@@ -1,0 +1,42 @@
+{
+  "name": "alouette",
+  "private": true,
+  "author": "Christophe Hurpeau <christophe@hurpeau.com>",
+  "license": "ISC",
+  "repository": "https://github.com/christophehurpeau/alouette.git",
+  "homepage": "https://github.com/christophehurpeau/alouette",
+  "type": "module",
+  "packageManager": "yarn@4.2.2",
+  "engines": {
+    "node": ">=18.12.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "undefined && yarn run build:definitions",
+    "build:definitions": "tsc -b",
+    "checks": "node scripts/check-packages.js",
+    "lint": "yarn run lint:prettier && yarn run lint:eslint",
+    "lint:eslint": "eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet .",
+    "lint:prettier": "pob-root-prettier --check .",
+    "lint:prettier:fix": "pob-root-prettier --write .",
+    "postinstall": "pob-root-postinstall",
+    "preversion": "yarn run lint && true && repository-check-dirty",
+    "tsc": "tsc -b"
+  },
+  "commitlint": {
+    "extends": [
+      "@pob/commitlint-config"
+    ]
+  },
+  "prettier": "@pob/root/prettier-config",
+  "devDependencies": {
+    "@pob/commitlint-config": "6.3.3",
+    "@pob/eslint-config": "56.0.0",
+    "@pob/root": "10.0.0",
+    "check-package-dependencies": "7.1.1",
+    "eslint": "8.57.0",
+    "typescript": "5.4.5"
+  }
+}
