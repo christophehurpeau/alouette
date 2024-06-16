@@ -1,10 +1,5 @@
 {
   "pob": {
-    "project": {
-      "type": "lib",
-      "packageManager": "yarn",
-      "yarnNodeLinker": "node-modules"
-    },
     "renovate": {
       "enable": true
     },
@@ -12,10 +7,14 @@
       "ci": false,
       "typescript": true,
       "eslint": true,
-      "testing": {
-        "testRunner": "vitest"
-      },
-      "packageNames": ["alouette"]
+      "testRunner": "vitest",
+      "testing": {},
+      "packageNames": ["alouette", "storybook-app"]
+    },
+    "project": {
+      "type": "lib",
+      "packageManager": "yarn",
+      "yarnNodeLinker": "node-modules"
     }
   }
 }

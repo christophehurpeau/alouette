@@ -14,17 +14,24 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "undefined && yarn run build:definitions",
+    "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
     "build:definitions": "tsc -b",
     "checks": "node scripts/check-packages.js",
+    "clean:build": "yarn workspaces foreach --parallel -A run clean:build",
     "lint": "yarn run lint:prettier && yarn run lint:eslint",
     "lint:eslint": "eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet .",
     "lint:prettier": "pob-root-prettier --check .",
     "lint:prettier:fix": "pob-root-prettier --write .",
     "postinstall": "pob-root-postinstall",
     "preversion": "yarn run lint && true && repository-check-dirty",
+    "storybook": "yarn ./packages/storybook-app start",
+    "test": "vitest",
+    "test:coverage": "POB_VITEST_COVERAGE=json,text vitest run --coverage",
+    "test:coverage:json": "POB_VITEST_COVERAGE=json vitest run --coverage",
+    "test:coverage:lcov": "POB_VITEST_COVERAGE=lcovvitest run --coverage",
+    "test:watch": "vitest --watch",
     "tsc": "tsc -b",
-    "storybook": "yarn ./packages/storybook-app start"
+    "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
   "commitlint": {
     "extends": [
@@ -41,6 +48,7 @@
     "check-package-dependencies": "7.1.2",
     "eslint": "8.57.0",
     "eslint-plugin-storybook": "0.8.0",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "vitest": "1.6.0"
   }
 }

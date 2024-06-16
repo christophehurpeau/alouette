@@ -1,4 +1,7 @@
 {
   "files": [],
-  "references": [{ "path": "packages/alouette/tsconfig.json" }]
+  "references": [
+    { "path": "packages/alouette/tsconfig.json" },
+    { "path": "packages/storybook-app/tsconfig.json" }
+  ]
 }
