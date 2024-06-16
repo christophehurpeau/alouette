@@ -8676,7 +8676,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.18.0 || ^0.19.0 || ^0.20.0, esbuild@npm:^0.20.1, esbuild@npm:~0.20.2":
+"esbuild@npm:^0.18.0 || ^0.19.0 || ^0.20.0, esbuild@npm:^0.20.1":
   version: 0.20.2
   resolution: "esbuild@npm:0.20.2"
   dependencies:
@@ -8756,7 +8756,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.21.3, esbuild@npm:^0.21.4":
+"esbuild@npm:^0.21.3, esbuild@npm:^0.21.4, esbuild@npm:~0.21.4":
   version: 0.21.5
   resolution: "esbuild@npm:0.21.5"
   dependencies:
@@ -14982,7 +14982,7 @@ __metadata:
     react-native-svg: "npm:15.3.0"
     react-native-web: "npm:0.19.12"
     storybook: "npm:8.1.7"
-    tsx: "npm:4.11.0"
+    tsx: "npm:4.15.2"
     typescript: "npm:5.4.5"
     vite: "npm:5.2.13"
     vite-plugin-svgr: "npm:4.2.0"
@@ -15546,11 +15546,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:4.11.0":
-  version: 4.11.0
-  resolution: "tsx@npm:4.11.0"
+"tsx@npm:4.15.2":
+  version: 4.15.2
+  resolution: "tsx@npm:4.15.2"
   dependencies:
-    esbuild: "npm:~0.20.2"
+    esbuild: "npm:~0.21.4"
     fsevents: "npm:~2.3.3"
     get-tsconfig: "npm:^4.7.5"
   dependenciesMeta:
@@ -15558,7 +15558,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 10c0/f8a714cd81c55c25c16b2fc4e879d517d37bedce8b74dee06c767d19b7e1a8b60e1eff3066b9fe8f66539eb8350dd4d16b51be4d1dd83af75bd8ddc8efcd0991
+  checksum: 10c0/6349ac29c13b567ece91d38e239606c0a8655ddbbdfab7250c04d7f9d5c447ff28f8dc7db62eaa16cafaff9cb5194c2a511d618cbfd4909e76cc54f07bc22424
   languageName: node
   linkType: hard
 
