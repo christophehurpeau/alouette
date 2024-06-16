@@ -1,0 +1,8 @@
+import type { Decorator } from "@storybook/react";
+import { StoryContainer } from "./StoryContainer";
+
+// eslint-disable-next-line react/function-component-definition -- not a component, it's a decorator for storybook.
+export const StoryDecorator: Decorator = (storyFn, { name, container }) => {
+  if (container === false) return storyFn();
+  return <StoryContainer title={name}>{storyFn()}</StoryContainer>;
+};

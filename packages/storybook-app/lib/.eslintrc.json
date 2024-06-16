@@ -1,0 +1,11 @@
+{
+  "root": true,
+  "extends": ["@pob/eslint-config/node-module"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    }
+  }
+}

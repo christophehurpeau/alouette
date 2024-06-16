@@ -1,0 +1,6029 @@
+{
+  "components": [
+    {
+      "moduleName": "@tamagui/core",
+      "nameToInfo": {
+        "Stack": {
+          "staticConfig": {
+            "acceptsClassName": true,
+            "defaultProps": {
+              "display": "flex",
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "flexBasis": "auto",
+              "boxSizing": "border-box",
+              "position": "relative",
+              "minHeight": 0,
+              "minWidth": 0,
+              "flexShrink": 0
+            },
+            "validStyles": {
+              "enterStyle": true,
+              "exitStyle": true,
+              "hoverStyle": true,
+              "pressStyle": true,
+              "focusStyle": true,
+              "disabledStyle": true,
+              "focusVisibleStyle": true,
+              "backfaceVisibility": true,
+              "borderBottomEndRadius": true,
+              "borderBottomStartRadius": true,
+              "borderBottomWidth": true,
+              "borderLeftWidth": true,
+              "borderRightWidth": true,
+              "borderBlockWidth": true,
+              "borderBlockEndWidth": true,
+              "borderBlockStartWidth": true,
+              "borderInlineWidth": true,
+              "borderInlineEndWidth": true,
+              "borderInlineStartWidth": true,
+              "borderStyle": true,
+              "borderBlockStyle": true,
+              "borderBlockEndStyle": true,
+              "borderBlockStartStyle": true,
+              "borderInlineStyle": true,
+              "borderInlineEndStyle": true,
+              "borderInlineStartStyle": true,
+              "borderTopEndRadius": true,
+              "borderTopStartRadius": true,
+              "borderTopWidth": true,
+              "borderWidth": true,
+              "transform": true,
+              "transformOrigin": true,
+              "alignContent": true,
+              "alignItems": true,
+              "alignSelf": true,
+              "borderEndWidth": true,
+              "borderStartWidth": true,
+              "bottom": true,
+              "display": true,
+              "end": true,
+              "flexBasis": true,
+              "flexDirection": true,
+              "flexWrap": true,
+              "gap": true,
+              "columnGap": true,
+              "rowGap": true,
+              "justifyContent": true,
+              "left": true,
+              "margin": true,
+              "marginBlock": true,
+              "marginBlockEnd": true,
+              "marginBlockStart": true,
+              "marginInline": true,
+              "marginInlineStart": true,
+              "marginInlineEnd": true,
+              "marginBottom": true,
+              "marginEnd": true,
+              "marginHorizontal": true,
+              "marginLeft": true,
+              "marginRight": true,
+              "marginStart": true,
+              "marginTop": true,
+              "marginVertical": true,
+              "overflow": true,
+              "padding": true,
+              "paddingBottom": true,
+              "paddingInline": true,
+              "paddingBlock": true,
+              "paddingBlockStart": true,
+              "paddingInlineEnd": true,
+              "paddingInlineStart": true,
+              "paddingEnd": true,
+              "paddingHorizontal": true,
+              "paddingLeft": true,
+              "paddingRight": true,
+              "paddingStart": true,
+              "paddingTop": true,
+              "paddingVertical": true,
+              "position": true,
+              "right": true,
+              "start": true,
+              "top": true,
+              "inset": true,
+              "insetBlock": true,
+              "insetBlockEnd": true,
+              "insetBlockStart": true,
+              "insetInline": true,
+              "insetInlineEnd": true,
+              "insetInlineStart": true,
+              "direction": true,
+              "shadowOffset": true,
+              "shadowRadius": true,
+              "backgroundColor": true,
+              "borderColor": true,
+              "borderBlockStartColor": true,
+              "borderBlockEndColor": true,
+              "borderBlockColor": true,
+              "borderBottomColor": true,
+              "borderInlineColor": true,
+              "borderInlineStartColor": true,
+              "borderInlineEndColor": true,
+              "borderTopColor": true,
+              "borderLeftColor": true,
+              "borderRightColor": true,
+              "borderEndColor": true,
+              "borderStartColor": true,
+              "shadowColor": true,
+              "color": true,
+              "textDecorationColor": true,
+              "textShadowColor": true,
+              "outlineColor": true,
+              "caretColor": true,
+              "borderRadius": true,
+              "borderTopLeftRadius": true,
+              "borderTopRightRadius": true,
+              "borderBottomLeftRadius": true,
+              "borderBottomRightRadius": true,
+              "borderStartStartRadius": true,
+              "borderStartEndRadius": true,
+              "borderEndStartRadius": true,
+              "borderEndEndRadius": true,
+              "width": true,
+              "height": true,
+              "minWidth": true,
+              "minHeight": true,
+              "maxWidth": true,
+              "maxHeight": true,
+              "blockSize": true,
+              "minBlockSize": true,
+              "maxBlockSize": true,
+              "inlineSize": true,
+              "minInlineSize": true,
+              "maxInlineSize": true,
+              "x": true,
+              "y": true,
+              "scale": true,
+              "perspective": true,
+              "scaleX": true,
+              "scaleY": true,
+              "skewX": true,
+              "skewY": true,
+              "matrix": true,
+              "rotate": true,
+              "rotateY": true,
+              "rotateX": true,
+              "rotateZ": true,
+              "WebkitLineClamp": true,
+              "animationIterationCount": true,
+              "aspectRatio": true,
+              "borderImageOutset": true,
+              "borderImageSlice": true,
+              "borderImageWidth": true,
+              "columnCount": true,
+              "flex": true,
+              "flexGrow": true,
+              "flexOrder": true,
+              "flexPositive": true,
+              "flexShrink": true,
+              "flexNegative": true,
+              "fontWeight": true,
+              "gridRow": true,
+              "gridRowEnd": true,
+              "gridRowGap": true,
+              "gridRowStart": true,
+              "gridColumn": true,
+              "gridColumnEnd": true,
+              "gridColumnGap": true,
+              "gridColumnStart": true,
+              "lineClamp": true,
+              "opacity": true,
+              "order": true,
+              "orphans": true,
+              "tabSize": true,
+              "widows": true,
+              "zIndex": true,
+              "zoom": true,
+              "scaleZ": true,
+              "shadowOpacity": true,
+              "backdropFilter": true,
+              "background": true,
+              "backgroundAttachment": true,
+              "backgroundBlendMode": true,
+              "backgroundClip": true,
+              "backgroundImage": true,
+              "backgroundOrigin": true,
+              "backgroundPosition": true,
+              "backgroundRepeat": true,
+              "backgroundSize": true,
+              "borderBottomStyle": true,
+              "borderImage": true,
+              "borderLeftStyle": true,
+              "borderRightStyle": true,
+              "borderTopStyle": true,
+              "boxShadow": true,
+              "boxSizing": true,
+              "clipPath": true,
+              "contain": true,
+              "content": true,
+              "cursor": true,
+              "filter": true,
+              "float": true,
+              "mask": true,
+              "maskBorder": true,
+              "maskBorderMode": true,
+              "maskBorderOutset": true,
+              "maskBorderRepeat": true,
+              "maskBorderSlice": true,
+              "maskBorderSource": true,
+              "maskBorderWidth": true,
+              "maskClip": true,
+              "maskComposite": true,
+              "maskImage": true,
+              "maskMode": true,
+              "maskOrigin": true,
+              "maskPosition": true,
+              "maskRepeat": true,
+              "maskSize": true,
+              "maskType": true,
+              "mixBlendMode": true,
+              "objectFit": true,
+              "objectPosition": true,
+              "outlineOffset": true,
+              "outlineStyle": true,
+              "outlineWidth": true,
+              "overflowBlock": true,
+              "overflowInline": true,
+              "overflowX": true,
+              "overflowY": true,
+              "pointerEvents": true,
+              "scrollbarWidth": true,
+              "textEmphasis": true,
+              "touchAction": true,
+              "transformStyle": true,
+              "userSelect": true
+            }
+          }
+        },
+        "Text": {
+          "staticConfig": {
+            "acceptsClassName": true,
+            "isText": true,
+            "defaultProps": {
+              "fontFamily": "unset",
+              "display": "inline",
+              "boxSizing": "border-box",
+              "wordWrap": "break-word",
+              "whiteSpace": "pre-wrap",
+              "margin": 0
+            },
+            "inlineWhenUnflattened": {},
+            "variants": {
+              "numberOfLines": {
+                "1": {
+                  "maxWidth": "100%",
+                  "overflow": "hidden",
+                  "textOverflow": "ellipsis",
+                  "whiteSpace": "nowrap"
+                },
+                ":number": "Function"
+              },
+              "selectable": {
+                "true": {
+                  "userSelect": "text",
+                  "cursor": "text"
+                },
+                "false": {
+                  "userSelect": "none",
+                  "cursor": "default"
+                }
+              },
+              "ellipse": {
+                "true": {
+                  "maxWidth": "100%",
+                  "overflow": "hidden",
+                  "textOverflow": "ellipsis",
+                  "whiteSpace": "nowrap"
+                }
+              },
+              "ellipsis": {
+                "true": {
+                  "maxWidth": "100%",
+                  "overflow": "hidden",
+                  "textOverflow": "ellipsis",
+                  "whiteSpace": "nowrap"
+                }
+              }
+            },
+            "validStyles": {
+              "enterStyle": true,
+              "exitStyle": true,
+              "hoverStyle": true,
+              "pressStyle": true,
+              "focusStyle": true,
+              "disabledStyle": true,
+              "focusVisibleStyle": true,
+              "backfaceVisibility": true,
+              "borderBottomEndRadius": true,
+              "borderBottomStartRadius": true,
+              "borderBottomWidth": true,
+              "borderLeftWidth": true,
+              "borderRightWidth": true,
+              "borderBlockWidth": true,
+              "borderBlockEndWidth": true,
+              "borderBlockStartWidth": true,
+              "borderInlineWidth": true,
+              "borderInlineEndWidth": true,
+              "borderInlineStartWidth": true,
+              "borderStyle": true,
+              "borderBlockStyle": true,
+              "borderBlockEndStyle": true,
+              "borderBlockStartStyle": true,
+              "borderInlineStyle": true,
+              "borderInlineEndStyle": true,
+              "borderInlineStartStyle": true,
+              "borderTopEndRadius": true,
+              "borderTopStartRadius": true,
+              "borderTopWidth": true,
+              "borderWidth": true,
+              "transform": true,
+              "transformOrigin": true,
+              "alignContent": true,
+              "alignItems": true,
+              "alignSelf": true,
+              "borderEndWidth": true,
+              "borderStartWidth": true,
+              "bottom": true,
+              "display": true,
+              "end": true,
+              "flexBasis": true,
+              "flexDirection": true,
+              "flexWrap": true,
+              "gap": true,
+              "columnGap": true,
+              "rowGap": true,
+              "justifyContent": true,
+              "left": true,
+              "margin": true,
+              "marginBlock": true,
+              "marginBlockEnd": true,
+              "marginBlockStart": true,
+              "marginInline": true,
+              "marginInlineStart": true,
+              "marginInlineEnd": true,
+              "marginBottom": true,
+              "marginEnd": true,
+              "marginHorizontal": true,
+              "marginLeft": true,
+              "marginRight": true,
+              "marginStart": true,
+              "marginTop": true,
+              "marginVertical": true,
+              "overflow": true,
+              "padding": true,
+              "paddingBottom": true,
+              "paddingInline": true,
+              "paddingBlock": true,
+              "paddingBlockStart": true,
+              "paddingInlineEnd": true,
+              "paddingInlineStart": true,
+              "paddingEnd": true,
+              "paddingHorizontal": true,
+              "paddingLeft": true,
+              "paddingRight": true,
+              "paddingStart": true,
+              "paddingTop": true,
+              "paddingVertical": true,
+              "position": true,
+              "right": true,
+              "start": true,
+              "top": true,
+              "inset": true,
+              "insetBlock": true,
+              "insetBlockEnd": true,
+              "insetBlockStart": true,
+              "insetInline": true,
+              "insetInlineEnd": true,
+              "insetInlineStart": true,
+              "direction": true,
+              "shadowOffset": true,
+              "shadowRadius": true,
+              "backgroundColor": true,
+              "borderColor": true,
+              "borderBlockStartColor": true,
+              "borderBlockEndColor": true,
+              "borderBlockColor": true,
+              "borderBottomColor": true,
+              "borderInlineColor": true,
+              "borderInlineStartColor": true,
+              "borderInlineEndColor": true,
+              "borderTopColor": true,
+              "borderLeftColor": true,
+              "borderRightColor": true,
+              "borderEndColor": true,
+              "borderStartColor": true,
+              "shadowColor": true,
+              "color": true,
+              "textDecorationColor": true,
+              "textShadowColor": true,
+              "outlineColor": true,
+              "caretColor": true,
+              "borderRadius": true,
+              "borderTopLeftRadius": true,
+              "borderTopRightRadius": true,
+              "borderBottomLeftRadius": true,
+              "borderBottomRightRadius": true,
+              "borderStartStartRadius": true,
+              "borderStartEndRadius": true,
+              "borderEndStartRadius": true,
+              "borderEndEndRadius": true,
+              "width": true,
+              "height": true,
+              "minWidth": true,
+              "minHeight": true,
+              "maxWidth": true,
+              "maxHeight": true,
+              "blockSize": true,
+              "minBlockSize": true,
+              "maxBlockSize": true,
+              "inlineSize": true,
+              "minInlineSize": true,
+              "maxInlineSize": true,
+              "x": true,
+              "y": true,
+              "scale": true,
+              "perspective": true,
+              "scaleX": true,
+              "scaleY": true,
+              "skewX": true,
+              "skewY": true,
+              "matrix": true,
+              "rotate": true,
+              "rotateY": true,
+              "rotateX": true,
+              "rotateZ": true,
+              "WebkitLineClamp": true,
+              "animationIterationCount": true,
+              "aspectRatio": true,
+              "borderImageOutset": true,
+              "borderImageSlice": true,
+              "borderImageWidth": true,
+              "columnCount": true,
+              "flex": true,
+              "flexGrow": true,
+              "flexOrder": true,
+              "flexPositive": true,
+              "flexShrink": true,
+              "flexNegative": true,
+              "fontWeight": true,
+              "gridRow": true,
+              "gridRowEnd": true,
+              "gridRowGap": true,
+              "gridRowStart": true,
+              "gridColumn": true,
+              "gridColumnEnd": true,
+              "gridColumnGap": true,
+              "gridColumnStart": true,
+              "lineClamp": true,
+              "opacity": true,
+              "order": true,
+              "orphans": true,
+              "tabSize": true,
+              "widows": true,
+              "zIndex": true,
+              "zoom": true,
+              "scaleZ": true,
+              "shadowOpacity": true,
+              "backdropFilter": true,
+              "background": true,
+              "backgroundAttachment": true,
+              "backgroundBlendMode": true,
+              "backgroundClip": true,
+              "backgroundImage": true,
+              "backgroundOrigin": true,
+              "backgroundPosition": true,
+              "backgroundRepeat": true,
+              "backgroundSize": true,
+              "borderBottomStyle": true,
+              "borderImage": true,
+              "borderLeftStyle": true,
+              "borderRightStyle": true,
+              "borderTopStyle": true,
+              "boxShadow": true,
+              "boxSizing": true,
+              "clipPath": true,
+              "contain": true,
+              "content": true,
+              "cursor": true,
+              "filter": true,
+              "float": true,
+              "mask": true,
+              "maskBorder": true,
+              "maskBorderMode": true,
+              "maskBorderOutset": true,
+              "maskBorderRepeat": true,
+              "maskBorderSlice": true,
+              "maskBorderSource": true,
+              "maskBorderWidth": true,
+              "maskClip": true,
+              "maskComposite": true,
+              "maskImage": true,
+              "maskMode": true,
+              "maskOrigin": true,
+              "maskPosition": true,
+              "maskRepeat": true,
+              "maskSize": true,
+              "maskType": true,
+              "mixBlendMode": true,
+              "objectFit": true,
+              "objectPosition": true,
+              "outlineOffset": true,
+              "outlineStyle": true,
+              "outlineWidth": true,
+              "overflowBlock": true,
+              "overflowInline": true,
+              "overflowX": true,
+              "overflowY": true,
+              "pointerEvents": true,
+              "scrollbarWidth": true,
+              "textEmphasis": true,
+              "touchAction": true,
+              "transformStyle": true,
+              "userSelect": true,
+              "fontFamily": true,
+              "fontSize": true,
+              "fontStyle": true,
+              "letterSpacing": true,
+              "lineHeight": true,
+              "textTransform": true,
+              "textAlign": true,
+              "textDecorationLine": true,
+              "textDecorationStyle": true,
+              "textShadowOffset": true,
+              "textShadowRadius": true,
+              "selectable": true,
+              "verticalAlign": true,
+              "whiteSpace": true,
+              "wordWrap": true,
+              "textOverflow": true,
+              "textDecorationDistance": true,
+              "WebkitBoxOrient": true
+            }
+          }
+        },
+        "View": {
+          "staticConfig": {
+            "acceptsClassName": true,
+            "defaultProps": {
+              "display": "flex",
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "flexBasis": "auto",
+              "boxSizing": "border-box",
+              "position": "relative",
+              "minHeight": 0,
+              "minWidth": 0,
+              "flexShrink": 0
+            },
+            "validStyles": {
+              "enterStyle": true,
+              "exitStyle": true,
+              "hoverStyle": true,
+              "pressStyle": true,
+              "focusStyle": true,
+              "disabledStyle": true,
+              "focusVisibleStyle": true,
+              "backfaceVisibility": true,
+              "borderBottomEndRadius": true,
+              "borderBottomStartRadius": true,
+              "borderBottomWidth": true,
+              "borderLeftWidth": true,
+              "borderRightWidth": true,
+              "borderBlockWidth": true,
+              "borderBlockEndWidth": true,
+              "borderBlockStartWidth": true,
+              "borderInlineWidth": true,
+              "borderInlineEndWidth": true,
+              "borderInlineStartWidth": true,
+              "borderStyle": true,
+              "borderBlockStyle": true,
+              "borderBlockEndStyle": true,
+              "borderBlockStartStyle": true,
+              "borderInlineStyle": true,
+              "borderInlineEndStyle": true,
+              "borderInlineStartStyle": true,
+              "borderTopEndRadius": true,
+              "borderTopStartRadius": true,
+              "borderTopWidth": true,
+              "borderWidth": true,
+              "transform": true,
+              "transformOrigin": true,
+              "alignContent": true,
+              "alignItems": true,
+              "alignSelf": true,
+              "borderEndWidth": true,
+              "borderStartWidth": true,
+              "bottom": true,
+              "display": true,
+              "end": true,
+              "flexBasis": true,
+              "flexDirection": true,
+              "flexWrap": true,
+              "gap": true,
+              "columnGap": true,
+              "rowGap": true,
+              "justifyContent": true,
+              "left": true,
+              "margin": true,
+              "marginBlock": true,
+              "marginBlockEnd": true,
+              "marginBlockStart": true,
+              "marginInline": true,
+              "marginInlineStart": true,
+              "marginInlineEnd": true,
+              "marginBottom": true,
+              "marginEnd": true,
+              "marginHorizontal": true,
+              "marginLeft": true,
+              "marginRight": true,
+              "marginStart": true,
+              "marginTop": true,
+              "marginVertical": true,
+              "overflow": true,
+              "padding": true,
+              "paddingBottom": true,
+              "paddingInline": true,
+              "paddingBlock": true,
+              "paddingBlockStart": true,
+              "paddingInlineEnd": true,
+              "paddingInlineStart": true,
+              "paddingEnd": true,
+              "paddingHorizontal": true,
+              "paddingLeft": true,
+              "paddingRight": true,
+              "paddingStart": true,
+              "paddingTop": true,
+              "paddingVertical": true,
+              "position": true,
+              "right": true,
+              "start": true,
+              "top": true,
+              "inset": true,
+              "insetBlock": true,
+              "insetBlockEnd": true,
+              "insetBlockStart": true,
+              "insetInline": true,
+              "insetInlineEnd": true,
+              "insetInlineStart": true,
+              "direction": true,
+              "shadowOffset": true,
+              "shadowRadius": true,
+              "backgroundColor": true,
+              "borderColor": true,
+              "borderBlockStartColor": true,
+              "borderBlockEndColor": true,
+              "borderBlockColor": true,
+              "borderBottomColor": true,
+              "borderInlineColor": true,
+              "borderInlineStartColor": true,
+              "borderInlineEndColor": true,
+              "borderTopColor": true,
+              "borderLeftColor": true,
+              "borderRightColor": true,
+              "borderEndColor": true,
+              "borderStartColor": true,
+              "shadowColor": true,
+              "color": true,
+              "textDecorationColor": true,
+              "textShadowColor": true,
+              "outlineColor": true,
+              "caretColor": true,
+              "borderRadius": true,
+              "borderTopLeftRadius": true,
+              "borderTopRightRadius": true,
+              "borderBottomLeftRadius": true,
+              "borderBottomRightRadius": true,
+              "borderStartStartRadius": true,
+              "borderStartEndRadius": true,
+              "borderEndStartRadius": true,
+              "borderEndEndRadius": true,
+              "width": true,
+              "height": true,
+              "minWidth": true,
+              "minHeight": true,
+              "maxWidth": true,
+              "maxHeight": true,
+              "blockSize": true,
+              "minBlockSize": true,
+              "maxBlockSize": true,
+              "inlineSize": true,
+              "minInlineSize": true,
+              "maxInlineSize": true,
+              "x": true,
+              "y": true,
+              "scale": true,
+              "perspective": true,
+              "scaleX": true,
+              "scaleY": true,
+              "skewX": true,
+              "skewY": true,
+              "matrix": true,
+              "rotate": true,
+              "rotateY": true,
+              "rotateX": true,
+              "rotateZ": true,
+              "WebkitLineClamp": true,
+              "animationIterationCount": true,
+              "aspectRatio": true,
+              "borderImageOutset": true,
+              "borderImageSlice": true,
+              "borderImageWidth": true,
+              "columnCount": true,
+              "flex": true,
+              "flexGrow": true,
+              "flexOrder": true,
+              "flexPositive": true,
+              "flexShrink": true,
+              "flexNegative": true,
+              "fontWeight": true,
+              "gridRow": true,
+              "gridRowEnd": true,
+              "gridRowGap": true,
+              "gridRowStart": true,
+              "gridColumn": true,
+              "gridColumnEnd": true,
+              "gridColumnGap": true,
+              "gridColumnStart": true,
+              "lineClamp": true,
+              "opacity": true,
+              "order": true,
+              "orphans": true,
+              "tabSize": true,
+              "widows": true,
+              "zIndex": true,
+              "zoom": true,
+              "scaleZ": true,
+              "shadowOpacity": true,
+              "backdropFilter": true,
+              "background": true,
+              "backgroundAttachment": true,
+              "backgroundBlendMode": true,
+              "backgroundClip": true,
+              "backgroundImage": true,
+              "backgroundOrigin": true,
+              "backgroundPosition": true,
+              "backgroundRepeat": true,
+              "backgroundSize": true,
+              "borderBottomStyle": true,
+              "borderImage": true,
+              "borderLeftStyle": true,
+              "borderRightStyle": true,
+              "borderTopStyle": true,
+              "boxShadow": true,
+              "boxSizing": true,
+              "clipPath": true,
+              "contain": true,
+              "content": true,
+              "cursor": true,
+              "filter": true,
+              "float": true,
+              "mask": true,
+              "maskBorder": true,
+              "maskBorderMode": true,
+              "maskBorderOutset": true,
+              "maskBorderRepeat": true,
+              "maskBorderSlice": true,
+              "maskBorderSource": true,
+              "maskBorderWidth": true,
+              "maskClip": true,
+              "maskComposite": true,
+              "maskImage": true,
+              "maskMode": true,
+              "maskOrigin": true,
+              "maskPosition": true,
+              "maskRepeat": true,
+              "maskSize": true,
+              "maskType": true,
+              "mixBlendMode": true,
+              "objectFit": true,
+              "objectPosition": true,
+              "outlineOffset": true,
+              "outlineStyle": true,
+              "outlineWidth": true,
+              "overflowBlock": true,
+              "overflowInline": true,
+              "overflowX": true,
+              "overflowY": true,
+              "pointerEvents": true,
+              "scrollbarWidth": true,
+              "textEmphasis": true,
+              "touchAction": true,
+              "transformStyle": true,
+              "userSelect": true
+            }
+          }
+        },
+        "Spacer": {
+          "staticConfig": {
+            "acceptsClassName": true,
+            "memo": true,
+            "componentName": "Spacer",
+            "validStyles": {
+              "enterStyle": true,
+              "exitStyle": true,
+              "hoverStyle": true,
+              "pressStyle": true,
+              "focusStyle": true,
+              "disabledStyle": true,
+              "focusVisibleStyle": true,
+              "backfaceVisibility": true,
+              "borderBottomEndRadius": true,
+              "borderBottomStartRadius": true,
+              "borderBottomWidth": true,
+              "borderLeftWidth": true,
+              "borderRightWidth": true,
+              "borderBlockWidth": true,
+              "borderBlockEndWidth": true,
+              "borderBlockStartWidth": true,
+              "borderInlineWidth": true,
+              "borderInlineEndWidth": true,
+              "borderInlineStartWidth": true,
+              "borderStyle": true,
+              "borderBlockStyle": true,
+              "borderBlockEndStyle": true,
+              "borderBlockStartStyle": true,
+              "borderInlineStyle": true,
+              "borderInlineEndStyle": true,
+              "borderInlineStartStyle": true,
+              "borderTopEndRadius": true,
+              "borderTopStartRadius": true,
+              "borderTopWidth": true,
+              "borderWidth": true,
+              "transform": true,
+              "transformOrigin": true,
+              "alignContent": true,
+              "alignItems": true,
+              "alignSelf": true,
+              "borderEndWidth": true,
+              "borderStartWidth": true,
+              "bottom": true,
+              "display": true,
+              "end": true,
+              "flexBasis": true,
+              "flexDirection": true,
+              "flexWrap": true,
+              "gap": true,
+              "columnGap": true,
+              "rowGap": true,
+              "justifyContent": true,
+              "left": true,
+              "margin": true,
+              "marginBlock": true,
+              "marginBlockEnd": true,
+              "marginBlockStart": true,
+              "marginInline": true,
+              "marginInlineStart": true,
+              "marginInlineEnd": true,
+              "marginBottom": true,
+              "marginEnd": true,
+              "marginHorizontal": true,
+              "marginLeft": true,
+              "marginRight": true,
+              "marginStart": true,
+              "marginTop": true,
+              "marginVertical": true,
+              "overflow": true,
+              "padding": true,
+              "paddingBottom": true,
+              "paddingInline": true,
+              "paddingBlock": true,
+              "paddingBlockStart": true,
+              "paddingInlineEnd": true,
+              "paddingInlineStart": true,
+              "paddingEnd": true,
+              "paddingHorizontal": true,
+              "paddingLeft": true,
+              "paddingRight": true,
+              "paddingStart": true,
+              "paddingTop": true,
+              "paddingVertical": true,
+              "position": true,
+              "right": true,
+              "start": true,
+              "top": true,
+              "inset": true,
+              "insetBlock": true,
+              "insetBlockEnd": true,
+              "insetBlockStart": true,
+              "insetInline": true,
+              "insetInlineEnd": true,
+              "insetInlineStart": true,
+              "direction": true,
+              "shadowOffset": true,
+              "shadowRadius": true,
+              "backgroundColor": true,
+              "borderColor": true,
+              "borderBlockStartColor": true,
+              "borderBlockEndColor": true,
+              "borderBlockColor": true,
+              "borderBottomColor": true,
+              "borderInlineColor": true,
+              "borderInlineStartColor": true,
+              "borderInlineEndColor": true,
+              "borderTopColor": true,
+              "borderLeftColor": true,
+              "borderRightColor": true,
+              "borderEndColor": true,
+              "borderStartColor": true,
+              "shadowColor": true,
+              "color": true,
+              "textDecorationColor": true,
+              "textShadowColor": true,
+              "outlineColor": true,
+              "caretColor": true,
+              "borderRadius": true,
+              "borderTopLeftRadius": true,
+              "borderTopRightRadius": true,
+              "borderBottomLeftRadius": true,
+              "borderBottomRightRadius": true,
+              "borderStartStartRadius": true,
+              "borderStartEndRadius": true,
+              "borderEndStartRadius": true,
+              "borderEndEndRadius": true,
+              "width": true,
+              "height": true,
+              "minWidth": true,
+              "minHeight": true,
+              "maxWidth": true,
+              "maxHeight": true,
+              "blockSize": true,
+              "minBlockSize": true,
+              "maxBlockSize": true,
+              "inlineSize": true,
+              "minInlineSize": true,
+              "maxInlineSize": true,
+              "x": true,
+              "y": true,
+              "scale": true,
+              "perspective": true,
+              "scaleX": true,
+              "scaleY": true,
+              "skewX": true,
+              "skewY": true,
+              "matrix": true,
+              "rotate": true,
+              "rotateY": true,
+              "rotateX": true,
+              "rotateZ": true,
+              "WebkitLineClamp": true,
+              "animationIterationCount": true,
+              "aspectRatio": true,
+              "borderImageOutset": true,
+              "borderImageSlice": true,
+              "borderImageWidth": true,
+              "columnCount": true,
+              "flex": true,
+              "flexGrow": true,
+              "flexOrder": true,
+              "flexPositive": true,
+              "flexShrink": true,
+              "flexNegative": true,
+              "fontWeight": true,
+              "gridRow": true,
+              "gridRowEnd": true,
+              "gridRowGap": true,
+              "gridRowStart": true,
+              "gridColumn": true,
+              "gridColumnEnd": true,
+              "gridColumnGap": true,
+              "gridColumnStart": true,
+              "lineClamp": true,
+              "opacity": true,
+              "order": true,
+              "orphans": true,
+              "tabSize": true,
+              "widows": true,
+              "zIndex": true,
+              "zoom": true,
+              "scaleZ": true,
+              "shadowOpacity": true,
+              "backdropFilter": true,
+              "background": true,
+              "backgroundAttachment": true,
+              "backgroundBlendMode": true,
+              "backgroundClip": true,
+              "backgroundImage": true,
+              "backgroundOrigin": true,
+              "backgroundPosition": true,
+              "backgroundRepeat": true,
+              "backgroundSize": true,
+              "borderBottomStyle": true,
+              "borderImage": true,
+              "borderLeftStyle": true,
+              "borderRightStyle": true,
+              "borderTopStyle": true,
+              "boxShadow": true,
+              "boxSizing": true,
+              "clipPath": true,
+              "contain": true,
+              "content": true,
+              "cursor": true,
+              "filter": true,
+              "float": true,
+              "mask": true,
+              "maskBorder": true,
+              "maskBorderMode": true,
+              "maskBorderOutset": true,
+              "maskBorderRepeat": true,
+              "maskBorderSlice": true,
+              "maskBorderSource": true,
+              "maskBorderWidth": true,
+              "maskClip": true,
+              "maskComposite": true,
+              "maskImage": true,
+              "maskMode": true,
+              "maskOrigin": true,
+              "maskPosition": true,
+              "maskRepeat": true,
+              "maskSize": true,
+              "maskType": true,
+              "mixBlendMode": true,
+              "objectFit": true,
+              "objectPosition": true,
+              "outlineOffset": true,
+              "outlineStyle": true,
+              "outlineWidth": true,
+              "overflowBlock": true,
+              "overflowInline": true,
+              "overflowX": true,
+              "overflowY": true,
+              "pointerEvents": true,
+              "scrollbarWidth": true,
+              "textEmphasis": true,
+              "touchAction": true,
+              "transformStyle": true,
+              "userSelect": true
+            },
+            "defaultProps": {
+              "display": "flex",
+              "alignItems": "stretch",
+              "flexDirection": "column",
+              "flexBasis": "auto",
+              "boxSizing": "border-box",
+              "position": "relative",
+              "minHeight": 0,
+              "minWidth": 0,
+              "flexShrink": 0,
+              "tag": "span",
+              "size": true,
+              "pointerEvents": "none"
+            },
+            "variants": {
+              "size": {
+                "...": "Function"
+              },
+              "flex": {
+                "true": {
+                  "flexGrow": 1
+                }
+              },
+              "direction": {
+                "horizontal": {
+                  "height": 0,
+                  "minHeight": 0
+                },
+                "vertical": {
+                  "width": 0,
+                  "minWidth": 0
+                },
+                "both": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "nameToPaths": {},
+  "tamaguiConfig": {
+    "fonts": {
+      "heading": {
+        "family": "Inter",
+        "weight": {
+          "xl": "400",
+          "lg": "400",
+          "md": "400",
+          "sm": "400",
+          "xs": "400",
+          "regular": "400",
+          "bold": "700",
+          "black": "900"
+        },
+        "face": {
+          "100": {
+            "normal": "Inter"
+          },
+          "200": {
+            "normal": "Inter"
+          },
+          "300": {
+            "normal": "Inter"
+          },
+          "400": {
+            "normal": "InterRegular"
+          },
+          "500": {
+            "normal": "InterRegular"
+          },
+          "600": {
+            "normal": "InterRegular"
+          },
+          "700": {
+            "normal": "InterBold"
+          },
+          "800": {
+            "normal": "InterBold"
+          },
+          "900": {
+            "normal": "InterBlack"
+          }
+        },
+        "size": {
+          "xl": 48,
+          "lg": 40,
+          "md": 32,
+          "sm": 24,
+          "xs": 18
+        },
+        "lineHeight": {
+          "xl": 52.8,
+          "lg": 44,
+          "md": 38.4,
+          "sm": 31.2,
+          "xs": 23.4
+        }
+      },
+      "body": {
+        "family": "Inter",
+        "weight": {
+          "xl": "400",
+          "lg": "400",
+          "md": "400",
+          "sm": "400",
+          "xs": "400",
+          "regular": "400",
+          "bold": "700",
+          "black": "900"
+        },
+        "face": {
+          "100": {
+            "normal": "Inter"
+          },
+          "200": {
+            "normal": "Inter"
+          },
+          "300": {
+            "normal": "Inter"
+          },
+          "400": {
+            "normal": "InterRegular"
+          },
+          "500": {
+            "normal": "InterRegular"
+          },
+          "600": {
+            "normal": "InterRegular"
+          },
+          "700": {
+            "normal": "InterBold"
+          },
+          "800": {
+            "normal": "InterBold"
+          },
+          "900": {
+            "normal": "InterBlack"
+          }
+        },
+        "size": {
+          "xl": 24,
+          "lg": 18,
+          "md": 16,
+          "sm": 14,
+          "xs": 12
+        },
+        "lineHeight": {
+          "xl": 33.6,
+          "lg": 25.2,
+          "md": 22.4,
+          "sm": 19.6,
+          "xs": 16.8
+        }
+      }
+    },
+    "onlyAllowShorthands": false,
+    "fontLanguages": [],
+    "animations": {
+      "isReactNative": true,
+      "animations": {
+        "fast": {
+          "type": "timing",
+          "duration": 100,
+          "damping": 20,
+          "stiffness": 250
+        },
+        "formElement": {
+          "type": "timing",
+          "duration": 400,
+          "damping": 20,
+          "stiffness": 250
+        }
+      },
+      "View": "Component",
+      "Text": "Component",
+      "useAnimatedNumber": "Function",
+      "useAnimatedNumberReaction": "Function",
+      "useAnimatedNumberStyle": "Function",
+      "usePresence": "Function",
+      "ResetPresence": "Function",
+      "useAnimations": "Function"
+    },
+    "media": {
+      "small": {
+        "minWidth": 480
+      },
+      "medium": {
+        "minWidth": 768
+      },
+      "large": {
+        "minWidth": 1024
+      },
+      "wide": {
+        "minWidth": 1280
+      }
+    },
+    "tokens": {
+      "color": {
+        "black": {
+          "isVar": true,
+          "key": "$black",
+          "name": "color-1",
+          "val": "#000000",
+          "variable": "var(--color-1)"
+        },
+        "white": {
+          "isVar": true,
+          "key": "$white",
+          "name": "color-2",
+          "val": "#ffffff",
+          "variable": "var(--color-2)"
+        },
+        "disabled": {
+          "isVar": true,
+          "key": "$disabled",
+          "name": "color-3",
+          "val": "#ebe9e5",
+          "variable": "var(--color-3)"
+        },
+        "contrastDisabled": {
+          "isVar": true,
+          "key": "$contrastDisabled",
+          "name": "color-4",
+          "val": "#aeaba3",
+          "variable": "var(--color-4)"
+        },
+        "grayscale.1": {
+          "isVar": true,
+          "key": "$grayscale.1",
+          "name": "color-5",
+          "val": "#faf9f8",
+          "variable": "var(--color-5)"
+        },
+        "grayscale.2": {
+          "isVar": true,
+          "key": "$grayscale.2",
+          "name": "color-6",
+          "val": "#f4f3ef",
+          "variable": "var(--color-6)"
+        },
+        "grayscale.3": {
+          "isVar": true,
+          "key": "$grayscale.3",
+          "name": "color-7",
+          "val": "#ebe9e5",
+          "variable": "var(--color-7)"
+        },
+        "grayscale.4": {
+          "isVar": true,
+          "key": "$grayscale.4",
+          "name": "color-8",
+          "val": "#dedad2",
+          "variable": "var(--color-8)"
+        },
+        "grayscale.5": {
+          "isVar": true,
+          "key": "$grayscale.5",
+          "name": "color-9",
+          "val": "#d1cdc5",
+          "variable": "var(--color-9)"
+        },
+        "grayscale.6": {
+          "isVar": true,
+          "key": "$grayscale.6",
+          "name": "color-10",
+          "val": "#bab8ae",
+          "variable": "var(--color-10)"
+        },
+        "grayscale.7": {
+          "isVar": true,
+          "key": "$grayscale.7",
+          "name": "color-11",
+          "val": "#aeaba3",
+          "variable": "var(--color-11)"
+        },
+        "grayscale.8": {
+          "isVar": true,
+          "key": "$grayscale.8",
+          "name": "color-12",
+          "val": "#9c9a92",
+          "variable": "var(--color-12)"
+        },
+        "grayscale.9": {
+          "isVar": true,
+          "key": "$grayscale.9",
+          "name": "color-13",
+          "val": "#8e8c83",
+          "variable": "var(--color-13)"
+        },
+        "grayscale.10": {
+          "isVar": true,
+          "key": "$grayscale.10",
+          "name": "color-14",
+          "val": "#74726a",
+          "variable": "var(--color-14)"
+        },
+        "success.1": {
+          "isVar": true,
+          "key": "$success.1",
+          "name": "color-15",
+          "val": "#f0f9f3",
+          "variable": "var(--color-15)"
+        },
+        "success.2": {
+          "isVar": true,
+          "key": "$success.2",
+          "name": "color-16",
+          "val": "#d4f0d4",
+          "variable": "var(--color-16)"
+        },
+        "success.3": {
+          "isVar": true,
+          "key": "$success.3",
+          "name": "color-17",
+          "val": "#a8e6a8",
+          "variable": "var(--color-17)"
+        },
+        "success.4": {
+          "isVar": true,
+          "key": "$success.4",
+          "name": "color-18",
+          "val": "#7edc7e",
+          "variable": "var(--color-18)"
+        },
+        "success.5": {
+          "isVar": true,
+          "key": "$success.5",
+          "name": "color-19",
+          "val": "#54d254",
+          "variable": "var(--color-19)"
+        },
+        "success.6": {
+          "isVar": true,
+          "key": "$success.6",
+          "name": "color-20",
+          "val": "#2ac82a",
+          "variable": "var(--color-20)"
+        },
+        "success.7": {
+          "isVar": true,
+          "key": "$success.7",
+          "name": "color-21",
+          "val": "#00be00",
+          "variable": "var(--color-21)"
+        },
+        "success.8": {
+          "isVar": true,
+          "key": "$success.8",
+          "name": "color-22",
+          "val": "#00b400",
+          "variable": "var(--color-22)"
+        },
+        "success.9": {
+          "isVar": true,
+          "key": "$success.9",
+          "name": "color-23",
+          "val": "#00aa00",
+          "variable": "var(--color-23)"
+        },
+        "success.10": {
+          "isVar": true,
+          "key": "$success.10",
+          "name": "color-24",
+          "val": "#009200",
+          "variable": "var(--color-24)"
+        },
+        "info.1": {
+          "isVar": true,
+          "key": "$info.1",
+          "name": "color-25",
+          "val": "#f0f9ff",
+          "variable": "var(--color-25)"
+        },
+        "info.2": {
+          "isVar": true,
+          "key": "$info.2",
+          "name": "color-26",
+          "val": "#d4f0ff",
+          "variable": "var(--color-26)"
+        },
+        "info.3": {
+          "isVar": true,
+          "key": "$info.3",
+          "name": "color-27",
+          "val": "#a8e6ff",
+          "variable": "var(--color-27)"
+        },
+        "info.4": {
+          "isVar": true,
+          "key": "$info.4",
+          "name": "color-28",
+          "val": "#7edcff",
+          "variable": "var(--color-28)"
+        },
+        "info.5": {
+          "isVar": true,
+          "key": "$info.5",
+          "name": "color-29",
+          "val": "#54d2ff",
+          "variable": "var(--color-29)"
+        },
+        "info.6": {
+          "isVar": true,
+          "key": "$info.6",
+          "name": "color-30",
+          "val": "#2ac8ff",
+          "variable": "var(--color-30)"
+        },
+        "info.7": {
+          "isVar": true,
+          "key": "$info.7",
+          "name": "color-31",
+          "val": "#00beff",
+          "variable": "var(--color-31)"
+        },
+        "info.8": {
+          "isVar": true,
+          "key": "$info.8",
+          "name": "color-32",
+          "val": "#00b4ff",
+          "variable": "var(--color-32)"
+        },
+        "info.9": {
+          "isVar": true,
+          "key": "$info.9",
+          "name": "color-33",
+          "val": "#00aaff",
+          "variable": "var(--color-33)"
+        },
+        "info.10": {
+          "isVar": true,
+          "key": "$info.10",
+          "name": "color-34",
+          "val": "#0092ff",
+          "variable": "var(--color-34)"
+        },
+        "warning.1": {
+          "isVar": true,
+          "key": "$warning.1",
+          "name": "color-35",
+          "val": "#fff9f0",
+          "variable": "var(--color-35)"
+        },
+        "warning.2": {
+          "isVar": true,
+          "key": "$warning.2",
+          "name": "color-36",
+          "val": "#fff0d4",
+          "variable": "var(--color-36)"
+        },
+        "warning.3": {
+          "isVar": true,
+          "key": "$warning.3",
+          "name": "color-37",
+          "val": "#ffe6a8",
+          "variable": "var(--color-37)"
+        },
+        "warning.4": {
+          "isVar": true,
+          "key": "$warning.4",
+          "name": "color-38",
+          "val": "#ffdc7e",
+          "variable": "var(--color-38)"
+        },
+        "warning.5": {
+          "isVar": true,
+          "key": "$warning.5",
+          "name": "color-39",
+          "val": "#ffd254",
+          "variable": "var(--color-39)"
+        },
+        "warning.6": {
+          "isVar": true,
+          "key": "$warning.6",
+          "name": "color-40",
+          "val": "#ffc82a",
+          "variable": "var(--color-40)"
+        },
+        "warning.7": {
+          "isVar": true,
+          "key": "$warning.7",
+          "name": "color-41",
+          "val": "#ffbe00",
+          "variable": "var(--color-41)"
+        },
+        "warning.8": {
+          "isVar": true,
+          "key": "$warning.8",
+          "name": "color-42",
+          "val": "#ffb400",
+          "variable": "var(--color-42)"
+        },
+        "warning.9": {
+          "isVar": true,
+          "key": "$warning.9",
+          "name": "color-43",
+          "val": "#ffaa00",
+          "variable": "var(--color-43)"
+        },
+        "warning.10": {
+          "isVar": true,
+          "key": "$warning.10",
+          "name": "color-44",
+          "val": "#ff9200",
+          "variable": "var(--color-44)"
+        },
+        "danger.1": {
+          "isVar": true,
+          "key": "$danger.1",
+          "name": "color-45",
+          "val": "#fff0f0",
+          "variable": "var(--color-45)"
+        },
+        "danger.2": {
+          "isVar": true,
+          "key": "$danger.2",
+          "name": "color-46",
+          "val": "#ffd4d4",
+          "variable": "var(--color-46)"
+        },
+        "danger.3": {
+          "isVar": true,
+          "key": "$danger.3",
+          "name": "color-47",
+          "val": "#ffaaaa",
+          "variable": "var(--color-47)"
+        },
+        "danger.4": {
+          "isVar": true,
+          "key": "$danger.4",
+          "name": "color-48",
+          "val": "#ff7e7e",
+          "variable": "var(--color-48)"
+        },
+        "danger.5": {
+          "isVar": true,
+          "key": "$danger.5",
+          "name": "color-49",
+          "val": "#ff5454",
+          "variable": "var(--color-49)"
+        },
+        "danger.6": {
+          "isVar": true,
+          "key": "$danger.6",
+          "name": "color-50",
+          "val": "#ff2a2a",
+          "variable": "var(--color-50)"
+        },
+        "danger.7": {
+          "isVar": true,
+          "key": "$danger.7",
+          "name": "color-51",
+          "val": "#ff0000",
+          "variable": "var(--color-51)"
+        },
+        "danger.8": {
+          "isVar": true,
+          "key": "$danger.8",
+          "name": "color-52",
+          "val": "#f40000",
+          "variable": "var(--color-52)"
+        },
+        "danger.9": {
+          "isVar": true,
+          "key": "$danger.9",
+          "name": "color-53",
+          "val": "#ea0000",
+          "variable": "var(--color-53)"
+        },
+        "danger.10": {
+          "isVar": true,
+          "key": "$danger.10",
+          "name": "color-54",
+          "val": "#d20000",
+          "variable": "var(--color-54)"
+        },
+        "primary.1": {
+          "isVar": true,
+          "key": "$primary.1",
+          "name": "color-55",
+          "val": "#e1f4f6",
+          "variable": "var(--color-55)"
+        },
+        "primary.2": {
+          "isVar": true,
+          "key": "$primary.2",
+          "name": "color-56",
+          "val": "#b4e2e9",
+          "variable": "var(--color-56)"
+        },
+        "primary.3": {
+          "isVar": true,
+          "key": "$primary.3",
+          "name": "color-57",
+          "val": "#86cfdc",
+          "variable": "var(--color-57)"
+        },
+        "primary.4": {
+          "isVar": true,
+          "key": "$primary.4",
+          "name": "color-58",
+          "val": "#60bcd0",
+          "variable": "var(--color-58)"
+        },
+        "primary.5": {
+          "isVar": true,
+          "key": "$primary.5",
+          "name": "color-59",
+          "val": "#46aeca",
+          "variable": "var(--color-59)"
+        },
+        "primary.6": {
+          "isVar": true,
+          "key": "$primary.6",
+          "name": "color-60",
+          "val": "#31a1c4",
+          "variable": "var(--color-60)"
+        },
+        "primary.7": {
+          "isVar": true,
+          "key": "$primary.7",
+          "name": "color-61",
+          "val": "#2994b7",
+          "variable": "var(--color-61)"
+        },
+        "primary.8": {
+          "isVar": true,
+          "key": "$primary.8",
+          "name": "color-62",
+          "val": "#1e82a6",
+          "variable": "var(--color-62)"
+        },
+        "primary.9": {
+          "isVar": true,
+          "key": "$primary.9",
+          "name": "color-63",
+          "val": "#1c7193",
+          "variable": "var(--color-63)"
+        },
+        "primary.10": {
+          "isVar": true,
+          "key": "$primary.10",
+          "name": "color-64",
+          "val": "#125272",
+          "variable": "var(--color-64)"
+        }
+      },
+      "radius": {
+        "0": {
+          "isVar": true,
+          "key": "$0",
+          "name": "radius-1",
+          "val": 0,
+          "variable": "var(--radius-1)"
+        },
+        "1": {
+          "isVar": true,
+          "key": "$1",
+          "name": "radius-2",
+          "val": 4,
+          "variable": "var(--radius-2)"
+        },
+        "2": {
+          "isVar": true,
+          "key": "$2",
+          "name": "radius-3",
+          "val": 8,
+          "variable": "var(--radius-3)"
+        },
+        "3": {
+          "isVar": true,
+          "key": "$3",
+          "name": "radius-4",
+          "val": 12,
+          "variable": "var(--radius-4)"
+        },
+        "4": {
+          "isVar": true,
+          "key": "$4",
+          "name": "radius-5",
+          "val": 16,
+          "variable": "var(--radius-5)"
+        },
+        "5": {
+          "isVar": true,
+          "key": "$5",
+          "name": "radius-6",
+          "val": 20,
+          "variable": "var(--radius-6)"
+        },
+        "6": {
+          "isVar": true,
+          "key": "$6",
+          "name": "radius-7",
+          "val": 24,
+          "variable": "var(--radius-7)"
+        },
+        "7": {
+          "isVar": true,
+          "key": "$7",
+          "name": "radius-8",
+          "val": 28,
+          "variable": "var(--radius-8)"
+        },
+        "8": {
+          "isVar": true,
+          "key": "$8",
+          "name": "radius-9",
+          "val": 32,
+          "variable": "var(--radius-9)"
+        },
+        "9": {
+          "isVar": true,
+          "key": "$9",
+          "name": "radius-10",
+          "val": 36,
+          "variable": "var(--radius-10)"
+        },
+        "10": {
+          "isVar": true,
+          "key": "$10",
+          "name": "radius-11",
+          "val": 40,
+          "variable": "var(--radius-11)"
+        },
+        "11": {
+          "isVar": true,
+          "key": "$11",
+          "name": "radius-12",
+          "val": 44,
+          "variable": "var(--radius-12)"
+        },
+        "12": {
+          "isVar": true,
+          "key": "$12",
+          "name": "radius-13",
+          "val": 48,
+          "variable": "var(--radius-13)"
+        },
+        "13": {
+          "isVar": true,
+          "key": "$13",
+          "name": "radius-14",
+          "val": 52,
+          "variable": "var(--radius-14)"
+        },
+        "14": {
+          "isVar": true,
+          "key": "$14",
+          "name": "radius-15",
+          "val": 56,
+          "variable": "var(--radius-15)"
+        },
+        "15": {
+          "isVar": true,
+          "key": "$15",
+          "name": "radius-16",
+          "val": 60,
+          "variable": "var(--radius-16)"
+        },
+        "16": {
+          "isVar": true,
+          "key": "$16",
+          "name": "radius-17",
+          "val": 64,
+          "variable": "var(--radius-17)"
+        },
+        "17": {
+          "isVar": true,
+          "key": "$17",
+          "name": "radius-18",
+          "val": 68,
+          "variable": "var(--radius-18)"
+        },
+        "18": {
+          "isVar": true,
+          "key": "$18",
+          "name": "radius-19",
+          "val": 72,
+          "variable": "var(--radius-19)"
+        },
+        "19": {
+          "isVar": true,
+          "key": "$19",
+          "name": "radius-20",
+          "val": 76,
+          "variable": "var(--radius-20)"
+        },
+        "20": {
+          "isVar": true,
+          "key": "$20",
+          "name": "radius-21",
+          "val": 80,
+          "variable": "var(--radius-21)"
+        },
+        "21": {
+          "isVar": true,
+          "key": "$21",
+          "name": "radius-22",
+          "val": 84,
+          "variable": "var(--radius-22)"
+        },
+        "22": {
+          "isVar": true,
+          "key": "$22",
+          "name": "radius-23",
+          "val": 88,
+          "variable": "var(--radius-23)"
+        },
+        "23": {
+          "isVar": true,
+          "key": "$23",
+          "name": "radius-24",
+          "val": 92,
+          "variable": "var(--radius-24)"
+        },
+        "24": {
+          "isVar": true,
+          "key": "$24",
+          "name": "radius-25",
+          "val": 96,
+          "variable": "var(--radius-25)"
+        },
+        "25": {
+          "isVar": true,
+          "key": "$25",
+          "name": "radius-26",
+          "val": 100,
+          "variable": "var(--radius-26)"
+        },
+        "26": {
+          "isVar": true,
+          "key": "$26",
+          "name": "radius-27",
+          "val": 104,
+          "variable": "var(--radius-27)"
+        },
+        "27": {
+          "isVar": true,
+          "key": "$27",
+          "name": "radius-28",
+          "val": 108,
+          "variable": "var(--radius-28)"
+        },
+        "28": {
+          "isVar": true,
+          "key": "$28",
+          "name": "radius-29",
+          "val": 112,
+          "variable": "var(--radius-29)"
+        },
+        "29": {
+          "isVar": true,
+          "key": "$29",
+          "name": "radius-30",
+          "val": 116,
+          "variable": "var(--radius-30)"
+        },
+        "30": {
+          "isVar": true,
+          "key": "$30",
+          "name": "radius-31",
+          "val": 120,
+          "variable": "var(--radius-31)"
+        },
+        "31": {
+          "isVar": true,
+          "key": "$31",
+          "name": "radius-32",
+          "val": 124,
+          "variable": "var(--radius-32)"
+        },
+        "32": {
+          "isVar": true,
+          "key": "$32",
+          "name": "radius-33",
+          "val": 128,
+          "variable": "var(--radius-33)"
+        },
+        "33": {
+          "isVar": true,
+          "key": "$33",
+          "name": "radius-34",
+          "val": 132,
+          "variable": "var(--radius-34)"
+        },
+        "34": {
+          "isVar": true,
+          "key": "$34",
+          "name": "radius-35",
+          "val": 136,
+          "variable": "var(--radius-35)"
+        },
+        "35": {
+          "isVar": true,
+          "key": "$35",
+          "name": "radius-36",
+          "val": 140,
+          "variable": "var(--radius-36)"
+        },
+        "36": {
+          "isVar": true,
+          "key": "$36",
+          "name": "radius-37",
+          "val": 144,
+          "variable": "var(--radius-37)"
+        },
+        "37": {
+          "isVar": true,
+          "key": "$37",
+          "name": "radius-38",
+          "val": 148,
+          "variable": "var(--radius-38)"
+        },
+        "38": {
+          "isVar": true,
+          "key": "$38",
+          "name": "radius-39",
+          "val": 152,
+          "variable": "var(--radius-39)"
+        },
+        "39": {
+          "isVar": true,
+          "key": "$39",
+          "name": "radius-40",
+          "val": 156,
+          "variable": "var(--radius-40)"
+        },
+        "40": {
+          "isVar": true,
+          "key": "$40",
+          "name": "radius-41",
+          "val": 160,
+          "variable": "var(--radius-41)"
+        },
+        "41": {
+          "isVar": true,
+          "key": "$41",
+          "name": "radius-42",
+          "val": 164,
+          "variable": "var(--radius-42)"
+        },
+        "42": {
+          "isVar": true,
+          "key": "$42",
+          "name": "radius-43",
+          "val": 168,
+          "variable": "var(--radius-43)"
+        },
+        "43": {
+          "isVar": true,
+          "key": "$43",
+          "name": "radius-44",
+          "val": 172,
+          "variable": "var(--radius-44)"
+        },
+        "44": {
+          "isVar": true,
+          "key": "$44",
+          "name": "radius-45",
+          "val": 176,
+          "variable": "var(--radius-45)"
+        },
+        "45": {
+          "isVar": true,
+          "key": "$45",
+          "name": "radius-46",
+          "val": 180,
+          "variable": "var(--radius-46)"
+        },
+        "46": {
+          "isVar": true,
+          "key": "$46",
+          "name": "radius-47",
+          "val": 184,
+          "variable": "var(--radius-47)"
+        },
+        "47": {
+          "isVar": true,
+          "key": "$47",
+          "name": "radius-48",
+          "val": 188,
+          "variable": "var(--radius-48)"
+        },
+        "48": {
+          "isVar": true,
+          "key": "$48",
+          "name": "radius-49",
+          "val": 192,
+          "variable": "var(--radius-49)"
+        },
+        "49": {
+          "isVar": true,
+          "key": "$49",
+          "name": "radius-50",
+          "val": 196,
+          "variable": "var(--radius-50)"
+        },
+        "50": {
+          "isVar": true,
+          "key": "$50",
+          "name": "radius-51",
+          "val": 200,
+          "variable": "var(--radius-51)"
+        },
+        "51": {
+          "isVar": true,
+          "key": "$51",
+          "name": "radius-52",
+          "val": 204,
+          "variable": "var(--radius-52)"
+        },
+        "52": {
+          "isVar": true,
+          "key": "$52",
+          "name": "radius-53",
+          "val": 208,
+          "variable": "var(--radius-53)"
+        },
+        "53": {
+          "isVar": true,
+          "key": "$53",
+          "name": "radius-54",
+          "val": 212,
+          "variable": "var(--radius-54)"
+        },
+        "54": {
+          "isVar": true,
+          "key": "$54",
+          "name": "radius-55",
+          "val": 216,
+          "variable": "var(--radius-55)"
+        },
+        "55": {
+          "isVar": true,
+          "key": "$55",
+          "name": "radius-56",
+          "val": 220,
+          "variable": "var(--radius-56)"
+        },
+        "56": {
+          "isVar": true,
+          "key": "$56",
+          "name": "radius-57",
+          "val": 224,
+          "variable": "var(--radius-57)"
+        },
+        "57": {
+          "isVar": true,
+          "key": "$57",
+          "name": "radius-58",
+          "val": 228,
+          "variable": "var(--radius-58)"
+        },
+        "58": {
+          "isVar": true,
+          "key": "$58",
+          "name": "radius-59",
+          "val": 232,
+          "variable": "var(--radius-59)"
+        },
+        "59": {
+          "isVar": true,
+          "key": "$59",
+          "name": "radius-60",
+          "val": 236,
+          "variable": "var(--radius-60)"
+        },
+        "60": {
+          "isVar": true,
+          "key": "$60",
+          "name": "radius-61",
+          "val": 240,
+          "variable": "var(--radius-61)"
+        },
+        "61": {
+          "isVar": true,
+          "key": "$61",
+          "name": "radius-62",
+          "val": 244,
+          "variable": "var(--radius-62)"
+        },
+        "62": {
+          "isVar": true,
+          "key": "$62",
+          "name": "radius-63",
+          "val": 248,
+          "variable": "var(--radius-63)"
+        },
+        "63": {
+          "isVar": true,
+          "key": "$63",
+          "name": "radius-64",
+          "val": 252,
+          "variable": "var(--radius-64)"
+        },
+        "64": {
+          "isVar": true,
+          "key": "$64",
+          "name": "radius-65",
+          "val": 256,
+          "variable": "var(--radius-65)"
+        },
+        "xs": {
+          "isVar": true,
+          "key": "$xs",
+          "name": "radius-66",
+          "val": 8,
+          "variable": "var(--radius-66)"
+        },
+        "sm": {
+          "isVar": true,
+          "key": "$sm",
+          "name": "radius-67",
+          "val": 16,
+          "variable": "var(--radius-67)"
+        },
+        "md": {
+          "isVar": true,
+          "key": "$md",
+          "name": "radius-68",
+          "val": 32,
+          "variable": "var(--radius-68)"
+        }
+      },
+      "space": {
+        "0": {
+          "isVar": true,
+          "key": "$0",
+          "name": "space-1",
+          "val": 0,
+          "variable": "var(--space-1)"
+        },
+        "1": {
+          "isVar": true,
+          "key": "$1",
+          "name": "space-2",
+          "val": 4,
+          "variable": "var(--space-2)"
+        },
+        "2": {
+          "isVar": true,
+          "key": "$2",
+          "name": "space-3",
+          "val": 8,
+          "variable": "var(--space-3)"
+        },
+        "3": {
+          "isVar": true,
+          "key": "$3",
+          "name": "space-4",
+          "val": 12,
+          "variable": "var(--space-4)"
+        },
+        "4": {
+          "isVar": true,
+          "key": "$4",
+          "name": "space-5",
+          "val": 16,
+          "variable": "var(--space-5)"
+        },
+        "5": {
+          "isVar": true,
+          "key": "$5",
+          "name": "space-6",
+          "val": 20,
+          "variable": "var(--space-6)"
+        },
+        "6": {
+          "isVar": true,
+          "key": "$6",
+          "name": "space-7",
+          "val": 24,
+          "variable": "var(--space-7)"
+        },
+        "7": {
+          "isVar": true,
+          "key": "$7",
+          "name": "space-8",
+          "val": 28,
+          "variable": "var(--space-8)"
+        },
+        "8": {
+          "isVar": true,
+          "key": "$8",
+          "name": "space-9",
+          "val": 32,
+          "variable": "var(--space-9)"
+        },
+        "9": {
+          "isVar": true,
+          "key": "$9",
+          "name": "space-10",
+          "val": 36,
+          "variable": "var(--space-10)"
+        },
+        "10": {
+          "isVar": true,
+          "key": "$10",
+          "name": "space-11",
+          "val": 40,
+          "variable": "var(--space-11)"
+        },
+        "11": {
+          "isVar": true,
+          "key": "$11",
+          "name": "space-12",
+          "val": 44,
+          "variable": "var(--space-12)"
+        },
+        "12": {
+          "isVar": true,
+          "key": "$12",
+          "name": "space-13",
+          "val": 48,
+          "variable": "var(--space-13)"
+        },
+        "13": {
+          "isVar": true,
+          "key": "$13",
+          "name": "space-14",
+          "val": 52,
+          "variable": "var(--space-14)"
+        },
+        "14": {
+          "isVar": true,
+          "key": "$14",
+          "name": "space-15",
+          "val": 56,
+          "variable": "var(--space-15)"
+        },
+        "15": {
+          "isVar": true,
+          "key": "$15",
+          "name": "space-16",
+          "val": 60,
+          "variable": "var(--space-16)"
+        },
+        "16": {
+          "isVar": true,
+          "key": "$16",
+          "name": "space-17",
+          "val": 64,
+          "variable": "var(--space-17)"
+        },
+        "17": {
+          "isVar": true,
+          "key": "$17",
+          "name": "space-18",
+          "val": 68,
+          "variable": "var(--space-18)"
+        },
+        "18": {
+          "isVar": true,
+          "key": "$18",
+          "name": "space-19",
+          "val": 72,
+          "variable": "var(--space-19)"
+        },
+        "19": {
+          "isVar": true,
+          "key": "$19",
+          "name": "space-20",
+          "val": 76,
+          "variable": "var(--space-20)"
+        },
+        "20": {
+          "isVar": true,
+          "key": "$20",
+          "name": "space-21",
+          "val": 80,
+          "variable": "var(--space-21)"
+        },
+        "21": {
+          "isVar": true,
+          "key": "$21",
+          "name": "space-22",
+          "val": 84,
+          "variable": "var(--space-22)"
+        },
+        "22": {
+          "isVar": true,
+          "key": "$22",
+          "name": "space-23",
+          "val": 88,
+          "variable": "var(--space-23)"
+        },
+        "23": {
+          "isVar": true,
+          "key": "$23",
+          "name": "space-24",
+          "val": 92,
+          "variable": "var(--space-24)"
+        },
+        "24": {
+          "isVar": true,
+          "key": "$24",
+          "name": "space-25",
+          "val": 96,
+          "variable": "var(--space-25)"
+        },
+        "25": {
+          "isVar": true,
+          "key": "$25",
+          "name": "space-26",
+          "val": 100,
+          "variable": "var(--space-26)"
+        },
+        "26": {
+          "isVar": true,
+          "key": "$26",
+          "name": "space-27",
+          "val": 104,
+          "variable": "var(--space-27)"
+        },
+        "27": {
+          "isVar": true,
+          "key": "$27",
+          "name": "space-28",
+          "val": 108,
+          "variable": "var(--space-28)"
+        },
+        "28": {
+          "isVar": true,
+          "key": "$28",
+          "name": "space-29",
+          "val": 112,
+          "variable": "var(--space-29)"
+        },
+        "29": {
+          "isVar": true,
+          "key": "$29",
+          "name": "space-30",
+          "val": 116,
+          "variable": "var(--space-30)"
+        },
+        "30": {
+          "isVar": true,
+          "key": "$30",
+          "name": "space-31",
+          "val": 120,
+          "variable": "var(--space-31)"
+        },
+        "31": {
+          "isVar": true,
+          "key": "$31",
+          "name": "space-32",
+          "val": 124,
+          "variable": "var(--space-32)"
+        },
+        "32": {
+          "isVar": true,
+          "key": "$32",
+          "name": "space-33",
+          "val": 128,
+          "variable": "var(--space-33)"
+        },
+        "33": {
+          "isVar": true,
+          "key": "$33",
+          "name": "space-34",
+          "val": 132,
+          "variable": "var(--space-34)"
+        },
+        "34": {
+          "isVar": true,
+          "key": "$34",
+          "name": "space-35",
+          "val": 136,
+          "variable": "var(--space-35)"
+        },
+        "35": {
+          "isVar": true,
+          "key": "$35",
+          "name": "space-36",
+          "val": 140,
+          "variable": "var(--space-36)"
+        },
+        "36": {
+          "isVar": true,
+          "key": "$36",
+          "name": "space-37",
+          "val": 144,
+          "variable": "var(--space-37)"
+        },
+        "37": {
+          "isVar": true,
+          "key": "$37",
+          "name": "space-38",
+          "val": 148,
+          "variable": "var(--space-38)"
+        },
+        "38": {
+          "isVar": true,
+          "key": "$38",
+          "name": "space-39",
+          "val": 152,
+          "variable": "var(--space-39)"
+        },
+        "39": {
+          "isVar": true,
+          "key": "$39",
+          "name": "space-40",
+          "val": 156,
+          "variable": "var(--space-40)"
+        },
+        "40": {
+          "isVar": true,
+          "key": "$40",
+          "name": "space-41",
+          "val": 160,
+          "variable": "var(--space-41)"
+        },
+        "41": {
+          "isVar": true,
+          "key": "$41",
+          "name": "space-42",
+          "val": 164,
+          "variable": "var(--space-42)"
+        },
+        "42": {
+          "isVar": true,
+          "key": "$42",
+          "name": "space-43",
+          "val": 168,
+          "variable": "var(--space-43)"
+        },
+        "43": {
+          "isVar": true,
+          "key": "$43",
+          "name": "space-44",
+          "val": 172,
+          "variable": "var(--space-44)"
+        },
+        "44": {
+          "isVar": true,
+          "key": "$44",
+          "name": "space-45",
+          "val": 176,
+          "variable": "var(--space-45)"
+        },
+        "45": {
+          "isVar": true,
+          "key": "$45",
+          "name": "space-46",
+          "val": 180,
+          "variable": "var(--space-46)"
+        },
+        "46": {
+          "isVar": true,
+          "key": "$46",
+          "name": "space-47",
+          "val": 184,
+          "variable": "var(--space-47)"
+        },
+        "47": {
+          "isVar": true,
+          "key": "$47",
+          "name": "space-48",
+          "val": 188,
+          "variable": "var(--space-48)"
+        },
+        "48": {
+          "isVar": true,
+          "key": "$48",
+          "name": "space-49",
+          "val": 192,
+          "variable": "var(--space-49)"
+        },
+        "49": {
+          "isVar": true,
+          "key": "$49",
+          "name": "space-50",
+          "val": 196,
+          "variable": "var(--space-50)"
+        },
+        "50": {
+          "isVar": true,
+          "key": "$50",
+          "name": "space-51",
+          "val": 200,
+          "variable": "var(--space-51)"
+        },
+        "51": {
+          "isVar": true,
+          "key": "$51",
+          "name": "space-52",
+          "val": 204,
+          "variable": "var(--space-52)"
+        },
+        "52": {
+          "isVar": true,
+          "key": "$52",
+          "name": "space-53",
+          "val": 208,
+          "variable": "var(--space-53)"
+        },
+        "53": {
+          "isVar": true,
+          "key": "$53",
+          "name": "space-54",
+          "val": 212,
+          "variable": "var(--space-54)"
+        },
+        "54": {
+          "isVar": true,
+          "key": "$54",
+          "name": "space-55",
+          "val": 216,
+          "variable": "var(--space-55)"
+        },
+        "55": {
+          "isVar": true,
+          "key": "$55",
+          "name": "space-56",
+          "val": 220,
+          "variable": "var(--space-56)"
+        },
+        "56": {
+          "isVar": true,
+          "key": "$56",
+          "name": "space-57",
+          "val": 224,
+          "variable": "var(--space-57)"
+        },
+        "57": {
+          "isVar": true,
+          "key": "$57",
+          "name": "space-58",
+          "val": 228,
+          "variable": "var(--space-58)"
+        },
+        "58": {
+          "isVar": true,
+          "key": "$58",
+          "name": "space-59",
+          "val": 232,
+          "variable": "var(--space-59)"
+        },
+        "59": {
+          "isVar": true,
+          "key": "$59",
+          "name": "space-60",
+          "val": 236,
+          "variable": "var(--space-60)"
+        },
+        "60": {
+          "isVar": true,
+          "key": "$60",
+          "name": "space-61",
+          "val": 240,
+          "variable": "var(--space-61)"
+        },
+        "61": {
+          "isVar": true,
+          "key": "$61",
+          "name": "space-62",
+          "val": 244,
+          "variable": "var(--space-62)"
+        },
+        "62": {
+          "isVar": true,
+          "key": "$62",
+          "name": "space-63",
+          "val": 248,
+          "variable": "var(--space-63)"
+        },
+        "63": {
+          "isVar": true,
+          "key": "$63",
+          "name": "space-64",
+          "val": 252,
+          "variable": "var(--space-64)"
+        },
+        "64": {
+          "isVar": true,
+          "key": "$64",
+          "name": "space-65",
+          "val": 256,
+          "variable": "var(--space-65)"
+        },
+        "-0": {
+          "isVar": true,
+          "key": "$-0",
+          "name": "space-66",
+          "val": 0,
+          "variable": "var(--space-66)"
+        },
+        "-1": {
+          "isVar": true,
+          "key": "$-1",
+          "name": "space-67",
+          "val": -4,
+          "variable": "var(--space-67)"
+        },
+        "-2": {
+          "isVar": true,
+          "key": "$-2",
+          "name": "space-68",
+          "val": -8,
+          "variable": "var(--space-68)"
+        },
+        "-3": {
+          "isVar": true,
+          "key": "$-3",
+          "name": "space-69",
+          "val": -12,
+          "variable": "var(--space-69)"
+        },
+        "-4": {
+          "isVar": true,
+          "key": "$-4",
+          "name": "space-70",
+          "val": -16,
+          "variable": "var(--space-70)"
+        },
+        "-5": {
+          "isVar": true,
+          "key": "$-5",
+          "name": "space-71",
+          "val": -20,
+          "variable": "var(--space-71)"
+        },
+        "-6": {
+          "isVar": true,
+          "key": "$-6",
+          "name": "space-72",
+          "val": -24,
+          "variable": "var(--space-72)"
+        },
+        "-7": {
+          "isVar": true,
+          "key": "$-7",
+          "name": "space-73",
+          "val": -28,
+          "variable": "var(--space-73)"
+        },
+        "-8": {
+          "isVar": true,
+          "key": "$-8",
+          "name": "space-74",
+          "val": -32,
+          "variable": "var(--space-74)"
+        },
+        "-9": {
+          "isVar": true,
+          "key": "$-9",
+          "name": "space-75",
+          "val": -36,
+          "variable": "var(--space-75)"
+        },
+        "-10": {
+          "isVar": true,
+          "key": "$-10",
+          "name": "space-76",
+          "val": -40,
+          "variable": "var(--space-76)"
+        },
+        "-11": {
+          "isVar": true,
+          "key": "$-11",
+          "name": "space-77",
+          "val": -44,
+          "variable": "var(--space-77)"
+        },
+        "-12": {
+          "isVar": true,
+          "key": "$-12",
+          "name": "space-78",
+          "val": -48,
+          "variable": "var(--space-78)"
+        },
+        "-13": {
+          "isVar": true,
+          "key": "$-13",
+          "name": "space-79",
+          "val": -52,
+          "variable": "var(--space-79)"
+        },
+        "-14": {
+          "isVar": true,
+          "key": "$-14",
+          "name": "space-80",
+          "val": -56,
+          "variable": "var(--space-80)"
+        },
+        "-15": {
+          "isVar": true,
+          "key": "$-15",
+          "name": "space-81",
+          "val": -60,
+          "variable": "var(--space-81)"
+        },
+        "-16": {
+          "isVar": true,
+          "key": "$-16",
+          "name": "space-82",
+          "val": -64,
+          "variable": "var(--space-82)"
+        },
+        "-17": {
+          "isVar": true,
+          "key": "$-17",
+          "name": "space-83",
+          "val": -68,
+          "variable": "var(--space-83)"
+        },
+        "-18": {
+          "isVar": true,
+          "key": "$-18",
+          "name": "space-84",
+          "val": -72,
+          "variable": "var(--space-84)"
+        },
+        "-19": {
+          "isVar": true,
+          "key": "$-19",
+          "name": "space-85",
+          "val": -76,
+          "variable": "var(--space-85)"
+        },
+        "-20": {
+          "isVar": true,
+          "key": "$-20",
+          "name": "space-86",
+          "val": -80,
+          "variable": "var(--space-86)"
+        },
+        "-21": {
+          "isVar": true,
+          "key": "$-21",
+          "name": "space-87",
+          "val": -84,
+          "variable": "var(--space-87)"
+        },
+        "-22": {
+          "isVar": true,
+          "key": "$-22",
+          "name": "space-88",
+          "val": -88,
+          "variable": "var(--space-88)"
+        },
+        "-23": {
+          "isVar": true,
+          "key": "$-23",
+          "name": "space-89",
+          "val": -92,
+          "variable": "var(--space-89)"
+        },
+        "-24": {
+          "isVar": true,
+          "key": "$-24",
+          "name": "space-90",
+          "val": -96,
+          "variable": "var(--space-90)"
+        },
+        "-25": {
+          "isVar": true,
+          "key": "$-25",
+          "name": "space-91",
+          "val": -100,
+          "variable": "var(--space-91)"
+        },
+        "-26": {
+          "isVar": true,
+          "key": "$-26",
+          "name": "space-92",
+          "val": -104,
+          "variable": "var(--space-92)"
+        },
+        "-27": {
+          "isVar": true,
+          "key": "$-27",
+          "name": "space-93",
+          "val": -108,
+          "variable": "var(--space-93)"
+        },
+        "-28": {
+          "isVar": true,
+          "key": "$-28",
+          "name": "space-94",
+          "val": -112,
+          "variable": "var(--space-94)"
+        },
+        "-29": {
+          "isVar": true,
+          "key": "$-29",
+          "name": "space-95",
+          "val": -116,
+          "variable": "var(--space-95)"
+        },
+        "-30": {
+          "isVar": true,
+          "key": "$-30",
+          "name": "space-96",
+          "val": -120,
+          "variable": "var(--space-96)"
+        },
+        "-31": {
+          "isVar": true,
+          "key": "$-31",
+          "name": "space-97",
+          "val": -124,
+          "variable": "var(--space-97)"
+        },
+        "-32": {
+          "isVar": true,
+          "key": "$-32",
+          "name": "space-98",
+          "val": -128,
+          "variable": "var(--space-98)"
+        },
+        "-33": {
+          "isVar": true,
+          "key": "$-33",
+          "name": "space-99",
+          "val": -132,
+          "variable": "var(--space-99)"
+        },
+        "-34": {
+          "isVar": true,
+          "key": "$-34",
+          "name": "space-100",
+          "val": -136,
+          "variable": "var(--space-100)"
+        },
+        "-35": {
+          "isVar": true,
+          "key": "$-35",
+          "name": "space-101",
+          "val": -140,
+          "variable": "var(--space-101)"
+        },
+        "-36": {
+          "isVar": true,
+          "key": "$-36",
+          "name": "space-102",
+          "val": -144,
+          "variable": "var(--space-102)"
+        },
+        "-37": {
+          "isVar": true,
+          "key": "$-37",
+          "name": "space-103",
+          "val": -148,
+          "variable": "var(--space-103)"
+        },
+        "-38": {
+          "isVar": true,
+          "key": "$-38",
+          "name": "space-104",
+          "val": -152,
+          "variable": "var(--space-104)"
+        },
+        "-39": {
+          "isVar": true,
+          "key": "$-39",
+          "name": "space-105",
+          "val": -156,
+          "variable": "var(--space-105)"
+        },
+        "-40": {
+          "isVar": true,
+          "key": "$-40",
+          "name": "space-106",
+          "val": -160,
+          "variable": "var(--space-106)"
+        },
+        "-41": {
+          "isVar": true,
+          "key": "$-41",
+          "name": "space-107",
+          "val": -164,
+          "variable": "var(--space-107)"
+        },
+        "-42": {
+          "isVar": true,
+          "key": "$-42",
+          "name": "space-108",
+          "val": -168,
+          "variable": "var(--space-108)"
+        },
+        "-43": {
+          "isVar": true,
+          "key": "$-43",
+          "name": "space-109",
+          "val": -172,
+          "variable": "var(--space-109)"
+        },
+        "-44": {
+          "isVar": true,
+          "key": "$-44",
+          "name": "space-110",
+          "val": -176,
+          "variable": "var(--space-110)"
+        },
+        "-45": {
+          "isVar": true,
+          "key": "$-45",
+          "name": "space-111",
+          "val": -180,
+          "variable": "var(--space-111)"
+        },
+        "-46": {
+          "isVar": true,
+          "key": "$-46",
+          "name": "space-112",
+          "val": -184,
+          "variable": "var(--space-112)"
+        },
+        "-47": {
+          "isVar": true,
+          "key": "$-47",
+          "name": "space-113",
+          "val": -188,
+          "variable": "var(--space-113)"
+        },
+        "-48": {
+          "isVar": true,
+          "key": "$-48",
+          "name": "space-114",
+          "val": -192,
+          "variable": "var(--space-114)"
+        },
+        "-49": {
+          "isVar": true,
+          "key": "$-49",
+          "name": "space-115",
+          "val": -196,
+          "variable": "var(--space-115)"
+        },
+        "-50": {
+          "isVar": true,
+          "key": "$-50",
+          "name": "space-116",
+          "val": -200,
+          "variable": "var(--space-116)"
+        },
+        "-51": {
+          "isVar": true,
+          "key": "$-51",
+          "name": "space-117",
+          "val": -204,
+          "variable": "var(--space-117)"
+        },
+        "-52": {
+          "isVar": true,
+          "key": "$-52",
+          "name": "space-118",
+          "val": -208,
+          "variable": "var(--space-118)"
+        },
+        "-53": {
+          "isVar": true,
+          "key": "$-53",
+          "name": "space-119",
+          "val": -212,
+          "variable": "var(--space-119)"
+        },
+        "-54": {
+          "isVar": true,
+          "key": "$-54",
+          "name": "space-120",
+          "val": -216,
+          "variable": "var(--space-120)"
+        },
+        "-55": {
+          "isVar": true,
+          "key": "$-55",
+          "name": "space-121",
+          "val": -220,
+          "variable": "var(--space-121)"
+        },
+        "-56": {
+          "isVar": true,
+          "key": "$-56",
+          "name": "space-122",
+          "val": -224,
+          "variable": "var(--space-122)"
+        },
+        "-57": {
+          "isVar": true,
+          "key": "$-57",
+          "name": "space-123",
+          "val": -228,
+          "variable": "var(--space-123)"
+        },
+        "-58": {
+          "isVar": true,
+          "key": "$-58",
+          "name": "space-124",
+          "val": -232,
+          "variable": "var(--space-124)"
+        },
+        "-59": {
+          "isVar": true,
+          "key": "$-59",
+          "name": "space-125",
+          "val": -236,
+          "variable": "var(--space-125)"
+        },
+        "-60": {
+          "isVar": true,
+          "key": "$-60",
+          "name": "space-126",
+          "val": -240,
+          "variable": "var(--space-126)"
+        },
+        "-61": {
+          "isVar": true,
+          "key": "$-61",
+          "name": "space-127",
+          "val": -244,
+          "variable": "var(--space-127)"
+        },
+        "-62": {
+          "isVar": true,
+          "key": "$-62",
+          "name": "space-128",
+          "val": -248,
+          "variable": "var(--space-128)"
+        },
+        "-63": {
+          "isVar": true,
+          "key": "$-63",
+          "name": "space-129",
+          "val": -252,
+          "variable": "var(--space-129)"
+        },
+        "-64": {
+          "isVar": true,
+          "key": "$-64",
+          "name": "space-130",
+          "val": -256,
+          "variable": "var(--space-130)"
+        },
+        "xs": {
+          "isVar": true,
+          "key": "$xs",
+          "name": "space-131",
+          "val": 8,
+          "variable": "var(--space-131)"
+        },
+        "sm": {
+          "isVar": true,
+          "key": "$sm",
+          "name": "space-132",
+          "val": 16,
+          "variable": "var(--space-132)"
+        },
+        "md": {
+          "isVar": true,
+          "key": "$md",
+          "name": "space-133",
+          "val": 32,
+          "variable": "var(--space-133)"
+        }
+      },
+      "size": {
+        "0": {
+          "isVar": true,
+          "key": "$0",
+          "name": "size-1",
+          "val": 0,
+          "variable": "var(--size-1)"
+        },
+        "1": {
+          "isVar": true,
+          "key": "$1",
+          "name": "size-2",
+          "val": 4,
+          "variable": "var(--size-2)"
+        },
+        "2": {
+          "isVar": true,
+          "key": "$2",
+          "name": "size-3",
+          "val": 8,
+          "variable": "var(--size-3)"
+        },
+        "3": {
+          "isVar": true,
+          "key": "$3",
+          "name": "size-4",
+          "val": 12,
+          "variable": "var(--size-4)"
+        },
+        "4": {
+          "isVar": true,
+          "key": "$4",
+          "name": "size-5",
+          "val": 16,
+          "variable": "var(--size-5)"
+        },
+        "5": {
+          "isVar": true,
+          "key": "$5",
+          "name": "size-6",
+          "val": 20,
+          "variable": "var(--size-6)"
+        },
+        "6": {
+          "isVar": true,
+          "key": "$6",
+          "name": "size-7",
+          "val": 24,
+          "variable": "var(--size-7)"
+        },
+        "7": {
+          "isVar": true,
+          "key": "$7",
+          "name": "size-8",
+          "val": 28,
+          "variable": "var(--size-8)"
+        },
+        "8": {
+          "isVar": true,
+          "key": "$8",
+          "name": "size-9",
+          "val": 32,
+          "variable": "var(--size-9)"
+        },
+        "9": {
+          "isVar": true,
+          "key": "$9",
+          "name": "size-10",
+          "val": 36,
+          "variable": "var(--size-10)"
+        },
+        "10": {
+          "isVar": true,
+          "key": "$10",
+          "name": "size-11",
+          "val": 40,
+          "variable": "var(--size-11)"
+        },
+        "11": {
+          "isVar": true,
+          "key": "$11",
+          "name": "size-12",
+          "val": 44,
+          "variable": "var(--size-12)"
+        },
+        "12": {
+          "isVar": true,
+          "key": "$12",
+          "name": "size-13",
+          "val": 48,
+          "variable": "var(--size-13)"
+        },
+        "13": {
+          "isVar": true,
+          "key": "$13",
+          "name": "size-14",
+          "val": 52,
+          "variable": "var(--size-14)"
+        },
+        "14": {
+          "isVar": true,
+          "key": "$14",
+          "name": "size-15",
+          "val": 56,
+          "variable": "var(--size-15)"
+        },
+        "15": {
+          "isVar": true,
+          "key": "$15",
+          "name": "size-16",
+          "val": 60,
+          "variable": "var(--size-16)"
+        },
+        "16": {
+          "isVar": true,
+          "key": "$16",
+          "name": "size-17",
+          "val": 64,
+          "variable": "var(--size-17)"
+        },
+        "17": {
+          "isVar": true,
+          "key": "$17",
+          "name": "size-18",
+          "val": 68,
+          "variable": "var(--size-18)"
+        },
+        "18": {
+          "isVar": true,
+          "key": "$18",
+          "name": "size-19",
+          "val": 72,
+          "variable": "var(--size-19)"
+        },
+        "19": {
+          "isVar": true,
+          "key": "$19",
+          "name": "size-20",
+          "val": 76,
+          "variable": "var(--size-20)"
+        },
+        "20": {
+          "isVar": true,
+          "key": "$20",
+          "name": "size-21",
+          "val": 80,
+          "variable": "var(--size-21)"
+        },
+        "21": {
+          "isVar": true,
+          "key": "$21",
+          "name": "size-22",
+          "val": 84,
+          "variable": "var(--size-22)"
+        },
+        "22": {
+          "isVar": true,
+          "key": "$22",
+          "name": "size-23",
+          "val": 88,
+          "variable": "var(--size-23)"
+        },
+        "23": {
+          "isVar": true,
+          "key": "$23",
+          "name": "size-24",
+          "val": 92,
+          "variable": "var(--size-24)"
+        },
+        "24": {
+          "isVar": true,
+          "key": "$24",
+          "name": "size-25",
+          "val": 96,
+          "variable": "var(--size-25)"
+        },
+        "25": {
+          "isVar": true,
+          "key": "$25",
+          "name": "size-26",
+          "val": 100,
+          "variable": "var(--size-26)"
+        },
+        "26": {
+          "isVar": true,
+          "key": "$26",
+          "name": "size-27",
+          "val": 104,
+          "variable": "var(--size-27)"
+        },
+        "27": {
+          "isVar": true,
+          "key": "$27",
+          "name": "size-28",
+          "val": 108,
+          "variable": "var(--size-28)"
+        },
+        "28": {
+          "isVar": true,
+          "key": "$28",
+          "name": "size-29",
+          "val": 112,
+          "variable": "var(--size-29)"
+        },
+        "29": {
+          "isVar": true,
+          "key": "$29",
+          "name": "size-30",
+          "val": 116,
+          "variable": "var(--size-30)"
+        },
+        "30": {
+          "isVar": true,
+          "key": "$30",
+          "name": "size-31",
+          "val": 120,
+          "variable": "var(--size-31)"
+        },
+        "31": {
+          "isVar": true,
+          "key": "$31",
+          "name": "size-32",
+          "val": 124,
+          "variable": "var(--size-32)"
+        },
+        "32": {
+          "isVar": true,
+          "key": "$32",
+          "name": "size-33",
+          "val": 128,
+          "variable": "var(--size-33)"
+        },
+        "33": {
+          "isVar": true,
+          "key": "$33",
+          "name": "size-34",
+          "val": 132,
+          "variable": "var(--size-34)"
+        },
+        "34": {
+          "isVar": true,
+          "key": "$34",
+          "name": "size-35",
+          "val": 136,
+          "variable": "var(--size-35)"
+        },
+        "35": {
+          "isVar": true,
+          "key": "$35",
+          "name": "size-36",
+          "val": 140,
+          "variable": "var(--size-36)"
+        },
+        "36": {
+          "isVar": true,
+          "key": "$36",
+          "name": "size-37",
+          "val": 144,
+          "variable": "var(--size-37)"
+        },
+        "37": {
+          "isVar": true,
+          "key": "$37",
+          "name": "size-38",
+          "val": 148,
+          "variable": "var(--size-38)"
+        },
+        "38": {
+          "isVar": true,
+          "key": "$38",
+          "name": "size-39",
+          "val": 152,
+          "variable": "var(--size-39)"
+        },
+        "39": {
+          "isVar": true,
+          "key": "$39",
+          "name": "size-40",
+          "val": 156,
+          "variable": "var(--size-40)"
+        },
+        "40": {
+          "isVar": true,
+          "key": "$40",
+          "name": "size-41",
+          "val": 160,
+          "variable": "var(--size-41)"
+        },
+        "41": {
+          "isVar": true,
+          "key": "$41",
+          "name": "size-42",
+          "val": 164,
+          "variable": "var(--size-42)"
+        },
+        "42": {
+          "isVar": true,
+          "key": "$42",
+          "name": "size-43",
+          "val": 168,
+          "variable": "var(--size-43)"
+        },
+        "43": {
+          "isVar": true,
+          "key": "$43",
+          "name": "size-44",
+          "val": 172,
+          "variable": "var(--size-44)"
+        },
+        "44": {
+          "isVar": true,
+          "key": "$44",
+          "name": "size-45",
+          "val": 176,
+          "variable": "var(--size-45)"
+        },
+        "45": {
+          "isVar": true,
+          "key": "$45",
+          "name": "size-46",
+          "val": 180,
+          "variable": "var(--size-46)"
+        },
+        "46": {
+          "isVar": true,
+          "key": "$46",
+          "name": "size-47",
+          "val": 184,
+          "variable": "var(--size-47)"
+        },
+        "47": {
+          "isVar": true,
+          "key": "$47",
+          "name": "size-48",
+          "val": 188,
+          "variable": "var(--size-48)"
+        },
+        "48": {
+          "isVar": true,
+          "key": "$48",
+          "name": "size-49",
+          "val": 192,
+          "variable": "var(--size-49)"
+        },
+        "49": {
+          "isVar": true,
+          "key": "$49",
+          "name": "size-50",
+          "val": 196,
+          "variable": "var(--size-50)"
+        },
+        "50": {
+          "isVar": true,
+          "key": "$50",
+          "name": "size-51",
+          "val": 200,
+          "variable": "var(--size-51)"
+        },
+        "51": {
+          "isVar": true,
+          "key": "$51",
+          "name": "size-52",
+          "val": 204,
+          "variable": "var(--size-52)"
+        },
+        "52": {
+          "isVar": true,
+          "key": "$52",
+          "name": "size-53",
+          "val": 208,
+          "variable": "var(--size-53)"
+        },
+        "53": {
+          "isVar": true,
+          "key": "$53",
+          "name": "size-54",
+          "val": 212,
+          "variable": "var(--size-54)"
+        },
+        "54": {
+          "isVar": true,
+          "key": "$54",
+          "name": "size-55",
+          "val": 216,
+          "variable": "var(--size-55)"
+        },
+        "55": {
+          "isVar": true,
+          "key": "$55",
+          "name": "size-56",
+          "val": 220,
+          "variable": "var(--size-56)"
+        },
+        "56": {
+          "isVar": true,
+          "key": "$56",
+          "name": "size-57",
+          "val": 224,
+          "variable": "var(--size-57)"
+        },
+        "57": {
+          "isVar": true,
+          "key": "$57",
+          "name": "size-58",
+          "val": 228,
+          "variable": "var(--size-58)"
+        },
+        "58": {
+          "isVar": true,
+          "key": "$58",
+          "name": "size-59",
+          "val": 232,
+          "variable": "var(--size-59)"
+        },
+        "59": {
+          "isVar": true,
+          "key": "$59",
+          "name": "size-60",
+          "val": 236,
+          "variable": "var(--size-60)"
+        },
+        "60": {
+          "isVar": true,
+          "key": "$60",
+          "name": "size-61",
+          "val": 240,
+          "variable": "var(--size-61)"
+        },
+        "61": {
+          "isVar": true,
+          "key": "$61",
+          "name": "size-62",
+          "val": 244,
+          "variable": "var(--size-62)"
+        },
+        "62": {
+          "isVar": true,
+          "key": "$62",
+          "name": "size-63",
+          "val": 248,
+          "variable": "var(--size-63)"
+        },
+        "63": {
+          "isVar": true,
+          "key": "$63",
+          "name": "size-64",
+          "val": 252,
+          "variable": "var(--size-64)"
+        },
+        "64": {
+          "isVar": true,
+          "key": "$64",
+          "name": "size-65",
+          "val": 256,
+          "variable": "var(--size-65)"
+        }
+      },
+      "zIndex": {}
+    },
+    "themes": {
+      "info": {
+        "mainColor": "#2ac8ff",
+        "textColor": "#00aaff",
+        "contrastTextColor": "#000000",
+        "borderColor": "#00b4ff",
+        "interactive.backgroundColor": "#54d2ff",
+        "interactive.borderColor": "#00b4ff",
+        "interactive.backgroundColor:hover": "#7edcff",
+        "interactive.borderColor:hover": "#00beff",
+        "interactive.backgroundColor:focus": "#7edcff",
+        "interactive.borderColor:focus": "#00beff",
+        "interactive.backgroundColor:press": "#d4f0ff",
+        "interactive.borderColor:press": "#00beff",
+        "interactive.backgroundColor:disabled": "#ebe9e5",
+        "interactive.borderColor:disabled": "#ebe9e5",
+        "interactive.textColor:disabled": "#aeaba3",
+        "id": "info"
+      },
+      "success": {
+        "mainColor": "#2ac82a",
+        "textColor": "#00aa00",
+        "contrastTextColor": "#000000",
+        "borderColor": "#00b400",
+        "interactive.backgroundColor": "#54d254",
+        "interactive.borderColor": "#00b400",
+        "interactive.backgroundColor:hover": "#7edc7e",
+        "interactive.borderColor:hover": "#00be00",
+        "interactive.backgroundColor:focus": "#7edc7e",
+        "interactive.borderColor:focus": "#00be00",
+        "interactive.backgroundColor:press": "#d4f0d4",
+        "interactive.borderColor:press": "#00be00",
+        "interactive.backgroundColor:disabled": "#ebe9e5",
+        "interactive.borderColor:disabled": "#ebe9e5",
+        "interactive.textColor:disabled": "#aeaba3",
+        "id": "success"
+      },
+      "warning": {
+        "mainColor": "#ffc82a",
+        "textColor": "#ffaa00",
+        "contrastTextColor": "#000000",
+        "borderColor": "#ffb400",
+        "interactive.backgroundColor": "#ffd254",
+        "interactive.borderColor": "#ffb400",
+        "interactive.backgroundColor:hover": "#ffdc7e",
+        "interactive.borderColor:hover": "#ffbe00",
+        "interactive.backgroundColor:focus": "#ffdc7e",
+        "interactive.borderColor:focus": "#ffbe00",
+        "interactive.backgroundColor:press": "#fff0d4",
+        "interactive.borderColor:press": "#ffbe00",
+        "interactive.backgroundColor:disabled": "#ebe9e5",
+        "interactive.borderColor:disabled": "#ebe9e5",
+        "interactive.textColor:disabled": "#aeaba3",
+        "id": "warning"
+      },
+      "danger": {
+        "mainColor": "#ff2a2a",
+        "textColor": "#ea0000",
+        "contrastTextColor": "#000000",
+        "borderColor": "#f40000",
+        "interactive.backgroundColor": "#ff5454",
+        "interactive.borderColor": "#f40000",
+        "interactive.backgroundColor:hover": "#ff7e7e",
+        "interactive.borderColor:hover": "#ff0000",
+        "interactive.backgroundColor:focus": "#ff7e7e",
+        "interactive.borderColor:focus": "#ff0000",
+        "interactive.backgroundColor:press": "#ffd4d4",
+        "interactive.borderColor:press": "#ff0000",
+        "interactive.backgroundColor:disabled": "#ebe9e5",
+        "interactive.borderColor:disabled": "#ebe9e5",
+        "interactive.textColor:disabled": "#aeaba3",
+        "id": "danger"
+      },
+      "primary": {
+        "mainColor": "#31a1c4",
+        "textColor": "#1c7193",
+        "contrastTextColor": "#ffffff",
+        "borderColor": "#1e82a6",
+        "interactive.backgroundColor": "#46aeca",
+        "interactive.borderColor": "#1e82a6",
+        "interactive.backgroundColor:hover": "#60bcd0",
+        "interactive.borderColor:hover": "#2994b7",
+        "interactive.backgroundColor:focus": "#60bcd0",
+        "interactive.borderColor:focus": "#2994b7",
+        "interactive.backgroundColor:press": "#b4e2e9",
+        "interactive.borderColor:press": "#2994b7",
+        "interactive.backgroundColor:disabled": "#ebe9e5",
+        "interactive.borderColor:disabled": "#ebe9e5",
+        "interactive.textColor:disabled": "#aeaba3",
+        "id": "primary"
+      },
+      "light": {
+        "mainColor": "#ffffff",
+        "textColor": "#000000",
+        "contrastTextColor": "#000000",
+        "interactive.borderColor": "#ffffff",
+        "interactive.backgroundColor": "#ffffff",
+        "interactive.backgroundColor:hover": "#ffffff",
+        "interactive.borderColor:hover": "#ffffff",
+        "interactive.backgroundColor:focus": "#ffffff",
+        "interactive.borderColor:focus": "#ffffff",
+        "interactive.backgroundColor:press": "#ffffff",
+        "interactive.borderColor:press": "#ffffff",
+        "interactive.backgroundColor:disabled": "#ebe9e5",
+        "interactive.borderColor:disabled": "#ebe9e5",
+        "interactive.textColor:disabled": "#aeaba3",
+        "id": "light"
+      },
+      "dark": {
+        "mainColor": "#000000",
+        "textColor": "#ffffff",
+        "contrastTextColor": "#ffffff",
+        "interactive.borderColor": "#000000",
+        "interactive.backgroundColor": "#000000",
+        "interactive.backgroundColor:hover": "#000000",
+        "interactive.borderColor:hover": "#000000",
+        "interactive.backgroundColor:focus": "#000000",
+        "interactive.borderColor:focus": "#000000",
+        "interactive.backgroundColor:press": "#000000",
+        "interactive.borderColor:press": "#000000",
+        "interactive.backgroundColor:disabled": "#ebe9e5",
+        "interactive.borderColor:disabled": "#ebe9e5",
+        "interactive.textColor:disabled": "#aeaba3",
+        "id": "dark"
+      }
+    },
+    "settings": {
+      "webContainerType": "inline-size",
+      "allowedStyleValues": "strict",
+      "autocompleteSpecificTokens": true
+    },
+    "components": [
+      "alouette"
+    ],
+    "unset": {},
+    "shorthands": {},
+    "inverseShorthands": {},
+    "parsed": true,
+    "getNewCSS": "Function",
+    "defaultFont": "$body",
+    "fontSizeTokens": {},
+    "specificTokens": {
+      "$color.black": {
+        "isVar": true,
+        "key": "$black",
+        "name": "color-1",
+        "val": "#000000",
+        "variable": "var(--color-1)"
+      },
+      "$color.white": {
+        "isVar": true,
+        "key": "$white",
+        "name": "color-2",
+        "val": "#ffffff",
+        "variable": "var(--color-2)"
+      },
+      "$color.disabled": {
+        "isVar": true,
+        "key": "$disabled",
+        "name": "color-3",
+        "val": "#ebe9e5",
+        "variable": "var(--color-3)"
+      },
+      "$color.contrastDisabled": {
+        "isVar": true,
+        "key": "$contrastDisabled",
+        "name": "color-4",
+        "val": "#aeaba3",
+        "variable": "var(--color-4)"
+      },
+      "$color.grayscale.1": {
+        "isVar": true,
+        "key": "$grayscale.1",
+        "name": "color-5",
+        "val": "#faf9f8",
+        "variable": "var(--color-5)"
+      },
+      "$color.grayscale.2": {
+        "isVar": true,
+        "key": "$grayscale.2",
+        "name": "color-6",
+        "val": "#f4f3ef",
+        "variable": "var(--color-6)"
+      },
+      "$color.grayscale.3": {
+        "isVar": true,
+        "key": "$grayscale.3",
+        "name": "color-7",
+        "val": "#ebe9e5",
+        "variable": "var(--color-7)"
+      },
+      "$color.grayscale.4": {
+        "isVar": true,
+        "key": "$grayscale.4",
+        "name": "color-8",
+        "val": "#dedad2",
+        "variable": "var(--color-8)"
+      },
+      "$color.grayscale.5": {
+        "isVar": true,
+        "key": "$grayscale.5",
+        "name": "color-9",
+        "val": "#d1cdc5",
+        "variable": "var(--color-9)"
+      },
+      "$color.grayscale.6": {
+        "isVar": true,
+        "key": "$grayscale.6",
+        "name": "color-10",
+        "val": "#bab8ae",
+        "variable": "var(--color-10)"
+      },
+      "$color.grayscale.7": {
+        "isVar": true,
+        "key": "$grayscale.7",
+        "name": "color-11",
+        "val": "#aeaba3",
+        "variable": "var(--color-11)"
+      },
+      "$color.grayscale.8": {
+        "isVar": true,
+        "key": "$grayscale.8",
+        "name": "color-12",
+        "val": "#9c9a92",
+        "variable": "var(--color-12)"
+      },
+      "$color.grayscale.9": {
+        "isVar": true,
+        "key": "$grayscale.9",
+        "name": "color-13",
+        "val": "#8e8c83",
+        "variable": "var(--color-13)"
+      },
+      "$color.grayscale.10": {
+        "isVar": true,
+        "key": "$grayscale.10",
+        "name": "color-14",
+        "val": "#74726a",
+        "variable": "var(--color-14)"
+      },
+      "$color.success.1": {
+        "isVar": true,
+        "key": "$success.1",
+        "name": "color-15",
+        "val": "#f0f9f3",
+        "variable": "var(--color-15)"
+      },
+      "$color.success.2": {
+        "isVar": true,
+        "key": "$success.2",
+        "name": "color-16",
+        "val": "#d4f0d4",
+        "variable": "var(--color-16)"
+      },
+      "$color.success.3": {
+        "isVar": true,
+        "key": "$success.3",
+        "name": "color-17",
+        "val": "#a8e6a8",
+        "variable": "var(--color-17)"
+      },
+      "$color.success.4": {
+        "isVar": true,
+        "key": "$success.4",
+        "name": "color-18",
+        "val": "#7edc7e",
+        "variable": "var(--color-18)"
+      },
+      "$color.success.5": {
+        "isVar": true,
+        "key": "$success.5",
+        "name": "color-19",
+        "val": "#54d254",
+        "variable": "var(--color-19)"
+      },
+      "$color.success.6": {
+        "isVar": true,
+        "key": "$success.6",
+        "name": "color-20",
+        "val": "#2ac82a",
+        "variable": "var(--color-20)"
+      },
+      "$color.success.7": {
+        "isVar": true,
+        "key": "$success.7",
+        "name": "color-21",
+        "val": "#00be00",
+        "variable": "var(--color-21)"
+      },
+      "$color.success.8": {
+        "isVar": true,
+        "key": "$success.8",
+        "name": "color-22",
+        "val": "#00b400",
+        "variable": "var(--color-22)"
+      },
+      "$color.success.9": {
+        "isVar": true,
+        "key": "$success.9",
+        "name": "color-23",
+        "val": "#00aa00",
+        "variable": "var(--color-23)"
+      },
+      "$color.success.10": {
+        "isVar": true,
+        "key": "$success.10",
+        "name": "color-24",
+        "val": "#009200",
+        "variable": "var(--color-24)"
+      },
+      "$color.info.1": {
+        "isVar": true,
+        "key": "$info.1",
+        "name": "color-25",
+        "val": "#f0f9ff",
+        "variable": "var(--color-25)"
+      },
+      "$color.info.2": {
+        "isVar": true,
+        "key": "$info.2",
+        "name": "color-26",
+        "val": "#d4f0ff",
+        "variable": "var(--color-26)"
+      },
+      "$color.info.3": {
+        "isVar": true,
+        "key": "$info.3",
+        "name": "color-27",
+        "val": "#a8e6ff",
+        "variable": "var(--color-27)"
+      },
+      "$color.info.4": {
+        "isVar": true,
+        "key": "$info.4",
+        "name": "color-28",
+        "val": "#7edcff",
+        "variable": "var(--color-28)"
+      },
+      "$color.info.5": {
+        "isVar": true,
+        "key": "$info.5",
+        "name": "color-29",
+        "val": "#54d2ff",
+        "variable": "var(--color-29)"
+      },
+      "$color.info.6": {
+        "isVar": true,
+        "key": "$info.6",
+        "name": "color-30",
+        "val": "#2ac8ff",
+        "variable": "var(--color-30)"
+      },
+      "$color.info.7": {
+        "isVar": true,
+        "key": "$info.7",
+        "name": "color-31",
+        "val": "#00beff",
+        "variable": "var(--color-31)"
+      },
+      "$color.info.8": {
+        "isVar": true,
+        "key": "$info.8",
+        "name": "color-32",
+        "val": "#00b4ff",
+        "variable": "var(--color-32)"
+      },
+      "$color.info.9": {
+        "isVar": true,
+        "key": "$info.9",
+        "name": "color-33",
+        "val": "#00aaff",
+        "variable": "var(--color-33)"
+      },
+      "$color.info.10": {
+        "isVar": true,
+        "key": "$info.10",
+        "name": "color-34",
+        "val": "#0092ff",
+        "variable": "var(--color-34)"
+      },
+      "$color.warning.1": {
+        "isVar": true,
+        "key": "$warning.1",
+        "name": "color-35",
+        "val": "#fff9f0",
+        "variable": "var(--color-35)"
+      },
+      "$color.warning.2": {
+        "isVar": true,
+        "key": "$warning.2",
+        "name": "color-36",
+        "val": "#fff0d4",
+        "variable": "var(--color-36)"
+      },
+      "$color.warning.3": {
+        "isVar": true,
+        "key": "$warning.3",
+        "name": "color-37",
+        "val": "#ffe6a8",
+        "variable": "var(--color-37)"
+      },
+      "$color.warning.4": {
+        "isVar": true,
+        "key": "$warning.4",
+        "name": "color-38",
+        "val": "#ffdc7e",
+        "variable": "var(--color-38)"
+      },
+      "$color.warning.5": {
+        "isVar": true,
+        "key": "$warning.5",
+        "name": "color-39",
+        "val": "#ffd254",
+        "variable": "var(--color-39)"
+      },
+      "$color.warning.6": {
+        "isVar": true,
+        "key": "$warning.6",
+        "name": "color-40",
+        "val": "#ffc82a",
+        "variable": "var(--color-40)"
+      },
+      "$color.warning.7": {
+        "isVar": true,
+        "key": "$warning.7",
+        "name": "color-41",
+        "val": "#ffbe00",
+        "variable": "var(--color-41)"
+      },
+      "$color.warning.8": {
+        "isVar": true,
+        "key": "$warning.8",
+        "name": "color-42",
+        "val": "#ffb400",
+        "variable": "var(--color-42)"
+      },
+      "$color.warning.9": {
+        "isVar": true,
+        "key": "$warning.9",
+        "name": "color-43",
+        "val": "#ffaa00",
+        "variable": "var(--color-43)"
+      },
+      "$color.warning.10": {
+        "isVar": true,
+        "key": "$warning.10",
+        "name": "color-44",
+        "val": "#ff9200",
+        "variable": "var(--color-44)"
+      },
+      "$color.danger.1": {
+        "isVar": true,
+        "key": "$danger.1",
+        "name": "color-45",
+        "val": "#fff0f0",
+        "variable": "var(--color-45)"
+      },
+      "$color.danger.2": {
+        "isVar": true,
+        "key": "$danger.2",
+        "name": "color-46",
+        "val": "#ffd4d4",
+        "variable": "var(--color-46)"
+      },
+      "$color.danger.3": {
+        "isVar": true,
+        "key": "$danger.3",
+        "name": "color-47",
+        "val": "#ffaaaa",
+        "variable": "var(--color-47)"
+      },
+      "$color.danger.4": {
+        "isVar": true,
+        "key": "$danger.4",
+        "name": "color-48",
+        "val": "#ff7e7e",
+        "variable": "var(--color-48)"
+      },
+      "$color.danger.5": {
+        "isVar": true,
+        "key": "$danger.5",
+        "name": "color-49",
+        "val": "#ff5454",
+        "variable": "var(--color-49)"
+      },
+      "$color.danger.6": {
+        "isVar": true,
+        "key": "$danger.6",
+        "name": "color-50",
+        "val": "#ff2a2a",
+        "variable": "var(--color-50)"
+      },
+      "$color.danger.7": {
+        "isVar": true,
+        "key": "$danger.7",
+        "name": "color-51",
+        "val": "#ff0000",
+        "variable": "var(--color-51)"
+      },
+      "$color.danger.8": {
+        "isVar": true,
+        "key": "$danger.8",
+        "name": "color-52",
+        "val": "#f40000",
+        "variable": "var(--color-52)"
+      },
+      "$color.danger.9": {
+        "isVar": true,
+        "key": "$danger.9",
+        "name": "color-53",
+        "val": "#ea0000",
+        "variable": "var(--color-53)"
+      },
+      "$color.danger.10": {
+        "isVar": true,
+        "key": "$danger.10",
+        "name": "color-54",
+        "val": "#d20000",
+        "variable": "var(--color-54)"
+      },
+      "$color.primary.1": {
+        "isVar": true,
+        "key": "$primary.1",
+        "name": "color-55",
+        "val": "#e1f4f6",
+        "variable": "var(--color-55)"
+      },
+      "$color.primary.2": {
+        "isVar": true,
+        "key": "$primary.2",
+        "name": "color-56",
+        "val": "#b4e2e9",
+        "variable": "var(--color-56)"
+      },
+      "$color.primary.3": {
+        "isVar": true,
+        "key": "$primary.3",
+        "name": "color-57",
+        "val": "#86cfdc",
+        "variable": "var(--color-57)"
+      },
+      "$color.primary.4": {
+        "isVar": true,
+        "key": "$primary.4",
+        "name": "color-58",
+        "val": "#60bcd0",
+        "variable": "var(--color-58)"
+      },
+      "$color.primary.5": {
+        "isVar": true,
+        "key": "$primary.5",
+        "name": "color-59",
+        "val": "#46aeca",
+        "variable": "var(--color-59)"
+      },
+      "$color.primary.6": {
+        "isVar": true,
+        "key": "$primary.6",
+        "name": "color-60",
+        "val": "#31a1c4",
+        "variable": "var(--color-60)"
+      },
+      "$color.primary.7": {
+        "isVar": true,
+        "key": "$primary.7",
+        "name": "color-61",
+        "val": "#2994b7",
+        "variable": "var(--color-61)"
+      },
+      "$color.primary.8": {
+        "isVar": true,
+        "key": "$primary.8",
+        "name": "color-62",
+        "val": "#1e82a6",
+        "variable": "var(--color-62)"
+      },
+      "$color.primary.9": {
+        "isVar": true,
+        "key": "$primary.9",
+        "name": "color-63",
+        "val": "#1c7193",
+        "variable": "var(--color-63)"
+      },
+      "$color.primary.10": {
+        "isVar": true,
+        "key": "$primary.10",
+        "name": "color-64",
+        "val": "#125272",
+        "variable": "var(--color-64)"
+      },
+      "$radius.0": {
+        "isVar": true,
+        "key": "$0",
+        "name": "radius-1",
+        "val": 0,
+        "variable": "var(--radius-1)"
+      },
+      "$radius.1": {
+        "isVar": true,
+        "key": "$1",
+        "name": "radius-2",
+        "val": 4,
+        "variable": "var(--radius-2)"
+      },
+      "$radius.2": {
+        "isVar": true,
+        "key": "$2",
+        "name": "radius-3",
+        "val": 8,
+        "variable": "var(--radius-3)"
+      },
+      "$radius.3": {
+        "isVar": true,
+        "key": "$3",
+        "name": "radius-4",
+        "val": 12,
+        "variable": "var(--radius-4)"
+      },
+      "$radius.4": {
+        "isVar": true,
+        "key": "$4",
+        "name": "radius-5",
+        "val": 16,
+        "variable": "var(--radius-5)"
+      },
+      "$radius.5": {
+        "isVar": true,
+        "key": "$5",
+        "name": "radius-6",
+        "val": 20,
+        "variable": "var(--radius-6)"
+      },
+      "$radius.6": {
+        "isVar": true,
+        "key": "$6",
+        "name": "radius-7",
+        "val": 24,
+        "variable": "var(--radius-7)"
+      },
+      "$radius.7": {
+        "isVar": true,
+        "key": "$7",
+        "name": "radius-8",
+        "val": 28,
+        "variable": "var(--radius-8)"
+      },
+      "$radius.8": {
+        "isVar": true,
+        "key": "$8",
+        "name": "radius-9",
+        "val": 32,
+        "variable": "var(--radius-9)"
+      },
+      "$radius.9": {
+        "isVar": true,
+        "key": "$9",
+        "name": "radius-10",
+        "val": 36,
+        "variable": "var(--radius-10)"
+      },
+      "$radius.10": {
+        "isVar": true,
+        "key": "$10",
+        "name": "radius-11",
+        "val": 40,
+        "variable": "var(--radius-11)"
+      },
+      "$radius.11": {
+        "isVar": true,
+        "key": "$11",
+        "name": "radius-12",
+        "val": 44,
+        "variable": "var(--radius-12)"
+      },
+      "$radius.12": {
+        "isVar": true,
+        "key": "$12",
+        "name": "radius-13",
+        "val": 48,
+        "variable": "var(--radius-13)"
+      },
+      "$radius.13": {
+        "isVar": true,
+        "key": "$13",
+        "name": "radius-14",
+        "val": 52,
+        "variable": "var(--radius-14)"
+      },
+      "$radius.14": {
+        "isVar": true,
+        "key": "$14",
+        "name": "radius-15",
+        "val": 56,
+        "variable": "var(--radius-15)"
+      },
+      "$radius.15": {
+        "isVar": true,
+        "key": "$15",
+        "name": "radius-16",
+        "val": 60,
+        "variable": "var(--radius-16)"
+      },
+      "$radius.16": {
+        "isVar": true,
+        "key": "$16",
+        "name": "radius-17",
+        "val": 64,
+        "variable": "var(--radius-17)"
+      },
+      "$radius.17": {
+        "isVar": true,
+        "key": "$17",
+        "name": "radius-18",
+        "val": 68,
+        "variable": "var(--radius-18)"
+      },
+      "$radius.18": {
+        "isVar": true,
+        "key": "$18",
+        "name": "radius-19",
+        "val": 72,
+        "variable": "var(--radius-19)"
+      },
+      "$radius.19": {
+        "isVar": true,
+        "key": "$19",
+        "name": "radius-20",
+        "val": 76,
+        "variable": "var(--radius-20)"
+      },
+      "$radius.20": {
+        "isVar": true,
+        "key": "$20",
+        "name": "radius-21",
+        "val": 80,
+        "variable": "var(--radius-21)"
+      },
+      "$radius.21": {
+        "isVar": true,
+        "key": "$21",
+        "name": "radius-22",
+        "val": 84,
+        "variable": "var(--radius-22)"
+      },
+      "$radius.22": {
+        "isVar": true,
+        "key": "$22",
+        "name": "radius-23",
+        "val": 88,
+        "variable": "var(--radius-23)"
+      },
+      "$radius.23": {
+        "isVar": true,
+        "key": "$23",
+        "name": "radius-24",
+        "val": 92,
+        "variable": "var(--radius-24)"
+      },
+      "$radius.24": {
+        "isVar": true,
+        "key": "$24",
+        "name": "radius-25",
+        "val": 96,
+        "variable": "var(--radius-25)"
+      },
+      "$radius.25": {
+        "isVar": true,
+        "key": "$25",
+        "name": "radius-26",
+        "val": 100,
+        "variable": "var(--radius-26)"
+      },
+      "$radius.26": {
+        "isVar": true,
+        "key": "$26",
+        "name": "radius-27",
+        "val": 104,
+        "variable": "var(--radius-27)"
+      },
+      "$radius.27": {
+        "isVar": true,
+        "key": "$27",
+        "name": "radius-28",
+        "val": 108,
+        "variable": "var(--radius-28)"
+      },
+      "$radius.28": {
+        "isVar": true,
+        "key": "$28",
+        "name": "radius-29",
+        "val": 112,
+        "variable": "var(--radius-29)"
+      },
+      "$radius.29": {
+        "isVar": true,
+        "key": "$29",
+        "name": "radius-30",
+        "val": 116,
+        "variable": "var(--radius-30)"
+      },
+      "$radius.30": {
+        "isVar": true,
+        "key": "$30",
+        "name": "radius-31",
+        "val": 120,
+        "variable": "var(--radius-31)"
+      },
+      "$radius.31": {
+        "isVar": true,
+        "key": "$31",
+        "name": "radius-32",
+        "val": 124,
+        "variable": "var(--radius-32)"
+      },
+      "$radius.32": {
+        "isVar": true,
+        "key": "$32",
+        "name": "radius-33",
+        "val": 128,
+        "variable": "var(--radius-33)"
+      },
+      "$radius.33": {
+        "isVar": true,
+        "key": "$33",
+        "name": "radius-34",
+        "val": 132,
+        "variable": "var(--radius-34)"
+      },
+      "$radius.34": {
+        "isVar": true,
+        "key": "$34",
+        "name": "radius-35",
+        "val": 136,
+        "variable": "var(--radius-35)"
+      },
+      "$radius.35": {
+        "isVar": true,
+        "key": "$35",
+        "name": "radius-36",
+        "val": 140,
+        "variable": "var(--radius-36)"
+      },
+      "$radius.36": {
+        "isVar": true,
+        "key": "$36",
+        "name": "radius-37",
+        "val": 144,
+        "variable": "var(--radius-37)"
+      },
+      "$radius.37": {
+        "isVar": true,
+        "key": "$37",
+        "name": "radius-38",
+        "val": 148,
+        "variable": "var(--radius-38)"
+      },
+      "$radius.38": {
+        "isVar": true,
+        "key": "$38",
+        "name": "radius-39",
+        "val": 152,
+        "variable": "var(--radius-39)"
+      },
+      "$radius.39": {
+        "isVar": true,
+        "key": "$39",
+        "name": "radius-40",
+        "val": 156,
+        "variable": "var(--radius-40)"
+      },
+      "$radius.40": {
+        "isVar": true,
+        "key": "$40",
+        "name": "radius-41",
+        "val": 160,
+        "variable": "var(--radius-41)"
+      },
+      "$radius.41": {
+        "isVar": true,
+        "key": "$41",
+        "name": "radius-42",
+        "val": 164,
+        "variable": "var(--radius-42)"
+      },
+      "$radius.42": {
+        "isVar": true,
+        "key": "$42",
+        "name": "radius-43",
+        "val": 168,
+        "variable": "var(--radius-43)"
+      },
+      "$radius.43": {
+        "isVar": true,
+        "key": "$43",
+        "name": "radius-44",
+        "val": 172,
+        "variable": "var(--radius-44)"
+      },
+      "$radius.44": {
+        "isVar": true,
+        "key": "$44",
+        "name": "radius-45",
+        "val": 176,
+        "variable": "var(--radius-45)"
+      },
+      "$radius.45": {
+        "isVar": true,
+        "key": "$45",
+        "name": "radius-46",
+        "val": 180,
+        "variable": "var(--radius-46)"
+      },
+      "$radius.46": {
+        "isVar": true,
+        "key": "$46",
+        "name": "radius-47",
+        "val": 184,
+        "variable": "var(--radius-47)"
+      },
+      "$radius.47": {
+        "isVar": true,
+        "key": "$47",
+        "name": "radius-48",
+        "val": 188,
+        "variable": "var(--radius-48)"
+      },
+      "$radius.48": {
+        "isVar": true,
+        "key": "$48",
+        "name": "radius-49",
+        "val": 192,
+        "variable": "var(--radius-49)"
+      },
+      "$radius.49": {
+        "isVar": true,
+        "key": "$49",
+        "name": "radius-50",
+        "val": 196,
+        "variable": "var(--radius-50)"
+      },
+      "$radius.50": {
+        "isVar": true,
+        "key": "$50",
+        "name": "radius-51",
+        "val": 200,
+        "variable": "var(--radius-51)"
+      },
+      "$radius.51": {
+        "isVar": true,
+        "key": "$51",
+        "name": "radius-52",
+        "val": 204,
+        "variable": "var(--radius-52)"
+      },
+      "$radius.52": {
+        "isVar": true,
+        "key": "$52",
+        "name": "radius-53",
+        "val": 208,
+        "variable": "var(--radius-53)"
+      },
+      "$radius.53": {
+        "isVar": true,
+        "key": "$53",
+        "name": "radius-54",
+        "val": 212,
+        "variable": "var(--radius-54)"
+      },
+      "$radius.54": {
+        "isVar": true,
+        "key": "$54",
+        "name": "radius-55",
+        "val": 216,
+        "variable": "var(--radius-55)"
+      },
+      "$radius.55": {
+        "isVar": true,
+        "key": "$55",
+        "name": "radius-56",
+        "val": 220,
+        "variable": "var(--radius-56)"
+      },
+      "$radius.56": {
+        "isVar": true,
+        "key": "$56",
+        "name": "radius-57",
+        "val": 224,
+        "variable": "var(--radius-57)"
+      },
+      "$radius.57": {
+        "isVar": true,
+        "key": "$57",
+        "name": "radius-58",
+        "val": 228,
+        "variable": "var(--radius-58)"
+      },
+      "$radius.58": {
+        "isVar": true,
+        "key": "$58",
+        "name": "radius-59",
+        "val": 232,
+        "variable": "var(--radius-59)"
+      },
+      "$radius.59": {
+        "isVar": true,
+        "key": "$59",
+        "name": "radius-60",
+        "val": 236,
+        "variable": "var(--radius-60)"
+      },
+      "$radius.60": {
+        "isVar": true,
+        "key": "$60",
+        "name": "radius-61",
+        "val": 240,
+        "variable": "var(--radius-61)"
+      },
+      "$radius.61": {
+        "isVar": true,
+        "key": "$61",
+        "name": "radius-62",
+        "val": 244,
+        "variable": "var(--radius-62)"
+      },
+      "$radius.62": {
+        "isVar": true,
+        "key": "$62",
+        "name": "radius-63",
+        "val": 248,
+        "variable": "var(--radius-63)"
+      },
+      "$radius.63": {
+        "isVar": true,
+        "key": "$63",
+        "name": "radius-64",
+        "val": 252,
+        "variable": "var(--radius-64)"
+      },
+      "$radius.64": {
+        "isVar": true,
+        "key": "$64",
+        "name": "radius-65",
+        "val": 256,
+        "variable": "var(--radius-65)"
+      },
+      "$radius.xs": {
+        "isVar": true,
+        "key": "$xs",
+        "name": "radius-66",
+        "val": 8,
+        "variable": "var(--radius-66)"
+      },
+      "$radius.sm": {
+        "isVar": true,
+        "key": "$sm",
+        "name": "radius-67",
+        "val": 16,
+        "variable": "var(--radius-67)"
+      },
+      "$radius.md": {
+        "isVar": true,
+        "key": "$md",
+        "name": "radius-68",
+        "val": 32,
+        "variable": "var(--radius-68)"
+      },
+      "$space.0": {
+        "isVar": true,
+        "key": "$0",
+        "name": "space-1",
+        "val": 0,
+        "variable": "var(--space-1)"
+      },
+      "$space.1": {
+        "isVar": true,
+        "key": "$1",
+        "name": "space-2",
+        "val": 4,
+        "variable": "var(--space-2)"
+      },
+      "$space.2": {
+        "isVar": true,
+        "key": "$2",
+        "name": "space-3",
+        "val": 8,
+        "variable": "var(--space-3)"
+      },
+      "$space.3": {
+        "isVar": true,
+        "key": "$3",
+        "name": "space-4",
+        "val": 12,
+        "variable": "var(--space-4)"
+      },
+      "$space.4": {
+        "isVar": true,
+        "key": "$4",
+        "name": "space-5",
+        "val": 16,
+        "variable": "var(--space-5)"
+      },
+      "$space.5": {
+        "isVar": true,
+        "key": "$5",
+        "name": "space-6",
+        "val": 20,
+        "variable": "var(--space-6)"
+      },
+      "$space.6": {
+        "isVar": true,
+        "key": "$6",
+        "name": "space-7",
+        "val": 24,
+        "variable": "var(--space-7)"
+      },
+      "$space.7": {
+        "isVar": true,
+        "key": "$7",
+        "name": "space-8",
+        "val": 28,
+        "variable": "var(--space-8)"
+      },
+      "$space.8": {
+        "isVar": true,
+        "key": "$8",
+        "name": "space-9",
+        "val": 32,
+        "variable": "var(--space-9)"
+      },
+      "$space.9": {
+        "isVar": true,
+        "key": "$9",
+        "name": "space-10",
+        "val": 36,
+        "variable": "var(--space-10)"
+      },
+      "$space.10": {
+        "isVar": true,
+        "key": "$10",
+        "name": "space-11",
+        "val": 40,
+        "variable": "var(--space-11)"
+      },
+      "$space.11": {
+        "isVar": true,
+        "key": "$11",
+        "name": "space-12",
+        "val": 44,
+        "variable": "var(--space-12)"
+      },
+      "$space.12": {
+        "isVar": true,
+        "key": "$12",
+        "name": "space-13",
+        "val": 48,
+        "variable": "var(--space-13)"
+      },
+      "$space.13": {
+        "isVar": true,
+        "key": "$13",
+        "name": "space-14",
+        "val": 52,
+        "variable": "var(--space-14)"
+      },
+      "$space.14": {
+        "isVar": true,
+        "key": "$14",
+        "name": "space-15",
+        "val": 56,
+        "variable": "var(--space-15)"
+      },
+      "$space.15": {
+        "isVar": true,
+        "key": "$15",
+        "name": "space-16",
+        "val": 60,
+        "variable": "var(--space-16)"
+      },
+      "$space.16": {
+        "isVar": true,
+        "key": "$16",
+        "name": "space-17",
+        "val": 64,
+        "variable": "var(--space-17)"
+      },
+      "$space.17": {
+        "isVar": true,
+        "key": "$17",
+        "name": "space-18",
+        "val": 68,
+        "variable": "var(--space-18)"
+      },
+      "$space.18": {
+        "isVar": true,
+        "key": "$18",
+        "name": "space-19",
+        "val": 72,
+        "variable": "var(--space-19)"
+      },
+      "$space.19": {
+        "isVar": true,
+        "key": "$19",
+        "name": "space-20",
+        "val": 76,
+        "variable": "var(--space-20)"
+      },
+      "$space.20": {
+        "isVar": true,
+        "key": "$20",
+        "name": "space-21",
+        "val": 80,
+        "variable": "var(--space-21)"
+      },
+      "$space.21": {
+        "isVar": true,
+        "key": "$21",
+        "name": "space-22",
+        "val": 84,
+        "variable": "var(--space-22)"
+      },
+      "$space.22": {
+        "isVar": true,
+        "key": "$22",
+        "name": "space-23",
+        "val": 88,
+        "variable": "var(--space-23)"
+      },
+      "$space.23": {
+        "isVar": true,
+        "key": "$23",
+        "name": "space-24",
+        "val": 92,
+        "variable": "var(--space-24)"
+      },
+      "$space.24": {
+        "isVar": true,
+        "key": "$24",
+        "name": "space-25",
+        "val": 96,
+        "variable": "var(--space-25)"
+      },
+      "$space.25": {
+        "isVar": true,
+        "key": "$25",
+        "name": "space-26",
+        "val": 100,
+        "variable": "var(--space-26)"
+      },
+      "$space.26": {
+        "isVar": true,
+        "key": "$26",
+        "name": "space-27",
+        "val": 104,
+        "variable": "var(--space-27)"
+      },
+      "$space.27": {
+        "isVar": true,
+        "key": "$27",
+        "name": "space-28",
+        "val": 108,
+        "variable": "var(--space-28)"
+      },
+      "$space.28": {
+        "isVar": true,
+        "key": "$28",
+        "name": "space-29",
+        "val": 112,
+        "variable": "var(--space-29)"
+      },
+      "$space.29": {
+        "isVar": true,
+        "key": "$29",
+        "name": "space-30",
+        "val": 116,
+        "variable": "var(--space-30)"
+      },
+      "$space.30": {
+        "isVar": true,
+        "key": "$30",
+        "name": "space-31",
+        "val": 120,
+        "variable": "var(--space-31)"
+      },
+      "$space.31": {
+        "isVar": true,
+        "key": "$31",
+        "name": "space-32",
+        "val": 124,
+        "variable": "var(--space-32)"
+      },
+      "$space.32": {
+        "isVar": true,
+        "key": "$32",
+        "name": "space-33",
+        "val": 128,
+        "variable": "var(--space-33)"
+      },
+      "$space.33": {
+        "isVar": true,
+        "key": "$33",
+        "name": "space-34",
+        "val": 132,
+        "variable": "var(--space-34)"
+      },
+      "$space.34": {
+        "isVar": true,
+        "key": "$34",
+        "name": "space-35",
+        "val": 136,
+        "variable": "var(--space-35)"
+      },
+      "$space.35": {
+        "isVar": true,
+        "key": "$35",
+        "name": "space-36",
+        "val": 140,
+        "variable": "var(--space-36)"
+      },
+      "$space.36": {
+        "isVar": true,
+        "key": "$36",
+        "name": "space-37",
+        "val": 144,
+        "variable": "var(--space-37)"
+      },
+      "$space.37": {
+        "isVar": true,
+        "key": "$37",
+        "name": "space-38",
+        "val": 148,
+        "variable": "var(--space-38)"
+      },
+      "$space.38": {
+        "isVar": true,
+        "key": "$38",
+        "name": "space-39",
+        "val": 152,
+        "variable": "var(--space-39)"
+      },
+      "$space.39": {
+        "isVar": true,
+        "key": "$39",
+        "name": "space-40",
+        "val": 156,
+        "variable": "var(--space-40)"
+      },
+      "$space.40": {
+        "isVar": true,
+        "key": "$40",
+        "name": "space-41",
+        "val": 160,
+        "variable": "var(--space-41)"
+      },
+      "$space.41": {
+        "isVar": true,
+        "key": "$41",
+        "name": "space-42",
+        "val": 164,
+        "variable": "var(--space-42)"
+      },
+      "$space.42": {
+        "isVar": true,
+        "key": "$42",
+        "name": "space-43",
+        "val": 168,
+        "variable": "var(--space-43)"
+      },
+      "$space.43": {
+        "isVar": true,
+        "key": "$43",
+        "name": "space-44",
+        "val": 172,
+        "variable": "var(--space-44)"
+      },
+      "$space.44": {
+        "isVar": true,
+        "key": "$44",
+        "name": "space-45",
+        "val": 176,
+        "variable": "var(--space-45)"
+      },
+      "$space.45": {
+        "isVar": true,
+        "key": "$45",
+        "name": "space-46",
+        "val": 180,
+        "variable": "var(--space-46)"
+      },
+      "$space.46": {
+        "isVar": true,
+        "key": "$46",
+        "name": "space-47",
+        "val": 184,
+        "variable": "var(--space-47)"
+      },
+      "$space.47": {
+        "isVar": true,
+        "key": "$47",
+        "name": "space-48",
+        "val": 188,
+        "variable": "var(--space-48)"
+      },
+      "$space.48": {
+        "isVar": true,
+        "key": "$48",
+        "name": "space-49",
+        "val": 192,
+        "variable": "var(--space-49)"
+      },
+      "$space.49": {
+        "isVar": true,
+        "key": "$49",
+        "name": "space-50",
+        "val": 196,
+        "variable": "var(--space-50)"
+      },
+      "$space.50": {
+        "isVar": true,
+        "key": "$50",
+        "name": "space-51",
+        "val": 200,
+        "variable": "var(--space-51)"
+      },
+      "$space.51": {
+        "isVar": true,
+        "key": "$51",
+        "name": "space-52",
+        "val": 204,
+        "variable": "var(--space-52)"
+      },
+      "$space.52": {
+        "isVar": true,
+        "key": "$52",
+        "name": "space-53",
+        "val": 208,
+        "variable": "var(--space-53)"
+      },
+      "$space.53": {
+        "isVar": true,
+        "key": "$53",
+        "name": "space-54",
+        "val": 212,
+        "variable": "var(--space-54)"
+      },
+      "$space.54": {
+        "isVar": true,
+        "key": "$54",
+        "name": "space-55",
+        "val": 216,
+        "variable": "var(--space-55)"
+      },
+      "$space.55": {
+        "isVar": true,
+        "key": "$55",
+        "name": "space-56",
+        "val": 220,
+        "variable": "var(--space-56)"
+      },
+      "$space.56": {
+        "isVar": true,
+        "key": "$56",
+        "name": "space-57",
+        "val": 224,
+        "variable": "var(--space-57)"
+      },
+      "$space.57": {
+        "isVar": true,
+        "key": "$57",
+        "name": "space-58",
+        "val": 228,
+        "variable": "var(--space-58)"
+      },
+      "$space.58": {
+        "isVar": true,
+        "key": "$58",
+        "name": "space-59",
+        "val": 232,
+        "variable": "var(--space-59)"
+      },
+      "$space.59": {
+        "isVar": true,
+        "key": "$59",
+        "name": "space-60",
+        "val": 236,
+        "variable": "var(--space-60)"
+      },
+      "$space.60": {
+        "isVar": true,
+        "key": "$60",
+        "name": "space-61",
+        "val": 240,
+        "variable": "var(--space-61)"
+      },
+      "$space.61": {
+        "isVar": true,
+        "key": "$61",
+        "name": "space-62",
+        "val": 244,
+        "variable": "var(--space-62)"
+      },
+      "$space.62": {
+        "isVar": true,
+        "key": "$62",
+        "name": "space-63",
+        "val": 248,
+        "variable": "var(--space-63)"
+      },
+      "$space.63": {
+        "isVar": true,
+        "key": "$63",
+        "name": "space-64",
+        "val": 252,
+        "variable": "var(--space-64)"
+      },
+      "$space.64": {
+        "isVar": true,
+        "key": "$64",
+        "name": "space-65",
+        "val": 256,
+        "variable": "var(--space-65)"
+      },
+      "$space.-0": {
+        "isVar": true,
+        "key": "$-0",
+        "name": "space-66",
+        "val": 0,
+        "variable": "var(--space-66)"
+      },
+      "$space.-1": {
+        "isVar": true,
+        "key": "$-1",
+        "name": "space-67",
+        "val": -4,
+        "variable": "var(--space-67)"
+      },
+      "$space.-2": {
+        "isVar": true,
+        "key": "$-2",
+        "name": "space-68",
+        "val": -8,
+        "variable": "var(--space-68)"
+      },
+      "$space.-3": {
+        "isVar": true,
+        "key": "$-3",
+        "name": "space-69",
+        "val": -12,
+        "variable": "var(--space-69)"
+      },
+      "$space.-4": {
+        "isVar": true,
+        "key": "$-4",
+        "name": "space-70",
+        "val": -16,
+        "variable": "var(--space-70)"
+      },
+      "$space.-5": {
+        "isVar": true,
+        "key": "$-5",
+        "name": "space-71",
+        "val": -20,
+        "variable": "var(--space-71)"
+      },
+      "$space.-6": {
+        "isVar": true,
+        "key": "$-6",
+        "name": "space-72",
+        "val": -24,
+        "variable": "var(--space-72)"
+      },
+      "$space.-7": {
+        "isVar": true,
+        "key": "$-7",
+        "name": "space-73",
+        "val": -28,
+        "variable": "var(--space-73)"
+      },
+      "$space.-8": {
+        "isVar": true,
+        "key": "$-8",
+        "name": "space-74",
+        "val": -32,
+        "variable": "var(--space-74)"
+      },
+      "$space.-9": {
+        "isVar": true,
+        "key": "$-9",
+        "name": "space-75",
+        "val": -36,
+        "variable": "var(--space-75)"
+      },
+      "$space.-10": {
+        "isVar": true,
+        "key": "$-10",
+        "name": "space-76",
+        "val": -40,
+        "variable": "var(--space-76)"
+      },
+      "$space.-11": {
+        "isVar": true,
+        "key": "$-11",
+        "name": "space-77",
+        "val": -44,
+        "variable": "var(--space-77)"
+      },
+      "$space.-12": {
+        "isVar": true,
+        "key": "$-12",
+        "name": "space-78",
+        "val": -48,
+        "variable": "var(--space-78)"
+      },
+      "$space.-13": {
+        "isVar": true,
+        "key": "$-13",
+        "name": "space-79",
+        "val": -52,
+        "variable": "var(--space-79)"
+      },
+      "$space.-14": {
+        "isVar": true,
+        "key": "$-14",
+        "name": "space-80",
+        "val": -56,
+        "variable": "var(--space-80)"
+      },
+      "$space.-15": {
+        "isVar": true,
+        "key": "$-15",
+        "name": "space-81",
+        "val": -60,
+        "variable": "var(--space-81)"
+      },
+      "$space.-16": {
+        "isVar": true,
+        "key": "$-16",
+        "name": "space-82",
+        "val": -64,
+        "variable": "var(--space-82)"
+      },
+      "$space.-17": {
+        "isVar": true,
+        "key": "$-17",
+        "name": "space-83",
+        "val": -68,
+        "variable": "var(--space-83)"
+      },
+      "$space.-18": {
+        "isVar": true,
+        "key": "$-18",
+        "name": "space-84",
+        "val": -72,
+        "variable": "var(--space-84)"
+      },
+      "$space.-19": {
+        "isVar": true,
+        "key": "$-19",
+        "name": "space-85",
+        "val": -76,
+        "variable": "var(--space-85)"
+      },
+      "$space.-20": {
+        "isVar": true,
+        "key": "$-20",
+        "name": "space-86",
+        "val": -80,
+        "variable": "var(--space-86)"
+      },
+      "$space.-21": {
+        "isVar": true,
+        "key": "$-21",
+        "name": "space-87",
+        "val": -84,
+        "variable": "var(--space-87)"
+      },
+      "$space.-22": {
+        "isVar": true,
+        "key": "$-22",
+        "name": "space-88",
+        "val": -88,
+        "variable": "var(--space-88)"
+      },
+      "$space.-23": {
+        "isVar": true,
+        "key": "$-23",
+        "name": "space-89",
+        "val": -92,
+        "variable": "var(--space-89)"
+      },
+      "$space.-24": {
+        "isVar": true,
+        "key": "$-24",
+        "name": "space-90",
+        "val": -96,
+        "variable": "var(--space-90)"
+      },
+      "$space.-25": {
+        "isVar": true,
+        "key": "$-25",
+        "name": "space-91",
+        "val": -100,
+        "variable": "var(--space-91)"
+      },
+      "$space.-26": {
+        "isVar": true,
+        "key": "$-26",
+        "name": "space-92",
+        "val": -104,
+        "variable": "var(--space-92)"
+      },
+      "$space.-27": {
+        "isVar": true,
+        "key": "$-27",
+        "name": "space-93",
+        "val": -108,
+        "variable": "var(--space-93)"
+      },
+      "$space.-28": {
+        "isVar": true,
+        "key": "$-28",
+        "name": "space-94",
+        "val": -112,
+        "variable": "var(--space-94)"
+      },
+      "$space.-29": {
+        "isVar": true,
+        "key": "$-29",
+        "name": "space-95",
+        "val": -116,
+        "variable": "var(--space-95)"
+      },
+      "$space.-30": {
+        "isVar": true,
+        "key": "$-30",
+        "name": "space-96",
+        "val": -120,
+        "variable": "var(--space-96)"
+      },
+      "$space.-31": {
+        "isVar": true,
+        "key": "$-31",
+        "name": "space-97",
+        "val": -124,
+        "variable": "var(--space-97)"
+      },
+      "$space.-32": {
+        "isVar": true,
+        "key": "$-32",
+        "name": "space-98",
+        "val": -128,
+        "variable": "var(--space-98)"
+      },
+      "$space.-33": {
+        "isVar": true,
+        "key": "$-33",
+        "name": "space-99",
+        "val": -132,
+        "variable": "var(--space-99)"
+      },
+      "$space.-34": {
+        "isVar": true,
+        "key": "$-34",
+        "name": "space-100",
+        "val": -136,
+        "variable": "var(--space-100)"
+      },
+      "$space.-35": {
+        "isVar": true,
+        "key": "$-35",
+        "name": "space-101",
+        "val": -140,
+        "variable": "var(--space-101)"
+      },
+      "$space.-36": {
+        "isVar": true,
+        "key": "$-36",
+        "name": "space-102",
+        "val": -144,
+        "variable": "var(--space-102)"
+      },
+      "$space.-37": {
+        "isVar": true,
+        "key": "$-37",
+        "name": "space-103",
+        "val": -148,
+        "variable": "var(--space-103)"
+      },
+      "$space.-38": {
+        "isVar": true,
+        "key": "$-38",
+        "name": "space-104",
+        "val": -152,
+        "variable": "var(--space-104)"
+      },
+      "$space.-39": {
+        "isVar": true,
+        "key": "$-39",
+        "name": "space-105",
+        "val": -156,
+        "variable": "var(--space-105)"
+      },
+      "$space.-40": {
+        "isVar": true,
+        "key": "$-40",
+        "name": "space-106",
+        "val": -160,
+        "variable": "var(--space-106)"
+      },
+      "$space.-41": {
+        "isVar": true,
+        "key": "$-41",
+        "name": "space-107",
+        "val": -164,
+        "variable": "var(--space-107)"
+      },
+      "$space.-42": {
+        "isVar": true,
+        "key": "$-42",
+        "name": "space-108",
+        "val": -168,
+        "variable": "var(--space-108)"
+      },
+      "$space.-43": {
+        "isVar": true,
+        "key": "$-43",
+        "name": "space-109",
+        "val": -172,
+        "variable": "var(--space-109)"
+      },
+      "$space.-44": {
+        "isVar": true,
+        "key": "$-44",
+        "name": "space-110",
+        "val": -176,
+        "variable": "var(--space-110)"
+      },
+      "$space.-45": {
+        "isVar": true,
+        "key": "$-45",
+        "name": "space-111",
+        "val": -180,
+        "variable": "var(--space-111)"
+      },
+      "$space.-46": {
+        "isVar": true,
+        "key": "$-46",
+        "name": "space-112",
+        "val": -184,
+        "variable": "var(--space-112)"
+      },
+      "$space.-47": {
+        "isVar": true,
+        "key": "$-47",
+        "name": "space-113",
+        "val": -188,
+        "variable": "var(--space-113)"
+      },
+      "$space.-48": {
+        "isVar": true,
+        "key": "$-48",
+        "name": "space-114",
+        "val": -192,
+        "variable": "var(--space-114)"
+      },
+      "$space.-49": {
+        "isVar": true,
+        "key": "$-49",
+        "name": "space-115",
+        "val": -196,
+        "variable": "var(--space-115)"
+      },
+      "$space.-50": {
+        "isVar": true,
+        "key": "$-50",
+        "name": "space-116",
+        "val": -200,
+        "variable": "var(--space-116)"
+      },
+      "$space.-51": {
+        "isVar": true,
+        "key": "$-51",
+        "name": "space-117",
+        "val": -204,
+        "variable": "var(--space-117)"
+      },
+      "$space.-52": {
+        "isVar": true,
+        "key": "$-52",
+        "name": "space-118",
+        "val": -208,
+        "variable": "var(--space-118)"
+      },
+      "$space.-53": {
+        "isVar": true,
+        "key": "$-53",
+        "name": "space-119",
+        "val": -212,
+        "variable": "var(--space-119)"
+      },
+      "$space.-54": {
+        "isVar": true,
+        "key": "$-54",
+        "name": "space-120",
+        "val": -216,
+        "variable": "var(--space-120)"
+      },
+      "$space.-55": {
+        "isVar": true,
+        "key": "$-55",
+        "name": "space-121",
+        "val": -220,
+        "variable": "var(--space-121)"
+      },
+      "$space.-56": {
+        "isVar": true,
+        "key": "$-56",
+        "name": "space-122",
+        "val": -224,
+        "variable": "var(--space-122)"
+      },
+      "$space.-57": {
+        "isVar": true,
+        "key": "$-57",
+        "name": "space-123",
+        "val": -228,
+        "variable": "var(--space-123)"
+      },
+      "$space.-58": {
+        "isVar": true,
+        "key": "$-58",
+        "name": "space-124",
+        "val": -232,
+        "variable": "var(--space-124)"
+      },
+      "$space.-59": {
+        "isVar": true,
+        "key": "$-59",
+        "name": "space-125",
+        "val": -236,
+        "variable": "var(--space-125)"
+      },
+      "$space.-60": {
+        "isVar": true,
+        "key": "$-60",
+        "name": "space-126",
+        "val": -240,
+        "variable": "var(--space-126)"
+      },
+      "$space.-61": {
+        "isVar": true,
+        "key": "$-61",
+        "name": "space-127",
+        "val": -244,
+        "variable": "var(--space-127)"
+      },
+      "$space.-62": {
+        "isVar": true,
+        "key": "$-62",
+        "name": "space-128",
+        "val": -248,
+        "variable": "var(--space-128)"
+      },
+      "$space.-63": {
+        "isVar": true,
+        "key": "$-63",
+        "name": "space-129",
+        "val": -252,
+        "variable": "var(--space-129)"
+      },
+      "$space.-64": {
+        "isVar": true,
+        "key": "$-64",
+        "name": "space-130",
+        "val": -256,
+        "variable": "var(--space-130)"
+      },
+      "$space.xs": {
+        "isVar": true,
+        "key": "$xs",
+        "name": "space-131",
+        "val": 8,
+        "variable": "var(--space-131)"
+      },
+      "$space.sm": {
+        "isVar": true,
+        "key": "$sm",
+        "name": "space-132",
+        "val": 16,
+        "variable": "var(--space-132)"
+      },
+      "$space.md": {
+        "isVar": true,
+        "key": "$md",
+        "name": "space-133",
+        "val": 32,
+        "variable": "var(--space-133)"
+      },
+      "$size.0": {
+        "isVar": true,
+        "key": "$0",
+        "name": "size-1",
+        "val": 0,
+        "variable": "var(--size-1)"
+      },
+      "$size.1": {
+        "isVar": true,
+        "key": "$1",
+        "name": "size-2",
+        "val": 4,
+        "variable": "var(--size-2)"
+      },
+      "$size.2": {
+        "isVar": true,
+        "key": "$2",
+        "name": "size-3",
+        "val": 8,
+        "variable": "var(--size-3)"
+      },
+      "$size.3": {
+        "isVar": true,
+        "key": "$3",
+        "name": "size-4",
+        "val": 12,
+        "variable": "var(--size-4)"
+      },
+      "$size.4": {
+        "isVar": true,
+        "key": "$4",
+        "name": "size-5",
+        "val": 16,
+        "variable": "var(--size-5)"
+      },
+      "$size.5": {
+        "isVar": true,
+        "key": "$5",
+        "name": "size-6",
+        "val": 20,
+        "variable": "var(--size-6)"
+      },
+      "$size.6": {
+        "isVar": true,
+        "key": "$6",
+        "name": "size-7",
+        "val": 24,
+        "variable": "var(--size-7)"
+      },
+      "$size.7": {
+        "isVar": true,
+        "key": "$7",
+        "name": "size-8",
+        "val": 28,
+        "variable": "var(--size-8)"
+      },
+      "$size.8": {
+        "isVar": true,
+        "key": "$8",
+        "name": "size-9",
+        "val": 32,
+        "variable": "var(--size-9)"
+      },
+      "$size.9": {
+        "isVar": true,
+        "key": "$9",
+        "name": "size-10",
+        "val": 36,
+        "variable": "var(--size-10)"
+      },
+      "$size.10": {
+        "isVar": true,
+        "key": "$10",
+        "name": "size-11",
+        "val": 40,
+        "variable": "var(--size-11)"
+      },
+      "$size.11": {
+        "isVar": true,
+        "key": "$11",
+        "name": "size-12",
+        "val": 44,
+        "variable": "var(--size-12)"
+      },
+      "$size.12": {
+        "isVar": true,
+        "key": "$12",
+        "name": "size-13",
+        "val": 48,
+        "variable": "var(--size-13)"
+      },
+      "$size.13": {
+        "isVar": true,
+        "key": "$13",
+        "name": "size-14",
+        "val": 52,
+        "variable": "var(--size-14)"
+      },
+      "$size.14": {
+        "isVar": true,
+        "key": "$14",
+        "name": "size-15",
+        "val": 56,
+        "variable": "var(--size-15)"
+      },
+      "$size.15": {
+        "isVar": true,
+        "key": "$15",
+        "name": "size-16",
+        "val": 60,
+        "variable": "var(--size-16)"
+      },
+      "$size.16": {
+        "isVar": true,
+        "key": "$16",
+        "name": "size-17",
+        "val": 64,
+        "variable": "var(--size-17)"
+      },
+      "$size.17": {
+        "isVar": true,
+        "key": "$17",
+        "name": "size-18",
+        "val": 68,
+        "variable": "var(--size-18)"
+      },
+      "$size.18": {
+        "isVar": true,
+        "key": "$18",
+        "name": "size-19",
+        "val": 72,
+        "variable": "var(--size-19)"
+      },
+      "$size.19": {
+        "isVar": true,
+        "key": "$19",
+        "name": "size-20",
+        "val": 76,
+        "variable": "var(--size-20)"
+      },
+      "$size.20": {
+        "isVar": true,
+        "key": "$20",
+        "name": "size-21",
+        "val": 80,
+        "variable": "var(--size-21)"
+      },
+      "$size.21": {
+        "isVar": true,
+        "key": "$21",
+        "name": "size-22",
+        "val": 84,
+        "variable": "var(--size-22)"
+      },
+      "$size.22": {
+        "isVar": true,
+        "key": "$22",
+        "name": "size-23",
+        "val": 88,
+        "variable": "var(--size-23)"
+      },
+      "$size.23": {
+        "isVar": true,
+        "key": "$23",
+        "name": "size-24",
+        "val": 92,
+        "variable": "var(--size-24)"
+      },
+      "$size.24": {
+        "isVar": true,
+        "key": "$24",
+        "name": "size-25",
+        "val": 96,
+        "variable": "var(--size-25)"
+      },
+      "$size.25": {
+        "isVar": true,
+        "key": "$25",
+        "name": "size-26",
+        "val": 100,
+        "variable": "var(--size-26)"
+      },
+      "$size.26": {
+        "isVar": true,
+        "key": "$26",
+        "name": "size-27",
+        "val": 104,
+        "variable": "var(--size-27)"
+      },
+      "$size.27": {
+        "isVar": true,
+        "key": "$27",
+        "name": "size-28",
+        "val": 108,
+        "variable": "var(--size-28)"
+      },
+      "$size.28": {
+        "isVar": true,
+        "key": "$28",
+        "name": "size-29",
+        "val": 112,
+        "variable": "var(--size-29)"
+      },
+      "$size.29": {
+        "isVar": true,
+        "key": "$29",
+        "name": "size-30",
+        "val": 116,
+        "variable": "var(--size-30)"
+      },
+      "$size.30": {
+        "isVar": true,
+        "key": "$30",
+        "name": "size-31",
+        "val": 120,
+        "variable": "var(--size-31)"
+      },
+      "$size.31": {
+        "isVar": true,
+        "key": "$31",
+        "name": "size-32",
+        "val": 124,
+        "variable": "var(--size-32)"
+      },
+      "$size.32": {
+        "isVar": true,
+        "key": "$32",
+        "name": "size-33",
+        "val": 128,
+        "variable": "var(--size-33)"
+      },
+      "$size.33": {
+        "isVar": true,
+        "key": "$33",
+        "name": "size-34",
+        "val": 132,
+        "variable": "var(--size-34)"
+      },
+      "$size.34": {
+        "isVar": true,
+        "key": "$34",
+        "name": "size-35",
+        "val": 136,
+        "variable": "var(--size-35)"
+      },
+      "$size.35": {
+        "isVar": true,
+        "key": "$35",
+        "name": "size-36",
+        "val": 140,
+        "variable": "var(--size-36)"
+      },
+      "$size.36": {
+        "isVar": true,
+        "key": "$36",
+        "name": "size-37",
+        "val": 144,
+        "variable": "var(--size-37)"
+      },
+      "$size.37": {
+        "isVar": true,
+        "key": "$37",
+        "name": "size-38",
+        "val": 148,
+        "variable": "var(--size-38)"
+      },
+      "$size.38": {
+        "isVar": true,
+        "key": "$38",
+        "name": "size-39",
+        "val": 152,
+        "variable": "var(--size-39)"
+      },
+      "$size.39": {
+        "isVar": true,
+        "key": "$39",
+        "name": "size-40",
+        "val": 156,
+        "variable": "var(--size-40)"
+      },
+      "$size.40": {
+        "isVar": true,
+        "key": "$40",
+        "name": "size-41",
+        "val": 160,
+        "variable": "var(--size-41)"
+      },
+      "$size.41": {
+        "isVar": true,
+        "key": "$41",
+        "name": "size-42",
+        "val": 164,
+        "variable": "var(--size-42)"
+      },
+      "$size.42": {
+        "isVar": true,
+        "key": "$42",
+        "name": "size-43",
+        "val": 168,
+        "variable": "var(--size-43)"
+      },
+      "$size.43": {
+        "isVar": true,
+        "key": "$43",
+        "name": "size-44",
+        "val": 172,
+        "variable": "var(--size-44)"
+      },
+      "$size.44": {
+        "isVar": true,
+        "key": "$44",
+        "name": "size-45",
+        "val": 176,
+        "variable": "var(--size-45)"
+      },
+      "$size.45": {
+        "isVar": true,
+        "key": "$45",
+        "name": "size-46",
+        "val": 180,
+        "variable": "var(--size-46)"
+      },
+      "$size.46": {
+        "isVar": true,
+        "key": "$46",
+        "name": "size-47",
+        "val": 184,
+        "variable": "var(--size-47)"
+      },
+      "$size.47": {
+        "isVar": true,
+        "key": "$47",
+        "name": "size-48",
+        "val": 188,
+        "variable": "var(--size-48)"
+      },
+      "$size.48": {
+        "isVar": true,
+        "key": "$48",
+        "name": "size-49",
+        "val": 192,
+        "variable": "var(--size-49)"
+      },
+      "$size.49": {
+        "isVar": true,
+        "key": "$49",
+        "name": "size-50",
+        "val": 196,
+        "variable": "var(--size-50)"
+      },
+      "$size.50": {
+        "isVar": true,
+        "key": "$50",
+        "name": "size-51",
+        "val": 200,
+        "variable": "var(--size-51)"
+      },
+      "$size.51": {
+        "isVar": true,
+        "key": "$51",
+        "name": "size-52",
+        "val": 204,
+        "variable": "var(--size-52)"
+      },
+      "$size.52": {
+        "isVar": true,
+        "key": "$52",
+        "name": "size-53",
+        "val": 208,
+        "variable": "var(--size-53)"
+      },
+      "$size.53": {
+        "isVar": true,
+        "key": "$53",
+        "name": "size-54",
+        "val": 212,
+        "variable": "var(--size-54)"
+      },
+      "$size.54": {
+        "isVar": true,
+        "key": "$54",
+        "name": "size-55",
+        "val": 216,
+        "variable": "var(--size-55)"
+      },
+      "$size.55": {
+        "isVar": true,
+        "key": "$55",
+        "name": "size-56",
+        "val": 220,
+        "variable": "var(--size-56)"
+      },
+      "$size.56": {
+        "isVar": true,
+        "key": "$56",
+        "name": "size-57",
+        "val": 224,
+        "variable": "var(--size-57)"
+      },
+      "$size.57": {
+        "isVar": true,
+        "key": "$57",
+        "name": "size-58",
+        "val": 228,
+        "variable": "var(--size-58)"
+      },
+      "$size.58": {
+        "isVar": true,
+        "key": "$58",
+        "name": "size-59",
+        "val": 232,
+        "variable": "var(--size-59)"
+      },
+      "$size.59": {
+        "isVar": true,
+        "key": "$59",
+        "name": "size-60",
+        "val": 236,
+        "variable": "var(--size-60)"
+      },
+      "$size.60": {
+        "isVar": true,
+        "key": "$60",
+        "name": "size-61",
+        "val": 240,
+        "variable": "var(--size-61)"
+      },
+      "$size.61": {
+        "isVar": true,
+        "key": "$61",
+        "name": "size-62",
+        "val": 244,
+        "variable": "var(--size-62)"
+      },
+      "$size.62": {
+        "isVar": true,
+        "key": "$62",
+        "name": "size-63",
+        "val": 248,
+        "variable": "var(--size-63)"
+      },
+      "$size.63": {
+        "isVar": true,
+        "key": "$63",
+        "name": "size-64",
+        "val": 252,
+        "variable": "var(--size-64)"
+      },
+      "$size.64": {
+        "isVar": true,
+        "key": "$64",
+        "name": "size-65",
+        "val": 256,
+        "variable": "var(--size-65)"
+      }
+    }
+  }
+}

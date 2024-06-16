@@ -1,0 +1,330 @@
+import { createFont, createTokens, createTamagui } from '@tamagui/core';
+import { createAnimations } from '@tamagui/animations-react-native';
+import { createMedia } from '@tamagui/react-native-media-driver';
+
+const animations = createAnimations({
+  fast: {
+    type: "timing",
+    duration: 100,
+    damping: 20,
+    stiffness: 250
+  },
+  formElement: {
+    type: "timing",
+    duration: 600,
+    damping: 20,
+    stiffness: 250
+  }
+});
+
+const defaultHeadingFontSizes = {
+  xl: 48,
+  lg: 40,
+  md: 32,
+  sm: 24,
+  xs: 18
+};
+const defaultBodyFontSizes = { xl: 24, lg: 18, md: 16, sm: 14, xs: 12 };
+const roundWith1Precision = (value) => Math.round(value * 10) / 10;
+const createAlouetteFonts = ({
+  headingFontFamily = "Inter",
+  headingFontSizes = defaultHeadingFontSizes,
+  bodyFontFamily = "Inter",
+  bodyFontSizes = defaultBodyFontSizes
+} = {}) => ({
+  heading: createFont({
+    family: headingFontFamily,
+    weight: {
+      regular: "400",
+      bold: "700",
+      black: "900"
+    },
+    face: {
+      400: { normal: headingFontFamily + "Regular" },
+      700: { normal: headingFontFamily + "Bold" },
+      900: { normal: headingFontFamily + "Black" }
+    },
+    size: headingFontSizes,
+    lineHeight: {
+      xl: roundWith1Precision(1.1 * headingFontSizes.xl),
+      lg: roundWith1Precision(1.1 * headingFontSizes.lg),
+      md: roundWith1Precision(1.2 * headingFontSizes.md),
+      sm: roundWith1Precision(1.3 * headingFontSizes.sm),
+      xs: roundWith1Precision(1.3 * headingFontSizes.xs)
+    }
+  }),
+  body: createFont({
+    family: bodyFontFamily,
+    weight: {
+      regular: "400",
+      bold: "700",
+      black: "900"
+    },
+    face: {
+      400: { normal: bodyFontFamily + "Regular" },
+      700: { normal: bodyFontFamily + "Bold" },
+      900: { normal: bodyFontFamily + "Black" }
+    },
+    size: bodyFontSizes,
+    lineHeight: {
+      xl: roundWith1Precision(1.4 * bodyFontSizes.xl),
+      lg: roundWith1Precision(1.4 * bodyFontSizes.lg),
+      md: roundWith1Precision(1.4 * bodyFontSizes.md),
+      sm: roundWith1Precision(1.4 * bodyFontSizes.sm),
+      xs: roundWith1Precision(1.4 * bodyFontSizes.xs)
+    }
+  })
+});
+
+const Breakpoints = {
+  /**
+   * min-width: 0
+   */
+  BASE: 0,
+  /**
+   * min-width: 480px
+   */
+  SMALL: 480,
+  /**
+   * min-width: 768px
+   */
+  MEDIUM: 768,
+  /**
+   * min-width: 1024px
+   */
+  LARGE: 1024,
+  /**
+   * min-width: 1280px
+   */
+  WIDE: 1280
+};
+
+const media = createMedia({
+  small: { minWidth: Breakpoints.SMALL },
+  medium: { minWidth: Breakpoints.MEDIUM },
+  large: { minWidth: Breakpoints.LARGE },
+  wide: { minWidth: Breakpoints.WIDE }
+});
+
+const createTheme = (theme) => {
+  return theme;
+};
+const createColorTheme = (tokens, colorScaleName, textColor = tokens.color.black, contrastTextColor = tokens.color.white) => {
+  const getColor = (scaleNumber) => tokens.color[colorScaleName + `.${scaleNumber}`];
+  return {
+    mainColor: getColor(6),
+    mainTextColor: getColor(9),
+    contrastTextColor,
+    borderColor: getColor(8),
+    "interactive.contained.backgroundColor": getColor(5),
+    "interactive.borderColor": getColor(8),
+    "interactive.contained.backgroundColor:hover": getColor(4),
+    "interactive.outlined.backgroundColor:hover": getColor(1),
+    "interactive.borderColor:hover": getColor(7),
+    "interactive.contained.backgroundColor:focus": getColor(4),
+    "interactive.outlined.backgroundColor:focus": getColor(1),
+    "interactive.borderColor:focus": getColor(7),
+    "interactive.contained.backgroundColor:press": getColor(2),
+    "interactive.outlined.backgroundColor:press": getColor(3),
+    "interactive.borderColor:press": getColor(7),
+    "interactive.contained.backgroundColor:disabled": tokens.color.disabled,
+    "interactive.borderColor:disabled": tokens.color.disabled,
+    "interactive.textColor:disabled": tokens.color.contrastDisabled,
+    "interactive.forms.textColor": textColor,
+    // "interactive.forms.backgroundColor": undefined,
+    // "interactive.forms.backgroundColor:hover": undefined,
+    "interactive.forms.backgroundColor:focus": getColor(1),
+    "interactive.forms.backgroundColor:press": getColor(3),
+    "interactive.forms.borderColor": getColor(10),
+    "interactive.forms.borderColor:hover": getColor(7),
+    "interactive.forms.borderColor:focus": getColor(7),
+    "interactive.forms.borderColor:press": getColor(7),
+    "interactive.forms.borderColor:disabled": tokens.color.disabled
+  };
+};
+const createAlouetteThemes = (tokens) => ({
+  light: createTheme({
+    backgroundColor: tokens.color.white,
+    textColor: tokens.color.black
+  }),
+  light_info: createColorTheme(tokens, "info"),
+  light_success: createColorTheme(tokens, "success"),
+  light_warning: createColorTheme(tokens, "warning"),
+  light_danger: createColorTheme(tokens, "danger"),
+  light_primary: createColorTheme(tokens, "primary"),
+  dark: createTheme({
+    backgroundColor: tokens.color.black,
+    textColor: tokens.color.white
+  }),
+  dark_info: createColorTheme(
+    tokens,
+    "info",
+    tokens.color.black,
+    tokens.color.white
+  ),
+  dark_success: createColorTheme(
+    tokens,
+    "success",
+    tokens.color.black,
+    tokens.color.white
+  ),
+  dark_warning: createColorTheme(
+    tokens,
+    "warning",
+    tokens.color.black,
+    tokens.color.white
+  ),
+  dark_danger: createColorTheme(
+    tokens,
+    "danger",
+    tokens.color.black,
+    tokens.color.white
+  ),
+  dark_primary: createColorTheme(
+    tokens,
+    "primary",
+    tokens.color.black,
+    tokens.color.white
+  )
+});
+
+const createAlouetteSizes = (spacing, negative) => {
+  const MAX_SIZE = 64;
+  const sizes = {};
+  for (let size = 0; size <= MAX_SIZE; size++) {
+    sizes[negative ? `-${size}` : `${size}`] = size * spacing;
+  }
+  return sizes;
+};
+const transformColorScalesToTokens = (colorScales) => {
+  return Object.fromEntries(
+    Object.entries(colorScales).flatMap(([colorName, colorScale]) => {
+      return Object.entries(colorScale).map(([scaleNumber, colorValue]) => {
+        return [`${colorName}.${scaleNumber}`, colorValue];
+      });
+    })
+  );
+};
+const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
+  const sizes = createAlouetteSizes(spacing, false);
+  const negativeSizes = createAlouetteSizes(-spacing, true);
+  return createTokens({
+    color: {
+      black: "#000000",
+      white: "#ffffff",
+      disabled: colorScales.grayscale[3],
+      contrastDisabled: colorScales.grayscale[7],
+      ...transformColorScalesToTokens(colorScales)
+    },
+    radius: {
+      ...sizes,
+      xs: spacing * 2,
+      sm: spacing * 4,
+      md: spacing * 8
+    },
+    space: {
+      ...sizes,
+      ...negativeSizes,
+      xs: spacing * 2,
+      sm: spacing * 4,
+      md: spacing * 8
+    },
+    size: { ...sizes },
+    zIndex: {}
+  });
+};
+
+const createColorScale = (colorScale) => colorScale;
+const defaultColorScales = {
+  grayscale: createColorScale({
+    1: "#faf9f8",
+    2: "#f4f3ef",
+    3: "#ebe9e5",
+    4: "#dedad2",
+    5: "#d1cdc5",
+    6: "#bab8ae",
+    7: "#aeaba3",
+    8: "#9c9a92",
+    9: "#8e8c83",
+    10: "#74726a"
+  }),
+  success: createColorScale({
+    1: "#f0f9f3",
+    2: "#d4f0d4",
+    3: "#a8e6a8",
+    4: "#7edc7e",
+    5: "#54d254",
+    6: "#2ac82a",
+    7: "#00be00",
+    8: "#00b400",
+    9: "#00aa00",
+    10: "#009200"
+  }),
+  info: createColorScale({
+    1: "#f0f9ff",
+    2: "#d4f0ff",
+    3: "#a8e6ff",
+    4: "#7edcff",
+    5: "#54d2ff",
+    6: "#2ac8ff",
+    7: "#00beff",
+    8: "#00b4ff",
+    9: "#00aaff",
+    10: "#0092ff"
+  }),
+  warning: createColorScale({
+    1: "#fff9f0",
+    2: "#fff0d4",
+    3: "#ffe6a8",
+    4: "#ffdc7e",
+    5: "#ffd254",
+    6: "#ffc82a",
+    7: "#ffbe00",
+    8: "#ffb400",
+    9: "#ffaa00",
+    10: "#ff9200"
+  }),
+  danger: createColorScale({
+    1: "#fff0f0",
+    2: "#ffd4d4",
+    3: "#ffaaaa",
+    4: "#ff7e7e",
+    5: "#ff5454",
+    6: "#ff2a2a",
+    7: "#ff0000",
+    8: "#f40000",
+    9: "#ea0000",
+    10: "#d20000"
+  }),
+  primary: createColorScale({
+    1: "#e1f4f6",
+    2: "#b4e2e9",
+    3: "#86cfdc",
+    4: "#60bcd0",
+    5: "#46aeca",
+    6: "#31a1c4",
+    7: "#2994b7",
+    8: "#1e82a6",
+    9: "#1c7193",
+    10: "#125272"
+  })
+};
+
+const createAlouetteTamagui = (options) => {
+  const tokens = createAlouetteTokens(options.colorScales, options.tokens);
+  return createTamagui({
+    fonts: createAlouetteFonts(options.fonts),
+    tokens,
+    themes: createAlouetteThemes(tokens),
+    media,
+    animations,
+    settings: {
+      allowedStyleValues: "strict",
+      autocompleteSpecificTokens: true
+    },
+    components: ["alouette"]
+  });
+};
+
+export { createAlouetteTamagui, createColorScale, defaultColorScales };
+//# sourceMappingURL=createAlouetteTamagui-browser.es.js.map

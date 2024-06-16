@@ -26,3 +26,5 @@ tsbuildinfo
 *~
 .#*
 .DS_Store
+
+*storybook.log

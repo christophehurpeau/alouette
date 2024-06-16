@@ -12,7 +12,10 @@
       "ci": false,
       "typescript": true,
       "eslint": true,
-      "packageNames": []
+      "testing": {
+        "testRunner": "vitest"
+      },
+      "packageNames": ["alouette"]
     }
   }
 }

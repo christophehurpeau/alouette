@@ -1,0 +1,102 @@
+{
+  "name": "alouette",
+  "version": "7.0.0-beta.5",
+  "description": "tamagui-based design system with configurable defaults",
+  "author": "Christophe Hurpeau <302891+christophehurpeau@users.noreply.github.com> (https://christophe.hurpeau.com)",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christophehurpeau/alouette.git",
+    "directory": "packages/alouette"
+  },
+  "homepage": "https://github.com/christophehurpeau/alouette",
+  "type": "module",
+  "engines": {
+    "node": ">=18.12.0"
+  },
+  "sideEffects": false,
+  "main": "./dist/index-node18.mjs",
+  "types": "./dist/definitions/index.d.ts",
+  "react-native": {
+    ".": "./src/index.ts",
+    "./phosphor-icons": "./src/phosphor-icons.cjs",
+    "./createAlouetteTamagui": "./src/createAlouetteTamagui.ts"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./src/index.ts",
+      "node": {
+        "import": "./dist/index-node18.mjs"
+      },
+      "browser": "./dist/index-browser.es.js"
+    },
+    "./phosphor-icons": {
+      "types": "./src/phosphor-icons.ts",
+      "react-native": "./src/phosphor-icons.cjs",
+      "node": {
+        "import": "./dist/phosphor-icons-node18.mjs"
+      },
+      "browser": "./dist/phosphor-icons-browser.es.js"
+    },
+    "./createAlouetteTamagui": {
+      "types": "./src/createAlouetteTamagui.ts",
+      "node": {
+        "import": "./dist/createAlouetteTamagui-node18.mjs"
+      },
+      "browser": "./dist/createAlouetteTamagui-browser.es.js"
+    }
+  },
+  "scripts": {
+    "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
+    "build:definitions": "tsc -p tsconfig.json",
+    "clean:build": "pob-esbuild-clean-out dist",
+    "lint": "yarn run lint:eslint",
+    "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet packages/alouette",
+    "test": "yarn ../../ run test -- packages/alouette"
+  },
+  "pob": {
+    "bundler": "rollup-esbuild",
+    "entries": [
+      "index",
+      "phosphor-icons",
+      "createAlouetteTamagui"
+    ],
+    "envs": [
+      {
+        "target": "node",
+        "version": "18"
+      },
+      {
+        "target": "browser"
+      },
+      {
+        "target": "react-native",
+        "formats": [
+          "cjs"
+        ]
+      }
+    ],
+    "jsx": true,
+    "typescript": true
+  },
+  "prettier": "@pob/root/prettier-config",
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-native": "*",
+    "react-native-svg": "*"
+  },
+  "dependencies": {
+    "@phosphor-icons/core": "2.0.8",
+    "@tamagui/animations-css": "1.100.5",
+    "@tamagui/animations-react-native": "1.100.5",
+    "@tamagui/core": "1.100.5",
+    "@tamagui/react-native-media-driver": "1.100.5",
+    "type-fest": "4.20.1"
+  },
+  "devDependencies": {
+    "@pob/rollup-esbuild": "3.0.0",
+    "react-native": "0.73.6",
+    "typescript": "5.4.5"
+  }
+}

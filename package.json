@@ -1,7 +1,7 @@
 {
-  "name": "alouette",
+  "name": "alouette-monorepo",
   "private": true,
-  "author": "Christophe Hurpeau <christophe@hurpeau.com>",
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "repository": "https://github.com/christophehurpeau/alouette.git",
   "homepage": "https://github.com/christophehurpeau/alouette",
@@ -23,7 +23,8 @@
     "lint:prettier:fix": "pob-root-prettier --write .",
     "postinstall": "pob-root-postinstall",
     "preversion": "yarn run lint && true && repository-check-dirty",
-    "tsc": "tsc -b"
+    "tsc": "tsc -b",
+    "storybook": "yarn ./packages/storybook-app start"
   },
   "commitlint": {
     "extends": [
@@ -34,9 +35,12 @@
   "devDependencies": {
     "@pob/commitlint-config": "6.4.0",
     "@pob/eslint-config": "56.0.0",
+    "@pob/eslint-config-typescript": "56.0.0",
+    "@pob/eslint-config-typescript-react": "56.0.0",
     "@pob/root": "12.1.1",
     "check-package-dependencies": "7.1.2",
-    "eslint": "9.5.0",
+    "eslint": "8.57.0",
+    "eslint-plugin-storybook": "0.8.0",
     "typescript": "5.4.5"
   }
 }
