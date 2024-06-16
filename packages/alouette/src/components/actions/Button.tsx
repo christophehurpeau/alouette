@@ -1,8 +1,8 @@
 import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
-import { type ReactElement, type ReactNode } from "react";
-import { Icon } from "../primitives/Icon";
+import type { ReactElement, ReactNode } from "react";
 import { Pressable } from "../containers/Pressable";
+import { Icon } from "../primitives/Icon";
 import { HStack } from "../primitives/stacks";
 import { Typography } from "../typography/Typography";
 
@@ -11,7 +11,6 @@ const ButtonFrame = styled(Pressable, {
   role: "button",
   centered: true,
   minHeight: 42,
-  borderWidth: 1,
   borderRadius: "$sm",
   paddingHorizontal: "$md",
 
