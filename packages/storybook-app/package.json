@@ -43,7 +43,7 @@
     "@storybook/react": "8.1.9",
     "@storybook/react-vite": "8.1.9",
     "@storybook/test": "8.1.9",
-    "@tamagui/vite-plugin": "1.100.5",
+    "@tamagui/vite-plugin": "1.100.6",
     "@types/prop-types": "15.7.12",
     "@vitejs/plugin-react": "4.3.1",
     "eslint": "9.5.0",
