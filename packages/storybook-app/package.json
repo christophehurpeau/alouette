@@ -46,7 +46,7 @@
     "@tamagui/vite-plugin": "1.100.5",
     "@types/prop-types": "15.7.12",
     "@vitejs/plugin-react": "4.3.1",
-    "eslint": "8.57.0",
+    "eslint": "9.5.0",
     "eslint-plugin-storybook": "0.8.0",
     "storybook": "8.1.9",
     "tsx": "4.15.5",
