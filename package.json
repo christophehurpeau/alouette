@@ -48,7 +48,7 @@
     "check-package-dependencies": "7.1.2",
     "eslint": "9.6.0",
     "eslint-plugin-storybook": "0.8.0",
-    "typescript": "5.5.2",
+    "typescript": "5.5.3",
     "vitest": "1.6.0"
   }
 }
