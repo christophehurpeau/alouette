@@ -14975,7 +14975,7 @@ __metadata:
     react-native-svg: "npm:15.3.0"
     react-native-web: "npm:0.19.12"
     storybook: "npm:8.1.11"
-    tsx: "npm:4.15.8"
+    tsx: "npm:4.15.9"
     typescript: "npm:5.5.3"
     vite: "npm:5.3.2"
     vite-plugin-svgr: "npm:4.2.0"
@@ -15539,9 +15539,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:4.15.8":
-  version: 4.15.8
-  resolution: "tsx@npm:4.15.8"
+"tsx@npm:4.15.9":
+  version: 4.15.9
+  resolution: "tsx@npm:4.15.9"
   dependencies:
     esbuild: "npm:~0.21.4"
     fsevents: "npm:~2.3.3"
@@ -15551,7 +15551,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 10c0/2e4e077e05e9ec324246f30be0b61e85c5a9c61e4dca160eec542eee410cc0fbcccf26f4d529a8d977d470dd0e13f6897cee5d5ebc3cbf6c2cdfbc5e4033b26c
+  checksum: 10c0/c4f6d4a033f19862099bfc716352b369bee10ee36e276c4892267dca5938fe98b17f544cc04505753ced7d6273aa3be4404d1a62135f6a74e1df1cef4752a04b
   languageName: node
   linkType: hard
 
