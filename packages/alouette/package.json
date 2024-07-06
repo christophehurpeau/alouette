@@ -1,6 +1,6 @@
 {
   "name": "alouette",
-  "version": "7.0.0-beta.5",
+  "version": "7.0.0-beta.7",
   "description": "tamagui-based design system with configurable defaults",
   "author": "Christophe Hurpeau <302891+christophehurpeau@users.noreply.github.com> (https://christophe.hurpeau.com)",
   "license": "UNLICENSED",
@@ -19,7 +19,6 @@
   "types": "./dist/definitions/index.d.ts",
   "react-native": {
     ".": "./src/index.ts",
-    "./phosphor-icons": "./src/phosphor-icons.cjs",
     "./createAlouetteTamagui": "./src/createAlouetteTamagui.ts"
   },
   "exports": {
@@ -30,14 +29,6 @@
         "import": "./dist/index-node18.mjs"
       },
       "browser": "./dist/index-browser.es.js"
-    },
-    "./phosphor-icons": {
-      "types": "./src/phosphor-icons.ts",
-      "react-native": "./src/phosphor-icons.cjs",
-      "node": {
-        "import": "./dist/phosphor-icons-node18.mjs"
-      },
-      "browser": "./dist/phosphor-icons-browser.es.js"
     },
     "./createAlouetteTamagui": {
       "types": "./src/createAlouetteTamagui.ts",
@@ -59,7 +50,6 @@
     "bundler": "rollup-esbuild",
     "entries": [
       "index",
-      "phosphor-icons",
       "createAlouetteTamagui"
     ],
     "envs": [
@@ -82,16 +72,17 @@
   },
   "prettier": "@pob/root/prettier-config",
   "peerDependencies": {
+    "alouette-icons": "*",
     "react": "^18.2.0",
     "react-native": "*",
     "react-native-svg": "*"
   },
   "dependencies": {
-    "@phosphor-icons/core": "2.1.1",
     "@tamagui/animations-css": "1.101.7",
     "@tamagui/animations-react-native": "1.101.7",
     "@tamagui/core": "1.101.7",
     "@tamagui/react-native-media-driver": "1.101.7",
+    "alouette-icons": "1.0.0-beta.1",
     "type-fest": "4.20.1"
   },
   "devDependencies": {

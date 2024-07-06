@@ -2811,7 +2811,6 @@ const ButtonFrame = core.styled(Pressable, {
   role: "button",
   centered: true,
   minHeight: 42,
-  borderWidth: 1,
   borderRadius: "$sm",
   paddingHorizontal: "$md",
   variants: {

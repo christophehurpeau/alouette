@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import * as AllPhosphorIcons from "../../phosphor-icons";
+import * as AllPhosphorIcons from "alouette-icons/phosphor-icons";
 import { Story } from "../story-components/Story";
 import { Icon } from "./Icon";
 

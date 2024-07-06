@@ -1,16 +1,12 @@
 import { createTamagui } from "@tamagui/core";
 import { animations } from "./config/animations";
-import {
-  createAlouetteFonts,
-  AlouetteFontsOptions,
-} from "./config/createAlouetteFonts";
+import type { AlouetteColorScales } from "./config/colorScales";
+import type { AlouetteFontsOptions } from "./config/createAlouetteFonts";
+import { createAlouetteFonts } from "./config/createAlouetteFonts";
+import type { AlouetteTokensOptions } from "./config/createAlouetteTokens";
+import { createAlouetteTokens } from "./config/createAlouetteTokens";
 import { media } from "./config/media";
 import { createAlouetteThemes } from "./config/themes";
-import {
-  createAlouetteTokens,
-  AlouetteTokensOptions,
-} from "./config/createAlouetteTokens";
-import { AlouetteColorScales } from "./config/colorScales";
 
 interface AlouetteTamaguiOptions {
   colorScales: AlouetteColorScales;

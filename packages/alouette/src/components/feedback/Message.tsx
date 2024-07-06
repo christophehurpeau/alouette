@@ -5,7 +5,7 @@ import { Frame } from "../containers/Frame";
 import { Typography } from "../typography/Typography";
 import { FeedbackIcon } from "./FeedbackIcon";
 import { IconButton } from "../actions/IconButton";
-import { XRegularIcon } from "../../phosphor-icons";
+import { XRegularIcon } from "alouette-icons/phosphor-icons";
 
 export const MessageFrame = styled(Frame, {
   name: "MessageFrame",

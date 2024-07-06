@@ -1,0 +1,50 @@
+{
+  "name": "alouette-icons",
+  "version": "1.0.0-beta.1",
+  "description": "icons for alouette",
+  "author": "Christophe Hurpeau <302891+christophehurpeau@users.noreply.github.com> (https://christophe.hurpeau.com)",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christophehurpeau/alouette.git",
+    "directory": "packages/alouette-icons"
+  },
+  "homepage": "https://github.com/christophehurpeau/alouette",
+  "type": "module",
+  "engines": {
+    "node": ">=18.12.0"
+  },
+  "sideEffects": false,
+  "react-native": {
+    "./phosphor-icons": "./src/phosphor-icons.cjs"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./phosphor-icons": {
+      "types": "./src/phosphor-icons.ts",
+      "react-native": "./src/phosphor-icons.cjs",
+      "node": {
+        "import": "./dist/phosphor-icons-node18.mjs"
+      },
+      "browser": "./dist/phosphor-icons-browser.es.js"
+    }
+  },
+  "pob": {
+    "entries": [
+      "phosphor-icons"
+    ]
+  },
+  "prettier": "@pob/root/prettier-config",
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-native": "*",
+    "react-native-svg": "*"
+  },
+  "dependencies": {
+    "@phosphor-icons/core": "2.0.8"
+  },
+  "devDependencies": {
+    "react-native": "0.74.3",
+    "typescript": "5.5.3"
+  }
+}

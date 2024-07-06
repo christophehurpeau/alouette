@@ -15,12 +15,6 @@
     "incremental": true,
     "composite": true,
 
-    "jsx": "react-jsx" /* 'react-jsx' is used with react/jsx-runtime (react >=17 || >= 16.14.0 | >= 15.7.0) */,
-
-    "paths": {
-      "alouette-icons": ["../../packages/alouette-icons/src"],
-      "alouette-icons/*": ["../../packages/alouette-icons/src/*"]
-    }
-  },
-  "references": [{ "path": "../../packages/alouette-icons/tsconfig.json" }]
+    "jsx": "react-jsx" /* 'react-jsx' is used with react/jsx-runtime (react >=17 || >= 16.14.0 | >= 15.7.0) */
+  }
 }

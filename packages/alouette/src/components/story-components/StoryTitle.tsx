@@ -1,3 +1,4 @@
+import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
 import { Typography } from "../typography/Typography";
 
@@ -17,3 +18,5 @@ export const StoryTitle = styled(Typography, {
     level: 1,
   },
 } as const);
+
+export type StoryTitleProps = GetProps<typeof StoryTitle>;

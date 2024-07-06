@@ -48,6 +48,8 @@ export const TypographyParagraph = styled(Typography, {
   family: "body",
 } as const);
 
+export type TypographyParagraphProps = GetProps<typeof TypographyParagraph>;
+
 const TypographySizeContext = createContext<TypographyProps["size"]>(undefined);
 
 export const TypographyWithContext = Typography.styleable(

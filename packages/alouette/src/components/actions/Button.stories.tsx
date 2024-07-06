@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ArrowLeftRegularIcon } from "../../phosphor-icons";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Story } from "../story-components/Story";
 import { Button } from "./Button";

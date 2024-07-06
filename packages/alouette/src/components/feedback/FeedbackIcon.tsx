@@ -4,7 +4,7 @@ import {
   InfoRegularIcon,
   WarningCircleRegularIcon,
   WarningRegularIcon,
-} from "../../phosphor-icons";
+} from "alouette-icons/phosphor-icons";
 import type { MessageProps } from "./Message";
 
 interface FeedbackIconProps {

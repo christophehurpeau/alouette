@@ -1,3 +1,4 @@
+import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
 import { TextInput } from "react-native";
 import * as variants from "../containers/variants";
@@ -28,6 +29,10 @@ export const InputText = styled(StyledInputText, {
   // animation: "formElement", // remove all style ?
 });
 
+export type InputTextProps = GetProps<typeof InputText>;
+
 export const TextArea = styled(InputText, {
   multiline: true,
 });
+
+export type TextAreaProps = GetProps<typeof TextArea>;
