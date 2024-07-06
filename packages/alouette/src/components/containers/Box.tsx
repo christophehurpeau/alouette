@@ -3,10 +3,10 @@ import { View, styled } from "@tamagui/core";
 import * as variants from "./variants";
 
 /** View with alouette variants */
-export const Frame = styled(View, {
-  name: "Frame",
+export const Box = styled(View, {
+  name: "Box",
   variants,
   animation: "fast",
 } as const);
 
-export type FrameProps = GetProps<typeof Frame>;
+export type BoxProps = GetProps<typeof Box>;

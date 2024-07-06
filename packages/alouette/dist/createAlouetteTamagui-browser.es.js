@@ -76,6 +76,52 @@ const createAlouetteFonts = ({
   })
 });
 
+const createAlouetteSizes = (spacing, negative) => {
+  const MAX_SIZE = 64;
+  const sizes = {};
+  for (let size = 0; size <= MAX_SIZE; size++) {
+    sizes[negative ? `-${size}` : `${size}`] = size * spacing;
+  }
+  return sizes;
+};
+const transformColorScalesToTokens = (colorScales) => {
+  return Object.fromEntries(
+    Object.entries(colorScales).flatMap(([colorName, colorScale]) => {
+      return Object.entries(colorScale).map(([scaleNumber, colorValue]) => {
+        return [`${colorName}.${scaleNumber}`, colorValue];
+      });
+    })
+  );
+};
+const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
+  const sizes = createAlouetteSizes(spacing, false);
+  const negativeSizes = createAlouetteSizes(-spacing, true);
+  return createTokens({
+    color: {
+      black: "#000000",
+      white: "#ffffff",
+      disabled: colorScales.grayscale[3],
+      contrastDisabled: colorScales.grayscale[7],
+      ...transformColorScalesToTokens(colorScales)
+    },
+    radius: {
+      ...sizes,
+      xs: spacing * 2,
+      sm: spacing * 4,
+      md: spacing * 8
+    },
+    space: {
+      ...sizes,
+      ...negativeSizes,
+      xs: spacing * 2,
+      sm: spacing * 4,
+      md: spacing * 8
+    },
+    size: { ...sizes },
+    zIndex: {}
+  });
+};
+
 const Breakpoints = {
   /**
    * min-width: 0
@@ -187,52 +233,6 @@ const createAlouetteThemes = (tokens) => ({
     tokens.color.white
   )
 });
-
-const createAlouetteSizes = (spacing, negative) => {
-  const MAX_SIZE = 64;
-  const sizes = {};
-  for (let size = 0; size <= MAX_SIZE; size++) {
-    sizes[negative ? `-${size}` : `${size}`] = size * spacing;
-  }
-  return sizes;
-};
-const transformColorScalesToTokens = (colorScales) => {
-  return Object.fromEntries(
-    Object.entries(colorScales).flatMap(([colorName, colorScale]) => {
-      return Object.entries(colorScale).map(([scaleNumber, colorValue]) => {
-        return [`${colorName}.${scaleNumber}`, colorValue];
-      });
-    })
-  );
-};
-const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
-  const sizes = createAlouetteSizes(spacing, false);
-  const negativeSizes = createAlouetteSizes(-spacing, true);
-  return createTokens({
-    color: {
-      black: "#000000",
-      white: "#ffffff",
-      disabled: colorScales.grayscale[3],
-      contrastDisabled: colorScales.grayscale[7],
-      ...transformColorScalesToTokens(colorScales)
-    },
-    radius: {
-      ...sizes,
-      xs: spacing * 2,
-      sm: spacing * 4,
-      md: spacing * 8
-    },
-    space: {
-      ...sizes,
-      ...negativeSizes,
-      xs: spacing * 2,
-      sm: spacing * 4,
-      md: spacing * 8
-    },
-    size: { ...sizes },
-    zIndex: {}
-  });
-};
 
 const createColorScale = (colorScale) => colorScale;
 const defaultColorScales = {

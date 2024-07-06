@@ -12,6 +12,7 @@ export declare const TypographyParagraph: import("@tamagui/core").TamaguiCompone
     contrast?: boolean | undefined;
     weight?: "regular" | "bold" | "black" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
+export type TypographyParagraphProps = GetProps<typeof TypographyParagraph>;
 export declare const TypographyWithContext: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
     size?: "xl" | "lg" | "md" | "sm" | "xs" | undefined;
     family?: "heading" | "body" | undefined;

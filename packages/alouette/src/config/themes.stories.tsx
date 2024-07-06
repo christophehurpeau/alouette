@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import type { Entries } from "type-fest";
+import { Box } from "../components/containers/Box";
 import { View } from "../components/primitives/View";
 import { VStack } from "../components/primitives/stacks";
-import { StoryGrid } from "../components/story-components/StoryGrid";
 import { Story } from "../components/story-components/Story";
-import { Frame } from "../components/containers/Frame";
+import { StoryGrid } from "../components/story-components/StoryGrid";
+import { WithTamaguiConfig } from "../components/story-components/WithTamaguiConfig";
 import { Typography } from "../components/typography/Typography";
 import { groupTokens } from "./utils/groupTokens";
-import { WithTamaguiConfig } from "../components/story-components/WithTamaguiConfig";
 
 type ThisStory = StoryObj<unknown>;
 
@@ -25,13 +25,9 @@ export const TokensStory: ThisStory = {
             {(Object.entries(themes) as Entries<typeof themes>).map(
               ([themeName, theme]) => (
                 <Story.Section key={themeName} title={themeName}>
-                  <Frame
-                    withBackground
-                    padding="$md"
-                    theme={themeName as string}
-                  >
+                  <Box withBackground padding="$md" theme={themeName as string}>
                     <Typography contrast>Demo</Typography>
-                  </Frame>
+                  </Box>
 
                   {groupTokens(theme).map(([groupName, tokens]) => (
                     <StoryGrid.Row key={groupName} flexWrap>

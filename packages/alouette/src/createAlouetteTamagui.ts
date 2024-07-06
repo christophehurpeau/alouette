@@ -8,13 +8,17 @@ import { createAlouetteTokens } from "./config/createAlouetteTokens";
 import { media } from "./config/media";
 import { createAlouetteThemes } from "./config/themes";
 
-interface AlouetteTamaguiOptions {
+export interface AlouetteTamaguiOptions {
   colorScales: AlouetteColorScales;
   fonts?: AlouetteFontsOptions;
   tokens?: AlouetteTokensOptions;
 }
 
-export { defaultColorScales, createColorScale } from "./config/colorScales";
+export {
+  defaultColorScales,
+  createColorScale,
+  type AlouetteColorScales,
+} from "./config/colorScales";
 
 export const createAlouetteTamagui = (options: AlouetteTamaguiOptions) => {
   const tokens = createAlouetteTokens(options.colorScales, options.tokens);

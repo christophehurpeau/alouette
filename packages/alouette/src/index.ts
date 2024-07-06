@@ -2,10 +2,10 @@ export type { IconButtonProps } from "./components/actions/IconButton";
 export { IconButton } from "./components/actions/IconButton";
 export type { ButtonProps } from "./components/actions/Button";
 export { Button } from "./components/actions/Button";
-export type { FrameProps } from "./components/containers/Frame";
-export { Frame } from "./components/containers/Frame";
-export type { PressableProps } from "./components/containers/Pressable";
-export { Pressable } from "./components/containers/Pressable";
+export type { BoxProps } from "./components/containers/Box";
+export { Box } from "./components/containers/Box";
+export type { PressableBoxProps } from "./components/containers/PressableBox";
+export { PressableBox } from "./components/containers/PressableBox";
 export type { MessageProps } from "./components/feedback/Message";
 export { Message } from "./components/feedback/Message";
 export type {
@@ -55,4 +55,7 @@ export {
 export { useCurrentBreakpointName } from "./components/windowSize/useCurrentBreakpointName";
 export { AlouetteDecorator } from "./core/AlouetteDecorator";
 export { AlouetteProvider } from "./core/AlouetteProvider";
-export { Theme } from "@tamagui/core";
+export type { GetProps, ThemeProps } from "@tamagui/core";
+export { Theme, styled, withStaticProperties } from "@tamagui/core";
+export type { SeparatorProps } from "./components/layout/Separator";
+export { Separator } from "./components/layout/Separator";

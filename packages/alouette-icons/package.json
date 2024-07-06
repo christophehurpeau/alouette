@@ -1,6 +1,6 @@
 {
   "name": "alouette-icons",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "icons for alouette",
   "author": "Christophe Hurpeau <302891+christophehurpeau@users.noreply.github.com> (https://christophe.hurpeau.com)",
   "license": "UNLICENSED",
@@ -16,17 +16,17 @@
   },
   "sideEffects": false,
   "react-native": {
-    "./phosphor-icons": "./src/phosphor-icons.cjs"
+    "./phosphor-icons": "./lib/phosphor-icons.cjs"
   },
   "exports": {
     "./package.json": "./package.json",
     "./phosphor-icons": {
-      "types": "./src/phosphor-icons.ts",
-      "react-native": "./src/phosphor-icons.cjs",
+      "types": "./lib/phosphor-icons.d.ts",
+      "react-native": "./lib/phosphor-icons.cjs",
       "node": {
-        "import": "./dist/phosphor-icons-node18.mjs"
+        "import": "./lib/phosphor-icons.mjs"
       },
-      "browser": "./dist/phosphor-icons-browser.es.js"
+      "browser": "./lib/phosphor-icons.mjs"
     }
   },
   "pob": {
@@ -44,7 +44,6 @@
     "@phosphor-icons/core": "2.0.8"
   },
   "devDependencies": {
-    "react-native": "0.74.3",
-    "typescript": "5.5.3"
+    "react-native": "0.74.3"
   }
 }

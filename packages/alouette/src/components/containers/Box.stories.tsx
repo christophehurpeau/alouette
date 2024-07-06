@@ -2,29 +2,29 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { HStack, VStack } from "../primitives/stacks";
 import { Story } from "../story-components/Story";
 import { Typography } from "../typography/Typography";
-import { Frame } from "./Frame";
+import { Box } from "./Box";
 
-type ThisStory = StoryObj<typeof Frame>;
+type ThisStory = StoryObj<typeof Box>;
 
 export default {
-  title: "alouette/Containers/Frame",
-  component: Frame,
-} satisfies Meta<typeof Frame>;
+  title: "alouette/Containers/Box",
+  component: Box,
+} satisfies Meta<typeof Box>;
 
-export const FrameStory: ThisStory = {
-  name: "Frame",
+export const BoxStory: ThisStory = {
+  name: "Box",
   render: (args) => (
     <Story
       preview={
-        <Frame theme="primary" {...args}>
-          <Typography>Frame</Typography>
-        </Frame>
+        <Box theme="primary" {...args}>
+          <Typography>Box</Typography>
+        </Box>
       }
     >
       <Story.Section title="With Background">
-        <Frame withBackground theme="primary" padding="$4">
+        <Box withBackground theme="primary" padding="$4">
           <Typography contrast>With Background</Typography>
-        </Frame>
+        </Box>
       </Story.Section>
 
       <Story.Section title="Proportion with radius and padding">
@@ -36,17 +36,17 @@ export const FrameStory: ThisStory = {
           alignItems="flex-start"
         >
           {(["$sm", "$md"] as const).map((proportion) => (
-            <Frame
+            <Box
+              key={proportion}
               asChild
               centered
-              key={proportion}
               withBackground
               borderRadius={proportion}
               padding={proportion}
               margin="$4"
             >
               <Typography contrast>{proportion}</Typography>
-            </Frame>
+            </Box>
           ))}
         </HStack>
       </Story.Section>
@@ -60,7 +60,7 @@ export const FrameStory: ThisStory = {
               title={state || "Default"}
             >
               <VStack theme="primary" gap="$xs">
-                <Frame
+                <Box
                   asChild
                   interactive
                   role="none"
@@ -68,9 +68,9 @@ export const FrameStory: ThisStory = {
                   internalForcedPseudoState={state}
                 >
                   <Typography contrast>interactive</Typography>
-                </Frame>
+                </Box>
 
-                <Frame
+                <Box
                   asChild
                   interactive
                   withBackground
@@ -79,9 +79,9 @@ export const FrameStory: ThisStory = {
                   internalForcedPseudoState={state}
                 >
                   <Typography contrast>interactive withBackground</Typography>
-                </Frame>
+                </Box>
 
-                <Frame
+                <Box
                   asChild
                   interactive
                   withBackground
@@ -93,7 +93,7 @@ export const FrameStory: ThisStory = {
                   <Typography contrast>
                     interactive withBackground withBorder
                   </Typography>
-                </Frame>
+                </Box>
               </VStack>
             </Story.Section>
           ))}

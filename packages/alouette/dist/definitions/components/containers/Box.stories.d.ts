@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react";
-import { Frame } from "./Frame";
-type ThisStory = StoryObj<typeof Frame>;
+import { Box } from "./Box";
+type ThisStory = StoryObj<typeof Box>;
 declare const _default: {
     title: string;
     component: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
@@ -14,5 +14,5 @@ declare const _default: {
     }, import("@tamagui/web").StaticConfigPublic>;
 };
 export default _default;
-export declare const FrameStory: ThisStory;
-//# sourceMappingURL=Frame.stories.d.ts.map
+export declare const BoxStory: ThisStory;
+//# sourceMappingURL=Box.stories.d.ts.map

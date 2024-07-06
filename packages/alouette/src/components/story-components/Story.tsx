@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
 import { styled } from "@tamagui/core";
+import type { ReactNode } from "react";
 import type { Except } from "type-fest";
 import type { VStackProps } from "../primitives/stacks";
 import { VStack } from "../primitives/stacks";

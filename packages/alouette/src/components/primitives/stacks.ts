@@ -13,12 +13,8 @@ export const Stack = styled(View, {
   variants: {
     ...variants,
     type: {
-      h: {
-        flexDirection: "row",
-      },
-      v: {
-        flexDirection: "column",
-      },
+      h: { flexDirection: "row" },
+      v: { flexDirection: "column" },
     },
   } as const,
 });

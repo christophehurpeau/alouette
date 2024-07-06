@@ -1,15 +1,5 @@
-import { copyFileSync, writeFileSync } from "node:fs";
-import { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { writeFileSync } from "node:fs";
 import { icons } from "@phosphor-icons/core";
-
-const phosphorAssetsPath = dirname(
-  dirname(
-    fileURLToPath(
-      await import.meta.resolve("@phosphor-icons/core/assets/regular/dot.svg"),
-    ),
-  ),
-);
 
 const header =
   "// This file is generated automatically by scripts/generate-phosphor-icons.mjs\n\n";
@@ -39,7 +29,7 @@ icons.forEach((icon) => {
 fileCJSForReactNativeContent += "};\n";
 
 writeFileSync(
-  new URL("../src/phosphor-icons.ts", import.meta.url),
+  new URL("../src/phosphor-icons.mjs", import.meta.url),
   fileContent,
 );
 writeFileSync(

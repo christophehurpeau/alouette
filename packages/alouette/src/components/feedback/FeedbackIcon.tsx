@@ -1,10 +1,10 @@
-import type { ReactNode } from "react";
 import {
   CheckRegularIcon,
   InfoRegularIcon,
   WarningCircleRegularIcon,
   WarningRegularIcon,
 } from "alouette-icons/phosphor-icons";
+import type { ReactNode } from "react";
 import type { MessageProps } from "./Message";
 
 interface FeedbackIconProps {

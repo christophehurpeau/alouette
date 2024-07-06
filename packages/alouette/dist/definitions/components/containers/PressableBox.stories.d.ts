@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react";
-import { Pressable } from "./Pressable";
-type ThisStory = StoryObj<typeof Pressable>;
+import { PressableBox } from "./PressableBox";
+type ThisStory = StoryObj<typeof PressableBox>;
 declare const _default: {
     title: string;
     component: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
@@ -15,4 +15,4 @@ declare const _default: {
 };
 export default _default;
 export declare const PressableStory: ThisStory;
-//# sourceMappingURL=Pressable.stories.d.ts.map
+//# sourceMappingURL=PressableBox.stories.d.ts.map

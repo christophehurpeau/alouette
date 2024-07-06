@@ -1,29 +1,29 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Story } from "../story-components/Story";
 import { Typography } from "../typography/Typography";
-import { Pressable } from "./Pressable";
+import { PressableBox } from "./PressableBox";
 
-type ThisStory = StoryObj<typeof Pressable>;
+type ThisStory = StoryObj<typeof PressableBox>;
 
 export default {
   title: "alouette/Containers/Pressable",
-  component: Pressable,
-} satisfies Meta<typeof Pressable>;
+  component: PressableBox,
+} satisfies Meta<typeof PressableBox>;
 
 export const PressableStory: ThisStory = {
   name: "Pressable",
   render: (args) => (
     <Story
       preview={
-        <Pressable role="button" theme="primary" {...args}>
+        <PressableBox role="button" theme="primary" {...args}>
           <Typography>Pressable</Typography>
-        </Pressable>
+        </PressableBox>
       }
     >
       <Story.Section title="With Background">
-        <Pressable role="button" withBackground theme="primary" padding="$4">
+        <PressableBox role="button" withBackground theme="primary" padding="$4">
           <Typography contrast>With Background</Typography>
-        </Pressable>
+        </PressableBox>
       </Story.Section>
     </Story>
   ),

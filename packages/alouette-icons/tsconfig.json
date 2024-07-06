@@ -3,18 +3,17 @@
     "@pob/root/tsconfigs/strict.json",
     "@pob/root/tsconfigs/targets/rollup-es2015.json"
   ],
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["lib/phosphor-icons.mjs", "lib/phosphor-icons.d.ts"],
   "compilerOptions": {
-    "rootDir": "src",
+    "rootDir": "lib",
     "outDir": "dist/definitions",
     "tsBuildInfoFile": "node_modules/.cache/tsc/tsbuildinfo",
     "noEmitOnError": true,
     "declaration": true,
     "declarationMap": true,
-    "emitDeclarationOnly": true,
+    "noEmit": true,
+    "emitDeclarationOnly": false,
     "incremental": true,
-    "composite": true,
-
-    "jsx": "react-jsx" /* 'react-jsx' is used with react/jsx-runtime (react >=17 || >= 16.14.0 | >= 15.7.0) */
+    "composite": true
   }
 }

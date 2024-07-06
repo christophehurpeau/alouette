@@ -2,14 +2,14 @@ import type { ColorTokens, GetProps, Variable } from "@tamagui/core";
 import { useStyle } from "@tamagui/core";
 import type { ReactElement, ReactNode } from "react";
 import type { OpaqueColorValue } from "react-native";
-import type { FrameProps } from "../containers/Frame";
-import { Frame } from "../containers/Frame";
+import type { BoxProps } from "../containers/Box";
+import { Box } from "../containers/Box";
 
 export interface IconProps
-  extends Exclude<GetProps<typeof Frame>, "alignSelf" | "style"> {
+  extends Exclude<GetProps<typeof Box>, "alignSelf" | "style"> {
   icon: ReactElement;
   color?: ColorTokens | OpaqueColorValue | Variable<any> | undefined;
-  align?: FrameProps["alignSelf"];
+  align?: BoxProps["alignSelf"];
   contrast?: boolean;
   size?: number;
 }
@@ -33,14 +33,8 @@ export function Icon({
   // const clonedIcon = cloneElement(icon, { color: style.color });
 
   return (
-    <Frame
-      {...props}
-      centered
-      alignSelf={align}
-      size={size}
-      style={style as any}
-    >
+    <Box {...props} centered alignSelf={align} size={size} style={style as any}>
       {icon}
-    </Frame>
+    </Box>
   );
 }

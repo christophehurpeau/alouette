@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Box } from "../components/containers/Box";
 import { View } from "../components/primitives/View";
 import { HStack, VStack } from "../components/primitives/stacks";
 import { Story } from "../components/story-components/Story";
-import { Frame } from "../components/containers/Frame";
+import { WithTamaguiConfig } from "../components/story-components/WithTamaguiConfig";
 import { Typography } from "../components/typography/Typography";
 import { groupTokens } from "./utils/groupTokens";
-import { WithTamaguiConfig } from "../components/story-components/WithTamaguiConfig";
 
 type ThisStory = StoryObj<unknown>;
 
@@ -44,9 +44,9 @@ export const TokensStory: ThisStory = {
             <Story.Section title="Radius">
               <HStack gap="$xs" flexWrap="wrap">
                 {(["$sm", "$md"] as const).map((proportion) => (
-                  <Frame
-                    centered
+                  <Box
                     key={proportion}
+                    centered
                     withBackground
                     borderRadius={proportion}
                     size={50}
@@ -54,7 +54,7 @@ export const TokensStory: ThisStory = {
                     margin="$4"
                   >
                     <Typography>{proportion}</Typography>
-                  </Frame>
+                  </Box>
                 ))}
               </HStack>
             </Story.Section>
@@ -62,7 +62,7 @@ export const TokensStory: ThisStory = {
             <Story.Section title="Spacings">
               <HStack gap="$xs" flexWrap="wrap" alignItems="flex-start">
                 {Object.entries(tokens.space).map(([key, value]) => (
-                  <Frame
+                  <Box
                     key={key}
                     centered
                     withBackground
@@ -74,7 +74,7 @@ export const TokensStory: ThisStory = {
                       <Typography size="xs">${key}</Typography>
                       <Typography size="xs">{value.val}</Typography>
                     </VStack>
-                  </Frame>
+                  </Box>
                 ))}
               </HStack>
             </Story.Section>
