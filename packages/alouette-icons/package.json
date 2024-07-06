@@ -41,7 +41,7 @@
     "react-native-svg": "*"
   },
   "dependencies": {
-    "@phosphor-icons/core": "2.0.8"
+    "@phosphor-icons/core": "2.1.1"
   },
   "devDependencies": {
     "react-native": "0.74.3",
