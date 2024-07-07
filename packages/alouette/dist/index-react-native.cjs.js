@@ -697,6 +697,24 @@ const Separator = core.styled(core.Stack, {
   }
 });
 
+function PressableListItem({
+  children,
+  onPress
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(reactNative.Pressable, { onPress, children: /* @__PURE__ */ jsxRuntime.jsxs(
+    HStack,
+    {
+      justifyContent: "space-between",
+      paddingHorizontal: "$4",
+      paddingVertical: "$3",
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx(core.View, { children }),
+        /* @__PURE__ */ jsxRuntime.jsx(Stack, { justifyContent: "center", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.CaretRightRegularIcon, {}), size: 20 }) })
+      ]
+    }
+  ) });
+}
+
 exports.Theme = core.Theme;
 exports.View = core.View;
 exports.styled = core.styled;
@@ -711,6 +729,7 @@ exports.IconButton = IconButton;
 exports.InputText = InputText;
 exports.Message = Message;
 exports.PressableBox = PressableBox;
+exports.PressableListItem = PressableListItem;
 exports.ScrollView = ScrollView;
 exports.Separator = Separator;
 exports.Stack = Stack;

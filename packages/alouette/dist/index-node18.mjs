@@ -2,8 +2,8 @@ import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import { styled, View, useStyle, Text, useConfiguration, useMedia, TamaguiProvider, Stack as Stack$1 } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
 import { createContext, useContext, Children } from 'react';
-import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon } from 'alouette-icons/phosphor-icons';
-import { TextInput, ScrollView as ScrollView$1, Platform } from 'react-native';
+import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
+import { TextInput, ScrollView as ScrollView$1, Platform, Pressable } from 'react-native';
 
 const fullscreenStyle = {
   position: "absolute",
@@ -696,5 +696,23 @@ const Separator = styled(Stack$1, {
   }
 });
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, HStack, Icon, IconButton, InputText, Message, PressableBox, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, TypographyParagraphWithContext, TypographyWithContext, VStack, WithTamaguiConfig, useCurrentBreakpointName };
+function PressableListItem({
+  children,
+  onPress
+}) {
+  return /* @__PURE__ */ jsx(Pressable, { onPress, children: /* @__PURE__ */ jsxs(
+    HStack,
+    {
+      justifyContent: "space-between",
+      paddingHorizontal: "$4",
+      paddingVertical: "$3",
+      children: [
+        /* @__PURE__ */ jsx(View, { children }),
+        /* @__PURE__ */ jsx(Stack, { justifyContent: "center", children: /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}), size: 20 }) })
+      ]
+    }
+  ) });
+}
+
+export { AlouetteDecorator, AlouetteProvider, Box, Button, HStack, Icon, IconButton, InputText, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, TypographyParagraphWithContext, TypographyWithContext, VStack, WithTamaguiConfig, useCurrentBreakpointName };
 //# sourceMappingURL=index-node18.mjs.map

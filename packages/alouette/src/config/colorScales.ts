@@ -21,12 +21,12 @@ export const createColorScale = <const T extends AlouetteColorScale>(
 ): T => colorScale;
 
 export type AlouetteColorScaleNames =
-  | "grayscale"
-  | "success"
-  | "info"
-  | "warning"
   | "danger"
-  | "primary";
+  | "grayscale"
+  | "info"
+  | "primary"
+  | "success"
+  | "warning";
 
 export type ColorScaleTokens = {
   [K in AlouetteColorScaleNames as `${K}.${AlouetteColorScaleNumber}`]: string; //(typeof colorScales)[K][AlouetteColorScaleNumber];

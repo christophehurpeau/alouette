@@ -1,27 +1,87 @@
+/* eslint-disable camelcase */
 import type { Variable } from "@tamagui/core";
-import { createAlouetteTokens } from "./createAlouetteTokens";
-import { AlouetteColorScaleNames } from "./colorScales";
+import type { AlouetteColorScales } from "./colorScales";
+import type { createAlouetteTokens } from "./createAlouetteTokens";
 
-interface MinimalTheme {
-  backgroundColor: Variable;
-  textColor: Variable;
+// export interface MinimalRootTheme {
+//   backgroundColor: Variable<string>;
+//   textColor: Variable<string>;
+// }
+
+// export interface RootTheme {
+//   backgroundColor: Variable<string>;
+//   textColor: Variable<string>;
+// }
+
+export interface ColorTheme {
+  backgroundColor: Variable<string>;
+  mainColor: Variable<string>;
+  mainTextColor: Variable<string>;
+  contrastTextColor: Variable<string>;
+  borderColor: Variable<string>;
+
+  "interactive.contained.backgroundColor": Variable<string>;
+  "interactive.borderColor": Variable<string>;
+
+  "interactive.contained.backgroundColor:hover": Variable<string>;
+  "interactive.outlined.backgroundColor:hover": Variable<string>;
+  "interactive.borderColor:hover": Variable<string>;
+
+  "interactive.contained.backgroundColor:focus": Variable<string>;
+  "interactive.outlined.backgroundColor:focus": Variable<string>;
+  "interactive.borderColor:focus": Variable<string>;
+
+  "interactive.contained.backgroundColor:press": Variable<string>;
+  "interactive.outlined.backgroundColor:press": Variable<string>;
+  "interactive.borderColor:press": Variable<string>;
+
+  "interactive.contained.backgroundColor:disabled": Variable<string>;
+  "interactive.borderColor:disabled": Variable<string>;
+  "interactive.textColor:disabled": Variable<string>;
+
+  "interactive.forms.textColor": Variable<string>;
+  // "interactive.forms.backgroundColor": Variable<string>,
+  // "interactive.forms.backgroundColor:hover": Variable<string>,
+  "interactive.forms.backgroundColor:focus": Variable<string>;
+  "interactive.forms.backgroundColor:press": Variable<string>;
+  "interactive.forms.borderColor": Variable<string>;
+  "interactive.forms.borderColor:hover": Variable<string>;
+  "interactive.forms.borderColor:focus": Variable<string>;
+  "interactive.forms.borderColor:press": Variable<string>;
+  "interactive.forms.borderColor:disabled": Variable<string>;
 }
 
-const createTheme = <T extends MinimalTheme>(theme: T): T => {
-  return theme;
-};
+// export interface FullTheme extends ColorTheme, RootTheme {}
+export type FullTheme = ColorTheme;
 
-const createColorTheme = (
-  tokens: ReturnType<typeof createAlouetteTokens>,
-  colorScaleName: AlouetteColorScaleNames,
-  textColor = tokens.color.black,
-  contrastTextColor = tokens.color.white,
+// export const createRootTheme = <T extends MinimalRootTheme>(
+//   theme: T,
+// ): FullTheme => {
+//   return theme satisfies RootTheme as unknown as FullTheme;
+// };
+
+export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
+  tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>,
+  colorScaleName: string & keyof ColorScales,
+  backgroundColor?: Variable<string>,
+  textColor?: Variable<string>,
+  contrastTextColor?: Variable<string>,
+  // eslint-disable-next-line @typescript-eslint/max-params, @typescript-eslint/explicit-module-boundary-types
 ) => {
+  const alouetteTokens: ReturnType<
+    typeof createAlouetteTokens<AlouetteColorScales>
+  > = tokens;
+  if (!backgroundColor) backgroundColor = alouetteTokens.color.white;
+  if (!textColor) textColor = alouetteTokens.color.black;
+  if (!contrastTextColor) contrastTextColor = alouetteTokens.color.white;
+
   const getColor = (scaleNumber: number) =>
     tokens.color[
-      (colorScaleName + `.${scaleNumber}`) as keyof typeof tokens.color
+      `${colorScaleName}.${scaleNumber}` as keyof typeof tokens.color
     ];
+
   return {
+    backgroundColor,
     mainColor: getColor(6),
     mainTextColor: getColor(9),
     contrastTextColor,
@@ -42,9 +102,10 @@ const createColorTheme = (
     "interactive.outlined.backgroundColor:press": getColor(3),
     "interactive.borderColor:press": getColor(7),
 
-    "interactive.contained.backgroundColor:disabled": tokens.color.disabled,
-    "interactive.borderColor:disabled": tokens.color.disabled,
-    "interactive.textColor:disabled": tokens.color.contrastDisabled,
+    "interactive.contained.backgroundColor:disabled":
+      alouetteTokens.color.disabled,
+    "interactive.borderColor:disabled": alouetteTokens.color.disabled,
+    "interactive.textColor:disabled": alouetteTokens.color.contrastDisabled,
 
     "interactive.forms.textColor": textColor,
     // "interactive.forms.backgroundColor": undefined,
@@ -55,57 +116,66 @@ const createColorTheme = (
     "interactive.forms.borderColor:hover": getColor(7),
     "interactive.forms.borderColor:focus": getColor(7),
     "interactive.forms.borderColor:press": getColor(7),
-    "interactive.forms.borderColor:disabled": tokens.color.disabled,
-  };
+    "interactive.forms.borderColor:disabled": alouetteTokens.color.disabled,
+  } satisfies FullTheme;
 };
 
-export const createAlouetteThemes = (
-  tokens: ReturnType<typeof createAlouetteTokens>,
-) =>
-  ({
-    light: createTheme({
-      backgroundColor: tokens.color.white,
-      textColor: tokens.color.black,
-    }),
-    light_info: createColorTheme(tokens, "info"),
-    light_success: createColorTheme(tokens, "success"),
-    light_warning: createColorTheme(tokens, "warning"),
-    light_danger: createColorTheme(tokens, "danger"),
-    light_primary: createColorTheme(tokens, "primary"),
+export const createAlouetteThemes = <
+  const ColorScales extends AlouetteColorScales,
+>(
+  tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>,
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+) => {
+  const alouetteTokens: ReturnType<
+    typeof createAlouetteTokens<AlouetteColorScales>
+  > = tokens;
+  return {
+    light: createColorTheme(
+      alouetteTokens,
+      "grayscale",
+      alouetteTokens.color.white,
+      alouetteTokens.color.black,
+    ),
+    light_info: createColorTheme(alouetteTokens, "info"),
+    light_success: createColorTheme(alouetteTokens, "success"),
+    light_warning: createColorTheme(alouetteTokens, "warning"),
+    light_danger: createColorTheme(alouetteTokens, "danger"),
+    light_primary: createColorTheme(alouetteTokens, "primary"),
 
-    dark: createTheme({
-      backgroundColor: tokens.color.black,
-      textColor: tokens.color.white,
-    }),
+    // dark: createRootTheme({
+    //   backgroundColor: alouetteTokens.color.black,
+    //   textColor: alouetteTokens.color.white,
+    // }),
 
-    dark_info: createColorTheme(
-      tokens,
-      "info",
-      tokens.color.black,
-      tokens.color.white,
-    ),
-    dark_success: createColorTheme(
-      tokens,
-      "success",
-      tokens.color.black,
-      tokens.color.white,
-    ),
-    dark_warning: createColorTheme(
-      tokens,
-      "warning",
-      tokens.color.black,
-      tokens.color.white,
-    ),
-    dark_danger: createColorTheme(
-      tokens,
-      "danger",
-      tokens.color.black,
-      tokens.color.white,
-    ),
-    dark_primary: createColorTheme(
-      tokens,
-      "primary",
-      tokens.color.black,
-      tokens.color.white,
-    ),
-  }) as const;
+    // dark_info: createColorTheme(
+    //   alouetteTokens,
+    //   "info",
+    //   alouetteTokens.color.black,
+    //   alouetteTokens.color.white,
+    // ),
+    // dark_success: createColorTheme(
+    //   alouetteTokens,
+    //   "success",
+    //   alouetteTokens.color.black,
+    //   alouetteTokens.color.white,
+    // ),
+    // dark_warning: createColorTheme(
+    //   alouetteTokens,
+    //   "warning",
+    //   alouetteTokens.color.black,
+    //   alouetteTokens.color.white,
+    // ),
+    // dark_danger: createColorTheme(
+    //   alouetteTokens,
+    //   "danger",
+    //   alouetteTokens.color.black,
+    //   alouetteTokens.color.white,
+    // ),
+    // dark_primary: createColorTheme(
+    //   alouetteTokens,
+    //   "primary",
+    //   alouetteTokens.color.black,
+    //   alouetteTokens.color.white,
+    // ),
+  } as const;
+};

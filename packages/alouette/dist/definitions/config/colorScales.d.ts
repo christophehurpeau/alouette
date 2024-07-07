@@ -4,7 +4,7 @@ export type AlouetteColorScale = {
     [K in AlouetteColorScaleNumber]: string;
 };
 export declare const createColorScale: <const T extends AlouetteColorScale>(colorScale: T) => T;
-export type AlouetteColorScaleNames = "grayscale" | "success" | "info" | "warning" | "danger" | "primary";
+export type AlouetteColorScaleNames = "danger" | "grayscale" | "info" | "primary" | "success" | "warning";
 export type ColorScaleTokens = {
     [K in AlouetteColorScaleNames as `${K}.${AlouetteColorScaleNumber}`]: string;
 };

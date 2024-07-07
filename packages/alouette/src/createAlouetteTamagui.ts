@@ -3,34 +3,48 @@ import { animations } from "./config/animations";
 import type { AlouetteColorScales } from "./config/colorScales";
 import type { AlouetteFontsOptions } from "./config/createAlouetteFonts";
 import { createAlouetteFonts } from "./config/createAlouetteFonts";
-import type { AlouetteTokensOptions } from "./config/createAlouetteTokens";
-import { createAlouetteTokens } from "./config/createAlouetteTokens";
+import type { createAlouetteTokens } from "./config/createAlouetteTokens";
 import { media } from "./config/media";
-import { createAlouetteThemes } from "./config/themes";
+import type { createAlouetteThemes } from "./config/themes";
+
+export { createAlouetteTokens } from "./config/createAlouetteTokens";
 
 export interface AlouetteTamaguiOptions {
-  colorScales: AlouetteColorScales;
   fonts?: AlouetteFontsOptions;
-  tokens?: AlouetteTokensOptions;
 }
+
+export {
+  createColorTheme,
+  createAlouetteThemes,
+  type FullTheme,
+} from "./config/themes";
 
 export {
   defaultColorScales,
   createColorScale,
   type AlouetteColorScales,
+  type AlouetteColorScale,
 } from "./config/colorScales";
 
-export const createAlouetteTamagui = (options: AlouetteTamaguiOptions) => {
-  const tokens = createAlouetteTokens(options.colorScales, options.tokens);
+export const createAlouetteTamagui = <
+  const ColorScales extends AlouetteColorScales,
+  const Tokens extends ReturnType<typeof createAlouetteTokens<ColorScales>>,
+  const Themes extends ReturnType<typeof createAlouetteThemes<ColorScales>>,
+>(
+  tokens: Tokens,
+  themes: Themes,
+  options: AlouetteTamaguiOptions,
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+) => {
   return createTamagui({
     fonts: createAlouetteFonts(options.fonts),
     tokens,
-    themes: createAlouetteThemes(tokens),
+    themes,
     media,
     animations,
     settings: {
-      allowedStyleValues: "strict",
-      autocompleteSpecificTokens: true,
+      allowedStyleValues: "somewhat-strict-web",
+      autocompleteSpecificTokens: "except-special",
     },
     components: ["alouette"],
   } as const);

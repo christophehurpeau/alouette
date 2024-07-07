@@ -76,52 +76,6 @@ const createAlouetteFonts = ({
   })
 });
 
-const createAlouetteSizes = (spacing, negative) => {
-  const MAX_SIZE = 64;
-  const sizes = {};
-  for (let size = 0; size <= MAX_SIZE; size++) {
-    sizes[negative ? `-${size}` : `${size}`] = size * spacing;
-  }
-  return sizes;
-};
-const transformColorScalesToTokens = (colorScales) => {
-  return Object.fromEntries(
-    Object.entries(colorScales).flatMap(([colorName, colorScale]) => {
-      return Object.entries(colorScale).map(([scaleNumber, colorValue]) => {
-        return [`${colorName}.${scaleNumber}`, colorValue];
-      });
-    })
-  );
-};
-const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
-  const sizes = createAlouetteSizes(spacing, false);
-  const negativeSizes = createAlouetteSizes(-spacing, true);
-  return createTokens({
-    color: {
-      black: "#000000",
-      white: "#ffffff",
-      disabled: colorScales.grayscale[3],
-      contrastDisabled: colorScales.grayscale[7],
-      ...transformColorScalesToTokens(colorScales)
-    },
-    radius: {
-      ...sizes,
-      xs: spacing * 2,
-      sm: spacing * 4,
-      md: spacing * 8
-    },
-    space: {
-      ...sizes,
-      ...negativeSizes,
-      xs: spacing * 2,
-      sm: spacing * 4,
-      md: spacing * 8
-    },
-    size: { ...sizes },
-    zIndex: {}
-  });
-};
-
 const Breakpoints = {
   /**
    * min-width: 0
@@ -152,12 +106,63 @@ const media = createMedia({
   wide: { minWidth: Breakpoints.WIDE }
 });
 
-const createTheme = (theme) => {
-  return theme;
+const createAlouetteSizes = (spacing, negative) => {
+  const MAX_SIZE = 64;
+  const sizes = {};
+  for (let size = 0; size <= MAX_SIZE; size++) {
+    sizes[negative ? `-${size}` : `${size}`] = size * spacing;
+  }
+  return sizes;
 };
-const createColorTheme = (tokens, colorScaleName, textColor = tokens.color.black, contrastTextColor = tokens.color.white) => {
-  const getColor = (scaleNumber) => tokens.color[colorScaleName + `.${scaleNumber}`];
+const transformColorScalesToTokens = (colorScales) => {
+  return Object.fromEntries(
+    Object.entries(colorScales).flatMap(([colorName, colorScale]) => {
+      return Object.entries(colorScale).map(([scaleNumber, colorValue]) => {
+        return [`${colorName}.${scaleNumber}`, colorValue];
+      });
+    })
+  );
+};
+const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
+  const sizes = createAlouetteSizes(spacing, false);
+  const negativeSizes = createAlouetteSizes(
+    -spacing,
+    true
+  );
+  return createTokens({
+    color: {
+      black: "#000000",
+      white: "#ffffff",
+      disabled: colorScales.grayscale[3],
+      contrastDisabled: colorScales.grayscale[7],
+      ...transformColorScalesToTokens(colorScales)
+    },
+    radius: {
+      ...sizes,
+      xs: spacing * 2,
+      sm: spacing * 4,
+      md: spacing * 8
+    },
+    space: {
+      ...sizes,
+      ...negativeSizes,
+      xs: spacing * 2,
+      sm: spacing * 4,
+      md: spacing * 8
+    },
+    size: { ...sizes },
+    zIndex: {}
+  });
+};
+
+const createColorTheme = (tokens, colorScaleName, backgroundColor, textColor, contrastTextColor) => {
+  const alouetteTokens = tokens;
+  if (!backgroundColor) backgroundColor = alouetteTokens.color.white;
+  if (!textColor) textColor = alouetteTokens.color.black;
+  if (!contrastTextColor) contrastTextColor = alouetteTokens.color.white;
+  const getColor = (scaleNumber) => tokens.color[`${colorScaleName}.${scaleNumber}`];
   return {
+    backgroundColor,
     mainColor: getColor(6),
     mainTextColor: getColor(9),
     contrastTextColor,
@@ -173,9 +178,9 @@ const createColorTheme = (tokens, colorScaleName, textColor = tokens.color.black
     "interactive.contained.backgroundColor:press": getColor(2),
     "interactive.outlined.backgroundColor:press": getColor(3),
     "interactive.borderColor:press": getColor(7),
-    "interactive.contained.backgroundColor:disabled": tokens.color.disabled,
-    "interactive.borderColor:disabled": tokens.color.disabled,
-    "interactive.textColor:disabled": tokens.color.contrastDisabled,
+    "interactive.contained.backgroundColor:disabled": alouetteTokens.color.disabled,
+    "interactive.borderColor:disabled": alouetteTokens.color.disabled,
+    "interactive.textColor:disabled": alouetteTokens.color.contrastDisabled,
     "interactive.forms.textColor": textColor,
     // "interactive.forms.backgroundColor": undefined,
     // "interactive.forms.backgroundColor:hover": undefined,
@@ -185,54 +190,59 @@ const createColorTheme = (tokens, colorScaleName, textColor = tokens.color.black
     "interactive.forms.borderColor:hover": getColor(7),
     "interactive.forms.borderColor:focus": getColor(7),
     "interactive.forms.borderColor:press": getColor(7),
-    "interactive.forms.borderColor:disabled": tokens.color.disabled
+    "interactive.forms.borderColor:disabled": alouetteTokens.color.disabled
   };
 };
-const createAlouetteThemes = (tokens) => ({
-  light: createTheme({
-    backgroundColor: tokens.color.white,
-    textColor: tokens.color.black
-  }),
-  light_info: createColorTheme(tokens, "info"),
-  light_success: createColorTheme(tokens, "success"),
-  light_warning: createColorTheme(tokens, "warning"),
-  light_danger: createColorTheme(tokens, "danger"),
-  light_primary: createColorTheme(tokens, "primary"),
-  dark: createTheme({
-    backgroundColor: tokens.color.black,
-    textColor: tokens.color.white
-  }),
-  dark_info: createColorTheme(
-    tokens,
-    "info",
-    tokens.color.black,
-    tokens.color.white
-  ),
-  dark_success: createColorTheme(
-    tokens,
-    "success",
-    tokens.color.black,
-    tokens.color.white
-  ),
-  dark_warning: createColorTheme(
-    tokens,
-    "warning",
-    tokens.color.black,
-    tokens.color.white
-  ),
-  dark_danger: createColorTheme(
-    tokens,
-    "danger",
-    tokens.color.black,
-    tokens.color.white
-  ),
-  dark_primary: createColorTheme(
-    tokens,
-    "primary",
-    tokens.color.black,
-    tokens.color.white
-  )
-});
+const createAlouetteThemes = (tokens) => {
+  const alouetteTokens = tokens;
+  return {
+    light: createColorTheme(
+      alouetteTokens,
+      "grayscale",
+      alouetteTokens.color.white,
+      alouetteTokens.color.black
+    ),
+    light_info: createColorTheme(alouetteTokens, "info"),
+    light_success: createColorTheme(alouetteTokens, "success"),
+    light_warning: createColorTheme(alouetteTokens, "warning"),
+    light_danger: createColorTheme(alouetteTokens, "danger"),
+    light_primary: createColorTheme(alouetteTokens, "primary")
+    // dark: createRootTheme({
+    //   backgroundColor: alouetteTokens.color.black,
+    //   textColor: alouetteTokens.color.white,
+    // }),
+    // dark_info: createColorTheme(
+    //   alouetteTokens,
+    //   "info",
+    //   alouetteTokens.color.black,
+    //   alouetteTokens.color.white,
+    // ),
+    // dark_success: createColorTheme(
+    //   alouetteTokens,
+    //   "success",
+    //   alouetteTokens.color.black,
+    //   alouetteTokens.color.white,
+    // ),
+    // dark_warning: createColorTheme(
+    //   alouetteTokens,
+    //   "warning",
+    //   alouetteTokens.color.black,
+    //   alouetteTokens.color.white,
+    // ),
+    // dark_danger: createColorTheme(
+    //   alouetteTokens,
+    //   "danger",
+    //   alouetteTokens.color.black,
+    //   alouetteTokens.color.white,
+    // ),
+    // dark_primary: createColorTheme(
+    //   alouetteTokens,
+    //   "primary",
+    //   alouetteTokens.color.black,
+    //   alouetteTokens.color.white,
+    // ),
+  };
+};
 
 const createColorScale = (colorScale) => colorScale;
 const defaultColorScales = {
@@ -310,21 +320,20 @@ const defaultColorScales = {
   })
 };
 
-const createAlouetteTamagui = (options) => {
-  const tokens = createAlouetteTokens(options.colorScales, options.tokens);
+const createAlouetteTamagui = (tokens, themes, options) => {
   return createTamagui({
     fonts: createAlouetteFonts(options.fonts),
     tokens,
-    themes: createAlouetteThemes(tokens),
+    themes,
     media,
     animations,
     settings: {
-      allowedStyleValues: "strict",
-      autocompleteSpecificTokens: true
+      allowedStyleValues: "somewhat-strict-web",
+      autocompleteSpecificTokens: "except-special"
     },
     components: ["alouette"]
   });
 };
 
-export { createAlouetteTamagui, createColorScale, defaultColorScales };
+export { createAlouetteTamagui, createAlouetteThemes, createAlouetteTokens, createColorScale, createColorTheme, defaultColorScales };
 //# sourceMappingURL=createAlouetteTamagui-node18.mjs.map

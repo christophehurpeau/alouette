@@ -6135,13 +6135,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alouette-icons@npm:1.0.0-beta.1, alouette-icons@workspace:*, alouette-icons@workspace:packages/alouette-icons":
+"alouette-icons@workspace:*, alouette-icons@workspace:packages/alouette-icons":
   version: 0.0.0-use.local
   resolution: "alouette-icons@workspace:packages/alouette-icons"
   dependencies:
     "@phosphor-icons/core": "npm:2.0.8"
     react-native: "npm:0.74.3"
-    typescript: "npm:5.5.3"
   peerDependencies:
     react: ^18.2.0
     react-native: "*"
@@ -6175,7 +6174,7 @@ __metadata:
     "@tamagui/animations-react-native": "npm:1.101.7"
     "@tamagui/core": "npm:1.101.7"
     "@tamagui/react-native-media-driver": "npm:1.101.7"
-    alouette-icons: "npm:1.0.0-beta.1"
+    alouette-icons: "workspace:*"
     react-native: "npm:0.74.3"
     type-fest: "npm:4.20.1"
     typescript: "npm:5.5.3"

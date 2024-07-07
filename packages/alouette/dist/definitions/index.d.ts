@@ -38,4 +38,5 @@ export type { GetProps, ThemeProps } from "@tamagui/core";
 export { Theme, styled, withStaticProperties } from "@tamagui/core";
 export type { SeparatorProps } from "./components/layout/Separator";
 export { Separator } from "./components/layout/Separator";
+export { PressableListItem } from "./components/layout/list";
 //# sourceMappingURL=index.d.ts.map

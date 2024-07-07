@@ -1,7 +1,6 @@
 import { createTokens } from "@tamagui/core";
 import type { IntRange } from "type-fest";
 import type {
-  AlouetteColorScaleNames,
   AlouetteColorScaleNumber,
   AlouetteColorScales,
 } from "./colorScales";
@@ -11,48 +10,54 @@ type NegativeAlouetteSize = `-${AlouetteSize}`;
 type AlouetteSizeRecord = Record<AlouetteSize, number>;
 type NegativeAlouetteSizeRecord = Record<NegativeAlouetteSize, number>;
 
-const createAlouetteSizes = <N extends boolean>(
+const createAlouetteSizes = <const N extends boolean>(
   spacing: number,
   negative: N,
-): N extends true ? AlouetteSizeRecord : NegativeAlouetteSizeRecord => {
+): N extends true ? NegativeAlouetteSizeRecord : AlouetteSizeRecord => {
   const MAX_SIZE = 64;
-  const sizes = {} as Partial<
-    N extends true ? AlouetteSizeRecord : NegativeAlouetteSizeRecord
-  >;
+  const sizes: Partial<
+    N extends true ? NegativeAlouetteSizeRecord : AlouetteSizeRecord
+  > = {};
   for (let size = 0; size <= MAX_SIZE; size++) {
     (sizes as any)[negative ? `-${size}` : `${size}`] = size * spacing;
   }
   return sizes as N extends true
-    ? AlouetteSizeRecord
-    : NegativeAlouetteSizeRecord;
+    ? NegativeAlouetteSizeRecord
+    : AlouetteSizeRecord;
 };
 
-type ColorScaleTokens = {
-  [K in AlouetteColorScaleNames as `${K}.${AlouetteColorScaleNumber}`]: string; //(typeof colorScales)[K][AlouetteColorScaleNumber];
+type ColorScaleTokens<ColorScales extends AlouetteColorScales> = {
+  [K in string &
+    keyof ColorScales as `${K}.${AlouetteColorScaleNumber}`]: string; //(typeof colorScales)[K][AlouetteColorScaleNumber];
 };
 
-const transformColorScalesToTokens = (
-  colorScales: AlouetteColorScales,
-): ColorScaleTokens => {
+const transformColorScalesToTokens = <ColorScales extends AlouetteColorScales>(
+  colorScales: ColorScales,
+): ColorScaleTokens<ColorScales> => {
   return Object.fromEntries(
     Object.entries(colorScales).flatMap(([colorName, colorScale]) => {
       return Object.entries(colorScale).map(([scaleNumber, colorValue]) => {
         return [`${colorName}.${scaleNumber}`, colorValue];
       });
     }),
-  ) as ColorScaleTokens;
+  ) as ColorScaleTokens<ColorScales>;
 };
 
 export interface AlouetteTokensOptions {
   spacing?: number;
 }
 
-export const createAlouetteTokens = (
-  colorScales: AlouetteColorScales,
+export const createAlouetteTokens = <
+  const ColorScales extends AlouetteColorScales,
+>(
+  colorScales: ColorScales,
   { spacing = 4 }: AlouetteTokensOptions = {},
 ) => {
-  const sizes = createAlouetteSizes(spacing, false);
-  const negativeSizes = createAlouetteSizes(-spacing, true);
+  const sizes: AlouetteSizeRecord = createAlouetteSizes(spacing, false);
+  const negativeSizes: NegativeAlouetteSizeRecord = createAlouetteSizes(
+    -spacing,
+    true,
+  );
 
   return createTokens({
     color: {
