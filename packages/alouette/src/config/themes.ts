@@ -15,6 +15,7 @@ import type { createAlouetteTokens } from "./createAlouetteTokens";
 
 export interface ColorTheme {
   backgroundColor: Variable<string>;
+  textColor: Variable<string>;
   mainColor: Variable<string>;
   mainTextColor: Variable<string>;
   contrastTextColor: Variable<string>;
@@ -82,6 +83,7 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
 
   return {
     backgroundColor,
+    textColor,
     mainColor: getColor(6),
     mainTextColor: getColor(9),
     contrastTextColor,

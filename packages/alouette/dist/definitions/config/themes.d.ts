@@ -3,6 +3,7 @@ import type { AlouetteColorScales } from "./colorScales";
 import type { createAlouetteTokens } from "./createAlouetteTokens";
 export interface ColorTheme {
     backgroundColor: Variable<string>;
+    textColor: Variable<string>;
     mainColor: Variable<string>;
     mainTextColor: Variable<string>;
     contrastTextColor: Variable<string>;
@@ -33,6 +34,7 @@ export interface ColorTheme {
 export type FullTheme = ColorTheme;
 export declare const createColorTheme: <const ColorScales extends AlouetteColorScales>(tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>, colorScaleName: string & keyof ColorScales, backgroundColor?: Variable<string>, textColor?: Variable<string>, contrastTextColor?: Variable<string>) => {
     backgroundColor: Variable<string>;
+    textColor: Variable<string>;
     mainColor: { [Key in "black" | "white" | "disabled" | "contrastDisabled" | keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; } extends number ? `${number & keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; }}` : "black" | "white" | "disabled" | "contrastDisabled" | keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; }]: Variable<string>; }["black" | "white" | "disabled" | "contrastDisabled" | keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; } extends number ? `${number & keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; }}` : "black" | "white" | "disabled" | "contrastDisabled" | keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; }];
     mainTextColor: { [Key in "black" | "white" | "disabled" | "contrastDisabled" | keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; } extends number ? `${number & keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; }}` : "black" | "white" | "disabled" | "contrastDisabled" | keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; }]: Variable<string>; }["black" | "white" | "disabled" | "contrastDisabled" | keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; } extends number ? `${number & keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; }}` : "black" | "white" | "disabled" | "contrastDisabled" | keyof { [K in string & keyof ColorScales as `${K}.1` | `${K}.4` | `${K}.2` | `${K}.3` | `${K}.5` | `${K}.6` | `${K}.7` | `${K}.8` | `${K}.9`]: string; }];
     contrastTextColor: Variable<string>;
@@ -63,6 +65,7 @@ export declare const createColorTheme: <const ColorScales extends AlouetteColorS
 export declare const createAlouetteThemes: <const ColorScales extends AlouetteColorScales>(tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>) => {
     readonly light: {
         backgroundColor: Variable<string>;
+        textColor: Variable<string>;
         mainColor: Variable<string>;
         mainTextColor: Variable<string>;
         contrastTextColor: Variable<string>;
@@ -92,6 +95,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly light_info: {
         backgroundColor: Variable<string>;
+        textColor: Variable<string>;
         mainColor: Variable<string>;
         mainTextColor: Variable<string>;
         contrastTextColor: Variable<string>;
@@ -121,6 +125,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly light_success: {
         backgroundColor: Variable<string>;
+        textColor: Variable<string>;
         mainColor: Variable<string>;
         mainTextColor: Variable<string>;
         contrastTextColor: Variable<string>;
@@ -150,6 +155,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly light_warning: {
         backgroundColor: Variable<string>;
+        textColor: Variable<string>;
         mainColor: Variable<string>;
         mainTextColor: Variable<string>;
         contrastTextColor: Variable<string>;
@@ -179,6 +185,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly light_danger: {
         backgroundColor: Variable<string>;
+        textColor: Variable<string>;
         mainColor: Variable<string>;
         mainTextColor: Variable<string>;
         contrastTextColor: Variable<string>;
@@ -208,6 +215,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly light_primary: {
         backgroundColor: Variable<string>;
+        textColor: Variable<string>;
         mainColor: Variable<string>;
         mainTextColor: Variable<string>;
         contrastTextColor: Variable<string>;

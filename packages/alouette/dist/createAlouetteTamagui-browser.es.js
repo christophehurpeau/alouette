@@ -163,6 +163,7 @@ const createColorTheme = (tokens, colorScaleName, backgroundColor, textColor, co
   const getColor = (scaleNumber) => tokens.color[`${colorScaleName}.${scaleNumber}`];
   return {
     backgroundColor,
+    textColor,
     mainColor: getColor(6),
     mainTextColor: getColor(9),
     contrastTextColor,
