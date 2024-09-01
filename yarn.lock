@@ -6176,7 +6176,7 @@ __metadata:
     "@tamagui/react-native-media-driver": "npm:1.101.7"
     alouette-icons: "npm:1.0.0-beta.2"
     react-native: "npm:0.74.3"
-    type-fest: "npm:4.20.1"
+    type-fest: "npm:4.26.0"
     typescript: "npm:5.5.3"
   peerDependencies:
     alouette-icons: "*"
@@ -15351,10 +15351,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:4.20.1, type-fest@npm:^4.0.0, type-fest@npm:^4.6.0, type-fest@npm:^4.7.1":
-  version: 4.20.1
-  resolution: "type-fest@npm:4.20.1"
-  checksum: 10c0/c31da16fe170a74c5b7e102e70e764ba8ec6ade128e782a56f842aefa07307df5a6353e6b5601d3b30ff2d856d8b955f89813df639e4758fedcf8e426b2d854e
+"type-fest@npm:4.26.0, type-fest@npm:^4.0.0, type-fest@npm:^4.6.0, type-fest@npm:^4.7.1":
+  version: 4.26.0
+  resolution: "type-fest@npm:4.26.0"
+  checksum: 10c0/3819b65fedd4655ed90703dad9e14248fb61f0a232dce8385e59771bdeaeca08195fe0683d892d62fcd84c0f3bb18bd4b0c3c2ba29023187d267868e75c53076
   languageName: node
   linkType: hard
 
