@@ -49,7 +49,7 @@ export declare const circular: {
         padding: number;
     };
 };
-export declare const interactive: (isInteractiveOrInteractiveCursorType: boolean | ViewStyle["cursor"], { props }: VariantSpreadExtras<any>) => {
+export declare const interactive: (isInteractiveOrInteractiveCursorType: ViewStyle["cursor"] | boolean, { props }: VariantSpreadExtras<any>) => {
     readonly cursor: import("csstype").Property.Cursor;
 } | null;
 export declare const centered: {

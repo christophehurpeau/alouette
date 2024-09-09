@@ -1,9 +1,12 @@
 import {
   createAlouetteTamagui,
+  createAlouetteThemes,
+  createAlouetteTokens,
   defaultColorScales,
 } from "alouette/createAlouetteTamagui";
 
-const config = createAlouetteTamagui({ colorScales: defaultColorScales });
+const tokens = createAlouetteTokens(defaultColorScales);
+const config = createAlouetteTamagui(tokens, createAlouetteThemes(tokens));
 
 export type AppConfig = typeof config;
 

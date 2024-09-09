@@ -29,11 +29,11 @@ const getBorderAdditionalInteraction = ({
         return {
           borderColor: `$${prefix}.borderColor:hover`
         };
-      case `press`:
+      case "press":
         return {
           borderColor: `$${prefix}.borderColor:press`
         };
-      case `focus`:
+      case "focus":
         return {
           borderColor: `$${prefix}.borderColor:focus`
         };
@@ -58,7 +58,10 @@ const getBackgroundAdditionalInteraction = ({
   interactive,
   variant
 }) => {
-  const prefix = interactive === "text" ? "interactive.forms" : `interactive.${variant || "contained"}`;
+  const prefix = interactive === "text" ? "interactive.forms" : (
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    `interactive.${variant || "contained"}`
+  );
   if (disabled) {
     return {
       backgroundColor: `$${prefix}.backgroundColor:disabled`
@@ -70,11 +73,11 @@ const getBackgroundAdditionalInteraction = ({
         return {
           backgroundColor: `$${prefix}.backgroundColor:hover`
         };
-      case `press`:
+      case "press":
         return {
           backgroundColor: `$${prefix}.backgroundColor:press`
         };
-      case `focus`:
+      case "focus":
         return {
           backgroundColor: `$${prefix}.backgroundColor:focus`
         };
@@ -109,7 +112,10 @@ const withBackground = (val, { props }) => {
     throw new Error("A role prop is required while using interactive");
   }
   return {
-    backgroundColor: props.interactive ? `$interactive.${variant}.backgroundColor` : "$mainColor",
+    backgroundColor: props.interactive ? (
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      `$interactive.${variant}.backgroundColor`
+    ) : "$mainColor",
     ...props.interactive ? getBackgroundAdditionalInteraction(props) : void 0
   };
 };
@@ -138,9 +144,15 @@ const circular = {
     };
   }
 };
-const interactive = (isInteractiveOrInteractiveCursorType, { props }) => isInteractiveOrInteractiveCursorType ? {
-  cursor: props.disabled ? "not-allowed" : isInteractiveOrInteractiveCursorType === true ? "pointer" : isInteractiveOrInteractiveCursorType
-} : null;
+const interactive = (isInteractiveOrInteractiveCursorType, { props }) => {
+  if (!isInteractiveOrInteractiveCursorType) return null;
+  if (props.disabled) {
+    return { cursor: "not-allowed" };
+  }
+  return {
+    cursor: isInteractiveOrInteractiveCursorType === true ? "pointer" : isInteractiveOrInteractiveCursorType
+  };
+};
 const centered = {
   true: {
     alignItems: "center",
@@ -165,6 +177,10 @@ const Box = styled(View, {
   animation: "fast"
 });
 
+const PressableBox = styled(Box, {
+  interactive: true
+});
+
 function Icon({
   icon,
   size = 20,
@@ -180,10 +196,6 @@ function Icon({
   });
   return /* @__PURE__ */ jsx(Box, { ...props, centered: true, alignSelf: align, size, style, children: icon });
 }
-
-const PressableBox = styled(Box, {
-  interactive: true
-});
 
 const IconButtonFrame = styled(PressableBox, {
   name: "IconButtonFrame",
@@ -668,7 +680,10 @@ function AlouetteProvider({
   return /* @__PURE__ */ jsx(TamaguiProvider, { config: tamaguiConfig, defaultTheme: "light", children });
 }
 
-const AlouetteDecorator = (storyFn, context) => /* @__PURE__ */ jsx(AlouetteProvider, { tamaguiConfig: context.parameters.tamaguiConfig, children: storyFn(context) });
+const AlouetteDecorator = (storyFn, context) => (
+  // eslint-disable-next-line react/destructuring-assignment
+  /* @__PURE__ */ jsx(AlouetteProvider, { tamaguiConfig: context.parameters.tamaguiConfig, children: storyFn(context) })
+);
 
 const Separator = styled(Stack$1, {
   name: "Separator",

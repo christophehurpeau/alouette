@@ -10,6 +10,9 @@ export default defineConfig({
     "process.env.STORYBOOK": "true",
   },
   resolve: {
+    extensions: [".mjs", ".js", ".mts", ".ts", ".jsx", ".tsx", ".json"].flatMap(
+      (extension) => [".web" + extension, extension],
+    ),
     alias: {
       alouette: fileURLToPath(new URL("../alouette/src", import.meta.url)),
     },

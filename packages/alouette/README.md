@@ -29,5 +29,7 @@ import {
   defaultColorScales,
 } from "alouette/createAlouetteTamagui";
 
-export default createAlouetteTamagui({ colorScales: defaultColorScales });
+const tokens = createAlouetteTokens(defaultColorScales);
+const config = createAlouetteTamagui(tokens, createAlouetteThemes(tokens));
+export default config;
 ```

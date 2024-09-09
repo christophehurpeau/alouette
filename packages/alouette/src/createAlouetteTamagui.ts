@@ -33,7 +33,7 @@ export const createAlouetteTamagui = <
 >(
   tokens: Tokens,
   themes: Themes,
-  options: AlouetteTamaguiOptions,
+  options: AlouetteTamaguiOptions = {},
 ) => {
   return createTamagui({
     fonts: createAlouetteFonts(options.fonts),

@@ -91,10 +91,10 @@
     "react-native-svg": "*"
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.110.2",
-    "@tamagui/animations-react-native": "1.110.2",
-    "@tamagui/core": "1.110.2",
-    "@tamagui/react-native-media-driver": "1.110.2",
+    "@tamagui/animations-css": "1.110.3",
+    "@tamagui/animations-react-native": "1.110.3",
+    "@tamagui/core": "1.110.3",
+    "@tamagui/react-native-media-driver": "1.110.3",
     "alouette-icons": "1.0.0-beta.2",
     "type-fest": "4.26.0"
   },

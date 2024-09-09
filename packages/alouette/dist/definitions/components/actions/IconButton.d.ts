@@ -1,5 +1,5 @@
 import type { GetProps } from "@tamagui/core";
-import { type ReactElement, type ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 declare const IconButtonFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: number | undefined;
     internalForcedPseudoState?: import("../primitives/createVariants").InternalPseudoState | undefined;
