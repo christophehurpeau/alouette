@@ -87,7 +87,7 @@
   },
   "devDependencies": {
     "@pob/rollup-esbuild": "3.1.2",
-    "react-native": "0.74.3",
+    "react-native": "0.75.2",
     "typescript": "5.5.4"
   }
 }

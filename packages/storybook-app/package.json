@@ -30,7 +30,7 @@
     "alouette-icons": "workspace:*",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-native": "0.74.3",
+    "react-native": "0.75.2",
     "react-native-svg": "15.3.0",
     "react-native-web": "0.19.12"
   },

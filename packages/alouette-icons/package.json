@@ -44,6 +44,6 @@
     "@phosphor-icons/core": "2.1.1"
   },
   "devDependencies": {
-    "react-native": "0.74.3"
+    "react-native": "0.75.2"
   }
 }
