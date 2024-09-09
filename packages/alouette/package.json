@@ -86,7 +86,7 @@
     "type-fest": "4.26.0"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "3.0.0",
+    "@pob/rollup-esbuild": "3.1.2",
     "react-native": "0.74.3",
     "typescript": "5.5.4"
   }
