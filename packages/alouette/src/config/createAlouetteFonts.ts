@@ -33,9 +33,9 @@ export const createAlouetteFonts = ({
       black: "900",
     },
     face: {
-      400: { normal: headingFontFamily + "Regular" },
-      700: { normal: headingFontFamily + "Bold" },
-      900: { normal: headingFontFamily + "Black" },
+      400: { normal: `${headingFontFamily}Regular` },
+      700: { normal: `${headingFontFamily}Bold` },
+      900: { normal: `${headingFontFamily}Black` },
     },
     size: headingFontSizes,
     lineHeight: {
@@ -54,9 +54,9 @@ export const createAlouetteFonts = ({
       black: "900",
     },
     face: {
-      400: { normal: bodyFontFamily + "Regular" },
-      700: { normal: bodyFontFamily + "Bold" },
-      900: { normal: bodyFontFamily + "Black" },
+      400: { normal: `${bodyFontFamily}Regular` },
+      700: { normal: `${bodyFontFamily}Bold` },
+      900: { normal: `${bodyFontFamily}Black` },
     },
     size: bodyFontSizes,
     lineHeight: {

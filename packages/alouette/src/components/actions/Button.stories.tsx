@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
-import { StoryGrid } from "../story-components/StoryGrid";
 import { Story } from "../story-components/Story";
+import { StoryGrid } from "../story-components/StoryGrid";
 import { Button } from "./Button";
 
 type ThisStory = StoryObj<typeof Button>;
@@ -40,12 +40,12 @@ export const ButtonStory: ThisStory = {
         ).map((theme) => (
           <Story.SubSection
             key={theme}
+            withBackground
             title={theme}
             theme={theme}
-            withBackground
           >
             {(["contained", "outlined"] as const).map((variant) => (
-              <StoryGrid.Row flexWrap>
+              <StoryGrid.Row key={variant} flexWrap>
                 {(
                   [undefined, "hover", "focus", "press", "disabled"] as const
                 ).map((state) => (

@@ -8,13 +8,23 @@ let fileDTSContent = `${header}import * as React from 'react';
 
 const SVGComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement> & { title?: string }>;
 `;
-let fileCJSForReactNativeContent = `/* prettier-ignore */\n${header}
+let fileCJSForReactNativeContent = `/* prettier-ignore */\n"use strict";\n${header}
 module.exports = {
 `;
 
 icons.forEach((icon) => {
-  if (icon.name === "file-search") {
-    // alias for "file-magnifying-glass"
+  // aliases
+  if (
+    [
+      "file-search",
+      "archive-box",
+      "archive-tray",
+      "folder-notch",
+      "folder-notch-minus",
+      "folder-notch-open",
+      "folder-notch-plus",
+    ].includes(icon.name)
+  ) {
     return;
   }
 
@@ -29,14 +39,14 @@ icons.forEach((icon) => {
 fileCJSForReactNativeContent += "};\n";
 
 writeFileSync(
-  new URL("../src/phosphor-icons.mjs", import.meta.url),
+  new URL("../lib/phosphor-icons.mjs", import.meta.url),
   fileContent,
 );
 writeFileSync(
-  new URL("../src/phosphor-icons.cjs", import.meta.url),
+  new URL("../lib/phosphor-icons.cjs", import.meta.url),
   fileCJSForReactNativeContent,
 );
 writeFileSync(
-  new URL("../src/phosphor-icons.d.ts", import.meta.url),
+  new URL("../lib/phosphor-icons.d.ts", import.meta.url),
   fileDTSContent,
 );

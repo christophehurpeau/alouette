@@ -29,11 +29,11 @@ export const getBorderAdditionalInteraction = ({
         return {
           borderColor: `$${prefix}.borderColor:hover`,
         };
-      case `press`:
+      case "press":
         return {
           borderColor: `$${prefix}.borderColor:press`,
         };
-      case `focus`:
+      case "focus":
         return {
           borderColor: `$${prefix}.borderColor:focus`,
         };
@@ -57,6 +57,7 @@ export const getBorderAdditionalInteraction = ({
   } as const;
 };
 
+// eslint-disable-next-line complexity
 export const getBackgroundAdditionalInteraction = ({
   internalForcedPseudoState,
   disabled,
@@ -66,7 +67,8 @@ export const getBackgroundAdditionalInteraction = ({
   const prefix =
     interactive === "text"
       ? "interactive.forms"
-      : `interactive.${variant || "contained"}`;
+      : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        `interactive.${variant || "contained"}`;
 
   if (disabled) {
     return {
@@ -80,11 +82,11 @@ export const getBackgroundAdditionalInteraction = ({
         return {
           backgroundColor: `$${prefix}.backgroundColor:hover`,
         };
-      case `press`:
+      case "press":
         return {
           backgroundColor: `$${prefix}.backgroundColor:press`,
         };
-      case `focus`:
+      case "focus":
         return {
           backgroundColor: `$${prefix}.backgroundColor:focus`,
         };

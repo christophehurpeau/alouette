@@ -34,7 +34,8 @@ export const withBackground = (
 
   return {
     backgroundColor: props.interactive
-      ? `$interactive.${variant}.backgroundColor`
+      ? // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        `$interactive.${variant}.backgroundColor`
       : "$mainColor",
 
     ...(props.interactive
@@ -72,18 +73,20 @@ export const circular = {
 } as const;
 
 export const interactive = (
-  isInteractiveOrInteractiveCursorType: boolean | ViewStyle["cursor"],
+  isInteractiveOrInteractiveCursorType: ViewStyle["cursor"] | boolean,
   { props }: VariantSpreadExtras<any>,
-) =>
-  isInteractiveOrInteractiveCursorType
-    ? ({
-        cursor: props.disabled
-          ? "not-allowed"
-          : isInteractiveOrInteractiveCursorType === true
-            ? "pointer"
-            : isInteractiveOrInteractiveCursorType,
-      } as const)
-    : null;
+) => {
+  if (!isInteractiveOrInteractiveCursorType) return null;
+  if (props.disabled) {
+    return { cursor: "not-allowed" } as const;
+  }
+  return {
+    cursor:
+      isInteractiveOrInteractiveCursorType === true
+        ? "pointer"
+        : isInteractiveOrInteractiveCursorType,
+  } as const;
+};
 
 export const centered = {
   true: {

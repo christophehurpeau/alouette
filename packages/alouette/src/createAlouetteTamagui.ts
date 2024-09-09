@@ -34,7 +34,6 @@ export const createAlouetteTamagui = <
   tokens: Tokens,
   themes: Themes,
   options: AlouetteTamaguiOptions,
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 ) => {
   return createTamagui({
     fonts: createAlouetteFonts(options.fonts),

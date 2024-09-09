@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { VStack } from "../primitives/stacks";
 import { Story } from "../story-components/Story";
 import type { MessageProps } from "./Message";
 import { Message } from "./Message";
-import { VStack } from "../primitives/stacks";
 
 type ThisStory = StoryObj<typeof Message>;
 
@@ -45,7 +45,7 @@ export const MessageStory: ThisStory = {
       </Story.Section>
       <Story.Section title="Edge Cases">
         <VStack gap="$1">
-          <Message theme="info" textCentered>
+          <Message textCentered theme="info">
             "textCentered" Example Message with very very very very very very
             very very very very very very very very very very very very very
             very very very long text

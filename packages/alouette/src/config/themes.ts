@@ -67,7 +67,7 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
   backgroundColor?: Variable<string>,
   textColor?: Variable<string>,
   contrastTextColor?: Variable<string>,
-  // eslint-disable-next-line @typescript-eslint/max-params, @typescript-eslint/explicit-module-boundary-types
+  // eslint-disable-next-line @typescript-eslint/max-params
 ) => {
   const alouetteTokens: ReturnType<
     typeof createAlouetteTokens<AlouetteColorScales>
@@ -126,7 +126,6 @@ export const createAlouetteThemes = <
   const ColorScales extends AlouetteColorScales,
 >(
   tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>,
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 ) => {
   const alouetteTokens: ReturnType<
     typeof createAlouetteTokens<AlouetteColorScales>

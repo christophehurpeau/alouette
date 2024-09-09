@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Story } from "../story-components/Story";
-import { InputText } from "./InputText";
 import { StoryGrid } from "../story-components/StoryGrid";
+import { InputText } from "./InputText";
 
 export default {
   title: "alouette/forms/InputText",
@@ -23,9 +23,9 @@ export const InputTextStory: StoryObj = {
         ).map((theme) => (
           <Story.SubSection
             key={theme}
+            withBackground
             title={theme}
             theme={theme}
-            withBackground
           >
             <StoryGrid.Row flexWrap>
               {(

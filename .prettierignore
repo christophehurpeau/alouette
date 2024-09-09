@@ -1,7 +1,7 @@
 CHANGELOG.md
 /.yarn/**/*
-packages/*/.tamagui
-packages/*/dist
-packages/alouette-icons/src/phosphor-icons.cjs
-packages/alouette-icons/src/phosphor-icons.d.ts
-packages/alouette-icons/src/phosphor-icons.ts
+/packages/*/.tamagui
+/packages/*/dist
+/packages/alouette-icons/lib/phosphor-icons.cjs
+/packages/alouette-icons/lib/phosphor-icons.d.ts
+/packages/alouette-icons/lib/phosphor-icons.mjs

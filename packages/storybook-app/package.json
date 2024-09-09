@@ -17,7 +17,7 @@
   "scripts": {
     "build-storybook": "storybook build",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn ../.. run eslint --report-unused-disable-directives --resolve-plugins-relative-to . --quiet packages/storybook-app",
+    "lint:eslint": "yarn ../.. run eslint --quiet packages/storybook-app",
     "start": "yarn storybook",
     "storybook": "storybook dev -p 6006"
   },
@@ -47,8 +47,6 @@
     "@tamagui/vite-plugin": "1.110.2",
     "@types/prop-types": "15.7.12",
     "@vitejs/plugin-react": "4.3.1",
-    "eslint": "9.10.0",
-    "eslint-plugin-storybook": "0.8.0",
     "storybook": "8.2.9",
     "tsx": "4.19.0",
     "typescript": "5.5.4",

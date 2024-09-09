@@ -9,11 +9,7 @@
       "eslint": true,
       "testRunner": "vitest",
       "testing": {},
-      "packageNames": [
-        "alouette",
-        "alouette-icons",
-        "storybook-app"
-      ]
+      "packageNames": ["alouette-icons", "alouette", "storybook-app"]
     },
     "project": {
       "type": "lib",

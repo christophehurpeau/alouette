@@ -21,7 +21,7 @@ export const PressableStory: ThisStory = {
       }
     >
       <Story.Section title="With Background">
-        <PressableBox role="button" withBackground theme="primary" padding="$4">
+        <PressableBox withBackground role="button" theme="primary" padding="$4">
           <Typography contrast>With Background</Typography>
         </PressableBox>
       </Story.Section>

@@ -2,6 +2,7 @@
   "name": "alouette-icons",
   "version": "1.0.0-beta.2",
   "description": "icons for alouette",
+  "keywords": [],
   "author": "Christophe Hurpeau <302891+christophehurpeau@users.noreply.github.com> (https://christophe.hurpeau.com)",
   "license": "UNLICENSED",
   "repository": {
@@ -29,10 +30,19 @@
       "browser": "./lib/phosphor-icons.mjs"
     }
   },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "lint": "yarn run lint:eslint",
+    "lint:eslint": "yarn ../.. run eslint --quiet packages/alouette-icons",
+    "test": "yarn ../../ run test -- packages/alouette-icons"
+  },
   "pob": {
     "entries": [
       "phosphor-icons"
-    ]
+    ],
+    "typescript": "check-only"
   },
   "prettier": "@pob/root/prettier-config",
   "peerDependencies": {
