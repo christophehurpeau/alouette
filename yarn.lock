@@ -2864,10 +2864,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@phosphor-icons/core@npm:2.0.8":
-  version: 2.0.8
-  resolution: "@phosphor-icons/core@npm:2.0.8"
-  checksum: 10c0/000586c248ab20de587d26a61141069c7b5b3862e3f432c6c9b81b8cf23fd08f3ac40db7d48eb913a8ed7870973b2699001fc0574c6ca9ff47ed65dd0ea93ad8
+"@phosphor-icons/core@npm:2.1.1":
+  version: 2.1.1
+  resolution: "@phosphor-icons/core@npm:2.1.1"
+  checksum: 10c0/0a92d8f1811c450b8ce12becbb520522784ffeb781a2cd33771d716901909fb4dfeb6d88243cbf3712c404f11479764c1dcd443a141d5dad416b41f7251e44d7
   languageName: node
   linkType: hard
 
@@ -6448,7 +6448,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "alouette-icons@workspace:packages/alouette-icons"
   dependencies:
-    "@phosphor-icons/core": "npm:2.0.8"
+    "@phosphor-icons/core": "npm:2.1.1"
     react-native: "npm:0.74.3"
   peerDependencies:
     react: ^18.2.0
