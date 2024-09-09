@@ -1655,16 +1655,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chromatic-com/storybook@npm:1.6.0":
-  version: 1.6.0
-  resolution: "@chromatic-com/storybook@npm:1.6.0"
+"@chromatic-com/storybook@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@chromatic-com/storybook@npm:1.8.0"
   dependencies:
     chromatic: "npm:^11.4.0"
     filesize: "npm:^10.0.12"
     jsonfile: "npm:^6.1.0"
     react-confetti: "npm:^6.1.0"
     strip-ansi: "npm:^7.1.0"
-  checksum: 10c0/b9b6d5e8c5ed9fd0e065c0f40ef9c8269f64436e098255e141dcf5399552c9322c5034a9c32b7af6b324110cd3c8f0879be39060db86d504dd2a4dea39afa166
+  checksum: 10c0/90f6c95eb498640a5f0006bcf71e9cd63890fcacba493ac2ad6bc37813ba32424f8df79d4d017fdb4dadbcbffa8c4c849f151404b7b4d5740df41cf4c223b376
   languageName: node
   linkType: hard
 
@@ -14927,7 +14927,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "storybook-app@workspace:packages/storybook-app"
   dependencies:
-    "@chromatic-com/storybook": "npm:1.6.0"
+    "@chromatic-com/storybook": "npm:1.8.0"
     "@storybook/addon-essentials": "npm:8.1.11"
     "@storybook/addon-interactions": "npm:8.1.11"
     "@storybook/addon-links": "npm:8.1.11"
