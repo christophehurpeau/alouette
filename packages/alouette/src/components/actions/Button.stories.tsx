@@ -23,6 +23,20 @@ export const ButtonStory: ThisStory = {
         />
       }
     >
+      <Story.Section title="Sizes">
+        <StoryGrid.Row>
+          {(["sm", "md"] as const).map((size) => (
+            <StoryGrid.Col key={size}>
+              <Button
+                variant="contained"
+                size={size}
+                icon={<ArrowLeftRegularIcon />}
+                text={size}
+              />
+            </StoryGrid.Col>
+          ))}
+        </StoryGrid.Row>
+      </Story.Section>
       <Story.Section title="Variants">
         {(
           [
