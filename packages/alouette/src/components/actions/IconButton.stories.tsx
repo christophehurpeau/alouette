@@ -17,6 +17,16 @@ export const IconButtonStory: ThisStory = {
     <Story
       preview={<IconButton theme="dark" icon={<ArrowLeftRegularIcon />} />}
     >
+      <Story.Section title="Size">
+        <StoryGrid.Row>
+          {([24, 40] as const).map((size) => (
+            <StoryGrid.Col key={size} title={size.toString()}>
+              <IconButton size={size} icon={<ArrowLeftRegularIcon />} />
+            </StoryGrid.Col>
+          ))}
+        </StoryGrid.Row>
+      </Story.Section>
+
       <Story.Section title="Variants">
         {(
           [
