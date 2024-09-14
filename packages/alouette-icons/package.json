@@ -1,6 +1,6 @@
 {
   "name": "alouette-icons",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "icons for alouette",
   "keywords": [],
   "author": "Christophe Hurpeau <302891+christophehurpeau@users.noreply.github.com> (https://christophe.hurpeau.com)",
@@ -31,7 +31,8 @@
     }
   },
   "files": [
-    "lib"
+    "lib",
+    "phosphor-icons.js"
   ],
   "scripts": {
     "lint": "yarn run lint:eslint",
