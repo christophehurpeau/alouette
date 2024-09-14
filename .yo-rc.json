@@ -4,11 +4,11 @@
       "enable": true
     },
     "monorepo": {
-      "ci": false,
+      "ci": true,
+      "testing": false,
+      "documentation": false,
       "typescript": true,
       "eslint": true,
-      "testRunner": "vitest",
-      "testing": {},
       "packageNames": ["alouette-icons", "alouette", "storybook-app"]
     },
     "project": {

@@ -2,7 +2,7 @@
   "pob": {
     "lib": {
       "documentation": false,
-      "testing": {}
+      "testing": false
     },
     "project": {
       "type": "lib"

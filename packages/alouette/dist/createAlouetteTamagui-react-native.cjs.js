@@ -18,6 +18,9 @@ const animations = animationsReactNative.createAnimations({
     stiffness: 250
   }
 });
+if ("navigator" in global) {
+  throw new Error("animations native is loaded in web");
+}
 
 const defaultHeadingFontSizes = {
   xl: 48,

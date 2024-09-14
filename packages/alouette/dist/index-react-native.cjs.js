@@ -314,9 +314,19 @@ const ButtonFrame = core.styled(PressableBox, {
   role: "button",
   centered: true,
   minHeight: 42,
-  borderRadius: "$sm",
-  paddingHorizontal: "$md",
   variants: {
+    size: {
+      sm: {
+        paddingHorizontal: "$sm",
+        borderRadius: "$3",
+        minHeight: 32
+      },
+      md: {
+        paddingHorizontal: "$md",
+        borderRadius: "$sm",
+        minHeight: 42
+      }
+    },
     variant: {
       contained: {
         withBackground: true
@@ -328,37 +338,49 @@ const ButtonFrame = core.styled(PressableBox, {
     }
   },
   defaultVariants: {
-    variant: "contained"
+    variant: "contained",
+    size: "md"
   }
 });
 function Button({
   icon,
   text,
   disabled,
-  variant,
+  variant = "contained",
+  size = "md",
   ...pressableProps
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(ButtonFrame, { disabled, variant, ...pressableProps, children: /* @__PURE__ */ jsxRuntime.jsxs(HStack, { gap: "$xs", alignItems: "center", children: [
-    icon && /* @__PURE__ */ jsxRuntime.jsx(
-      Icon,
-      {
-        color: disabled ? "$contrastDisabled" : void 0,
-        contrast: variant === "contained" && !disabled,
-        icon
-      }
-    ),
-    /* @__PURE__ */ jsxRuntime.jsx(
-      Typography,
-      {
-        size: "md",
-        weight: "bold",
-        paddingVertical: "$xs",
-        color: disabled ? "$contrastDisabled" : void 0,
-        contrast: variant === "contained" && !disabled,
-        children: text
-      }
-    )
-  ] }) });
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    ButtonFrame,
+    {
+      disabled,
+      variant,
+      size,
+      ...pressableProps,
+      children: /* @__PURE__ */ jsxRuntime.jsxs(HStack, { gap: "$xs", alignItems: "center", children: [
+        icon && /* @__PURE__ */ jsxRuntime.jsx(
+          Icon,
+          {
+            color: disabled ? "$contrastDisabled" : void 0,
+            contrast: variant === "contained" && !disabled,
+            icon,
+            size: size === "sm" ? 16 : 20
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          Typography,
+          {
+            size,
+            weight: "bold",
+            paddingVertical: size === "sm" ? "$1" : "$xs",
+            color: disabled ? "$contrastDisabled" : void 0,
+            contrast: variant === "contained" && !disabled,
+            children: text
+          }
+        )
+      ] })
+    }
+  );
 }
 
 function FeedbackIcon({ type }) {

@@ -23,13 +23,7 @@
     "lint:prettier": "pob-root-prettier --check .",
     "lint:prettier:fix": "pob-root-prettier --write .",
     "postinstall": "pob-root-postinstall",
-    "preversion": "yarn run lint && true && repository-check-dirty",
     "storybook": "yarn ./packages/storybook-app start",
-    "test": "vitest",
-    "test:coverage": "POB_VITEST_COVERAGE=json,text vitest run --coverage",
-    "test:coverage:json": "POB_VITEST_COVERAGE=json vitest run --coverage",
-    "test:coverage:lcov": "POB_VITEST_COVERAGE=lcovvitest run --coverage",
-    "test:watch": "vitest --watch",
     "tsc": "tsc -b",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
@@ -44,11 +38,10 @@
     "@pob/eslint-config": "58.1.0",
     "@pob/eslint-config-typescript-react": "58.1.0",
     "@pob/root": "13.2.0",
-    "@vitest/coverage-v8": "2.0.5",
     "check-package-dependencies": "7.2.0",
     "eslint": "9.10.0",
     "eslint-plugin-storybook": "0.8.0",
-    "typescript": "5.5.4",
-    "vitest": "2.0.5"
+    "rollup": "4.21.3",
+    "typescript": "5.5.4"
   }
 }
