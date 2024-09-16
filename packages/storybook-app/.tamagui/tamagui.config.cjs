@@ -21256,8 +21256,8 @@ function useAnimatedNumber(initial) {
       return state.current.val._value;
     },
     stop() {
-      var _a;
-      (_a = state.current.composite) == null ? void 0 : _a.stop(), state.current.composite = null;
+      var _a2;
+      (_a2 = state.current.composite) == null ? void 0 : _a2.stop(), state.current.composite = null;
     },
     setValue(next, {
       type,
@@ -21265,13 +21265,13 @@ function useAnimatedNumber(initial) {
     } = {
       type: "spring"
     }, onFinish) {
-      var _a, _b;
+      var _a2, _b;
       const val = state.current.val, handleFinish = onFinish ? ({
         finished
       }) => finished ? onFinish() : null : void 0;
       if (type === "direct") val.setValue(next);
       else if (type === "spring") {
-        (_a = state.current.composite) == null ? void 0 : _a.stop();
+        (_a2 = state.current.composite) == null ? void 0 : _a2.stop();
         const composite = import_react_native_web.Animated.spring(val, {
           ...config2,
           toValue: next,
@@ -21328,7 +21328,7 @@ function createAnimations(animations2) {
       presence
     }) => {
       const isExiting = (presence == null ? void 0 : presence[0]) === false, sendExitComplete = presence == null ? void 0 : presence[1], animateStyles = import_react2.default.useRef({}), animatedTranforms = import_react2.default.useRef([]), animationsState = import_react2.default.useRef(/* @__PURE__ */ new WeakMap()), animateOnly = props.animateOnly || [], hasAnimateOnly = !!props.animateOnly, args = [JSON.stringify(style), componentState, isExiting, !!onDidAnimate], isThereNoNativeStyleKeys = import_react2.default.useMemo(() => isWeb ? true : Object.keys(style).some((key) => animateOnly.length ? !animatedStyleKey[key] && animateOnly.indexOf(key) === -1 : !animatedStyleKey[key]), args), res = import_react2.default.useMemo(() => {
-        var _a;
+        var _a2;
         const runners = [], completions = [], nonAnimatedStyle = {};
         for (const key in style) {
           const val = style[key];
@@ -21351,7 +21351,7 @@ function createAnimations(animations2) {
             }
             for (const [index, transform] of val.entries()) {
               if (!transform) continue;
-              const tkey = Object.keys(transform)[0], currentTransform = (_a = animatedTranforms.current[index]) == null ? void 0 : _a[tkey];
+              const tkey = Object.keys(transform)[0], currentTransform = (_a2 = animatedTranforms.current[index]) == null ? void 0 : _a2[tkey];
               animatedTranforms.current[index] = {
                 [tkey]: update(tkey, currentTransform, transform[tkey])
               }, animatedTranforms.current = [...animatedTranforms.current];
@@ -21360,12 +21360,12 @@ function createAnimations(animations2) {
         }
         const animatedStyle = {
           ...Object.fromEntries(Object.entries(animateStyles.current).map(([k, v]) => {
-            var _a2;
-            return [k, ((_a2 = animationsState.current.get(v)) == null ? void 0 : _a2.interpolation) || v];
+            var _a3;
+            return [k, ((_a3 = animationsState.current.get(v)) == null ? void 0 : _a3.interpolation) || v];
           })),
           transform: animatedTranforms.current.map((r) => {
-            var _a2;
-            const key = Object.keys(r)[0], val = ((_a2 = animationsState.current.get(r[key])) == null ? void 0 : _a2.interpolation) || r[key];
+            var _a3;
+            const key = Object.keys(r)[0], val = ((_a3 = animationsState.current.get(r[key])) == null ? void 0 : _a3.interpolation) || r[key];
             return {
               [key]: val
             };
@@ -21455,13 +21455,13 @@ function getInterpolated(current, next, postfix = "deg") {
 }
 __name(getInterpolated, "getInterpolated");
 function getAnimationConfig(key, animations2, animation) {
-  var _a, _b;
+  var _a2, _b;
   if (typeof animation == "string") return animations2[animation];
   let type = "", extraConf;
   const shortKey = transformShorthands[key];
   if (Array.isArray(animation)) {
     type = animation[0];
-    const conf = ((_a = animation[1]) == null ? void 0 : _a[key]) ?? ((_b = animation[1]) == null ? void 0 : _b[shortKey]);
+    const conf = ((_a2 = animation[1]) == null ? void 0 : _a2[key]) ?? ((_b = animation[1]) == null ? void 0 : _b[shortKey]);
     conf && (typeof conf == "string" ? type = conf : (type = conf.type || type, extraConf = conf));
   } else {
     const val = (animation == null ? void 0 : animation[key]) ?? (animation == null ? void 0 : animation[shortKey]);
@@ -21513,6 +21513,16 @@ var animations = createAnimations({
     stiffness: 250
   }
 });
+var _a;
+if ("navigator" in global) {
+  const navigator2 = global.navigator;
+  if (!((_a = navigator2.userAgent) == null ? void 0 : _a.startsWith("Node.js"))) {
+    throw new Error(
+      `animations native is loaded in web: ${// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      navigator2.appName || navigator2.product || navigator2.userAgent}`
+    );
+  }
+}
 var defaultHeadingFontSizes = {
   xl: 48,
   lg: 40,

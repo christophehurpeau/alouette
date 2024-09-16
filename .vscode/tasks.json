@@ -4,6 +4,18 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "build",
+      "type": "shell",
+      "command": "yarn build",
+      "options": {
+        "cwd": "${workspaceFolder}/packages/alouette"
+      },
+      "group": {
+        "kind": "none"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "storybook-app",
       "type": "shell",
       "command": "yarn start",
@@ -13,6 +25,7 @@
       "group": {
         "kind": "none"
       },
+      "dependsOn": ["build"],
       "problemMatcher": []
     }
   ]
