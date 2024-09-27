@@ -41,7 +41,7 @@
     "check-package-dependencies": "7.2.0",
     "eslint": "9.11.1",
     "eslint-plugin-storybook": "0.9.0",
-    "rollup": "4.22.4",
+    "rollup": "4.22.5",
     "typescript": "5.5.4"
   }
 }
