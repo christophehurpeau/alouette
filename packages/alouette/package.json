@@ -100,7 +100,7 @@
     "type-fest": "4.26.1"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "4.0.0",
+    "@pob/rollup-esbuild": "4.1.0",
     "react": "18.3.1",
     "react-native": "0.75.2",
     "react-native-svg": "15.7.1",
