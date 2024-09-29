@@ -2,20 +2,20 @@ import type { SizeTokens, VariantSpreadExtras, ViewStyle } from "@tamagui/core";
 import type { InternalPseudoState } from "../primitives/createVariants";
 export declare const internalForcedPseudoState: (val: InternalPseudoState) => {};
 export declare const withBorder: (val: SizeTokens | boolean, { props }: VariantSpreadExtras<any>) => {
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber;
     readonly borderColor: "$borderColor";
 } | {
     readonly borderColor: "$interactive.forms.borderColor:disabled" | "$interactive.borderColor:disabled";
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber;
 } | {
     readonly borderColor: string;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber;
 } | {
     readonly borderColor: "$interactive.forms.borderColor" | "$interactive.borderColor";
     readonly hoverStyle: {
@@ -27,7 +27,7 @@ export declare const withBorder: (val: SizeTokens | boolean, { props }: VariantS
     readonly focusStyle: {
         readonly borderColor: "$interactive.forms.borderColor:focus" | "$interactive.borderColor:focus";
     };
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber;
 };
 export declare const withBackground: (val: boolean, { props }: VariantSpreadExtras<any>) => {};
 export declare const size: (val: number) => {
@@ -39,12 +39,12 @@ export declare const circular: {
         borderRadius: number;
         padding: number;
     } | {
-        width: import("@tamagui/core").VariableVal;
-        height: import("@tamagui/core").VariableVal;
-        maxWidth: import("@tamagui/core").VariableVal;
-        maxHeight: import("@tamagui/core").VariableVal;
-        minWidth: import("@tamagui/core").VariableVal;
-        minHeight: import("@tamagui/core").VariableVal;
+        width: import("@tamagui/web").VariableVal;
+        height: import("@tamagui/web").VariableVal;
+        maxWidth: import("@tamagui/web").VariableVal;
+        maxHeight: import("@tamagui/web").VariableVal;
+        minWidth: import("@tamagui/web").VariableVal;
+        minHeight: import("@tamagui/web").VariableVal;
         borderRadius: number;
         padding: number;
     };
