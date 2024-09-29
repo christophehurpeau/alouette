@@ -1,1 +1,1 @@
-{"version":3,"file":"Box.d.ts","sourceRoot":"","sources":["../../../../src/components/containers/Box.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,QAAQ,EAAE,MAAM,eAAe,CAAC;AAI9C,kCAAkC;AAClC,eAAO,MAAM,GAAG;;;;;;;;8CAIL,CAAC;AAEZ,MAAM,MAAM,QAAQ,GAAG,QAAQ,CAAC,OAAO,GAAG,CAAC,CAAC"}
+{"version":3,"file":"Box.d.ts","sourceRoot":"","sources":["../../../../src/components/containers/Box.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,QAAQ,EAAE,MAAM,eAAe,CAAC;AAI9C,kCAAkC;AAClC,eAAO,MAAM,GAAG;;;;;;;;6CAIL,CAAC;AAEZ,MAAM,MAAM,QAAQ,GAAG,QAAQ,CAAC,OAAO,GAAG,CAAC,CAAC"}
