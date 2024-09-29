@@ -24,7 +24,7 @@ export const ButtonStory: ThisStory = {
       }
     >
       <Story.Section title="Sizes">
-        <StoryGrid.Row>
+        <StoryGrid.Row flexWrap>
           {(["sm", "md"] as const).map((size) => (
             <StoryGrid.Col key={size}>
               <Button
