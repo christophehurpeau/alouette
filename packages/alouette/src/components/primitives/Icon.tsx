@@ -22,11 +22,14 @@ export function Icon({
   color = contrast ? "$contrastTextColor" : "$textColor",
   ...props
 }: IconProps): ReactNode {
-  const style = useStyle({
-    color,
-    // if needed for native
-    // resolveValues: Platform.OS === 'web' ? undefined: 'value',
-  });
+  const style = useStyle(
+    {
+      color,
+      // if needed for native
+      // resolveValues: Platform.OS === 'web' ? undefined: 'value',
+    },
+    {},
+  );
 
   // if needed for native
   // const clonedIcon = cloneElement(icon, { style });

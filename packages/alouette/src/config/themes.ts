@@ -143,6 +143,12 @@ export const createAlouetteThemes = <
     light_danger: createColorTheme(alouetteTokens, "danger"),
     light_primary: createColorTheme(alouetteTokens, "primary"),
 
+    dark: createColorTheme(
+      alouetteTokens,
+      "grayscale",
+      alouetteTokens.color.black,
+      alouetteTokens.color.white,
+    ),
     // dark: createRootTheme({
     //   backgroundColor: alouetteTokens.color.black,
     //   textColor: alouetteTokens.color.white,

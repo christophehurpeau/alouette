@@ -22,6 +22,7 @@ export const createColorScale = <const T extends AlouetteColorScale>(
 
 export type AlouetteColorScaleNames =
   | "danger"
+  | "darkscale"
   | "grayscale"
   | "info"
   | "primary"
@@ -51,6 +52,18 @@ export const defaultColorScales: AlouetteColorScales = {
     8: "#9c9a92",
     9: "#8e8c83",
     10: "#74726a",
+  }),
+  darkscale: createColorScale({
+    1: "#1a1a1a",
+    2: "#333333",
+    3: "#4d4d4d",
+    4: "#666666",
+    5: "#808080",
+    6: "#999999",
+    7: "#b3b3b3",
+    8: "#cccccc",
+    9: "#e6e6e6",
+    10: "#ffffff",
   }),
   success: createColorScale({
     1: "#f0f9f3",
