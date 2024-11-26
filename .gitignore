@@ -14,9 +14,6 @@ yarn-error.log*
 *.sublime-project
 *.sublime-workspace
 
-# default coverage directory
-/coverage
-
 # Typescript
 tsbuildinfo
 

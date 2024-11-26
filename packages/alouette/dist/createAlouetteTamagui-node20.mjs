@@ -346,4 +346,4 @@ const createAlouetteTamagui = (tokens, themes, options = {}) => {
 };
 
 export { createAlouetteTamagui, createAlouetteThemes, createAlouetteTokens, createColorScale, createColorTheme, defaultColorScales };
-//# sourceMappingURL=createAlouetteTamagui-node18.mjs.map
+//# sourceMappingURL=createAlouetteTamagui-node20.mjs.map
