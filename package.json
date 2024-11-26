@@ -6,7 +6,7 @@
   "repository": "https://github.com/christophehurpeau/alouette.git",
   "homepage": "https://github.com/christophehurpeau/alouette",
   "type": "module",
-  "packageManager": "yarn@4.5.2",
+  "packageManager": "yarn@4.5.3",
   "engines": {
     "node": ">=20.9.0"
   },
