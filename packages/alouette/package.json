@@ -97,7 +97,7 @@
     "@tamagui/core": "1.117.0",
     "@tamagui/react-native-media-driver": "1.117.0",
     "alouette-icons": "1.0.0",
-    "type-fest": "4.27.1"
+    "type-fest": "4.28.0"
   },
   "devDependencies": {
     "@pob/rollup-esbuild": "5.0.0",
