@@ -3,7 +3,7 @@ import { Box } from "../containers/Box";
 import { Story } from "../story-components/Story";
 import { Typography } from "../typography/Typography";
 import { View } from "./View";
-import { HStack, VStack, Stack } from "./stacks";
+import { HStack, Stack, VStack } from "./stacks";
 
 export default {
   title: "alouette/Primitives/Stacks",

@@ -1,9 +1,10 @@
-import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
-import { styled, View, useStyle, Text, useConfiguration, useMedia, TamaguiProvider, Stack as Stack$1 } from '@tamagui/core';
-export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
-import { createContext, useContext, Children } from 'react';
-import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
-import { TextInput, ScrollView as ScrollView$1, Platform, Pressable } from 'react-native-web';
+'use strict';
+
+const jsxRuntime = require('react/jsx-runtime');
+const core = require('@tamagui/core');
+const react = require('react');
+const phosphorIcons = require('alouette-icons/phosphor-icons');
+const reactNativeWeb = require('react-native-web');
 
 const fullscreenStyle = {
   position: "absolute",
@@ -171,13 +172,13 @@ const variants$1 = {
   withBorder: withBorder
 };
 
-const Box = styled(View, {
+const Box = core.styled(core.View, {
   name: "Box",
   variants: variants$1,
   animation: "fast"
 });
 
-const PressableBox = styled(Box, {
+const PressableBox = core.styled(Box, {
   interactive: true
 });
 
@@ -189,15 +190,15 @@ function Icon({
   color = contrast ? "$contrastTextColor" : "$textColor",
   ...props
 }) {
-  const style = useStyle({
+  const style = core.useStyle({
     color
     // if needed for native
     // resolveValues: Platform.OS === 'web' ? undefined: 'value',
   });
-  return /* @__PURE__ */ jsx(Box, { ...props, centered: true, alignSelf: align, size, style, children: icon });
+  return /* @__PURE__ */ jsxRuntime.jsx(Box, { ...props, centered: true, alignSelf: align, size, style, children: icon });
 }
 
-const IconButtonFrame = styled(PressableBox, {
+const IconButtonFrame = core.styled(PressableBox, {
   name: "IconButtonFrame",
   role: "button",
   centered: true,
@@ -213,7 +214,7 @@ function IconButton({
   size = 40,
   ...pressableProps
 }) {
-  return /* @__PURE__ */ jsx(IconButtonFrame, { size, disabled, ...pressableProps, children: /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxRuntime.jsx(IconButtonFrame, { size, disabled, ...pressableProps, children: /* @__PURE__ */ jsxRuntime.jsx(
     Icon,
     {
       size: size / 2,
@@ -229,7 +230,7 @@ const variants = {
     true: fullscreenStyle
   }
 };
-const Stack = styled(View, {
+const Stack = core.styled(core.View, {
   name: "Stack",
   variants: {
     ...variants,
@@ -239,17 +240,17 @@ const Stack = styled(View, {
     }
   }
 });
-const HStack = styled(Stack, {
+const HStack = core.styled(Stack, {
   name: "HStack",
   flexDirection: "row",
   variants
 });
-const VStack = styled(Stack, {
+const VStack = core.styled(Stack, {
   name: "VStack",
   flexDirection: "column"
 });
 
-const Typography = styled(Text, {
+const Typography = core.styled(core.Text, {
   name: "Typography",
   fontFamily: "$body",
   color: "$textColor",
@@ -283,32 +284,32 @@ const Typography = styled(Text, {
     family: "body"
   }
 });
-const TypographyParagraph = styled(Typography, {
+const TypographyParagraph = core.styled(Typography, {
   name: "TypographyParagraph",
   tag: "p",
   userSelect: "auto",
   family: "body"
 });
-const TypographySizeContext = createContext(void 0);
+const TypographySizeContext = react.createContext(void 0);
 const TypographyWithContext = Typography.styleable(
   ({ size, ...props }, ref) => {
-    const ancestorSize = useContext(TypographySizeContext);
+    const ancestorSize = react.useContext(TypographySizeContext);
     const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
     if (sizeOrAncestorSizeOrDefaultSize !== size) {
-      return /* @__PURE__ */ jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsx(Typography, { ref, size, ...props }) });
+      return /* @__PURE__ */ jsxRuntime.jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsxRuntime.jsx(Typography, { ref, size, ...props }) });
     }
-    return /* @__PURE__ */ jsx(Typography, { ref, size, ...props });
+    return /* @__PURE__ */ jsxRuntime.jsx(Typography, { ref, size, ...props });
   }
 );
 const TypographyParagraphWithContext = TypographyParagraph.styleable(
   ({ size, ...props }, ref) => {
-    const ancestorSize = useContext(TypographySizeContext);
+    const ancestorSize = react.useContext(TypographySizeContext);
     const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
-    return /* @__PURE__ */ jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsx(Typography, { ref, size, ...props }) });
+    return /* @__PURE__ */ jsxRuntime.jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsxRuntime.jsx(Typography, { ref, size, ...props }) });
   }
 );
 
-const ButtonFrame = styled(PressableBox, {
+const ButtonFrame = core.styled(PressableBox, {
   name: "ButtonFrame",
   role: "button",
   centered: true,
@@ -349,15 +350,15 @@ function Button({
   size = "md",
   ...pressableProps
 }) {
-  return /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxRuntime.jsx(
     ButtonFrame,
     {
       disabled,
       variant,
       size,
       ...pressableProps,
-      children: /* @__PURE__ */ jsxs(HStack, { gap: "$xs", alignItems: "center", children: [
-        icon && /* @__PURE__ */ jsx(
+      children: /* @__PURE__ */ jsxRuntime.jsxs(HStack, { gap: "$xs", alignItems: "center", children: [
+        icon && /* @__PURE__ */ jsxRuntime.jsx(
           Icon,
           {
             color: disabled ? "$contrastDisabled" : void 0,
@@ -366,7 +367,7 @@ function Button({
             size: size === "sm" ? 16 : 20
           }
         ),
-        /* @__PURE__ */ jsx(
+        /* @__PURE__ */ jsxRuntime.jsx(
           Typography,
           {
             size,
@@ -385,17 +386,17 @@ function Button({
 function FeedbackIcon({ type }) {
   switch (type) {
     case "warning":
-      return /* @__PURE__ */ jsx(WarningCircleRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.WarningCircleRegularIcon, {});
     case "success":
-      return /* @__PURE__ */ jsx(CheckRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.CheckRegularIcon, {});
     case "danger":
-      return /* @__PURE__ */ jsx(WarningRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.WarningRegularIcon, {});
     default:
-      return /* @__PURE__ */ jsx(InfoRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.InfoRegularIcon, {});
   }
 }
 
-const MessageFrame = styled(Box, {
+const MessageFrame = core.styled(Box, {
   name: "MessageFrame",
   alignItems: "center",
   withBackground: true,
@@ -404,7 +405,7 @@ const MessageFrame = styled(Box, {
   flexDirection: "row",
   gap: "$4"
 });
-const MessageText = styled(Typography, {
+const MessageText = core.styled(Typography, {
   name: "MessageText",
   contrast: true,
   size: "md",
@@ -419,11 +420,11 @@ const MessageText = styled(Typography, {
     }
   }
 });
-const MessageIconContainer = styled(View, {
+const MessageIconContainer = core.styled(core.View, {
   name: "MessageIconContainer",
   alignItems: "center"
 });
-const MessageDismissButtonContainer = styled(View, {
+const MessageDismissButtonContainer = core.styled(core.View, {
   name: "MessageDismissButtonContainer",
   marginRight: "$2"
 });
@@ -433,14 +434,14 @@ function Message({
   children,
   onDismiss
 }) {
-  return /* @__PURE__ */ jsxs(MessageFrame, { theme, children: [
-    textCentered ? null : /* @__PURE__ */ jsx(MessageIconContainer, { children: /* @__PURE__ */ jsx(Icon, { contrast: true, icon: /* @__PURE__ */ jsx(FeedbackIcon, { type: theme }) }) }),
-    /* @__PURE__ */ jsx(MessageText, { centered: textCentered, children }),
-    onDismiss ? /* @__PURE__ */ jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsx(IconButton, { icon: /* @__PURE__ */ jsx(XRegularIcon, {}), size: 40 }) }) : null
+  return /* @__PURE__ */ jsxRuntime.jsxs(MessageFrame, { theme, children: [
+    textCentered ? null : /* @__PURE__ */ jsxRuntime.jsx(MessageIconContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { contrast: true, icon: /* @__PURE__ */ jsxRuntime.jsx(FeedbackIcon, { type: theme }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(MessageText, { centered: textCentered, children }),
+    onDismiss ? /* @__PURE__ */ jsxRuntime.jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(IconButton, { icon: /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.XRegularIcon, {}), size: 40 }) }) : null
   ] });
 }
 
-const StyledInputText = styled(TextInput, {
+const StyledInputText = core.styled(reactNativeWeb.TextInput, {
   variants: variants$1,
   padding: "$xs",
   borderRadius: "$sm",
@@ -453,18 +454,18 @@ const StyledInputText = styled(TextInput, {
   // reset browser style
   outlineStyle: "none"
 });
-const InputText = styled(StyledInputText, {
+const InputText = core.styled(StyledInputText, {
   name: "InputText",
   interactive: "text",
   theme: "primary"
   // animation: "formElement", // remove all style ?
 });
-const TextArea = styled(InputText, {
+const TextArea = core.styled(InputText, {
   multiline: true
 });
 
-const ScrollView = styled(
-  ScrollView$1,
+const ScrollView = core.styled(
+  reactNativeWeb.ScrollView,
   {
     name: "ScrollView",
     scrollEnabled: true,
@@ -481,7 +482,7 @@ const ScrollView = styled(
   }
 );
 
-const StoryTitle = styled(Typography, {
+const StoryTitle = core.styled(Typography, {
   family: "heading",
   weight: "black",
   variants: {
@@ -497,7 +498,7 @@ const StoryTitle = styled(Typography, {
   }
 });
 
-const InternalStorySection = styled(VStack, {
+const InternalStorySection = core.styled(VStack, {
   marginBottom: "$8",
   paddingHorizontal: "$4",
   marginHorizontal: "$-4",
@@ -516,8 +517,8 @@ function StorySection({
   withBackground,
   ...props
 }) {
-  return /* @__PURE__ */ jsxs(InternalStorySection, { withBackground, ...props, children: [
-    /* @__PURE__ */ jsx(StoryTitle, { level: level + 1, children: title }),
+  return /* @__PURE__ */ jsxRuntime.jsxs(InternalStorySection, { withBackground, ...props, children: [
+    /* @__PURE__ */ jsxRuntime.jsx(StoryTitle, { level: level + 1, children: title }),
     children
   ] });
 }
@@ -527,22 +528,22 @@ function SubSection({
   withBackground,
   ...props
 }) {
-  return /* @__PURE__ */ jsxs(
+  return /* @__PURE__ */ jsxRuntime.jsxs(
     InternalStorySection,
     {
       marginBottom: "$4",
       withBackground,
       ...props,
       children: [
-        /* @__PURE__ */ jsx(StoryTitle, { level: 3, children: title }),
+        /* @__PURE__ */ jsxRuntime.jsx(StoryTitle, { level: 3, children: title }),
         children
       ]
     }
   );
 }
 function Story({ preview, children }) {
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    preview && /* @__PURE__ */ jsx(StorySection, { title: "Preview", paddingBottom: "$12", children: preview }),
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    preview && /* @__PURE__ */ jsxRuntime.jsx(StorySection, { title: "Preview", paddingBottom: "$12", children: preview }),
     children
   ] });
 }
@@ -553,15 +554,15 @@ function StoryContainer({
   title,
   children
 }) {
-  return /* @__PURE__ */ jsxs(ScrollView, { theme: "light", background: "#fff", padding: "$4", children: [
-    /* @__PURE__ */ jsx(StoryTitle, { level: 1, children: title }),
+  return /* @__PURE__ */ jsxRuntime.jsxs(ScrollView, { theme: "light", background: "#fff", padding: "$4", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(StoryTitle, { level: 1, children: title }),
     children
   ] });
 }
 
 const StoryDecorator = (storyFn, { name, container }) => {
   if (container === false) return storyFn();
-  return /* @__PURE__ */ jsx(StoryContainer, { title: name, children: storyFn() });
+  return /* @__PURE__ */ jsxRuntime.jsx(StoryContainer, { title: name, children: storyFn() });
 };
 
 function StoryGridRow({
@@ -569,8 +570,8 @@ function StoryGridRow({
   breakpoint = "small",
   flexWrap
 }) {
-  return /* @__PURE__ */ jsx(
-    View,
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    core.View,
     {
       flexDirection: "column",
       ...{
@@ -582,8 +583,8 @@ function StoryGridRow({
           gap: flexWrap ? "$xs" : void 0
         }
       },
-      children: Children.map(children, (child) => /* @__PURE__ */ jsx(
-        View,
+      children: react.Children.map(children, (child) => /* @__PURE__ */ jsxRuntime.jsx(
+        core.View,
         {
           paddingTop: "$2",
           paddingBottom: "$4",
@@ -607,15 +608,15 @@ function StoryGridCol({
   children,
   platform = "all"
 }) {
-  const isNative = Platform.OS === "ios" || Platform.OS === "android";
-  if (Platform.OS === "web" && platform === "native") {
+  const isNative = reactNativeWeb.Platform.OS === "ios" || reactNativeWeb.Platform.OS === "android";
+  if (reactNativeWeb.Platform.OS === "web" && platform === "native") {
     return null;
   }
   if (isNative && platform === "web") {
     return null;
   }
-  return title ? /* @__PURE__ */ jsxs(VStack, { children: [
-    /* @__PURE__ */ jsx(StoryTitle, { level: 4, numberOfLines: 1, children: title }),
+  return title ? /* @__PURE__ */ jsxRuntime.jsxs(VStack, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(StoryTitle, { level: 4, numberOfLines: 1, children: title }),
     children
   ] }) : children;
 }
@@ -627,7 +628,7 @@ const StoryGrid = {
 function WithTamaguiConfig({
   render
 }) {
-  const config = useConfiguration();
+  const config = core.useConfiguration();
   return render(config);
 }
 
@@ -641,7 +642,7 @@ var BreakpointNameEnum = /* @__PURE__ */ ((BreakpointNameEnum2) => {
 })(BreakpointNameEnum || {});
 
 function useCurrentBreakpointName() {
-  const media = useMedia();
+  const media = core.useMedia();
   if (media.wide) return BreakpointNameEnum.WIDE;
   if (media.large) return BreakpointNameEnum.LARGE;
   if (media.medium) return BreakpointNameEnum.MEDIUM;
@@ -649,7 +650,7 @@ function useCurrentBreakpointName() {
   return BreakpointNameEnum.BASE;
 }
 function useCurrentBreakpointNameFiltered(names) {
-  const media = useMedia();
+  const media = core.useMedia();
   if (names.includes(BreakpointNameEnum.WIDE) && media.wide) {
     return BreakpointNameEnum.WIDE;
   }
@@ -670,8 +671,8 @@ function SwitchBreakpointsUsingDisplayNone({
 }) {
   const entries = Object.entries(breakpoints);
   return entries.map(([name, node], index) => {
-    return /* @__PURE__ */ jsx(
-      View,
+    return /* @__PURE__ */ jsxRuntime.jsx(
+      core.View,
       {
         display: name === "base" ? "flex" : "none",
         ...name === "base" ? void 0 : {
@@ -699,15 +700,15 @@ function AlouetteProvider({
   children,
   tamaguiConfig
 }) {
-  return /* @__PURE__ */ jsx(TamaguiProvider, { config: tamaguiConfig, defaultTheme: "light", children });
+  return /* @__PURE__ */ jsxRuntime.jsx(core.TamaguiProvider, { config: tamaguiConfig, defaultTheme: "light", children });
 }
 
 const AlouetteDecorator = (storyFn, context) => (
   // eslint-disable-next-line react/destructuring-assignment
-  /* @__PURE__ */ jsx(AlouetteProvider, { tamaguiConfig: context.parameters.tamaguiConfig, children: storyFn(context) })
+  /* @__PURE__ */ jsxRuntime.jsx(AlouetteProvider, { tamaguiConfig: context.parameters.tamaguiConfig, children: storyFn(context) })
 );
 
-const Separator = styled(Stack$1, {
+const Separator = core.styled(core.Stack, {
   name: "Separator",
   flexGrow: 1,
   flexShrink: 0,
@@ -737,19 +738,51 @@ function PressableListItem({
   children,
   onPress
 }) {
-  return /* @__PURE__ */ jsx(Pressable, { onPress, children: /* @__PURE__ */ jsxs(
+  return /* @__PURE__ */ jsxRuntime.jsx(reactNativeWeb.Pressable, { onPress, children: /* @__PURE__ */ jsxRuntime.jsxs(
     HStack,
     {
       justifyContent: "space-between",
       paddingHorizontal: "$4",
       paddingVertical: "$3",
       children: [
-        /* @__PURE__ */ jsx(View, { children }),
-        /* @__PURE__ */ jsx(Stack, { justifyContent: "center", children: /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}), size: 20 }) })
+        /* @__PURE__ */ jsxRuntime.jsx(core.View, { children }),
+        /* @__PURE__ */ jsxRuntime.jsx(Stack, { justifyContent: "center", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.CaretRightRegularIcon, {}), size: 20 }) })
       ]
     }
   ) });
 }
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, HStack, Icon, IconButton, InputText, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, TypographyParagraphWithContext, TypographyWithContext, VStack, WithTamaguiConfig, useCurrentBreakpointName };
-//# sourceMappingURL=index-node20.mjs.map
+exports.Theme = core.Theme;
+exports.View = core.View;
+exports.styled = core.styled;
+exports.withStaticProperties = core.withStaticProperties;
+exports.AlouetteDecorator = AlouetteDecorator;
+exports.AlouetteProvider = AlouetteProvider;
+exports.Box = Box;
+exports.Button = Button;
+exports.HStack = HStack;
+exports.Icon = Icon;
+exports.IconButton = IconButton;
+exports.InputText = InputText;
+exports.Message = Message;
+exports.PressableBox = PressableBox;
+exports.PressableListItem = PressableListItem;
+exports.ScrollView = ScrollView;
+exports.Separator = Separator;
+exports.Stack = Stack;
+exports.Story = Story;
+exports.StoryContainer = StoryContainer;
+exports.StoryDecorator = StoryDecorator;
+exports.StoryGrid = StoryGrid;
+exports.StoryTitle = StoryTitle;
+exports.SwitchBreakpointsUsingDisplayNone = SwitchBreakpointsUsingDisplayNone;
+exports.SwitchBreakpointsUsingNull = SwitchBreakpointsUsingNull;
+exports.TextArea = TextArea;
+exports.Typography = Typography;
+exports.TypographyParagraph = TypographyParagraph;
+exports.TypographyParagraphWithContext = TypographyParagraphWithContext;
+exports.TypographyWithContext = TypographyWithContext;
+exports.VStack = VStack;
+exports.WithTamaguiConfig = WithTamaguiConfig;
+exports.useCurrentBreakpointName = useCurrentBreakpointName;
+//# sourceMappingURL=index-node20.cjs.map

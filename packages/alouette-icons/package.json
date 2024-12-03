@@ -25,7 +25,8 @@
       "types": "./lib/phosphor-icons.d.ts",
       "react-native": "./lib/phosphor-icons.cjs",
       "node": {
-        "import": "./lib/phosphor-icons.mjs"
+        "import": "./lib/phosphor-icons.mjs",
+        "require": "./lib/phosphor-icons.cjs"
       },
       "browser": "./lib/phosphor-icons.mjs"
     }
@@ -55,6 +56,6 @@
     "@phosphor-icons/core": "2.1.1"
   },
   "devDependencies": {
-    "react-native": "0.75.2"
+    "react-native": "0.75.4"
   }
 }

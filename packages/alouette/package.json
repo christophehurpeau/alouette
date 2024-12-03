@@ -29,7 +29,8 @@
     ".": {
       "types": "./dist/definitions/index.d.ts",
       "node": {
-        "import": "./dist/index-node20.mjs"
+        "import": "./dist/index-node20.mjs",
+        "require": "./dist/index-node20.cjs"
       },
       "browser": {
         "import": "./dist/index-browser.es.js"
@@ -39,7 +40,8 @@
     "./createAlouetteTamagui": {
       "types": "./dist/definitions/createAlouetteTamagui.d.ts",
       "node": {
-        "import": "./dist/createAlouetteTamagui-node20.mjs"
+        "import": "./dist/createAlouetteTamagui-node20.mjs",
+        "require": "./dist/createAlouetteTamagui-node20.cjs"
       },
       "browser": {
         "import": "./dist/createAlouetteTamagui-browser.es.js"
@@ -69,7 +71,11 @@
     "envs": [
       {
         "target": "node",
-        "version": "20"
+        "version": "20",
+        "formats": [
+          "cjs",
+          "es"
+        ]
       },
       {
         "target": "browser"
@@ -92,18 +98,20 @@
     "react-native-svg": "*"
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.117.0",
-    "@tamagui/animations-react-native": "1.117.0",
-    "@tamagui/core": "1.117.0",
-    "@tamagui/react-native-media-driver": "1.117.0",
+    "@tamagui/animations-css": "1.118.1",
+    "@tamagui/animations-react-native": "1.118.1",
+    "@tamagui/core": "1.118.1",
+    "@tamagui/react-native-media-driver": "1.118.1",
     "alouette-icons": "1.0.0",
-    "type-fest": "4.28.0"
+    "type-fest": "4.30.0"
   },
   "devDependencies": {
     "@pob/rollup-esbuild": "5.0.1",
+    "@rollup/plugin-replace": "6.0.1",
+    "@types/react": "18.3.12",
     "react": "18.3.1",
-    "react-native": "0.75.2",
-    "react-native-svg": "15.9.0",
+    "react-native": "0.75.4",
+    "react-native-svg": "15.10.0",
     "typescript": "5.7.2"
   }
 }

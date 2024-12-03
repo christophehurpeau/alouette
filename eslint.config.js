@@ -2,7 +2,7 @@ import pobTypescriptReactConfig, {
   applyTs,
 } from "@pob/eslint-config-typescript-react";
 
-const { compat, configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig(
+const { configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig(
   import.meta.url,
 );
 
@@ -24,9 +24,9 @@ export default [
     configs: [
       ...pobTypescriptReactConfigs.app,
       ...pobTypescriptReactConfigs["react-native-web"],
-      ...compat.config({
-        extends: ["plugin:storybook/recommended"],
-      }),
+      // ...compat.config({
+      //   extends: ["plugin:storybook/recommended"],
+      // }),
     ],
   }),
 ];

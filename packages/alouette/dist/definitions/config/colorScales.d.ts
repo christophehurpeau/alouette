@@ -1,8 +1,6 @@
 import type { IntRange } from "type-fest";
 export type AlouetteColorScaleNumber = IntRange<1, 10>;
-export type AlouetteColorScale = {
-    [K in AlouetteColorScaleNumber]: string;
-};
+export type AlouetteColorScale = Record<AlouetteColorScaleNumber, string>;
 export declare const createColorScale: <const T extends AlouetteColorScale>(colorScale: T) => T;
 export type AlouetteColorScaleNames = "danger" | "grayscale" | "info" | "primary" | "success" | "warning";
 export type ColorScaleTokens = {

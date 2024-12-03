@@ -14,7 +14,7 @@ import type { IntRange } from "type-fest";
 
 export type AlouetteColorScaleNumber = IntRange<1, 10>;
 
-export type AlouetteColorScale = { [K in AlouetteColorScaleNumber]: string };
+export type AlouetteColorScale = Record<AlouetteColorScaleNumber, string>;
 
 export const createColorScale = <const T extends AlouetteColorScale>(
   colorScale: T,

@@ -3,8 +3,8 @@ import { View } from "@tamagui/core";
 import { Story } from "../story-components/Story";
 import {
   Typography,
-  TypographyWithContext,
   TypographyParagraphWithContext,
+  TypographyWithContext,
 } from "./Typography";
 
 type ThisStory = StoryObj<typeof Typography>;
