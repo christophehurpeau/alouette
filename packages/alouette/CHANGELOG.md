@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@7.0.0...alouette@8.0.0) (2024-12-03)
+
+### ⚠ BREAKING CHANGES
+
+* drop node 18
+
+### Features
+
+* **deps:** update dependency react-native-svg to v15.7.1 ([#81](https://github.com/christophehurpeau/alouette/issues/81)) ([9e2dac7](https://github.com/christophehurpeau/alouette/commit/9e2dac7dcd04fd6d3d7785371813d0a8453b2912))
+* **deps:** update dependency react-native-svg to v15.9.0 ([#97](https://github.com/christophehurpeau/alouette/issues/97)) ([9708d65](https://github.com/christophehurpeau/alouette/commit/9708d65227f41c6a63c1eaebdccc08954b1859e4))
+* **deps:** update dependency type-fest to v4.27.1 ([#106](https://github.com/christophehurpeau/alouette/issues/106)) ([017ecef](https://github.com/christophehurpeau/alouette/commit/017ecef48d136a11cf741150c8a5d9c9440df6b7))
+* **deps:** update dependency type-fest to v4.28.0 ([#109](https://github.com/christophehurpeau/alouette/issues/109)) ([2723fc5](https://github.com/christophehurpeau/alouette/commit/2723fc56620a6aded5402162eff1e5a85a3eeb50))
+* **deps:** update tamagui to v1.112.0 ([#73](https://github.com/christophehurpeau/alouette/issues/73)) ([11debab](https://github.com/christophehurpeau/alouette/commit/11debabc2a07e70607c6b2675c371a05afcb487f))
+* **deps:** update tamagui to v1.117.0 ([#88](https://github.com/christophehurpeau/alouette/issues/88)) ([7d94ca0](https://github.com/christophehurpeau/alouette/commit/7d94ca0e722579c33a1dbe93e72c2eb9924ce542))
+* update dependencies and build cjs ([121ed87](https://github.com/christophehurpeau/alouette/commit/121ed8748bed730826d206160399af2f1eae63fa))
+
+### Bug Fixes
+
+* add missing flexwrap in storybook ([42e6d4a](https://github.com/christophehurpeau/alouette/commit/42e6d4a7621ab4c155038b54e9b67625004edd72))
+* **deps:** update dependency type-fest to v4.26.1 ([#64](https://github.com/christophehurpeau/alouette/issues/64)) ([04f79ff](https://github.com/christophehurpeau/alouette/commit/04f79ff9821193ecf06d0563a90161bd54ae208b))
+
+### Miscellaneous Chores
+
+* update dev dependencies and update to node 20 ([28885df](https://github.com/christophehurpeau/alouette/commit/28885dfe4fae18e4159ec3c9fab23a7fc738b6c0))
+
+Version bump for dependency: alouette-icons
+
+
 ## 7.0.0 (2024-09-14)
 
 ### Features
