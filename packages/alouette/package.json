@@ -55,7 +55,8 @@
   },
   "files": [
     "src",
-    "dist"
+    "dist",
+    "createAlouetteTamagui.js"
   ],
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
