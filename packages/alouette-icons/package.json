@@ -16,19 +16,19 @@
     "node": ">=20.9.0"
   },
   "sideEffects": false,
-  "react-native": {
-    "./phosphor-icons": "./lib/phosphor-icons.cjs"
-  },
   "exports": {
     "./package.json": "./package.json",
     "./phosphor-icons": {
       "types": "./lib/phosphor-icons.d.ts",
-      "react-native": "./lib/phosphor-icons.cjs",
-      "node": {
+      "browser": "./lib/phosphor-icons.mjs",
+      "react-native": {
         "import": "./lib/phosphor-icons.mjs",
         "require": "./lib/phosphor-icons.cjs"
       },
-      "browser": "./lib/phosphor-icons.mjs"
+      "node": {
+        "import": "./lib/phosphor-icons.node.mjs",
+        "require": "./lib/phosphor-icons.node.cjs"
+      }
     }
   },
   "files": [

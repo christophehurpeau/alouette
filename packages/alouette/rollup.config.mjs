@@ -6,6 +6,12 @@ import replace from "@rollup/plugin-replace";
 export default createRollupConfig({
   cwd: dirname(fileURLToPath(import.meta.url)),
   outDirectory: "dist",
+  getExtensions: (extensions, { target }) => {
+    if (target === "react-native") {
+      return extensions;
+    }
+    return extensions.flatMap((ext) => [`.web${ext}`, `${ext}`]);
+  },
   plugins: ({ target }) =>
     target === "node" || target === "browser"
       ? [

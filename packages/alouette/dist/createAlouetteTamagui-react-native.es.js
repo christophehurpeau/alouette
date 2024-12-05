@@ -1,12 +1,30 @@
 import { createFont, createTokens, createTamagui } from '@tamagui/core';
-import { createAnimations } from '@tamagui/animations-css';
+import { createAnimations } from '@tamagui/animations-react-native';
 import { createMedia } from '@tamagui/react-native-media-driver';
 
 const animations = createAnimations({
-  fast: "ease-in 150ms",
-  formElement: "ease-in 600ms"
+  fast: {
+    type: "timing",
+    duration: 100,
+    damping: 20,
+    stiffness: 250
+  },
+  formElement: {
+    type: "timing",
+    duration: 600,
+    damping: 20,
+    stiffness: 250
+  }
 });
-console.log("animations: web");
+if ("navigator" in global) {
+  const navigator = global.navigator;
+  if (!navigator.userAgent?.startsWith("Node.js")) {
+    throw new Error(
+      `animations native is loaded in web: ${// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      navigator.appName || navigator.product || navigator.userAgent}`
+    );
+  }
+}
 
 const defaultHeadingFontSizes = {
   xl: 48,
@@ -328,4 +346,4 @@ const createAlouetteTamagui = (tokens, themes, options = {}) => {
 };
 
 export { createAlouetteTamagui, createAlouetteThemes, createAlouetteTokens, createColorScale, createColorTheme, defaultColorScales };
-//# sourceMappingURL=createAlouetteTamagui-browser.es.js.map
+//# sourceMappingURL=createAlouetteTamagui-react-native.es.js.map
