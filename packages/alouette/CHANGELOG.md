@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.7](https://github.com/christophehurpeau/alouette/compare/alouette@8.0.6...alouette@8.0.7) (2024-12-05)
+
+### Bug Fixes
+
+* add createAlouetteTamagui.js in files ([9d88c7e](https://github.com/christophehurpeau/alouette/commit/9d88c7e966e43aa4af3a257e74394b8619786dcd))
+
 ## [8.0.6](https://github.com/christophehurpeau/alouette/compare/alouette@8.0.5...alouette@8.0.6) (2024-12-05)
 
 Version bump for dependency: alouette-icons
