@@ -18,6 +18,10 @@
   "sideEffects": false,
   "main": "./dist/index-node20.mjs",
   "types": "./dist/definitions/index.d.ts",
+  "react-native": {
+    ".": "./src/index.ts",
+    "./createAlouetteTamagui": "./src/createAlouetteTamagui.ts"
+  },
   "exports": {
     "./package.json": "./package.json",
     ".": {

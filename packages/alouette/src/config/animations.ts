@@ -18,7 +18,10 @@ export const animations = createAnimations({
 if ("navigator" in global) {
   // eslint-disable-next-line n/no-unsupported-features/node-builtins
   const navigator = global.navigator as any;
-  if (!navigator.userAgent?.startsWith("Node.js")) {
+  if (
+    !navigator.userAgent?.startsWith("Node.js") &&
+    navigator.product !== "ReactNative"
+  ) {
     throw new Error(
       `animations native is loaded in web: ${
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
