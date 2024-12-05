@@ -1,14 +1,32 @@
 'use strict';
 
 const core = require('@tamagui/core');
-const animationsCss = require('@tamagui/animations-css');
+const animationsReactNative = require('@tamagui/animations-react-native');
 const reactNativeMediaDriver = require('@tamagui/react-native-media-driver');
 
-const animations = animationsCss.createAnimations({
-  fast: "ease-in 150ms",
-  formElement: "ease-in 600ms"
+const animations = animationsReactNative.createAnimations({
+  fast: {
+    type: "timing",
+    duration: 100,
+    damping: 20,
+    stiffness: 250
+  },
+  formElement: {
+    type: "timing",
+    duration: 600,
+    damping: 20,
+    stiffness: 250
+  }
 });
-console.log("animations: web");
+if ("navigator" in global) {
+  const navigator = global.navigator;
+  if (!navigator.userAgent?.startsWith("Node.js")) {
+    throw new Error(
+      `animations native is loaded in web: ${// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      navigator.appName || navigator.product || navigator.userAgent}`
+    );
+  }
+}
 
 const defaultHeadingFontSizes = {
   xl: 48,

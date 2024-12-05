@@ -7,10 +7,10 @@ export default createRollupConfig({
   cwd: dirname(fileURLToPath(import.meta.url)),
   outDirectory: "dist",
   getExtensions: (extensions, { target }) => {
-    if (target === "react-native") {
-      return extensions;
+    if (target === "browser") {
+      return extensions.flatMap((ext) => [`.web${ext}`, `${ext}`]);
     }
-    return extensions.flatMap((ext) => [`.web${ext}`, `${ext}`]);
+    return extensions;
   },
   plugins: ({ target }) =>
     target === "node" || target === "browser"
