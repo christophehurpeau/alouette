@@ -3,7 +3,7 @@ import { styled, View, useStyle, Text, useConfiguration, useMedia, TamaguiProvid
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
 import { createContext, useContext, Children } from 'react';
 import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
-import { TextInput, ScrollView as ScrollView$1, Platform, Pressable } from 'react-native-web';
+import { TextInput, ScrollView as ScrollView$1, Platform, Pressable } from 'react-native';
 
 const fullscreenStyle = {
   position: "absolute",

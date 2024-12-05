@@ -4,7 +4,7 @@ const jsxRuntime = require('react/jsx-runtime');
 const core = require('@tamagui/core');
 const react = require('react');
 const phosphorIcons = require('alouette-icons/phosphor-icons');
-const reactNativeWeb = require('react-native-web');
+const reactNative = require('react-native');
 
 const fullscreenStyle = {
   position: "absolute",
@@ -441,7 +441,7 @@ function Message({
   ] });
 }
 
-const StyledInputText = core.styled(reactNativeWeb.TextInput, {
+const StyledInputText = core.styled(reactNative.TextInput, {
   variants: variants$1,
   padding: "$xs",
   borderRadius: "$sm",
@@ -465,7 +465,7 @@ const TextArea = core.styled(InputText, {
 });
 
 const ScrollView = core.styled(
-  reactNativeWeb.ScrollView,
+  reactNative.ScrollView,
   {
     name: "ScrollView",
     scrollEnabled: true,
@@ -608,8 +608,8 @@ function StoryGridCol({
   children,
   platform = "all"
 }) {
-  const isNative = reactNativeWeb.Platform.OS === "ios" || reactNativeWeb.Platform.OS === "android";
-  if (reactNativeWeb.Platform.OS === "web" && platform === "native") {
+  const isNative = reactNative.Platform.OS === "ios" || reactNative.Platform.OS === "android";
+  if (reactNative.Platform.OS === "web" && platform === "native") {
     return null;
   }
   if (isNative && platform === "web") {
@@ -738,7 +738,7 @@ function PressableListItem({
   children,
   onPress
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(reactNativeWeb.Pressable, { onPress, children: /* @__PURE__ */ jsxRuntime.jsxs(
+  return /* @__PURE__ */ jsxRuntime.jsx(reactNative.Pressable, { onPress, children: /* @__PURE__ */ jsxRuntime.jsxs(
     HStack,
     {
       justifyContent: "space-between",

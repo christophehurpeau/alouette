@@ -13,7 +13,7 @@ export default createRollupConfig({
     return extensions;
   },
   plugins: ({ target }) =>
-    target === "node" || target === "browser"
+    target === "browser"
       ? [
           replace({
             preventAssignment: true,
