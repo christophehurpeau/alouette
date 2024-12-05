@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/christophehurpeau/alouette/compare/alouette-icons@2.0.1...alouette-icons@2.0.2) (2024-12-05)
+
+### Bug Fixes
+
+* add react-native field in package.json ([f8bf639](https://github.com/christophehurpeau/alouette/commit/f8bf6390402c9a9c25979899781b7a849d04202d))
+
 ## [2.0.1](https://github.com/christophehurpeau/alouette/compare/alouette-icons@2.0.0...alouette-icons@2.0.1) (2024-12-05)
 
 ### Bug Fixes

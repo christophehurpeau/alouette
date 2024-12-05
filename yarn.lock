@@ -4664,7 +4664,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alouette-icons@npm:2.0.1, alouette-icons@workspace:*, alouette-icons@workspace:packages/alouette-icons":
+"alouette-icons@npm:2.0.2, alouette-icons@workspace:*, alouette-icons@workspace:packages/alouette-icons":
   version: 0.0.0-use.local
   resolution: "alouette-icons@workspace:packages/alouette-icons"
   dependencies:
@@ -4704,7 +4704,7 @@ __metadata:
     "@tamagui/core": "npm:1.118.1"
     "@tamagui/react-native-media-driver": "npm:1.118.1"
     "@types/react": "npm:18.3.14"
-    alouette-icons: "npm:2.0.1"
+    alouette-icons: "npm:2.0.2"
     react: "npm:18.3.1"
     react-native: "npm:0.75.4"
     react-native-svg: "npm:15.10.0"
