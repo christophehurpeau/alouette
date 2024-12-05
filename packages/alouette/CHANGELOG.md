@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.1](https://github.com/christophehurpeau/alouette/compare/alouette@8.0.0...alouette@8.0.1) (2024-12-05)
+
+### Bug Fixes
+
+* fix dist for web ([43ddeaf](https://github.com/christophehurpeau/alouette/commit/43ddeaf1efc4989d56b248aa91aa667cdb418fa3))
+
+Version bump for dependency: alouette-icons
+
+
 ## [8.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@7.0.0...alouette@8.0.0) (2024-12-03)
 
 ### ⚠ BREAKING CHANGES

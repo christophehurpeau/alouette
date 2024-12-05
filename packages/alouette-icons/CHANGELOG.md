@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/christophehurpeau/alouette/compare/alouette-icons@2.0.0...alouette-icons@2.0.1) (2024-12-05)
+
+### Bug Fixes
+
+* fix dist for web ([43ddeaf](https://github.com/christophehurpeau/alouette/commit/43ddeaf1efc4989d56b248aa91aa667cdb418fa3))
+
 ## [2.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@1.0.0...alouette-icons@2.0.0) (2024-12-03)
 
 ### ⚠ BREAKING CHANGES
