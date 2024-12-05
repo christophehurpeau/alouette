@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.2](https://github.com/christophehurpeau/alouette/compare/alouette@8.0.1...alouette@8.0.2) (2024-12-05)
+
+### Bug Fixes
+
+* move react-native before browser ([27265f9](https://github.com/christophehurpeau/alouette/commit/27265f9f89e5692d4a1b39b25c6b1817b0b73792))
+
 ## [8.0.1](https://github.com/christophehurpeau/alouette/compare/alouette@8.0.0...alouette@8.0.1) (2024-12-05)
 
 ### Bug Fixes
