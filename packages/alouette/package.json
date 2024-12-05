@@ -38,7 +38,7 @@
       "types": "./dist/definitions/createAlouetteTamagui.d.ts",
       "react-native": {
         "import": "./dist/createAlouetteTamagui-react-native.es.js",
-        "require": "./dist/index-react-native.cjs.js"
+        "require": "./dist/createAlouetteTamagui-react-native.cjs.js"
       },
       "node": {
         "import": "./dist/createAlouetteTamagui-node20.mjs",
