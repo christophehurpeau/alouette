@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.5](https://github.com/christophehurpeau/alouette/compare/alouette@8.0.4...alouette@8.0.5) (2024-12-05)
+
+### Bug Fixes
+
+* fix for react-native update ([2d642c0](https://github.com/christophehurpeau/alouette/commit/2d642c0d42feb54275fd1b7db7309e8fb28cc96d))
+
 ## [8.0.4](https://github.com/christophehurpeau/alouette/compare/alouette@8.0.3...alouette@8.0.4) (2024-12-05)
 
 ### Bug Fixes
