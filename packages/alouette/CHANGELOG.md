@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.3](https://github.com/christophehurpeau/alouette/compare/alouette@8.0.2...alouette@8.0.3) (2024-12-05)
+
+### Bug Fixes
+
+* build node for react-native ([c050f74](https://github.com/christophehurpeau/alouette/commit/c050f74899de0bc97758bdecc00b880dbad2f865))
+* fix require path for createAlouetteTamagui ([861c551](https://github.com/christophehurpeau/alouette/commit/861c551bff575a3445f6402afb200a108ef45a36))
+
 ## [8.0.2](https://github.com/christophehurpeau/alouette/compare/alouette@8.0.1...alouette@8.0.2) (2024-12-05)
 
 ### Bug Fixes
