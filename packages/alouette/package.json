@@ -22,30 +22,30 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/definitions/index.d.ts",
+      "react-native": {
+        "import": "./dist/index-react-native.es.js",
+        "require": "./dist/index-react-native.cjs.js"
+      },
       "node": {
         "import": "./dist/index-node20.mjs",
         "require": "./dist/index-node20.cjs"
       },
       "browser": {
         "import": "./dist/index-browser.es.js"
-      },
-      "react-native": {
-        "import": "./dist/index-react-native.es.js",
-        "require": "./dist/index-react-native.cjs.js"
       }
     },
     "./createAlouetteTamagui": {
       "types": "./dist/definitions/createAlouetteTamagui.d.ts",
+      "react-native": {
+        "import": "./dist/createAlouetteTamagui-react-native.es.js",
+        "require": "./dist/index-react-native.cjs.js"
+      },
       "node": {
         "import": "./dist/createAlouetteTamagui-node20.mjs",
         "require": "./dist/createAlouetteTamagui-node20.cjs"
       },
       "browser": {
         "import": "./dist/createAlouetteTamagui-browser.es.js"
-      },
-      "react-native": {
-        "import": "./dist/createAlouetteTamagui-react-native.es.js",
-        "require": "./dist/index-react-native.cjs.js"
       }
     }
   },
@@ -69,6 +69,13 @@
     ],
     "envs": [
       {
+        "target": "react-native",
+        "formats": [
+          "cjs",
+          "es"
+        ]
+      },
+      {
         "target": "node",
         "version": "20",
         "formats": [
@@ -78,13 +85,6 @@
       },
       {
         "target": "browser"
-      },
-      {
-        "target": "react-native",
-        "formats": [
-          "cjs",
-          "es"
-        ]
       }
     ],
     "jsx": true,
