@@ -115,7 +115,7 @@
     "@rollup/plugin-replace": "6.0.2",
     "@types/react": "18.3.17",
     "react": "18.3.1",
-    "react-native": "0.75.4",
+    "react-native": "0.76.5",
     "react-native-svg": "15.10.1",
     "typescript": "5.7.2"
   }
