@@ -99,14 +99,20 @@
   "peerDependencies": {
     "alouette-icons": "*",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-native": "*",
     "react-native-svg": "*"
   },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    }
+  },
   "dependencies": {
-    "@tamagui/animations-css": "1.118.1",
-    "@tamagui/animations-react-native": "1.118.1",
-    "@tamagui/core": "1.118.1",
-    "@tamagui/react-native-media-driver": "1.118.1",
+    "@tamagui/animations-css": "1.120.1",
+    "@tamagui/animations-react-native": "1.120.1",
+    "@tamagui/core": "1.120.1",
+    "@tamagui/react-native-media-driver": "1.120.1",
     "alouette-icons": "2.0.2",
     "type-fest": "4.30.1"
   },
@@ -115,6 +121,7 @@
     "@rollup/plugin-replace": "6.0.2",
     "@types/react": "18.3.17",
     "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-native": "0.75.4",
     "react-native-svg": "15.10.1",
     "typescript": "5.7.2"
