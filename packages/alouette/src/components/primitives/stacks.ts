@@ -21,7 +21,7 @@ export const Stack = styled(View, {
 
 export type StackProps = GetProps<typeof Stack>;
 
-export const HStack = styled(Stack, {
+export const HStack = styled(View, {
   name: "HStack",
   flexDirection: "row",
   variants,
@@ -29,7 +29,7 @@ export const HStack = styled(Stack, {
 
 export type HStackProps = GetProps<typeof HStack>;
 
-export const VStack = styled(Stack, {
+export const VStack = styled(View, {
   name: "VStack",
   flexDirection: "column",
 });
