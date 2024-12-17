@@ -99,8 +99,14 @@
   "peerDependencies": {
     "alouette-icons": "*",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-native": "*",
     "react-native-svg": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@tamagui/animations-css": "1.121.8",
@@ -115,6 +121,7 @@
     "@rollup/plugin-replace": "6.0.2",
     "@types/react": "18.3.17",
     "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-native": "0.75.4",
     "react-native-svg": "15.10.1",
     "typescript": "5.7.3"

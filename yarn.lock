@@ -4733,6 +4733,7 @@ __metadata:
     "@types/react": "npm:18.3.17"
     alouette-icons: "npm:2.0.2"
     react: "npm:18.3.1"
+    react-dom: "npm:18.3.1"
     react-native: "npm:0.75.4"
     react-native-svg: "npm:15.10.1"
     type-fest: "npm:4.30.1"
@@ -4740,8 +4741,12 @@ __metadata:
   peerDependencies:
     alouette-icons: "*"
     react: ^18.2.0
+    react-dom: ^18.2.0
     react-native: "*"
     react-native-svg: "*"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
   languageName: unknown
   linkType: soft
 
