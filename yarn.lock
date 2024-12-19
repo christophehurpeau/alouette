@@ -2252,12 +2252,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pob/rollup-esbuild@npm:5.2.1":
-  version: 5.2.1
-  resolution: "@pob/rollup-esbuild@npm:5.2.1"
+"@pob/rollup-esbuild@npm:5.3.0":
+  version: 5.3.0
+  resolution: "@pob/rollup-esbuild@npm:5.3.0"
   dependencies:
     "@pob/rollup": "npm:5.0.3"
-    "@rollup/plugin-node-resolve": "npm:15.3.0"
+    "@rollup/plugin-node-resolve": "npm:16.0.0"
     "@rollup/plugin-run": "npm:3.1.0"
     esbuild: "npm:0.24.0"
     rollup: "npm:4.28.1"
@@ -2272,7 +2272,7 @@ __metadata:
   bin:
     pob-esbuild-clean-out: ./bin/pob-esbuild-clean-out.js
     rollup: ./bin/rollup.cjs
-  checksum: 10c0/2d92022c98882a30a7e526bb3f7ff64ef456ab59991c1b7d2f2aae4f8930e9ef15077772822e151c788dda84baf500233024a5a69dd09c412c103f12704f36f9
+  checksum: 10c0/e9fdee818602a8aa4288845c60734cb9a172049e0ed2ddd497c58d73621f63718bee81fe256ddefc67402900d61fa8e7f0e8ec2a134e657922dbde353c866925
   languageName: node
   linkType: hard
 
@@ -2712,9 +2712,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-node-resolve@npm:15.3.0":
-  version: 15.3.0
-  resolution: "@rollup/plugin-node-resolve@npm:15.3.0"
+"@rollup/plugin-node-resolve@npm:16.0.0":
+  version: 16.0.0
+  resolution: "@rollup/plugin-node-resolve@npm:16.0.0"
   dependencies:
     "@rollup/pluginutils": "npm:^5.0.1"
     "@types/resolve": "npm:1.20.2"
@@ -2726,7 +2726,7 @@ __metadata:
   peerDependenciesMeta:
     rollup:
       optional: true
-  checksum: 10c0/5f3b11f9f6d00fe9fd3fe1977cc71f6a99c2b13d0ee82ad6822c4c4ecfc98854791c5a505798762f7e2332d9d67568a561e89aa8268ed3b1668563be1845109e
+  checksum: 10c0/b63deb6fc14b37070ccaffacc8c10c9720f28ce7632f4fe2ee77064c0c79bcc3fe060fb77160e673c9fd847307252f25a2983030bd54f1888324063c69ae1399
   languageName: node
   linkType: hard
 
@@ -4706,7 +4706,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "alouette@workspace:packages/alouette"
   dependencies:
-    "@pob/rollup-esbuild": "npm:5.2.1"
+    "@pob/rollup-esbuild": "npm:5.3.0"
     "@rollup/plugin-replace": "npm:6.0.2"
     "@tamagui/animations-css": "npm:1.118.1"
     "@tamagui/animations-react-native": "npm:1.118.1"
