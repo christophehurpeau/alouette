@@ -554,7 +554,7 @@ function StoryContainer({
   title,
   children
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsxs(ScrollView, { theme: "light", background: "#fff", padding: "$4", children: [
+  return /* @__PURE__ */ jsxRuntime.jsxs(ScrollView, { theme: "light", backgroundColor: "#fff", padding: "$4", children: [
     /* @__PURE__ */ jsxRuntime.jsx(StoryTitle, { level: 1, children: title }),
     children
   ] });
