@@ -102,7 +102,7 @@ const withBorder = (val, { props }) => {
   return {
     borderWidth: typeof val === "number" ? val : 1,
     borderColor: "$borderColor",
-    ...props.interactive ? getBorderAdditionalInteraction(props) : void 0
+    ...props.interactive ? getBorderAdditionalInteraction(props) : undefined
   };
 };
 const withBackground = (val, { props }) => {
@@ -116,7 +116,7 @@ const withBackground = (val, { props }) => {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       `$interactive.${variant}.backgroundColor`
     ) : "$mainColor",
-    ...props.interactive ? getBackgroundAdditionalInteraction(props) : void 0
+    ...props.interactive ? getBackgroundAdditionalInteraction(props) : undefined
   };
 };
 const circularStyle = {
@@ -217,7 +217,7 @@ function IconButton({
     Icon,
     {
       size: size / 2,
-      color: disabled ? "$contrastDisabled" : void 0,
+      color: disabled ? "$contrastDisabled" : undefined,
       contrast: !disabled,
       icon
     }
@@ -289,7 +289,7 @@ const TypographyParagraph = styled(Typography, {
   userSelect: "auto",
   family: "body"
 });
-const TypographySizeContext = createContext(void 0);
+const TypographySizeContext = createContext(undefined);
 const TypographyWithContext = Typography.styleable(
   ({ size, ...props }, ref) => {
     const ancestorSize = useContext(TypographySizeContext);
@@ -360,7 +360,7 @@ function Button({
         icon && /* @__PURE__ */ jsx(
           Icon,
           {
-            color: disabled ? "$contrastDisabled" : void 0,
+            color: disabled ? "$contrastDisabled" : undefined,
             contrast: variant === "contained" && !disabled,
             icon,
             size: size === "sm" ? 16 : 20
@@ -372,7 +372,7 @@ function Button({
             size,
             weight: "bold",
             paddingVertical: size === "sm" ? "$1" : "$xs",
-            color: disabled ? "$contrastDisabled" : void 0,
+            color: disabled ? "$contrastDisabled" : undefined,
             contrast: variant === "contained" && !disabled,
             children: text
           }
@@ -578,8 +578,8 @@ function StoryGridRow({
           flexDirection: "row",
           marginVertical: "$-1",
           marginBottom: "$4",
-          flexWrap: flexWrap ? "wrap" : void 0,
-          gap: flexWrap ? "$xs" : void 0
+          flexWrap: flexWrap ? "wrap" : undefined,
+          gap: flexWrap ? "$xs" : undefined
         }
       },
       children: Children.map(children, (child) => /* @__PURE__ */ jsx(
@@ -590,7 +590,7 @@ function StoryGridRow({
           ...{
             [`$${breakpoint}`]: {
               flexGrow: 1,
-              flexBasis: flexWrap ? void 0 : 0,
+              flexBasis: flexWrap ? undefined : 0,
               paddingTop: 0,
               paddingBottom: 0,
               marginVertical: "$2"
@@ -674,11 +674,11 @@ function SwitchBreakpointsUsingDisplayNone({
       View,
       {
         display: name === "base" ? "flex" : "none",
-        ...name === "base" ? void 0 : {
+        ...name === "base" ? undefined : {
           display: "none",
           [`$${name}`]: { display: "flex" }
         },
-        ...index + 1 in entries ? { [`$${entries[index + 1][0]}`]: { display: "none" } } : void 0,
+        ...index + 1 in entries ? { [`$${entries[index + 1][0]}`]: { display: "none" } } : undefined,
         children: node
       },
       name
