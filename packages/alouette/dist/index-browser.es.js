@@ -239,12 +239,12 @@ const Stack = styled(View, {
     }
   }
 });
-const HStack = styled(Stack, {
+const HStack = styled(View, {
   name: "HStack",
   flexDirection: "row",
   variants
 });
-const VStack = styled(Stack, {
+const VStack = styled(View, {
   name: "VStack",
   flexDirection: "column"
 });

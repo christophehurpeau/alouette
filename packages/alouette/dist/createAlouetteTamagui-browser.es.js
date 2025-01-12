@@ -8,13 +8,7 @@ const animations = createAnimations({
 });
 console.log("animations: web");
 
-const defaultHeadingFontSizes = {
-  xl: 48,
-  lg: 40,
-  md: 32,
-  sm: 24,
-  xs: 18
-};
+const defaultHeadingFontSizes = { xl: 48, lg: 40, md: 32, sm: 24, xs: 18 };
 const defaultBodyFontSizes = { xl: 24, lg: 18, md: 16, sm: 14, xs: 12 };
 const roundWith1Precision = (value) => Math.round(value * 10) / 10;
 const createAlouetteFonts = ({

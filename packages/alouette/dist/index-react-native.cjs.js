@@ -240,12 +240,12 @@ const Stack = core.styled(core.View, {
     }
   }
 });
-const HStack = core.styled(Stack, {
+const HStack = core.styled(core.View, {
   name: "HStack",
   flexDirection: "row",
   variants
 });
-const VStack = core.styled(Stack, {
+const VStack = core.styled(core.View, {
   name: "VStack",
   flexDirection: "column"
 });
