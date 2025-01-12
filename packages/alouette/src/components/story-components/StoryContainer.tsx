@@ -12,7 +12,7 @@ export function StoryContainer({
   children,
 }: StoryContainerProps): ReactNode {
   return (
-    <ScrollView theme="light" background="#fff" padding="$4">
+    <ScrollView theme="light" backgroundColor="#fff" padding="$4">
       <StoryTitle level={1}>{title}</StoryTitle>
       {children}
     </ScrollView>
