@@ -13,6 +13,7 @@ export default [
       "**/.storybook/**",
       "**/vite.config.ts",
       "**/tamagui.config.ts",
+      "**/alouette-icons/lib/**",
     ],
   },
   ...pobTypescriptReactConfigs.node,
