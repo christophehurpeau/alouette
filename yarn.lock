@@ -4404,13 +4404,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.3.17":
-  version: 18.3.17
-  resolution: "@types/react@npm:18.3.17"
+"@types/react@npm:18.3.18":
+  version: 18.3.18
+  resolution: "@types/react@npm:18.3.18"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/475191e9cd0ab5bef35cc1868295d6526cd78b25c1bb816f0747a1e92261688305f81c0e29aff52e6ea70397f133e34c399dc936cb5072f1acf465d9daacc0da
+  checksum: 10c0/8fb2b00672072135d0858dc9db07873ea107cc238b6228aaa2a9afd1ef7a64a7074078250db38afbeb19064be8ea6af5eac32d404efdd5f45e093cc4829d87f8
   languageName: node
   linkType: hard
 
@@ -4863,7 +4863,7 @@ __metadata:
     "@tamagui/animations-react-native": "npm:1.121.8"
     "@tamagui/core": "npm:1.121.8"
     "@tamagui/react-native-media-driver": "npm:1.121.8"
-    "@types/react": "npm:18.3.17"
+    "@types/react": "npm:18.3.18"
     alouette-icons: "npm:2.0.2"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
@@ -12593,7 +12593,7 @@ __metadata:
     "@storybook/test": "npm:8.4.7"
     "@tamagui/vite-plugin": "npm:1.121.8"
     "@types/prop-types": "npm:15.7.14"
-    "@types/react": "npm:18.3.17"
+    "@types/react": "npm:18.3.18"
     "@vitejs/plugin-react": "npm:4.3.4"
     alouette: "workspace:*"
     alouette-icons: "workspace:*"
