@@ -109,10 +109,10 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.121.8",
-    "@tamagui/animations-react-native": "1.121.8",
-    "@tamagui/core": "1.121.8",
-    "@tamagui/react-native-media-driver": "1.121.8",
+    "@tamagui/animations-css": "1.121.9",
+    "@tamagui/animations-react-native": "1.121.9",
+    "@tamagui/core": "1.121.9",
+    "@tamagui/react-native-media-driver": "1.121.9",
     "alouette-icons": "2.0.2",
     "type-fest": "4.32.0"
   },
