@@ -29,6 +29,9 @@ export const Typography = styled(Text, {
       true: {
         color: "$contrastTextColor",
       },
+      false: {
+        color: "$textColor",
+      },
     },
   },
 

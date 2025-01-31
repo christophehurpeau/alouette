@@ -12,7 +12,7 @@ import type { IntRange } from "type-fest";
 // 9: text color
 // 10: form border color (default)
 
-export type AlouetteColorScaleNumber = IntRange<1, 10>;
+export type AlouetteColorScaleNumber = IntRange<1, 11>;
 
 export type AlouetteColorScale = Record<AlouetteColorScaleNumber, string>;
 

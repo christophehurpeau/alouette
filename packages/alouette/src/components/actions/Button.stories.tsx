@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Theme } from "@tamagui/core";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
 import { Story } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
@@ -17,7 +18,7 @@ export const ButtonStory: ThisStory = {
     <Story
       preview={
         <Button
-          theme="light_primary"
+          theme="primary"
           icon={<ArrowLeftRegularIcon />}
           text="Example"
         />
@@ -38,50 +39,49 @@ export const ButtonStory: ThisStory = {
         </StoryGrid.Row>
       </Story.Section>
       <Story.Section title="Variants">
-        {(
-          [
-            "light_primary",
-            "light_info",
-            "light_success",
-            "light_warning",
-            "light_danger",
-            "dark_primary",
-            "dark_info",
-            "dark_success",
-            "dark_warning",
-            "dark_danger",
-          ] as const
-        ).map((theme) => (
-          <Story.SubSection
-            key={theme}
-            withBackground
-            title={theme}
-            theme={theme}
-          >
-            {(["contained", "outlined"] as const).map((variant) => (
-              <StoryGrid.Row key={variant} flexWrap>
-                {(
-                  [undefined, "hover", "focus", "press", "disabled"] as const
-                ).map((state) => (
-                  <StoryGrid.Col
-                    key={state || "default"}
-                    title={state || "default"}
-                  >
-                    <Button
-                      theme={theme}
-                      disabled={state === "disabled"}
-                      variant={variant}
-                      internalForcedPseudoState={
-                        state === "disabled" ? undefined : state
-                      }
-                      icon={<ArrowLeftRegularIcon />}
-                      text={variant}
-                    />
-                  </StoryGrid.Col>
-                ))}
-              </StoryGrid.Row>
-            ))}
-          </Story.SubSection>
+        {(["light", "dark"] as const).map((mainTheme) => (
+          <Theme key={mainTheme} name={mainTheme}>
+            {(["primary", "info", "success", "warning", "danger"] as const).map(
+              (theme) => (
+                <Story.SubSection
+                  key={theme}
+                  withBackground
+                  title={`${mainTheme}_${theme}`}
+                  theme={theme}
+                >
+                  {(["contained", "outlined"] as const).map((variant) => (
+                    <StoryGrid.Row key={variant} flexWrap>
+                      {(
+                        [
+                          undefined,
+                          "hover",
+                          "focus",
+                          "press",
+                          "disabled",
+                        ] as const
+                      ).map((state) => (
+                        <StoryGrid.Col
+                          key={state || "default"}
+                          title={state || "default"}
+                        >
+                          <Button
+                            theme={theme}
+                            disabled={state === "disabled"}
+                            variant={variant}
+                            internalForcedPseudoState={
+                              state === "disabled" ? undefined : state
+                            }
+                            icon={<ArrowLeftRegularIcon />}
+                            text={variant}
+                          />
+                        </StoryGrid.Col>
+                      ))}
+                    </StoryGrid.Row>
+                  ))}
+                </Story.SubSection>
+              ),
+            )}
+          </Theme>
         ))}
       </Story.Section>
 

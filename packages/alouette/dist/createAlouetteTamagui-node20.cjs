@@ -160,12 +160,37 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
   });
 };
 
-const createColorTheme = (tokens, colorScaleName, backgroundColor, textColor, contrastTextColor) => {
+const darkModeScaleNumbers = {
+  1: 10,
+  2: 9,
+  3: 8,
+  4: 7,
+  5: 6,
+  6: 5,
+  7: 4,
+  8: 3,
+  9: 2,
+  10: 1
+};
+const createColorTheme = (tokens, colorScaleName, mode = "light", backgroundColor, textColor, contrastTextColor) => {
   const alouetteTokens = tokens;
-  if (!backgroundColor) backgroundColor = alouetteTokens.color.white;
-  if (!textColor) textColor = alouetteTokens.color.black;
-  if (!contrastTextColor) contrastTextColor = alouetteTokens.color.white;
-  const getColor = (scaleNumber) => tokens.color[`${colorScaleName}.${scaleNumber}`];
+  if (!backgroundColor) {
+    backgroundColor = mode === "dark" ? alouetteTokens.color.black : alouetteTokens.color.white;
+  }
+  if (!textColor) {
+    textColor = mode === "dark" ? alouetteTokens.color.white : alouetteTokens.color.black;
+  }
+  if (!contrastTextColor) {
+    if (colorScaleName === "grayscale") {
+      contrastTextColor = mode === "dark" ? alouetteTokens.color.white : alouetteTokens.color.black;
+    } else {
+      contrastTextColor = mode === "dark" ? alouetteTokens.color.black : alouetteTokens.color.white;
+    }
+  }
+  const getColor = (lightScaleNumber) => {
+    const scaleNumber = mode === "dark" ? darkModeScaleNumbers[lightScaleNumber] : lightScaleNumber;
+    return tokens.color[`${colorScaleName}.${scaleNumber}`];
+  };
   return {
     backgroundColor,
     textColor,
@@ -174,10 +199,10 @@ const createColorTheme = (tokens, colorScaleName, backgroundColor, textColor, co
     contrastTextColor,
     borderColor: getColor(8),
     "interactive.contained.backgroundColor": getColor(5),
-    "interactive.borderColor": getColor(8),
+    "interactive.borderColor": getColor(mode === "dark" ? 5 : 8),
     "interactive.contained.backgroundColor:hover": getColor(4),
     "interactive.outlined.backgroundColor:hover": getColor(1),
-    "interactive.borderColor:hover": getColor(7),
+    "interactive.borderColor:hover": getColor(mode === "dark" ? 5 : 7),
     "interactive.contained.backgroundColor:focus": getColor(4),
     "interactive.outlined.backgroundColor:focus": getColor(1),
     "interactive.borderColor:focus": getColor(7),
@@ -188,6 +213,7 @@ const createColorTheme = (tokens, colorScaleName, backgroundColor, textColor, co
     "interactive.borderColor:disabled": alouetteTokens.color.disabled,
     "interactive.textColor:disabled": alouetteTokens.color.contrastDisabled,
     "interactive.forms.textColor": textColor,
+    "interactive.forms.placeholderTextColor": alouetteTokens.color.disabled,
     // "interactive.forms.backgroundColor": undefined,
     // "interactive.forms.backgroundColor:hover": undefined,
     "interactive.forms.backgroundColor:focus": getColor(1),
@@ -202,51 +228,18 @@ const createColorTheme = (tokens, colorScaleName, backgroundColor, textColor, co
 const createAlouetteThemes = (tokens) => {
   const alouetteTokens = tokens;
   return {
-    light: createColorTheme(
-      alouetteTokens,
-      "grayscale",
-      alouetteTokens.color.white,
-      alouetteTokens.color.black
-    ),
-    light_info: createColorTheme(alouetteTokens, "info"),
-    light_success: createColorTheme(alouetteTokens, "success"),
-    light_warning: createColorTheme(alouetteTokens, "warning"),
-    light_danger: createColorTheme(alouetteTokens, "danger"),
-    light_primary: createColorTheme(alouetteTokens, "primary")
-    // dark: createRootTheme({
-    //   backgroundColor: alouetteTokens.color.black,
-    //   textColor: alouetteTokens.color.white,
-    // }),
-    // dark_info: createColorTheme(
-    //   alouetteTokens,
-    //   "info",
-    //   alouetteTokens.color.black,
-    //   alouetteTokens.color.white,
-    // ),
-    // dark_success: createColorTheme(
-    //   alouetteTokens,
-    //   "success",
-    //   alouetteTokens.color.black,
-    //   alouetteTokens.color.white,
-    // ),
-    // dark_warning: createColorTheme(
-    //   alouetteTokens,
-    //   "warning",
-    //   alouetteTokens.color.black,
-    //   alouetteTokens.color.white,
-    // ),
-    // dark_danger: createColorTheme(
-    //   alouetteTokens,
-    //   "danger",
-    //   alouetteTokens.color.black,
-    //   alouetteTokens.color.white,
-    // ),
-    // dark_primary: createColorTheme(
-    //   alouetteTokens,
-    //   "primary",
-    //   alouetteTokens.color.black,
-    //   alouetteTokens.color.white,
-    // ),
+    light: createColorTheme(alouetteTokens, "grayscale", "light"),
+    light_info: createColorTheme(alouetteTokens, "info", "light"),
+    light_success: createColorTheme(alouetteTokens, "success", "light"),
+    light_warning: createColorTheme(alouetteTokens, "warning", "light"),
+    light_danger: createColorTheme(alouetteTokens, "danger", "light"),
+    light_primary: createColorTheme(alouetteTokens, "primary", "light"),
+    dark: createColorTheme(alouetteTokens, "grayscale", "dark"),
+    dark_info: createColorTheme(alouetteTokens, "info", "dark"),
+    dark_success: createColorTheme(alouetteTokens, "success", "dark"),
+    dark_warning: createColorTheme(alouetteTokens, "warning", "dark"),
+    dark_danger: createColorTheme(alouetteTokens, "danger", "dark"),
+    dark_primary: createColorTheme(alouetteTokens, "primary", "dark")
   };
 };
 

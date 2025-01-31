@@ -1,5 +1,5 @@
 import { Preview } from "@storybook/react";
-import { AlouetteProvider } from "alouette";
+import { AlouetteDecorator } from "alouette";
 import tamaguiConfig from "../tamagui.config";
 
 const preview: Preview = {
@@ -10,15 +10,23 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    tamaguiConfig,
+    backgrounds: {
+      default: "light",
+      values: [
+        {
+          name: "light",
+          value: "#ffffff",
+        },
+        {
+          name: "dark",
+          value: "#000000",
+        },
+      ],
+    },
   },
 
-  decorators: [
-    (Story) => (
-      <AlouetteProvider tamaguiConfig={tamaguiConfig}>
-        {Story()}
-      </AlouetteProvider>
-    ),
-  ],
+  decorators: [AlouetteDecorator],
 };
 
 export default preview;

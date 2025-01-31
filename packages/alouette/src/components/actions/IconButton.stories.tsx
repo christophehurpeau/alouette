@@ -41,9 +41,9 @@ export const IconButtonStory: ThisStory = {
         ).map((theme) => (
           <Story.SubSection
             key={theme}
+            withBackground
             title={theme}
-            theme={theme === "light" ? "primary" : undefined}
-            withBackground={theme === "light"}
+            theme={theme}
           >
             <StoryGrid.Row>
               {(

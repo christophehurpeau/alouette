@@ -275,6 +275,9 @@ const Typography = core.styled(core.Text, {
     contrast: {
       true: {
         color: "$contrastTextColor"
+      },
+      false: {
+        color: "$textColor"
       }
     }
   },
@@ -441,19 +444,25 @@ function Message({
   ] });
 }
 
-const StyledInputText = core.styled(reactNative.TextInput, {
-  variants: variants$1,
-  padding: "$xs",
-  borderRadius: "$sm",
-  // @ts-expect-error missing prop but seems to work
-  color: "$forms.textColor",
-  withBorder: true,
-  withBackground: true,
-  borderWidth: 1,
-  borderBottomWidth: 3,
-  // reset browser style
-  outlineStyle: "none"
-});
+const StyledInputText = core.styled(
+  reactNative.TextInput,
+  {
+    variants: variants$1,
+    padding: "$xs",
+    borderRadius: "$sm",
+    color: "$interactive.forms.textColor",
+    // currently not working in web unless we use tamagui Input
+    // placeholderTextColor: "$interactive.forms.placeholderTextColor",
+    // @ts-expect-error missing prop due to isInput but in does exist in variants
+    withBorder: true,
+    withBackground: true,
+    borderWidth: 1,
+    borderBottomWidth: 3,
+    // reset browser style
+    outlineStyle: "none"
+  },
+  { isInput: true }
+);
 const InputText = core.styled(StyledInputText, {
   name: "InputText",
   interactive: "text",
@@ -696,17 +705,38 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
+const useDefaultThemeFromColorScheme = () => {
+  const colorScheme = reactNative.useColorScheme();
+  return colorScheme || "light";
+};
 function AlouetteProvider({
   children,
-  tamaguiConfig
+  tamaguiConfig,
+  defaultTheme = "light"
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(core.TamaguiProvider, { config: tamaguiConfig, defaultTheme: "light", children });
+  return /* @__PURE__ */ jsxRuntime.jsx(core.TamaguiProvider, { config: tamaguiConfig, defaultTheme, children });
 }
 
-const AlouetteDecorator = (storyFn, context) => (
-  // eslint-disable-next-line react/destructuring-assignment
-  /* @__PURE__ */ jsxRuntime.jsx(AlouetteProvider, { tamaguiConfig: context.parameters.tamaguiConfig, children: storyFn(context) })
-);
+const AlouetteDecorator = (storyFn, context) => {
+  const systemColorScheme = reactNative.useColorScheme();
+  const [theme, setTheme] = react.useState(systemColorScheme || "light");
+  react.useEffect(() => {
+    const backgroundColor = context.globals.backgrounds?.value;
+    if (backgroundColor === "#000000") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, [context.globals.backgrounds?.value]);
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    AlouetteProvider,
+    {
+      tamaguiConfig: context.parameters.tamaguiConfig,
+      defaultTheme: theme,
+      children: storyFn(context)
+    }
+  );
+};
 
 const Separator = core.styled(core.Stack, {
   name: "Separator",
@@ -785,4 +815,5 @@ exports.TypographyWithContext = TypographyWithContext;
 exports.VStack = VStack;
 exports.WithTamaguiConfig = WithTamaguiConfig;
 exports.useCurrentBreakpointName = useCurrentBreakpointName;
+exports.useDefaultThemeFromColorScheme = useDefaultThemeFromColorScheme;
 //# sourceMappingURL=index-node20.cjs.map

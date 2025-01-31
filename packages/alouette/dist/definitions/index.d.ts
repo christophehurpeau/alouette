@@ -33,7 +33,7 @@ export { Typography, TypographyWithContext, TypographyParagraph, TypographyParag
 export { SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, } from "./components/windowSize/SwitchBreakpoints";
 export { useCurrentBreakpointName } from "./components/windowSize/useCurrentBreakpointName";
 export { AlouetteDecorator } from "./core/AlouetteDecorator";
-export { AlouetteProvider } from "./core/AlouetteProvider";
+export { AlouetteProvider, useDefaultThemeFromColorScheme, } from "./core/AlouetteProvider";
 export type { GetProps, ThemeProps } from "@tamagui/core";
 export { Theme, styled, withStaticProperties } from "@tamagui/core";
 export type { SeparatorProps } from "./components/layout/Separator";

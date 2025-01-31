@@ -13,14 +13,7 @@ export const InputTextStory: StoryObj = {
   render: () => (
     <Story preview={<InputText />}>
       <Story.Section title="Variants">
-        {(
-          [
-            "light_primary",
-            "light_danger",
-            "light_success",
-            "dark_primary",
-          ] as const
-        ).map((theme) => (
+        {(["primary", "danger", "success"] as const).map((theme) => (
           <Story.SubSection
             key={theme}
             withBackground

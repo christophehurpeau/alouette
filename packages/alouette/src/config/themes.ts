@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
 import type { Variable } from "@tamagui/core";
-import type { AlouetteColorScales } from "./colorScales";
+import type {
+  AlouetteColorScaleNumber,
+  AlouetteColorScales,
+} from "./colorScales";
 import type { createAlouetteTokens } from "./createAlouetteTokens";
 
 // export interface MinimalRootTheme {
@@ -41,6 +44,7 @@ export interface ColorTheme {
   "interactive.textColor:disabled": Variable<string>;
 
   "interactive.forms.textColor": Variable<string>;
+  "interactive.forms.placeholderTextColor": Variable<string>;
   // "interactive.forms.backgroundColor": Variable<string>,
   // "interactive.forms.backgroundColor:hover": Variable<string>,
   "interactive.forms.backgroundColor:focus": Variable<string>;
@@ -61,25 +65,66 @@ export type FullTheme = ColorTheme;
 //   return theme satisfies RootTheme as unknown as FullTheme;
 // };
 
+const darkModeScaleNumbers: Record<
+  AlouetteColorScaleNumber,
+  AlouetteColorScaleNumber
+> = {
+  1: 10,
+  2: 9,
+  3: 8,
+  4: 7,
+  5: 6,
+  6: 5,
+  7: 4,
+  8: 3,
+  9: 2,
+  10: 1,
+};
+
 export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
   tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>,
   colorScaleName: string & keyof ColorScales,
+  mode: "dark" | "light" = "light",
   backgroundColor?: Variable<string>,
   textColor?: Variable<string>,
   contrastTextColor?: Variable<string>,
-  // eslint-disable-next-line @typescript-eslint/max-params
 ) => {
   const alouetteTokens: ReturnType<
     typeof createAlouetteTokens<AlouetteColorScales>
   > = tokens;
-  if (!backgroundColor) backgroundColor = alouetteTokens.color.white;
-  if (!textColor) textColor = alouetteTokens.color.black;
-  if (!contrastTextColor) contrastTextColor = alouetteTokens.color.white;
+  if (!backgroundColor) {
+    backgroundColor =
+      mode === "dark" ? alouetteTokens.color.black : alouetteTokens.color.white;
+  }
+  if (!textColor) {
+    textColor =
+      mode === "dark" ? alouetteTokens.color.white : alouetteTokens.color.black;
+  }
+  if (!contrastTextColor) {
+    if (colorScaleName === "grayscale") {
+      contrastTextColor =
+        mode === "dark"
+          ? alouetteTokens.color.white
+          : alouetteTokens.color.black;
+    } else {
+      contrastTextColor =
+        mode === "dark"
+          ? alouetteTokens.color.black
+          : alouetteTokens.color.white;
+    }
+  }
 
-  const getColor = (scaleNumber: number) =>
-    tokens.color[
+  const getColor = (lightScaleNumber: AlouetteColorScaleNumber) => {
+    // Invert scale for dark mode
+    const scaleNumber =
+      mode === "dark"
+        ? darkModeScaleNumbers[lightScaleNumber]
+        : lightScaleNumber;
+
+    return tokens.color[
       `${colorScaleName}.${scaleNumber}` as keyof typeof tokens.color
     ];
+  };
 
   return {
     backgroundColor,
@@ -90,11 +135,11 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
     borderColor: getColor(8),
 
     "interactive.contained.backgroundColor": getColor(5),
-    "interactive.borderColor": getColor(8),
+    "interactive.borderColor": getColor(mode === "dark" ? 5 : 8),
 
     "interactive.contained.backgroundColor:hover": getColor(4),
     "interactive.outlined.backgroundColor:hover": getColor(1),
-    "interactive.borderColor:hover": getColor(7),
+    "interactive.borderColor:hover": getColor(mode === "dark" ? 5 : 7),
 
     "interactive.contained.backgroundColor:focus": getColor(4),
     "interactive.outlined.backgroundColor:focus": getColor(1),
@@ -110,6 +155,8 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
     "interactive.textColor:disabled": alouetteTokens.color.contrastDisabled,
 
     "interactive.forms.textColor": textColor,
+    "interactive.forms.placeholderTextColor": alouetteTokens.color.disabled,
+
     // "interactive.forms.backgroundColor": undefined,
     // "interactive.forms.backgroundColor:hover": undefined,
     "interactive.forms.backgroundColor:focus": getColor(1),
@@ -131,52 +178,18 @@ export const createAlouetteThemes = <
     typeof createAlouetteTokens<AlouetteColorScales>
   > = tokens;
   return {
-    light: createColorTheme(
-      alouetteTokens,
-      "grayscale",
-      alouetteTokens.color.white,
-      alouetteTokens.color.black,
-    ),
-    light_info: createColorTheme(alouetteTokens, "info"),
-    light_success: createColorTheme(alouetteTokens, "success"),
-    light_warning: createColorTheme(alouetteTokens, "warning"),
-    light_danger: createColorTheme(alouetteTokens, "danger"),
-    light_primary: createColorTheme(alouetteTokens, "primary"),
+    light: createColorTheme(alouetteTokens, "grayscale", "light"),
+    light_info: createColorTheme(alouetteTokens, "info", "light"),
+    light_success: createColorTheme(alouetteTokens, "success", "light"),
+    light_warning: createColorTheme(alouetteTokens, "warning", "light"),
+    light_danger: createColorTheme(alouetteTokens, "danger", "light"),
+    light_primary: createColorTheme(alouetteTokens, "primary", "light"),
 
-    // dark: createRootTheme({
-    //   backgroundColor: alouetteTokens.color.black,
-    //   textColor: alouetteTokens.color.white,
-    // }),
-
-    // dark_info: createColorTheme(
-    //   alouetteTokens,
-    //   "info",
-    //   alouetteTokens.color.black,
-    //   alouetteTokens.color.white,
-    // ),
-    // dark_success: createColorTheme(
-    //   alouetteTokens,
-    //   "success",
-    //   alouetteTokens.color.black,
-    //   alouetteTokens.color.white,
-    // ),
-    // dark_warning: createColorTheme(
-    //   alouetteTokens,
-    //   "warning",
-    //   alouetteTokens.color.black,
-    //   alouetteTokens.color.white,
-    // ),
-    // dark_danger: createColorTheme(
-    //   alouetteTokens,
-    //   "danger",
-    //   alouetteTokens.color.black,
-    //   alouetteTokens.color.white,
-    // ),
-    // dark_primary: createColorTheme(
-    //   alouetteTokens,
-    //   "primary",
-    //   alouetteTokens.color.black,
-    //   alouetteTokens.color.white,
-    // ),
+    dark: createColorTheme(alouetteTokens, "grayscale", "dark"),
+    dark_info: createColorTheme(alouetteTokens, "info", "dark"),
+    dark_success: createColorTheme(alouetteTokens, "success", "dark"),
+    dark_warning: createColorTheme(alouetteTokens, "warning", "dark"),
+    dark_danger: createColorTheme(alouetteTokens, "danger", "dark"),
+    dark_primary: createColorTheme(alouetteTokens, "primary", "dark"),
   } as const;
 };

@@ -3,24 +3,30 @@ import { styled } from "@tamagui/core";
 import { TextInput } from "react-native";
 import * as variants from "../containers/variants";
 
-const StyledInputText = styled(TextInput, {
-  variants,
+const StyledInputText = styled(
+  TextInput,
+  {
+    variants,
 
-  padding: "$xs",
-  borderRadius: "$sm",
+    padding: "$xs",
+    borderRadius: "$sm",
 
-  // @ts-expect-error missing prop but seems to work
-  color: "$forms.textColor",
+    color: "$interactive.forms.textColor",
+    // currently not working in web unless we use tamagui Input
+    // placeholderTextColor: "$interactive.forms.placeholderTextColor",
 
-  withBorder: true,
-  withBackground: true,
+    // @ts-expect-error missing prop due to isInput but in does exist in variants
+    withBorder: true,
+    withBackground: true,
 
-  borderWidth: 1,
-  borderBottomWidth: 3,
+    borderWidth: 1,
+    borderBottomWidth: 3,
 
-  // reset browser style
-  outlineStyle: "none",
-});
+    // reset browser style
+    outlineStyle: "none",
+  },
+  { isInput: true },
+);
 
 export const InputText = styled(StyledInputText, {
   name: "InputText",

@@ -1,9 +1,9 @@
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import { styled, View, useStyle, Text, useConfiguration, useMedia, TamaguiProvider, Stack as Stack$1 } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
-import { createContext, useContext, Children } from 'react';
+import { createContext, useContext, Children, useState, useEffect } from 'react';
 import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
-import { TextInput, ScrollView as ScrollView$1, Platform, Pressable } from 'react-native';
+import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Pressable } from 'react-native';
 
 const fullscreenStyle = {
   position: "absolute",
@@ -274,6 +274,9 @@ const Typography = styled(Text, {
     contrast: {
       true: {
         color: "$contrastTextColor"
+      },
+      false: {
+        color: "$textColor"
       }
     }
   },
@@ -440,19 +443,25 @@ function Message({
   ] });
 }
 
-const StyledInputText = styled(TextInput, {
-  variants: variants$1,
-  padding: "$xs",
-  borderRadius: "$sm",
-  // @ts-expect-error missing prop but seems to work
-  color: "$forms.textColor",
-  withBorder: true,
-  withBackground: true,
-  borderWidth: 1,
-  borderBottomWidth: 3,
-  // reset browser style
-  outlineStyle: "none"
-});
+const StyledInputText = styled(
+  TextInput,
+  {
+    variants: variants$1,
+    padding: "$xs",
+    borderRadius: "$sm",
+    color: "$interactive.forms.textColor",
+    // currently not working in web unless we use tamagui Input
+    // placeholderTextColor: "$interactive.forms.placeholderTextColor",
+    // @ts-expect-error missing prop due to isInput but in does exist in variants
+    withBorder: true,
+    withBackground: true,
+    borderWidth: 1,
+    borderBottomWidth: 3,
+    // reset browser style
+    outlineStyle: "none"
+  },
+  { isInput: true }
+);
 const InputText = styled(StyledInputText, {
   name: "InputText",
   interactive: "text",
@@ -695,17 +704,38 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
+const useDefaultThemeFromColorScheme = () => {
+  const colorScheme = useColorScheme();
+  return colorScheme || "light";
+};
 function AlouetteProvider({
   children,
-  tamaguiConfig
+  tamaguiConfig,
+  defaultTheme = "light"
 }) {
-  return /* @__PURE__ */ jsx(TamaguiProvider, { config: tamaguiConfig, defaultTheme: "light", children });
+  return /* @__PURE__ */ jsx(TamaguiProvider, { config: tamaguiConfig, defaultTheme, children });
 }
 
-const AlouetteDecorator = (storyFn, context) => (
-  // eslint-disable-next-line react/destructuring-assignment
-  /* @__PURE__ */ jsx(AlouetteProvider, { tamaguiConfig: context.parameters.tamaguiConfig, children: storyFn(context) })
-);
+const AlouetteDecorator = (storyFn, context) => {
+  const systemColorScheme = useColorScheme();
+  const [theme, setTheme] = useState(systemColorScheme || "light");
+  useEffect(() => {
+    const backgroundColor = context.globals.backgrounds?.value;
+    if (backgroundColor === "#000000") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, [context.globals.backgrounds?.value]);
+  return /* @__PURE__ */ jsx(
+    AlouetteProvider,
+    {
+      tamaguiConfig: context.parameters.tamaguiConfig,
+      defaultTheme: theme,
+      children: storyFn(context)
+    }
+  );
+};
 
 const Separator = styled(Stack$1, {
   name: "Separator",
@@ -751,5 +781,5 @@ function PressableListItem({
   ) });
 }
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, HStack, Icon, IconButton, InputText, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, TypographyParagraphWithContext, TypographyWithContext, VStack, WithTamaguiConfig, useCurrentBreakpointName };
+export { AlouetteDecorator, AlouetteProvider, Box, Button, HStack, Icon, IconButton, InputText, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, TypographyParagraphWithContext, TypographyWithContext, VStack, WithTamaguiConfig, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
 //# sourceMappingURL=index-node20.mjs.map
