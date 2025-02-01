@@ -2184,12 +2184,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pob/commitlint-config@npm:8.0.1":
-  version: 8.0.1
-  resolution: "@pob/commitlint-config@npm:8.0.1"
+"@pob/commitlint-config@npm:9.0.0":
+  version: 9.0.0
+  resolution: "@pob/commitlint-config@npm:9.0.0"
   dependencies:
     "@commitlint/config-conventional": "npm:^19.2.2"
-  checksum: 10c0/99d9ac14e3817832cab29497557ddd3bfadbb6583231a6edd06d71b17f2950abf155e0920be760cc963903918010feb9d53a47aef8d7abb58196d728d32603a8
+  checksum: 10c0/8741ba0c78b7872958fc21d00482620eb0b71805c09187540f33224089e2f92055577b433ac55983a401aba857f0bb06872ab09c1805d59747a58a81e4c52373
   languageName: node
   linkType: hard
 
@@ -4529,7 +4529,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "alouette-monorepo@workspace:."
   dependencies:
-    "@pob/commitlint-config": "npm:8.0.1"
+    "@pob/commitlint-config": "npm:9.0.0"
     "@pob/eslint-config": "npm:59.3.2"
     "@pob/eslint-config-typescript-react": "npm:59.3.2"
     "@pob/root": "npm:15.1.1"
