@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.0.0 (2025-02-01)
+
+### ⚠ BREAKING CHANGES
+
+* drop node 18
+
+### Features
+
+* alouette-icons ([924eb6d](https://github.com/christophehurpeau/alouette/commit/924eb6da66cb9689cfc1bb390a810167eb9b5d87))
+* build alouette-icons for node (web and react-native) for unit testing or SSR ([b772a51](https://github.com/christophehurpeau/alouette/commit/b772a51c0786c722f748f8d4c212d9225529e509))
+* **deps:** update dependency @phosphor-icons/core to v2.1.1 ([#46](https://github.com/christophehurpeau/alouette/issues/46)) ([58ba6e0](https://github.com/christophehurpeau/alouette/commit/58ba6e0473f6a7362d19e21f9f71ca97b81933df))
+* **deps:** update dependency react-native to v0.75.2 ([#61](https://github.com/christophehurpeau/alouette/issues/61)) ([09b2a47](https://github.com/christophehurpeau/alouette/commit/09b2a472ba642defe11ef3eee5ef546ff1bf633f))
+* **deps:** update dependency react-native to v0.77.0 ([#68](https://github.com/christophehurpeau/alouette/issues/68)) ([577dc45](https://github.com/christophehurpeau/alouette/commit/577dc45287c344164317212198c6453d1bde1a74))
+* improvements and new components ([335f060](https://github.com/christophehurpeau/alouette/commit/335f06086a3eae528e8f351ad6bf5b94cdc4c612))
+* update dependencies and build cjs ([121ed87](https://github.com/christophehurpeau/alouette/commit/121ed8748bed730826d206160399af2f1eae63fa))
+
+### Bug Fixes
+
+* add react-native field in package.json ([f8bf639](https://github.com/christophehurpeau/alouette/commit/f8bf6390402c9a9c25979899781b7a849d04202d))
+* fix dist for web ([43ddeaf](https://github.com/christophehurpeau/alouette/commit/43ddeaf1efc4989d56b248aa91aa667cdb418fa3))
+
+### Miscellaneous Chores
+
+* update dev dependencies and update to node 20 ([28885df](https://github.com/christophehurpeau/alouette/commit/28885dfe4fae18e4159ec3c9fab23a7fc738b6c0))
+
 ## 3.0.0 (2025-02-01)
 
 ### ⚠ BREAKING CHANGES
