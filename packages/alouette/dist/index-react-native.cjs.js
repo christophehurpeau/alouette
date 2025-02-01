@@ -712,9 +712,18 @@ const useDefaultThemeFromColorScheme = () => {
 function AlouetteProvider({
   children,
   tamaguiConfig,
-  defaultTheme = "light"
+  defaultTheme = "light",
+  disableInjectCSS
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(core.TamaguiProvider, { config: tamaguiConfig, defaultTheme, children });
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    core.TamaguiProvider,
+    {
+      config: tamaguiConfig,
+      defaultTheme,
+      disableInjectCSS,
+      children
+    }
+  );
 }
 
 const AlouetteDecorator = (storyFn, context) => {
