@@ -16,32 +16,16 @@
     "node": ">=20.9.0"
   },
   "sideEffects": false,
+  "main": "./lib/index.js",
   "react-native": {
     "./phosphor-icons": "./lib/phosphor-icons.cjs"
   },
   "exports": {
-    "./package.json": "./package.json",
-    "./phosphor-icons": {
-      "types": "./lib/phosphor-icons.d.ts",
-      "browser": "./lib/phosphor-icons.mjs",
-      "react-native": {
-        "import": "./lib/phosphor-icons.mjs",
-        "require": "./lib/phosphor-icons.cjs"
-      },
-      "node": {
-        "react-native": {
-          "import": "./lib/phosphor-icons.node.mjs"
-        },
-        "browser": {
-          "import": "./lib/phosphor-icons.node.web.mjs"
-        },
-        "import": "./lib/phosphor-icons.node.mjs"
-      }
-    }
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
   },
   "files": [
-    "lib",
-    "phosphor-icons.js"
+    "lib"
   ],
   "scripts": {
     "lint": "yarn run lint:eslint",
@@ -49,9 +33,6 @@
     "test": "yarn ../../ run test -- packages/alouette-icons"
   },
   "pob": {
-    "entries": [
-      "phosphor-icons"
-    ],
     "typescript": "check-only"
   },
   "prettier": "@pob/root/prettier-config",
@@ -64,8 +45,7 @@
     "@phosphor-icons/core": "2.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7.26.7",
-    "@babel/preset-react": "7.26.3",
-    "react-native": "0.77.0"
+    "react-native": "0.77.0",
+    "typescript": "5.7.3"
   }
 }

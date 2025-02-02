@@ -21,5 +21,6 @@
       "alouette-icons": ["../../packages/alouette-icons/src"],
       "alouette-icons/*": ["../../packages/alouette-icons/src/*"]
     }
-  }
+  },
+  "references": [{ "path": "../../packages/alouette-icons/tsconfig.json" }]
 }
