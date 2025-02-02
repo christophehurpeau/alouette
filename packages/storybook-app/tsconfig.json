@@ -16,9 +16,14 @@
     "resolveJsonModule": true,
 
     "paths": {
+      "alouette-icons": ["../../packages/alouette-icons/src"],
+      "alouette-icons/*": ["../../packages/alouette-icons/src/*"],
       "alouette": ["../../packages/alouette/src"],
       "alouette/*": ["../../packages/alouette/src/*"]
     }
   },
-  "references": [{ "path": "../../packages/alouette/tsconfig.json" }]
+  "references": [
+    { "path": "../../packages/alouette-icons/tsconfig.json" },
+    { "path": "../../packages/alouette/tsconfig.json" }
+  ]
 }
