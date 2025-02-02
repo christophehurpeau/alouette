@@ -1,19 +1,14 @@
 {
   "extends": [
-    "@pob/root/tsconfigs/strict.json",
-    "@pob/root/tsconfigs/targets/rollup-es2015.json"
+    "@pob/root/tsconfigs/base.json",
+    "@pob/root/tsconfigs/targets/node-20.json"
   ],
-  "include": ["lib/phosphor-icons.mjs", "lib/phosphor-icons.d.ts"],
   "compilerOptions": {
-    "rootDir": "lib",
-    "outDir": "dist/definitions",
+    "allowJs": true,
+    "checkJs": true,
+    "composite": true,
     "tsBuildInfoFile": "node_modules/.cache/tsc/tsbuildinfo",
-    "noEmitOnError": true,
-    "declaration": true,
-    "declarationMap": true,
-    "noEmit": true,
-    "emitDeclarationOnly": false,
-    "incremental": true,
-    "composite": true
-  }
+    "noEmit": true
+  },
+  "include": ["lib/**/*.js", "lib/**/*.mjs", "lib/**/*.cjs", "lib/**/*.d.ts"]
 }

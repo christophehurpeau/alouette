@@ -1,4 +1,6 @@
 // This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// prettier-ignore-start
+// @ts-nocheck
 
 export { ReactComponent as AcornRegularIcon } from "@phosphor-icons/core/assets/regular/acorn.svg";
 export { ReactComponent as AcornFillIcon } from "@phosphor-icons/core/assets/fill/acorn-fill.svg";

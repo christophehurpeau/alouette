@@ -1,24 +1,24 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { transform as babelTransform } from "@babel/core";
+import { transformSync as babelTransform } from "@babel/core";
 import { icons } from "@phosphor-icons/core";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { transform as svgrTransform } from "@svgr/core";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import jsx from "@svgr/plugin-jsx";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import prettier from "prettier";
 
 const header =
-  "// This file is generated automatically by scripts/generate-phosphor-icons.mjs\n\n";
-let fileContent = `${header}`;
+  "// This file is generated automatically by scripts/generate-phosphor-icons.mjs\n";
+let fileContent = `${header}// @ts-nocheck\n\n`;
 let nodeFileContent = `${fileContent}import Svg, { Path } from "react-native-svg";\n`;
 let nodeWebFileContent = `${fileContent}`;
-let fileDTSContent = `${header}import * as React from 'react';
+let fileDTSContent = `${header}\nimport * as React from 'react';
 
 const SVGComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement> & { title?: string }>;
 `;
-let fileCJSForReactNativeContent = `"use strict";\n${header}
-module.exports = {
-`;
+let fileCJSForReactNativeContent = `"use strict";\n${fileContent}module.exports = {\n`;
 
 for (const icon of icons) {
   // aliases
@@ -88,35 +88,42 @@ for (const icon of icons) {
 
 fileCJSForReactNativeContent += "};\n";
 
-writeFileSync(
-  new URL("../lib/phosphor-icons.mjs", import.meta.url),
-  fileContent,
-);
-writeFileSync(
-  new URL("../lib/phosphor-icons.cjs", import.meta.url),
+const formatWithPrettierAndSave = async (filename, content) => {
+  writeFileSync(
+    new URL(`../lib/${filename}`, import.meta.url),
+    await prettier.format(content, {
+      filepath: filename,
+    }),
+  );
+};
+
+await formatWithPrettierAndSave("phosphor-icons.mjs", fileContent);
+await formatWithPrettierAndSave(
+  "phosphor-icons.cjs",
   fileCJSForReactNativeContent,
 );
-writeFileSync(
-  new URL("../lib/phosphor-icons.d.ts", import.meta.url),
-  fileDTSContent,
-);
+await formatWithPrettierAndSave("phosphor-icons.d.ts", fileDTSContent);
 
-writeFileSync(
-  new URL("../lib/phosphor-icons.node.mjs", import.meta.url),
-  await babelTransform(nodeFileContent, {
+await formatWithPrettierAndSave(
+  "phosphor-icons.node.mjs",
+  babelTransform(nodeFileContent, {
     babelrc: false,
     configFile: false,
-    presets: [["@babel/preset-react", { useSpread: true }]],
+    presets: [
+      ["@babel/preset-react", { useSpread: true, runtime: "automatic" }],
+    ],
     minified: false,
     compact: false,
   }).code,
 );
-writeFileSync(
-  new URL("../lib/phosphor-icons.node.web.mjs", import.meta.url),
-  await babelTransform(nodeWebFileContent, {
+await formatWithPrettierAndSave(
+  "phosphor-icons.node.web.mjs",
+  babelTransform(nodeWebFileContent, {
     babelrc: false,
     configFile: false,
-    presets: [["@babel/preset-react", { useSpread: true }]],
+    presets: [
+      ["@babel/preset-react", { useSpread: true, runtime: "automatic" }],
+    ],
     minified: false,
     compact: false,
   }).code,

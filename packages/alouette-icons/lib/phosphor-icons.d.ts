@@ -1,8 +1,11 @@
 // This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// prettier-ignore-start
 
-import * as React from 'react';
+import * as React from "react";
 
-const SVGComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement> & { title?: string }>;
+const SVGComponent: React.FunctionComponent<
+  React.SVGProps<SVGSVGElement> & { title?: string }
+>;
 declare const AcornRegularIcon = SVGComponent;
 declare const AcornFillIcon = SVGComponent;
 declare const AddressBookRegularIcon = SVGComponent;

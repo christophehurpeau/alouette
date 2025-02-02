@@ -3,4 +3,3 @@ CHANGELOG.md
 /.yarn/**/*
 /packages/*/.tamagui
 /packages/*/dist
-/packages/alouette-icons/lib/*
