@@ -21,14 +21,17 @@ export const SwitchBreakpointsStory: ThisStory = {
   render: () => (
     <Story>
       {(
-        [SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull] as const
-      ).map((SwitchBreakpointsComponent) => (
-        <Story.Section
-          key={SwitchBreakpointsComponent.name}
-          title={`Mode "${SwitchBreakpointsComponent.name}"`}
-        >
+        [
+          {
+            name: "UsingDisplayNone",
+            component: SwitchBreakpointsUsingDisplayNone,
+          },
+          { name: "UsingNull", component: SwitchBreakpointsUsingNull },
+        ] as const
+      ).map(({ name, component: Component }) => (
+        <Story.Section key={name} title={`Mode "${name}"`}>
           <Story.SubSection title="Current breakpoint">
-            <SwitchBreakpointsComponent
+            <Component
               base={<Typography>base</Typography>}
               small={<Typography>small</Typography>}
               medium={<Typography>medium</Typography>}
@@ -40,7 +43,7 @@ export const SwitchBreakpointsStory: ThisStory = {
             <StoryGrid.Row>
               {Object.values(BreakpointNameEnum).map((name, index, array) => (
                 <StoryGrid.Col key={name} title={name}>
-                  <SwitchBreakpointsComponent
+                  <Component
                     base={<Typography>no</Typography>}
                     {...{ [name]: <Typography>yes</Typography> }}
                     {...(array[index + 1]

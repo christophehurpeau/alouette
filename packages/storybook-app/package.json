@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build-storybook": "storybook build",
+    "chromatic": "npx chromatic",
     "lint": "yarn run lint:eslint",
     "lint:eslint": "yarn ../.. run eslint --quiet packages/storybook-app",
     "start": "yarn storybook",
