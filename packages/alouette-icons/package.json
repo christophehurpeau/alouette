@@ -32,7 +32,7 @@
         "react-native": {
           "import": "./lib/phosphor-icons.node.mjs"
         },
-        "browser": {
+        "web": {
           "import": "./lib/phosphor-icons.node.web.mjs"
         },
         "import": "./lib/phosphor-icons.node.mjs"
