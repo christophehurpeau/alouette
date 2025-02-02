@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@10.0.0...alouette@10.1.0) (2025-02-02)
+
+### Features
+
+* update tamagui ([fa5e6bb](https://github.com/christophehurpeau/alouette/commit/fa5e6bb03237d944bddb122d8885812235eda14c))
+
+Version bump for dependency: alouette-icons
+
+
 ## 10.0.0 (2025-02-01)
 
 ### ⚠ BREAKING CHANGES
