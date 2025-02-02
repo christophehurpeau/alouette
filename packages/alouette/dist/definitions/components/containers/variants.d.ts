@@ -35,16 +35,19 @@ export declare const size: (val: number) => {
     readonly height: number;
 };
 export declare const circular: {
-    readonly true: (val: boolean, { props, tokens }: VariantSpreadExtras<any>) => {
+    readonly true: (val: boolean, { props, tokens }: {
+        props: any;
+        tokens: any;
+    }) => {
         borderRadius: number;
         padding: number;
     } | {
-        width: import("@tamagui/web").VariableVal;
-        height: import("@tamagui/web").VariableVal;
-        maxWidth: import("@tamagui/web").VariableVal;
-        maxHeight: import("@tamagui/web").VariableVal;
-        minWidth: import("@tamagui/web").VariableVal;
-        minHeight: import("@tamagui/web").VariableVal;
+        width: any;
+        height: any;
+        maxWidth: any;
+        maxHeight: any;
+        minWidth: any;
+        minHeight: any;
         borderRadius: number;
         padding: number;
     };

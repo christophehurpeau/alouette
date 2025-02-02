@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import type { Variable } from "@tamagui/core";
 import { Box } from "../components/containers/Box";
 import { View } from "../components/primitives/View";
 import { HStack, VStack } from "../components/primitives/stacks";
@@ -61,7 +62,7 @@ export const TokensStory: ThisStory = {
 
             <Story.Section title="Spacings">
               <HStack gap="$xs" flexWrap="wrap" alignItems="flex-start">
-                {Object.entries(tokens.space).map(([key, value]) => (
+                {Object.entries<Variable>(tokens.space).map(([key, value]) => (
                   <Box
                     key={key}
                     centered

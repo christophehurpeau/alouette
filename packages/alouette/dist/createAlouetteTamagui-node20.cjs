@@ -2,7 +2,6 @@
 
 const core = require('@tamagui/core');
 const animationsReactNative = require('@tamagui/animations-react-native');
-const reactNativeMediaDriver = require('@tamagui/react-native-media-driver');
 
 const animations = animationsReactNative.createAnimations({
   fast: {
@@ -104,12 +103,12 @@ const Breakpoints = {
   WIDE: 1280
 };
 
-const media = reactNativeMediaDriver.createMedia({
+const media = {
   small: { minWidth: Breakpoints.SMALL },
   medium: { minWidth: Breakpoints.MEDIUM },
   large: { minWidth: Breakpoints.LARGE },
   wide: { minWidth: Breakpoints.WIDE }
-});
+};
 
 const createAlouetteSizes = (spacing, negative) => {
   const MAX_SIZE = 64;

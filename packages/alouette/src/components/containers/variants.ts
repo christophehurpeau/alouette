@@ -54,7 +54,7 @@ export const size = (val: number) => {
 };
 
 export const circular = {
-  true: (val: boolean, { props, tokens }: VariantSpreadExtras<any>) => {
+  true: (val: boolean, { props, tokens }: { props: any; tokens: any }) => {
     if (!("size" in props)) {
       return circularStyle;
     }

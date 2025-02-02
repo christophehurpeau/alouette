@@ -11,21 +11,21 @@ export { defaultColorScales, createColorScale, type AlouetteColorScales, type Al
 export declare const createAlouetteTamagui: <const ColorScales extends AlouetteColorScales, const Tokens extends ReturnType<typeof createAlouetteTokens<ColorScales>>, const Themes extends ReturnType<typeof createAlouetteThemes<ColorScales>>>(tokens: Tokens, themes: Themes, options?: AlouetteTamaguiOptions) => import("@tamagui/web").TamaguiInternalConfig<Tokens extends Record<string, {
     [key: string]: import("@tamagui/web").VariableVal;
 }> & {
-    color: {
+    color?: {
         [key: string]: import("@tamagui/web").VariableVal;
-    };
-    space: {
+    } | undefined;
+    space?: {
         [key: string]: import("@tamagui/web").VariableVal;
-    };
-    size: {
+    } | undefined;
+    size?: {
         [key: string]: import("@tamagui/web").VariableVal;
-    };
-    radius: {
+    } | undefined;
+    radius?: {
         [key: string]: import("@tamagui/web").VariableVal;
-    };
-    zIndex: {
+    } | undefined;
+    zIndex?: {
         [key: string]: import("@tamagui/web").VariableVal;
-    };
+    } | undefined;
 } ? Tokens : {
     color: {};
     space: {};
@@ -129,7 +129,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
             xs: number;
         };
     };
-}, boolean | undefined, {
+}, {
     readonly allowedStyleValues: "somewhat-strict-web";
     readonly autocompleteSpecificTokens: "except-special";
 }>;

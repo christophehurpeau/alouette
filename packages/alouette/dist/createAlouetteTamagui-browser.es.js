@@ -1,6 +1,5 @@
 import { createFont, createTokens, createTamagui } from '@tamagui/core';
 import { createAnimations } from '@tamagui/animations-css';
-import { createMedia } from '@tamagui/react-native-media-driver';
 
 const animations = createAnimations({
   fast: "ease-in 150ms",
@@ -84,12 +83,12 @@ const Breakpoints = {
   WIDE: 1280
 };
 
-const media = createMedia({
+const media = {
   small: { minWidth: Breakpoints.SMALL },
   medium: { minWidth: Breakpoints.MEDIUM },
   large: { minWidth: Breakpoints.LARGE },
   wide: { minWidth: Breakpoints.WIDE }
-});
+};
 
 const createAlouetteSizes = (spacing, negative) => {
   const MAX_SIZE = 64;
