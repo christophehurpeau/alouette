@@ -2305,12 +2305,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pob/rollup-esbuild@npm:6.1.0":
-  version: 6.1.0
-  resolution: "@pob/rollup-esbuild@npm:6.1.0"
+"@pob/rollup-esbuild@npm:6.2.0":
+  version: 6.2.0
+  resolution: "@pob/rollup-esbuild@npm:6.2.0"
   dependencies:
     "@pob/rollup": "npm:6.1.0"
     "@rollup/plugin-node-resolve": "npm:16.0.0"
+    "@rollup/plugin-replace": "npm:6.0.2"
     "@rollup/plugin-run": "npm:3.1.0"
     esbuild: "npm:0.24.2"
     rollup: "npm:4.33.0"
@@ -2325,7 +2326,7 @@ __metadata:
   bin:
     pob-esbuild-clean-out: ./bin/pob-esbuild-clean-out.js
     rollup: ./bin/rollup.cjs
-  checksum: 10c0/418be7d534c5f158375812269914688476c4a364ddf041482977aa867ab1da163ede4bd60edaae374976038aa8d218ed2c5213dfc15f1bc583ecbbe308673d43
+  checksum: 10c0/3bc77d372cd35762041a93958111a0ee1d2ca2f287a1c134e1c760669b06ccaea042c3786e3f2fcc85d30293625bb881916d05e36f1b3a3d4f81a69aefe9df98
   languageName: node
   linkType: hard
 
@@ -4565,7 +4566,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "alouette@workspace:packages/alouette"
   dependencies:
-    "@pob/rollup-esbuild": "npm:6.1.0"
+    "@pob/rollup-esbuild": "npm:6.2.0"
     "@rollup/plugin-replace": "npm:6.0.2"
     "@tamagui/animations-css": "npm:1.121.9"
     "@tamagui/animations-react-native": "npm:1.121.9"
