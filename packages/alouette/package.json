@@ -1,6 +1,6 @@
 {
   "name": "alouette",
-  "version": "10.1.0",
+  "version": "10.1.1",
   "description": "tamagui-based design system with configurable defaults",
   "keywords": [],
   "author": "Christophe Hurpeau <302891+christophehurpeau@users.noreply.github.com> (https://christophe.hurpeau.com)",
@@ -113,7 +113,7 @@
     "@tamagui/animations-css": "1.123.8",
     "@tamagui/animations-react-native": "1.123.8",
     "@tamagui/core": "1.123.8",
-    "alouette-icons": "4.0.1",
+    "alouette-icons": "4.0.2",
     "type-fest": "4.33.0"
   },
   "devDependencies": {

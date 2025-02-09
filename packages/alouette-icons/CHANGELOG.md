@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/christophehurpeau/alouette/compare/alouette-icons@4.0.1...alouette-icons@4.0.2) (2025-02-09)
+
+### Bug Fixes
+
+* node web condition ([e70b163](https://github.com/christophehurpeau/alouette/commit/e70b163264812f6011333d131aad792ae7976ca5))
+
 ## [4.0.1](https://github.com/christophehurpeau/alouette/compare/alouette-icons@4.0.0...alouette-icons@4.0.1) (2025-02-02)
 
 Note: no notable changes

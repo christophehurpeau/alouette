@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.1](https://github.com/christophehurpeau/alouette/compare/alouette@10.1.0...alouette@10.1.1) (2025-02-09)
+
+Version bump for dependency: alouette-icons
+
+
 ## [10.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@10.0.0...alouette@10.1.0) (2025-02-02)
 
 ### Features
