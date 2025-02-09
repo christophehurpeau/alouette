@@ -683,10 +683,7 @@ function SwitchBreakpointsUsingDisplayNone({
       View,
       {
         display: name === "base" ? "flex" : "none",
-        ...name === "base" ? undefined : {
-          display: "none",
-          [`$${name}`]: { display: "flex" }
-        },
+        ...name === "base" ? undefined : { display: "none", [`$${name}`]: { display: "flex" } },
         ...index + 1 in entries ? { [`$${entries[index + 1][0]}`]: { display: "none" } } : undefined,
         children: node
       },

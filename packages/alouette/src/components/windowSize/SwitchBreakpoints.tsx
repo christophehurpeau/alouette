@@ -7,9 +7,7 @@ import { useCurrentBreakpointNameFiltered } from "./useCurrentBreakpointName";
 type SwitchBreakpointsProps = SetRequired<
   Partial<Record<BreakpointNames, ReactNode>>,
   "base"
-> & {
-  children?: never;
-};
+> & { children?: never };
 
 /**
  * Display based on current breakpoint
@@ -28,12 +26,9 @@ export function SwitchBreakpointsUsingDisplayNone({
         display={name === "base" ? "flex" : "none"}
         {...(name === "base"
           ? undefined
-          : {
-              display: "none",
-              [`$${name}`]: { display: "flex" },
-            })}
+          : { display: "none", [`$${name}`]: { display: "flex" } })}
         {...(index + 1 in entries
-          ? { [`$${entries[index + 1][0]}`]: { display: "none" } }
+          ? { [`$${entries[index + 1]![0]}`]: { display: "none" } }
           : undefined)}
       >
         {node}

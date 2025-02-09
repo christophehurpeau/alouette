@@ -47,9 +47,7 @@ export const SwitchBreakpointsStory: ThisStory = {
                     base={<Typography>no</Typography>}
                     {...{ [name]: <Typography>yes</Typography> }}
                     {...(array[index + 1]
-                      ? {
-                          [array[index + 1]]: <Typography>no</Typography>,
-                        }
+                      ? { [array[index + 1]!]: <Typography>no</Typography> }
                       : {})}
                   />
                 </StoryGrid.Col>

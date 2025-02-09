@@ -7,12 +7,15 @@ export const groupTokens = (colorTokens: Record<any, Variable<any>>) => {
   >();
 
   Object.entries(colorTokens).forEach(([key, variable]) => {
-    let [keyGroup, keyValue] = key.split(".", 2);
+    let [keyGroup, keyValue] = key.split(".", 2) as [string, string];
     if (!keyValue) {
       keyGroup = "default";
       keyValue = keyGroup;
     } else {
-      const [subKeyGroup, subKeyValue] = keyValue.split(":", 2);
+      const [subKeyGroup, subKeyValue] = keyValue.split(":", 2) as [
+        string,
+        string,
+      ];
 
       if (subKeyValue) {
         keyGroup = `${keyGroup}.${subKeyGroup}`;
