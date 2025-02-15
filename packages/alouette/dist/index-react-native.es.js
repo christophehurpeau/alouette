@@ -564,9 +564,24 @@ function SubSection({
     }
   );
 }
-function Story({ preview, children }) {
+function Story({
+  preview,
+  documentation,
+  children
+}) {
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     preview && /* @__PURE__ */ jsx(StorySection, { title: "Preview", paddingBottom: "$12", children: preview }),
+    documentation && /* @__PURE__ */ jsx(
+      Box,
+      {
+        withBorder: "$2",
+        borderRadius: "$md",
+        padding: "$md",
+        theme: "primary",
+        marginBottom: "$12",
+        children: documentation
+      }
+    ),
     children
   ] });
 }

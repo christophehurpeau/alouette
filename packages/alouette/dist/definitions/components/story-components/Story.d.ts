@@ -9,10 +9,10 @@ export type StorySectionProps = Except<VStackProps, "marginBottom"> & {
 };
 declare function StorySection({ title, children, level, withBackground, ...props }: StorySectionProps): ReactNode;
 export interface StoryProps {
-    preview?: NonNullable<ReactNode>;
+    documentation?: NonNullable<ReactNode>;
     children?: NonNullable<ReactNode>;
 }
-export declare function Story({ preview, children }: StoryProps): ReactNode;
+export declare function Story({ documentation, children }: StoryProps): ReactNode;
 export declare namespace Story {
     var Section: typeof StorySection;
     var SubSection: ({ title, children, withBackground, ...props }: StorySectionProps) => ReactNode;

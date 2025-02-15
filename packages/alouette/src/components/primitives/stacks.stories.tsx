@@ -2,40 +2,143 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Box } from "../containers/Box";
 import { Story } from "../story-components/Story";
 import { Typography } from "../typography/Typography";
-import { View } from "./View";
 import { HStack, Stack, VStack } from "./stacks";
 
-export default {
+const meta = {
   title: "alouette/Primitives/Stacks",
-  component: View,
-} satisfies Meta<unknown>;
+  component: Stack,
+  subcomponents: { HStack: HStack as any, VStack: VStack as any },
+  parameters: {
+    componentSubtitle:
+      "Flexible stack layout components that provide an easy way to arrange elements vertically or horizontally with consistent spacing",
+    docs: {
+      description: {
+        component: `
+### Components
+- \`Stack\`: Base component with configurable direction
+- \`HStack\`: Horizontal stack (row layout)
+- \`VStack\`: Vertical stack (column layout)
 
-export const StacksStory: StoryObj = {
-  name: "Stacks",
+### Features
+- Configurable gap between elements
+- Theme support for background colors
+- Responsive layout changes
+- Flexible alignment and distribution
+- Proper spacing on all screen sizes
+
+### Variants
+- \`type\`: Stack direction (h | v) - Stack only
+- \`gap\`: Space between items ($xs | $sm | $md | $lg | $xl)
+- \`alignItems\`: Cross-axis alignment
+- \`justifyContent\`: Main-axis alignment
+- \`flexWrap\`: Enable wrapping to next line
+
+### Guidelines
+- Use Stack when direction might change responsively
+- Use HStack for navigation bars, toolbars, inline actions
+- Use VStack for forms, content sections, lists
+- Always specify gap for consistent spacing
+- Consider alignment needs (start, center, end)
+- Use flexWrap for responsive layouts
+
+### Usage
+~~~tsx
+// Basic horizontal stack
+<HStack gap="$4" alignItems="center">
+  <Box>Left</Box>
+  <Box>Right</Box>
+</HStack>
+
+// Vertical stack with alignment
+<VStack gap="$4" alignItems="stretch">
+  <Box>Top</Box>
+  <Box>Bottom</Box>
+</VStack>
+~~~`,
+      },
+    },
+  },
+  argTypes: {
+    type: {
+      description: "Stack direction (only for Stack component)",
+      control: "select",
+      options: ["h", "v"],
+      table: {
+        defaultValue: { summary: "v" },
+      },
+    },
+    gap: {
+      description: "Space between stack items",
+      control: "select",
+      options: ["$xs", "$sm", "$md", "$lg", "$xl", "$20"],
+    },
+    theme: {
+      description: "Theme color for the stack background",
+      control: "select",
+      options: ["primary", "info", "success", "warning", "danger"],
+    },
+    alignItems: {
+      description: "Alignment of items along the cross axis",
+      control: "select",
+      options: ["flex-start", "center", "flex-end", "stretch"],
+    },
+    justifyContent: {
+      description: "Alignment of items along the main axis",
+      control: "select",
+      options: [
+        "flex-start",
+        "center",
+        "flex-end",
+        "space-between",
+        "space-around",
+        "space-evenly",
+      ],
+    },
+    flexWrap: {
+      description: "Whether items should wrap to the next line",
+      control: "boolean",
+    },
+  },
+} satisfies Meta<typeof Stack>;
+
+export default meta;
+
+type Story = StoryObj<typeof Stack>;
+
+export const StackStory: Story = {
+  name: "Stack",
+  args: {
+    type: "v",
+    gap: "$4",
+    theme: "primary",
+    children: [
+      <Box key="1" centered withBackground flexGrow={1}>
+        <Typography contrast>1</Typography>
+      </Box>,
+      <Box key="2" centered withBackground flexGrow={1}>
+        <Typography contrast>2</Typography>
+      </Box>,
+    ],
+  },
+};
+
+export const HStackStory: StoryObj<typeof HStack> = {
+  name: "HStack",
   render: () => (
     <Story>
-      <Story.Section title="HStack">
-        <HStack>
-          <View flexGrow={1}>
+      <Story.Section title="Basic">
+        <HStack gap="$4">
+          <Box centered withBackground flexGrow={1}>
             <Typography>1</Typography>
-          </View>
-          <View flexGrow={1}>
+          </Box>
+          <Box centered withBackground flexGrow={1}>
             <Typography>2</Typography>
-          </View>
+          </Box>
         </HStack>
       </Story.Section>
-      <Story.Section title="VStack">
-        <VStack>
-          <View flexGrow={1}>
-            <Typography>1</Typography>
-          </View>
-          <View flexGrow={1}>
-            <Typography>2</Typography>
-          </View>
-        </VStack>
-      </Story.Section>
-      <Story.Section title="HStack with gap">
-        <HStack theme="primary" gap="$20">
+
+      <Story.Section title="With theme">
+        <HStack theme="primary" gap="$4">
           <Box centered withBackground flexGrow={1}>
             <Typography contrast>1</Typography>
           </Box>
@@ -44,31 +147,56 @@ export const StacksStory: StoryObj = {
           </Box>
         </HStack>
       </Story.Section>
-      <Story.Section title="VStack with gap">
-        <VStack theme="primary" gap="$20" alignItems="flex-start">
+
+      <Story.Section title="With justifyContent">
+        <HStack theme="info" gap="$4" justifyContent="space-between">
+          <Box centered withBackground>
+            <Typography contrast>1</Typography>
+          </Box>
+          <Box centered withBackground>
+            <Typography contrast>2</Typography>
+          </Box>
+        </HStack>
+      </Story.Section>
+    </Story>
+  ),
+};
+
+export const VStackStory: StoryObj<typeof VStack> = {
+  name: "VStack",
+  render: () => (
+    <Story>
+      <Story.Section title="Basic">
+        <VStack gap="$4">
           <Box centered withBackground flexGrow={1}>
             <Typography>1</Typography>
           </Box>
-          <Box centered backgroundColor="$color.primary.9" flexGrow={1}>
+          <Box centered withBackground flexGrow={1}>
             <Typography>2</Typography>
           </Box>
         </VStack>
       </Story.Section>
-      <Story.Section title="VStack in base, HStack in large">
-        <Stack
-          theme="primary"
-          type="v"
-          $large={{ type: "h" }}
-          gap="$20"
-          alignItems="flex-start"
-        >
+
+      <Story.Section title="With theme">
+        <VStack theme="primary" gap="$4">
           <Box centered withBackground flexGrow={1}>
-            <Typography>1</Typography>
+            <Typography contrast>1</Typography>
           </Box>
-          <Box centered backgroundColor="$color.primary.9" flexGrow={1}>
-            <Typography>2</Typography>
+          <Box centered withBackground flexGrow={1}>
+            <Typography contrast>2</Typography>
           </Box>
-        </Stack>
+        </VStack>
+      </Story.Section>
+
+      <Story.Section title="With alignItems">
+        <VStack theme="warning" gap="$4" alignItems="center">
+          <Box centered withBackground padding="$4">
+            <Typography contrast>1</Typography>
+          </Box>
+          <Box centered withBackground padding="$8">
+            <Typography contrast>2</Typography>
+          </Box>
+        </VStack>
       </Story.Section>
     </Story>
   ),

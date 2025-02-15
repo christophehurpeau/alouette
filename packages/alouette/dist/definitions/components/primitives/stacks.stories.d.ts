@@ -1,10 +1,64 @@
 import type { StoryObj } from "@storybook/react";
-declare const _default: {
+import { Story } from "../story-components/Story";
+import { HStack, Stack, VStack } from "./stacks";
+declare const meta: {
     title: string;
-    component: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}> & Omit<{}, "staticConfig" | "extractable" | "styleable"> & {
-        __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}];
+    component: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        type?: "h" | "v" | undefined;
+        fullscreen?: boolean | undefined;
+    }, import("@tamagui/web").StaticConfigPublic>;
+    subcomponents: {
+        HStack: any;
+        VStack: any;
+    };
+    parameters: {
+        componentSubtitle: string;
+        docs: {
+            description: {
+                component: string;
+            };
+        };
+    };
+    argTypes: {
+        type: {
+            description: string;
+            control: "select";
+            options: string[];
+            table: {
+                defaultValue: {
+                    summary: string;
+                };
+            };
+        };
+        gap: {
+            description: string;
+            control: "select";
+            options: string[];
+        };
+        theme: {
+            description: string;
+            control: "select";
+            options: string[];
+        };
+        alignItems: {
+            description: string;
+            control: "select";
+            options: string[];
+        };
+        justifyContent: {
+            description: string;
+            control: "select";
+            options: string[];
+        };
+        flexWrap: {
+            description: string;
+            control: "boolean";
+        };
     };
 };
-export default _default;
-export declare const StacksStory: StoryObj;
+export default meta;
+type Story = StoryObj<typeof Stack>;
+export declare const StackStory: Story;
+export declare const HStackStory: StoryObj<typeof HStack>;
+export declare const VStackStory: StoryObj<typeof VStack>;
 //# sourceMappingURL=stacks.stories.d.ts.map

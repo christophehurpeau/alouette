@@ -1,8 +1,10 @@
 import { Preview } from "@storybook/react";
 import { AlouetteDecorator } from "alouette";
 import tamaguiConfig from "../tamagui.config";
+import { DocTemplate } from "./DocTemplate";
 
 const preview: Preview = {
+  tags: ["autodocs"],
   parameters: {
     controls: {
       matchers: {
@@ -23,6 +25,10 @@ const preview: Preview = {
           value: "#000000",
         },
       ],
+    },
+    docs: {
+      toc: true,
+      page: DocTemplate,
     },
   },
 

@@ -137,6 +137,55 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
   });
 };
 
+const getLuminance = (r, g, b) => {
+  const values = [r, g, b].map((c) => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * values[0] + 0.7152 * values[1] + 0.0722 * values[2];
+};
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!result?.[1] || !result[2] || !result[3]) return null;
+  return {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  };
+};
+const getContrastRatio = (color1, color2) => {
+  const rgb1 = hexToRgb(color1);
+  const rgb2 = hexToRgb(color2);
+  if (!rgb1 || !rgb2) return 0;
+  const l1 = getLuminance(rgb1.r, rgb1.g, rgb1.b);
+  const l2 = getLuminance(rgb2.r, rgb2.g, rgb2.b);
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
+};
+const checkContrast = (foreground, background, level = "AA") => {
+  const ratio = getContrastRatio(foreground, background);
+  const minimumRatio = level === "AA" ? 4.5 : 7;
+  return {
+    ratio,
+    passes: ratio >= minimumRatio,
+    minimumRatio
+  };
+};
+const warnOnContrastIssues = (themeName, textColor, backgroundColor) => {
+  if (process.env.NODE_ENV !== "development") return;
+  const result = checkContrast(textColor, backgroundColor);
+  if (!result.passes) {
+    console.warn(
+      `[Alouette] Contrast warning in theme "${themeName}":
+       Text color ${textColor} on background ${backgroundColor}
+       has contrast ratio of ${result.ratio.toFixed(2)}.
+       Minimum required: ${result.minimumRatio}
+       This may cause accessibility issues.`
+    );
+  }
+};
+
 const darkModeScaleNumbers = {
   1: 10,
   2: 9,
@@ -169,7 +218,7 @@ const createColorTheme = (tokens, colorScaleName, mode = "light", backgroundColo
     return tokens.color[`${forceScaleNumber}.${scaleNumber}`];
   };
   const contrastBorderColor = contrastTextColor;
-  return {
+  const theme = {
     backgroundColor,
     textColor,
     mainColor: getColor(6),
@@ -180,6 +229,11 @@ const createColorTheme = (tokens, colorScaleName, mode = "light", backgroundColo
     shadowColor: getColor(9),
     "textColor:disabled": getColor(3, "grayscale"),
     "contrastTextColor:disabled": getColor(7, "grayscale"),
+    "interactive.linkTextColor": getColor(9),
+    "interactive.linkTextColor:hover": getColor(7),
+    "interactive.linkTextColor:focus": getColor(7),
+    "interactive.linkTextColor:press": getColor(7),
+    "interactive.linkTextColor:disabled": getColor(3, "grayscale"),
     "interactive.contained.backgroundColor": getColor(5),
     "interactive.elevated.backgroundColor": backgroundColor,
     "interactive.elevated.shadowColor": getColor(9),
@@ -220,6 +274,14 @@ const createColorTheme = (tokens, colorScaleName, mode = "light", backgroundColo
     "interactive.forms.borderColor:press": getColor(7),
     "interactive.forms.borderColor:disabled": getColor(3, "grayscale")
   };
+  if (process.env.NODE_ENV === "development") {
+    warnOnContrastIssues(
+      colorScaleName,
+      theme.textColor.val,
+      theme.backgroundColor.val
+    );
+  }
+  return theme;
 };
 const createAlouetteThemes = (tokens) => {
   const alouetteTokens = tokens;

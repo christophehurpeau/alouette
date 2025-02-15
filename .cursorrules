@@ -1,8 +1,18 @@
-This is a monorepo to create a design system library based on tamagui. It have 3 packages:
+This is a monorepo to create a design system library based on @tamagui/core. It have 3 packages:
 
 - alouette: the actual design system library
 - alouette-icons: icons based on phosphor-icons
 - storybook-app: storybook to see result and serve as a demo
 
+Using tamagui package directly is not compatible with alouette.
+
 As this is a open source library, make a clear documentation both in README.md (in alouette and alouette-icons packages) but most importantly in storybook
-Maintain documentation up-to-date. Keep README compatible with emplates @https://github.com/christophehurpeau/pob/blob/main/packages/pob/lib/generators/monorepo/workspaces/templates/README.md.ejs @https://github.com/christophehurpeau/pob/blob/main/packages/pob/lib/generators/lib/readme/templates/README.md.ejs (in particular `<h1>` and `<h3>`)
+Maintain documentation up-to-date. Keep README compatible with templates @https://github.com/christophehurpeau/pob/blob/main/packages/pob/lib/generators/monorepo/workspaces/templates/README.md.ejs @https://github.com/christophehurpeau/pob/blob/main/packages/pob/lib/generators/lib/readme/templates/README.md.ejs (in particular `<h1>` and `<h3>`)
+
+In stories:
+
+- use componentSubtitle
+- Add simple Usage example in description, but make sure these examples are covered in real stories.
+- Do not add variant theme in description, the themes.stories.tsx should document this
+- story should always have a name defined. exported story function should end with `Story`
+- The first story should be the preview and use args

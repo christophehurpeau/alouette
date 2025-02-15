@@ -1,8 +1,15 @@
 import type { StoryObj } from "@storybook/react";
-type ThisStory = StoryObj<unknown>;
-declare const _default: {
+declare const meta: {
     title: string;
+    parameters: {
+        componentSubtitle: string;
+        docs: {
+            description: {
+                component: string;
+            };
+        };
+    };
 };
-export default _default;
-export declare const TokensStory: ThisStory;
+export default meta;
+export declare const TokensStory: StoryObj<unknown>;
 //# sourceMappingURL=themes.stories.d.ts.map

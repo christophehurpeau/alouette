@@ -5,6 +5,7 @@ import type {
   AlouetteColorScales,
 } from "./colorScales";
 import type { createAlouetteTokens } from "./createAlouetteTokens";
+import { warnOnContrastIssues } from "./utils/colorContrast";
 
 // export interface MinimalRootTheme {
 //   backgroundColor: Variable<string>;
@@ -27,6 +28,12 @@ export interface ColorTheme {
   borderColor: Variable<string>;
   contrastBorderColor: Variable<string>;
   shadowColor: Variable<string>;
+
+  "interactive.linkTextColor": Variable<string>;
+  "interactive.linkTextColor:hover": Variable<string>;
+  "interactive.linkTextColor:focus": Variable<string>;
+  "interactive.linkTextColor:press": Variable<string>;
+  "interactive.linkTextColor:disabled": Variable<string>;
 
   "interactive.contained.backgroundColor": Variable<string>;
   "interactive.elevated.backgroundColor": Variable<string>;
@@ -149,7 +156,7 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
 
   const contrastBorderColor = contrastTextColor;
 
-  return {
+  const theme = {
     backgroundColor,
     textColor,
     mainColor: getColor(6),
@@ -160,6 +167,12 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
     shadowColor: getColor(9),
     "textColor:disabled": getColor(3, "grayscale"),
     "contrastTextColor:disabled": getColor(7, "grayscale"),
+
+    "interactive.linkTextColor": getColor(9),
+    "interactive.linkTextColor:hover": getColor(7),
+    "interactive.linkTextColor:focus": getColor(7),
+    "interactive.linkTextColor:press": getColor(7),
+    "interactive.linkTextColor:disabled": getColor(3, "grayscale"),
 
     "interactive.contained.backgroundColor": getColor(5),
     "interactive.elevated.backgroundColor": backgroundColor,
@@ -207,6 +220,17 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
     "interactive.forms.borderColor:press": getColor(7),
     "interactive.forms.borderColor:disabled": getColor(3, "grayscale"),
   } satisfies FullTheme;
+
+  if (process.env.NODE_ENV === "development") {
+    // Check main text contrast
+    warnOnContrastIssues(
+      colorScaleName,
+      theme.textColor.val,
+      theme.backgroundColor.val,
+    );
+  }
+
+  return theme;
 };
 
 export const createAlouetteThemes = <
