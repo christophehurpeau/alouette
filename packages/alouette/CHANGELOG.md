@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@10.2.0...alouette@10.3.0) (2025-02-15)
+
+### Features
+
+* add variants elevated and ghosts ([983aa49](https://github.com/christophehurpeau/alouette/commit/983aa49e883ba3bd2aa050c4d8c284611fa5ba37))
+
 ## [10.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@10.1.1...alouette@10.2.0) (2025-02-15)
 
 ### Features
