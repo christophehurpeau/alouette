@@ -67,7 +67,7 @@
   "devDependencies": {
     "@babel/core": "7.26.9",
     "@babel/preset-react": "7.26.3",
-    "react-native": "0.77.0",
+    "react-native": "0.77.1",
     "typescript": "5.7.3"
   }
 }
