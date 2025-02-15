@@ -8,12 +8,49 @@ const IconButtonFrame = styled(PressableBox, {
   name: "IconButtonFrame",
   role: "button",
   centered: true,
-  withBorder: true,
-  withBackground: true,
-  size: 40,
-  borderWidth: 1,
   borderRadius: 10_000,
+
+  variants: {
+    variant: {
+      contained: {
+        withBackground: true,
+      },
+      outlined: {
+        withBackground: true,
+        withBorder: 1,
+      },
+      elevated: {
+        withBackground: true,
+        withElevation: true,
+        withBorder: 1,
+      },
+      "ghost-contained": {
+        withBackground: true,
+      },
+      "ghost-outlined": {
+        withBackground: true,
+        withBorder: 1,
+      },
+    },
+  },
+
+  defaultVariants: {
+    variant: "contained",
+  },
 });
+
+const getDisabledColor = (
+  variant:
+    | "contained"
+    | "elevated"
+    | "ghost-contained"
+    | "ghost-outlined"
+    | "outlined",
+) => {
+  return variant === "contained" || variant === "ghost-contained"
+    ? "$contrastTextColor:disabled"
+    : "$textColor:disabled";
+};
 
 type IconButtonFrameProps = GetProps<typeof IconButtonFrame>;
 
@@ -25,13 +62,23 @@ export function IconButton({
   icon,
   disabled,
   size = 40,
+  variant = "contained",
   ...pressableProps
 }: IconButtonProps): ReactNode {
   return (
-    <IconButtonFrame size={size} disabled={disabled} {...pressableProps}>
+    <IconButtonFrame
+      size={size}
+      variant={variant}
+      disabled={disabled}
+      {...pressableProps}
+    >
       <Icon
         size={size / 2}
-        color={disabled ? "$contrastTextColor:disabled" : undefined}
+        color={disabled ? getDisabledColor(variant) : undefined}
+        contrast={
+          (variant === "contained" || variant === "ghost-contained") &&
+          !disabled
+        }
         icon={icon}
       />
     </IconButtonFrame>

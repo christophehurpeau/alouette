@@ -34,6 +34,19 @@ const ButtonFrame = styled(PressableBox, {
         withBackground: true,
         withBorder: true,
       },
+      elevated: {
+        withBackground: true,
+        withElevation: true,
+        withBorder: true,
+        borderColor: "$contrastBorderColor",
+      },
+      "ghost-contained": {
+        withBackground: true,
+      },
+      "ghost-outlined": {
+        withBorder: 1,
+        withBackground: true,
+      },
     },
   },
 
@@ -51,8 +64,15 @@ export interface ButtonProps extends Except<ButtonFrameProps, "size"> {
   size?: "md" | "sm";
 }
 
-const getDisabledColor = (variant: "contained" | "outlined") => {
-  return variant === "contained"
+const getDisabledColor = (
+  variant:
+    | "contained"
+    | "elevated"
+    | "ghost-contained"
+    | "ghost-outlined"
+    | "outlined",
+) => {
+  return variant === "contained" || variant === "ghost-contained"
     ? "$contrastTextColor:disabled"
     : "$textColor:disabled";
 };
@@ -77,7 +97,10 @@ export function Button({
         {icon && (
           <Icon
             color={disabled ? getDisabledColor(variant) : undefined}
-            contrast={variant === "contained" && !disabled}
+            contrast={
+              (variant === "contained" || variant === "ghost-contained") &&
+              !disabled
+            }
             icon={icon}
             size={size === "sm" ? 16 : 20}
           />
@@ -87,7 +110,10 @@ export function Button({
           weight="bold"
           paddingVertical={size === "sm" ? "$1" : "$xs"}
           color={disabled ? getDisabledColor(variant) : undefined}
-          contrast={variant === "contained" && !disabled}
+          contrast={
+            (variant === "contained" || variant === "ghost-contained") &&
+            !disabled
+          }
         >
           {text}
         </Typography>

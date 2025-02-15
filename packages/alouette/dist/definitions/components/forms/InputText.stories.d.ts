@@ -7,6 +7,7 @@ declare const _default: {
         interactive?: boolean | import("csstype").Property.Cursor | undefined;
         withBorder?: boolean | import("@tamagui/web").SizeTokens | undefined;
         withBackground?: boolean | undefined;
+        withElevation?: boolean | undefined;
         circular?: boolean | undefined;
         centered?: boolean | undefined;
     }, {

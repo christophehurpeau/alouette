@@ -13,111 +13,67 @@ const fullscreenStyle = {
   right: 0,
   bottom: 0
 };
-const getBorderAdditionalInteraction = ({
-  internalForcedPseudoState,
-  disabled,
-  interactive
-}) => {
-  const prefix = interactive === "text" ? "interactive.forms" : "interactive";
-  if (disabled) {
-    return {
-      borderColor: `$${prefix}.borderColor:disabled`
-    };
-  }
-  if (process.env.STORYBOOK && internalForcedPseudoState) {
-    switch (internalForcedPseudoState) {
-      case "hover":
-        return {
-          borderColor: `$${prefix}.borderColor:hover`
-        };
-      case "press":
-        return {
-          borderColor: `$${prefix}.borderColor:press`
-        };
-      case "focus":
-        return {
-          borderColor: `$${prefix}.borderColor:focus`
-        };
-    }
-  }
-  return {
-    borderColor: `$${prefix}.borderColor`,
-    hoverStyle: {
-      borderColor: `$${prefix}.borderColor:hover`
-    },
-    pressStyle: {
-      borderColor: `$${prefix}.borderColor:press`
-    },
-    focusStyle: {
-      borderColor: `$${prefix}.borderColor:focus`
-    }
-  };
-};
-const getBackgroundAdditionalInteraction = ({
+const getInteractionStyles = (name, {
   internalForcedPseudoState,
   disabled,
   interactive,
   variant
 }) => {
+  const isGhost = variant?.startsWith("ghost-");
   const prefix = interactive === "text" ? "interactive.forms" : (
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    `interactive.${variant || "contained"}`
+    `interactive.${(isGhost ? variant.slice(6) : variant) || "contained"}`
   );
   if (disabled) {
-    return {
-      backgroundColor: `$${prefix}.backgroundColor:disabled`
-    };
+    return { [name]: `$${prefix}.${name}:disabled` };
+  }
+  if (name === "shadowColor") {
+    return { [name]: `$${prefix}.${name}` };
   }
   if (process.env.STORYBOOK && internalForcedPseudoState) {
     switch (internalForcedPseudoState) {
       case "hover":
-        return {
-          backgroundColor: `$${prefix}.backgroundColor:hover`
-        };
+        return { [name]: `$${prefix}.${name}:hover` };
       case "press":
-        return {
-          backgroundColor: `$${prefix}.backgroundColor:press`
-        };
+        return { [name]: `$${prefix}.${name}:press` };
       case "focus":
-        return {
-          backgroundColor: `$${prefix}.backgroundColor:focus`
-        };
+        return { [name]: `$${prefix}.${name}:focus` };
     }
   }
   return {
-    backgroundColor: `$${prefix}.backgroundColor`,
-    hoverStyle: {
-      backgroundColor: `$${prefix}.backgroundColor:hover`
-    },
-    pressStyle: {
-      backgroundColor: `$${prefix}.backgroundColor:press`
-    },
-    focusStyle: {
-      backgroundColor: `$${prefix}.backgroundColor:focus`
-    }
+    [name]: isGhost ? "transparent" : `$${prefix}.${name}`,
+    hoverStyle: { [name]: `$${prefix}.${name}:hover` },
+    pressStyle: { [name]: `$${prefix}.${name}:press` },
+    focusStyle: { [name]: `$${prefix}.${name}:focus` }
   };
 };
 
 const internalForcedPseudoState = (val) => ({});
 const withBorder = (val, { props }) => {
   return {
-    borderWidth: typeof val === "number" ? val : 1,
-    borderColor: "$borderColor",
-    ...props.interactive ? getBorderAdditionalInteraction(props) : undefined
+    borderWidth: typeof val !== "boolean" ? val : 1,
+    ...props.interactive ? getInteractionStyles("borderColor", props) : { borderColor: "$borderColor" }
   };
 };
 const withBackground = (val, { props }) => {
-  const variant = props.interactive === "text" ? "text" : props.variant || "contained";
   if (!val) return {};
   if (!props.role && !props.outlineStyle && props.interactive) {
     throw new Error("A role prop is required while using interactive");
   }
   return {
-    backgroundColor: props.interactive ? (
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      `$interactive.${variant}.backgroundColor`
-    ) : "$mainColor",
-    ...props.interactive ? getBackgroundAdditionalInteraction(props) : undefined
+    ...props.interactive ? getInteractionStyles("backgroundColor", props) : { backgroundColor: "$mainColor" }
+  };
+};
+const withElevation = (val, { props }) => {
+  if (!val) return {};
+  return {
+    ...props.disabled ? {} : {
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.65,
+      shadowRadius: 6,
+      elevation: 5
+    },
+    ...props.interactive ? getInteractionStyles("shadowColor", props) : { shadowColor: "$shadowColor" }
   };
 };
 const circularStyle = {
@@ -169,7 +125,8 @@ const variants$1 = {
   internalForcedPseudoState: internalForcedPseudoState,
   size: size,
   withBackground: withBackground,
-  withBorder: withBorder
+  withBorder: withBorder,
+  withElevation: withElevation
 };
 
 const Box = core.styled(core.View, {
@@ -202,26 +159,62 @@ const IconButtonFrame = core.styled(PressableBox, {
   name: "IconButtonFrame",
   role: "button",
   centered: true,
-  withBorder: true,
-  withBackground: true,
-  size: 40,
-  borderWidth: 1,
-  borderRadius: 1e4
+  borderRadius: 1e4,
+  variants: {
+    variant: {
+      contained: {
+        withBackground: true
+      },
+      outlined: {
+        withBackground: true,
+        withBorder: 1
+      },
+      elevated: {
+        withBackground: true,
+        withElevation: true,
+        withBorder: 1
+      },
+      "ghost-contained": {
+        withBackground: true
+      },
+      "ghost-outlined": {
+        withBackground: true,
+        withBorder: 1
+      }
+    }
+  },
+  defaultVariants: {
+    variant: "contained"
+  }
 });
+const getDisabledColor$1 = (variant) => {
+  return variant === "contained" || variant === "ghost-contained" ? "$contrastTextColor:disabled" : "$textColor:disabled";
+};
 function IconButton({
   icon,
   disabled,
   size = 40,
+  variant = "contained",
   ...pressableProps
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(IconButtonFrame, { size, disabled, ...pressableProps, children: /* @__PURE__ */ jsxRuntime.jsx(
-    Icon,
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    IconButtonFrame,
     {
-      size: size / 2,
-      color: disabled ? "$contrastTextColor:disabled" : undefined,
-      icon
+      size,
+      variant,
+      disabled,
+      ...pressableProps,
+      children: /* @__PURE__ */ jsxRuntime.jsx(
+        Icon,
+        {
+          size: size / 2,
+          color: disabled ? getDisabledColor$1(variant) : undefined,
+          contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
+          icon
+        }
+      )
     }
-  ) });
+  );
 }
 
 const variants = {
@@ -336,6 +329,19 @@ const ButtonFrame = core.styled(PressableBox, {
       outlined: {
         withBackground: true,
         withBorder: true
+      },
+      elevated: {
+        withBackground: true,
+        withElevation: true,
+        withBorder: true,
+        borderColor: "$contrastBorderColor"
+      },
+      "ghost-contained": {
+        withBackground: true
+      },
+      "ghost-outlined": {
+        withBorder: 1,
+        withBackground: true
       }
     }
   },
@@ -345,7 +351,7 @@ const ButtonFrame = core.styled(PressableBox, {
   }
 });
 const getDisabledColor = (variant) => {
-  return variant === "contained" ? "$contrastTextColor:disabled" : "$textColor:disabled";
+  return variant === "contained" || variant === "ghost-contained" ? "$contrastTextColor:disabled" : "$textColor:disabled";
 };
 function Button({
   icon,
@@ -367,7 +373,7 @@ function Button({
           Icon,
           {
             color: disabled ? getDisabledColor(variant) : undefined,
-            contrast: variant === "contained" && !disabled,
+            contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
             icon,
             size: size === "sm" ? 16 : 20
           }
@@ -379,7 +385,7 @@ function Button({
             weight: "bold",
             paddingVertical: size === "sm" ? "$1" : "$xs",
             color: disabled ? getDisabledColor(variant) : undefined,
-            contrast: variant === "contained" && !disabled,
+            contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
             children: text
           }
         )
@@ -442,7 +448,14 @@ function Message({
   return /* @__PURE__ */ jsxRuntime.jsxs(MessageFrame, { theme, children: [
     textCentered ? null : /* @__PURE__ */ jsxRuntime.jsx(MessageIconContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { contrast: true, icon: /* @__PURE__ */ jsxRuntime.jsx(FeedbackIcon, { type: theme }) }) }),
     /* @__PURE__ */ jsxRuntime.jsx(MessageText, { centered: textCentered, children }),
-    onDismiss ? /* @__PURE__ */ jsxRuntime.jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(IconButton, { icon: /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.XRegularIcon, {}), size: 40 }) }) : null
+    onDismiss ? /* @__PURE__ */ jsxRuntime.jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(
+      IconButton,
+      {
+        icon: /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.XRegularIcon, {}),
+        size: 40,
+        variant: "ghost-contained"
+      }
+    ) }) : null
   ] });
 }
 

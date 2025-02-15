@@ -10,102 +10,49 @@ export const fullscreenStyle = {
 
 export type InternalPseudoState = "focus" | "hover" | "press";
 
-export const getBorderAdditionalInteraction = ({
-  internalForcedPseudoState,
-  disabled,
-  interactive,
-}: VariantSpreadExtras<any>["props"]) => {
-  const prefix = interactive === "text" ? "interactive.forms" : "interactive";
-
-  if (disabled) {
-    return {
-      borderColor: `$${prefix}.borderColor:disabled`,
-    } as const;
-  }
-
-  if (process.env.STORYBOOK && internalForcedPseudoState) {
-    switch (internalForcedPseudoState) {
-      case "hover":
-        return {
-          borderColor: `$${prefix}.borderColor:hover`,
-        };
-      case "press":
-        return {
-          borderColor: `$${prefix}.borderColor:press`,
-        };
-      case "focus":
-        return {
-          borderColor: `$${prefix}.borderColor:focus`,
-        };
-      default:
-        break;
-    }
-  }
-
-  return {
-    borderColor: `$${prefix}.borderColor`,
-
-    hoverStyle: {
-      borderColor: `$${prefix}.borderColor:hover`,
-    },
-    pressStyle: {
-      borderColor: `$${prefix}.borderColor:press`,
-    },
-    focusStyle: {
-      borderColor: `$${prefix}.borderColor:focus`,
-    },
-  } as const;
-};
-
 // eslint-disable-next-line complexity
-export const getBackgroundAdditionalInteraction = ({
-  internalForcedPseudoState,
-  disabled,
-  interactive,
-  variant,
-}: VariantSpreadExtras<any>["props"]) => {
+export const getInteractionStyles = (
+  name: "backgroundColor" | "borderColor" | "shadowColor",
+  {
+    internalForcedPseudoState,
+    disabled,
+    interactive,
+    variant,
+  }: VariantSpreadExtras<any>["props"],
+) => {
+  const isGhost = variant?.startsWith("ghost-");
   const prefix =
     interactive === "text"
       ? "interactive.forms"
       : // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        `interactive.${variant || "contained"}`;
+        `interactive.${(isGhost ? variant.slice(6) : variant) || "contained"}`;
 
   if (disabled) {
-    return {
-      backgroundColor: `$${prefix}.backgroundColor:disabled`,
-    } as const;
+    return { [name]: `$${prefix}.${name}:disabled` } as const;
+  }
+
+  if (name === "shadowColor") {
+    // no need to add :hover, :focus, :press, and causes issues because all of the box-shadow is set and resets width etc
+    return { [name]: `$${prefix}.${name}` } as const;
   }
 
   if (process.env.STORYBOOK && internalForcedPseudoState) {
     switch (internalForcedPseudoState) {
       case "hover":
-        return {
-          backgroundColor: `$${prefix}.backgroundColor:hover`,
-        };
+        return { [name]: `$${prefix}.${name}:hover` } as const;
       case "press":
-        return {
-          backgroundColor: `$${prefix}.backgroundColor:press`,
-        };
+        return { [name]: `$${prefix}.${name}:press` } as const;
       case "focus":
-        return {
-          backgroundColor: `$${prefix}.backgroundColor:focus`,
-        };
+        return { [name]: `$${prefix}.${name}:focus` } as const;
       default:
         break;
     }
   }
 
   return {
-    backgroundColor: `$${prefix}.backgroundColor`,
-
-    hoverStyle: {
-      backgroundColor: `$${prefix}.backgroundColor:hover`,
-    },
-    pressStyle: {
-      backgroundColor: `$${prefix}.backgroundColor:press`,
-    },
-    focusStyle: {
-      backgroundColor: `$${prefix}.backgroundColor:focus`,
-    },
+    [name]: isGhost ? "transparent" : `$${prefix}.${name}`,
+    hoverStyle: { [name]: `$${prefix}.${name}:hover` },
+    pressStyle: { [name]: `$${prefix}.${name}:press` },
+    focusStyle: { [name]: `$${prefix}.${name}:focus` },
   } as const;
 };

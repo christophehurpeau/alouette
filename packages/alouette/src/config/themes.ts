@@ -25,24 +25,40 @@ export interface ColorTheme {
   mainColor: Variable<string>;
   mainTextColor: Variable<string>;
   borderColor: Variable<string>;
+  contrastBorderColor: Variable<string>;
+  shadowColor: Variable<string>;
 
   "interactive.contained.backgroundColor": Variable<string>;
-  "interactive.borderColor": Variable<string>;
+  "interactive.elevated.backgroundColor": Variable<string>;
+  "interactive.elevated.shadowColor": Variable<string>;
+  "interactive.elevated.borderColor": Variable<string>;
+  "interactive.outlined.backgroundColor": Variable<string>;
+  "interactive.outlined.borderColor": Variable<string>;
 
   "interactive.contained.backgroundColor:hover": Variable<string>;
+  "interactive.elevated.backgroundColor:hover": Variable<string>;
+  "interactive.elevated.borderColor:hover": Variable<string>;
   "interactive.outlined.backgroundColor:hover": Variable<string>;
-  "interactive.borderColor:hover": Variable<string>;
+  "interactive.outlined.borderColor:hover": Variable<string>;
 
   "interactive.contained.backgroundColor:focus": Variable<string>;
+  "interactive.elevated.backgroundColor:focus": Variable<string>;
+  "interactive.elevated.borderColor:focus": Variable<string>;
   "interactive.outlined.backgroundColor:focus": Variable<string>;
-  "interactive.borderColor:focus": Variable<string>;
+  "interactive.outlined.borderColor:focus": Variable<string>;
 
   "interactive.contained.backgroundColor:press": Variable<string>;
+  "interactive.elevated.backgroundColor:press": Variable<string>;
+  "interactive.elevated.borderColor:press": Variable<string>;
   "interactive.outlined.backgroundColor:press": Variable<string>;
-  "interactive.borderColor:press": Variable<string>;
+  "interactive.outlined.borderColor:press": Variable<string>;
 
   "interactive.contained.backgroundColor:disabled": Variable<string>;
-  "interactive.borderColor:disabled": Variable<string>;
+  "interactive.elevated.backgroundColor:disabled": Variable<string>;
+  "interactive.elevated.shadowColor:disabled": Variable<string>;
+  "interactive.elevated.borderColor:disabled": Variable<string>;
+  "interactive.outlined.backgroundColor:disabled": Variable<string>;
+  "interactive.outlined.borderColor:disabled": Variable<string>;
   "interactive.textColor:disabled": Variable<string>;
 
   "interactive.forms.textColor": Variable<string>;
@@ -131,6 +147,8 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
     ];
   };
 
+  const contrastBorderColor = contrastTextColor;
+
   return {
     backgroundColor,
     textColor,
@@ -138,26 +156,42 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
     mainTextColor: getColor(9),
     contrastTextColor,
     borderColor: getColor(8),
+    contrastBorderColor,
+    shadowColor: getColor(9),
     "textColor:disabled": getColor(3, "grayscale"),
     "contrastTextColor:disabled": getColor(7, "grayscale"),
 
     "interactive.contained.backgroundColor": getColor(5),
-    "interactive.borderColor": getColor(mode === "dark" ? 5 : 8),
+    "interactive.elevated.backgroundColor": backgroundColor,
+    "interactive.elevated.shadowColor": getColor(9),
+    "interactive.elevated.borderColor": contrastBorderColor,
+    "interactive.outlined.backgroundColor": backgroundColor,
+    "interactive.outlined.borderColor": getColor(mode === "dark" ? 5 : 8),
 
     "interactive.contained.backgroundColor:hover": getColor(4),
+    "interactive.elevated.backgroundColor:hover": getColor(1),
+    "interactive.elevated.borderColor:hover": contrastBorderColor,
     "interactive.outlined.backgroundColor:hover": getColor(1),
-    "interactive.borderColor:hover": getColor(mode === "dark" ? 5 : 7),
+    "interactive.outlined.borderColor:hover": getColor(mode === "dark" ? 5 : 7),
 
     "interactive.contained.backgroundColor:focus": getColor(4),
+    "interactive.elevated.backgroundColor:focus": getColor(1),
+    "interactive.elevated.borderColor:focus": contrastBorderColor,
     "interactive.outlined.backgroundColor:focus": getColor(1),
-    "interactive.borderColor:focus": getColor(7),
+    "interactive.outlined.borderColor:focus": getColor(7),
 
     "interactive.contained.backgroundColor:press": getColor(2),
+    "interactive.elevated.backgroundColor:press": getColor(3),
+    "interactive.elevated.borderColor:press": contrastBorderColor,
     "interactive.outlined.backgroundColor:press": getColor(3),
-    "interactive.borderColor:press": getColor(7),
+    "interactive.outlined.borderColor:press": getColor(7),
 
     "interactive.contained.backgroundColor:disabled": getColor(3, "grayscale"),
-    "interactive.borderColor:disabled": getColor(3, "grayscale"),
+    "interactive.elevated.backgroundColor:disabled": backgroundColor,
+    "interactive.elevated.shadowColor:disabled": getColor(9, "grayscale"),
+    "interactive.elevated.borderColor:disabled": getColor(3, "grayscale"),
+    "interactive.outlined.backgroundColor:disabled": backgroundColor,
+    "interactive.outlined.borderColor:disabled": getColor(3, "grayscale"),
     "interactive.textColor:disabled": getColor(7, "grayscale"),
 
     "interactive.forms.textColor": textColor,

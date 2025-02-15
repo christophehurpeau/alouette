@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
+import { Box } from "../containers/Box";
+import { HStack, VStack } from "../primitives/stacks";
 import { Story } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
+import { Typography } from "../typography/Typography";
 import { IconButton } from "./IconButton";
 
 type ThisStory = StoryObj<typeof IconButton>;
@@ -53,14 +56,34 @@ export const IconButtonStory: ThisStory = {
                   key={state || "default"}
                   title={state || "default"}
                 >
-                  <IconButton
-                    theme={theme}
-                    disabled={state === "disabled"}
-                    internalForcedPseudoState={
-                      state === "disabled" ? undefined : state
-                    }
-                    icon={<ArrowLeftRegularIcon />}
-                  />
+                  <VStack gap="$2">
+                    {(
+                      [
+                        "contained",
+                        "outlined",
+                        "elevated",
+                        "ghost-contained",
+                        "ghost-outlined",
+                      ] as const
+                    ).map((variant) => (
+                      <HStack key={variant} gap="$2" alignItems="center">
+                        <Box
+                          theme={theme}
+                          withBackground={variant === "ghost-contained"}
+                        >
+                          <IconButton
+                            variant={variant}
+                            disabled={state === "disabled"}
+                            internalForcedPseudoState={
+                              state === "disabled" ? undefined : state
+                            }
+                            icon={<ArrowLeftRegularIcon />}
+                          />
+                        </Box>
+                        <Typography size="xs">{variant}</Typography>
+                      </HStack>
+                    ))}
+                  </VStack>
                 </StoryGrid.Col>
               ))}
             </StoryGrid.Row>

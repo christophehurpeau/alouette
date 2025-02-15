@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Theme } from "@tamagui/core";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
+import { Box } from "../containers/Box";
+import { VStack } from "../primitives/stacks";
 import { Story } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Button } from "./Button";
@@ -49,35 +51,50 @@ export const ButtonStory: ThisStory = {
                   title={`${mainTheme}_${theme}`}
                   theme={theme}
                 >
-                  {(["contained", "outlined"] as const).map((variant) => (
-                    <StoryGrid.Row key={variant} flexWrap>
-                      {(
-                        [
-                          undefined,
-                          "hover",
-                          "focus",
-                          "press",
-                          "disabled",
-                        ] as const
-                      ).map((state) => (
-                        <StoryGrid.Col
-                          key={state || "default"}
-                          title={state || "default"}
-                        >
-                          <Button
-                            theme={theme}
-                            disabled={state === "disabled"}
-                            variant={variant}
-                            internalForcedPseudoState={
-                              state === "disabled" ? undefined : state
-                            }
-                            icon={<ArrowLeftRegularIcon />}
-                            text={variant}
-                          />
-                        </StoryGrid.Col>
-                      ))}
-                    </StoryGrid.Row>
-                  ))}
+                  <StoryGrid.Row flexWrap>
+                    {(
+                      [
+                        undefined,
+                        "hover",
+                        "focus",
+                        "press",
+                        "disabled",
+                      ] as const
+                    ).map((state) => (
+                      <StoryGrid.Col
+                        key={state || "default"}
+                        title={state || "default"}
+                      >
+                        <VStack gap="$2" padding="$1">
+                          {(
+                            [
+                              "contained",
+                              "outlined",
+                              "elevated",
+                              "ghost-contained",
+                              "ghost-outlined",
+                            ] as const
+                          ).map((variant) => (
+                            <Box
+                              key={variant}
+                              theme={theme}
+                              withBackground={variant === "ghost-contained"}
+                            >
+                              <Button
+                                disabled={state === "disabled"}
+                                variant={variant}
+                                internalForcedPseudoState={
+                                  state === "disabled" ? undefined : state
+                                }
+                                icon={<ArrowLeftRegularIcon />}
+                                text={variant}
+                              />
+                            </Box>
+                          ))}
+                        </VStack>
+                      </StoryGrid.Col>
+                    ))}
+                  </StoryGrid.Row>
                 </Story.SubSection>
               ),
             )}

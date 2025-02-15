@@ -7,48 +7,52 @@ export declare const fullscreenStyle: {
     readonly bottom: 0;
 };
 export type InternalPseudoState = "focus" | "hover" | "press";
-export declare const getBorderAdditionalInteraction: ({ internalForcedPseudoState, disabled, interactive, }: VariantSpreadExtras<any>["props"]) => {
-    readonly borderColor: "$interactive.forms.borderColor:disabled" | "$interactive.borderColor:disabled";
+export declare const getInteractionStyles: (name: "backgroundColor" | "borderColor" | "shadowColor", { internalForcedPseudoState, disabled, interactive, variant, }: VariantSpreadExtras<any>["props"]) => {
+    readonly [x: string]: `$${string}.backgroundColor:disabled` | `$${string}.borderColor:disabled` | `$${string}.shadowColor:disabled`;
+    readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
 } | {
-    borderColor: string;
+    readonly shadowColor: `$${string}.shadowColor`;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
 } | {
-    readonly borderColor: "$interactive.forms.borderColor" | "$interactive.borderColor";
+    readonly [x: string]: `$${string}.backgroundColor:hover` | `$${string}.borderColor:hover`;
+    readonly shadowColor?: undefined;
+    readonly hoverStyle?: undefined;
+    readonly pressStyle?: undefined;
+    readonly focusStyle?: undefined;
+} | {
+    readonly [x: string]: `$${string}.backgroundColor:press` | `$${string}.borderColor:press`;
+    readonly shadowColor?: undefined;
+    readonly hoverStyle?: undefined;
+    readonly pressStyle?: undefined;
+    readonly focusStyle?: undefined;
+} | {
+    readonly [x: string]: `$${string}.backgroundColor:focus` | `$${string}.borderColor:focus`;
+    readonly shadowColor?: undefined;
+    readonly hoverStyle?: undefined;
+    readonly pressStyle?: undefined;
+    readonly focusStyle?: undefined;
+} | {
+    readonly [x: string]: string | {
+        readonly [x: string]: `$${string}.backgroundColor:hover` | `$${string}.borderColor:hover`;
+    } | {
+        readonly [x: string]: `$${string}.backgroundColor:press` | `$${string}.borderColor:press`;
+    } | {
+        readonly [x: string]: `$${string}.backgroundColor:focus` | `$${string}.borderColor:focus`;
+    };
     readonly hoverStyle: {
-        readonly borderColor: "$interactive.forms.borderColor:hover" | "$interactive.borderColor:hover";
+        readonly [x: string]: `$${string}.backgroundColor:hover` | `$${string}.borderColor:hover`;
     };
     readonly pressStyle: {
-        readonly borderColor: "$interactive.forms.borderColor:press" | "$interactive.borderColor:press";
+        readonly [x: string]: `$${string}.backgroundColor:press` | `$${string}.borderColor:press`;
     };
     readonly focusStyle: {
-        readonly borderColor: "$interactive.forms.borderColor:focus" | "$interactive.borderColor:focus";
+        readonly [x: string]: `$${string}.backgroundColor:focus` | `$${string}.borderColor:focus`;
     };
-};
-export declare const getBackgroundAdditionalInteraction: ({ internalForcedPseudoState, disabled, interactive, variant, }: VariantSpreadExtras<any>["props"]) => {
-    readonly backgroundColor: `$${string}.backgroundColor:disabled`;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-} | {
-    backgroundColor: string;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-} | {
-    readonly backgroundColor: `$${string}.backgroundColor`;
-    readonly hoverStyle: {
-        readonly backgroundColor: `$${string}.backgroundColor:hover`;
-    };
-    readonly pressStyle: {
-        readonly backgroundColor: `$${string}.backgroundColor:press`;
-    };
-    readonly focusStyle: {
-        readonly backgroundColor: `$${string}.backgroundColor:focus`;
-    };
+    readonly shadowColor?: undefined;
 };
 //# sourceMappingURL=createVariants.d.ts.map

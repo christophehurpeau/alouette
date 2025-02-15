@@ -66,7 +66,11 @@ export function Message({
       <MessageText centered={textCentered}>{children}</MessageText>
       {onDismiss ? (
         <MessageDismissButtonContainer>
-          <IconButton icon={<XRegularIcon />} size={40} />
+          <IconButton
+            icon={<XRegularIcon />}
+            size={40}
+            variant="ghost-contained"
+          />
         </MessageDismissButtonContainer>
       ) : null}
     </MessageFrame>
