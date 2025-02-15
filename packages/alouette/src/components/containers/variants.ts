@@ -1,9 +1,6 @@
 import type { SizeTokens, VariantSpreadExtras, ViewStyle } from "@tamagui/core";
 import type { InternalPseudoState } from "../primitives/createVariants";
-import {
-  getBackgroundAdditionalInteraction,
-  getBorderAdditionalInteraction,
-} from "../primitives/createVariants";
+import { getInteractionStyles } from "../primitives/createVariants";
 
 export const internalForcedPseudoState = (val: InternalPseudoState) => ({});
 
@@ -12,10 +9,11 @@ export const withBorder = (
   { props }: VariantSpreadExtras<any>,
 ) => {
   return {
-    borderWidth: typeof val === "number" ? val : 1,
-    borderColor: "$borderColor",
+    borderWidth: typeof val !== "boolean" ? val : 1,
 
-    ...(props.interactive ? getBorderAdditionalInteraction(props) : undefined),
+    ...(props.interactive
+      ? getInteractionStyles("borderColor", props)
+      : { borderColor: "$borderColor" }),
   } as const;
 };
 
@@ -23,9 +21,6 @@ export const withBackground = (
   val: boolean,
   { props }: VariantSpreadExtras<any>,
 ) => {
-  const variant =
-    props.interactive === "text" ? "text" : props.variant || "contained";
-
   if (!val) return {} as const;
 
   if (!props.role && !props.outlineStyle && props.interactive) {
@@ -33,14 +28,30 @@ export const withBackground = (
   }
 
   return {
-    backgroundColor: props.interactive
-      ? // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        `$interactive.${variant}.backgroundColor`
-      : "$mainColor",
-
     ...(props.interactive
-      ? getBackgroundAdditionalInteraction(props)
-      : undefined),
+      ? getInteractionStyles("backgroundColor", props)
+      : { backgroundColor: "$mainColor" }),
+  } as const;
+};
+
+export const withElevation = (
+  val: boolean,
+  { props }: VariantSpreadExtras<any>,
+) => {
+  if (!val) return {} as const;
+
+  return {
+    ...(props.disabled
+      ? {}
+      : {
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.65,
+          shadowRadius: 6,
+          elevation: 5,
+        }),
+    ...(props.interactive
+      ? getInteractionStyles("shadowColor", props)
+      : { shadowColor: "$shadowColor" }),
   } as const;
 };
 

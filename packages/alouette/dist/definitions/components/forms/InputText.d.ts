@@ -6,6 +6,7 @@ export declare const InputText: import("@tamagui/web").TamaguiComponent<import("
     interactive?: boolean | import("csstype").Property.Cursor | undefined;
     withBorder?: boolean | import("@tamagui/web").SizeTokens | undefined;
     withBackground?: boolean | undefined;
+    withElevation?: boolean | undefined;
     circular?: boolean | undefined;
     centered?: boolean | undefined;
 }, {
@@ -18,6 +19,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
     interactive?: boolean | import("csstype").Property.Cursor | undefined;
     withBorder?: boolean | import("@tamagui/web").SizeTokens | undefined;
     withBackground?: boolean | undefined;
+    withElevation?: boolean | undefined;
     circular?: boolean | undefined;
     centered?: boolean | undefined;
 }, {

@@ -8,13 +8,41 @@ import { WithTamaguiConfig } from "../components/story-components/WithTamaguiCon
 import { Typography } from "../components/typography/Typography";
 import { groupTokens } from "./utils/groupTokens";
 
-type ThisStory = StoryObj<unknown>;
-
-export default {
+const meta = {
   title: "alouette/Config/Tokens",
+  parameters: {
+    componentSubtitle:
+      "Design tokens for consistent styling across the design system",
+    docs: {
+      description: {
+        component: `
+Design tokens in Alouette are powered by Tamagui's token system. They provide type-safe, performant values for colors, spacing, and other visual properties.
+
+### Color System
+- Theme-based semantic tokens with automatic light/dark mode support
+- Color tokens compile to atomic CSS using Tamagui's compiler
+- Consistent contrast ratios through our color calculation system
+- Tokens for text, borders, and backgrounds using createTokens
+
+### Space Tokens
+- Space scale using createTokens ($1-$16)
+- Semantic tokens ($xs, $sm, $md, $lg, $xl) for consistent spacing
+- Consistent spacing through space props (gap, padding, margin)
+- Values compile to optimized CSS variables for better performance
+
+### Radius Tokens
+- Consistent border radius using createTokens
+- $sm (4px) for subtle rounding
+- $md (8px) for standard components
+- Radius values are type-safe and optimized at build time`,
+      },
+    },
+  },
 } satisfies Meta<unknown>;
 
-export const TokensStory: ThisStory = {
+export default meta;
+
+export const TokensStory: StoryObj<unknown> = {
   name: "Tokens",
   render: () => (
     <WithTamaguiConfig

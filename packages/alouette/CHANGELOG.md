@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@10.2.0...alouette@10.3.0) (2025-02-15)
+
+### Features
+
+* add variants elevated and ghosts ([983aa49](https://github.com/christophehurpeau/alouette/commit/983aa49e883ba3bd2aa050c4d8c284611fa5ba37))
+
+## [10.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@10.1.1...alouette@10.2.0) (2025-02-15)
+
+### Features
+
+* **deps:** update dependency type-fest to v4.34.1 ([#158](https://github.com/christophehurpeau/alouette/issues/158)) ([b07cf48](https://github.com/christophehurpeau/alouette/commit/b07cf484d671ba0be6a96af470f8b819a3b0e66a))
+* improve dark mode disabled colors ([1787990](https://github.com/christophehurpeau/alouette/commit/1787990c0aa01ac69ef15de79ff911c6dcbe2e15))
+
+### Bug Fixes
+
+* update tamagui ([ea74ff5](https://github.com/christophehurpeau/alouette/commit/ea74ff5f4ce09906a9b972ba8bfaab2aaff910cf))
+
+Version bump for dependency: alouette-icons
+
+
 ## [10.1.1](https://github.com/christophehurpeau/alouette/compare/alouette@10.1.0...alouette@10.1.1) (2025-02-09)
 
 Version bump for dependency: alouette-icons

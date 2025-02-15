@@ -1,6 +1,7 @@
 import { styled } from "@tamagui/core";
 import type { ReactNode } from "react";
 import type { Except } from "type-fest";
+import { Box } from "../containers/Box";
 import type { VStackProps } from "../primitives/stacks";
 import { VStack } from "../primitives/stacks";
 import { StoryTitle } from "./StoryTitle";
@@ -59,17 +60,23 @@ function SubSection({
 }
 
 export interface StoryProps {
-  preview?: NonNullable<ReactNode>;
+  documentation?: NonNullable<ReactNode>;
   children?: NonNullable<ReactNode>;
 }
 
-export function Story({ preview, children }: StoryProps): ReactNode {
+export function Story({ documentation, children }: StoryProps): ReactNode {
   return (
     <>
-      {preview && (
-        <StorySection title="Preview" paddingBottom="$12">
-          {preview}
-        </StorySection>
+      {documentation && (
+        <Box
+          withBorder="$2"
+          borderRadius="$md"
+          padding="$md"
+          theme="primary"
+          marginBottom="$12"
+        >
+          {documentation}
+        </Box>
       )}
       {children}
     </>

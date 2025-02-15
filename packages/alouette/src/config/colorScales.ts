@@ -9,7 +9,7 @@ import type { IntRange } from "type-fest";
 // 6: main color
 // 7: border hover/focus color
 // 8: border color
-// 9: text color
+// 9: text color / shadow color
 // 10: form border color (default)
 
 export type AlouetteColorScaleNumber = IntRange<1, 11>;

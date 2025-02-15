@@ -25,6 +25,7 @@
     "lint:prettier:fix": "pob-root-prettier --write .",
     "postinstall": "pob-root-postinstall",
     "storybook": "yarn ./packages/storybook-app start",
+    "test": "node --disable-warning=ExperimentalWarning --experimental-strip-types --test packages/alouette/src/**/*.test.ts",
     "tsc": "tsc -b",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
