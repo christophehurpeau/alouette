@@ -1,6 +1,7 @@
 {
   "name": "alouette-monorepo",
   "private": true,
+  "description": "Alouette is a modern, customizable design system built on top of Tamagui. It provides a comprehensive set of components and tools to build consistent, accessible, and performant user interfaces for React and React Native applications.",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (https://christophe.hurpeau.com)",
   "license": "ISC",
   "repository": "https://github.com/christophehurpeau/alouette.git",

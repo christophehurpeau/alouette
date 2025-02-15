@@ -1,7 +1,7 @@
 {
   "name": "alouette",
   "version": "10.1.1",
-  "description": "tamagui-based design system with configurable defaults",
+  "description": "A modern, customizable design system built on top of Tamagui with configurable defaults",
   "keywords": [],
   "author": "Christophe Hurpeau <302891+christophehurpeau@users.noreply.github.com> (https://christophe.hurpeau.com)",
   "license": "UNLICENSED",

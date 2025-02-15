@@ -1,0 +1,8 @@
+This is a monorepo to create a design system library based on tamagui. It have 3 packages:
+
+- alouette: the actual design system library
+- alouette-icons: icons based on phosphor-icons
+- storybook-app: storybook to see result and serve as a demo
+
+As this is a open source library, make a clear documentation both in README.md (in alouette and alouette-icons packages) but most importantly in storybook
+Maintain documentation up-to-date. Keep README compatible with emplates @https://github.com/christophehurpeau/pob/blob/main/packages/pob/lib/generators/monorepo/workspaces/templates/README.md.ejs @https://github.com/christophehurpeau/pob/blob/main/packages/pob/lib/generators/lib/readme/templates/README.md.ejs (in particular `<h1>` and `<h3>`)
