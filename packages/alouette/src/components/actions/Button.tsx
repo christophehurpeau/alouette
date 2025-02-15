@@ -51,6 +51,12 @@ export interface ButtonProps extends Except<ButtonFrameProps, "size"> {
   size?: "md" | "sm";
 }
 
+const getDisabledColor = (variant: "contained" | "outlined") => {
+  return variant === "contained"
+    ? "$contrastTextColor:disabled"
+    : "$textColor:disabled";
+};
+
 // eslint-disable-next-line complexity
 export function Button({
   icon,
@@ -70,7 +76,7 @@ export function Button({
       <HStack gap="$xs" alignItems="center">
         {icon && (
           <Icon
-            color={disabled ? "$contrastDisabled" : undefined}
+            color={disabled ? getDisabledColor(variant) : undefined}
             contrast={variant === "contained" && !disabled}
             icon={icon}
             size={size === "sm" ? 16 : 20}
@@ -80,7 +86,7 @@ export function Button({
           size={size}
           weight="bold"
           paddingVertical={size === "sm" ? "$1" : "$xs"}
-          color={disabled ? "$contrastDisabled" : undefined}
+          color={disabled ? getDisabledColor(variant) : undefined}
           contrast={variant === "contained" && !disabled}
         >
           {text}

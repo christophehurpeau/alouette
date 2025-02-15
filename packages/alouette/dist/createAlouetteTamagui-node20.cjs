@@ -137,8 +137,6 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
     color: {
       black: "#000000",
       white: "#ffffff",
-      disabled: colorScales.grayscale[3],
-      contrastDisabled: colorScales.grayscale[7],
       ...transformColorScalesToTokens(colorScales)
     },
     radius: {
@@ -186,9 +184,9 @@ const createColorTheme = (tokens, colorScaleName, mode = "light", backgroundColo
       contrastTextColor = mode === "dark" ? alouetteTokens.color.black : alouetteTokens.color.white;
     }
   }
-  const getColor = (lightScaleNumber) => {
+  const getColor = (lightScaleNumber, forceScaleNumber = colorScaleName) => {
     const scaleNumber = mode === "dark" ? darkModeScaleNumbers[lightScaleNumber] : lightScaleNumber;
-    return tokens.color[`${colorScaleName}.${scaleNumber}`];
+    return tokens.color[`${forceScaleNumber}.${scaleNumber}`];
   };
   return {
     backgroundColor,
@@ -197,6 +195,8 @@ const createColorTheme = (tokens, colorScaleName, mode = "light", backgroundColo
     mainTextColor: getColor(9),
     contrastTextColor,
     borderColor: getColor(8),
+    "textColor:disabled": getColor(3, "grayscale"),
+    "contrastTextColor:disabled": getColor(7, "grayscale"),
     "interactive.contained.backgroundColor": getColor(5),
     "interactive.borderColor": getColor(mode === "dark" ? 5 : 8),
     "interactive.contained.backgroundColor:hover": getColor(4),
@@ -208,11 +208,11 @@ const createColorTheme = (tokens, colorScaleName, mode = "light", backgroundColo
     "interactive.contained.backgroundColor:press": getColor(2),
     "interactive.outlined.backgroundColor:press": getColor(3),
     "interactive.borderColor:press": getColor(7),
-    "interactive.contained.backgroundColor:disabled": alouetteTokens.color.disabled,
-    "interactive.borderColor:disabled": alouetteTokens.color.disabled,
-    "interactive.textColor:disabled": alouetteTokens.color.contrastDisabled,
+    "interactive.contained.backgroundColor:disabled": getColor(3, "grayscale"),
+    "interactive.borderColor:disabled": getColor(3, "grayscale"),
+    "interactive.textColor:disabled": getColor(7, "grayscale"),
     "interactive.forms.textColor": textColor,
-    "interactive.forms.placeholderTextColor": alouetteTokens.color.disabled,
+    "interactive.forms.placeholderTextColor": getColor(3, "grayscale"),
     // "interactive.forms.backgroundColor": undefined,
     // "interactive.forms.backgroundColor:hover": undefined,
     "interactive.forms.backgroundColor:focus": getColor(1),
@@ -221,7 +221,7 @@ const createColorTheme = (tokens, colorScaleName, mode = "light", backgroundColo
     "interactive.forms.borderColor:hover": getColor(7),
     "interactive.forms.borderColor:focus": getColor(7),
     "interactive.forms.borderColor:press": getColor(7),
-    "interactive.forms.borderColor:disabled": alouetteTokens.color.disabled
+    "interactive.forms.borderColor:disabled": getColor(3, "grayscale")
   };
 };
 const createAlouetteThemes = (tokens) => {

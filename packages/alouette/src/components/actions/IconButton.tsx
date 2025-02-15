@@ -31,8 +31,7 @@ export function IconButton({
     <IconButtonFrame size={size} disabled={disabled} {...pressableProps}>
       <Icon
         size={size / 2}
-        color={disabled ? "$contrastDisabled" : undefined}
-        contrast={!disabled}
+        color={disabled ? "$contrastTextColor:disabled" : undefined}
         icon={icon}
       />
     </IconButtonFrame>

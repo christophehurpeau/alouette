@@ -63,8 +63,6 @@ export const createAlouetteTokens = <
     color: {
       black: "#000000",
       white: "#ffffff",
-      disabled: colorScales.grayscale[3],
-      contrastDisabled: colorScales.grayscale[7],
       ...transformColorScalesToTokens(colorScales),
     },
     radius: {

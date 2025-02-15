@@ -6,7 +6,7 @@ export interface AlouetteTokensOptions {
     spacing?: number;
 }
 export declare const createAlouetteTokens: <const ColorScales extends AlouetteColorScales>(colorScales: ColorScales, { spacing }?: AlouetteTokensOptions) => {
-    color: { [Key in "black" | "white" | "disabled" | "contrastDisabled" | keyof ColorScaleTokens<ColorScales> extends number ? `${number & keyof ColorScaleTokens<ColorScales>}` : "black" | "white" | "disabled" | "contrastDisabled" | keyof ColorScaleTokens<ColorScales>]: import("@tamagui/web").Variable<string>; };
+    color: { [Key in "black" | "white" | keyof ColorScaleTokens<ColorScales> extends number ? `${number & keyof ColorScaleTokens<ColorScales>}` : "black" | "white" | keyof ColorScaleTokens<ColorScales>]: import("@tamagui/web").Variable<string>; };
     space: {
         0: import("@tamagui/web").Variable<number>;
         20: import("@tamagui/web").Variable<number>;
@@ -277,12 +277,10 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     };
     zIndex: {};
 } & Omit<{
-    readonly color: { [Key_1 in "black" | "white" | "disabled" | "contrastDisabled" | keyof ColorScaleTokens<ColorScales> extends number ? `${number & keyof ColorScaleTokens<ColorScales>}` : "black" | "white" | "disabled" | "contrastDisabled" | keyof ColorScaleTokens<ColorScales>]: import("@tamagui/web").Variable<({
+    readonly color: { [Key_1 in "black" | "white" | keyof ColorScaleTokens<ColorScales> extends number ? `${number & keyof ColorScaleTokens<ColorScales>}` : "black" | "white" | keyof ColorScaleTokens<ColorScales>]: import("@tamagui/web").Variable<({
         readonly black: "#000000";
         readonly white: "#ffffff";
-        readonly disabled: string;
-        readonly contrastDisabled: string;
-    } & ColorScaleTokens<ColorScales>)["black" | "white" | "disabled" | "contrastDisabled" | keyof ColorScaleTokens<ColorScales>]>; };
+    } & ColorScaleTokens<ColorScales>)["black" | "white" | keyof ColorScaleTokens<ColorScales>]>; };
     readonly radius: {
         0: import("@tamagui/web").Variable<number>;
         20: import("@tamagui/web").Variable<number>;

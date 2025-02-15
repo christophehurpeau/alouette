@@ -345,6 +345,9 @@ const ButtonFrame = core.styled(PressableBox, {
     size: "md"
   }
 });
+const getDisabledColor = (variant) => {
+  return variant === "contained" ? "$contrastTextColor:disabled" : "$textColor:disabled";
+};
 function Button({
   icon,
   text,
@@ -364,7 +367,7 @@ function Button({
         icon && /* @__PURE__ */ jsxRuntime.jsx(
           Icon,
           {
-            color: disabled ? "$contrastDisabled" : undefined,
+            color: disabled ? getDisabledColor(variant) : undefined,
             contrast: variant === "contained" && !disabled,
             icon,
             size: size === "sm" ? 16 : 20
@@ -376,7 +379,7 @@ function Button({
             size,
             weight: "bold",
             paddingVertical: size === "sm" ? "$1" : "$xs",
-            color: disabled ? "$contrastDisabled" : undefined,
+            color: disabled ? getDisabledColor(variant) : undefined,
             contrast: variant === "contained" && !disabled,
             children: text
           }

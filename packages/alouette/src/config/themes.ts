@@ -19,9 +19,11 @@ import type { createAlouetteTokens } from "./createAlouetteTokens";
 export interface ColorTheme {
   backgroundColor: Variable<string>;
   textColor: Variable<string>;
+  contrastTextColor: Variable<string>;
+  "textColor:disabled": Variable<string>;
+  "contrastTextColor:disabled": Variable<string>;
   mainColor: Variable<string>;
   mainTextColor: Variable<string>;
-  contrastTextColor: Variable<string>;
   borderColor: Variable<string>;
 
   "interactive.contained.backgroundColor": Variable<string>;
@@ -114,7 +116,10 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
     }
   }
 
-  const getColor = (lightScaleNumber: AlouetteColorScaleNumber) => {
+  const getColor = (
+    lightScaleNumber: AlouetteColorScaleNumber,
+    forceScaleNumber = colorScaleName,
+  ) => {
     // Invert scale for dark mode
     const scaleNumber =
       mode === "dark"
@@ -122,7 +127,7 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
         : lightScaleNumber;
 
     return tokens.color[
-      `${colorScaleName}.${scaleNumber}` as keyof typeof tokens.color
+      `${forceScaleNumber}.${scaleNumber}` as keyof typeof tokens.color
     ];
   };
 
@@ -133,6 +138,8 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
     mainTextColor: getColor(9),
     contrastTextColor,
     borderColor: getColor(8),
+    "textColor:disabled": getColor(3, "grayscale"),
+    "contrastTextColor:disabled": getColor(7, "grayscale"),
 
     "interactive.contained.backgroundColor": getColor(5),
     "interactive.borderColor": getColor(mode === "dark" ? 5 : 8),
@@ -149,13 +156,12 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
     "interactive.outlined.backgroundColor:press": getColor(3),
     "interactive.borderColor:press": getColor(7),
 
-    "interactive.contained.backgroundColor:disabled":
-      alouetteTokens.color.disabled,
-    "interactive.borderColor:disabled": alouetteTokens.color.disabled,
-    "interactive.textColor:disabled": alouetteTokens.color.contrastDisabled,
+    "interactive.contained.backgroundColor:disabled": getColor(3, "grayscale"),
+    "interactive.borderColor:disabled": getColor(3, "grayscale"),
+    "interactive.textColor:disabled": getColor(7, "grayscale"),
 
     "interactive.forms.textColor": textColor,
-    "interactive.forms.placeholderTextColor": alouetteTokens.color.disabled,
+    "interactive.forms.placeholderTextColor": getColor(3, "grayscale"),
 
     // "interactive.forms.backgroundColor": undefined,
     // "interactive.forms.backgroundColor:hover": undefined,
@@ -165,7 +171,7 @@ export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
     "interactive.forms.borderColor:hover": getColor(7),
     "interactive.forms.borderColor:focus": getColor(7),
     "interactive.forms.borderColor:press": getColor(7),
-    "interactive.forms.borderColor:disabled": alouetteTokens.color.disabled,
+    "interactive.forms.borderColor:disabled": getColor(3, "grayscale"),
   } satisfies FullTheme;
 };
 
