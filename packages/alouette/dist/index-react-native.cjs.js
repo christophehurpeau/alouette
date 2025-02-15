@@ -565,13 +565,8 @@ function SubSection({
     }
   );
 }
-function Story({
-  preview,
-  documentation,
-  children
-}) {
+function Story({ documentation, children }) {
   return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
-    preview && /* @__PURE__ */ jsxRuntime.jsx(StorySection, { title: "Preview", paddingBottom: "$12", children: preview }),
     documentation && /* @__PURE__ */ jsxRuntime.jsx(
       Box,
       {
