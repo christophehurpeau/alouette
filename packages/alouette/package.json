@@ -110,9 +110,9 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.123.8",
-    "@tamagui/animations-react-native": "1.123.8",
-    "@tamagui/core": "1.123.8",
+    "@tamagui/animations-css": "1.125.1",
+    "@tamagui/animations-react-native": "1.125.1",
+    "@tamagui/core": "1.125.1",
     "alouette-icons": "4.0.2",
     "type-fest": "4.34.1"
   },
