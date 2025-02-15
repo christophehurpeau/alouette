@@ -217,8 +217,7 @@ function IconButton({
     Icon,
     {
       size: size / 2,
-      color: disabled ? "$contrastDisabled" : undefined,
-      contrast: !disabled,
+      color: disabled ? "$contrastTextColor:disabled" : undefined,
       icon
     }
   ) });
