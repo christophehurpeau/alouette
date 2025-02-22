@@ -114,7 +114,7 @@
     "@tamagui/animations-react-native": "1.125.1",
     "@tamagui/core": "1.125.1",
     "alouette-icons": "4.0.3",
-    "type-fest": "4.34.1"
+    "type-fest": "4.35.0"
   },
   "devDependencies": {
     "@pob/rollup-esbuild": "6.3.0",
