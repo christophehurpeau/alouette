@@ -2201,34 +2201,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pob/pretty-eslint-config@npm:9.0.0":
-  version: 9.0.0
-  resolution: "@pob/pretty-eslint-config@npm:9.0.0"
+"@pob/pretty-pkg@npm:12.0.1":
+  version: 12.0.1
+  resolution: "@pob/pretty-pkg@npm:12.0.1"
   dependencies:
-    "@pob/sort-eslint-config": "npm:8.0.0"
-    prettier: "npm:^3.2.5"
-  bin:
-    pretty-eslint-config: ./bin/pretty-eslint-config.js
-  checksum: 10c0/a26a49b8484a5dfc87c7ffe9bb5acf71487795ca3d6a3a865a8d2e900c4c91afcf4fe223a888c2a895c9720b898f1ca053710ad57a9e42798a5d7760598d94d7
-  languageName: node
-  linkType: hard
-
-"@pob/pretty-pkg@npm:12.0.0":
-  version: 12.0.0
-  resolution: "@pob/pretty-pkg@npm:12.0.0"
-  dependencies:
-    "@pob/sort-pkg": "npm:11.0.0"
+    "@pob/sort-pkg": "npm:11.0.1"
     glob: "npm:^11.0.0"
-    prettier: "npm:^3.2.5"
+    prettier: "npm:^3.5.2"
   bin:
     pretty-pkg: ./bin/pretty-pkg.js
-  checksum: 10c0/a71b25ebbbeb7c7d0afbb10ed62cf9993f1131aa6ddae3b998382d88082545840b02c977eb4cce3395234ed0e47ff8b6d45c8ccd9241aa833892fc97c930013d
+  checksum: 10c0/5b46c1f32cd396c1f8615fb5488d4f6414115c34ae63d2931f7d0163f389853707ebc73e776a9e2a774f570a37b84fae38ea90712885a6e38c579db9d3c001c4
   languageName: node
   linkType: hard
 
-"@pob/rollup-esbuild@npm:6.2.0":
-  version: 6.2.0
-  resolution: "@pob/rollup-esbuild@npm:6.2.0"
+"@pob/rollup-esbuild@npm:6.3.0":
+  version: 6.3.0
+  resolution: "@pob/rollup-esbuild@npm:6.3.0"
   dependencies:
     "@pob/rollup": "npm:6.1.0"
     "@rollup/plugin-node-resolve": "npm:16.0.0"
@@ -2237,7 +2225,7 @@ __metadata:
     esbuild: "npm:0.24.2"
     rollup: "npm:4.33.0"
     rollup-config-external-dependencies: "npm:^3.0.1"
-    rollup-plugin-esbuild: "npm:6.1.1"
+    rollup-plugin-esbuild: "npm:6.2.0"
   peerDependencies:
     rollup: 4.33.0
     typescript: ^4.0.3 || ^5.0.0
@@ -2247,7 +2235,7 @@ __metadata:
   bin:
     pob-esbuild-clean-out: ./bin/pob-esbuild-clean-out.js
     rollup: ./bin/rollup.cjs
-  checksum: 10c0/3bc77d372cd35762041a93958111a0ee1d2ca2f287a1c134e1c760669b06ccaea042c3786e3f2fcc85d30293625bb881916d05e36f1b3a3d4f81a69aefe9df98
+  checksum: 10c0/4f5ed05c174cc65f8235b895b1c28407523ffb948068390afc662a2213cf654e5fc9a7808bf925477807327a8e8708fbe0d7c4932cea3a5e46dc36b94e65790f
   languageName: node
   linkType: hard
 
@@ -2263,44 +2251,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pob/root@npm:16.6.0":
-  version: 16.6.0
-  resolution: "@pob/root@npm:16.6.0"
+"@pob/root@npm:16.7.0":
+  version: 16.7.0
+  resolution: "@pob/root@npm:16.7.0"
   dependencies:
     "@commitlint/cli": "npm:19.7.1"
-    "@pob/pretty-eslint-config": "npm:9.0.0"
-    "@pob/pretty-pkg": "npm:12.0.0"
+    "@pob/pretty-pkg": "npm:12.0.1"
     conventional-changelog-conventionalcommits: "npm:^8.0.0"
     cosmiconfig: "npm:^9.0.0"
     husky: "npm:~9.1.7"
     json5: "npm:^2.2.3"
     lint-staged: "npm:15.4.3"
-    pob-dependencies: "npm:17.6.0"
-    prettier: "npm:3.5.1"
+    pob-dependencies: "npm:17.7.0"
+    prettier: "npm:3.5.2"
     repository-check-dirty: "npm:10.0.0"
     semver: "npm:^7.3.7"
     which-pm-runs: "npm:1.1.0"
-    yarn-version: "npm:6.4.0"
+    yarn-version: "npm:6.5.0"
   bin:
     commitlint: ./bin/commitlint.js
     pob-root-lint-staged: ./bin/pob-root-lint-staged.js
     pob-root-postinstall: ./bin/pob-root-postinstall.js
     pob-root-prettier: ./bin/prettier.cjs
     prettier: ./bin/prettier.cjs
-    pretty-eslint-config: ./bin/pretty-eslint-config.js
     pretty-pkg: ./bin/pretty-pkg.js
     repository-check-dirty: ./bin/repository-check-dirty.js
     yarn-version: ./bin/yarn-version.js
-  checksum: 10c0/e0d052a46a3a000c33de03930ce6879b93cb27d14e3646b2a1bc16c998da07ef730583f29e6300811c4d4e0805c11c6102521e2734d266ff4f1d2d92a0426e23
-  languageName: node
-  linkType: hard
-
-"@pob/sort-eslint-config@npm:8.0.0":
-  version: 8.0.0
-  resolution: "@pob/sort-eslint-config@npm:8.0.0"
-  dependencies:
-    "@pob/sort-object": "npm:9.0.0"
-  checksum: 10c0/5ee73f0ed97c3f296efad1d3e7613e717b5b706e63f0583485727a4c4c16ec0f4642be0ef5bbb3ecee279d828d9544d156442d299c8e9187caa6836366fd2b61
+  checksum: 10c0/0d2dd6546cefae1e6a61fa6c38e48a881a8564118c88282463d5042e892760af3a643360f826bd8bdff4372871dc2e7fb433cd02bb97cde1a4caf06544b948f0
   languageName: node
   linkType: hard
 
@@ -2311,12 +2288,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pob/sort-pkg@npm:11.0.0":
-  version: 11.0.0
-  resolution: "@pob/sort-pkg@npm:11.0.0"
+"@pob/sort-pkg@npm:11.0.1":
+  version: 11.0.1
+  resolution: "@pob/sort-pkg@npm:11.0.1"
   dependencies:
     "@pob/sort-object": "npm:9.0.0"
-  checksum: 10c0/d5e0e92238a6474b9ee907d6dadc09919acb6fdb0fe180bcd0232eebd0815f0228862008e784964ca83c241c6ea6d59c1d65a151ac57c88bc685311bebee2f26
+  checksum: 10c0/85db1e8ce7325f197edecc6951b455003281d0e6818751a7cdf50d088a790cc3f8b52bdea17bd9b85f1797646cfb8d3cf02b52a9ea394ec6dd326012ef05bc3a
   languageName: node
   linkType: hard
 
@@ -2572,7 +2549,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/pluginutils@npm:^5.0.1, @rollup/pluginutils@npm:^5.0.2, @rollup/pluginutils@npm:^5.0.5, @rollup/pluginutils@npm:^5.1.3":
+"@rollup/pluginutils@npm:^5.0.1, @rollup/pluginutils@npm:^5.0.2, @rollup/pluginutils@npm:^5.1.3":
   version: 5.1.3
   resolution: "@rollup/pluginutils@npm:5.1.3"
   dependencies:
@@ -4420,8 +4397,8 @@ __metadata:
     "@pob/commitlint-config": "npm:9.1.1"
     "@pob/eslint-config": "npm:59.7.0"
     "@pob/eslint-config-typescript-react": "npm:59.7.0"
-    "@pob/root": "npm:16.6.0"
-    check-package-dependencies: "npm:9.2.0"
+    "@pob/root": "npm:16.7.0"
+    check-package-dependencies: "npm:10.0.0"
     eslint: "npm:9.20.1"
     eslint-plugin-storybook: "npm:0.11.2"
     rollup: "npm:4.33.0"
@@ -4433,7 +4410,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "alouette@workspace:packages/alouette"
   dependencies:
-    "@pob/rollup-esbuild": "npm:6.2.0"
+    "@pob/rollup-esbuild": "npm:6.3.0"
     "@rollup/plugin-replace": "npm:6.0.2"
     "@tamagui/animations-css": "npm:1.125.1"
     "@tamagui/animations-react-native": "npm:1.125.1"
@@ -5164,21 +5141,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-package-dependencies@npm:9.2.0":
-  version: 9.2.0
-  resolution: "check-package-dependencies@npm:9.2.0"
+"check-package-dependencies@npm:10.0.0":
+  version: 10.0.0
+  resolution: "check-package-dependencies@npm:10.0.0"
   dependencies:
     "@eslint/plugin-kit": "npm:^0.2.5"
-    chalk: "npm:^5.4.1"
-    import-meta-resolve: "npm:^4.1.0"
     jsonc-parser: "npm:^3.3.1"
     semver: "npm:^7.7.1"
     semver-utils: "npm:^1.1.4"
     tslib: "npm:^2.8.1"
-    type-fest: "npm:^4.34.0"
+    type-fest: "npm:^4.35.0"
   bin:
     check-package-dependencies: ./bin/check-package-dependencies.mjs
-  checksum: 10c0/c5f7f45bb920224a96bb43fd5ef3a39b13105dca8486fa38bc236b56e69e5d9399ea0db86ed772575a088a010e7428171c4927182af5136236a46940287f991f
+  checksum: 10c0/b9acdff03d4545e65158c022f1e358973e3f9b840b776c70f551fd521da6a46d6ae844398cd222d90b362b4f11bd785a7ae369332a8b818ce712609dcf6bc073
   languageName: node
   linkType: hard
 
@@ -6176,10 +6151,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-module-lexer@npm:^1.3.1":
-  version: 1.5.3
-  resolution: "es-module-lexer@npm:1.5.3"
-  checksum: 10c0/0f50b655490d1048432eac6eec94d99d3933119666ae82be578c3db1ea4b2c594118a336f6b7a3c4e2815355dcc9a469d880acef1c45aa656a5aae8c8ae8e5f6
+"es-module-lexer@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "es-module-lexer@npm:1.6.0"
+  checksum: 10c0/667309454411c0b95c476025929881e71400d74a746ffa1ff4cb450bd87f8e33e8eef7854d68e401895039ac0bac64e7809acbebb6253e055dd49ea9e3ea9212
   languageName: node
   linkType: hard
 
@@ -7224,12 +7199,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-tsconfig@npm:^4.7.2, get-tsconfig@npm:^4.8.1":
-  version: 4.8.1
-  resolution: "get-tsconfig@npm:4.8.1"
+"get-tsconfig@npm:^4.10.0, get-tsconfig@npm:^4.8.1":
+  version: 4.10.0
+  resolution: "get-tsconfig@npm:4.10.0"
   dependencies:
     resolve-pkg-maps: "npm:^1.0.0"
-  checksum: 10c0/536ee85d202f604f4b5fb6be81bcd6e6d9a96846811e83e9acc6de4a04fb49506edea0e1b8cf1d5ee7af33e469916ec2809d4c5445ab8ae015a7a51fbd1572f9
+  checksum: 10c0/c9b5572c5118923c491c04285c73bd55b19e214992af957c502a3be0fc0043bb421386ffd45ca3433c0a7fba81221ca300479e8393960acf15d0ed4563f38a86
   languageName: node
   linkType: hard
 
@@ -7634,7 +7609,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"import-meta-resolve@npm:^4.0.0, import-meta-resolve@npm:^4.1.0":
+"import-meta-resolve@npm:^4.0.0":
   version: 4.1.0
   resolution: "import-meta-resolve@npm:4.1.0"
   checksum: 10c0/42f3284b0460635ddf105c4ad99c6716099c3ce76702602290ad5cbbcd295700cbc04e4bdf47bacf9e3f1a4cec2e1ff887dabc20458bef398f9de22ddff45ef5
@@ -10173,6 +10148,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pathe@npm:^2.0.2":
+  version: 2.0.3
+  resolution: "pathe@npm:2.0.3"
+  checksum: 10c0/c118dc5a8b5c4166011b2b70608762e260085180bb9e33e80a50dcdb1e78c010b1624f4280c492c92b05fc276715a4c357d1f9edc570f8f1b3d90b6839ebaca1
+  languageName: node
+  linkType: hard
+
 "pathval@npm:^2.0.0":
   version: 2.0.0
   resolution: "pathval@npm:2.0.0"
@@ -10249,10 +10231,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pob-dependencies@npm:17.6.0":
-  version: 17.6.0
-  resolution: "pob-dependencies@npm:17.6.0"
-  checksum: 10c0/bfe5494058cc0b784bc356abf69ff6370b06a92336b2c9d29865d7e4c4a3cdd9f6f6abf911054a0cb3ba1b8efa0f5da187a7c96f09741bbf905b15473ced6400
+"pob-dependencies@npm:17.7.0":
+  version: 17.7.0
+  resolution: "pob-dependencies@npm:17.7.0"
+  checksum: 10c0/ea134333e253485918958890cab6c77f6ca321549982579ee55f00882cedcd8b699a1d5d0a8404e018757edd1a9e60e5402fa7646902d293bbe8eb6fb3e94164
   languageName: node
   linkType: hard
 
@@ -10297,12 +10279,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.5.1, prettier@npm:^3.2.5":
-  version: 3.5.1
-  resolution: "prettier@npm:3.5.1"
+"prettier@npm:3.5.2, prettier@npm:^3.5.2":
+  version: 3.5.2
+  resolution: "prettier@npm:3.5.2"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/9f6f810eae455d6e4213845151a484a2338f2e0d6a8b84ee8e13a83af8a2421ef6c1e31e61e4b135671fb57b9541f6624648880cc2061ac803e243ac898c0123
+  checksum: 10c0/d7b597ed33f39c32ace675896ad187f06a3e48dc8a1e80051b5c5f0dae3586d53981704b8fda5ac3b080e6c2e0e197d239131b953702674f044351621ca5e1ac
   languageName: node
   linkType: hard
 
@@ -10968,18 +10950,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup-plugin-esbuild@npm:6.1.1":
-  version: 6.1.1
-  resolution: "rollup-plugin-esbuild@npm:6.1.1"
+"rollup-plugin-esbuild@npm:6.2.0":
+  version: 6.2.0
+  resolution: "rollup-plugin-esbuild@npm:6.2.0"
   dependencies:
-    "@rollup/pluginutils": "npm:^5.0.5"
-    debug: "npm:^4.3.4"
-    es-module-lexer: "npm:^1.3.1"
-    get-tsconfig: "npm:^4.7.2"
+    debug: "npm:^4.4.0"
+    es-module-lexer: "npm:^1.6.0"
+    get-tsconfig: "npm:^4.10.0"
+    unplugin-utils: "npm:^0.2.3"
   peerDependencies:
     esbuild: ">=0.18.0"
     rollup: ^1.20.0 || ^2.0.0 || ^3.0.0 || ^4.0.0
-  checksum: 10c0/1d5610a54ea4ffc4721d4f6beed8931cb2188313ab464480605b8bc7eb24be63eadf5eb706c8af2ed930f93c210b66190f482311642f5f3c5ad801c63d80f755
+  checksum: 10c0/4d74f7de837ddf06b711361bfc7b5bcd532c7abc17df4016b8d08ed4cc0589ec8566ee62564e4b16b7c667b5117a88edafb622616d3c403e0a60816cd6a77133
   languageName: node
   linkType: hard
 
@@ -12076,7 +12058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:4.34.1, type-fest@npm:^4.34.0, type-fest@npm:^4.6.0, type-fest@npm:^4.7.1":
+"type-fest@npm:4.34.1":
   version: 4.34.1
   resolution: "type-fest@npm:4.34.1"
   checksum: 10c0/4aa016be91f4225b772d77da91415cd25961a937f84e68d763b2dfeb936ef1671b039bbb0f75019affb8f591c26d65966024343aae75b17ab49db6f9c50c38a8
@@ -12101,6 +12083,13 @@ __metadata:
   version: 3.13.1
   resolution: "type-fest@npm:3.13.1"
   checksum: 10c0/547d22186f73a8c04590b70dcf63baff390078c75ea8acd366bbd510fd0646e348bd1970e47ecf795b7cff0b41d26e9c475c1fedd6ef5c45c82075fbf916b629
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^4.35.0, type-fest@npm:^4.6.0, type-fest@npm:^4.7.1":
+  version: 4.35.0
+  resolution: "type-fest@npm:4.35.0"
+  checksum: 10c0/7032a8a940c33d45947a4ff0f74e3aa43b6fd8bb4745b32bba8e61ee47c0dd088cacd102f8377e9e889362e1ae8e0292b64a4c0698c1e42fd297bf6f8899d220
   languageName: node
   linkType: hard
 
@@ -12300,6 +12289,16 @@ __metadata:
   version: 1.0.0
   resolution: "unpipe@npm:1.0.0"
   checksum: 10c0/193400255bd48968e5c5383730344fbb4fa114cdedfab26e329e50dd2d81b134244bb8a72c6ac1b10ab0281a58b363d06405632c9d49ca9dfd5e90cbd7d0f32c
+  languageName: node
+  linkType: hard
+
+"unplugin-utils@npm:^0.2.3":
+  version: 0.2.4
+  resolution: "unplugin-utils@npm:0.2.4"
+  dependencies:
+    pathe: "npm:^2.0.2"
+    picomatch: "npm:^4.0.2"
+  checksum: 10c0/b5ab2db37823f5b4c8ee8719caa4b5a50b2da33c74c8110d46deb7a2399dfa15cbcaa0cff62aa6400c76e778e42becd9195c09b6502c0c007d03610f432c875f
   languageName: node
   linkType: hard
 
@@ -12782,14 +12781,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yarn-version@npm:6.4.0":
-  version: 6.4.0
-  resolution: "yarn-version@npm:6.4.0"
+"yarn-version@npm:6.5.0":
+  version: 6.5.0
+  resolution: "yarn-version@npm:6.5.0"
   dependencies:
     "@conventional-changelog/git-client": "npm:1.0.1"
     "@npmcli/map-workspaces": "npm:4.0.2"
     "@octokit/rest": "npm:21.1.1"
-    "@pob/pretty-pkg": "npm:12.0.0"
+    "@pob/pretty-pkg": "npm:12.0.1"
     commander: "npm:12.1.0"
     conventional-changelog-conventionalcommits: "npm:8.0.0"
     conventional-changelog-core: "npm:8.0.0"
@@ -12802,7 +12801,7 @@ __metadata:
     semver: "npm:7.7.1"
   bin:
     yarn-version: ./dist/index-node.mjs
-  checksum: 10c0/ee0a44f8279134001df8fcc756ce880fa969c84fc81ce31508192f392fa05a8dfa191d93297b9be0f7c3da5e92382adbafb521c07691f0272146ff04f489cb56
+  checksum: 10c0/f7ca1874bd4f65af594c92ce776bf3ae4752bb809a58f38931fe9b0e494dfe03ecc188c07f766f690f1eeed3092f7a336d4dce19c589015525bf1e4d8c2a3a73
   languageName: node
   linkType: hard
 
