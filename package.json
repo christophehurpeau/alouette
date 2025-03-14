@@ -39,7 +39,7 @@
     "@pob/commitlint-config": "9.1.1",
     "@pob/eslint-config": "59.7.0",
     "@pob/eslint-config-typescript-react": "59.7.0",
-    "@pob/root": "16.7.0",
+    "@pob/root": "16.8.0",
     "check-package-dependencies": "10.0.0",
     "eslint": "9.21.0",
     "eslint-plugin-storybook": "0.11.2",
