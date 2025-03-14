@@ -36,14 +36,14 @@
   },
   "prettier": "@pob/root/prettier-config",
   "devDependencies": {
-    "@pob/commitlint-config": "9.1.1",
-    "@pob/eslint-config": "59.7.0",
-    "@pob/eslint-config-typescript-react": "59.7.0",
+    "@pob/commitlint-config": "9.1.2",
+    "@pob/eslint-config": "59.8.0",
+    "@pob/eslint-config-typescript-react": "59.8.0",
     "@pob/root": "16.8.0",
-    "check-package-dependencies": "10.0.0",
-    "eslint": "9.21.0",
+    "check-package-dependencies": "10.1.0",
+    "eslint": "9.22.0",
     "eslint-plugin-storybook": "0.11.2",
     "rollup": "4.33.0",
-    "typescript": "5.7.3"
+    "typescript": "5.8.2"
   }
 }
