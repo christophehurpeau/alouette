@@ -36,7 +36,7 @@
   },
   "prettier": "@pob/root/prettier-config",
   "devDependencies": {
-    "@pob/commitlint-config": "9.1.1",
+    "@pob/commitlint-config": "9.1.2",
     "@pob/eslint-config": "59.7.0",
     "@pob/eslint-config-typescript-react": "59.7.0",
     "@pob/root": "16.7.0",
