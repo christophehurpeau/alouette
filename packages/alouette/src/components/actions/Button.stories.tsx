@@ -134,7 +134,8 @@ export const PreviewButtonStory: ThisStory = {
   render: (args) => <Button {...args} />,
 };
 
-export const Variants: ThisStory = {
+export const VariantsStory: ThisStory = {
+  name: "Variants",
   render: () => (
     <Story>
       <Story.Section title="Sizes">
