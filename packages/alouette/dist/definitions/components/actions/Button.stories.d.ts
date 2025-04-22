@@ -66,5 +66,5 @@ declare const _default: {
 };
 export default _default;
 export declare const PreviewButtonStory: ThisStory;
-export declare const Variants: ThisStory;
+export declare const VariantsStory: ThisStory;
 //# sourceMappingURL=Button.stories.d.ts.map
