@@ -29,5 +29,5 @@ export default defineConfig({
       components: ["alouette"],
       optimize: process.env.NODE_ENV === "production",
     }),
-  ].filter(Boolean),
+  ],
 });

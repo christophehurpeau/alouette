@@ -1,5 +1,6 @@
 import { createTamagui } from "@tamagui/core";
-import { animations } from "./config/animations.ts";
+// eslint-disable-next-line import/extensions
+import { animations } from "./config/animations";
 import type { AlouetteColorScales } from "./config/colorScales.ts";
 import type { AlouetteFontsOptions } from "./config/createAlouetteFonts.ts";
 import { createAlouetteFonts } from "./config/createAlouetteFonts.ts";
