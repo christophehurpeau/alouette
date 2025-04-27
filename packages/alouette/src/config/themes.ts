@@ -3,9 +3,9 @@ import type { Variable } from "@tamagui/core";
 import type {
   AlouetteColorScaleNumber,
   AlouetteColorScales,
-} from "./colorScales";
-import type { createAlouetteTokens } from "./createAlouetteTokens";
-import { warnOnContrastIssues } from "./utils/colorContrast";
+} from "./colorScales.ts";
+import type { createAlouetteTokens } from "./createAlouetteTokens.ts";
+import { warnOnContrastIssues } from "./utils/colorContrast.ts";
 
 // export interface MinimalRootTheme {
 //   backgroundColor: Variable<string>;

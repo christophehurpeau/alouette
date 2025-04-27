@@ -1,20 +1,20 @@
 import type { GetProps } from "@tamagui/core";
 import type { DistributedOmit } from "type-fest";
-declare const Anchor: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    size?: "xl" | "lg" | "md" | "sm" | "xs" | undefined;
+declare const Anchor: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+    size?: "xs" | "sm" | "md" | "xl" | "lg" | undefined;
     family?: "heading" | "body" | undefined;
+    weight?: "black" | "bold" | "regular" | undefined;
     contrast?: boolean | undefined;
-    weight?: "regular" | "bold" | "black" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic>;
 type AnchorProps = GetProps<typeof Anchor>;
 export type LinkProps = DistributedOmit<AnchorProps, "href"> & {
     href: string;
 };
-export declare const Link: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    size?: "xl" | "lg" | "md" | "sm" | "xs" | undefined;
+export declare const Link: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+    size?: "xs" | "sm" | "md" | "xl" | "lg" | undefined;
     family?: "heading" | "body" | undefined;
+    weight?: "black" | "bold" | "regular" | undefined;
     contrast?: boolean | undefined;
-    weight?: "regular" | "bold" | "black" | undefined;
 }>, "href"> & {
     href: string;
 } & import("react").RefAttributes<HTMLAnchorElement>>;

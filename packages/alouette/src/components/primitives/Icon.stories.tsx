@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as AllPhosphorIcons from "alouette-icons/phosphor-icons";
-import { Icon } from "./Icon";
+import { Icon } from "./Icon.tsx";
 
 export default {
   title: "alouette/Primitives/Icon",

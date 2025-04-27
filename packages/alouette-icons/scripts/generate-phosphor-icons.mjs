@@ -45,6 +45,7 @@ for (const icon of icons) {
     fileCJSForReactNativeContent += `  get ${componentName}() { return require("@phosphor-icons/core/assets/${filepathInAssets}.svg").ReactComponent },\n`;
 
     const filePath = path.resolve(
+      // eslint-disable-next-line n/no-unsupported-features/node-builtins
       import.meta.dirname,
       "../../../node_modules",
       `@phosphor-icons/core/assets/${filepathInAssets}.svg`,

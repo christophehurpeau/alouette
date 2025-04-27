@@ -3,7 +3,7 @@ import type { IntRange } from "type-fest";
 import type {
   AlouetteColorScaleNumber,
   AlouetteColorScales,
-} from "./colorScales";
+} from "./colorScales.ts";
 
 type AlouetteSize = IntRange<0, 64>;
 type NegativeAlouetteSize = `-${AlouetteSize}`;

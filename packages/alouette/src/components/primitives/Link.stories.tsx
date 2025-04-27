@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Box } from "../containers/Box";
-import { Story } from "../story-components/Story";
-import { Link } from "./Link";
-import { VStack } from "./stacks";
+import { Box } from "../containers/Box.tsx";
+import { Story } from "../story-components/Story.tsx";
+import { Link } from "./Link.tsx";
+import { VStack } from "./stacks.ts";
 
 type ThisStory = StoryObj<typeof Link>;
 

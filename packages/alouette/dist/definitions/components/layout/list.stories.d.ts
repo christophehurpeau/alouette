@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react";
-import { PressableListItem } from "./list";
+import { PressableListItem } from "./list.tsx";
 declare const _default: {
     title: string;
     component: typeof PressableListItem;

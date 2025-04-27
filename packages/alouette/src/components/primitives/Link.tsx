@@ -2,7 +2,7 @@ import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
 import { forwardRef } from "react";
 import type { DistributedOmit } from "type-fest";
-import { Typography } from "../typography/Typography";
+import { Typography } from "../typography/Typography.tsx";
 
 const Anchor = styled(Typography, {
   tag: "a",

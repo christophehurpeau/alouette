@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Box } from "../containers/Box";
-import { Story } from "../story-components/Story";
-import { Typography } from "../typography/Typography";
-import { HStack, Stack, VStack } from "./stacks";
+import { Box } from "../containers/Box.tsx";
+import { Story } from "../story-components/Story.tsx";
+import { Typography } from "../typography/Typography.tsx";
+import { HStack, Stack, VStack } from "./stacks.ts";
 
 const meta = {
   title: "alouette/Primitives/Stacks",

@@ -1,30 +1,30 @@
-import type { AlouetteColorScales } from "./config/colorScales";
-import type { AlouetteFontsOptions } from "./config/createAlouetteFonts";
-import type { createAlouetteTokens } from "./config/createAlouetteTokens";
-import type { createAlouetteThemes } from "./config/themes";
-export { createAlouetteTokens } from "./config/createAlouetteTokens";
+import type { AlouetteColorScales } from "./config/colorScales.ts";
+import type { AlouetteFontsOptions } from "./config/createAlouetteFonts.ts";
+import type { createAlouetteTokens } from "./config/createAlouetteTokens.ts";
+import type { createAlouetteThemes } from "./config/themes.ts";
+export { createAlouetteTokens } from "./config/createAlouetteTokens.ts";
 export interface AlouetteTamaguiOptions {
     fonts?: AlouetteFontsOptions;
 }
-export { createColorTheme, createAlouetteThemes, type FullTheme, } from "./config/themes";
-export { defaultColorScales, createColorScale, type AlouetteColorScales, type AlouetteColorScale, } from "./config/colorScales";
-export declare const createAlouetteTamagui: <const ColorScales extends AlouetteColorScales, const Tokens extends ReturnType<typeof createAlouetteTokens<ColorScales>>, const Themes extends ReturnType<typeof createAlouetteThemes<ColorScales>>>(tokens: Tokens, themes: Themes, options?: AlouetteTamaguiOptions) => import("@tamagui/web").TamaguiInternalConfig<Tokens extends Record<string, {
-    [key: string]: import("@tamagui/web").VariableVal;
+export { createColorTheme, createAlouetteThemes, type FullTheme, } from "./config/themes.ts";
+export { defaultColorScales, createColorScale, type AlouetteColorScales, type AlouetteColorScale, } from "./config/colorScales.ts";
+export declare const createAlouetteTamagui: <const ColorScales extends AlouetteColorScales, const Tokens extends ReturnType<typeof createAlouetteTokens<ColorScales>>, const Themes extends ReturnType<typeof createAlouetteThemes<ColorScales>>>(tokens: Tokens, themes: Themes, options?: AlouetteTamaguiOptions) => import("@tamagui/core").TamaguiInternalConfig<Tokens extends Record<string, {
+    [key: string]: import("@tamagui/core").VariableVal;
 }> & {
     color?: {
-        [key: string]: import("@tamagui/web").VariableVal;
+        [key: string]: import("@tamagui/core").VariableVal;
     } | undefined;
     space?: {
-        [key: string]: import("@tamagui/web").VariableVal;
+        [key: string]: import("@tamagui/core").VariableVal;
     } | undefined;
     size?: {
-        [key: string]: import("@tamagui/web").VariableVal;
+        [key: string]: import("@tamagui/core").VariableVal;
     } | undefined;
     radius?: {
-        [key: string]: import("@tamagui/web").VariableVal;
+        [key: string]: import("@tamagui/core").VariableVal;
     } | undefined;
     zIndex?: {
-        [key: string]: import("@tamagui/web").VariableVal;
+        [key: string]: import("@tamagui/core").VariableVal;
     } | undefined;
 } ? Tokens : {
     color: {};
@@ -33,8 +33,8 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
     radius: {};
     zIndex: {};
 }, Themes extends {
-    [key: string]: Partial<import("@tamagui/web").TamaguiBaseTheme> & {
-        [key: string]: import("@tamagui/web").VariableVal;
+    [key: string]: Partial<import("@tamagui/core").TamaguiBaseTheme> & {
+        [key: string]: import("@tamagui/core").VariableVal;
     };
 } ? Themes : {}, {}, {
     readonly small: {

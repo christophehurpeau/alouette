@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Typography } from "../typography/Typography";
-import { View } from "./View";
+import { Typography } from "../typography/Typography.tsx";
+import { View } from "./View.ts";
 
 export default {
   title: "alouette/Primitives/View",

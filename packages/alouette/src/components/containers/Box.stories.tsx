@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { HStack } from "../primitives/stacks";
-import { Story } from "../story-components/Story";
-import { Typography } from "../typography/Typography";
-import { Box } from "./Box";
+import { HStack } from "../primitives/stacks.ts";
+import { Story } from "../story-components/Story.tsx";
+import { Typography } from "../typography/Typography.tsx";
+import { Box } from "./Box.tsx";
 
 type ThisStory = StoryObj<typeof Box>;
 

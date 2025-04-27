@@ -1,6 +1,6 @@
 import { View, styled } from "@tamagui/core";
 import type { GetProps } from "@tamagui/core";
-import { fullscreenStyle } from "./createVariants";
+import { fullscreenStyle } from "./createVariants.ts";
 
 const variants = {
   fullscreen: {

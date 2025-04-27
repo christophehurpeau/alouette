@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import type { Entries } from "type-fest";
-import { Box } from "../components/containers/Box";
-import { View } from "../components/primitives/View";
-import { VStack } from "../components/primitives/stacks";
-import { Story } from "../components/story-components/Story";
-import { StoryGrid } from "../components/story-components/StoryGrid";
-import { WithTamaguiConfig } from "../components/story-components/WithTamaguiConfig";
-import { Typography } from "../components/typography/Typography";
-import { groupTokens } from "./utils/groupTokens";
+import { Box } from "../components/containers/Box.tsx";
+import { View } from "../components/primitives/View.ts";
+import { VStack } from "../components/primitives/stacks.ts";
+import { Story } from "../components/story-components/Story.tsx";
+import { StoryGrid } from "../components/story-components/StoryGrid.tsx";
+import { WithTamaguiConfig } from "../components/story-components/WithTamaguiConfig.tsx";
+import { Typography } from "../components/typography/Typography.tsx";
+import { groupTokens } from "./utils/groupTokens.ts";
 
 const meta = {
   title: "alouette/Config/Themes",

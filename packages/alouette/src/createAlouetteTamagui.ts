@@ -1,13 +1,13 @@
 import { createTamagui } from "@tamagui/core";
-import { animations } from "./config/animations";
-import type { AlouetteColorScales } from "./config/colorScales";
-import type { AlouetteFontsOptions } from "./config/createAlouetteFonts";
-import { createAlouetteFonts } from "./config/createAlouetteFonts";
-import type { createAlouetteTokens } from "./config/createAlouetteTokens";
-import { media } from "./config/media";
-import type { createAlouetteThemes } from "./config/themes";
+import { animations } from "./config/animations.ts";
+import type { AlouetteColorScales } from "./config/colorScales.ts";
+import type { AlouetteFontsOptions } from "./config/createAlouetteFonts.ts";
+import { createAlouetteFonts } from "./config/createAlouetteFonts.ts";
+import type { createAlouetteTokens } from "./config/createAlouetteTokens.ts";
+import { media } from "./config/media.ts";
+import type { createAlouetteThemes } from "./config/themes.ts";
 
-export { createAlouetteTokens } from "./config/createAlouetteTokens";
+export { createAlouetteTokens } from "./config/createAlouetteTokens.ts";
 
 export interface AlouetteTamaguiOptions {
   fonts?: AlouetteFontsOptions;
@@ -17,14 +17,14 @@ export {
   createColorTheme,
   createAlouetteThemes,
   type FullTheme,
-} from "./config/themes";
+} from "./config/themes.ts";
 
 export {
   defaultColorScales,
   createColorScale,
   type AlouetteColorScales,
   type AlouetteColorScale,
-} from "./config/colorScales";
+} from "./config/colorScales.ts";
 
 export const createAlouetteTamagui = <
   const ColorScales extends AlouetteColorScales,

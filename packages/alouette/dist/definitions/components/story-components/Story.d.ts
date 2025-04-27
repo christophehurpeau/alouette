@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Except } from "type-fest";
-import type { VStackProps } from "../primitives/stacks";
+import type { VStackProps } from "../primitives/stacks.tsx";
 export type StorySectionProps = Except<VStackProps, "marginBottom"> & {
     title: ReactNode;
     children: ReactNode;

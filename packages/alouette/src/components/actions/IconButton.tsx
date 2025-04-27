@@ -1,8 +1,8 @@
 import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
 import type { ReactElement, ReactNode } from "react";
-import { PressableBox } from "../containers/PressableBox";
-import { Icon } from "../primitives/Icon";
+import { PressableBox } from "../containers/PressableBox.tsx";
+import { Icon } from "../primitives/Icon.tsx";
 
 const IconButtonFrame = styled(PressableBox, {
   name: "IconButtonFrame",

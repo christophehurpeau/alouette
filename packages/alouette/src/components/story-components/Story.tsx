@@ -1,10 +1,10 @@
 import { styled } from "@tamagui/core";
 import type { ReactNode } from "react";
 import type { Except } from "type-fest";
-import { Box } from "../containers/Box";
-import type { VStackProps } from "../primitives/stacks";
-import { VStack } from "../primitives/stacks";
-import { StoryTitle } from "./StoryTitle";
+import { Box } from "../containers/Box.tsx";
+import { VStack } from "../primitives/stacks.ts";
+import type { VStackProps } from "../primitives/stacks.tsx";
+import { StoryTitle } from "./StoryTitle.tsx";
 
 const InternalStorySection = styled(VStack, {
   marginBottom: "$8",

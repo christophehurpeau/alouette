@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react";
-import { Message } from "./Message";
+import { Message } from "./Message.tsx";
 type ThisStory = StoryObj<typeof Message>;
 declare const _default: {
     title: string;

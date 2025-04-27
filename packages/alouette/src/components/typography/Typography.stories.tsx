@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { View } from "@tamagui/core";
-import { Story } from "../story-components/Story";
+import { Story } from "../story-components/Story.tsx";
 import {
   Typography,
   TypographyParagraphWithContext,
   TypographyWithContext,
-} from "./Typography";
+} from "./Typography.tsx";
 
 type ThisStory = StoryObj<typeof Typography>;
 

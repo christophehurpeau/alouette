@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react";
-import { IconButton } from "./IconButton";
+import { IconButton } from "./IconButton.tsx";
 type ThisStory = StoryObj<typeof IconButton>;
 declare const _default: {
     title: string;

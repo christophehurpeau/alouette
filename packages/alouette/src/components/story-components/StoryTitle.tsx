@@ -1,6 +1,6 @@
 import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
-import { Typography } from "../typography/Typography";
+import { Typography } from "../typography/Typography.tsx";
 
 export const StoryTitle = styled(Typography, {
   family: "heading",

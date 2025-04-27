@@ -1,16 +1,16 @@
 import type { GetProps } from "@tamagui/core";
 import type { ReactElement, ReactNode } from "react";
-declare const IconButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+declare const IconButtonFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: number | undefined;
-    internalForcedPseudoState?: import("../primitives/createVariants").InternalPseudoState | undefined;
+    internalForcedPseudoState?: import("../primitives/createVariants.ts").InternalPseudoState | undefined;
     interactive?: boolean | import("csstype").Property.Cursor | undefined;
     variant?: "contained" | "outlined" | "elevated" | "ghost-contained" | "ghost-outlined" | undefined;
-    withBorder?: boolean | import("@tamagui/web").SizeTokens | undefined;
+    withBorder?: boolean | import("@tamagui/core").SizeTokens | undefined;
     withBackground?: boolean | undefined;
     withElevation?: boolean | undefined;
     circular?: boolean | undefined;
     centered?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+}, import("@tamagui/core").StaticConfigPublic>;
 type IconButtonFrameProps = GetProps<typeof IconButtonFrame>;
 export interface IconButtonProps extends IconButtonFrameProps {
     icon: NonNullable<ReactElement>;

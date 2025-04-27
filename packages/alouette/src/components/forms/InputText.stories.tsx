@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Story } from "../story-components/Story";
-import { StoryGrid } from "../story-components/StoryGrid";
-import { InputText } from "./InputText";
+import { Story } from "../story-components/Story.tsx";
+import { StoryGrid } from "../story-components/StoryGrid.tsx";
+import { InputText } from "./InputText.tsx";
 
 export default {
   title: "alouette/forms/InputText",

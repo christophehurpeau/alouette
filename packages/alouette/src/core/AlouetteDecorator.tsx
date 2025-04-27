@@ -2,7 +2,7 @@
 import type { Decorator } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
-import { AlouetteProvider } from "./AlouetteProvider";
+import { AlouetteProvider } from "./AlouetteProvider.tsx";
 
 // eslint-disable-next-line react/function-component-definition -- not a component
 export const AlouetteDecorator: Decorator = (storyFn, context) => {

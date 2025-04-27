@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react";
-import { Icon } from "./Icon";
+import { Icon } from "./Icon.tsx";
 declare const _default: {
     title: string;
     component: typeof Icon;
