@@ -13,7 +13,7 @@
   "homepage": "https://github.com/christophehurpeau/alouette",
   "type": "module",
   "engines": {
-    "node": ">=20.9.0"
+    "node": ">=20.11.0"
   },
   "sideEffects": false,
   "main": "./dist/index-node20.mjs",
@@ -114,16 +114,16 @@
     "@tamagui/animations-react-native": "1.125.23",
     "@tamagui/core": "1.125.23",
     "alouette-icons": "4.0.3",
-    "type-fest": "4.35.0"
+    "type-fest": "4.40.1"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "6.3.0",
+    "@pob/rollup-esbuild": "6.5.0",
     "@rollup/plugin-replace": "6.0.2",
     "@types/react": "18.3.18",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.77.1",
     "react-native-svg": "15.11.1",
-    "typescript": "5.7.3"
+    "typescript": "5.8.3"
   }
 }

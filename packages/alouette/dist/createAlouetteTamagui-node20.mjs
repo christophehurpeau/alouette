@@ -80,10 +80,6 @@ const createAlouetteFonts = ({
 
 const Breakpoints = {
   /**
-   * min-width: 0
-   */
-  BASE: 0,
-  /**
    * min-width: 480px
    */
   SMALL: 480,

@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+
 const jsxRuntime = require('react/jsx-runtime');
 const core = require('@tamagui/core');
 const react = require('react');
@@ -117,17 +119,17 @@ const centered = {
   }
 };
 
-const variants$1 = {
+const variants$1 = /*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  centered: centered,
-  circular: circular,
-  interactive: interactive,
-  internalForcedPseudoState: internalForcedPseudoState,
-  size: size,
-  withBackground: withBackground,
-  withBorder: withBorder,
-  withElevation: withElevation
-};
+  centered,
+  circular,
+  interactive,
+  internalForcedPseudoState,
+  size,
+  withBackground,
+  withBorder,
+  withElevation
+}, Symbol.toStringTag, { value: 'Module' });
 
 const Box = core.styled(core.View, {
   name: "Box",
@@ -208,7 +210,7 @@ function IconButton({
         Icon,
         {
           size: size / 2,
-          color: disabled ? getDisabledColor$1(variant) : undefined,
+          color: disabled ? getDisabledColor$1(variant) : void 0,
           contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
           icon
         }
@@ -285,7 +287,7 @@ const TypographyParagraph = core.styled(Typography, {
   userSelect: "auto",
   family: "body"
 });
-const TypographySizeContext = react.createContext(undefined);
+const TypographySizeContext = react.createContext(void 0);
 const TypographyWithContext = Typography.styleable(
   ({ size, ...props }, ref) => {
     const ancestorSize = react.useContext(TypographySizeContext);
@@ -372,7 +374,7 @@ function Button({
         icon && /* @__PURE__ */ jsxRuntime.jsx(
           Icon,
           {
-            color: disabled ? getDisabledColor(variant) : undefined,
+            color: disabled ? getDisabledColor(variant) : void 0,
             contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
             icon,
             size: size === "sm" ? 16 : 20
@@ -384,7 +386,7 @@ function Button({
             size,
             weight: "bold",
             paddingVertical: size === "sm" ? "$1" : "$xs",
-            color: disabled ? getDisabledColor(variant) : undefined,
+            color: disabled ? getDisabledColor(variant) : void 0,
             contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
             children: text
           }
@@ -613,8 +615,8 @@ function StoryGridRow({
           flexDirection: "row",
           marginVertical: "$-1",
           marginBottom: "$4",
-          flexWrap: flexWrap ? "wrap" : undefined,
-          gap: flexWrap ? "$xs" : undefined
+          flexWrap: flexWrap ? "wrap" : void 0,
+          gap: flexWrap ? "$xs" : void 0
         }
       },
       children: react.Children.map(children, (child) => /* @__PURE__ */ jsxRuntime.jsx(
@@ -625,7 +627,7 @@ function StoryGridRow({
           ...{
             [`$${breakpoint}`]: {
               flexGrow: 1,
-              flexBasis: flexWrap ? undefined : 0,
+              flexBasis: flexWrap ? void 0 : 0,
               paddingTop: 0,
               paddingBottom: 0,
               marginVertical: "$2"
@@ -709,8 +711,8 @@ function SwitchBreakpointsUsingDisplayNone({
       core.View,
       {
         display: name === "base" ? "flex" : "none",
-        ...name === "base" ? undefined : { display: "none", [`$${name}`]: { display: "flex" } },
-        ...index + 1 in entries ? { [`$${entries[index + 1][0]}`]: { display: "none" } } : undefined,
+        ...name === "base" ? void 0 : { display: "none", [`$${name}`]: { display: "flex" } },
+        ...index + 1 in entries ? { [`$${entries[index + 1][0]}`]: { display: "none" } } : void 0,
         children: node
       },
       name

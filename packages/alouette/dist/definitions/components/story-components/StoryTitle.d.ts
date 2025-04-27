@@ -4,7 +4,7 @@ export declare const StoryTitle: import("@tamagui/web").TamaguiComponent<import(
     family?: "heading" | "body" | undefined;
     contrast?: boolean | undefined;
     weight?: "regular" | "bold" | "black" | undefined;
-    level?: 1 | 4 | 2 | 3 | undefined;
+    level?: 1 | 2 | 3 | 4 | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export type StoryTitleProps = GetProps<typeof StoryTitle>;
 //# sourceMappingURL=StoryTitle.d.ts.map

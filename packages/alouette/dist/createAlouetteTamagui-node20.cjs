@@ -1,5 +1,7 @@
 'use strict';
 
+Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+
 const core = require('@tamagui/core');
 const animationsReactNative = require('@tamagui/animations-react-native');
 
@@ -81,10 +83,6 @@ const createAlouetteFonts = ({
 });
 
 const Breakpoints = {
-  /**
-   * min-width: 0
-   */
-  BASE: 0,
   /**
    * min-width: 480px
    */
