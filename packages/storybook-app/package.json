@@ -48,7 +48,7 @@
     "@tamagui/vite-plugin": "1.125.23",
     "@types/prop-types": "15.7.14",
     "@types/react": "18.3.18",
-    "@vitejs/plugin-react": "4.3.4",
+    "@vitejs/plugin-react": "4.4.1",
     "storybook": "8.5.8",
     "typescript": "5.8.3",
     "vite": "6.2.4",
