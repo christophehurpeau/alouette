@@ -10,11 +10,11 @@ export declare const MessageFrame: import("@tamagui/core").TamaguiComponent<impo
     centered?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const MessageText: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: "xs" | "sm" | "md" | "xl" | "lg" | undefined;
+    size?: "xl" | "lg" | "md" | "sm" | "xs" | undefined;
     family?: "heading" | "body" | undefined;
     centered?: boolean | undefined;
-    weight?: "black" | "bold" | "regular" | undefined;
     contrast?: boolean | undefined;
+    weight?: "regular" | "bold" | "black" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export interface MessageProps {
     theme: NonNullable<ComponentProps<typeof MessageFrame>["theme"]>;
