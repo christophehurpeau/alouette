@@ -1,6 +1,7 @@
 import pobTypescriptReactConfig, {
   applyTs,
 } from "@pob/eslint-config-typescript-react";
+import checkPackageDependenciesEslintPlugin from "check-package-dependencies/eslint-plugin";
 
 const { configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig(
   import.meta.url,
@@ -19,6 +20,7 @@ export default [
   ...pobTypescriptReactConfigs.node,
   ...pobTypescriptReactConfigs.allowUnsafe,
   ...pobTypescriptReactConfigs.allowImplicitReturnType,
+  checkPackageDependenciesEslintPlugin.configs["recommended-library"],
   ...applyTs({
     mode: "directory",
     files: ["packages/storybook-app/"],

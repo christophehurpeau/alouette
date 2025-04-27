@@ -17,7 +17,6 @@
   "scripts": {
     "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
     "build:definitions": "tsc -b",
-    "checks": "node scripts/check-packages.js",
     "clean:build": "yarn workspaces foreach --parallel -A run clean:build",
     "lint": "yarn run lint:prettier && yarn run lint:eslint",
     "lint:eslint": "eslint --quiet .",
@@ -40,7 +39,7 @@
     "@pob/eslint-config": "59.7.0",
     "@pob/eslint-config-typescript-react": "59.7.0",
     "@pob/root": "16.7.0",
-    "check-package-dependencies": "10.0.0",
+    "check-package-dependencies": "10.2.0",
     "eslint": "9.21.0",
     "eslint-plugin-storybook": "0.11.2",
     "rollup": "4.33.0",
