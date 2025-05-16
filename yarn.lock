@@ -4668,7 +4668,7 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-native: "npm:0.77.1"
-    react-native-svg: "npm:15.11.1"
+    react-native-svg: "npm:15.12.0"
     type-fest: "npm:4.40.1"
     typescript: "npm:5.8.3"
   peerDependencies:
@@ -10797,9 +10797,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg@npm:15.11.1":
-  version: 15.11.1
-  resolution: "react-native-svg@npm:15.11.1"
+"react-native-svg@npm:15.12.0":
+  version: 15.12.0
+  resolution: "react-native-svg@npm:15.12.0"
   dependencies:
     css-select: "npm:^5.1.0"
     css-tree: "npm:^1.1.3"
@@ -10807,7 +10807,7 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/b93d995e459b0e9250639a0f2171ed8c3d580d57b93400c5f2696ab0b24d1babf9c20099e904964f93c6c44597b9cc5e8c87ee248c24c63d4dbc3250b04b57b9
+  checksum: 10c0/80ad7ed06fc095767a8f786416fa0f4258a644ffc80a27a9425ad753abe0feab523f3e8817758411f7bead38449ab8c2f1272a9f124d185ffcf69afaf57eba31
   languageName: node
   linkType: hard
 
@@ -11890,7 +11890,7 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-native: "npm:0.77.1"
-    react-native-svg: "npm:15.11.1"
+    react-native-svg: "npm:15.12.0"
     react-native-web: "npm:0.19.13"
     storybook: "npm:8.5.8"
     typescript: "npm:5.8.3"
