@@ -1,5 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
-import type { Decorator } from "@storybook/react";
+import type { Decorator } from "@storybook/react-vite";
 import { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 import { AlouetteProvider } from "./AlouetteProvider.tsx";

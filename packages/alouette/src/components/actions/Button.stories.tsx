@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Theme } from "@tamagui/core";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
 import { Box } from "../containers/Box.tsx";

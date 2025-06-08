@@ -1,4 +1,4 @@
-import type { StoryObj } from "@storybook/react";
+import type { StoryObj } from "@storybook/react-vite";
 import { InputText } from "./InputText.tsx";
 declare const _default: {
     title: string;

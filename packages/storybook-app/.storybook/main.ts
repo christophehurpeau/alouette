@@ -14,12 +14,11 @@ const config: StorybookConfig = {
   addons: [
     getAbsolutePath("@storybook/addon-onboarding"),
     getAbsolutePath("@storybook/addon-links"),
-    getAbsolutePath("@storybook/addon-essentials"),
-    getAbsolutePath("@storybook/addon-interactions"),
     getAbsolutePath("@chromatic-com/storybook"),
+    getAbsolutePath("@storybook/addon-docs"),
   ],
   framework: {
-    name: "@storybook/react-vite",
+    name: getAbsolutePath("@storybook/react-vite"),
     options: {},
   },
   typescript: {
@@ -27,7 +26,6 @@ const config: StorybookConfig = {
     reactDocgen: "react-docgen",
   },
   docs: {
-    autodocs: true,
     defaultName: "Documentation",
   },
 };

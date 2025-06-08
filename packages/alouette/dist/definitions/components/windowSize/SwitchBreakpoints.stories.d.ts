@@ -1,4 +1,4 @@
-import type { StoryObj } from "@storybook/react";
+import type { StoryObj } from "@storybook/react-vite";
 import { SwitchBreakpointsUsingDisplayNone } from "./SwitchBreakpoints.tsx";
 type ThisStory = StoryObj<typeof SwitchBreakpointsUsingDisplayNone>;
 declare const _default: {

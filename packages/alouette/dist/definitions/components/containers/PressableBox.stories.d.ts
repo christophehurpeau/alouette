@@ -1,4 +1,4 @@
-import type { StoryObj } from "@storybook/react";
+import type { StoryObj } from "@storybook/react-vite";
 import { PressableBox } from "./PressableBox.tsx";
 type ThisStory = StoryObj<typeof PressableBox>;
 declare const _default: {

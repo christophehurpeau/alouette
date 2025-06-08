@@ -6,7 +6,7 @@ import {
   Primary,
   Controls,
   Stories,
-} from "@storybook/blocks";
+} from "@storybook/addon-docs/blocks";
 
 const primaryColor = "#1c7193";
 

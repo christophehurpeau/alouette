@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
 import { Box } from "../containers/Box.tsx";
 import { HStack, VStack } from "../primitives/stacks.ts";

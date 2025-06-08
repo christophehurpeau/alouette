@@ -1,4 +1,4 @@
-import type { StoryObj } from "@storybook/react";
+import type { StoryObj } from "@storybook/react-vite";
 import { Typography } from "./Typography.tsx";
 type ThisStory = StoryObj<typeof Typography>;
 declare const _default: {

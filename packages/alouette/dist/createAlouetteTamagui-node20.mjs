@@ -17,9 +17,12 @@ const animations = createAnimations({
 });
 if ("navigator" in global) {
   const navigator = global.navigator;
-  if (!navigator.userAgent?.startsWith("Node.js") && navigator.product !== "ReactNative") {
+  if (
+    // eslint-disable-next-line n/no-unsupported-features/node-builtins
+    !navigator.userAgent?.startsWith("Node.js") && navigator.product !== "ReactNative"
+  ) {
     throw new Error(
-      `animations native is loaded in web: ${// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      `animations native is loaded in web: ${// eslint-disable-next-line @typescript-eslint/restrict-template-expressions, n/no-unsupported-features/node-builtins
       navigator.appName || navigator.product || navigator.userAgent}`
     );
   }

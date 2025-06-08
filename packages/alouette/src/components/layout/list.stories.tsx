@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { VStack } from "../primitives/stacks.ts";
 import { Story } from "../story-components/Story.tsx";
 import { Typography } from "../typography/Typography.tsx";

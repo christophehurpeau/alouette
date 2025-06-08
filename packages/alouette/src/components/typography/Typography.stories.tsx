@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { View } from "@tamagui/core";
 import { Story } from "../story-components/Story.tsx";
 import {

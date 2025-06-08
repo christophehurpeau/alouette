@@ -1,4 +1,4 @@
-import type { StoryObj } from "@storybook/react";
+import type { StoryObj } from "@storybook/react-vite";
 import { IconButton } from "./IconButton.tsx";
 type ThisStory = StoryObj<typeof IconButton>;
 declare const _default: {

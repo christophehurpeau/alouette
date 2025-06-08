@@ -1,4 +1,4 @@
-import { Preview } from "@storybook/react";
+import { Preview } from "@storybook/react-vite";
 import { AlouetteDecorator } from "alouette";
 import tamaguiConfig from "../tamagui.config";
 import { DocTemplate } from "./DocTemplate";
