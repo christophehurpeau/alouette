@@ -6,31 +6,31 @@ export declare const withBorder: (val: SizeTokens | boolean, { props }: VariantS
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 } | {
     readonly shadowColor: `$${string}.shadowColor`;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 } | {
     readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 } | {
     readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 } | {
     readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 } | {
     readonly hoverStyle: {
         readonly [x: string]: `$${string}.backgroundColor:hover` | `$${string}.borderColor:hover`;
@@ -42,10 +42,10 @@ export declare const withBorder: (val: SizeTokens | boolean, { props }: VariantS
         readonly [x: string]: `$${string}.backgroundColor:focus` | `$${string}.borderColor:focus`;
     };
     readonly shadowColor?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 } | {
     readonly borderColor: string;
-    readonly borderWidth: 1 | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 };
 export declare const withBackground: (val: boolean, { props }: VariantSpreadExtras<any>) => {
     readonly [x: string]: `$${string}.backgroundColor:disabled` | `$${string}.borderColor:disabled` | `$${string}.shadowColor:disabled`;
