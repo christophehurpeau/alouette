@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-global-this */
 import { createAnimations } from "@tamagui/animations-react-native";
 
 export const animations = createAnimations({
@@ -19,12 +20,13 @@ if ("navigator" in global) {
   // eslint-disable-next-line n/no-unsupported-features/node-builtins
   const navigator = global.navigator as any;
   if (
+    // eslint-disable-next-line n/no-unsupported-features/node-builtins
     !navigator.userAgent?.startsWith("Node.js") &&
     navigator.product !== "ReactNative"
   ) {
     throw new Error(
       `animations native is loaded in web: ${
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, n/no-unsupported-features/node-builtins
         navigator.appName || navigator.product || navigator.userAgent
       }`,
     );
