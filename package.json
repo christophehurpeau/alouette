@@ -38,10 +38,10 @@
     "@pob/commitlint-config": "9.1.4",
     "@pob/eslint-config": "60.0.0",
     "@pob/eslint-config-typescript-react": "60.0.0",
-    "@pob/rollup-esbuild": "6.5.0",
+    "@pob/rollup-esbuild": "6.5.1",
     "@pob/root": "18.1.0",
     "check-package-dependencies": "10.2.0",
-    "eslint": "9.25.1",
+    "eslint": "9.28.0",
     "eslint-plugin-storybook": "0.11.2",
     "typescript": "5.8.3"
   }
