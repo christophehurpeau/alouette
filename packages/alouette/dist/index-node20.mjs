@@ -286,20 +286,20 @@ const TypographyParagraph = styled(Typography, {
 });
 const TypographySizeContext = createContext(void 0);
 const TypographyWithContext = Typography.styleable(
-  ({ size, ...props }, ref) => {
+  ({ size, ...props }) => {
     const ancestorSize = useContext(TypographySizeContext);
     const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
     if (sizeOrAncestorSizeOrDefaultSize !== size) {
-      return /* @__PURE__ */ jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsx(Typography, { ref, size, ...props }) });
+      return /* @__PURE__ */ jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsx(Typography, { size, ...props }) });
     }
-    return /* @__PURE__ */ jsx(Typography, { ref, size, ...props });
+    return /* @__PURE__ */ jsx(Typography, { size, ...props });
   }
 );
 const TypographyParagraphWithContext = TypographyParagraph.styleable(
-  ({ size, ...props }, ref) => {
+  ({ size, ...props }) => {
     const ancestorSize = useContext(TypographySizeContext);
     const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
-    return /* @__PURE__ */ jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsx(Typography, { ref, size, ...props }) });
+    return /* @__PURE__ */ jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsx(Typography, { size, ...props }) });
   }
 );
 

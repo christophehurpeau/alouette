@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Story } from "../story-components/Story.tsx";
-import { StoryGrid } from "../story-components/StoryGrid.tsx";
-import { InputText } from "./InputText.tsx";
+import { Story } from "../story-components/Story";
+import { StoryGrid } from "../story-components/StoryGrid";
+import { InputText } from "./InputText";
 
 export default {
   title: "alouette/forms/InputText",

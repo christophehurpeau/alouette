@@ -1,14 +1,13 @@
 import { createTamagui } from "@tamagui/core";
-// eslint-disable-next-line import/extensions
 import { animations } from "./config/animations";
-import type { AlouetteColorScales } from "./config/colorScales.ts";
-import type { AlouetteFontsOptions } from "./config/createAlouetteFonts.ts";
-import { createAlouetteFonts } from "./config/createAlouetteFonts.ts";
-import type { createAlouetteTokens } from "./config/createAlouetteTokens.ts";
-import { media } from "./config/media.ts";
-import type { createAlouetteThemes } from "./config/themes.ts";
+import type { AlouetteColorScales } from "./config/colorScales";
+import type { AlouetteFontsOptions } from "./config/createAlouetteFonts";
+import { createAlouetteFonts } from "./config/createAlouetteFonts";
+import type { createAlouetteTokens } from "./config/createAlouetteTokens";
+import { media } from "./config/media";
+import type { createAlouetteThemes } from "./config/themes";
 
-export { createAlouetteTokens } from "./config/createAlouetteTokens.ts";
+export { createAlouetteTokens } from "./config/createAlouetteTokens";
 
 export interface AlouetteTamaguiOptions {
   fonts?: AlouetteFontsOptions;
@@ -18,14 +17,14 @@ export {
   createColorTheme,
   createAlouetteThemes,
   type FullTheme,
-} from "./config/themes.ts";
+} from "./config/themes";
 
 export {
   defaultColorScales,
   createColorScale,
   type AlouetteColorScales,
   type AlouetteColorScale,
-} from "./config/colorScales.ts";
+} from "./config/colorScales";
 
 export const createAlouetteTamagui = <
   const ColorScales extends AlouetteColorScales,

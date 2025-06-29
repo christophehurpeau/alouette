@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react-vite";
-import { Typography } from "./Typography.tsx";
+import { Typography } from "./Typography";
 type ThisStory = StoryObj<typeof Typography>;
 declare const _default: {
     title: string;

@@ -16,11 +16,24 @@
       "problemMatcher": []
     },
     {
-      "label": "storybook-app",
+      "label": "storybook-native-app:web",
+      "type": "shell",
+      "command": "yarn start:web",
+      "options": {
+        "cwd": "${workspaceFolder}/packages/storybook-native-app"
+      },
+      "group": {
+        "kind": "none"
+      },
+      "dependsOn": ["build"],
+      "problemMatcher": []
+    },
+    {
+      "label": "storybook-native-app:native",
       "type": "shell",
       "command": "yarn start",
       "options": {
-        "cwd": "${workspaceFolder}/packages/storybook-app"
+        "cwd": "${workspaceFolder}/packages/storybook-native-app"
       },
       "group": {
         "kind": "none"

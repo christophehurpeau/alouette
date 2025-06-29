@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react-vite";
-import { PressableListItem } from "./list.tsx";
+import { PressableListItem } from "./list";
 declare const _default: {
     title: string;
     component: typeof PressableListItem;

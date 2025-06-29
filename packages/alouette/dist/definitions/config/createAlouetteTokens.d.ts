@@ -1,4 +1,4 @@
-import type { AlouetteColorScaleNumber, AlouetteColorScales } from "./colorScales.ts";
+import type { AlouetteColorScaleNumber, AlouetteColorScales } from "./colorScales";
 type ColorScaleTokens<ColorScales extends AlouetteColorScales> = {
     [K in string & keyof ColorScales as `${K}.${AlouetteColorScaleNumber}`]: string;
 };

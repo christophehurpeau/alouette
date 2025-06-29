@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react-vite";
-import { Message } from "./Message.tsx";
+import { Message } from "./Message";
 type ThisStory = StoryObj<typeof Message>;
 declare const _default: {
     title: string;

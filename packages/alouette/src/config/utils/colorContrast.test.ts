@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { checkContrast, getContrastRatio } from "./colorContrast.ts";
+import { checkContrast, getContrastRatio } from "./colorContrast";
 
 test("colorContrast", async (t) => {
   await t.test("getContrastRatio", async (t) => {

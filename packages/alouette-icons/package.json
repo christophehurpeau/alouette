@@ -57,7 +57,7 @@
   },
   "prettier": "@pob/root/prettier-config",
   "peerDependencies": {
-    "react": "^18.2.0",
+    "react": "^19.0.0",
     "react-native": "*",
     "react-native-svg": "*"
   },
@@ -67,7 +67,7 @@
   "devDependencies": {
     "@babel/core": "7.27.7",
     "@babel/preset-react": "7.27.1",
-    "react-native": "0.77.2",
+    "react-native": "0.79.3",
     "typescript": "5.8.3"
   }
 }

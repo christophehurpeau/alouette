@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 import { Children } from "react";
 import { Platform } from "react-native";
-import { View } from "../primitives/View.ts";
-import { VStack } from "../primitives/stacks.ts";
-import { StoryTitle } from "./StoryTitle.tsx";
+import { View } from "../primitives/View";
+import { VStack } from "../primitives/stacks";
+import { StoryTitle } from "./StoryTitle";
 
 export interface StoryGridRowProps {
   children: NonNullable<ReactNode>;

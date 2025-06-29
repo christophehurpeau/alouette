@@ -56,27 +56,27 @@ export type TypographyParagraphProps = GetProps<typeof TypographyParagraph>;
 const TypographySizeContext = createContext<TypographyProps["size"]>(undefined);
 
 export const TypographyWithContext = Typography.styleable(
-  ({ size, ...props }, ref) => {
+  ({ size, ...props }) => {
     const ancestorSize = useContext(TypographySizeContext);
     const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
     if (sizeOrAncestorSizeOrDefaultSize !== size) {
       return (
         <TypographySizeContext.Provider value={sizeOrAncestorSizeOrDefaultSize}>
-          <Typography ref={ref} size={size} {...props} />
+          <Typography size={size} {...props} />
         </TypographySizeContext.Provider>
       );
     }
-    return <Typography ref={ref} size={size} {...props} />;
+    return <Typography size={size} {...props} />;
   },
 );
 
 export const TypographyParagraphWithContext = TypographyParagraph.styleable(
-  ({ size, ...props }, ref) => {
+  ({ size, ...props }) => {
     const ancestorSize = useContext(TypographySizeContext);
     const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
     return (
       <TypographySizeContext.Provider value={sizeOrAncestorSizeOrDefaultSize}>
-        <Typography ref={ref} size={size} {...props} />
+        <Typography size={size} {...props} />
       </TypographySizeContext.Provider>
     );
   },

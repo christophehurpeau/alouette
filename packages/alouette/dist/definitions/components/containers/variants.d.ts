@@ -1,5 +1,5 @@
 import type { SizeTokens, VariantSpreadExtras, ViewStyle } from "@tamagui/core";
-import type { InternalPseudoState } from "../primitives/createVariants.ts";
+import type { InternalPseudoState } from "../primitives/createVariants";
 export declare const internalForcedPseudoState: (val: InternalPseudoState) => {};
 export declare const withBorder: (val: SizeTokens | boolean, { props }: VariantSpreadExtras<any>) => {
     readonly shadowColor?: undefined;

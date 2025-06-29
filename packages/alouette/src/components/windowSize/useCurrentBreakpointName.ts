@@ -1,6 +1,6 @@
 import { useMedia } from "@tamagui/core";
-import type { BreakpointNames } from "../../config/Breakpoints.ts";
-import { BreakpointNameEnum } from "../../config/Breakpoints.ts";
+import type { BreakpointNames } from "../../config/Breakpoints";
+import { BreakpointNameEnum } from "../../config/Breakpoints";
 
 export function useCurrentBreakpointName(): BreakpointNameEnum {
   const media = useMedia();

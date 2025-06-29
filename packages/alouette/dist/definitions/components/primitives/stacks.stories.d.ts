@@ -1,6 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
-import { Story } from "../story-components/Story.tsx";
-import { HStack, Stack, VStack } from "./stacks.ts";
+import { Story } from "../story-components/Story";
+import { HStack, Stack, VStack } from "./stacks";
 declare const meta: {
     title: string;
     component: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {

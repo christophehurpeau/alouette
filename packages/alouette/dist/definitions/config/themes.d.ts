@@ -1,6 +1,6 @@
 import type { Variable } from "@tamagui/core";
-import type { AlouetteColorScales } from "./colorScales.ts";
-import type { createAlouetteTokens } from "./createAlouetteTokens.ts";
+import type { AlouetteColorScales } from "./colorScales";
+import type { createAlouetteTokens } from "./createAlouetteTokens";
 export interface ColorTheme {
     backgroundColor: Variable<string>;
     textColor: Variable<string>;

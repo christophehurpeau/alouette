@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Story } from "../story-components/Story.tsx";
-import { Typography } from "../typography/Typography.tsx";
-import { PressableBox } from "./PressableBox.tsx";
+import { Story } from "../story-components/Story";
+import { Typography } from "../typography/Typography";
+import { PressableBox } from "./PressableBox";
 
 type ThisStory = StoryObj<typeof PressableBox>;
 

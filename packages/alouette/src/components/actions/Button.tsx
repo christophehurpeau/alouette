@@ -2,10 +2,10 @@ import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
 import type { ReactElement, ReactNode } from "react";
 import type { Except } from "type-fest";
-import { PressableBox } from "../containers/PressableBox.tsx";
-import { Icon } from "../primitives/Icon.tsx";
-import { HStack } from "../primitives/stacks.ts";
-import { Typography } from "../typography/Typography.tsx";
+import { PressableBox } from "../containers/PressableBox";
+import { Icon } from "../primitives/Icon";
+import { HStack } from "../primitives/stacks";
+import { Typography } from "../typography/Typography";
 
 const ButtonFrame = styled(PressableBox, {
   name: "ButtonFrame",

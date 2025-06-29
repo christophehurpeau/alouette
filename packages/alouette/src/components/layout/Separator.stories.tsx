@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { View } from "../primitives/View.ts";
-import { HStack } from "../primitives/stacks.ts";
-import { Story } from "../story-components/Story.tsx";
-import { Typography } from "../typography/Typography.tsx";
-import { Separator } from "./Separator.tsx";
+import { View } from "../primitives/View";
+import { HStack } from "../primitives/stacks";
+import { Story } from "../story-components/Story";
+import { Typography } from "../typography/Typography";
+import { Separator } from "./Separator";
 
 export default {
   title: "alouette/layout/Separator",

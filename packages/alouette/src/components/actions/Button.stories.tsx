@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Theme } from "@tamagui/core";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
-import { Box } from "../containers/Box.tsx";
-import { VStack } from "../primitives/stacks.ts";
-import { Story } from "../story-components/Story.tsx";
-import { StoryGrid } from "../story-components/StoryGrid.tsx";
-import { Button } from "./Button.tsx";
+import { Box } from "../containers/Box";
+import { VStack } from "../primitives/stacks";
+import { Story } from "../story-components/Story";
+import { StoryGrid } from "../story-components/StoryGrid";
+import { Button } from "./Button";
 
 type ThisStory = StoryObj<typeof Button>;
 

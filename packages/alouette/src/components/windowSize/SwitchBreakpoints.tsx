@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import type { SetRequired } from "type-fest";
-import type { BreakpointNames } from "../../config/Breakpoints.tsx";
-import { View } from "../primitives/View.ts";
-import { useCurrentBreakpointNameFiltered } from "./useCurrentBreakpointName.ts";
+import type { BreakpointNames } from "../../config/Breakpoints";
+import { View } from "../primitives/View";
+import { useCurrentBreakpointNameFiltered } from "./useCurrentBreakpointName";
 
 type SwitchBreakpointsProps = SetRequired<
   Partial<Record<BreakpointNames, ReactNode>>,

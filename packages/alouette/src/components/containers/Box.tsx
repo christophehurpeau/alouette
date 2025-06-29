@@ -1,6 +1,6 @@
 import type { GetProps } from "@tamagui/core";
 import { View, styled } from "@tamagui/core";
-import * as variants from "./variants.ts";
+import * as variants from "./variants";
 
 /** View with alouette variants */
 export const Box = styled(View, {

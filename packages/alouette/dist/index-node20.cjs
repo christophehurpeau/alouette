@@ -289,20 +289,20 @@ const TypographyParagraph = core.styled(Typography, {
 });
 const TypographySizeContext = react.createContext(void 0);
 const TypographyWithContext = Typography.styleable(
-  ({ size, ...props }, ref) => {
+  ({ size, ...props }) => {
     const ancestorSize = react.useContext(TypographySizeContext);
     const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
     if (sizeOrAncestorSizeOrDefaultSize !== size) {
-      return /* @__PURE__ */ jsxRuntime.jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsxRuntime.jsx(Typography, { ref, size, ...props }) });
+      return /* @__PURE__ */ jsxRuntime.jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsxRuntime.jsx(Typography, { size, ...props }) });
     }
-    return /* @__PURE__ */ jsxRuntime.jsx(Typography, { ref, size, ...props });
+    return /* @__PURE__ */ jsxRuntime.jsx(Typography, { size, ...props });
   }
 );
 const TypographyParagraphWithContext = TypographyParagraph.styleable(
-  ({ size, ...props }, ref) => {
+  ({ size, ...props }) => {
     const ancestorSize = react.useContext(TypographySizeContext);
     const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
-    return /* @__PURE__ */ jsxRuntime.jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsxRuntime.jsx(Typography, { ref, size, ...props }) });
+    return /* @__PURE__ */ jsxRuntime.jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsxRuntime.jsx(Typography, { size, ...props }) });
   }
 );
 

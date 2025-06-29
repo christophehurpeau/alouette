@@ -1,11 +1,11 @@
 import { View, styled } from "@tamagui/core";
 import { XRegularIcon } from "alouette-icons/phosphor-icons";
 import type { ComponentProps, ReactNode } from "react";
-import { IconButton } from "../actions/IconButton.tsx";
-import { Box } from "../containers/Box.tsx";
-import { Icon } from "../primitives/Icon.tsx";
-import { Typography } from "../typography/Typography.tsx";
-import { FeedbackIcon } from "./FeedbackIcon.tsx";
+import { IconButton } from "../actions/IconButton";
+import { Box } from "../containers/Box";
+import { Icon } from "../primitives/Icon";
+import { Typography } from "../typography/Typography";
+import { FeedbackIcon } from "./FeedbackIcon";
 
 export const MessageFrame = styled(Box, {
   name: "MessageFrame",
