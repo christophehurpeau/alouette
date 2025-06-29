@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@4.0.3...alouette-icons@5.0.0) (2025-06-29)
+
+### ⚠ BREAKING CHANGES
+
+* update to react 19, typography changes and add native storybook
+
+### Features
+
+* update dependencies ([27d1465](https://github.com/christophehurpeau/alouette/commit/27d146549419358385e1a5d6bab79c426269e542))
+* update to react 19, typography changes and add native storybook ([87cc3a9](https://github.com/christophehurpeau/alouette/commit/87cc3a99e295d7a47e90c04d68dfb2aecc79430f))
+
 ## [4.0.3](https://github.com/christophehurpeau/alouette/compare/alouette-icons@4.0.2...alouette-icons@4.0.3) (2025-02-15)
 
 Note: no notable changes

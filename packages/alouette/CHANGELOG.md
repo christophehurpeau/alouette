@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@10.3.0...alouette@11.0.0) (2025-06-29)
+
+### ⚠ BREAKING CHANGES
+
+* update to react 19, typography changes and add native storybook
+
+### Features
+
+* **deps:** update dependency type-fest to v4.35.0 ([#166](https://github.com/christophehurpeau/alouette/issues/166)) ([c0e667e](https://github.com/christophehurpeau/alouette/commit/c0e667e21a56da7a8d3d9d441781718a528bf117))
+* update dependencies ([27d1465](https://github.com/christophehurpeau/alouette/commit/27d146549419358385e1a5d6bab79c426269e542))
+* update tamagui ([9880238](https://github.com/christophehurpeau/alouette/commit/98802387b506755124bef6dc7c1ea660b20d8737))
+* update to react 19, typography changes and add native storybook ([87cc3a9](https://github.com/christophehurpeau/alouette/commit/87cc3a99e295d7a47e90c04d68dfb2aecc79430f))
+
+### Bug Fixes
+
+* animation import ([90dc596](https://github.com/christophehurpeau/alouette/commit/90dc596b36be08439ecf520856324f005a091059))
+* **deps:** update tamagui to v1.125.23 ([#138](https://github.com/christophehurpeau/alouette/issues/138)) ([5f695d7](https://github.com/christophehurpeau/alouette/commit/5f695d7358bbab15052ca89dc3144e07499eb3b7))
+
+Version bump for dependency: alouette-icons
+
+
 ## [10.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@10.2.0...alouette@10.3.0) (2025-02-15)
 
 ### Features
