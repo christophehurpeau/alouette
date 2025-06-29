@@ -3778,20 +3778,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*, @types/prop-types@npm:15.7.15":
+"@types/prop-types@npm:15.7.15":
   version: 15.7.15
   resolution: "@types/prop-types@npm:15.7.15"
   checksum: 10c0/b59aad1ad19bf1733cf524fd4e618196c6c7690f48ee70a327eb450a42aab8e8a063fbe59ca0a5701aebe2d92d582292c0fb845ea57474f6a15f6994b0e260b2
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.3.23":
-  version: 18.3.23
-  resolution: "@types/react@npm:18.3.23"
+"@types/react@npm:19.1.8":
+  version: 19.1.8
+  resolution: "@types/react@npm:19.1.8"
   dependencies:
-    "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10c0/49331800b76572eb2992a5c44801dbf8c612a5f99c8f4e4200f06c7de6f3a6e9455c661784a6c5469df96fa45622cb4a9d0982c44e6a0d5719be5f2ef1f545ed
+  checksum: 10c0/4908772be6dc941df276931efeb0e781777fa76e4d5d12ff9f75eb2dcc2db3065e0100efde16fde562c5bafa310cc8f50c1ee40a22640459e066e72cd342143e
   languageName: node
   linkType: hard
 
@@ -4177,7 +4176,7 @@ __metadata:
     react-native: "npm:0.77.2"
     typescript: "npm:5.8.3"
   peerDependencies:
-    react: ^18.2.0
+    react: ^18.2.0 || ^19.0.0
     react-native: "*"
     react-native-svg: "*"
   languageName: unknown
@@ -4210,18 +4209,18 @@ __metadata:
     "@tamagui/animations-react-native": "npm:1.126.14"
     "@tamagui/core": "npm:1.126.14"
     "@types/node": "npm:24.0.7"
-    "@types/react": "npm:18.3.23"
+    "@types/react": "npm:19.1.8"
     alouette-icons: "npm:4.0.3"
-    react: "npm:18.3.1"
-    react-dom: "npm:18.3.1"
+    react: "npm:19.1.0"
+    react-dom: "npm:19.1.0"
     react-native: "npm:0.77.2"
     react-native-svg: "npm:15.12.0"
     type-fest: "npm:4.41.0"
     typescript: "npm:5.8.3"
   peerDependencies:
     alouette-icons: "*"
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: ^18.2.0 || ^19.0.0
+    react-dom: ^18.2.0 || ^19.0.0
     react-native: "*"
     react-native-svg: "*"
   peerDependenciesMeta:
@@ -9981,15 +9980,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.3.1, react-dom@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0":
-  version: 18.3.1
-  resolution: "react-dom@npm:18.3.1"
+"react-dom@npm:19.1.0, react-dom@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0":
+  version: 19.1.0
+  resolution: "react-dom@npm:19.1.0"
   dependencies:
-    loose-envify: "npm:^1.1.0"
-    scheduler: "npm:^0.23.2"
+    scheduler: "npm:^0.26.0"
   peerDependencies:
-    react: ^18.3.1
-  checksum: 10c0/a752496c1941f958f2e8ac56239172296fcddce1365ce45222d04a1947e0cc5547df3e8447f855a81d6d39f008d7c32eab43db3712077f09e3f67c4874973e85
+    react: ^19.1.0
+  checksum: 10c0/3e26e89bb6c67c9a6aa86cb888c7a7f8258f2e347a6d2a15299c17eb16e04c19194e3452bc3255bd34000a61e45e2cb51e46292392340432f133e5a5d2dfb5fc
   languageName: node
   linkType: hard
 
@@ -10107,12 +10105,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:*, react@npm:18.3.1, react@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0":
-  version: 18.3.1
-  resolution: "react@npm:18.3.1"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: 10c0/283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
+"react@npm:*, react@npm:19.1.0, react@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0":
+  version: 19.1.0
+  resolution: "react@npm:19.1.0"
+  checksum: 10c0/530fb9a62237d54137a13d2cfb67a7db6a2156faed43eecc423f4713d9b20c6f2728b026b45e28fcd72e8eadb9e9ed4b089e99f5e295d2f0ad3134251bdd3698
   languageName: node
   linkType: hard
 
@@ -10609,12 +10605,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.23.2":
-  version: 0.23.2
-  resolution: "scheduler@npm:0.23.2"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: 10c0/26383305e249651d4c58e6705d5f8425f153211aef95f15161c151f7b8de885f24751b377e4a0b3dd42cce09aad3f87a61dab7636859c0d89b7daf1a1e2a5c78
+"scheduler@npm:^0.26.0":
+  version: 0.26.0
+  resolution: "scheduler@npm:0.26.0"
+  checksum: 10c0/5b8d5bfddaae3513410eda54f2268e98a376a429931921a81b5c3a2873aab7ca4d775a8caac5498f8cbc7d0daeab947cf923dbd8e215d61671f9f4e392d34356
   languageName: node
   linkType: hard
 
@@ -11096,12 +11090,12 @@ __metadata:
     "@storybook/react-vite": "npm:9.0.6"
     "@tamagui/vite-plugin": "npm:1.126.14"
     "@types/prop-types": "npm:15.7.15"
-    "@types/react": "npm:18.3.23"
+    "@types/react": "npm:19.1.8"
     "@vitejs/plugin-react": "npm:4.5.1"
     alouette: "workspace:*"
     alouette-icons: "workspace:*"
-    react: "npm:18.3.1"
-    react-dom: "npm:18.3.1"
+    react: "npm:19.1.0"
+    react-dom: "npm:19.1.0"
     react-native: "npm:0.77.2"
     react-native-svg: "npm:15.12.0"
     react-native-web: "npm:0.20.0"
