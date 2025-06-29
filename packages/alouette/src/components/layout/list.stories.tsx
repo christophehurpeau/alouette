@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { VStack } from "../primitives/stacks.ts";
-import { Story } from "../story-components/Story.tsx";
-import { Typography } from "../typography/Typography.tsx";
-import { PressableListItem } from "./list.tsx";
+import { VStack } from "../primitives/stacks";
+import { Story } from "../story-components/Story";
+import { Typography } from "../typography/Typography";
+import { PressableListItem } from "./list";
 
 export default {
   title: "alouette/layout/List",

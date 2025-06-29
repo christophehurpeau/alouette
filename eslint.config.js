@@ -6,15 +6,14 @@ import pobTypescriptReactConfig, {
 import checkPackageDependenciesEslintPlugin from "check-package-dependencies/eslint-plugin";
 import storybook from "eslint-plugin-storybook";
 
-const { configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig(
-  import.meta.url,
-);
+const { configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig();
 
 export default [
   {
     ignores: [
       "**/.tamagui/**",
       "**/.storybook/**",
+      "**/.rnstorybook/**",
       "**/vite.config.ts",
       "**/tamagui.config.ts",
       "**/alouette-icons/lib/**",

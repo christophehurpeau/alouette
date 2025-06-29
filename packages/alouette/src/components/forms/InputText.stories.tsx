@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Story } from "../story-components/Story.tsx";
-import { StoryGrid } from "../story-components/StoryGrid.tsx";
-import { InputText } from "./InputText.tsx";
+import { Story } from "../story-components/Story";
+import { StoryGrid } from "../story-components/StoryGrid";
+import { InputText } from "./InputText";
 
 export default {
   title: "alouette/forms/InputText",
@@ -95,9 +95,7 @@ export const Variants: StoryObj<typeof InputText> = {
                   <InputText
                     theme={theme}
                     disabled={state === "disabled"}
-                    internalForcedPseudoState={
-                      state === "disabled" ? undefined : state
-                    }
+                    forceStyle={state === "disabled" ? undefined : state}
                   />
                 </StoryGrid.Col>
               ))}
@@ -113,9 +111,7 @@ export const Variants: StoryObj<typeof InputText> = {
                   <InputText
                     theme={theme}
                     disabled={state === "disabled"}
-                    internalForcedPseudoState={
-                      state === "disabled" ? undefined : state
-                    }
+                    forceStyle={state === "disabled" ? undefined : state}
                     placeholder="Placeholder"
                   />
                 </StoryGrid.Col>

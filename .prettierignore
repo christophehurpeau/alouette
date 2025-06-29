@@ -3,3 +3,5 @@ CHANGELOG.md
 /.yarn/**/*
 /packages/*/.tamagui
 /packages/*/dist
+/packages/*/.expo/**/*
+/packages/*/.rnstorybook/storybook.requires.ts

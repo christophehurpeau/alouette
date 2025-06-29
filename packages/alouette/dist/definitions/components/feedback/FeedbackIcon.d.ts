@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { MessageProps } from "./Message.tsx";
+import type { MessageProps } from "./Message";
 interface FeedbackIconProps {
     type: MessageProps["theme"];
 }

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { VStack } from "../primitives/stacks.ts";
-import { Story } from "../story-components/Story.tsx";
-import type { MessageProps } from "./Message.tsx";
-import { Message } from "./Message.tsx";
+import { VStack } from "../primitives/stacks";
+import { Story } from "../story-components/Story";
+import type { MessageProps } from "./Message";
+import { Message } from "./Message";
 
 type ThisStory = StoryObj<typeof Message>;
 

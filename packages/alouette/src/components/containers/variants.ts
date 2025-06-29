@@ -1,8 +1,5 @@
 import type { SizeTokens, VariantSpreadExtras, ViewStyle } from "@tamagui/core";
-import type { InternalPseudoState } from "../primitives/createVariants.ts";
-import { getInteractionStyles } from "../primitives/createVariants.ts";
-
-export const internalForcedPseudoState = (val: InternalPseudoState) => ({});
+import { getInteractionStyles } from "../primitives/createVariants";
 
 export const withBorder = (
   val: SizeTokens | boolean,

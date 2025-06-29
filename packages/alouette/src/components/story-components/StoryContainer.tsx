@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { ScrollView } from "../primitives/ScrollView.ts";
-import { StoryTitle } from "./StoryTitle.tsx";
+import { ScrollView } from "../primitives/ScrollView";
+import { StoryTitle } from "./StoryTitle";
 
 export interface StoryContainerProps {
   title: ReactNode;

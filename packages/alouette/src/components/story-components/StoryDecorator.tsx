@@ -1,5 +1,5 @@
 import type { Decorator } from "@storybook/react-vite";
-import { StoryContainer } from "./StoryContainer.tsx";
+import { StoryContainer } from "./StoryContainer";
 
 // eslint-disable-next-line react/function-component-definition -- not a component, it's a decorator for storybook.
 export const StoryDecorator: Decorator = (storyFn, { name, container }) => {

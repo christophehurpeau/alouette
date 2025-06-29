@@ -1,7 +1,7 @@
 import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
 import { TextInput } from "react-native";
-import * as variants from "../containers/variants.ts";
+import * as variants from "../containers/variants";
 
 const StyledInputText = styled(
   TextInput,

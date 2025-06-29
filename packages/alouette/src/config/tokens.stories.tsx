@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { Variable } from "@tamagui/core";
-import { Box } from "../components/containers/Box.tsx";
-import { View } from "../components/primitives/View.ts";
-import { HStack, VStack } from "../components/primitives/stacks.ts";
-import { Story } from "../components/story-components/Story.tsx";
-import { WithTamaguiConfig } from "../components/story-components/WithTamaguiConfig.tsx";
-import { Typography } from "../components/typography/Typography.tsx";
-import { groupTokens } from "./utils/groupTokens.ts";
+import { Box } from "../components/containers/Box";
+import { View } from "../components/primitives/View";
+import { HStack, VStack } from "../components/primitives/stacks";
+import { Story } from "../components/story-components/Story";
+import { WithTamaguiConfig } from "../components/story-components/WithTamaguiConfig";
+import { Typography } from "../components/typography/Typography";
+import { groupTokens } from "./utils/groupTokens";
 
 const meta = {
   title: "alouette/Config/Tokens",
@@ -100,8 +100,8 @@ export const TokensStory: StoryObj<unknown> = {
                     width={value.val}
                   >
                     <VStack gap="$xs">
-                      <Typography size="xs">${key}</Typography>
-                      <Typography size="xs">{value.val}</Typography>
+                      <Typography size="$xs">${key}</Typography>
+                      <Typography size="$xs">{value.val}</Typography>
                     </VStack>
                   </Box>
                 ))}

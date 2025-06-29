@@ -1,9 +1,9 @@
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import { styled, View, useStyle, Text, useConfiguration, useMedia, TamaguiProvider, Stack as Stack$1 } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
-import { createContext, useContext, Children, useState, useEffect } from 'react';
 import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
 import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Pressable } from 'react-native';
+import { Children, useState, useEffect } from 'react';
 
 const fullscreenStyle = {
   position: "absolute",
@@ -12,12 +12,7 @@ const fullscreenStyle = {
   right: 0,
   bottom: 0
 };
-const getInteractionStyles = (name, {
-  internalForcedPseudoState,
-  disabled,
-  interactive,
-  variant
-}) => {
+const getInteractionStyles = (name, { disabled, interactive, variant }) => {
   const isGhost = variant?.startsWith("ghost-");
   const prefix = interactive === "text" ? "interactive.forms" : (
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -29,16 +24,6 @@ const getInteractionStyles = (name, {
   if (name === "shadowColor") {
     return { [name]: `$${prefix}.${name}` };
   }
-  if (process.env.STORYBOOK && internalForcedPseudoState) {
-    switch (internalForcedPseudoState) {
-      case "hover":
-        return { [name]: `$${prefix}.${name}:hover` };
-      case "press":
-        return { [name]: `$${prefix}.${name}:press` };
-      case "focus":
-        return { [name]: `$${prefix}.${name}:focus` };
-    }
-  }
   return {
     [name]: isGhost ? "transparent" : `$${prefix}.${name}`,
     hoverStyle: { [name]: `$${prefix}.${name}:hover` },
@@ -47,7 +32,6 @@ const getInteractionStyles = (name, {
   };
 };
 
-const internalForcedPseudoState = (val) => ({});
 const withBorder = (val, { props }) => {
   return {
     borderWidth: typeof val !== "boolean" ? val : 1,
@@ -121,7 +105,6 @@ const variants$1 = /*#__PURE__*/Object.defineProperty({
   centered,
   circular,
   interactive,
-  internalForcedPseudoState,
   size,
   withBackground,
   withBorder,
@@ -247,21 +230,27 @@ const Typography = styled(Text, {
   color: "$textColor",
   fontWeight: "$regular",
   variants: {
+    inherit: {
+      false: {
+        size: "$md",
+        weight: "$regular",
+        family: "$body"
+      }
+    },
     size: {
-      xl: { fontSize: "$xl", lineHeight: "$xl" },
-      lg: { fontSize: "$lg", lineHeight: "$lg" },
-      md: { fontSize: "$md", lineHeight: "$md" },
-      sm: { fontSize: "$sm", lineHeight: "$sm" },
-      xs: { fontSize: "$xs", lineHeight: "$xs" }
+      "...fontSize": (size) => ({
+        fontSize: size,
+        lineHeight: size
+      })
     },
     weight: {
-      regular: { fontWeight: "$regular" },
-      bold: { fontWeight: "$bold" },
-      black: { fontWeight: "$black" }
+      $regular: { fontWeight: "$regular" },
+      $bold: { fontWeight: "$bold" },
+      $black: { fontWeight: "$black" }
     },
     family: {
-      heading: { fontFamily: "$heading" },
-      body: { fontFamily: "$body" }
+      $heading: { fontFamily: "$heading" },
+      $body: { fontFamily: "$body" }
     },
     contrast: {
       true: {
@@ -273,35 +262,15 @@ const Typography = styled(Text, {
     }
   },
   defaultVariants: {
-    size: "md",
-    weight: "regular",
-    family: "body"
+    inherit: false
   }
 });
 const TypographyParagraph = styled(Typography, {
   name: "TypographyParagraph",
   tag: "p",
   userSelect: "auto",
-  family: "body"
+  family: "$body"
 });
-const TypographySizeContext = createContext(void 0);
-const TypographyWithContext = Typography.styleable(
-  ({ size, ...props }, ref) => {
-    const ancestorSize = useContext(TypographySizeContext);
-    const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
-    if (sizeOrAncestorSizeOrDefaultSize !== size) {
-      return /* @__PURE__ */ jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsx(Typography, { ref, size, ...props }) });
-    }
-    return /* @__PURE__ */ jsx(Typography, { ref, size, ...props });
-  }
-);
-const TypographyParagraphWithContext = TypographyParagraph.styleable(
-  ({ size, ...props }, ref) => {
-    const ancestorSize = useContext(TypographySizeContext);
-    const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
-    return /* @__PURE__ */ jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsx(Typography, { ref, size, ...props }) });
-  }
-);
 
 const ButtonFrame = styled(PressableBox, {
   name: "ButtonFrame",
@@ -380,8 +349,8 @@ function Button({
         /* @__PURE__ */ jsx(
           Typography,
           {
-            size,
-            weight: "bold",
+            size: size === "sm" ? "$sm" : "$md",
+            weight: "$bold",
             paddingVertical: size === "sm" ? "$1" : "$xs",
             color: disabled ? getDisabledColor(variant) : void 0,
             contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
@@ -418,7 +387,7 @@ const MessageFrame = styled(Box, {
 const MessageText = styled(Typography, {
   name: "MessageText",
   contrast: true,
-  size: "md",
+  size: "$md",
   flexGrow: 1,
   paddingVertical: "$4",
   variants: {
@@ -506,14 +475,14 @@ const ScrollView = styled(
 );
 
 const StoryTitle = styled(Typography, {
-  family: "heading",
-  weight: "black",
+  family: "$heading",
+  weight: "$black",
   variants: {
     level: {
-      1: { size: "xl", marginBottom: "$8" },
-      2: { size: "lg", marginBottom: "$8" },
-      3: { size: "md", marginBottom: "$3" },
-      4: { size: "sm", marginBottom: "$3" }
+      1: { size: "$xl", marginBottom: "$8" },
+      2: { size: "$lg", marginBottom: "$8" },
+      3: { size: "$md", marginBottom: "$3" },
+      4: { size: "$sm", marginBottom: "$3" }
     }
   },
   defaultVariants: {
@@ -812,5 +781,5 @@ function PressableListItem({
   ) });
 }
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, HStack, Icon, IconButton, InputText, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, TypographyParagraphWithContext, TypographyWithContext, VStack, WithTamaguiConfig, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
+export { AlouetteDecorator, AlouetteProvider, Box, Button, HStack, Icon, IconButton, InputText, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
 //# sourceMappingURL=index-react-native.es.js.map

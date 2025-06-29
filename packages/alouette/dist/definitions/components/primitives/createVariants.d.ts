@@ -7,7 +7,7 @@ export declare const fullscreenStyle: {
     readonly bottom: 0;
 };
 export type InternalPseudoState = "focus" | "hover" | "press";
-export declare const getInteractionStyles: (name: "backgroundColor" | "borderColor" | "shadowColor", { internalForcedPseudoState, disabled, interactive, variant, }: VariantSpreadExtras<any>["props"]) => {
+export declare const getInteractionStyles: (name: "backgroundColor" | "borderColor" | "shadowColor", { disabled, interactive, variant }: VariantSpreadExtras<any>["props"]) => {
     readonly [x: string]: `$${string}.backgroundColor:disabled` | `$${string}.borderColor:disabled` | `$${string}.shadowColor:disabled`;
     readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
@@ -15,24 +15,6 @@ export declare const getInteractionStyles: (name: "backgroundColor" | "borderCol
     readonly focusStyle?: undefined;
 } | {
     readonly shadowColor: `$${string}.shadowColor`;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-} | {
-    readonly [x: string]: `$${string}.backgroundColor:hover` | `$${string}.borderColor:hover`;
-    readonly shadowColor?: undefined;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-} | {
-    readonly [x: string]: `$${string}.backgroundColor:press` | `$${string}.borderColor:press`;
-    readonly shadowColor?: undefined;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-} | {
-    readonly [x: string]: `$${string}.backgroundColor:focus` | `$${string}.borderColor:focus`;
-    readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;

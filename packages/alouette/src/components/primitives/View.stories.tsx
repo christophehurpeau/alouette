@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Typography } from "../typography/Typography.tsx";
-import { View } from "./View.ts";
+import { Typography } from "../typography/Typography";
+import { View } from "./View";
 
 export default {
   title: "alouette/Primitives/View",

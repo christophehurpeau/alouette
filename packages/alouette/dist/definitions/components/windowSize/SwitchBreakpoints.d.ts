@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { SetRequired } from "type-fest";
-import type { BreakpointNames } from "../../config/Breakpoints.tsx";
+import type { BreakpointNames } from "../../config/Breakpoints";
 type SwitchBreakpointsProps = SetRequired<Partial<Record<BreakpointNames, ReactNode>>, "base"> & {
     children?: never;
 };

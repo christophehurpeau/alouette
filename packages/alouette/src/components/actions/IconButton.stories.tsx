@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
-import { Box } from "../containers/Box.tsx";
-import { HStack, VStack } from "../primitives/stacks.ts";
-import { Story } from "../story-components/Story.tsx";
-import { StoryGrid } from "../story-components/StoryGrid.tsx";
-import { Typography } from "../typography/Typography.tsx";
-import { IconButton } from "./IconButton.tsx";
+import { Box } from "../containers/Box";
+import { HStack, VStack } from "../primitives/stacks";
+import { Story } from "../story-components/Story";
+import { StoryGrid } from "../story-components/StoryGrid";
+import { Typography } from "../typography/Typography";
+import { IconButton } from "./IconButton";
 
 type ThisStory = StoryObj<typeof IconButton>;
 
@@ -151,13 +151,13 @@ export const Variants: ThisStory = {
                           <IconButton
                             variant={variant}
                             disabled={state === "disabled"}
-                            internalForcedPseudoState={
+                            forceStyle={
                               state === "disabled" ? undefined : state
                             }
                             icon={<ArrowLeftRegularIcon />}
                           />
                         </Box>
-                        <Typography size="xs">{variant}</Typography>
+                        <Typography size="$xs">{variant}</Typography>
                       </HStack>
                     ))}
                   </VStack>

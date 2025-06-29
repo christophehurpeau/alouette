@@ -1,4 +1,4 @@
-import { Breakpoints } from "./Breakpoints.ts";
+import { Breakpoints } from "./Breakpoints";
 
 export const media = {
   small: { minWidth: Breakpoints.SMALL },

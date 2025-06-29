@@ -4,9 +4,9 @@ Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 
 const jsxRuntime = require('react/jsx-runtime');
 const core = require('@tamagui/core');
-const react = require('react');
 const phosphorIcons = require('alouette-icons/phosphor-icons');
 const reactNative = require('react-native');
+const react = require('react');
 
 const fullscreenStyle = {
   position: "absolute",
@@ -15,12 +15,7 @@ const fullscreenStyle = {
   right: 0,
   bottom: 0
 };
-const getInteractionStyles = (name, {
-  internalForcedPseudoState,
-  disabled,
-  interactive,
-  variant
-}) => {
+const getInteractionStyles = (name, { disabled, interactive, variant }) => {
   const isGhost = variant?.startsWith("ghost-");
   const prefix = interactive === "text" ? "interactive.forms" : (
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -32,16 +27,6 @@ const getInteractionStyles = (name, {
   if (name === "shadowColor") {
     return { [name]: `$${prefix}.${name}` };
   }
-  if (process.env.STORYBOOK && internalForcedPseudoState) {
-    switch (internalForcedPseudoState) {
-      case "hover":
-        return { [name]: `$${prefix}.${name}:hover` };
-      case "press":
-        return { [name]: `$${prefix}.${name}:press` };
-      case "focus":
-        return { [name]: `$${prefix}.${name}:focus` };
-    }
-  }
   return {
     [name]: isGhost ? "transparent" : `$${prefix}.${name}`,
     hoverStyle: { [name]: `$${prefix}.${name}:hover` },
@@ -50,7 +35,6 @@ const getInteractionStyles = (name, {
   };
 };
 
-const internalForcedPseudoState = (val) => ({});
 const withBorder = (val, { props }) => {
   return {
     borderWidth: typeof val !== "boolean" ? val : 1,
@@ -124,7 +108,6 @@ const variants$1 = /*#__PURE__*/Object.defineProperty({
   centered,
   circular,
   interactive,
-  internalForcedPseudoState,
   size,
   withBackground,
   withBorder,
@@ -250,21 +233,27 @@ const Typography = core.styled(core.Text, {
   color: "$textColor",
   fontWeight: "$regular",
   variants: {
+    inherit: {
+      false: {
+        size: "$md",
+        weight: "$regular",
+        family: "$body"
+      }
+    },
     size: {
-      xl: { fontSize: "$xl", lineHeight: "$xl" },
-      lg: { fontSize: "$lg", lineHeight: "$lg" },
-      md: { fontSize: "$md", lineHeight: "$md" },
-      sm: { fontSize: "$sm", lineHeight: "$sm" },
-      xs: { fontSize: "$xs", lineHeight: "$xs" }
+      "...fontSize": (size) => ({
+        fontSize: size,
+        lineHeight: size
+      })
     },
     weight: {
-      regular: { fontWeight: "$regular" },
-      bold: { fontWeight: "$bold" },
-      black: { fontWeight: "$black" }
+      $regular: { fontWeight: "$regular" },
+      $bold: { fontWeight: "$bold" },
+      $black: { fontWeight: "$black" }
     },
     family: {
-      heading: { fontFamily: "$heading" },
-      body: { fontFamily: "$body" }
+      $heading: { fontFamily: "$heading" },
+      $body: { fontFamily: "$body" }
     },
     contrast: {
       true: {
@@ -276,35 +265,15 @@ const Typography = core.styled(core.Text, {
     }
   },
   defaultVariants: {
-    size: "md",
-    weight: "regular",
-    family: "body"
+    inherit: false
   }
 });
 const TypographyParagraph = core.styled(Typography, {
   name: "TypographyParagraph",
   tag: "p",
   userSelect: "auto",
-  family: "body"
+  family: "$body"
 });
-const TypographySizeContext = react.createContext(void 0);
-const TypographyWithContext = Typography.styleable(
-  ({ size, ...props }, ref) => {
-    const ancestorSize = react.useContext(TypographySizeContext);
-    const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
-    if (sizeOrAncestorSizeOrDefaultSize !== size) {
-      return /* @__PURE__ */ jsxRuntime.jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsxRuntime.jsx(Typography, { ref, size, ...props }) });
-    }
-    return /* @__PURE__ */ jsxRuntime.jsx(Typography, { ref, size, ...props });
-  }
-);
-const TypographyParagraphWithContext = TypographyParagraph.styleable(
-  ({ size, ...props }, ref) => {
-    const ancestorSize = react.useContext(TypographySizeContext);
-    const sizeOrAncestorSizeOrDefaultSize = size || ancestorSize;
-    return /* @__PURE__ */ jsxRuntime.jsx(TypographySizeContext.Provider, { value: sizeOrAncestorSizeOrDefaultSize, children: /* @__PURE__ */ jsxRuntime.jsx(Typography, { ref, size, ...props }) });
-  }
-);
 
 const ButtonFrame = core.styled(PressableBox, {
   name: "ButtonFrame",
@@ -383,8 +352,8 @@ function Button({
         /* @__PURE__ */ jsxRuntime.jsx(
           Typography,
           {
-            size,
-            weight: "bold",
+            size: size === "sm" ? "$sm" : "$md",
+            weight: "$bold",
             paddingVertical: size === "sm" ? "$1" : "$xs",
             color: disabled ? getDisabledColor(variant) : void 0,
             contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
@@ -421,7 +390,7 @@ const MessageFrame = core.styled(Box, {
 const MessageText = core.styled(Typography, {
   name: "MessageText",
   contrast: true,
-  size: "md",
+  size: "$md",
   flexGrow: 1,
   paddingVertical: "$4",
   variants: {
@@ -509,14 +478,14 @@ const ScrollView = core.styled(
 );
 
 const StoryTitle = core.styled(Typography, {
-  family: "heading",
-  weight: "black",
+  family: "$heading",
+  weight: "$black",
   variants: {
     level: {
-      1: { size: "xl", marginBottom: "$8" },
-      2: { size: "lg", marginBottom: "$8" },
-      3: { size: "md", marginBottom: "$3" },
-      4: { size: "sm", marginBottom: "$3" }
+      1: { size: "$xl", marginBottom: "$8" },
+      2: { size: "$lg", marginBottom: "$8" },
+      3: { size: "$md", marginBottom: "$3" },
+      4: { size: "$sm", marginBottom: "$3" }
     }
   },
   defaultVariants: {
@@ -843,8 +812,6 @@ exports.SwitchBreakpointsUsingNull = SwitchBreakpointsUsingNull;
 exports.TextArea = TextArea;
 exports.Typography = Typography;
 exports.TypographyParagraph = TypographyParagraph;
-exports.TypographyParagraphWithContext = TypographyParagraphWithContext;
-exports.TypographyWithContext = TypographyWithContext;
 exports.VStack = VStack;
 exports.WithTamaguiConfig = WithTamaguiConfig;
 exports.useCurrentBreakpointName = useCurrentBreakpointName;

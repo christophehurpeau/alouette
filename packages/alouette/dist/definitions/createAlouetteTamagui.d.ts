@@ -1,13 +1,13 @@
-import type { AlouetteColorScales } from "./config/colorScales.ts";
-import type { AlouetteFontsOptions } from "./config/createAlouetteFonts.ts";
-import type { createAlouetteTokens } from "./config/createAlouetteTokens.ts";
-import type { createAlouetteThemes } from "./config/themes.ts";
-export { createAlouetteTokens } from "./config/createAlouetteTokens.ts";
+import type { AlouetteColorScales } from "./config/colorScales";
+import type { AlouetteFontsOptions } from "./config/createAlouetteFonts";
+import type { createAlouetteTokens } from "./config/createAlouetteTokens";
+import type { createAlouetteThemes } from "./config/themes";
+export { createAlouetteTokens } from "./config/createAlouetteTokens";
 export interface AlouetteTamaguiOptions {
     fonts?: AlouetteFontsOptions;
 }
-export { createColorTheme, createAlouetteThemes, type FullTheme, } from "./config/themes.ts";
-export { defaultColorScales, createColorScale, type AlouetteColorScales, type AlouetteColorScale, } from "./config/colorScales.ts";
+export { createColorTheme, createAlouetteThemes, type FullTheme, } from "./config/themes";
+export { defaultColorScales, createColorScale, type AlouetteColorScales, type AlouetteColorScale, } from "./config/colorScales";
 export declare const createAlouetteTamagui: <const ColorScales extends AlouetteColorScales, const Tokens extends ReturnType<typeof createAlouetteTokens<ColorScales>>, const Themes extends ReturnType<typeof createAlouetteThemes<ColorScales>>>(tokens: Tokens, themes: Themes, options?: AlouetteTamaguiOptions) => import("@tamagui/web").TamaguiInternalConfig<Tokens extends Record<string, {
     [key: string]: import("@tamagui/web").VariableVal;
 }> & {

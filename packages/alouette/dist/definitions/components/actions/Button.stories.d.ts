@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react-vite";
-import { Button } from "./Button.tsx";
+import { Button } from "./Button";
 type ThisStory = StoryObj<typeof Button>;
 declare const _default: {
     title: string;

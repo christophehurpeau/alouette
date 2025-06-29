@@ -22,13 +22,13 @@ jobs:
         run: yarn install --immutable
 
       - name: Run Chromatic (main branch)
-        run: yarn ./packages/storybook-app chromatic --auto-accept-changes
+        run: yarn ./packages/storybook-native-app chromatic --auto-accept-changes
         if: ${{ github.ref == 'refs/heads/main' }}
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
       - name: Run Chromatic
-        run: yarn ./packages/storybook-app chromatic
+        run: yarn ./packages/storybook-native-app chromatic
         if: ${{ github.ref != 'refs/heads/main' }}
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

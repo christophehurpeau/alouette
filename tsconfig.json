@@ -3,6 +3,6 @@
   "references": [
     { "path": "packages/alouette-icons/tsconfig.json" },
     { "path": "packages/alouette/tsconfig.json" },
-    { "path": "packages/storybook-app/tsconfig.json" }
+    { "path": "packages/storybook-native-app/tsconfig.json" }
   ]
 }

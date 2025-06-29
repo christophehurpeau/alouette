@@ -1,11 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { View } from "@tamagui/core";
-import { Story } from "../story-components/Story.tsx";
-import {
-  Typography,
-  TypographyParagraphWithContext,
-  TypographyWithContext,
-} from "./Typography.tsx";
+import { Story } from "../story-components/Story";
+import { Typography, TypographyParagraph } from "./Typography";
 
 type ThisStory = StoryObj<typeof Typography>;
 
@@ -22,7 +18,6 @@ export default {
 - **Weights**: Supports 3 font weights (regular, bold, black)
 - **Font Families**: Can switch between body and heading font families
 - **Contrast**: Optional high contrast mode for better visibility
-- **Context Awareness**: Includes context-aware variants (TypographyWithContext and TypographyParagraphWithContext) that inherit size from parent
 
 ### Variants
 - \`size\`: Controls font size and line height (xs | sm | md | lg | xl)
@@ -35,13 +30,13 @@ export default {
 // Basic usage
 <Typography size="md" weight="regular">Regular text</Typography>
 
-// With context
-<TypographyParagraphWithContext size="xl">
+// With inherit
+<TypographyParagraph size="xl">
   Parent text
-  <TypographyWithContext weight="bold">
+  <Typography inherit weight="bold">
     Inherits xl size from parent
-  </TypographyWithContext>
-</TypographyParagraphWithContext>
+  </Typography>
+</TypographyParagraph>
 ~~~`,
       },
     },
@@ -53,8 +48,8 @@ export const BodyStory: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Sizes">
-        {(["xl", "lg", "md", "sm", "xs"] as const).flatMap((size) =>
-          (["regular", "bold", "black"] as const).map((weight) => (
+        {(["$xl", "$lg", "$md", "$sm", "$xs"] as const).flatMap((size) =>
+          (["$regular", "$bold", "$black"] as const).map((weight) => (
             <View key={`${size}-${weight}`}>
               <Typography size={size} weight={weight}>
                 Body {size}/{weight}
@@ -65,17 +60,21 @@ export const BodyStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Paragraph">
-        <TypographyParagraphWithContext size="xl" color="black">
+        <TypographyParagraph size="$xl" color="black">
           The future is in{" "}
-          <TypographyWithContext weight="bold">
+          <Typography inherit weight="$bold">
             our{" "}
-            <TypographyWithContext theme="primary">hands</TypographyWithContext>
-          </TypographyWithContext>{" "}
-          <TypographyWithContext theme="danger">
+            <Typography inherit colored theme="primary">
+              hands
+            </Typography>
+          </Typography>{" "}
+          <Typography inherit colored theme="danger">
             to{" "}
-            <TypographyWithContext weight="bold">shape</TypographyWithContext>
-          </TypographyWithContext>
-        </TypographyParagraphWithContext>
+            <Typography inherit colored weight="$bold">
+              shape
+            </Typography>
+          </Typography>
+        </TypographyParagraph>
       </Story.Section>
     </Story>
   ),

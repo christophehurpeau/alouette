@@ -1,6 +1,4 @@
 import type { SizeTokens, VariantSpreadExtras, ViewStyle } from "@tamagui/core";
-import type { InternalPseudoState } from "../primitives/createVariants.ts";
-export declare const internalForcedPseudoState: (val: InternalPseudoState) => {};
 export declare const withBorder: (val: SizeTokens | boolean, { props }: VariantSpreadExtras<any>) => {
     readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
@@ -9,24 +7,6 @@ export declare const withBorder: (val: SizeTokens | boolean, { props }: VariantS
     readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 } | {
     readonly shadowColor: `$${string}.shadowColor`;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
-} | {
-    readonly shadowColor?: undefined;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
-} | {
-    readonly shadowColor?: undefined;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
-} | {
-    readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
@@ -55,24 +35,6 @@ export declare const withBackground: (val: boolean, { props }: VariantSpreadExtr
     readonly focusStyle?: undefined;
 } | {
     readonly shadowColor: `$${string}.shadowColor`;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-} | {
-    readonly [x: string]: `$${string}.backgroundColor:hover` | `$${string}.borderColor:hover`;
-    readonly shadowColor?: undefined;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-} | {
-    readonly [x: string]: `$${string}.backgroundColor:press` | `$${string}.borderColor:press`;
-    readonly shadowColor?: undefined;
-    readonly hoverStyle?: undefined;
-    readonly pressStyle?: undefined;
-    readonly focusStyle?: undefined;
-} | {
-    readonly [x: string]: `$${string}.backgroundColor:focus` | `$${string}.borderColor:focus`;
-    readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;

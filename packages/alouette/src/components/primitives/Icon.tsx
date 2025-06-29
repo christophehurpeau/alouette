@@ -2,8 +2,8 @@ import type { ColorTokens, GetProps, Variable } from "@tamagui/core";
 import { useStyle } from "@tamagui/core";
 import type { ReactElement, ReactNode } from "react";
 import type { OpaqueColorValue } from "react-native";
-import type { BoxProps } from "../containers/Box.tsx";
-import { Box } from "../containers/Box.tsx";
+import type { BoxProps } from "../containers/Box";
+import { Box } from "../containers/Box";
 
 export interface IconProps
   extends Exclude<GetProps<typeof Box>, "alignSelf" | "style"> {

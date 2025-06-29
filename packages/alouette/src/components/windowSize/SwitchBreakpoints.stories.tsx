@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BreakpointNameEnum } from "../../config/Breakpoints.ts";
-import { Story } from "../story-components/Story.tsx";
-import { StoryGrid } from "../story-components/StoryGrid.tsx";
-import { Typography } from "../typography/Typography.tsx";
+import { BreakpointNameEnum } from "../../config/Breakpoints";
+import { Story } from "../story-components/Story";
+import { StoryGrid } from "../story-components/StoryGrid";
+import { Typography } from "../typography/Typography";
 import {
   SwitchBreakpointsUsingDisplayNone,
   SwitchBreakpointsUsingNull,
-} from "./SwitchBreakpoints.tsx";
+} from "./SwitchBreakpoints";
 
 type ThisStory = StoryObj<typeof SwitchBreakpointsUsingDisplayNone>;
 

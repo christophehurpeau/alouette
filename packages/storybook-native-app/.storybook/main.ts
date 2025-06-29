@@ -12,8 +12,6 @@ function getAbsolutePath(value: string): string {
 const config: StorybookConfig = {
   stories: ["../../alouette/src/**/*.stories.@(ts|tsx)"],
   addons: [
-    getAbsolutePath("@storybook/addon-onboarding"),
-    getAbsolutePath("@storybook/addon-links"),
     getAbsolutePath("@chromatic-com/storybook"),
     getAbsolutePath("@storybook/addon-docs"),
   ],

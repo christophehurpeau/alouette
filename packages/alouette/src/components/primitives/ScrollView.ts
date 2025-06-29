@@ -1,7 +1,7 @@
 import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
 import { ScrollView as ScrollViewNative } from "react-native";
-import { fullscreenStyle } from "./createVariants.ts";
+import { fullscreenStyle } from "./createVariants";
 
 export const ScrollView = styled(
   ScrollViewNative,

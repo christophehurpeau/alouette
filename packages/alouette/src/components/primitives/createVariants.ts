@@ -10,15 +10,9 @@ export const fullscreenStyle = {
 
 export type InternalPseudoState = "focus" | "hover" | "press";
 
-// eslint-disable-next-line complexity
 export const getInteractionStyles = (
   name: "backgroundColor" | "borderColor" | "shadowColor",
-  {
-    internalForcedPseudoState,
-    disabled,
-    interactive,
-    variant,
-  }: VariantSpreadExtras<any>["props"],
+  { disabled, interactive, variant }: VariantSpreadExtras<any>["props"],
 ) => {
   const isGhost = variant?.startsWith("ghost-");
   const prefix =
@@ -34,19 +28,6 @@ export const getInteractionStyles = (
   if (name === "shadowColor") {
     // no need to add :hover, :focus, :press, and causes issues because all of the box-shadow is set and resets width etc
     return { [name]: `$${prefix}.${name}` } as const;
-  }
-
-  if (process.env.STORYBOOK && internalForcedPseudoState) {
-    switch (internalForcedPseudoState) {
-      case "hover":
-        return { [name]: `$${prefix}.${name}:hover` } as const;
-      case "press":
-        return { [name]: `$${prefix}.${name}:press` } as const;
-      case "focus":
-        return { [name]: `$${prefix}.${name}:focus` } as const;
-      default:
-        break;
-    }
   }
 
   return {

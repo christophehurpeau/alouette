@@ -3,7 +3,6 @@ import type { ReactElement, ReactNode } from "react";
 import type { Except } from "type-fest";
 declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | "md" | "sm" | undefined;
-    internalForcedPseudoState?: import("../primitives/createVariants.ts").InternalPseudoState | undefined;
     interactive?: boolean | import("csstype").Property.Cursor | undefined;
     variant?: "contained" | "outlined" | "elevated" | "ghost-contained" | "ghost-outlined" | undefined;
     withBorder?: boolean | import("@tamagui/web").SizeTokens | undefined;

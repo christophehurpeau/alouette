@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Box } from "../containers/Box.tsx";
-import { Story } from "../story-components/Story.tsx";
-import { Typography } from "../typography/Typography.tsx";
-import { HStack, Stack, VStack } from "./stacks.ts";
+import { Box } from "../containers/Box";
+import { Story } from "../story-components/Story";
+import { Typography } from "../typography/Typography";
+import { HStack, Stack, VStack } from "./stacks";
 
 const meta = {
   title: "alouette/Primitives/Stacks",

@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react-vite";
-import { SwitchBreakpointsUsingDisplayNone } from "./SwitchBreakpoints.tsx";
+import { SwitchBreakpointsUsingDisplayNone } from "./SwitchBreakpoints";
 type ThisStory = StoryObj<typeof SwitchBreakpointsUsingDisplayNone>;
 declare const _default: {
     title: string;
