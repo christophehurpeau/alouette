@@ -231,7 +231,6 @@ const Typography = core.styled(core.Text, {
   name: "Typography",
   fontFamily: "$body",
   color: "$textColor",
-  fontWeight: "$regular",
   variants: {
     inherit: {
       false: {
@@ -262,10 +261,16 @@ const Typography = core.styled(core.Text, {
       false: {
         color: "$textColor"
       }
+    },
+    colored: {
+      true: {
+        color: "$mainColor"
+      }
     }
   },
   defaultVariants: {
-    inherit: false
+    inherit: false,
+    contrast: false
   }
 });
 const TypographyParagraph = core.styled(Typography, {

@@ -228,7 +228,6 @@ const Typography = styled(Text, {
   name: "Typography",
   fontFamily: "$body",
   color: "$textColor",
-  fontWeight: "$regular",
   variants: {
     inherit: {
       false: {
@@ -259,10 +258,16 @@ const Typography = styled(Text, {
       false: {
         color: "$textColor"
       }
+    },
+    colored: {
+      true: {
+        color: "$mainColor"
+      }
     }
   },
   defaultVariants: {
-    inherit: false
+    inherit: false,
+    contrast: false
   }
 });
 const TypographyParagraph = styled(Typography, {
