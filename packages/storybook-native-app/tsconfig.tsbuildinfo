@@ -1,0 +1,1 @@
+{"root":["./app.config.js","./babel.config.js","./metro.config.cjs","./tamagui.config.ts","./vite.config.ts","./src/app.tsx","./src/appentry.tsx"],"errors":true,"version":"5.8.3"}

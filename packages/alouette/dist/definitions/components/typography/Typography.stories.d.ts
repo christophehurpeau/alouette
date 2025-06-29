@@ -9,6 +9,7 @@ declare const _default: {
         family?: "$body" | "$heading" | undefined;
         contrast?: boolean | undefined;
         weight?: "$regular" | "$bold" | "$black" | undefined;
+        colored?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     parameters: {
         componentSubtitle: string;

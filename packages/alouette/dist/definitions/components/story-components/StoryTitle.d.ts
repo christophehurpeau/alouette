@@ -5,6 +5,7 @@ export declare const StoryTitle: import("@tamagui/web").TamaguiComponent<import(
     family?: "$body" | "$heading" | undefined;
     contrast?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$black" | undefined;
+    colored?: boolean | undefined;
     level?: 1 | 2 | 3 | 4 | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export type StoryTitleProps = GetProps<typeof StoryTitle>;

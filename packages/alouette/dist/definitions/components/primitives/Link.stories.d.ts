@@ -9,6 +9,7 @@ declare const _default: {
         family?: "$body" | "$heading" | undefined;
         contrast?: boolean | undefined;
         weight?: "$regular" | "$bold" | "$black" | undefined;
+        colored?: boolean | undefined;
     }>, "href"> & {
         href: string;
     } & import("react").RefAttributes<HTMLAnchorElement>>;

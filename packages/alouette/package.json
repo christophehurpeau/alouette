@@ -110,9 +110,9 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.126.14",
-    "@tamagui/animations-react-native": "1.126.14",
-    "@tamagui/core": "1.126.14",
+    "@tamagui/animations-css": "1.129.5",
+    "@tamagui/animations-react-native": "1.129.5",
+    "@tamagui/core": "1.129.5",
     "alouette-icons": "4.0.3",
     "type-fest": "4.41.0"
   },
@@ -120,7 +120,7 @@
     "@pob/rollup-esbuild": "6.6.0",
     "@rollup/plugin-replace": "6.0.2",
     "@types/node": "24.0.7",
-    "@types/react": "19.0.14",
+    "@types/react": "19.1.8",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.3",

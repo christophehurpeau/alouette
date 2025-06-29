@@ -15,6 +15,7 @@ export declare const MessageText: import("@tamagui/web").TamaguiComponent<import
     centered?: boolean | undefined;
     contrast?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$black" | undefined;
+    colored?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export interface MessageProps {
     theme: NonNullable<ComponentProps<typeof MessageFrame>["theme"]>;
