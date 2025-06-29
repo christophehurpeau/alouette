@@ -5482,7 +5482,7 @@ __metadata:
     "@pob/root": "npm:18.2.0"
     check-package-dependencies: "npm:10.3.0"
     eslint: "npm:9.30.0"
-    eslint-plugin-storybook: "npm:9.0.6"
+    eslint-plugin-storybook: "npm:9.0.14"
     storybook: "npm:9.0.14"
     typescript: "npm:5.8.3"
   languageName: unknown
@@ -7956,15 +7956,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-storybook@npm:9.0.6":
-  version: 9.0.6
-  resolution: "eslint-plugin-storybook@npm:9.0.6"
+"eslint-plugin-storybook@npm:9.0.14":
+  version: 9.0.14
+  resolution: "eslint-plugin-storybook@npm:9.0.14"
   dependencies:
     "@typescript-eslint/utils": "npm:^8.8.1"
   peerDependencies:
     eslint: ">=8"
-    storybook: ^9.0.6
-  checksum: 10c0/92e846f3c69cc00dd2b58e5d8f21cdb9c68f345110b87b62110441e2ceebd9c1c42b738afb29014933d8b057dcc7876701f74813b0220a6259c8fe728bf06740
+    storybook: ^9.0.14
+  checksum: 10c0/e649f67e4428c4bd700e4a24b6d08d7540447f026fae7ff1ece42e8fb59b3eab837d6d2773d89891b83add2657c2f5eac9b0e3fafac276b1da954a25b6a7ef1d
   languageName: node
   linkType: hard
 
