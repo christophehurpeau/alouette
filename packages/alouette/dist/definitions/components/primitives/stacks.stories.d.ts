@@ -3,10 +3,10 @@ import { Story } from "../story-components/Story";
 import { HStack, Stack, VStack } from "./stacks";
 declare const meta: {
     title: string;
-    component: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    component: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         type?: "h" | "v" | undefined;
         fullscreen?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
+    }, import("@tamagui/core").StaticConfigPublic>;
     subcomponents: {
         HStack: any;
         VStack: any;

@@ -3,8 +3,8 @@ import { Link } from "./Link";
 type ThisStory = StoryObj<typeof Link>;
 declare const _default: {
     title: string;
-    component: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: import("@tamagui/web").FontSizeTokens | undefined;
+    component: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
         inherit?: boolean | undefined;
         family?: "$body" | "$heading" | undefined;
         contrast?: boolean | undefined;
