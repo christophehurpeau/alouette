@@ -18,5 +18,6 @@ export interface ButtonProps extends Except<ButtonFrameProps, "size"> {
     size?: "md" | "sm";
 }
 export declare function Button({ icon, text, disabled, variant, size, ...pressableProps }: ButtonProps): ReactNode;
+export declare const ExternalLinkButton: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, unknown, import("@tamagui/core").TamaguiComponentPropsBaseBase & ButtonProps, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
 export {};
 //# sourceMappingURL=Button.d.ts.map

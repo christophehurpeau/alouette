@@ -366,6 +366,11 @@ function Button({
     }
   );
 }
+styled(Button, {
+  name: "ExternalLinkButton",
+  tag: "a",
+  role: "link"
+});
 
 function FeedbackIcon({ type }) {
   switch (type) {

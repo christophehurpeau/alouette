@@ -77,7 +77,6 @@ const getDisabledColor = (
     : "$textColor:disabled";
 };
 
-// eslint-disable-next-line complexity
 export function Button({
   icon,
   text,
@@ -119,5 +118,20 @@ export function Button({
         </Typography>
       </HStack>
     </ButtonFrame>
+  );
+}
+
+export function ExternalLinkButton(
+  props: Except<ButtonProps, "href" | "role" | "tag"> & { href: string },
+): ReactNode {
+  return (
+    <Button
+      {...props}
+      tag="a"
+      role="link"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ textDecorationLine: "none" }}
+    />
   );
 }

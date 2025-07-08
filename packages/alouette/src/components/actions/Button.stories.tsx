@@ -5,7 +5,7 @@ import { Box } from "../containers/Box";
 import { VStack } from "../primitives/stacks";
 import { Story } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
-import { Button } from "./Button";
+import { Button, ExternalLinkButton } from "./Button";
 
 type ThisStory = StoryObj<typeof Button>;
 
@@ -212,6 +212,13 @@ export const VariantsStory: ThisStory = {
             )}
           </Theme>
         ))}
+      </Story.Section>
+
+      <Story.Section title="External Link Button">
+        <ExternalLinkButton
+          href="https://storybook.js.org/"
+          text="Open Storybook"
+        />
       </Story.Section>
 
       <Story.Section title="Edge Cases">
