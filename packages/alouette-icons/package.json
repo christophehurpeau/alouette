@@ -29,13 +29,13 @@
         "require": "./lib/phosphor-icons.cjs"
       },
       "node": {
-        "react-native": {
-          "import": "./lib/phosphor-icons.node.mjs"
-        },
         "web": {
           "import": "./lib/phosphor-icons.node.web.mjs"
         },
-        "import": "./lib/phosphor-icons.node.mjs"
+        "react-native": {
+          "import": "./lib/phosphor-icons.node.react-native.mjs"
+        },
+        "import": "./lib/phosphor-icons.node.web.mjs"
       }
     },
     "./lib/phosphor-icons.cjs": "./lib/phosphor-icons.cjs"

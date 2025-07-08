@@ -1,6 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 // This file is generated automatically by scripts/generate-phosphor-icons.mjs
-// prettier-ignore-start
 // @ts-nocheck
 
 export const AcornRegularIcon = (props) =>

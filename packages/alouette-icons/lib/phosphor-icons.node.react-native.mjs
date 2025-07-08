@@ -1,5 +1,4 @@
 // This file is generated automatically by scripts/generate-phosphor-icons.mjs
-// prettier-ignore-start
 // @ts-nocheck
 
 import Svg, { Path } from "react-native-svg";

@@ -1,6 +1,5 @@
 "use strict";
 // This file is generated automatically by scripts/generate-phosphor-icons.mjs
-// prettier-ignore-start
 // @ts-nocheck
 
 module.exports = {

@@ -1,5 +1,4 @@
 // This file is generated automatically by scripts/generate-phosphor-icons.mjs
-// prettier-ignore-start
 
 import * as React from "react";
 
