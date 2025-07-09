@@ -7,7 +7,6 @@ export default ({ config }) => ({
   icon: "./assets/icon.png",
   newArchEnabled: true,
   splash: {
-    image: "./assets/splash.png",
     resizeMode: "contain",
     backgroundColor: "#ffffff",
   },
@@ -24,7 +23,7 @@ export default ({ config }) => ({
       backgroundColor: "#FFFFFF",
     },
   },
-  web: {
-    favicon: "./assets/favicon-96x96.png",
-  },
+  // web: {
+  //   favicon: "./assets/favicon-96x96.png",
+  // },
 });
