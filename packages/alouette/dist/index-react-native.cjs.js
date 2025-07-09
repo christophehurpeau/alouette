@@ -369,11 +369,19 @@ function Button({
     }
   );
 }
-core.styled(Button, {
-  name: "ExternalLinkButton",
-  tag: "a",
-  role: "link"
-});
+function ExternalLinkButton(props) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    Button,
+    {
+      ...props,
+      tag: "a",
+      role: "link",
+      target: "_blank",
+      rel: "noopener noreferrer",
+      style: { textDecorationLine: "none" }
+    }
+  );
+}
 
 function FeedbackIcon({ type }) {
   switch (type) {
@@ -802,6 +810,7 @@ exports.AlouetteDecorator = AlouetteDecorator;
 exports.AlouetteProvider = AlouetteProvider;
 exports.Box = Box;
 exports.Button = Button;
+exports.ExternalLinkButton = ExternalLinkButton;
 exports.HStack = HStack;
 exports.Icon = Icon;
 exports.IconButton = IconButton;

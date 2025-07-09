@@ -1,5 +1,6 @@
 import type { TamaguiProviderProps } from "@tamagui/core";
 import type { ReactNode } from "react";
+import "./reset";
 export interface AlouetteProviderProps extends Pick<TamaguiProviderProps, "disableInjectCSS"> {
     children: ReactNode;
     tamaguiConfig: TamaguiProviderProps["config"];

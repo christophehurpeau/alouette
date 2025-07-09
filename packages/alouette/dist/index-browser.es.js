@@ -4,6 +4,7 @@ export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
 import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
 import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Pressable } from 'react-native-web';
 import { Children, useState, useEffect } from 'react';
+import '@tamagui/core/reset.css';
 
 const fullscreenStyle = {
   position: "absolute",
@@ -366,11 +367,19 @@ function Button({
     }
   );
 }
-styled(Button, {
-  name: "ExternalLinkButton",
-  tag: "a",
-  role: "link"
-});
+function ExternalLinkButton(props) {
+  return /* @__PURE__ */ jsx(
+    Button,
+    {
+      ...props,
+      tag: "a",
+      role: "link",
+      target: "_blank",
+      rel: "noopener noreferrer",
+      style: { textDecorationLine: "none" }
+    }
+  );
+}
 
 function FeedbackIcon({ type }) {
   switch (type) {
@@ -791,5 +800,5 @@ function PressableListItem({
   ) });
 }
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, HStack, Icon, IconButton, InputText, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
+export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, HStack, Icon, IconButton, InputText, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
 //# sourceMappingURL=index-browser.es.js.map
