@@ -2,6 +2,10 @@
   Alouette is a modern, customizable design system built on top of Tamagui. It provides a comprehensive set of components and tools to build consistent, accessible, and performant user interfaces for React and React Native applications.
 </h1>
 
+<p align="center">
+  <img src="./packages/storybook-native-app/assets/icon.png" width="48">
+</p>
+
 <h3>📦 Packages</h3>
 
 This repository is a monorepo that we manage using [Yarn Workspaces](https://yarnpkg.com/features/workspaces).
