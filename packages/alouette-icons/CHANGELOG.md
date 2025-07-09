@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@5.0.0...alouette-icons@5.1.0) (2025-07-09)
+
+### Features
+
+* better nextjs support ([d96fb37](https://github.com/christophehurpeau/alouette/commit/d96fb3706357656b95420a7e6c6e77f8c94989a4))
+* update babel ([2d1f630](https://github.com/christophehurpeau/alouette/commit/2d1f6301b7c716d32df7969bb14a8a61facc6d9d))
+
 ## [5.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@4.0.3...alouette-icons@5.0.0) (2025-06-29)
 
 ### ⚠ BREAKING CHANGES
