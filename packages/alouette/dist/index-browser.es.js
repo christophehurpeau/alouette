@@ -1,9 +1,9 @@
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
-import { styled, View, useStyle, Text, useConfiguration, useMedia, TamaguiProvider, Stack as Stack$1 } from '@tamagui/core';
+import { styled, View, useStyle, Text, TamaguiProvider, useMedia, Stack as Stack$1 } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
 import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
 import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Pressable } from 'react-native-web';
-import { Children, useState, useEffect } from 'react';
+import { Children, createContext, useState, useEffect, useContext } from 'react';
 import '@tamagui/core/reset.css';
 
 const fullscreenStyle = {
@@ -646,10 +646,64 @@ const StoryGrid = {
   Col: StoryGridCol
 };
 
+const useDefaultThemeFromColorScheme = () => {
+  const colorScheme = useColorScheme();
+  return colorScheme || "light";
+};
+function AlouetteProvider({
+  children,
+  tamaguiConfig,
+  defaultTheme = "light",
+  disableInjectCSS
+}) {
+  return /* @__PURE__ */ jsx(
+    TamaguiProvider,
+    {
+      config: tamaguiConfig,
+      defaultTheme,
+      disableInjectCSS,
+      children
+    }
+  );
+}
+
+const AlouetteTamaguiConfigContext = createContext(null);
+const AlouetteDecorator = (storyFn, context) => {
+  const systemColorScheme = useColorScheme();
+  const [theme, setTheme] = useState(systemColorScheme || "light");
+  useEffect(() => {
+    const backgroundColor = context.globals.backgrounds?.value;
+    if (backgroundColor === "#000000") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, [context.globals.backgrounds?.value]);
+  return /* @__PURE__ */ jsx(
+    AlouetteProvider,
+    {
+      tamaguiConfig: context.parameters.tamaguiConfig,
+      defaultTheme: theme,
+      children: /* @__PURE__ */ jsx(
+        AlouetteTamaguiConfigContext.Provider,
+        {
+          value: context.parameters.tamaguiConfig,
+          children: storyFn(context)
+        }
+      )
+    }
+  );
+};
+
 function WithTamaguiConfig({
   render
 }) {
-  const config = useConfiguration();
+  const config = useContext(AlouetteTamaguiConfigContext);
+  if (!config) {
+    throw new Error(
+      "No config found, check that AlouetteDecorator is used in the story"
+    );
+  }
   return render(config);
 }
 
@@ -713,48 +767,6 @@ function SwitchBreakpointsUsingNull({
   );
   return breakpoints[currentBreakpointName] ?? null;
 }
-
-const useDefaultThemeFromColorScheme = () => {
-  const colorScheme = useColorScheme();
-  return colorScheme || "light";
-};
-function AlouetteProvider({
-  children,
-  tamaguiConfig,
-  defaultTheme = "light",
-  disableInjectCSS
-}) {
-  return /* @__PURE__ */ jsx(
-    TamaguiProvider,
-    {
-      config: tamaguiConfig,
-      defaultTheme,
-      disableInjectCSS,
-      children
-    }
-  );
-}
-
-const AlouetteDecorator = (storyFn, context) => {
-  const systemColorScheme = useColorScheme();
-  const [theme, setTheme] = useState(systemColorScheme || "light");
-  useEffect(() => {
-    const backgroundColor = context.globals.backgrounds?.value;
-    if (backgroundColor === "#000000") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  }, [context.globals.backgrounds?.value]);
-  return /* @__PURE__ */ jsx(
-    AlouetteProvider,
-    {
-      tamaguiConfig: context.parameters.tamaguiConfig,
-      defaultTheme: theme,
-      children: storyFn(context)
-    }
-  );
-};
 
 const Separator = styled(Stack$1, {
   name: "Separator",

@@ -3,14 +3,14 @@ import { Typography } from "./Typography";
 type ThisStory = StoryObj<typeof Typography>;
 declare const _default: {
     title: string;
-    component: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
+    component: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        size?: import("@tamagui/web").FontSizeTokens | undefined;
         inherit?: boolean | undefined;
         family?: "$body" | "$heading" | undefined;
         contrast?: boolean | undefined;
         weight?: "$regular" | "$bold" | "$black" | undefined;
         colored?: boolean | undefined;
-    }, import("@tamagui/core").StaticConfigPublic>;
+    }, import("@tamagui/web").StaticConfigPublic>;
     parameters: {
         componentSubtitle: string;
         docs: {

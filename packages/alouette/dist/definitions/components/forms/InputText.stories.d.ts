@@ -2,17 +2,17 @@ import type { StoryObj } from "@storybook/react-vite";
 import { InputText } from "./InputText";
 declare const _default: {
     title: string;
-    component: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("react-native").TextInput, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase, {
+    component: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").TextInput, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/web").TextStylePropsBase, {
         size?: number | undefined;
         interactive?: boolean | import("csstype").Property.Cursor | undefined;
-        withBorder?: boolean | import("@tamagui/core").SizeTokens | undefined;
+        withBorder?: boolean | import("@tamagui/web").SizeTokens | undefined;
         withBackground?: boolean | undefined;
         withElevation?: boolean | undefined;
         circular?: boolean | undefined;
         centered?: boolean | undefined;
     }, {
         isInput: true;
-    } & import("@tamagui/core").StaticConfigPublic>;
+    } & import("@tamagui/web").StaticConfigPublic>;
     parameters: {
         componentSubtitle: string;
         docs: {

@@ -1,1 +1,1 @@
-{"version":3,"file":"StoryTitle.d.ts","sourceRoot":"","sources":["../../../../src/components/story-components/StoryTitle.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,QAAQ,EAAE,MAAM,eAAe,CAAC;AAI9C,eAAO,MAAM,UAAU;;;;;;;;8CAeZ,CAAC;AAEZ,MAAM,MAAM,eAAe,GAAG,QAAQ,CAAC,OAAO,UAAU,CAAC,CAAC"}
+{"version":3,"file":"StoryTitle.d.ts","sourceRoot":"","sources":["../../../../src/components/story-components/StoryTitle.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,QAAQ,EAAE,MAAM,eAAe,CAAC;AAI9C,eAAO,MAAM,UAAU;;;;;;;;6CAeZ,CAAC;AAEZ,MAAM,MAAM,eAAe,GAAG,QAAQ,CAAC,OAAO,UAAU,CAAC,CAAC"}

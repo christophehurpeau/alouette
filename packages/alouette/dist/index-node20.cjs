@@ -648,10 +648,64 @@ const StoryGrid = {
   Col: StoryGridCol
 };
 
+const useDefaultThemeFromColorScheme = () => {
+  const colorScheme = reactNative.useColorScheme();
+  return colorScheme || "light";
+};
+function AlouetteProvider({
+  children,
+  tamaguiConfig,
+  defaultTheme = "light",
+  disableInjectCSS
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    core.TamaguiProvider,
+    {
+      config: tamaguiConfig,
+      defaultTheme,
+      disableInjectCSS,
+      children
+    }
+  );
+}
+
+const AlouetteTamaguiConfigContext = react.createContext(null);
+const AlouetteDecorator = (storyFn, context) => {
+  const systemColorScheme = reactNative.useColorScheme();
+  const [theme, setTheme] = react.useState(systemColorScheme || "light");
+  react.useEffect(() => {
+    const backgroundColor = context.globals.backgrounds?.value;
+    if (backgroundColor === "#000000") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, [context.globals.backgrounds?.value]);
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    AlouetteProvider,
+    {
+      tamaguiConfig: context.parameters.tamaguiConfig,
+      defaultTheme: theme,
+      children: /* @__PURE__ */ jsxRuntime.jsx(
+        AlouetteTamaguiConfigContext.Provider,
+        {
+          value: context.parameters.tamaguiConfig,
+          children: storyFn(context)
+        }
+      )
+    }
+  );
+};
+
 function WithTamaguiConfig({
   render
 }) {
-  const config = core.useConfiguration();
+  const config = react.useContext(AlouetteTamaguiConfigContext);
+  if (!config) {
+    throw new Error(
+      "No config found, check that AlouetteDecorator is used in the story"
+    );
+  }
   return render(config);
 }
 
@@ -715,48 +769,6 @@ function SwitchBreakpointsUsingNull({
   );
   return breakpoints[currentBreakpointName] ?? null;
 }
-
-const useDefaultThemeFromColorScheme = () => {
-  const colorScheme = reactNative.useColorScheme();
-  return colorScheme || "light";
-};
-function AlouetteProvider({
-  children,
-  tamaguiConfig,
-  defaultTheme = "light",
-  disableInjectCSS
-}) {
-  return /* @__PURE__ */ jsxRuntime.jsx(
-    core.TamaguiProvider,
-    {
-      config: tamaguiConfig,
-      defaultTheme,
-      disableInjectCSS,
-      children
-    }
-  );
-}
-
-const AlouetteDecorator = (storyFn, context) => {
-  const systemColorScheme = reactNative.useColorScheme();
-  const [theme, setTheme] = react.useState(systemColorScheme || "light");
-  react.useEffect(() => {
-    const backgroundColor = context.globals.backgrounds?.value;
-    if (backgroundColor === "#000000") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  }, [context.globals.backgrounds?.value]);
-  return /* @__PURE__ */ jsxRuntime.jsx(
-    AlouetteProvider,
-    {
-      tamaguiConfig: context.parameters.tamaguiConfig,
-      defaultTheme: theme,
-      children: storyFn(context)
-    }
-  );
-};
 
 const Separator = core.styled(core.Stack, {
   name: "Separator",

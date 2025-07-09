@@ -13,6 +13,7 @@ export default [
     ignores: [
       "**/.tamagui/**",
       "**/.storybook/**",
+      "**/storybook-static/**",
       "**/.rnstorybook/**",
       "**/vite.config.ts",
       "**/tamagui.config.ts",

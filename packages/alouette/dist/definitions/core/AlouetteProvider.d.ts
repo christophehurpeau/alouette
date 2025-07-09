@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./reset";
 export interface AlouetteProviderProps extends Pick<TamaguiProviderProps, "disableInjectCSS"> {
     children: ReactNode;
-    tamaguiConfig: TamaguiProviderProps["config"];
+    tamaguiConfig: NonNullable<TamaguiProviderProps["config"]>;
     defaultTheme?: "dark" | "light";
 }
 export declare const useDefaultThemeFromColorScheme: () => "dark" | "light";

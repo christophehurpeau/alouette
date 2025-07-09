@@ -5,3 +5,4 @@ CHANGELOG.md
 /packages/*/dist
 /packages/*/.expo/**/*
 /packages/*/.rnstorybook/storybook.requires.ts
+/packages/storybook-native-app/storybook-static

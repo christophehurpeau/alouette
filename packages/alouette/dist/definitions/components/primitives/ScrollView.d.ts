@@ -1,7 +1,7 @@
 import type { GetProps } from "@tamagui/core";
 import { ScrollView as ScrollViewNative } from "react-native";
-export declare const ScrollView: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, ScrollViewNative, import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {
-    readonly contentContainerStyle?: Partial<import("@tamagui/core").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase, {}>> | undefined;
+export declare const ScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, ScrollViewNative, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/web").StackStyleBase & {
+    readonly contentContainerStyle?: Partial<import("@tamagui/web").GetFinalProps<import("react-native").ScrollViewProps, import("@tamagui/web").StackStyleBase, {}>> | undefined;
 }, {
     fullscreen?: boolean | undefined;
 }, {

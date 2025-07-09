@@ -1,8 +1,13 @@
 /* eslint-disable react/destructuring-assignment */
 import type { Decorator } from "@storybook/react-vite";
-import { useEffect, useState } from "react";
+import type { TamaguiProviderProps } from "@tamagui/core";
+import { createContext, useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 import { AlouetteProvider } from "./AlouetteProvider";
+
+export const AlouetteTamaguiConfigContext = createContext<
+  TamaguiProviderProps["config"] | null
+>(null);
 
 // eslint-disable-next-line react/function-component-definition -- not a component
 export const AlouetteDecorator: Decorator = (storyFn, context) => {
@@ -23,7 +28,11 @@ export const AlouetteDecorator: Decorator = (storyFn, context) => {
       tamaguiConfig={context.parameters.tamaguiConfig}
       defaultTheme={theme}
     >
-      {storyFn(context)}
+      <AlouetteTamaguiConfigContext.Provider
+        value={context.parameters.tamaguiConfig}
+      >
+        {storyFn(context)}
+      </AlouetteTamaguiConfigContext.Provider>
     </AlouetteProvider>
   );
 };
