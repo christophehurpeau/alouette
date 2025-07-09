@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { transformSync as babelTransform } from "@babel/core";
@@ -106,7 +107,7 @@ await formatWithPrettierAndSave(
 await formatWithPrettierAndSave("phosphor-icons.d.ts", fileDTSContent);
 
 await formatWithPrettierAndSave(
-  "phosphor-icons.node.mjs",
+  "phosphor-icons.node.react-native.mjs",
   babelTransform(nodeFileContent, {
     babelrc: false,
     configFile: false,
