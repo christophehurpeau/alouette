@@ -121,9 +121,9 @@
     "@rollup/plugin-replace": "6.0.2",
     "@types/node": "24.0.7",
     "@types/react": "19.1.8",
-    "react": "19.0.0",
+    "react": "19.1.0",
     "react-dom": "19.0.0",
-    "react-native": "0.79.4",
+    "react-native": "0.80.2",
     "react-native-svg": "15.11.2",
     "typescript": "5.8.3"
   }
