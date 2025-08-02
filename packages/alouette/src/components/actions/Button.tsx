@@ -135,3 +135,9 @@ export function ExternalLinkButton(
     />
   );
 }
+
+export function InternalLinkButton(
+  props: Except<ButtonProps, "href" | "role" | "tag"> & { href: string },
+): ReactNode {
+  return <Button {...props} tag="a" role="link" />;
+}
