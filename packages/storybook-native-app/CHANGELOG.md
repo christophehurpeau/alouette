@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.0](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@2.1.0...storybook-native-app@2.2.0) (2025-08-02)
+
+### Features
+
+* **deps:** update dependency react-native-gesture-handler to ~2.27.0 ([#208](https://github.com/christophehurpeau/alouette/issues/208)) ([45a14c2](https://github.com/christophehurpeau/alouette/commit/45a14c21f21a4e457057370b9e42cfb5fe21fef8))
+* **deps:** update dependency react-native-safe-area-context to v5.5.2 ([#210](https://github.com/christophehurpeau/alouette/issues/210)) ([dfd2bf0](https://github.com/christophehurpeau/alouette/commit/dfd2bf0ad807eb429a3f96ef831af67f35bcbdd5))
+* update tamagui ([d61b072](https://github.com/christophehurpeau/alouette/commit/d61b072792fefc38656451fc7a487bd73362022d))
+
 ## [2.1.0](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@2.0.0...storybook-native-app@2.1.0) (2025-07-09)
 
 ### Features

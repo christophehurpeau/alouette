@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@11.2.1...alouette@11.3.0) (2025-08-02)
+
+### Features
+
+* update tamagui ([d61b072](https://github.com/christophehurpeau/alouette/commit/d61b072792fefc38656451fc7a487bd73362022d))
+
 ## [11.2.1](https://github.com/christophehurpeau/alouette/compare/alouette@11.2.0...alouette@11.2.1) (2025-08-02)
 
 Note: no notable changes
