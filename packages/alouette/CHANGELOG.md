@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@11.1.0...alouette@11.2.0) (2025-08-02)
+
+### Features
+
+* add InternalLinkButton ([6d1487a](https://github.com/christophehurpeau/alouette/commit/6d1487aad220cdad0ec17afea26d129b147c2178))
+
 ## [11.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@11.0.0...alouette@11.1.0) (2025-07-09)
 
 ### Features
