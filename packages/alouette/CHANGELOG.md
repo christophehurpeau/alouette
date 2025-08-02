@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.2.1](https://github.com/christophehurpeau/alouette/compare/alouette@11.2.0...alouette@11.2.1) (2025-08-02)
+
+Note: no notable changes
+
+
 ## [11.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@11.1.0...alouette@11.2.0) (2025-08-02)
 
 ### Features
