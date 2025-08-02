@@ -21,5 +21,8 @@ export declare function Button({ icon, text, disabled, variant, size, ...pressab
 export declare function ExternalLinkButton(props: Except<ButtonProps, "href" | "role" | "tag"> & {
     href: string;
 }): ReactNode;
+export declare function InternalLinkButton(props: Except<ButtonProps, "href" | "role" | "tag"> & {
+    href: string;
+}): ReactNode;
 export {};
 //# sourceMappingURL=Button.d.ts.map

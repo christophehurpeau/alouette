@@ -1,7 +1,7 @@
 export type { IconButtonProps } from "./components/actions/IconButton";
 export { IconButton } from "./components/actions/IconButton";
 export type { ButtonProps } from "./components/actions/Button";
-export { Button, ExternalLinkButton } from "./components/actions/Button";
+export { Button, ExternalLinkButton, InternalLinkButton, } from "./components/actions/Button";
 export type { BoxProps } from "./components/containers/Box";
 export { Box } from "./components/containers/Box";
 export type { PressableBoxProps } from "./components/containers/PressableBox";

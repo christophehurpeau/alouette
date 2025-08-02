@@ -382,6 +382,9 @@ function ExternalLinkButton(props) {
     }
   );
 }
+function InternalLinkButton(props) {
+  return /* @__PURE__ */ jsxRuntime.jsx(Button, { ...props, tag: "a", role: "link" });
+}
 
 function FeedbackIcon({ type }) {
   switch (type) {
@@ -827,6 +830,7 @@ exports.HStack = HStack;
 exports.Icon = Icon;
 exports.IconButton = IconButton;
 exports.InputText = InputText;
+exports.InternalLinkButton = InternalLinkButton;
 exports.Message = Message;
 exports.PressableBox = PressableBox;
 exports.PressableListItem = PressableListItem;

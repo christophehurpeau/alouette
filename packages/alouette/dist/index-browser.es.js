@@ -380,6 +380,9 @@ function ExternalLinkButton(props) {
     }
   );
 }
+function InternalLinkButton(props) {
+  return /* @__PURE__ */ jsx(Button, { ...props, tag: "a", role: "link" });
+}
 
 function FeedbackIcon({ type }) {
   switch (type) {
@@ -812,5 +815,5 @@ function PressableListItem({
   ) });
 }
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, HStack, Icon, IconButton, InputText, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
+export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
 //# sourceMappingURL=index-browser.es.js.map
