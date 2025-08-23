@@ -21,7 +21,7 @@
     "@gorhom/bottom-sheet": "^5.1.6",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-native-community/datetimepicker": "8.4.4",
-    "@react-native-community/slider": "4.5.6",
+    "@react-native-community/slider": "4.5.7",
     "alouette": "workspace:*",
     "alouette-icons": "workspace:*",
     "expo": "~53.0.13",
