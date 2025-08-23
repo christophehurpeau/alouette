@@ -3232,10 +3232,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/slider@npm:4.5.6":
-  version: 4.5.6
-  resolution: "@react-native-community/slider@npm:4.5.6"
-  checksum: 10c0/6ff9b91b8f9af14fadccad101fc0abc17c864a5d2832483aef8813e67a93ad723053ed033141f71db8f7a128d3b1fdf4dd37f5c093901e7f041380a671090283
+"@react-native-community/slider@npm:4.5.7":
+  version: 4.5.7
+  resolution: "@react-native-community/slider@npm:4.5.7"
+  checksum: 10c0/9154c88972eb97ecb53190ff215148b41ec195619991e51061f543dc67c8b2463d1d195dd9c166755b8db1cc4d5a1ae8a152c3ecd5d3285cc4a14c35fddb3716
   languageName: node
   linkType: hard
 
@@ -13177,7 +13177,7 @@ __metadata:
     "@gorhom/bottom-sheet": "npm:^5.1.6"
     "@react-native-async-storage/async-storage": "npm:2.1.2"
     "@react-native-community/datetimepicker": "npm:8.4.4"
-    "@react-native-community/slider": "npm:4.5.6"
+    "@react-native-community/slider": "npm:4.5.7"
     "@storybook/addon-docs": "npm:9.0.14"
     "@storybook/addon-ondevice-actions": "npm:9.0.14"
     "@storybook/addon-ondevice-backgrounds": "npm:9.0.14"
