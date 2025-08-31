@@ -17,7 +17,7 @@
     "storybook-generate": "sb-rn-get-stories"
   },
   "dependencies": {
-    "@babel/core": "7.28.0",
+    "@babel/core": "7.28.3",
     "@gorhom/bottom-sheet": "^5.1.6",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-community/datetimepicker": "8.4.4",
@@ -37,7 +37,7 @@
     "react-native-web": "^0.20.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "7.28.0",
+    "@babel/preset-env": "7.28.3",
     "@chromatic-com/storybook": "4.1.0",
     "@expo/metro-runtime": "5.0.4",
     "@storybook/addon-docs": "9.0.14",
