@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { VStack } from "../primitives/stacks";
 import { Story } from "../story-components/Story";
+import { StoryGrid } from "../story-components/StoryGrid";
 import { Typography } from "../typography/Typography";
+import { Box } from "./Box";
 import { PressableBox } from "./PressableBox";
 
 type ThisStory = StoryObj<typeof PressableBox>;
@@ -57,7 +60,7 @@ export const PreviewPressableBoxStory: ThisStory = {
     theme: "primary",
     withBackground: true,
     padding: "$4",
-    children: <Typography contrast>Pressable</Typography>,
+    children: <Typography>Pressable</Typography>,
   },
   render: (args) => <PressableBox {...args} />,
 };
@@ -67,8 +70,57 @@ export const Variants: ThisStory = {
     <Story>
       <Story.Section title="With Background">
         <PressableBox withBackground role="button" theme="primary" padding="$4">
-          <Typography contrast>With Background</Typography>
+          <Typography>With Background</Typography>
         </PressableBox>
+      </Story.Section>
+
+      <Story.Section title="Variants">
+        {(["primary", "info", "success", "warning", "danger"] as const).map(
+          (theme) => (
+            <Story.SubSection key={theme} title={theme} theme={theme}>
+              <StoryGrid.Row flexWrap>
+                {(
+                  [undefined, "hover", "focus", "press", "disabled"] as const
+                ).map((state) => (
+                  <StoryGrid.Col
+                    key={state || "default"}
+                    title={state || "default"}
+                  >
+                    <VStack gap="$2" padding="$1">
+                      {(
+                        [
+                          "contained",
+                          "outlined",
+                          "elevated",
+                          "ghost-contained",
+                          "ghost-outlined",
+                        ] as const
+                      ).map((variant) => (
+                        <Box
+                          key={variant}
+                          theme={theme}
+                          withBackground={variant === "ghost-contained"}
+                        >
+                          <PressableBox
+                            role="button"
+                            borderRadius="$sm"
+                            disabled={state === "disabled"}
+                            variant={variant}
+                            forceStyle={
+                              state === "disabled" ? undefined : state
+                            }
+                          >
+                            <Typography>{variant}</Typography>
+                          </PressableBox>
+                        </Box>
+                      ))}
+                    </VStack>
+                  </StoryGrid.Col>
+                ))}
+              </StoryGrid.Row>
+            </Story.SubSection>
+          ),
+        )}
       </Story.Section>
     </Story>
   ),

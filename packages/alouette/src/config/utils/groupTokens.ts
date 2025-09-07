@@ -3,24 +3,21 @@ import type { Variable } from "@tamagui/core";
 export const groupTokens = (colorTokens: Record<any, Variable<any>>) => {
   const groupedEntriesMap = new Map<
     string,
-    { key: string; keyValue: string; variable: Variable }[]
+    { key: string; variable: Variable }[]
   >();
 
   Object.entries(colorTokens).forEach(([key, variable]) => {
-    let [keyGroup, keyValue] = key.split(".", 2) as [string, string];
-    if (!keyValue) {
+    // eslint-disable-next-line prefer-const
+    let [keyGroup, keyValue1, keyValue2] = key.split(".") as [
+      string,
+      string,
+      string,
+      string,
+    ];
+    if (!keyValue1) {
       keyGroup = "default";
-      keyValue = keyGroup;
-    } else {
-      const [subKeyGroup, subKeyValue] = keyValue.split(":", 2) as [
-        string,
-        string,
-      ];
-
-      if (subKeyValue) {
-        keyGroup = `${keyGroup}.${subKeyGroup}`;
-        keyValue = subKeyValue;
-      }
+    } else if (keyValue2) {
+      keyGroup = `${keyGroup}.${keyValue1}`;
     }
 
     let array = groupedEntriesMap.get(keyGroup);
@@ -28,7 +25,7 @@ export const groupTokens = (colorTokens: Record<any, Variable<any>>) => {
       array = [];
       groupedEntriesMap.set(keyGroup, array);
     }
-    array.push({ key, keyValue, variable });
+    array.push({ key, variable });
   });
 
   return [...groupedEntriesMap.entries()];

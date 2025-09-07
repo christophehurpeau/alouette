@@ -122,7 +122,21 @@ export declare const circular: {
     };
 };
 export declare const interactive: (isInteractiveOrInteractiveCursorType: ViewStyle["cursor"] | boolean, { props }: VariantSpreadExtras<any>) => {
+    readonly cursor: "not-allowed";
+    readonly hoverStyle?: undefined;
+    readonly pressStyle?: undefined;
+} | {
     readonly cursor: import("csstype").Property.Cursor;
+    readonly hoverStyle: {
+        readonly transform: readonly [{
+            readonly scale: 1.02;
+        }];
+    };
+    readonly pressStyle: {
+        readonly transform: readonly [{
+            readonly scale: 0.98;
+        }];
+    };
 } | null;
 export declare const centered: {
     readonly true: {

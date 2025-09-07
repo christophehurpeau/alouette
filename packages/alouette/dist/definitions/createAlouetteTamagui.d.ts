@@ -7,7 +7,8 @@ export interface AlouetteTamaguiOptions {
     fonts?: AlouetteFontsOptions;
 }
 export { createColorTheme, createAlouetteThemes, type FullTheme, } from "./config/themes";
-export { defaultColorScales, createColorScale, type AlouetteColorScales, type AlouetteColorScale, } from "./config/colorScales";
+export { createColorScale, type AlouetteColorScales, type AlouetteColorScale, } from "./config/colorScales";
+export { defaultColorScales } from "./config/defaultColorScales";
 export declare const createAlouetteTamagui: <const ColorScales extends AlouetteColorScales, const Tokens extends ReturnType<typeof createAlouetteTokens<ColorScales>>, const Themes extends ReturnType<typeof createAlouetteThemes<ColorScales>>>(tokens: Tokens, themes: Themes, options?: AlouetteTamaguiOptions) => import("@tamagui/web").TamaguiInternalConfig<Tokens extends Record<string, {
     [key: string]: import("@tamagui/web").VariableVal;
 }> & {

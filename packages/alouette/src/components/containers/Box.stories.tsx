@@ -112,7 +112,7 @@ export const PreviewBoxStory: ThisStory = {
     theme: "primary",
     withBackground: true,
     padding: "$4",
-    children: <Typography contrast>Box Content</Typography>,
+    children: <Typography>Box Content</Typography>,
   },
   render: (args) => <Box {...args} />,
 };
@@ -122,7 +122,7 @@ export const Variants: ThisStory = {
     <Story>
       <Story.Section title="With Background">
         <Box withBackground theme="primary" padding="$4">
-          <Typography contrast>With Background</Typography>
+          <Typography>With Background</Typography>
         </Box>
       </Story.Section>
 
@@ -144,7 +144,7 @@ export const Variants: ThisStory = {
               padding={proportion}
               margin="$4"
             >
-              <Typography contrast>{proportion}</Typography>
+              <Typography>{proportion}</Typography>
             </Box>
           ))}
         </HStack>

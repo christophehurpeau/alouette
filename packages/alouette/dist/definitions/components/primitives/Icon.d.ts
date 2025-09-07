@@ -7,8 +7,7 @@ export interface IconProps extends Exclude<GetProps<typeof Box>, "alignSelf" | "
     icon: ReactElement;
     color?: ColorTokens | OpaqueColorValue | Variable<any> | undefined;
     align?: BoxProps["alignSelf"];
-    contrast?: boolean;
     size?: number;
 }
-export declare function Icon({ icon, size, align, contrast, color, ...props }: IconProps): ReactNode;
+export declare function Icon({ icon, size, align, disabled, color, ...props }: IconProps): ReactNode;
 //# sourceMappingURL=Icon.d.ts.map

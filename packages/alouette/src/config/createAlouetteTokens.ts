@@ -61,8 +61,10 @@ export const createAlouetteTokens = <
 
   return createTokens({
     color: {
-      black: "#000000",
-      white: "#ffffff",
+      blackBackground: "#121212",
+      whiteBackground: "#ffffff",
+      blackText: "#000000",
+      whiteText: "#fdfdfd",
       ...transformColorScalesToTokens(colorScales),
     },
     radius: {

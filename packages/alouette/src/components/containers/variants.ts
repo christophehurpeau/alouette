@@ -27,7 +27,7 @@ export const withBackground = (
   return {
     ...(props.interactive
       ? getInteractionStyles("backgroundColor", props)
-      : { backgroundColor: "$mainColor" }),
+      : { backgroundColor: "$nonInteractiveBackgroundColor" }),
   } as const;
 };
 
@@ -93,6 +93,14 @@ export const interactive = (
       isInteractiveOrInteractiveCursorType === true
         ? "pointer"
         : isInteractiveOrInteractiveCursorType,
+
+    hoverStyle: {
+      transform: [{ scale: 1.02 }],
+    },
+
+    pressStyle: {
+      transform: [{ scale: 0.98 }],
+    },
   } as const;
 };
 

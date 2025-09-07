@@ -19,7 +19,7 @@ export const MessageFrame = styled(Box, {
 
 export const MessageText = styled(Typography, {
   name: "MessageText",
-  contrast: true,
+  // contrast: true,
   size: "$md",
   flexGrow: 1,
   paddingVertical: "$4",
@@ -60,7 +60,7 @@ export function Message({
     <MessageFrame theme={theme}>
       {textCentered ? null : (
         <MessageIconContainer>
-          <Icon contrast icon={<FeedbackIcon type={theme} />} />
+          <Icon icon={<FeedbackIcon type={theme} />} />
         </MessageIconContainer>
       )}
       <MessageText centered={textCentered}>{children}</MessageText>

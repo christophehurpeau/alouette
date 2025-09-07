@@ -5,9 +5,9 @@ declare const _default: {
     title: string;
     component: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSizeTokens | undefined;
+        disabled?: boolean | undefined;
         inherit?: boolean | undefined;
         family?: "$body" | "$heading" | undefined;
-        contrast?: boolean | undefined;
         weight?: "$regular" | "$bold" | "$black" | undefined;
         colored?: boolean | undefined;
     }>, "href"> & {

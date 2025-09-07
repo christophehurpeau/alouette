@@ -113,10 +113,10 @@ export const StackStory: Story = {
     theme: "primary",
     children: [
       <Box key="1" centered withBackground flexGrow={1}>
-        <Typography contrast>1</Typography>
+        <Typography>1</Typography>
       </Box>,
       <Box key="2" centered withBackground flexGrow={1}>
-        <Typography contrast>2</Typography>
+        <Typography>2</Typography>
       </Box>,
     ],
   },
@@ -140,10 +140,10 @@ export const HStackStory: StoryObj<typeof HStack> = {
       <Story.Section title="With theme">
         <HStack theme="primary" gap="$4">
           <Box centered withBackground flexGrow={1}>
-            <Typography contrast>1</Typography>
+            <Typography>1</Typography>
           </Box>
           <Box centered withBackground flexGrow={1}>
-            <Typography contrast>2</Typography>
+            <Typography>2</Typography>
           </Box>
         </HStack>
       </Story.Section>
@@ -151,10 +151,10 @@ export const HStackStory: StoryObj<typeof HStack> = {
       <Story.Section title="With justifyContent">
         <HStack theme="info" gap="$4" justifyContent="space-between">
           <Box centered withBackground>
-            <Typography contrast>1</Typography>
+            <Typography>1</Typography>
           </Box>
           <Box centered withBackground>
-            <Typography contrast>2</Typography>
+            <Typography>2</Typography>
           </Box>
         </HStack>
       </Story.Section>
@@ -180,10 +180,10 @@ export const VStackStory: StoryObj<typeof VStack> = {
       <Story.Section title="With theme">
         <VStack theme="primary" gap="$4">
           <Box centered withBackground flexGrow={1}>
-            <Typography contrast>1</Typography>
+            <Typography>1</Typography>
           </Box>
           <Box centered withBackground flexGrow={1}>
-            <Typography contrast>2</Typography>
+            <Typography>2</Typography>
           </Box>
         </VStack>
       </Story.Section>
@@ -191,10 +191,10 @@ export const VStackStory: StoryObj<typeof VStack> = {
       <Story.Section title="With alignItems">
         <VStack theme="warning" gap="$4" alignItems="center">
           <Box centered withBackground padding="$4">
-            <Typography contrast>1</Typography>
+            <Typography>1</Typography>
           </Box>
           <Box centered withBackground padding="$8">
-            <Typography contrast>2</Typography>
+            <Typography>2</Typography>
           </Box>
         </VStack>
       </Story.Section>

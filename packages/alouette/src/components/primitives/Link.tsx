@@ -24,6 +24,19 @@ const Anchor = styled(Typography, {
         textDecorationLine: "none",
       },
     },
+    disabled: {
+      true: {
+        cursor: "not-allowed",
+        color: "$interactive.linkTextColor:disabled",
+
+        hoverStyle: {
+          color: "$interactive.linkTextColor:disabled",
+        },
+        pressStyle: {
+          color: "$interactive.linkTextColor:disabled",
+        },
+      },
+    },
   },
 });
 

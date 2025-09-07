@@ -20,7 +20,6 @@ const StyledInputText = styled(
     withBackground: true,
 
     borderWidth: 1,
-    borderBottomWidth: 3,
 
     // reset browser style
     outlineStyle: "none",

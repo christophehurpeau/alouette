@@ -44,15 +44,11 @@ function StorySection({
 function SubSection({
   title,
   children,
-  withBackground,
+
   ...props
 }: StorySectionProps): ReactNode {
   return (
-    <InternalStorySection
-      marginBottom="$4"
-      withBackground={withBackground}
-      {...props}
-    >
+    <InternalStorySection marginBottom="$4" {...props}>
       <StoryTitle level={3}>{title}</StoryTitle>
       {children}
     </InternalStorySection>
@@ -78,7 +74,16 @@ export function Story({ documentation, children }: StoryProps): ReactNode {
           {documentation}
         </Box>
       )}
-      {children}
+      {["light", "dark"].map((theme) => (
+        <Box
+          key={theme}
+          theme={theme}
+          backgroundColor="$backgroundColor"
+          padding="$md"
+        >
+          {children}
+        </Box>
+      ))}
     </>
   );
 }

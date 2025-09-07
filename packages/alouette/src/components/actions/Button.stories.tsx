@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Theme } from "@tamagui/core";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
 import { Box } from "../containers/Box";
 import { VStack } from "../primitives/stacks";
@@ -153,65 +152,55 @@ export const VariantsStory: ThisStory = {
         </StoryGrid.Row>
       </Story.Section>
       <Story.Section title="Variants">
-        {(["light", "dark"] as const).map((mainTheme) => (
-          <Theme key={mainTheme} name={mainTheme}>
-            {(["primary", "info", "success", "warning", "danger"] as const).map(
-              (theme) => (
-                <Story.SubSection
-                  key={theme}
-                  withBackground
-                  title={`${mainTheme}_${theme}`}
-                  theme={theme}
-                >
-                  <StoryGrid.Row flexWrap>
-                    {(
-                      [
-                        undefined,
-                        "hover",
-                        "focus",
-                        "press",
-                        "disabled",
-                      ] as const
-                    ).map((state) => (
-                      <StoryGrid.Col
-                        key={state || "default"}
-                        title={state || "default"}
-                      >
-                        <VStack gap="$2" padding="$1">
-                          {(
-                            [
-                              "contained",
-                              "outlined",
-                              "elevated",
-                              "ghost-contained",
-                              "ghost-outlined",
-                            ] as const
-                          ).map((variant) => (
-                            <Box
-                              key={variant}
-                              theme={theme}
-                              withBackground={variant === "ghost-contained"}
-                            >
-                              <Button
-                                disabled={state === "disabled"}
-                                variant={variant}
-                                forceStyle={
-                                  state === "disabled" ? undefined : state
-                                }
-                                icon={<ArrowLeftRegularIcon />}
-                                text={variant}
-                              />
-                            </Box>
-                          ))}
-                        </VStack>
-                      </StoryGrid.Col>
-                    ))}
-                  </StoryGrid.Row>
-                </Story.SubSection>
-              ),
-            )}
-          </Theme>
-        ))}
+        {(["primary", "info", "success", "warning", "danger"] as const).map(
+          (theme) => (
+            <Story.SubSection
+              key={theme}
+              withBackground
+              title={theme}
+              theme={theme}
+            >
+              <StoryGrid.Row flexWrap>
+                {(
+                  [undefined, "hover", "focus", "press", "disabled"] as const
+                ).map((state) => (
+                  <StoryGrid.Col
+                    key={state || "default"}
+                    title={state || "default"}
+                  >
+                    <VStack gap="$2" padding="$1">
+                      {(
+                        [
+                          "contained",
+                          "outlined",
+                          "elevated",
+                          "ghost-contained",
+                          "ghost-outlined",
+                        ] as const
+                      ).map((variant) => (
+                        <Box
+                          key={variant}
+                          theme={theme}
+                          withBackground={variant === "ghost-contained"}
+                        >
+                          <Button
+                            disabled={state === "disabled"}
+                            variant={variant}
+                            forceStyle={
+                              state === "disabled" ? undefined : state
+                            }
+                            icon={<ArrowLeftRegularIcon />}
+                            text={variant}
+                          />
+                        </Box>
+                      ))}
+                    </VStack>
+                  </StoryGrid.Col>
+                ))}
+              </StoryGrid.Row>
+            </Story.SubSection>
+          ),
+        )}
       </Story.Section>
 
       <Story.Section title="External Link Button">

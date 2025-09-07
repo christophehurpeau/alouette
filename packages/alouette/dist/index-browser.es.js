@@ -45,7 +45,7 @@ const withBackground = (val, { props }) => {
     throw new Error("A role prop is required while using interactive");
   }
   return {
-    ...props.interactive ? getInteractionStyles("backgroundColor", props) : { backgroundColor: "$mainColor" }
+    ...props.interactive ? getInteractionStyles("backgroundColor", props) : { backgroundColor: "$nonInteractiveBackgroundColor" }
   };
 };
 const withElevation = (val, { props }) => {
@@ -91,7 +91,13 @@ const interactive = (isInteractiveOrInteractiveCursorType, { props }) => {
     return { cursor: "not-allowed" };
   }
   return {
-    cursor: isInteractiveOrInteractiveCursorType === true ? "pointer" : isInteractiveOrInteractiveCursorType
+    cursor: isInteractiveOrInteractiveCursorType === true ? "pointer" : isInteractiveOrInteractiveCursorType,
+    hoverStyle: {
+      transform: [{ scale: 1.02 }]
+    },
+    pressStyle: {
+      transform: [{ scale: 0.98 }]
+    }
   };
 };
 const centered = {
@@ -119,15 +125,42 @@ const Box = styled(View, {
 });
 
 const PressableBox = styled(Box, {
-  interactive: true
+  interactive: true,
+  variants: {
+    variant: {
+      contained: {
+        withBackground: true
+      },
+      outlined: {
+        withBackground: true,
+        withBorder: true
+      },
+      elevated: {
+        withBackground: true,
+        withElevation: true,
+        withBorder: true,
+        borderColor: "$contrastBorderColor"
+      },
+      "ghost-contained": {
+        withBackground: true
+      },
+      "ghost-outlined": {
+        withBorder: 1,
+        withBackground: true
+      }
+    }
+  },
+  defaultVariants: {
+    variant: "contained"
+  }
 });
 
 function Icon({
   icon,
   size = 20,
   align = "auto",
-  contrast,
-  color = contrast ? "$contrastTextColor" : "$textColor",
+  disabled,
+  color = disabled ? "$textColor:disabled" : "$textColor",
   ...props
 }) {
   const style = useStyle({
@@ -170,9 +203,6 @@ const IconButtonFrame = styled(PressableBox, {
     variant: "contained"
   }
 });
-const getDisabledColor$1 = (variant) => {
-  return variant === "contained" || variant === "ghost-contained" ? "$contrastTextColor:disabled" : "$textColor:disabled";
-};
 function IconButton({
   icon,
   disabled,
@@ -187,15 +217,7 @@ function IconButton({
       variant,
       disabled,
       ...pressableProps,
-      children: /* @__PURE__ */ jsx(
-        Icon,
-        {
-          size: size / 2,
-          color: disabled ? getDisabledColor$1(variant) : void 0,
-          contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
-          icon
-        }
-      )
+      children: /* @__PURE__ */ jsx(Icon, { size: size / 2, disabled, icon })
     }
   );
 }
@@ -252,23 +274,20 @@ const Typography = styled(Text, {
       $heading: { fontFamily: "$heading" },
       $body: { fontFamily: "$body" }
     },
-    contrast: {
-      true: {
-        color: "$contrastTextColor"
-      },
-      false: {
-        color: "$textColor"
-      }
-    },
     colored: {
       true: {
-        color: "$mainColor"
+        color: "$coloredTextColor"
+      }
+    },
+    disabled: {
+      true: {
+        color: "$textColor:disabled"
       }
     }
   },
   defaultVariants: {
-    inherit: false,
-    contrast: false
+    inherit: false
+    // contrast: false,
   }
 });
 const TypographyParagraph = styled(Typography, {
@@ -295,38 +314,12 @@ const ButtonFrame = styled(PressableBox, {
         borderRadius: "$sm",
         minHeight: 42
       }
-    },
-    variant: {
-      contained: {
-        withBackground: true
-      },
-      outlined: {
-        withBackground: true,
-        withBorder: true
-      },
-      elevated: {
-        withBackground: true,
-        withElevation: true,
-        withBorder: true,
-        borderColor: "$contrastBorderColor"
-      },
-      "ghost-contained": {
-        withBackground: true
-      },
-      "ghost-outlined": {
-        withBorder: 1,
-        withBackground: true
-      }
     }
   },
   defaultVariants: {
-    variant: "contained",
     size: "md"
   }
 });
-const getDisabledColor = (variant) => {
-  return variant === "contained" || variant === "ghost-contained" ? "$contrastTextColor:disabled" : "$textColor:disabled";
-};
 function Button({
   icon,
   text,
@@ -346,8 +339,7 @@ function Button({
         icon && /* @__PURE__ */ jsx(
           Icon,
           {
-            color: disabled ? getDisabledColor(variant) : void 0,
-            contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
+            disabled,
             icon,
             size: size === "sm" ? 16 : 20
           }
@@ -358,8 +350,7 @@ function Button({
             size: size === "sm" ? "$sm" : "$md",
             weight: "$bold",
             paddingVertical: size === "sm" ? "$1" : "$xs",
-            color: disabled ? getDisabledColor(variant) : void 0,
-            contrast: (variant === "contained" || variant === "ghost-contained") && !disabled,
+            disabled,
             children: text
           }
         )
@@ -408,7 +399,7 @@ const MessageFrame = styled(Box, {
 });
 const MessageText = styled(Typography, {
   name: "MessageText",
-  contrast: true,
+  // contrast: true,
   size: "$md",
   flexGrow: 1,
   paddingVertical: "$4",
@@ -436,7 +427,7 @@ function Message({
   onDismiss
 }) {
   return /* @__PURE__ */ jsxs(MessageFrame, { theme, children: [
-    textCentered ? null : /* @__PURE__ */ jsx(MessageIconContainer, { children: /* @__PURE__ */ jsx(Icon, { contrast: true, icon: /* @__PURE__ */ jsx(FeedbackIcon, { type: theme }) }) }),
+    textCentered ? null : /* @__PURE__ */ jsx(MessageIconContainer, { children: /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(FeedbackIcon, { type: theme }) }) }),
     /* @__PURE__ */ jsx(MessageText, { centered: textCentered, children }),
     onDismiss ? /* @__PURE__ */ jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsx(
       IconButton,
@@ -462,7 +453,6 @@ const StyledInputText = styled(
     withBorder: true,
     withBackground: true,
     borderWidth: 1,
-    borderBottomWidth: 3,
     // reset browser style
     outlineStyle: "none"
   },
@@ -539,21 +529,12 @@ function StorySection({
 function SubSection({
   title,
   children,
-  withBackground,
   ...props
 }) {
-  return /* @__PURE__ */ jsxs(
-    InternalStorySection,
-    {
-      marginBottom: "$4",
-      withBackground,
-      ...props,
-      children: [
-        /* @__PURE__ */ jsx(StoryTitle, { level: 3, children: title }),
-        children
-      ]
-    }
-  );
+  return /* @__PURE__ */ jsxs(InternalStorySection, { marginBottom: "$4", ...props, children: [
+    /* @__PURE__ */ jsx(StoryTitle, { level: 3, children: title }),
+    children
+  ] });
 }
 function Story({ documentation, children }) {
   return /* @__PURE__ */ jsxs(Fragment, { children: [
@@ -568,7 +549,16 @@ function Story({ documentation, children }) {
         children: documentation
       }
     ),
-    children
+    ["light", "dark"].map((theme) => /* @__PURE__ */ jsx(
+      Box,
+      {
+        theme,
+        backgroundColor: "$backgroundColor",
+        padding: "$md",
+        children
+      },
+      theme
+    ))
   ] });
 }
 Story.Section = StorySection;

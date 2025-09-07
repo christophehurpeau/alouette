@@ -132,8 +132,10 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
   );
   return createTokens({
     color: {
-      black: "#000000",
-      white: "#ffffff",
+      blackBackground: "#121212",
+      whiteBackground: "#ffffff",
+      blackText: "#000000",
+      whiteText: "#fdfdfd",
       ...transformColorScalesToTokens(colorScales)
     },
     radius: {
@@ -153,6 +155,20 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
     zIndex: {}
   });
 };
+
+const mappingLightToDark = {
+  1: 1,
+  2: 3,
+  3: 4,
+  4: 2,
+  5: 6,
+  6: 5,
+  7: 7,
+  8: 8,
+  9: 9,
+  10: 10
+};
+const createColorScale = (colorScale) => colorScale;
 
 const getLuminance = (r, g, b) => {
   const values = [r, g, b].map((c) => {
@@ -203,97 +219,76 @@ const warnOnContrastIssues = (themeName, textColor, backgroundColor) => {
   }
 };
 
-const darkModeScaleNumbers = {
-  1: 10,
-  2: 9,
-  3: 8,
-  4: 7,
-  5: 6,
-  6: 5,
-  7: 4,
-  8: 3,
-  9: 2,
-  10: 1
-};
-const createColorTheme = (tokens, colorScaleName, mode = "light", backgroundColor, textColor, contrastTextColor) => {
+const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textColor) => {
   const alouetteTokens = tokens;
   if (!backgroundColor) {
-    backgroundColor = mode === "dark" ? alouetteTokens.color.black : alouetteTokens.color.white;
+    backgroundColor = mode === "dark" ? alouetteTokens.color.blackBackground : alouetteTokens.color.whiteBackground;
   }
   if (!textColor) {
-    textColor = mode === "dark" ? alouetteTokens.color.white : alouetteTokens.color.black;
+    textColor = mode === "dark" ? alouetteTokens.color.whiteText : alouetteTokens.color.blackText;
   }
-  if (!contrastTextColor) {
-    if (colorScaleName === "grayscale") {
-      contrastTextColor = mode === "dark" ? alouetteTokens.color.white : alouetteTokens.color.black;
-    } else {
-      contrastTextColor = mode === "dark" ? alouetteTokens.color.black : alouetteTokens.color.white;
-    }
-  }
-  const getColor = (lightScaleNumber, forceScaleNumber = colorScaleName) => {
-    const scaleNumber = mode === "dark" ? darkModeScaleNumbers[lightScaleNumber] : lightScaleNumber;
-    return tokens.color[`${forceScaleNumber}.${scaleNumber}`];
+  const getColor = (scaleNumber, tint) => {
+    return tokens.color[`${tint || intent}.${mode}.${mode === "dark" ? mappingLightToDark[scaleNumber] : scaleNumber}`];
   };
-  const contrastBorderColor = contrastTextColor;
   const theme = {
     backgroundColor,
+    "gradientColor:start": getColor(5),
+    "gradientColor:middle": getColor(7),
+    "gradientColor:end": getColor(4),
     textColor,
-    mainColor: getColor(6),
-    mainTextColor: getColor(9),
-    contrastTextColor,
-    borderColor: getColor(8),
-    contrastBorderColor,
-    shadowColor: getColor(9),
-    "textColor:disabled": getColor(3, "grayscale"),
-    "contrastTextColor:disabled": getColor(7, "grayscale"),
+    pageBackgroundColor: getColor(1),
+    nonInteractiveBackgroundColor: getColor(3),
+    coloredTextColor: getColor(9),
+    borderColor: getColor(4),
+    shadowColor: getColor(8),
+    "textColor:disabled": getColor(6, "grayscale"),
     "interactive.linkTextColor": getColor(9),
-    "interactive.linkTextColor:hover": getColor(7),
-    "interactive.linkTextColor:focus": getColor(7),
-    "interactive.linkTextColor:press": getColor(7),
-    "interactive.linkTextColor:disabled": getColor(3, "grayscale"),
-    "interactive.contained.backgroundColor": getColor(5),
+    "interactive.linkTextColor:hover": getColor(10),
+    "interactive.linkTextColor:focus": getColor(10),
+    "interactive.linkTextColor:press": getColor(8),
+    "interactive.linkTextColor:disabled": getColor(9, "grayscale"),
+    "interactive.contained.backgroundColor": getColor(6),
     "interactive.elevated.backgroundColor": backgroundColor,
-    "interactive.elevated.shadowColor": getColor(9),
-    "interactive.elevated.borderColor": contrastBorderColor,
+    "interactive.elevated.shadowColor": getColor(8),
+    "interactive.elevated.borderColor": getColor(1),
     "interactive.outlined.backgroundColor": backgroundColor,
-    "interactive.outlined.borderColor": getColor(mode === "dark" ? 5 : 8),
-    "interactive.contained.backgroundColor:hover": getColor(4),
-    "interactive.elevated.backgroundColor:hover": getColor(1),
-    "interactive.elevated.borderColor:hover": contrastBorderColor,
-    "interactive.outlined.backgroundColor:hover": getColor(1),
-    "interactive.outlined.borderColor:hover": getColor(mode === "dark" ? 5 : 7),
-    "interactive.contained.backgroundColor:focus": getColor(4),
-    "interactive.elevated.backgroundColor:focus": getColor(1),
-    "interactive.elevated.borderColor:focus": contrastBorderColor,
-    "interactive.outlined.backgroundColor:focus": getColor(1),
-    "interactive.outlined.borderColor:focus": getColor(7),
-    "interactive.contained.backgroundColor:press": getColor(2),
-    "interactive.elevated.backgroundColor:press": getColor(3),
-    "interactive.elevated.borderColor:press": contrastBorderColor,
-    "interactive.outlined.backgroundColor:press": getColor(3),
-    "interactive.outlined.borderColor:press": getColor(7),
-    "interactive.contained.backgroundColor:disabled": getColor(3, "grayscale"),
+    "interactive.outlined.borderColor": getColor(7),
+    "interactive.contained.backgroundColor:hover": getColor(5),
+    "interactive.elevated.backgroundColor:hover": getColor(2),
+    "interactive.elevated.borderColor:hover": getColor(1),
+    "interactive.outlined.backgroundColor:hover": getColor(2),
+    "interactive.outlined.borderColor:hover": getColor(6),
+    "interactive.contained.backgroundColor:focus": getColor(5),
+    "interactive.elevated.backgroundColor:focus": getColor(2),
+    "interactive.elevated.borderColor:focus": getColor(1),
+    "interactive.outlined.backgroundColor:focus": getColor(2),
+    "interactive.outlined.borderColor:focus": getColor(6),
+    "interactive.contained.backgroundColor:press": getColor(3),
+    "interactive.elevated.backgroundColor:press": getColor(4),
+    "interactive.elevated.borderColor:press": getColor(1),
+    "interactive.outlined.backgroundColor:press": getColor(4),
+    "interactive.outlined.borderColor:press": getColor(6),
+    "interactive.contained.backgroundColor:disabled": getColor(4, "grayscale"),
     "interactive.elevated.backgroundColor:disabled": backgroundColor,
-    "interactive.elevated.shadowColor:disabled": getColor(9, "grayscale"),
-    "interactive.elevated.borderColor:disabled": getColor(3, "grayscale"),
+    "interactive.elevated.shadowColor:disabled": getColor(8, "grayscale"),
+    "interactive.elevated.borderColor:disabled": getColor(1, "grayscale"),
     "interactive.outlined.backgroundColor:disabled": backgroundColor,
-    "interactive.outlined.borderColor:disabled": getColor(3, "grayscale"),
-    "interactive.textColor:disabled": getColor(7, "grayscale"),
+    "interactive.outlined.borderColor:disabled": getColor(7, "grayscale"),
     "interactive.forms.textColor": textColor,
-    "interactive.forms.placeholderTextColor": getColor(3, "grayscale"),
+    "interactive.forms.placeholderTextColor": getColor(8, "grayscale"),
     // "interactive.forms.backgroundColor": undefined,
     // "interactive.forms.backgroundColor:hover": undefined,
-    "interactive.forms.backgroundColor:focus": getColor(1),
-    "interactive.forms.backgroundColor:press": getColor(3),
-    "interactive.forms.borderColor": getColor(10),
-    "interactive.forms.borderColor:hover": getColor(7),
-    "interactive.forms.borderColor:focus": getColor(7),
-    "interactive.forms.borderColor:press": getColor(7),
-    "interactive.forms.borderColor:disabled": getColor(3, "grayscale")
+    "interactive.forms.backgroundColor:focus": getColor(2),
+    "interactive.forms.backgroundColor:press": getColor(4),
+    "interactive.forms.borderColor": getColor(7),
+    "interactive.forms.borderColor:disabled": getColor(7, "grayscale"),
+    "interactive.forms.borderColor:hover": getColor(6),
+    "interactive.forms.borderColor:focus": getColor(6),
+    "interactive.forms.borderColor:press": getColor(6)
   };
   if (process.env.NODE_ENV === "development") {
     warnOnContrastIssues(
-      colorScaleName,
+      intent,
       theme.textColor.val,
       theme.backgroundColor.val
     );
@@ -318,79 +313,150 @@ const createAlouetteThemes = (tokens) => {
   };
 };
 
-const createColorScale = (colorScale) => colorScale;
 const defaultColorScales = {
-  grayscale: createColorScale({
-    1: "#faf9f8",
-    2: "#f4f3ef",
-    3: "#ebe9e5",
-    4: "#dedad2",
-    5: "#d1cdc5",
-    6: "#bab8ae",
-    7: "#aeaba3",
-    8: "#9c9a92",
-    9: "#8e8c83",
-    10: "#74726a"
+  "grayscale.light": createColorScale({
+    1: "#F5F5F5",
+    2: "#EBEBEB",
+    3: "#E0E0E0",
+    4: "#D6D6D6",
+    5: "#C7C7C7",
+    6: "#B8B8B8",
+    7: "#8F8F8F",
+    8: "#616161",
+    9: "#525252",
+    10: "#2E2E2E"
   }),
-  success: createColorScale({
-    1: "#f0f9f3",
-    2: "#d4f0d4",
-    3: "#a8e6a8",
-    4: "#7edc7e",
-    5: "#54d254",
-    6: "#2ac82a",
-    7: "#00be00",
-    8: "#00b400",
-    9: "#00aa00",
-    10: "#009200"
+  "grayscale.dark": createColorScale({
+    1: "#1A1A1A",
+    2: "#1F1F1F",
+    3: "#292929",
+    4: "#333333",
+    5: "#3D3D3D",
+    6: "#474747",
+    7: "#525252",
+    8: "#9E9E9E",
+    9: "#ADADAD",
+    10: "#D1D1D1"
   }),
-  info: createColorScale({
-    1: "#f0f9ff",
-    2: "#d4f0ff",
-    3: "#a8e6ff",
-    4: "#7edcff",
-    5: "#54d2ff",
-    6: "#2ac8ff",
-    7: "#00beff",
-    8: "#00b4ff",
-    9: "#00aaff",
-    10: "#0092ff"
+  "primary.light": createColorScale({
+    1: "#EFF8FB",
+    2: "#DAF4FB",
+    3: "#C7EEF9",
+    4: "#B5E8F8",
+    5: "#99DFF5",
+    6: "#7DD7F2",
+    7: "#33C0EB",
+    8: "#037496",
+    9: "#025D78",
+    10: "#012732"
   }),
-  warning: createColorScale({
-    1: "#fff9f0",
-    2: "#fff0d4",
-    3: "#ffe6a8",
-    4: "#ffdc7e",
-    5: "#ffd254",
-    6: "#ffc82a",
-    7: "#ffbe00",
-    8: "#ffb400",
-    9: "#ffaa00",
-    10: "#ff9200"
+  "primary.dark": createColorScale({
+    1: "#02161C",
+    2: "#06242D",
+    3: "#072B36",
+    4: "#093A49",
+    5: "#0D576D",
+    6: "#0D576D",
+    7: "#10657F",
+    8: "#49CCF3",
+    9: "#66D4F5",
+    10: "#A9E7F9"
   }),
-  danger: createColorScale({
-    1: "#fff0f0",
-    2: "#ffd4d4",
-    3: "#ffaaaa",
-    4: "#ff7e7e",
-    5: "#ff5454",
-    6: "#ff2a2a",
-    7: "#ff0000",
-    8: "#f40000",
-    9: "#ea0000",
-    10: "#d20000"
+  "danger.light": createColorScale({
+    1: "#FBEFEF",
+    2: "#FEF6F6",
+    3: "#FCE4E3",
+    4: "#FAD2D1",
+    5: "#F8B7B5",
+    6: "#F59C99",
+    7: "#EE544F",
+    8: "#DC0C04",
+    9: "#BE0A04",
+    10: "#780602"
   }),
-  primary: createColorScale({
-    1: "#e1f4f6",
-    2: "#b4e2e9",
-    3: "#86cfdc",
-    4: "#60bcd0",
-    5: "#46aeca",
-    6: "#31a1c4",
-    7: "#2994b7",
-    8: "#1e82a6",
-    9: "#1c7193",
-    10: "#125272"
+  "danger.dark": createColorScale({
+    1: "#1C0302",
+    2: "#490B09",
+    3: "#520C0A",
+    4: "#640F0C",
+    5: "#881511",
+    6: "#881511",
+    7: "#9A1813",
+    8: "#F56A66",
+    9: "#F78682",
+    10: "#FBC7C5"
+  }),
+  "info.light": createColorScale({
+    1: "#EFF8FB",
+    2: "#DAF3FB",
+    3: "#C7EDF9",
+    4: "#B5E7F8",
+    5: "#99DEF5",
+    6: "#7DD5F2",
+    7: "#33BDEB",
+    8: "#037196",
+    9: "#025B78",
+    10: "#012632"
+  }),
+  "info.dark": createColorScale({
+    1: "#02161C",
+    2: "#06232D",
+    3: "#072B36",
+    4: "#093949",
+    5: "#0D556D",
+    6: "#0D556D",
+    7: "#10637F",
+    8: "#49C9F3",
+    9: "#66D1F5",
+    10: "#A9E5F9"
+  }),
+  "success.light": createColorScale({
+    1: "#EFFBEF",
+    2: "#DAFBDA",
+    3: "#C7F9C7",
+    4: "#B5F8B5",
+    5: "#99F599",
+    6: "#7DF27D",
+    7: "#33EB33",
+    8: "#039603",
+    9: "#027802",
+    10: "#013201"
+  }),
+  "success.dark": createColorScale({
+    1: "#021C02",
+    2: "#062D06",
+    3: "#073607",
+    4: "#094909",
+    5: "#0D6D0D",
+    6: "#0D6D0D",
+    7: "#107F10",
+    8: "#49F349",
+    9: "#66F566",
+    10: "#A9F9A9"
+  }),
+  "warning.light": createColorScale({
+    1: "#FBF7EF",
+    2: "#FEFBF6",
+    3: "#FCF4E3",
+    4: "#FAECD1",
+    5: "#F8E1B5",
+    6: "#F5D699",
+    7: "#EEB94F",
+    8: "#8C5E03",
+    9: "#6E4A02",
+    10: "#281B01"
+  }),
+  "warning.dark": createColorScale({
+    1: "#1C1402",
+    2: "#493309",
+    3: "#523A0A",
+    4: "#64470C",
+    5: "#886011",
+    6: "#886011",
+    7: "#9A6D13",
+    8: "#F5C566",
+    9: "#F7D082",
+    10: "#FBE9C5"
   })
 };
 

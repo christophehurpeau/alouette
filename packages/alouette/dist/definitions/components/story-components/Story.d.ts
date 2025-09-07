@@ -15,7 +15,7 @@ export interface StoryProps {
 export declare function Story({ documentation, children }: StoryProps): ReactNode;
 export declare namespace Story {
     var Section: typeof StorySection;
-    var SubSection: ({ title, children, withBackground, ...props }: StorySectionProps) => ReactNode;
+    var SubSection: ({ title, children, ...props }: StorySectionProps) => ReactNode;
 }
 export {};
 //# sourceMappingURL=Story.d.ts.map

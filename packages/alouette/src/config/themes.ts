@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import type { Variable } from "@tamagui/core";
+import { mappingLightToDark } from "./colorScales";
 import type {
+  AlouetteColorIntent,
   AlouetteColorScaleNumber,
   AlouetteColorScales,
 } from "./colorScales";
@@ -19,14 +21,15 @@ import { warnOnContrastIssues } from "./utils/colorContrast";
 
 export interface ColorTheme {
   backgroundColor: Variable<string>;
+  pageBackgroundColor: Variable<string>;
+  nonInteractiveBackgroundColor: Variable<string>;
+  "gradientColor:start": Variable<string>;
+  "gradientColor:middle": Variable<string>;
+  "gradientColor:end": Variable<string>;
   textColor: Variable<string>;
-  contrastTextColor: Variable<string>;
   "textColor:disabled": Variable<string>;
-  "contrastTextColor:disabled": Variable<string>;
-  mainColor: Variable<string>;
-  mainTextColor: Variable<string>;
+  coloredTextColor: Variable<string>;
   borderColor: Variable<string>;
-  contrastBorderColor: Variable<string>;
   shadowColor: Variable<string>;
 
   "interactive.linkTextColor": Variable<string>;
@@ -66,7 +69,6 @@ export interface ColorTheme {
   "interactive.elevated.borderColor:disabled": Variable<string>;
   "interactive.outlined.backgroundColor:disabled": Variable<string>;
   "interactive.outlined.borderColor:disabled": Variable<string>;
-  "interactive.textColor:disabled": Variable<string>;
 
   "interactive.forms.textColor": Variable<string>;
   "interactive.forms.placeholderTextColor": Variable<string>;
@@ -90,141 +92,108 @@ export type FullTheme = ColorTheme;
 //   return theme satisfies RootTheme as unknown as FullTheme;
 // };
 
-const darkModeScaleNumbers: Record<
-  AlouetteColorScaleNumber,
-  AlouetteColorScaleNumber
-> = {
-  1: 10,
-  2: 9,
-  3: 8,
-  4: 7,
-  5: 6,
-  6: 5,
-  7: 4,
-  8: 3,
-  9: 2,
-  10: 1,
-};
-
-export const createColorTheme = <const ColorScales extends AlouetteColorScales>(
-  tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>,
-  colorScaleName: string & keyof ColorScales,
+export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
+  tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>,
+  intent: ColorIntent,
   mode: "dark" | "light" = "light",
+  // TODO replace by color in scale
   backgroundColor?: Variable<string>,
   textColor?: Variable<string>,
-  contrastTextColor?: Variable<string>,
 ) => {
   const alouetteTokens: ReturnType<
     typeof createAlouetteTokens<AlouetteColorScales>
   > = tokens;
   if (!backgroundColor) {
     backgroundColor =
-      mode === "dark" ? alouetteTokens.color.black : alouetteTokens.color.white;
+      mode === "dark"
+        ? alouetteTokens.color.blackBackground
+        : alouetteTokens.color.whiteBackground;
   }
   if (!textColor) {
     textColor =
-      mode === "dark" ? alouetteTokens.color.white : alouetteTokens.color.black;
-  }
-  if (!contrastTextColor) {
-    if (colorScaleName === "grayscale") {
-      contrastTextColor =
-        mode === "dark"
-          ? alouetteTokens.color.white
-          : alouetteTokens.color.black;
-    } else {
-      contrastTextColor =
-        mode === "dark"
-          ? alouetteTokens.color.black
-          : alouetteTokens.color.white;
-    }
+      mode === "dark"
+        ? alouetteTokens.color.whiteText
+        : alouetteTokens.color.blackText;
   }
 
   const getColor = (
-    lightScaleNumber: AlouetteColorScaleNumber,
-    forceScaleNumber = colorScaleName,
+    scaleNumber: AlouetteColorScaleNumber,
+    tint?: "grayscale",
   ) => {
-    // Invert scale for dark mode
-    const scaleNumber =
-      mode === "dark"
-        ? darkModeScaleNumbers[lightScaleNumber]
-        : lightScaleNumber;
-
     return tokens.color[
-      `${forceScaleNumber}.${scaleNumber}` as keyof typeof tokens.color
+      `${tint || intent}.${mode}.${mode === "dark" ? mappingLightToDark[scaleNumber] : scaleNumber}` as keyof typeof tokens.color
     ];
   };
 
-  const contrastBorderColor = contrastTextColor;
-
   const theme = {
     backgroundColor,
+    "gradientColor:start": getColor(5),
+    "gradientColor:middle": getColor(7),
+    "gradientColor:end": getColor(4),
     textColor,
-    mainColor: getColor(6),
-    mainTextColor: getColor(9),
-    contrastTextColor,
-    borderColor: getColor(8),
-    contrastBorderColor,
-    shadowColor: getColor(9),
-    "textColor:disabled": getColor(3, "grayscale"),
-    "contrastTextColor:disabled": getColor(7, "grayscale"),
+    pageBackgroundColor: getColor(1),
+    nonInteractiveBackgroundColor: getColor(3),
+    coloredTextColor: getColor(9),
+    borderColor: getColor(4),
+    shadowColor: getColor(8),
+    "textColor:disabled": getColor(6, "grayscale"),
 
     "interactive.linkTextColor": getColor(9),
-    "interactive.linkTextColor:hover": getColor(7),
-    "interactive.linkTextColor:focus": getColor(7),
-    "interactive.linkTextColor:press": getColor(7),
-    "interactive.linkTextColor:disabled": getColor(3, "grayscale"),
+    "interactive.linkTextColor:hover": getColor(10),
+    "interactive.linkTextColor:focus": getColor(10),
+    "interactive.linkTextColor:press": getColor(8),
+    "interactive.linkTextColor:disabled": getColor(9, "grayscale"),
 
-    "interactive.contained.backgroundColor": getColor(5),
+    "interactive.contained.backgroundColor": getColor(6),
     "interactive.elevated.backgroundColor": backgroundColor,
-    "interactive.elevated.shadowColor": getColor(9),
-    "interactive.elevated.borderColor": contrastBorderColor,
+    "interactive.elevated.shadowColor": getColor(8),
+    "interactive.elevated.borderColor": getColor(1),
     "interactive.outlined.backgroundColor": backgroundColor,
-    "interactive.outlined.borderColor": getColor(mode === "dark" ? 5 : 8),
+    "interactive.outlined.borderColor": getColor(7),
 
-    "interactive.contained.backgroundColor:hover": getColor(4),
-    "interactive.elevated.backgroundColor:hover": getColor(1),
-    "interactive.elevated.borderColor:hover": contrastBorderColor,
-    "interactive.outlined.backgroundColor:hover": getColor(1),
-    "interactive.outlined.borderColor:hover": getColor(mode === "dark" ? 5 : 7),
+    "interactive.contained.backgroundColor:hover": getColor(5),
+    "interactive.elevated.backgroundColor:hover": getColor(2),
+    "interactive.elevated.borderColor:hover": getColor(1),
+    "interactive.outlined.backgroundColor:hover": getColor(2),
+    "interactive.outlined.borderColor:hover": getColor(6),
 
-    "interactive.contained.backgroundColor:focus": getColor(4),
-    "interactive.elevated.backgroundColor:focus": getColor(1),
-    "interactive.elevated.borderColor:focus": contrastBorderColor,
-    "interactive.outlined.backgroundColor:focus": getColor(1),
-    "interactive.outlined.borderColor:focus": getColor(7),
+    "interactive.contained.backgroundColor:focus": getColor(5),
+    "interactive.elevated.backgroundColor:focus": getColor(2),
+    "interactive.elevated.borderColor:focus": getColor(1),
+    "interactive.outlined.backgroundColor:focus": getColor(2),
+    "interactive.outlined.borderColor:focus": getColor(6),
 
-    "interactive.contained.backgroundColor:press": getColor(2),
-    "interactive.elevated.backgroundColor:press": getColor(3),
-    "interactive.elevated.borderColor:press": contrastBorderColor,
-    "interactive.outlined.backgroundColor:press": getColor(3),
-    "interactive.outlined.borderColor:press": getColor(7),
+    "interactive.contained.backgroundColor:press": getColor(3),
+    "interactive.elevated.backgroundColor:press": getColor(4),
+    "interactive.elevated.borderColor:press": getColor(1),
+    "interactive.outlined.backgroundColor:press": getColor(4),
+    "interactive.outlined.borderColor:press": getColor(6),
 
-    "interactive.contained.backgroundColor:disabled": getColor(3, "grayscale"),
+    "interactive.contained.backgroundColor:disabled": getColor(4, "grayscale"),
     "interactive.elevated.backgroundColor:disabled": backgroundColor,
-    "interactive.elevated.shadowColor:disabled": getColor(9, "grayscale"),
-    "interactive.elevated.borderColor:disabled": getColor(3, "grayscale"),
+    "interactive.elevated.shadowColor:disabled": getColor(8, "grayscale"),
+    "interactive.elevated.borderColor:disabled": getColor(1, "grayscale"),
     "interactive.outlined.backgroundColor:disabled": backgroundColor,
-    "interactive.outlined.borderColor:disabled": getColor(3, "grayscale"),
-    "interactive.textColor:disabled": getColor(7, "grayscale"),
+    "interactive.outlined.borderColor:disabled": getColor(7, "grayscale"),
 
     "interactive.forms.textColor": textColor,
-    "interactive.forms.placeholderTextColor": getColor(3, "grayscale"),
+    "interactive.forms.placeholderTextColor": getColor(8, "grayscale"),
 
     // "interactive.forms.backgroundColor": undefined,
     // "interactive.forms.backgroundColor:hover": undefined,
-    "interactive.forms.backgroundColor:focus": getColor(1),
-    "interactive.forms.backgroundColor:press": getColor(3),
-    "interactive.forms.borderColor": getColor(10),
-    "interactive.forms.borderColor:hover": getColor(7),
-    "interactive.forms.borderColor:focus": getColor(7),
-    "interactive.forms.borderColor:press": getColor(7),
-    "interactive.forms.borderColor:disabled": getColor(3, "grayscale"),
+    "interactive.forms.backgroundColor:focus": getColor(2),
+    "interactive.forms.backgroundColor:press": getColor(4),
+    "interactive.forms.borderColor": getColor(7),
+    "interactive.forms.borderColor:disabled": getColor(7, "grayscale"),
+    "interactive.forms.borderColor:hover": getColor(6),
+    "interactive.forms.borderColor:focus": getColor(6),
+    "interactive.forms.borderColor:press": getColor(6),
   } satisfies FullTheme;
 
   if (process.env.NODE_ENV === "development") {
     // Check main text contrast
     warnOnContrastIssues(
-      colorScaleName,
+      intent,
       theme.textColor.val,
       theme.backgroundColor.val,
     );

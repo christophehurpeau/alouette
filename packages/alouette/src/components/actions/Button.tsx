@@ -26,35 +26,12 @@ const ButtonFrame = styled(PressableBox, {
         minHeight: 42,
       },
     },
-    variant: {
-      contained: {
-        withBackground: true,
-      },
-      outlined: {
-        withBackground: true,
-        withBorder: true,
-      },
-      elevated: {
-        withBackground: true,
-        withElevation: true,
-        withBorder: true,
-        borderColor: "$contrastBorderColor",
-      },
-      "ghost-contained": {
-        withBackground: true,
-      },
-      "ghost-outlined": {
-        withBorder: 1,
-        withBackground: true,
-      },
-    },
   },
 
   defaultVariants: {
-    variant: "contained",
     size: "md",
   },
-});
+} as const);
 
 type ButtonFrameProps = GetProps<typeof ButtonFrame>;
 
@@ -63,19 +40,6 @@ export interface ButtonProps extends Except<ButtonFrameProps, "size"> {
   text: ReactNode;
   size?: "md" | "sm";
 }
-
-const getDisabledColor = (
-  variant:
-    | "contained"
-    | "elevated"
-    | "ghost-contained"
-    | "ghost-outlined"
-    | "outlined",
-) => {
-  return variant === "contained" || variant === "ghost-contained"
-    ? "$contrastTextColor:disabled"
-    : "$textColor:disabled";
-};
 
 export function Button({
   icon,
@@ -95,11 +59,7 @@ export function Button({
       <HStack gap="$xs" alignItems="center">
         {icon && (
           <Icon
-            color={disabled ? getDisabledColor(variant) : undefined}
-            contrast={
-              (variant === "contained" || variant === "ghost-contained") &&
-              !disabled
-            }
+            disabled={disabled}
             icon={icon}
             size={size === "sm" ? 16 : 20}
           />
@@ -108,11 +68,7 @@ export function Button({
           size={size === "sm" ? "$sm" : "$md"}
           weight="$bold"
           paddingVertical={size === "sm" ? "$1" : "$xs"}
-          color={disabled ? getDisabledColor(variant) : undefined}
-          contrast={
-            (variant === "contained" || variant === "ghost-contained") &&
-            !disabled
-          }
+          disabled={disabled}
         >
           {text}
         </Typography>

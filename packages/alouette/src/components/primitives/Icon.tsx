@@ -10,7 +10,6 @@ export interface IconProps
   icon: ReactElement;
   color?: ColorTokens | OpaqueColorValue | Variable<any> | undefined;
   align?: BoxProps["alignSelf"];
-  contrast?: boolean;
   size?: number;
 }
 
@@ -18,8 +17,8 @@ export function Icon({
   icon,
   size = 20,
   align = "auto",
-  contrast,
-  color = contrast ? "$contrastTextColor" : "$textColor",
+  disabled,
+  color = disabled ? "$textColor:disabled" : "$textColor",
   ...props
 }: IconProps): ReactNode {
   const style = useStyle({

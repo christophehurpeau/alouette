@@ -20,11 +20,12 @@ export {
 } from "./config/themes";
 
 export {
-  defaultColorScales,
   createColorScale,
   type AlouetteColorScales,
   type AlouetteColorScale,
 } from "./config/colorScales";
+
+export { defaultColorScales } from "./config/defaultColorScales";
 
 export const createAlouetteTamagui = <
   const ColorScales extends AlouetteColorScales,

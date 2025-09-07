@@ -51,7 +51,7 @@ export const TokensStory: StoryObj<unknown> = {
               ([themeName, theme]) => (
                 <Story.Section key={themeName} title={themeName}>
                   <Box withBackground padding="$md" theme={themeName as string}>
-                    <Typography contrast>Demo</Typography>
+                    <Typography>Demo</Typography>
                   </Box>
 
                   {groupTokens(theme).map(([groupName, tokens]) => (

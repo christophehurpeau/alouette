@@ -29,24 +29,21 @@ export const Typography = styled(Text, {
       $heading: { fontFamily: "$heading" },
       $body: { fontFamily: "$body" },
     },
-    contrast: {
-      true: {
-        color: "$contrastTextColor",
-      },
-      false: {
-        color: "$textColor",
-      },
-    },
     colored: {
       true: {
-        color: "$mainColor",
+        color: "$coloredTextColor",
+      },
+    },
+    disabled: {
+      true: {
+        color: "$textColor:disabled",
       },
     },
   },
 
   defaultVariants: {
     inherit: false,
-    contrast: false,
+    // contrast: false,
   },
 } as const);
 

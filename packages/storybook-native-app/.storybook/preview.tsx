@@ -13,19 +13,7 @@ const preview: Preview = {
       },
     },
     tamaguiConfig,
-    backgrounds: {
-      default: "light",
-      values: [
-        {
-          name: "light",
-          value: "#ffffff",
-        },
-        {
-          name: "dark",
-          value: "#000000",
-        },
-      ],
-    },
+    layout: "fullscreen",
     docs: {
       toc: true,
       page: DocTemplate,

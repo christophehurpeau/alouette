@@ -39,19 +39,6 @@ const IconButtonFrame = styled(PressableBox, {
   },
 });
 
-const getDisabledColor = (
-  variant:
-    | "contained"
-    | "elevated"
-    | "ghost-contained"
-    | "ghost-outlined"
-    | "outlined",
-) => {
-  return variant === "contained" || variant === "ghost-contained"
-    ? "$contrastTextColor:disabled"
-    : "$textColor:disabled";
-};
-
 type IconButtonFrameProps = GetProps<typeof IconButtonFrame>;
 
 export interface IconButtonProps extends IconButtonFrameProps {
@@ -72,15 +59,7 @@ export function IconButton({
       disabled={disabled}
       {...pressableProps}
     >
-      <Icon
-        size={size / 2}
-        color={disabled ? getDisabledColor(variant) : undefined}
-        contrast={
-          (variant === "contained" || variant === "ghost-contained") &&
-          !disabled
-        }
-        icon={icon}
-      />
+      <Icon size={size / 2} disabled={disabled} icon={icon} />
     </IconButtonFrame>
   );
 }

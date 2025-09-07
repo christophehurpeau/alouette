@@ -2,9 +2,9 @@ import type { GetProps } from "@tamagui/core";
 import type { DistributedOmit } from "type-fest";
 declare const Anchor: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: import("@tamagui/web").FontSizeTokens | undefined;
+    disabled?: boolean | undefined;
     inherit?: boolean | undefined;
     family?: "$body" | "$heading" | undefined;
-    contrast?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$black" | undefined;
     colored?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
@@ -14,9 +14,9 @@ export type LinkProps = DistributedOmit<AnchorProps, "href"> & {
 };
 export declare const Link: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: import("@tamagui/web").FontSizeTokens | undefined;
+    disabled?: boolean | undefined;
     inherit?: boolean | undefined;
     family?: "$body" | "$heading" | undefined;
-    contrast?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$black" | undefined;
     colored?: boolean | undefined;
 }>, "href"> & {

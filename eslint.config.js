@@ -18,6 +18,7 @@ export default [
       "**/vite.config.ts",
       "**/tamagui.config.ts",
       "**/alouette-icons/lib/**",
+      "**/scripts/**",
     ],
   },
   ...pobTypescriptReactConfigs.node,

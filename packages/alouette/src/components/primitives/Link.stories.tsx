@@ -90,9 +90,7 @@ export const Variants: ThisStory = {
 
       <Story.Section title="High Contrast">
         <Box withBackground theme="primary" padding="$4">
-          <Link contrast href="#">
-            Settings
-          </Link>
+          <Link href="#">Settings</Link>
         </Box>
       </Story.Section>
 
