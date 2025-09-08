@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.0](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@2.2.0...storybook-native-app@3.0.0) (2025-09-08)
+
+### ⚠ BREAKING CHANGES
+
+* generate palette, check colors for accessibility and improve dark/light modes
+
+### Features
+
+* **deps:** update dependency @react-native-async-storage/async-storage to v2.2.0 ([#206](https://github.com/christophehurpeau/alouette/issues/206)) ([b63471b](https://github.com/christophehurpeau/alouette/commit/b63471b7e68d6c599ea8191c4206bf70e9ae6ec3))
+* **deps:** update dependency @react-native-community/datetimepicker to v8.4.4 ([#207](https://github.com/christophehurpeau/alouette/issues/207)) ([0749538](https://github.com/christophehurpeau/alouette/commit/07495388d2898d4975f49f1982daf58c7dedf136))
+* **deps:** update dependency react-native-reanimated to ~3.19.0 ([#209](https://github.com/christophehurpeau/alouette/issues/209)) ([687fff6](https://github.com/christophehurpeau/alouette/commit/687fff62cb2ae595a7b3ba56b87f9a776d594380))
+* **deps:** update dependency react-native-svg to v15.12.1 ([#211](https://github.com/christophehurpeau/alouette/issues/211)) ([cf78659](https://github.com/christophehurpeau/alouette/commit/cf78659d27c63f7aa88873ae51e34e24b9cd52fb))
+* generate palette, check colors for accessibility and improve dark/light modes ([49157a7](https://github.com/christophehurpeau/alouette/commit/49157a70dae174aa93b78390bc90ee259218975b))
+
+### Bug Fixes
+
+* **deps:** update babel monorepo to v7.28.3 ([#219](https://github.com/christophehurpeau/alouette/issues/219)) ([d7284a7](https://github.com/christophehurpeau/alouette/commit/d7284a75adbb8c8b1c7f619807d75993ff0f93d9))
+* **deps:** update dependency @react-native-community/slider to v4.5.7 ([#205](https://github.com/christophehurpeau/alouette/issues/205)) ([a4d635c](https://github.com/christophehurpeau/alouette/commit/a4d635c4f92d990f2fef7f05c7669ef5acd43079))
+
 ## [2.2.0](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@2.1.0...storybook-native-app@2.2.0) (2025-08-02)
 
 ### Features

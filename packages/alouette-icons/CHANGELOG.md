@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.1](https://github.com/christophehurpeau/alouette/compare/alouette-icons@5.1.0...alouette-icons@5.1.1) (2025-09-08)
+
+### Bug Fixes
+
+* **deps:** update babel monorepo to v7.28.3 ([#219](https://github.com/christophehurpeau/alouette/issues/219)) ([d7284a7](https://github.com/christophehurpeau/alouette/commit/d7284a75adbb8c8b1c7f619807d75993ff0f93d9))
+
 ## [5.1.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@5.0.0...alouette-icons@5.1.0) (2025-07-09)
 
 ### Features

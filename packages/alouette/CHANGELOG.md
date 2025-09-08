@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@11.3.0...alouette@12.0.0) (2025-09-08)
+
+### ⚠ BREAKING CHANGES
+
+* generate palette, check colors for accessibility and improve dark/light modes
+
+### Features
+
+* **deps:** update dependency react-native-svg to v15.12.1 ([#211](https://github.com/christophehurpeau/alouette/issues/211)) ([cf78659](https://github.com/christophehurpeau/alouette/commit/cf78659d27c63f7aa88873ae51e34e24b9cd52fb))
+* generate palette, check colors for accessibility and improve dark/light modes ([49157a7](https://github.com/christophehurpeau/alouette/commit/49157a70dae174aa93b78390bc90ee259218975b))
+
+### Bug Fixes
+
+* fix themes stories ([4c2fe21](https://github.com/christophehurpeau/alouette/commit/4c2fe2132a73f97d7d922997cbebf09f122c41ea))
+
+Version bump for dependency: alouette-icons
+
+
 ## [11.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@11.2.1...alouette@11.3.0) (2025-08-02)
 
 ### Features
