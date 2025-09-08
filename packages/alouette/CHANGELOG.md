@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@12.0.0...alouette@13.0.0) (2025-09-08)
+
+### ⚠ BREAKING CHANGES
+
+* remove box around icon component and accent color
+
+### Features
+
+* add GradientBackground component ([28c9aaf](https://github.com/christophehurpeau/alouette/commit/28c9aaf04ecfb6f4329da68a37910dbb643c9dce))
+
+### Bug Fixes
+
+* remove box around icon component and accent color ([bd8eaf6](https://github.com/christophehurpeau/alouette/commit/bd8eaf686aca94b23cead0844d353aff6ef3d3fe))
+
 ## [12.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@11.3.0...alouette@12.0.0) (2025-09-08)
 
 ### ⚠ BREAKING CHANGES

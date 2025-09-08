@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@3.0.0...storybook-native-app@3.1.0) (2025-09-08)
+
+### Features
+
+* add GradientBackground component ([28c9aaf](https://github.com/christophehurpeau/alouette/commit/28c9aaf04ecfb6f4329da68a37910dbb643c9dce))
+
 ## [3.0.0](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@2.2.0...storybook-native-app@3.0.0) (2025-09-08)
 
 ### ⚠ BREAKING CHANGES
