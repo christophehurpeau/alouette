@@ -1,7 +1,8 @@
 import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
-import type { ReactElement, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { PressableBox } from "../containers/PressableBox";
+import type { SVGIconElement } from "../primitives/Icon";
 import { Icon } from "../primitives/Icon";
 
 const IconButtonFrame = styled(PressableBox, {
@@ -42,7 +43,7 @@ const IconButtonFrame = styled(PressableBox, {
 type IconButtonFrameProps = GetProps<typeof IconButtonFrame>;
 
 export interface IconButtonProps extends IconButtonFrameProps {
-  icon: NonNullable<ReactElement>;
+  icon: NonNullable<SVGIconElement>;
 }
 
 export function IconButton({

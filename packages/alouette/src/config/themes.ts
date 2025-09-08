@@ -28,7 +28,7 @@ export interface ColorTheme {
   "gradientColor:end": Variable<string>;
   textColor: Variable<string>;
   "textColor:disabled": Variable<string>;
-  coloredTextColor: Variable<string>;
+  accentTextColor: Variable<string>;
   borderColor: Variable<string>;
   shadowColor: Variable<string>;
 
@@ -127,13 +127,16 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
 
   const theme = {
     backgroundColor,
-    "gradientColor:start": getColor(5),
-    "gradientColor:middle": getColor(7),
-    "gradientColor:end": getColor(4),
+    "gradientColor:start":
+      tokens.color[`${intent}.${mode}.${mode === "dark" ? 5 : 6}`],
+    "gradientColor:middle":
+      tokens.color[`${intent}.${mode}.${mode === "dark" ? 6 : 7}`],
+    "gradientColor:end":
+      tokens.color[`${intent}.${mode}.${mode === "dark" ? 4 : 5}`],
     textColor,
     pageBackgroundColor: getColor(1),
     nonInteractiveBackgroundColor: getColor(3),
-    coloredTextColor: getColor(9),
+    accentTextColor: getColor(9),
     borderColor: getColor(4),
     shadowColor: getColor(8),
     "textColor:disabled": getColor(6, "grayscale"),

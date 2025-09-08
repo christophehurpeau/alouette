@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import * as AllPhosphorIcons from "alouette-icons/phosphor-icons";
+import { Box } from "../containers/Box";
+import { Story } from "../story-components/Story";
+import { StoryGrid } from "../story-components/StoryGrid";
 import { Icon } from "./Icon";
 
 export default {
@@ -62,4 +65,55 @@ export const PreviewIconStory: StoryObj<typeof Icon> = {
     size: 24,
   },
   render: (args) => <Icon {...args} />,
+};
+
+export const VariantsIconStory: StoryObj<typeof Icon> = {
+  name: "Variants",
+  render: () => (
+    <Story>
+      <Story.Section title="Size">
+        <StoryGrid.Row>
+          <StoryGrid.Col title="24">
+            <Icon
+              icon={<AllPhosphorIcons.ArrowUpLeftRegularIcon />}
+              size={24}
+            />
+          </StoryGrid.Col>
+          <StoryGrid.Col title="40">
+            <Icon
+              icon={<AllPhosphorIcons.ArrowUpLeftRegularIcon />}
+              size={40}
+            />
+          </StoryGrid.Col>
+        </StoryGrid.Row>
+      </Story.Section>
+
+      <Story.Section title="Color">
+        <StoryGrid.Row>
+          <StoryGrid.Col title="Default">
+            <Icon
+              icon={<AllPhosphorIcons.ArrowUpLeftRegularIcon />}
+              size={24}
+            />
+          </StoryGrid.Col>
+          <StoryGrid.Col title="Disabled">
+            <Icon
+              disabled
+              icon={<AllPhosphorIcons.ArrowUpLeftRegularIcon />}
+              size={24}
+            />
+          </StoryGrid.Col>
+          <StoryGrid.Col title="Primary">
+            <Box theme="primary">
+              <Icon
+                accent
+                icon={<AllPhosphorIcons.ArrowUpLeftRegularIcon />}
+                size={24}
+              />
+            </Box>
+          </StoryGrid.Col>
+        </StoryGrid.Row>
+      </Story.Section>
+    </Story>
+  ),
 };

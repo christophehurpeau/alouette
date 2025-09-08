@@ -64,13 +64,13 @@ export const BodyStory: ThisStory = {
           The future is in{" "}
           <Typography inherit weight="$bold">
             our{" "}
-            <Typography inherit colored theme="primary">
+            <Typography inherit accent theme="primary">
               hands
             </Typography>
           </Typography>{" "}
-          <Typography inherit colored theme="danger">
+          <Typography inherit accent theme="danger">
             to{" "}
-            <Typography inherit colored weight="$bold">
+            <Typography inherit accent weight="$bold">
               shape
             </Typography>
           </Typography>

@@ -1,8 +1,9 @@
 import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
-import type { ReactElement, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Except } from "type-fest";
 import { PressableBox } from "../containers/PressableBox";
+import type { SVGIconElement } from "../primitives/Icon";
 import { Icon } from "../primitives/Icon";
 import { HStack } from "../primitives/stacks";
 import { Typography } from "../typography/Typography";
@@ -36,7 +37,7 @@ const ButtonFrame = styled(PressableBox, {
 type ButtonFrameProps = GetProps<typeof ButtonFrame>;
 
 export interface ButtonProps extends Except<ButtonFrameProps, "size"> {
-  icon?: NonNullable<ReactElement>;
+  icon?: NonNullable<SVGIconElement>;
   text: ReactNode;
   size?: "md" | "sm";
 }

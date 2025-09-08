@@ -29,9 +29,9 @@ export const Typography = styled(Text, {
       $heading: { fontFamily: "$heading" },
       $body: { fontFamily: "$body" },
     },
-    colored: {
+    accent: {
       true: {
-        color: "$coloredTextColor",
+        color: "$accentTextColor",
       },
     },
     disabled: {

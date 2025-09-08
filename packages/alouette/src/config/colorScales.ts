@@ -17,7 +17,7 @@ import type { IntRange } from "type-fest";
 // DARK SCALE
 // 1: colored page background color
 // 2: interactive outlined background press color / non interactive shadow color
-// 2: interactive outlined background hover/focus color
+// 3: interactive outlined background hover/focus color
 // 4: interactive contained background press color / non interactive background color
 // 5: interactive contained background color / interactive border hover/focus color
 // 6: interactive contained background hover/focus color
