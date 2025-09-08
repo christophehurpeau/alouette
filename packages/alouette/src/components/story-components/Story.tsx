@@ -58,9 +58,14 @@ function SubSection({
 export interface StoryProps {
   documentation?: NonNullable<ReactNode>;
   children?: NonNullable<ReactNode>;
+  noDarkTheme?: boolean;
 }
 
-export function Story({ documentation, children }: StoryProps): ReactNode {
+export function Story({
+  documentation,
+  children,
+  noDarkTheme,
+}: StoryProps): ReactNode {
   return (
     <>
       {documentation && (
@@ -74,7 +79,7 @@ export function Story({ documentation, children }: StoryProps): ReactNode {
           {documentation}
         </Box>
       )}
-      {["light", "dark"].map((theme) => (
+      {["light", ...(noDarkTheme ? [] : ["dark"])].map((theme) => (
         <Box
           key={theme}
           theme={theme}

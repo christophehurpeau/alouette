@@ -46,7 +46,7 @@ export const TokensStory: StoryObj<unknown> = {
     <WithTamaguiConfig
       render={({ themes }) => {
         return (
-          <Story>
+          <Story noDarkTheme>
             {(Object.entries(themes) as Entries<typeof themes>).map(
               ([themeName, theme]) => (
                 <Story.Section key={themeName} title={themeName}>
