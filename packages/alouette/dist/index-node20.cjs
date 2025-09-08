@@ -538,7 +538,11 @@ function SubSection({
     children
   ] });
 }
-function Story({ documentation, children }) {
+function Story({
+  documentation,
+  children,
+  noDarkTheme
+}) {
   return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
     documentation && /* @__PURE__ */ jsxRuntime.jsx(
       Box,
@@ -551,7 +555,7 @@ function Story({ documentation, children }) {
         children: documentation
       }
     ),
-    ["light", "dark"].map((theme) => /* @__PURE__ */ jsxRuntime.jsx(
+    ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsxRuntime.jsx(
       Box,
       {
         theme,

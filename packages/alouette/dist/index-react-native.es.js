@@ -535,7 +535,11 @@ function SubSection({
     children
   ] });
 }
-function Story({ documentation, children }) {
+function Story({
+  documentation,
+  children,
+  noDarkTheme
+}) {
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     documentation && /* @__PURE__ */ jsx(
       Box,
@@ -548,7 +552,7 @@ function Story({ documentation, children }) {
         children: documentation
       }
     ),
-    ["light", "dark"].map((theme) => /* @__PURE__ */ jsx(
+    ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsx(
       Box,
       {
         theme,

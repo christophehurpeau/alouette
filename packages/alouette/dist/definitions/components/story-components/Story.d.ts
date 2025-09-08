@@ -11,8 +11,9 @@ declare function StorySection({ title, children, level, withBackground, ...props
 export interface StoryProps {
     documentation?: NonNullable<ReactNode>;
     children?: NonNullable<ReactNode>;
+    noDarkTheme?: boolean;
 }
-export declare function Story({ documentation, children }: StoryProps): ReactNode;
+export declare function Story({ documentation, children, noDarkTheme, }: StoryProps): ReactNode;
 export declare namespace Story {
     var Section: typeof StorySection;
     var SubSection: ({ title, children, ...props }: StorySectionProps) => ReactNode;
