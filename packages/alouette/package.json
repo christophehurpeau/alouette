@@ -99,12 +99,16 @@
   "prettier": "@pob/root/prettier-config",
   "peerDependencies": {
     "alouette-icons": "*",
+    "expo-linear-gradient": "*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-native": "*",
     "react-native-svg": "*"
   },
   "peerDependenciesMeta": {
+    "expo-linear-gradient": {
+      "optional": true
+    },
     "react-dom": {
       "optional": true
     }
@@ -114,6 +118,7 @@
     "@tamagui/animations-react-native": "1.132.15",
     "@tamagui/core": "1.132.15",
     "alouette-icons": "5.1.1",
+    "expo-linear-gradient": "14.1.5",
     "type-fest": "4.41.0"
   },
   "devDependencies": {

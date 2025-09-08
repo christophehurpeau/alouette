@@ -29,4 +29,5 @@ declare const _default: {
 };
 export default _default;
 export declare const PreviewIconStory: StoryObj<typeof Icon>;
+export declare const VariantsIconStory: StoryObj<typeof Icon>;
 //# sourceMappingURL=Icon.stories.d.ts.map

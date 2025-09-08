@@ -5285,6 +5285,7 @@ __metadata:
     "@types/node": "npm:24.3.0"
     "@types/react": "npm:19.1.8"
     alouette-icons: "npm:5.1.1"
+    expo-linear-gradient: "npm:14.1.5"
     react: "npm:19.0.0"
     react-dom: "npm:19.0.0"
     react-native: "npm:0.79.4"
@@ -5293,11 +5294,14 @@ __metadata:
     typescript: "npm:5.9.2"
   peerDependencies:
     alouette-icons: "*"
+    expo-linear-gradient: "*"
     react: ^19.0.0
     react-dom: ^19.0.0
     react-native: "*"
     react-native-svg: "*"
   peerDependenciesMeta:
+    expo-linear-gradient:
+      optional: true
     react-dom:
       optional: true
   languageName: unknown
@@ -7981,6 +7985,17 @@ __metadata:
     expo: "*"
     react: "*"
   checksum: 10c0/9d1993f7b17e6c36d707501ba9d983fe7e640317af7f2ecee17255f2c8c7bae39bdb3dfffcc67afcd36457bb60a6799dbaa2414922507ef01298cbe34e8eae8e
+  languageName: node
+  linkType: hard
+
+"expo-linear-gradient@npm:14.1.5":
+  version: 14.1.5
+  resolution: "expo-linear-gradient@npm:14.1.5"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/14484683a36d8346ee2339530edb4927bbdb58833728ac34cdfe2df38541705cd9ef5f460c89dd28617af760b12197870bc411c48780f57bf1ba969bf54b13a0
   languageName: node
   linkType: hard
 
@@ -12032,9 +12047,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:~3.19.0":
-  version: 3.19.1
-  resolution: "react-native-reanimated@npm:3.19.1"
+"react-native-reanimated@npm:3.17.4":
+  version: 3.17.4
+  resolution: "react-native-reanimated@npm:3.17.4"
   dependencies:
     "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
     "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
@@ -12052,7 +12067,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 10c0/82f83f8cd307dbb3d0d435a7c801fa27d06265b1eed51844013682e133072e447fd15c3f12814f4bd8d4759c89ad4b1043631611284afbd8e6eb505f57af0f12
+  checksum: 10c0/a86e0886acec76367b14cb3026de09a5c83b2845349b4c643b2a95eb56b9e477a3c6b5956707457c794dde3dc06e47d451c55d94188533abec04451c2c378160
   languageName: node
   linkType: hard
 
@@ -13234,7 +13249,7 @@ __metadata:
     react-dom: "npm:19.0.0"
     react-native: "npm:0.79.4"
     react-native-gesture-handler: "npm:~2.27.0"
-    react-native-reanimated: "npm:~3.19.0"
+    react-native-reanimated: "npm:3.17.4"
     react-native-safe-area-context: "npm:5.5.2"
     react-native-svg: "npm:15.12.1"
     react-native-web: "npm:^0.20.0"

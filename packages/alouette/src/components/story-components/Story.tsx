@@ -1,7 +1,9 @@
-import { styled } from "@tamagui/core";
+import { isWeb, styled } from "@tamagui/core";
+import { Fragment } from "react";
 import type { ReactNode } from "react";
 import type { Except } from "type-fest";
 import { Box } from "../containers/Box";
+import { ScrollView } from "../primitives/ScrollView";
 import { VStack } from "../primitives/stacks";
 import type { VStackProps } from "../primitives/stacks";
 import { StoryTitle } from "./StoryTitle";
@@ -55,6 +57,8 @@ function SubSection({
   );
 }
 
+const ScrollViewNative = isWeb ? Fragment : ScrollView;
+
 export interface StoryProps {
   documentation?: NonNullable<ReactNode>;
   children?: NonNullable<ReactNode>;
@@ -67,7 +71,7 @@ export function Story({
   noDarkTheme,
 }: StoryProps): ReactNode {
   return (
-    <>
+    <ScrollViewNative>
       {documentation && (
         <Box
           withBorder="$2"
@@ -89,7 +93,7 @@ export function Story({
           {children}
         </Box>
       ))}
-    </>
+    </ScrollViewNative>
   );
 }
 

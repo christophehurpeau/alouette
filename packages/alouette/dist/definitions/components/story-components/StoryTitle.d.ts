@@ -4,8 +4,8 @@ export declare const StoryTitle: import("@tamagui/web").TamaguiComponent<import(
     disabled?: boolean | undefined;
     inherit?: boolean | undefined;
     family?: "$body" | "$heading" | undefined;
+    accent?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$black" | undefined;
-    colored?: boolean | undefined;
     level?: 1 | 3 | 4 | 2 | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export type StoryTitleProps = GetProps<typeof StoryTitle>;

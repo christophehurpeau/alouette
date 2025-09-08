@@ -65,3 +65,6 @@ export { Theme, styled, withStaticProperties } from "@tamagui/core";
 export type { SeparatorProps } from "./components/layout/Separator";
 export { Separator } from "./components/layout/Separator";
 export { PressableListItem } from "./components/layout/list";
+export type { PressableListItemProps } from "./components/layout/list";
+export { GradientBackground } from "./components/layout/GradientBackground";
+export type { GradientBackgroundProps } from "./components/layout/GradientBackground";

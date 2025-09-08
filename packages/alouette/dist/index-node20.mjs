@@ -1,9 +1,10 @@
-import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
-import { styled, View, useStyle, Text, TamaguiProvider, useMedia, Stack as Stack$1 } from '@tamagui/core';
+import { jsx, jsxs } from 'react/jsx-runtime';
+import { styled, View, usePropsAndStyle, Text, isWeb, TamaguiProvider, useMedia, Stack as Stack$1, useTheme, Theme } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
+import { cloneElement, Fragment, Children, createContext, useState, useEffect, useContext } from 'react';
 import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
-import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Pressable } from 'react-native';
-import { Children, createContext, useState, useEffect, useContext } from 'react';
+import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Pressable, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const fullscreenStyle = {
   position: "absolute",
@@ -154,20 +155,25 @@ const PressableBox = styled(Box, {
   }
 });
 
+const getDefaultColor = (disabled, accent) => {
+  if (disabled) return "$textColor:disabled";
+  if (accent) return "$accentTextColor";
+  return "$textColor";
+};
 function Icon({
   icon,
   size = 20,
-  align = "auto",
   disabled,
-  color = disabled ? "$textColor:disabled" : "$textColor",
-  ...props
+  accent,
+  color = getDefaultColor(disabled, accent)
 }) {
-  const style = useStyle({
-    color
-    // if needed for native
-    // resolveValues: Platform.OS === 'web' ? undefined: 'value',
+  const [props, style] = usePropsAndStyle({
+    forComponent: Text,
+    color,
+    width: size,
+    height: size
   });
-  return /* @__PURE__ */ jsx(Box, { ...props, centered: true, alignSelf: align, size, style, children: icon });
+  return cloneElement(icon, { style, ...props });
 }
 
 const IconButtonFrame = styled(PressableBox, {
@@ -273,9 +279,9 @@ const Typography = styled(Text, {
       $heading: { fontFamily: "$heading" },
       $body: { fontFamily: "$body" }
     },
-    colored: {
+    accent: {
       true: {
-        color: "$coloredTextColor"
+        color: "$accentTextColor"
       }
     },
     disabled: {
@@ -535,12 +541,13 @@ function SubSection({
     children
   ] });
 }
+const ScrollViewNative = isWeb ? Fragment : ScrollView;
 function Story({
   documentation,
   children,
   noDarkTheme
 }) {
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
+  return /* @__PURE__ */ jsxs(ScrollViewNative, { children: [
     documentation && /* @__PURE__ */ jsx(
       Box,
       {
@@ -808,5 +815,28 @@ function PressableListItem({
   ) });
 }
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
+function GradientBackground({
+  theme: themeName,
+  children
+}) {
+  const theme = useTheme({ name: themeName });
+  const colors = [
+    theme["gradientColor:start"]?.get("web"),
+    theme["gradientColor:middle"]?.get("web"),
+    theme["gradientColor:end"]?.get("web")
+  ];
+  return /* @__PURE__ */ jsx(Theme, { name: themeName, children: /* @__PURE__ */ jsx(
+    LinearGradient,
+    {
+      colors,
+      start: { x: 0, y: 0 },
+      end: { x: 1, y: 1 },
+      locations: [0.2, 0.7, 1],
+      style: StyleSheet.absoluteFill,
+      children
+    }
+  ) });
+}
+
+export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
 //# sourceMappingURL=index-node20.mjs.map

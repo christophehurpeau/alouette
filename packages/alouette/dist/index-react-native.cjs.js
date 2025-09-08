@@ -4,9 +4,10 @@ Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 
 const jsxRuntime = require('react/jsx-runtime');
 const core = require('@tamagui/core');
+const react = require('react');
 const phosphorIcons = require('alouette-icons/phosphor-icons');
 const reactNative = require('react-native');
-const react = require('react');
+const expoLinearGradient = require('expo-linear-gradient');
 
 const fullscreenStyle = {
   position: "absolute",
@@ -157,20 +158,25 @@ const PressableBox = core.styled(Box, {
   }
 });
 
+const getDefaultColor = (disabled, accent) => {
+  if (disabled) return "$textColor:disabled";
+  if (accent) return "$accentTextColor";
+  return "$textColor";
+};
 function Icon({
   icon,
   size = 20,
-  align = "auto",
   disabled,
-  color = disabled ? "$textColor:disabled" : "$textColor",
-  ...props
+  accent,
+  color = getDefaultColor(disabled, accent)
 }) {
-  const style = core.useStyle({
-    color
-    // if needed for native
-    // resolveValues: Platform.OS === 'web' ? undefined: 'value',
+  const [props, style] = core.usePropsAndStyle({
+    forComponent: core.Text,
+    color,
+    width: size,
+    height: size
   });
-  return /* @__PURE__ */ jsxRuntime.jsx(Box, { ...props, centered: true, alignSelf: align, size, style, children: icon });
+  return react.cloneElement(icon, { style, ...props });
 }
 
 const IconButtonFrame = core.styled(PressableBox, {
@@ -276,9 +282,9 @@ const Typography = core.styled(core.Text, {
       $heading: { fontFamily: "$heading" },
       $body: { fontFamily: "$body" }
     },
-    colored: {
+    accent: {
       true: {
-        color: "$coloredTextColor"
+        color: "$accentTextColor"
       }
     },
     disabled: {
@@ -538,12 +544,13 @@ function SubSection({
     children
   ] });
 }
+const ScrollViewNative = core.isWeb ? react.Fragment : ScrollView;
 function Story({
   documentation,
   children,
   noDarkTheme
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+  return /* @__PURE__ */ jsxRuntime.jsxs(ScrollViewNative, { children: [
     documentation && /* @__PURE__ */ jsxRuntime.jsx(
       Box,
       {
@@ -811,6 +818,29 @@ function PressableListItem({
   ) });
 }
 
+function GradientBackground({
+  theme: themeName,
+  children
+}) {
+  const theme = core.useTheme({ name: themeName });
+  const colors = [
+    theme["gradientColor:start"]?.get("web"),
+    theme["gradientColor:middle"]?.get("web"),
+    theme["gradientColor:end"]?.get("web")
+  ];
+  return /* @__PURE__ */ jsxRuntime.jsx(core.Theme, { name: themeName, children: /* @__PURE__ */ jsxRuntime.jsx(
+    expoLinearGradient.LinearGradient,
+    {
+      colors,
+      start: { x: 0, y: 0 },
+      end: { x: 1, y: 1 },
+      locations: [0.2, 0.7, 1],
+      style: reactNative.StyleSheet.absoluteFill,
+      children
+    }
+  ) });
+}
+
 exports.Theme = core.Theme;
 exports.View = core.View;
 exports.styled = core.styled;
@@ -820,6 +850,7 @@ exports.AlouetteProvider = AlouetteProvider;
 exports.Box = Box;
 exports.Button = Button;
 exports.ExternalLinkButton = ExternalLinkButton;
+exports.GradientBackground = GradientBackground;
 exports.HStack = HStack;
 exports.Icon = Icon;
 exports.IconButton = IconButton;

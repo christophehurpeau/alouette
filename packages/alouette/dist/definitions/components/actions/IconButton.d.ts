@@ -1,5 +1,6 @@
 import type { GetProps } from "@tamagui/core";
-import type { ReactElement, ReactNode } from "react";
+import type { ReactNode } from "react";
+import type { SVGIconElement } from "../primitives/Icon";
 declare const IconButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | undefined;
     interactive?: boolean | import("csstype").Property.Cursor | undefined;
@@ -12,7 +13,7 @@ declare const IconButtonFrame: import("@tamagui/web").TamaguiComponent<import("@
 }, import("@tamagui/web").StaticConfigPublic>;
 type IconButtonFrameProps = GetProps<typeof IconButtonFrame>;
 export interface IconButtonProps extends IconButtonFrameProps {
-    icon: NonNullable<ReactElement>;
+    icon: NonNullable<SVGIconElement>;
 }
 export declare function IconButton({ icon, disabled, size, variant, ...pressableProps }: IconButtonProps): ReactNode;
 export {};

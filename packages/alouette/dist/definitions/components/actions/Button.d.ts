@@ -1,6 +1,7 @@
 import type { GetProps } from "@tamagui/core";
-import type { ReactElement, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Except } from "type-fest";
+import type { SVGIconElement } from "../primitives/Icon";
 declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | "md" | "sm" | undefined;
     interactive?: boolean | import("csstype").Property.Cursor | undefined;
@@ -13,7 +14,7 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
 }, import("@tamagui/web").StaticConfigPublic>;
 type ButtonFrameProps = GetProps<typeof ButtonFrame>;
 export interface ButtonProps extends Except<ButtonFrameProps, "size"> {
-    icon?: NonNullable<ReactElement>;
+    icon?: NonNullable<SVGIconElement>;
     text: ReactNode;
     size?: "md" | "sm";
 }

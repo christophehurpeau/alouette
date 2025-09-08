@@ -14,8 +14,8 @@ export declare const MessageText: import("@tamagui/web").TamaguiComponent<import
     inherit?: boolean | undefined;
     family?: "$body" | "$heading" | undefined;
     centered?: boolean | undefined;
+    accent?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$black" | undefined;
-    colored?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export interface MessageProps {
     theme: NonNullable<ComponentProps<typeof MessageFrame>["theme"]>;
