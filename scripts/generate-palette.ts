@@ -17,25 +17,25 @@ const createColorScale = (
   const saturations =
     hue === 0
       ? {
-          dark: { standard: 0, interactive: 0, moreSaturation: 0 },
-          light: { standard: 0, interactive: 0, moreSaturation: 0 },
+          dark: { standard: 0, medium: 0, moreSaturation: 0 },
+          light: { standard: 0, medium: 0, moreSaturation: 0 },
         }
       : {
-          dark: { standard: 85, interactive: 78, moreSaturation: 88 },
-          light: { standard: 56, interactive: 82, moreSaturation: 96 },
+          dark: { standard: 85, medium: 72, moreSaturation: 88 },
+          light: { standard: 56, medium: 82 + boostLight, moreSaturation: 96 },
         };
 
   const lightnessSteps =
     kind === "light"
-      ? [96, 92, 88, 84, 78, 72, 56, 38, 32, 18]
+      ? [96, 92, 86, 82, 78, 72, 56, 38, 32, 18]
       : [
           hue === 0 ? 10 : 6,
-          hue === 0 ? 12 : 10,
-          hue === 0 ? 16 : 12,
-          hue === 0 ? 20 : 16,
-          hue === 0 ? 24 : 24,
-          hue === 0 ? 28 : 24,
-          hue === 0 ? 32 : 28,
+          hue === 0 ? 12 : 12,
+          hue === 0 ? 16 : 16,
+          hue === 0 ? 20 : 20,
+          hue === 0 ? 24 : 26,
+          hue === 0 ? 28 : 30,
+          hue === 0 ? 32 : 32,
           62,
           68,
           82,
@@ -43,12 +43,12 @@ const createColorScale = (
 
   const scale: ColorScale = {
     1: `#${convert.hsl.hex([hue, saturations[kind].standard, lightnessSteps[0]])}`,
-    2: `#${convert.hsl.hex([hue, saturations[kind].interactive, boostLight + lightnessSteps[1]])}`,
-    3: `#${convert.hsl.hex([hue, saturations[kind].interactive, boostLight + lightnessSteps[2]])}`,
-    4: `#${convert.hsl.hex([hue, saturations[kind].interactive, boostLight + lightnessSteps[3]])}`,
-    5: `#${convert.hsl.hex([hue, saturations[kind].interactive, boostLight + lightnessSteps[4]])}`,
-    6: `#${convert.hsl.hex([hue, saturations[kind].interactive, boostLight + lightnessSteps[5]])}`,
-    7: `#${convert.hsl.hex([hue, saturations[kind].interactive, boostLight + lightnessSteps[6]])}`,
+    2: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[1]])}`,
+    3: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[2]])}`,
+    4: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[3]])}`,
+    5: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[4]])}`,
+    6: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[5]])}`,
+    7: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[6]])}`,
     8: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[7] + boostTextContrast])}`,
     9: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[8] + boostTextContrast])}`,
     10: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[9] + boostTextContrast])}`,
@@ -92,7 +92,7 @@ const generatePalettes = () => {
     }),
     ...createColorPalettes("warning", "#ffb72a", 40, {
       boostLightTextContrast: 16,
-      boostLight: 6,
+      boostLight: 4,
     }),
   };
 
@@ -178,9 +178,17 @@ if (process.argv[2] === "generate") {
       const colorToCompareForStepBefore7 = name.includes(".light")
         ? "#000000"
         : "#fdfdfd";
+
+      const colorToCompareForStepAfter3 = name.includes(".light")
+        ? "#ffffff"
+        : "#1f1e1e";
+
       const colorToCompareForStepAfter7 = name.includes(".light")
         ? "#ffffff"
         : "#1f1e1e";
+
+      const highContrastColor = name.includes(".light") ? "#000000" : "#ffffff";
+
       console.log(
         [
           `  ${step.padStart(2, " ")}:`,
@@ -197,6 +205,11 @@ if (process.argv[2] === "generate") {
                       : colorToCompareForStepAfter7,
                   ),
                 ),
+                ["3", "4", "5", "6"].includes(step)
+                  ? "/ vs high contrast: " +
+                    getContrastGrade(getContrastRatio(color, highContrastColor))
+                  : null,
+
                 ["8", "9", "10"].includes(step)
                   ? "/ vs .1: " +
                     getContrastGrade(getContrastRatio(color, palette["1"]))
