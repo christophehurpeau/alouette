@@ -12,6 +12,12 @@ const animations = animationsReactNative.createAnimations({
     damping: 20,
     stiffness: 250
   },
+  medium: {
+    type: "timing",
+    duration: 300,
+    damping: 20,
+    stiffness: 250
+  },
   formElement: {
     type: "timing",
     duration: 600,
