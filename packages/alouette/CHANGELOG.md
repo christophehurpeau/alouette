@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@13.0.0...alouette@13.1.0) (2025-09-09)
+
+### Features
+
+* improve dark background, color contrasts and pressable outline border size ([0cdeb86](https://github.com/christophehurpeau/alouette/commit/0cdeb86870bf2e8c42f9a4d154b1d439aa5d8a80))
+
 ## [13.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@12.0.0...alouette@13.0.0) (2025-09-08)
 
 ### ⚠ BREAKING CHANGES
