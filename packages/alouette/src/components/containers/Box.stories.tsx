@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { HStack } from "../primitives/stacks";
+import { HStack, VStack } from "../primitives/stacks";
 import { Story } from "../story-components/Story";
 import { Typography } from "../typography/Typography";
 import { Box } from "./Box";
@@ -123,6 +123,24 @@ export const Variants: ThisStory = {
       <Story.Section title="With Background">
         <Box withBackground theme="primary" padding="$4">
           <Typography>With Background</Typography>
+        </Box>
+      </Story.Section>
+
+      <Story.Section title="With Border">
+        <VStack gap="$4">
+          <Box withBorder theme="primary" padding="$4">
+            <Typography>With Border</Typography>
+          </Box>
+
+          <Box withBorder={2} theme="primary" padding="$4">
+            <Typography>With Border 2</Typography>
+          </Box>
+        </VStack>
+      </Story.Section>
+
+      <Story.Section title="With Border and Background">
+        <Box withBorder withBackground theme="primary" padding="$4">
+          <Typography>With Border</Typography>
         </Box>
       </Story.Section>
 

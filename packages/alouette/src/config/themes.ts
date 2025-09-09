@@ -119,25 +119,23 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
   const getColor = (
     scaleNumber: AlouetteColorScaleNumber,
     tint?: "grayscale",
+    adaptForDarkMode = true,
   ) => {
     return tokens.color[
-      `${tint || intent}.${mode}.${mode === "dark" ? mappingLightToDark[scaleNumber] : scaleNumber}` as keyof typeof tokens.color
+      `${tint || intent}.${mode}.${mode === "dark" && adaptForDarkMode ? mappingLightToDark[scaleNumber] : scaleNumber}` as keyof typeof tokens.color
     ];
   };
 
   const theme = {
     backgroundColor,
-    "gradientColor:start":
-      tokens.color[`${intent}.${mode}.${mode === "dark" ? 5 : 6}`],
-    "gradientColor:middle":
-      tokens.color[`${intent}.${mode}.${mode === "dark" ? 6 : 7}`],
-    "gradientColor:end":
-      tokens.color[`${intent}.${mode}.${mode === "dark" ? 4 : 5}`],
+    "gradientColor:start": getColor(mode === "dark" ? 5 : 6, undefined, false),
+    "gradientColor:middle": getColor(mode === "dark" ? 6 : 7, undefined, false),
+    "gradientColor:end": getColor(mode === "dark" ? 4 : 5, undefined, false),
     textColor,
     pageBackgroundColor: getColor(1),
     nonInteractiveBackgroundColor: getColor(3),
     accentTextColor: getColor(9),
-    borderColor: getColor(4),
+    borderColor: getColor(8),
     shadowColor: getColor(8),
     "textColor:disabled": getColor(7, "grayscale"),
 
@@ -172,7 +170,11 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
     "interactive.outlined.backgroundColor:press": getColor(4),
     "interactive.outlined.borderColor:press": getColor(6),
 
-    "interactive.contained.backgroundColor:disabled": getColor(4, "grayscale"),
+    "interactive.contained.backgroundColor:disabled": getColor(
+      4,
+      "grayscale",
+      false,
+    ),
     "interactive.elevated.backgroundColor:disabled": backgroundColor,
     "interactive.elevated.shadowColor:disabled": getColor(8, "grayscale"),
     "interactive.elevated.borderColor:disabled": getColor(1, "grayscale"),
