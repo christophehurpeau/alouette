@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@13.1.0...alouette@13.2.0) (2025-09-09)
+
+### Features
+
+* add medium animation ([1a9293b](https://github.com/christophehurpeau/alouette/commit/1a9293b2231b0330590a5442aa1495f27cc4e8b4))
+
+### Bug Fixes
+
+* fix disabled color dark mode ([086355c](https://github.com/christophehurpeau/alouette/commit/086355cfd1f484e811d471418a823a918ed2a469))
+* optional GradientBackground children ([dde4495](https://github.com/christophehurpeau/alouette/commit/dde44952fc01ef1633059e11a9a4ea540318b68c))
+
 ## [13.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@13.0.0...alouette@13.1.0) (2025-09-09)
 
 ### Features
