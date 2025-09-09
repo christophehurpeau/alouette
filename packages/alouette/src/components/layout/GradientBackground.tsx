@@ -6,7 +6,7 @@ import { StyleSheet } from "react-native";
 
 export interface GradientBackgroundProps {
   theme?: ThemeName;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export function GradientBackground({
