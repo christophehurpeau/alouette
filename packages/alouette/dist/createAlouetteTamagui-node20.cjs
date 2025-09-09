@@ -136,7 +136,7 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
   );
   return core.createTokens({
     color: {
-      blackBackground: "#121212",
+      blackBackground: "#1f1e1e",
       whiteBackground: "#ffffff",
       blackText: "#000000",
       whiteText: "#fdfdfd",
@@ -245,7 +245,7 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
     accentTextColor: getColor(9),
     borderColor: getColor(4),
     shadowColor: getColor(8),
-    "textColor:disabled": getColor(6, "grayscale"),
+    "textColor:disabled": getColor(7, "grayscale"),
     "interactive.linkTextColor": getColor(9),
     "interactive.linkTextColor:hover": getColor(10),
     "interactive.linkTextColor:focus": getColor(10),
@@ -374,9 +374,9 @@ const defaultColorScales = {
     5: "#F8B7B5",
     6: "#F59C99",
     7: "#EE544F",
-    8: "#DC0C04",
-    9: "#BE0A04",
-    10: "#780602"
+    8: "#C80B04",
+    9: "#AA0903",
+    10: "#640502"
   }),
   "danger.dark": createColorScale({
     1: "#1C0302",
@@ -422,9 +422,9 @@ const defaultColorScales = {
     5: "#99F599",
     6: "#7DF27D",
     7: "#33EB33",
-    8: "#039603",
-    9: "#027802",
-    10: "#013201"
+    8: "#038203",
+    9: "#026402",
+    10: "#011E01"
   }),
   "success.dark": createColorScale({
     1: "#021C02",

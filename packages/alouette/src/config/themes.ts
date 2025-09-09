@@ -139,7 +139,7 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
     accentTextColor: getColor(9),
     borderColor: getColor(4),
     shadowColor: getColor(8),
-    "textColor:disabled": getColor(6, "grayscale"),
+    "textColor:disabled": getColor(7, "grayscale"),
 
     "interactive.linkTextColor": getColor(9),
     "interactive.linkTextColor:hover": getColor(10),

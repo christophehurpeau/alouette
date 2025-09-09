@@ -81,13 +81,14 @@ const generatePalettes = () => {
       boostLightTextContrast: 8,
     }),
     ...createColorPalettes("danger", "#b52a26", 2, {
+      boostLightTextContrast: 4,
       boostLight: 6,
     }),
     ...createColorPalettes("info", "#2ac8ff", 195, {
       boostLightTextContrast: 8,
     }),
     ...createColorPalettes("success", "#2ac82a", 120, {
-      boostLightTextContrast: 8,
+      boostLightTextContrast: 12,
     }),
     ...createColorPalettes("warning", "#ffb72a", 40, {
       boostLightTextContrast: 16,
@@ -179,7 +180,7 @@ if (process.argv[2] === "generate") {
         : "#fdfdfd";
       const colorToCompareForStepAfter7 = name.includes(".light")
         ? "#ffffff"
-        : "#121212";
+        : "#1f1e1e";
       console.log(
         [
           `  ${step.padStart(2, " ")}:`,

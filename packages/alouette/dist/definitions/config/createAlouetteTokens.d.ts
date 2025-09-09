@@ -278,7 +278,7 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     zIndex: {};
 } & Omit<{
     readonly color: { [Key_1 in "blackBackground" | "whiteBackground" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales> extends number ? `${number & keyof ColorScaleTokens<ColorScales>}` : "blackBackground" | "whiteBackground" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales>]: import("@tamagui/web").Variable<({
-        readonly blackBackground: "#121212";
+        readonly blackBackground: "#1f1e1e";
         readonly whiteBackground: "#ffffff";
         readonly blackText: "#000000";
         readonly whiteText: "#fdfdfd";

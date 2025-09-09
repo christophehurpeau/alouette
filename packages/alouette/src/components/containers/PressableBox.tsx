@@ -12,7 +12,7 @@ export const PressableBox = styled(Box, {
       },
       outlined: {
         withBackground: true,
-        withBorder: true,
+        withBorder: 2,
       },
       elevated: {
         withBackground: true,
@@ -24,7 +24,7 @@ export const PressableBox = styled(Box, {
         withBackground: true,
       },
       "ghost-outlined": {
-        withBorder: 1,
+        withBorder: 2,
         withBackground: true,
       },
     },

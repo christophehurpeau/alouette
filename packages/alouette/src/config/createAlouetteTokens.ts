@@ -61,7 +61,7 @@ export const createAlouetteTokens = <
 
   return createTokens({
     color: {
-      blackBackground: "#121212",
+      blackBackground: "#1f1e1e",
       whiteBackground: "#ffffff",
       blackText: "#000000",
       whiteText: "#fdfdfd",
