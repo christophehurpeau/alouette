@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.2.1](https://github.com/christophehurpeau/alouette/compare/alouette@13.2.0...alouette@13.2.1) (2025-09-09)
+
+### Bug Fixes
+
+* improve color contrast ([dd1d0ec](https://github.com/christophehurpeau/alouette/commit/dd1d0ecc63d0a28edf40dfa603b56a569c863460))
+
 ## [13.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@13.1.0...alouette@13.2.0) (2025-09-09)
 
 ### Features
