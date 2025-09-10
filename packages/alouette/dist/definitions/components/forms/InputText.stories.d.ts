@@ -9,6 +9,7 @@ declare const _default: {
         withBackground?: boolean | undefined;
         withElevation?: boolean | undefined;
         circular?: boolean | undefined;
+        fullscreen?: boolean | undefined;
         centered?: boolean | undefined;
     }, {
         isInput: true;

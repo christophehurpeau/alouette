@@ -80,6 +80,16 @@ export const circular = {
   },
 } as const;
 
+export const fullscreen = {
+  true: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+} as const;
+
 export const interactive = (
   isInteractiveOrInteractiveCursorType: ViewStyle["cursor"] | boolean,
   { props }: VariantSpreadExtras<any>,

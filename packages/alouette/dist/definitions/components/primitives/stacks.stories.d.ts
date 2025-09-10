@@ -4,8 +4,8 @@ import { HStack, Stack, VStack } from "./stacks";
 declare const meta: {
     title: string;
     component: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        type?: "h" | "v" | undefined;
         fullscreen?: boolean | undefined;
+        type?: "h" | "v" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     subcomponents: {
         HStack: any;

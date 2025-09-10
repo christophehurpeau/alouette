@@ -7,6 +7,7 @@ export declare const Box: import("@tamagui/web").TamaguiComponent<import("@tamag
     withBackground?: boolean | undefined;
     withElevation?: boolean | undefined;
     circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
     centered?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export type BoxProps = GetProps<typeof Box>;

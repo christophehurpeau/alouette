@@ -7,6 +7,7 @@ export declare const InputText: import("@tamagui/web").TamaguiComponent<import("
     withBackground?: boolean | undefined;
     withElevation?: boolean | undefined;
     circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
     centered?: boolean | undefined;
 }, {
     isInput: true;
@@ -19,6 +20,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
     withBackground?: boolean | undefined;
     withElevation?: boolean | undefined;
     circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
     centered?: boolean | undefined;
 }, {
     isInput: true;

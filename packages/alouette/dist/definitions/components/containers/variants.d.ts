@@ -121,6 +121,15 @@ export declare const circular: {
         padding: number;
     };
 };
+export declare const fullscreen: {
+    readonly true: {
+        readonly position: "absolute";
+        readonly top: 0;
+        readonly left: 0;
+        readonly right: 0;
+        readonly bottom: 0;
+    };
+};
 export declare const interactive: (isInteractiveOrInteractiveCursorType: ViewStyle["cursor"] | boolean, { props }: VariantSpreadExtras<any>) => {
     readonly cursor: "not-allowed";
     readonly hoverStyle?: undefined;

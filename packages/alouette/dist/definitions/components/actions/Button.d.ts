@@ -10,6 +10,7 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     withBackground?: boolean | undefined;
     withElevation?: boolean | undefined;
     circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
     centered?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 type ButtonFrameProps = GetProps<typeof ButtonFrame>;

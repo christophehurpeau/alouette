@@ -9,6 +9,7 @@ declare const IconButtonFrame: import("@tamagui/web").TamaguiComponent<import("@
     withBackground?: boolean | undefined;
     withElevation?: boolean | undefined;
     circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
     centered?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 type IconButtonFrameProps = GetProps<typeof IconButtonFrame>;

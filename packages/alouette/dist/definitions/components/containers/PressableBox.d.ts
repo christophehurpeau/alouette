@@ -7,6 +7,7 @@ export declare const PressableBox: import("@tamagui/web").TamaguiComponent<impor
     withBackground?: boolean | undefined;
     withElevation?: boolean | undefined;
     circular?: boolean | undefined;
+    fullscreen?: boolean | undefined;
     centered?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export type PressableBoxProps = GetProps<typeof PressableBox>;
