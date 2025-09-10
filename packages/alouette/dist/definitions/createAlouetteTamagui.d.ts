@@ -63,6 +63,10 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
         damping: number;
         stiffness: number;
     };
+    slow: {
+        damping: number;
+        stiffness: number;
+    };
     formElement: {
         type: "timing";
         duration: number;

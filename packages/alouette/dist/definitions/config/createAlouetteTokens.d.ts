@@ -10,6 +10,7 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     space: {
         0: import("@tamagui/web").Variable<number>;
         20: import("@tamagui/web").Variable<number>;
+        60: import("@tamagui/web").Variable<number>;
         1: import("@tamagui/web").Variable<number>;
         3: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
@@ -71,12 +72,12 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
         57: import("@tamagui/web").Variable<number>;
         58: import("@tamagui/web").Variable<number>;
         59: import("@tamagui/web").Variable<number>;
-        60: import("@tamagui/web").Variable<number>;
         61: import("@tamagui/web").Variable<number>;
         62: import("@tamagui/web").Variable<number>;
         63: import("@tamagui/web").Variable<number>;
         "-0": import("@tamagui/web").Variable<number>;
         [-20]: import("@tamagui/web").Variable<number>;
+        [-60]: import("@tamagui/web").Variable<number>;
         [-1]: import("@tamagui/web").Variable<number>;
         [-3]: import("@tamagui/web").Variable<number>;
         [-4]: import("@tamagui/web").Variable<number>;
@@ -135,7 +136,6 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
         [-57]: import("@tamagui/web").Variable<number>;
         [-58]: import("@tamagui/web").Variable<number>;
         [-59]: import("@tamagui/web").Variable<number>;
-        [-60]: import("@tamagui/web").Variable<number>;
         [-61]: import("@tamagui/web").Variable<number>;
         [-62]: import("@tamagui/web").Variable<number>;
         [-63]: import("@tamagui/web").Variable<number>;
@@ -143,6 +143,7 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     size: {
         0: import("@tamagui/web").Variable<number>;
         20: import("@tamagui/web").Variable<number>;
+        60: import("@tamagui/web").Variable<number>;
         1: import("@tamagui/web").Variable<number>;
         3: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
@@ -201,7 +202,6 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
         57: import("@tamagui/web").Variable<number>;
         58: import("@tamagui/web").Variable<number>;
         59: import("@tamagui/web").Variable<number>;
-        60: import("@tamagui/web").Variable<number>;
         61: import("@tamagui/web").Variable<number>;
         62: import("@tamagui/web").Variable<number>;
         63: import("@tamagui/web").Variable<number>;
@@ -209,6 +209,7 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     radius: {
         0: import("@tamagui/web").Variable<number>;
         20: import("@tamagui/web").Variable<number>;
+        60: import("@tamagui/web").Variable<number>;
         1: import("@tamagui/web").Variable<number>;
         3: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
@@ -270,7 +271,6 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
         57: import("@tamagui/web").Variable<number>;
         58: import("@tamagui/web").Variable<number>;
         59: import("@tamagui/web").Variable<number>;
-        60: import("@tamagui/web").Variable<number>;
         61: import("@tamagui/web").Variable<number>;
         62: import("@tamagui/web").Variable<number>;
         63: import("@tamagui/web").Variable<number>;
@@ -286,6 +286,7 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     readonly radius: {
         0: import("@tamagui/web").Variable<number>;
         20: import("@tamagui/web").Variable<number>;
+        60: import("@tamagui/web").Variable<number>;
         1: import("@tamagui/web").Variable<number>;
         3: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
@@ -347,7 +348,6 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
         57: import("@tamagui/web").Variable<number>;
         58: import("@tamagui/web").Variable<number>;
         59: import("@tamagui/web").Variable<number>;
-        60: import("@tamagui/web").Variable<number>;
         61: import("@tamagui/web").Variable<number>;
         62: import("@tamagui/web").Variable<number>;
         63: import("@tamagui/web").Variable<number>;
@@ -355,6 +355,7 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     readonly space: {
         0: import("@tamagui/web").Variable<number>;
         20: import("@tamagui/web").Variable<number>;
+        60: import("@tamagui/web").Variable<number>;
         1: import("@tamagui/web").Variable<number>;
         3: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
@@ -416,12 +417,12 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
         57: import("@tamagui/web").Variable<number>;
         58: import("@tamagui/web").Variable<number>;
         59: import("@tamagui/web").Variable<number>;
-        60: import("@tamagui/web").Variable<number>;
         61: import("@tamagui/web").Variable<number>;
         62: import("@tamagui/web").Variable<number>;
         63: import("@tamagui/web").Variable<number>;
         "-0": import("@tamagui/web").Variable<number>;
         [-20]: import("@tamagui/web").Variable<number>;
+        [-60]: import("@tamagui/web").Variable<number>;
         [-1]: import("@tamagui/web").Variable<number>;
         [-3]: import("@tamagui/web").Variable<number>;
         [-4]: import("@tamagui/web").Variable<number>;
@@ -480,7 +481,6 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
         [-57]: import("@tamagui/web").Variable<number>;
         [-58]: import("@tamagui/web").Variable<number>;
         [-59]: import("@tamagui/web").Variable<number>;
-        [-60]: import("@tamagui/web").Variable<number>;
         [-61]: import("@tamagui/web").Variable<number>;
         [-62]: import("@tamagui/web").Variable<number>;
         [-63]: import("@tamagui/web").Variable<number>;
@@ -488,6 +488,7 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     readonly size: {
         0: import("@tamagui/web").Variable<number>;
         20: import("@tamagui/web").Variable<number>;
+        60: import("@tamagui/web").Variable<number>;
         1: import("@tamagui/web").Variable<number>;
         3: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
@@ -546,7 +547,6 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
         57: import("@tamagui/web").Variable<number>;
         58: import("@tamagui/web").Variable<number>;
         59: import("@tamagui/web").Variable<number>;
-        60: import("@tamagui/web").Variable<number>;
         61: import("@tamagui/web").Variable<number>;
         62: import("@tamagui/web").Variable<number>;
         63: import("@tamagui/web").Variable<number>;

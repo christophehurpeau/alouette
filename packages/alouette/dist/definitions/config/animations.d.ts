@@ -11,6 +11,10 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
         damping: number;
         stiffness: number;
     };
+    slow: {
+        damping: number;
+        stiffness: number;
+    };
     formElement: {
         type: "timing";
         duration: number;

@@ -14,6 +14,10 @@ const animations = createAnimations({
     damping: 20,
     stiffness: 250
   },
+  slow: {
+    damping: 20,
+    stiffness: 60
+  },
   formElement: {
     type: "timing",
     duration: 600,

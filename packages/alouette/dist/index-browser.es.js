@@ -168,12 +168,10 @@ function Icon({
   accent,
   color = getDefaultColor(disabled, accent)
 }) {
-  const [props, style] = usePropsAndStyle({
-    forComponent: Text,
-    color,
-    width: size,
-    height: size
-  });
+  const [props, style] = usePropsAndStyle(
+    { color, width: size, height: size },
+    { forComponent: Text }
+  );
   return cloneElement(icon, { style, ...props });
 }
 
