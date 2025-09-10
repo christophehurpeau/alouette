@@ -251,7 +251,7 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
     accentTextColor: getColor(9),
     borderColor: getColor(8),
     shadowColor: getColor(8),
-    "textColor:disabled": getColor(7, "grayscale"),
+    "textColor:disabled": getColor(mode === "dark" ? 8 : 7, "grayscale", false),
     "interactive.linkTextColor": getColor(9),
     "interactive.linkTextColor:hover": getColor(10),
     "interactive.linkTextColor:focus": getColor(10),
