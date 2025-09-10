@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@13.2.1...alouette@13.3.0) (2025-09-10)
+
+### Features
+
+* add slow animation ([9008b90](https://github.com/christophehurpeau/alouette/commit/9008b90cdf59b3c5a68bf61cca4d7ac2925306d8))
+* improve dark textColor:disabled ([ee7bcbb](https://github.com/christophehurpeau/alouette/commit/ee7bcbb61c8df2e8f0ff70e6c28dc4956f09735a))
+
+### Bug Fixes
+
+* forComponent icon ([ca2586d](https://github.com/christophehurpeau/alouette/commit/ca2586d0843de7157a5e1fb88cc3d894c3036288))
+
 ## [13.2.1](https://github.com/christophehurpeau/alouette/compare/alouette@13.2.0...alouette@13.2.1) (2025-09-09)
 
 ### Bug Fixes

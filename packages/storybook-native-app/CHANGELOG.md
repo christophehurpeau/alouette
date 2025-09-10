@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@3.1.0...storybook-native-app@3.1.1) (2025-09-10)
+
+Note: no notable changes
+
+
 ## [3.1.0](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@3.0.0...storybook-native-app@3.1.0) (2025-09-08)
 
 ### Features
