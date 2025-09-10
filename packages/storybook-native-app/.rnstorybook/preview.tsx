@@ -1,4 +1,4 @@
-import type { Preview } from "@storybook/react";
+import type { Preview } from "@storybook/react-native";
 import { AlouetteDecorator } from "alouette";
 import tamaguiConfig from "../tamagui.config";
 
