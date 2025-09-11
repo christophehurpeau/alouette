@@ -1,5 +1,8 @@
 import type { SizeTokens, VariantSpreadExtras, ViewStyle } from "@tamagui/core";
-import { getInteractionStyles } from "../primitives/createVariants";
+import {
+  fullscreenStyle,
+  getInteractionStyles,
+} from "../primitives/createVariants";
 
 export const withBorder = (
   val: SizeTokens | boolean,
@@ -81,13 +84,7 @@ export const circular = {
 } as const;
 
 export const fullscreen = {
-  true: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
+  true: fullscreenStyle,
 } as const;
 
 export const interactive = (

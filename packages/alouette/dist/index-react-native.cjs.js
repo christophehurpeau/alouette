@@ -89,13 +89,7 @@ const circular = {
   }
 };
 const fullscreen = {
-  true: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0
-  }
+  true: fullscreenStyle
 };
 const interactive = (isInteractiveOrInteractiveCursorType, { props }) => {
   if (!isInteractiveOrInteractiveCursorType) return null;
@@ -882,6 +876,7 @@ exports.Typography = Typography;
 exports.TypographyParagraph = TypographyParagraph;
 exports.VStack = VStack;
 exports.WithTamaguiConfig = WithTamaguiConfig;
+exports.containersVariants = variants$1;
 exports.useCurrentBreakpointName = useCurrentBreakpointName;
 exports.useDefaultThemeFromColorScheme = useDefaultThemeFromColorScheme;
 //# sourceMappingURL=index-react-native.cjs.js.map
