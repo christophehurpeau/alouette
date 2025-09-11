@@ -172,20 +172,17 @@ if (process.argv[2] === "generate") {
   };
 
   const displayPalette = (name: string, palette: ColorScale) => {
+    const palettePageBackground = name.includes(".light")
+      ? "#ffffff"
+      : "#1f1e1e";
+    const paletteColorText = name.includes(".light") ? "#000000" : "#fdfdfd";
+
     console.log(`\n${ansiColors.bright}${name}:${ansiColors.reset}`);
     Object.entries(palette).forEach(([step, color]) => {
       const swatch = displayColorSwatch(color, "██");
-      const colorToCompareForStepBefore7 = name.includes(".light")
-        ? "#000000"
-        : "#fdfdfd";
+      const colorToCompareForStepBefore7 = paletteColorText;
 
-      const colorToCompareForStepAfter3 = name.includes(".light")
-        ? "#ffffff"
-        : "#1f1e1e";
-
-      const colorToCompareForStepAfter7 = name.includes(".light")
-        ? "#ffffff"
-        : "#1f1e1e";
+      const colorToCompareForStepAfter7 = palettePageBackground;
 
       const highContrastColor = name.includes(".light") ? "#000000" : "#ffffff";
 

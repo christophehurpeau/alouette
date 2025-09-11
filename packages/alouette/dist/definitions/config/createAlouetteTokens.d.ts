@@ -6,7 +6,7 @@ export interface AlouetteTokensOptions {
     spacing?: number;
 }
 export declare const createAlouetteTokens: <const ColorScales extends AlouetteColorScales>(colorScales: ColorScales, { spacing }?: AlouetteTokensOptions) => {
-    color: { [Key in "blackBackground" | "whiteBackground" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales> extends number ? `${number & keyof ColorScaleTokens<ColorScales>}` : "blackBackground" | "whiteBackground" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales>]: import("@tamagui/web").Variable<string>; };
+    color: { [Key in "blackBackground" | "whiteBackground" | "blackBackgroundTranslucent" | "whiteBackgroundTranslucent" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales> extends number ? `${number & keyof ColorScaleTokens<ColorScales>}` : "blackBackground" | "whiteBackground" | "blackBackgroundTranslucent" | "whiteBackgroundTranslucent" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales>]: import("@tamagui/web").Variable<string>; };
     space: {
         0: import("@tamagui/web").Variable<number>;
         20: import("@tamagui/web").Variable<number>;
@@ -277,12 +277,14 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     };
     zIndex: {};
 } & Omit<{
-    readonly color: { [Key_1 in "blackBackground" | "whiteBackground" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales> extends number ? `${number & keyof ColorScaleTokens<ColorScales>}` : "blackBackground" | "whiteBackground" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales>]: import("@tamagui/web").Variable<({
+    readonly color: { [Key_1 in "blackBackground" | "whiteBackground" | "blackBackgroundTranslucent" | "whiteBackgroundTranslucent" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales> extends number ? `${number & keyof ColorScaleTokens<ColorScales>}` : "blackBackground" | "whiteBackground" | "blackBackgroundTranslucent" | "whiteBackgroundTranslucent" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales>]: import("@tamagui/web").Variable<({
         readonly blackBackground: "#1f1e1e";
         readonly whiteBackground: "#ffffff";
+        readonly blackBackgroundTranslucent: "#1f1e1ecc";
+        readonly whiteBackgroundTranslucent: "#ffffffdd";
         readonly blackText: "#000000";
         readonly whiteText: "#fdfdfd";
-    } & ColorScaleTokens<ColorScales>)["blackBackground" | "whiteBackground" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales>]>; };
+    } & ColorScaleTokens<ColorScales>)["blackBackground" | "whiteBackground" | "blackBackgroundTranslucent" | "whiteBackgroundTranslucent" | "blackText" | "whiteText" | keyof ColorScaleTokens<ColorScales>]>; };
     readonly radius: {
         0: import("@tamagui/web").Variable<number>;
         20: import("@tamagui/web").Variable<number>;

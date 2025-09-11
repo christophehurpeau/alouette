@@ -3,6 +3,7 @@ import type { AlouetteColorIntent, AlouetteColorScales } from "./colorScales";
 import type { createAlouetteTokens } from "./createAlouetteTokens";
 export interface ColorTheme {
     backgroundColor: Variable<string>;
+    backgroundColorTranslucent: Variable<string>;
     pageBackgroundColor: Variable<string>;
     nonInteractiveBackgroundColor: Variable<string>;
     "gradientColor:start": Variable<string>;
@@ -58,6 +59,7 @@ export interface ColorTheme {
 export type FullTheme = ColorTheme;
 export declare const createColorTheme: <const ColorIntent extends AlouetteColorIntent>(tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>, intent: ColorIntent, mode?: "dark" | "light", backgroundColor?: Variable<string>, textColor?: Variable<string>) => {
     backgroundColor: Variable<string>;
+    backgroundColorTranslucent: Variable<string>;
     "gradientColor:start": Variable<string>;
     "gradientColor:middle": Variable<string>;
     "gradientColor:end": Variable<string>;
@@ -113,6 +115,7 @@ export declare const createColorTheme: <const ColorIntent extends AlouetteColorI
 export declare const createAlouetteThemes: <const ColorScales extends AlouetteColorScales>(tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>) => {
     readonly light: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -167,6 +170,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly light_info: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -221,6 +225,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly light_success: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -275,6 +280,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly light_warning: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -329,6 +335,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly light_danger: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -383,6 +390,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly light_primary: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -437,6 +445,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly dark: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -491,6 +500,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly dark_info: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -545,6 +555,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly dark_success: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -599,6 +610,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly dark_warning: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -653,6 +665,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly dark_danger: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
@@ -707,6 +720,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
     };
     readonly dark_primary: {
         backgroundColor: Variable<string>;
+        backgroundColorTranslucent: Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;

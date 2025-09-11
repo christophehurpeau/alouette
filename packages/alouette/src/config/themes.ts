@@ -21,6 +21,7 @@ import { warnOnContrastIssues } from "./utils/colorContrast";
 
 export interface ColorTheme {
   backgroundColor: Variable<string>;
+  backgroundColorTranslucent: Variable<string>;
   pageBackgroundColor: Variable<string>;
   nonInteractiveBackgroundColor: Variable<string>;
   "gradientColor:start": Variable<string>;
@@ -128,9 +129,10 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
 
   const theme = {
     backgroundColor,
-    "gradientColor:start": getColor(mode === "dark" ? 5 : 6, undefined, false),
-    "gradientColor:middle": getColor(mode === "dark" ? 6 : 7, undefined, false),
-    "gradientColor:end": getColor(mode === "dark" ? 4 : 5, undefined, false),
+    backgroundColorTranslucent: backgroundColor,
+    "gradientColor:start": getColor(mode === "dark" ? 3 : 6, undefined, false),
+    "gradientColor:middle": getColor(mode === "dark" ? 4 : 7, undefined, false),
+    "gradientColor:end": getColor(mode === "dark" ? 2 : 5, undefined, false),
     textColor,
     pageBackgroundColor: getColor(1),
     nonInteractiveBackgroundColor: getColor(3),

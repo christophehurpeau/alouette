@@ -29,6 +29,13 @@ export default [
     mode: "directory",
     files: ["packages/storybook-app/"],
     configs: [
+      {
+        settings: {
+          "check-package-dependencies": {
+            isLibrary: false,
+          },
+        },
+      },
       ...pobTypescriptReactConfigs.app,
       ...pobTypescriptReactConfigs["react-native-web"],
       // ...compat.config({

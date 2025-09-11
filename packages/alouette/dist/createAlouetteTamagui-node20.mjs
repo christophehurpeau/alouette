@@ -144,6 +144,8 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
     color: {
       blackBackground: "#1f1e1e",
       whiteBackground: "#ffffff",
+      blackBackgroundTranslucent: "#1f1e1ecc",
+      whiteBackgroundTranslucent: "#ffffffdd",
       blackText: "#000000",
       whiteText: "#fdfdfd",
       ...transformColorScalesToTokens(colorScales)
@@ -242,9 +244,10 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
   };
   const theme = {
     backgroundColor,
-    "gradientColor:start": getColor(mode === "dark" ? 5 : 6, void 0, false),
-    "gradientColor:middle": getColor(mode === "dark" ? 6 : 7, void 0, false),
-    "gradientColor:end": getColor(mode === "dark" ? 4 : 5, void 0, false),
+    backgroundColorTranslucent: backgroundColor,
+    "gradientColor:start": getColor(mode === "dark" ? 3 : 6, void 0, false),
+    "gradientColor:middle": getColor(mode === "dark" ? 4 : 7, void 0, false),
+    "gradientColor:end": getColor(mode === "dark" ? 2 : 5, void 0, false),
     textColor,
     pageBackgroundColor: getColor(1),
     nonInteractiveBackgroundColor: getColor(3),
