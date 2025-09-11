@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.5.1](https://github.com/christophehurpeau/alouette/compare/alouette@13.5.0...alouette@13.5.1) (2025-09-11)
+
+### Bug Fixes
+
+* add missing backgroundColorTranslucent value ([76e5d62](https://github.com/christophehurpeau/alouette/commit/76e5d629e78f51a6b5fa405108efd7674ac41ee3))
+
 ## [13.5.0](https://github.com/christophehurpeau/alouette/compare/alouette@13.4.0...alouette@13.5.0) (2025-09-11)
 
 ### Features
