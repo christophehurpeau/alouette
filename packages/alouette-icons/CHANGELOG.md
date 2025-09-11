@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.2](https://github.com/christophehurpeau/alouette/compare/alouette-icons@5.1.1...alouette-icons@5.1.2) (2025-09-11)
+
+### Bug Fixes
+
+* **deps:** update dependency @babel/core to v7.28.4 ([#233](https://github.com/christophehurpeau/alouette/issues/233)) ([08a4cf5](https://github.com/christophehurpeau/alouette/commit/08a4cf5a03c25a62c20dfdf4edf197775467a0f3))
+
 ## [5.1.1](https://github.com/christophehurpeau/alouette/compare/alouette-icons@5.1.0...alouette-icons@5.1.1) (2025-09-08)
 
 ### Bug Fixes

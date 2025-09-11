@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.4.0](https://github.com/christophehurpeau/alouette/compare/alouette@13.3.0...alouette@13.4.0) (2025-09-11)
+
+### Features
+
+* add fullscreen variant ([056fd99](https://github.com/christophehurpeau/alouette/commit/056fd9908b013d2bde5fde85e4a19039e579a83c))
+* export containersVariants ([360f4a3](https://github.com/christophehurpeau/alouette/commit/360f4a3d6bb9430ce160d8ec3c44cce09b4a9096))
+
+Version bump for dependency: alouette-icons
+
+
 ## [13.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@13.2.1...alouette@13.3.0) (2025-09-10)
 
 ### Features
