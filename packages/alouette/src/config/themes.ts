@@ -129,7 +129,10 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
 
   const theme = {
     backgroundColor,
-    backgroundColorTranslucent: backgroundColor,
+    backgroundColorTranslucent:
+      mode === "dark"
+        ? alouetteTokens.color.blackBackgroundTranslucent
+        : alouetteTokens.color.whiteBackgroundTranslucent,
     "gradientColor:start": getColor(mode === "dark" ? 3 : 6, undefined, false),
     "gradientColor:middle": getColor(mode === "dark" ? 4 : 7, undefined, false),
     "gradientColor:end": getColor(mode === "dark" ? 2 : 5, undefined, false),

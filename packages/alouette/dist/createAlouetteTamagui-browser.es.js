@@ -215,7 +215,7 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
   };
   const theme = {
     backgroundColor,
-    backgroundColorTranslucent: backgroundColor,
+    backgroundColorTranslucent: mode === "dark" ? alouetteTokens.color.blackBackgroundTranslucent : alouetteTokens.color.whiteBackgroundTranslucent,
     "gradientColor:start": getColor(mode === "dark" ? 3 : 6, void 0, false),
     "gradientColor:middle": getColor(mode === "dark" ? 4 : 7, void 0, false),
     "gradientColor:end": getColor(mode === "dark" ? 2 : 5, void 0, false),
