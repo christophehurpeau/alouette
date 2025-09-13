@@ -148,10 +148,12 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
     color: {
       blackBackground: "#1f1e1e",
       whiteBackground: "#ffffff",
-      blackBackgroundTranslucent: "#1f1e1ecc",
-      whiteBackgroundTranslucent: "#ffffffdd",
+      // https://github.com/tamagui/tamagui/issues/3601 does not work at the moment
+      blackBackgroundTranslucent: "#1f1e1e77",
+      whiteBackgroundTranslucent: "#ffffff99",
       blackText: "#000000",
       whiteText: "#fdfdfd",
+      transparent: "transparent",
       ...transformColorScalesToTokens(colorScales)
     },
     radius: {
@@ -174,8 +176,8 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
 
 const mappingLightToDark = {
   1: 1,
-  2: 3,
-  3: 4,
+  2: 4,
+  3: 3,
   4: 2,
   5: 6,
   6: 5,
@@ -247,17 +249,26 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
     return tokens.color[`${tint || intent}.${mode}.${mode === "dark" && adaptForDarkMode ? mappingLightToDark[scaleNumber] : scaleNumber}`];
   };
   const theme = {
-    backgroundColor,
-    backgroundColorTranslucent: mode === "dark" ? alouetteTokens.color.blackBackgroundTranslucent : alouetteTokens.color.whiteBackgroundTranslucent,
-    "gradientColor:start": getColor(mode === "dark" ? 3 : 6, void 0, false),
-    "gradientColor:middle": getColor(mode === "dark" ? 4 : 7, void 0, false),
-    "gradientColor:end": getColor(mode === "dark" ? 2 : 5, void 0, false),
-    textColor,
-    pageBackgroundColor: getColor(1),
+    screenBackgroundColor: getColor(1),
+    "screenBackgroundColor.elevated": getColor(
+      mode === "dark" ? 2 : 1,
+      void 0,
+      false
+    ),
+    "screenBackgroundColor.translucent": mode === "dark" ? alouetteTokens.color.blackBackgroundTranslucent : alouetteTokens.color.whiteBackgroundTranslucent,
     nonInteractiveBackgroundColor: getColor(3),
+    "nonInteractiveBackgroundColor.elevated": getColor(
+      mode === "dark" ? 4 : 3,
+      void 0,
+      false
+    ),
+    "gradientColor:start": getColor(mode === "dark" ? 5 : 6, void 0, false),
+    "gradientColor:middle": getColor(mode === "dark" ? 6 : 7, void 0, false),
+    "gradientColor:end": getColor(mode === "dark" ? 4 : 5, void 0, false),
+    textColor,
     accentTextColor: getColor(9),
     borderColor: getColor(8),
-    shadowColor: getColor(8),
+    shadowColor: mode === "dark" ? alouetteTokens.color.transparent : getColor(8, "grayscale", false),
     "textColor:disabled": getColor(mode === "dark" ? 8 : 7, "grayscale", false),
     "interactive.linkTextColor": getColor(9),
     "interactive.linkTextColor:hover": getColor(10),
@@ -265,26 +276,35 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
     "interactive.linkTextColor:press": getColor(8),
     "interactive.linkTextColor:disabled": getColor(9, "grayscale"),
     "interactive.contained.backgroundColor": getColor(6),
-    "interactive.elevated.backgroundColor": backgroundColor,
-    "interactive.elevated.shadowColor": getColor(8),
-    "interactive.elevated.borderColor": getColor(1),
+    "interactive.elevated.backgroundColor": mode === "dark" ? getColor(4, "grayscale", false) : backgroundColor,
+    "interactive.elevated.shadowColor": mode === "dark" ? alouetteTokens.color.transparent : getColor(8),
+    "interactive.elevated.borderColor": getColor(mode === "dark" ? 7 : 1),
     "interactive.outlined.backgroundColor": backgroundColor,
     "interactive.outlined.borderColor": getColor(7),
     "interactive.contained.backgroundColor:hover": getColor(5),
     "interactive.elevated.backgroundColor:hover": getColor(2),
-    "interactive.elevated.borderColor:hover": getColor(1),
-    "interactive.outlined.backgroundColor:hover": getColor(2),
-    "interactive.outlined.borderColor:hover": getColor(6),
+    "interactive.elevated.borderColor:hover": getColor(mode === "dark" ? 8 : 1),
+    "interactive.outlined.backgroundColor:hover": backgroundColor,
+    "interactive.outlined.borderColor:hover": getColor(8),
     "interactive.contained.backgroundColor:focus": getColor(5),
     "interactive.elevated.backgroundColor:focus": getColor(2),
-    "interactive.elevated.borderColor:focus": getColor(1),
-    "interactive.outlined.backgroundColor:focus": getColor(2),
-    "interactive.outlined.borderColor:focus": getColor(6),
+    "interactive.elevated.borderColor:focus": getColor(mode === "dark" ? 8 : 1),
+    "interactive.outlined.backgroundColor:focus": backgroundColor,
+    "interactive.outlined.borderColor:focus": getColor(8),
+    "interactive.contained.outlineColor:focus": getColor(
+      mode === "dark" ? 7 : 8
+    ),
+    "interactive.outlined.outlineColor:focus": getColor(
+      mode === "dark" ? 7 : 8
+    ),
+    "interactive.elevated.outlineColor:focus": getColor(
+      mode === "dark" ? 7 : 8
+    ),
     "interactive.contained.backgroundColor:press": getColor(3),
     "interactive.elevated.backgroundColor:press": getColor(4),
-    "interactive.elevated.borderColor:press": getColor(1),
-    "interactive.outlined.backgroundColor:press": getColor(4),
-    "interactive.outlined.borderColor:press": getColor(6),
+    "interactive.elevated.borderColor:press": getColor(mode === "dark" ? 8 : 1),
+    "interactive.outlined.backgroundColor:press": backgroundColor,
+    "interactive.outlined.borderColor:press": getColor(8),
     "interactive.contained.backgroundColor:disabled": getColor(
       4,
       "grayscale",
@@ -294,7 +314,7 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
     "interactive.elevated.shadowColor:disabled": getColor(8, "grayscale"),
     "interactive.elevated.borderColor:disabled": getColor(1, "grayscale"),
     "interactive.outlined.backgroundColor:disabled": backgroundColor,
-    "interactive.outlined.borderColor:disabled": getColor(7, "grayscale"),
+    "interactive.outlined.borderColor:disabled": getColor(6, "grayscale"),
     "interactive.forms.textColor": textColor,
     "interactive.forms.placeholderTextColor": getColor(8, "grayscale"),
     // "interactive.forms.backgroundColor": undefined,
@@ -303,15 +323,23 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
     "interactive.forms.backgroundColor:press": getColor(4),
     "interactive.forms.borderColor": getColor(7),
     "interactive.forms.borderColor:disabled": getColor(7, "grayscale"),
-    "interactive.forms.borderColor:hover": getColor(6),
-    "interactive.forms.borderColor:focus": getColor(6),
+    "interactive.forms.borderColor:hover": getColor(
+      mode === "dark" ? 8 : 6,
+      void 0,
+      false
+    ),
+    "interactive.forms.borderColor:focus": getColor(
+      mode === "dark" ? 8 : 6,
+      void 0,
+      false
+    ),
     "interactive.forms.borderColor:press": getColor(6)
   };
   if (process.env.NODE_ENV === "development") {
     warnOnContrastIssues(
       intent,
       theme.textColor.val,
-      theme.backgroundColor.val
+      theme.screenBackgroundColor.val
     );
   }
   return theme;
@@ -336,7 +364,7 @@ const createAlouetteThemes = (tokens) => {
 
 const defaultColorScales = {
   "grayscale.light": createColorScale({
-    1: "#F5F5F5",
+    1: "#FFFFFF",
     2: "#EBEBEB",
     3: "#DBDBDB",
     4: "#D1D1D1",
@@ -348,7 +376,7 @@ const defaultColorScales = {
     10: "#2E2E2E"
   }),
   "grayscale.dark": createColorScale({
-    1: "#1A1A1A",
+    1: "#1F1F1F",
     2: "#1F1F1F",
     3: "#292929",
     4: "#333333",
@@ -366,7 +394,7 @@ const defaultColorScales = {
     4: "#ABE5F7",
     5: "#99DFF5",
     6: "#7DD7F2",
-    7: "#33C0EB",
+    7: "#23C8FB",
     8: "#037496",
     9: "#025D78",
     10: "#012732"
@@ -378,7 +406,7 @@ const defaultColorScales = {
     4: "#0E4758",
     5: "#135C72",
     6: "#156A84",
-    7: "#17718C",
+    7: "#0FB4E6",
     8: "#49CCF3",
     9: "#66D4F5",
     10: "#A9E7F9"
@@ -390,7 +418,7 @@ const defaultColorScales = {
     4: "#FBC7C5",
     5: "#FAB5B2",
     6: "#F89996",
-    7: "#F34F49",
+    7: "#FB4741",
     8: "#C80B04",
     9: "#AA0903",
     10: "#640502"
@@ -402,7 +430,7 @@ const defaultColorScales = {
     4: "#721613",
     5: "#8C1B17",
     6: "#9E1E1A",
-    7: "#A7201B",
+    7: "#F12922",
     8: "#F56A66",
     9: "#F78682",
     10: "#FBC7C5"
@@ -414,7 +442,7 @@ const defaultColorScales = {
     4: "#ABE4F7",
     5: "#99DEF5",
     6: "#7DD5F2",
-    7: "#33BDEB",
+    7: "#23C5FB",
     8: "#037196",
     9: "#025B78",
     10: "#012632"
@@ -426,7 +454,7 @@ const defaultColorScales = {
     4: "#0E4558",
     5: "#135A72",
     6: "#156884",
-    7: "#176F8C",
+    7: "#0FB0E6",
     8: "#49C9F3",
     9: "#66D1F5",
     10: "#A9E5F9"
@@ -438,7 +466,7 @@ const defaultColorScales = {
     4: "#ABF7AB",
     5: "#99F599",
     6: "#7DF27D",
-    7: "#33EB33",
+    7: "#23FB23",
     8: "#038203",
     9: "#026402",
     10: "#011E01"
@@ -450,7 +478,7 @@ const defaultColorScales = {
     4: "#0E580E",
     5: "#137213",
     6: "#158415",
-    7: "#178C17",
+    7: "#0FE60F",
     8: "#49F349",
     9: "#66F566",
     10: "#A9F9A9"
@@ -462,7 +490,7 @@ const defaultColorScales = {
     4: "#FAE6BD",
     5: "#F9DEAA",
     6: "#F6D38D",
-    7: "#F1B641",
+    7: "#FBBA37",
     8: "#825803",
     9: "#644302",
     10: "#1E1401"
@@ -474,7 +502,7 @@ const defaultColorScales = {
     4: "#694C11",
     5: "#845F15",
     6: "#956C18",
-    7: "#9E721A",
+    7: "#F0A919",
     8: "#F5C25C",
     9: "#F6CD79",
     10: "#FBE6BC"

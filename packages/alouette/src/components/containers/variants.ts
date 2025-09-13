@@ -1,3 +1,4 @@
+import { isAndroid } from "@tamagui/core";
 import type { SizeTokens, VariantSpreadExtras, ViewStyle } from "@tamagui/core";
 import {
   fullscreenStyle,
@@ -29,8 +30,39 @@ export const withBackground = (
 
   return {
     ...(props.interactive
-      ? getInteractionStyles("backgroundColor", props)
-      : { backgroundColor: "$nonInteractiveBackgroundColor" }),
+      ? {
+          ...getInteractionStyles("backgroundColor", props),
+          ...getInteractionStyles("outlineColor", props),
+        }
+      : {
+          backgroundColor: props.withElevation
+            ? "$nonInteractiveBackgroundColor.elevated"
+            : "$nonInteractiveBackgroundColor",
+        }),
+  } as const;
+};
+
+export const withScreenBackground = (
+  val: boolean | "translucent",
+  { props }: VariantSpreadExtras<any>,
+) => {
+  if (!val) return {} as const;
+
+  if (val === "translucent") {
+    return {
+      backgroundColor: "$screenBackgroundColor.translucent",
+      backdropFilter: "blur(14px)",
+    } as const;
+  }
+
+  if (props.withElevation) {
+    return {
+      backgroundColor: "$screenBackgroundColor.elevated",
+    } as const;
+  }
+
+  return {
+    backgroundColor: "$screenBackgroundColor",
   } as const;
 };
 
@@ -40,14 +72,16 @@ export const withElevation = (
 ) => {
   if (!val) return {} as const;
 
+  const height = 2;
+
   return {
     ...(props.disabled
       ? {}
       : {
-          shadowOffset: { width: 0, height: 2 },
+          shadowOffset: { width: 0, height },
           shadowOpacity: 0.65,
           shadowRadius: 6,
-          elevation: 5,
+          ...(isAndroid ? { elevationAndroid: height * 2 } : undefined),
         }),
     ...(props.interactive
       ? getInteractionStyles("shadowColor", props)

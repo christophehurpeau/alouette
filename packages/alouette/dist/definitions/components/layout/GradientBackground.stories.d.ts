@@ -7,5 +7,7 @@ declare const _default: {
 };
 export default _default;
 export declare const PreviewGradientBackgroundStoryLightPrimary: StoryObj;
+export declare const PreviewGradientBackgroundStoryLightPrimaryLight: StoryObj;
 export declare const PreviewGradientBackgroundStoryDarkPrimary: StoryObj;
+export declare const PreviewGradientBackgroundStoryDarkPrimaryLight: StoryObj;
 //# sourceMappingURL=GradientBackground.stories.d.ts.map

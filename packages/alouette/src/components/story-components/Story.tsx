@@ -84,12 +84,7 @@ export function Story({
         </Box>
       )}
       {["light", ...(noDarkTheme ? [] : ["dark"])].map((theme) => (
-        <Box
-          key={theme}
-          theme={theme}
-          backgroundColor="$backgroundColor"
-          padding="$md"
-        >
+        <Box key={theme} withScreenBackground theme={theme} padding="$md">
           {children}
         </Box>
       ))}

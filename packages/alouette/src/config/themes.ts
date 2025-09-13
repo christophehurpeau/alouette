@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable camelcase */
 import type { Variable } from "@tamagui/core";
 import { mappingLightToDark } from "./colorScales";
@@ -20,10 +21,12 @@ import { warnOnContrastIssues } from "./utils/colorContrast";
 // }
 
 export interface ColorTheme {
-  backgroundColor: Variable<string>;
-  backgroundColorTranslucent: Variable<string>;
-  pageBackgroundColor: Variable<string>;
+  screenBackgroundColor: Variable<string>;
+  "screenBackgroundColor.translucent": Variable<string>;
+  "screenBackgroundColor.elevated": Variable<string>;
   nonInteractiveBackgroundColor: Variable<string>;
+  "nonInteractiveBackgroundColor.elevated": Variable<string>;
+
   "gradientColor:start": Variable<string>;
   "gradientColor:middle": Variable<string>;
   "gradientColor:end": Variable<string>;
@@ -57,6 +60,10 @@ export interface ColorTheme {
   "interactive.elevated.borderColor:focus": Variable<string>;
   "interactive.outlined.backgroundColor:focus": Variable<string>;
   "interactive.outlined.borderColor:focus": Variable<string>;
+
+  "interactive.contained.outlineColor:focus": Variable<string>;
+  "interactive.elevated.outlineColor:focus": Variable<string>;
+  "interactive.outlined.outlineColor:focus": Variable<string>;
 
   "interactive.contained.backgroundColor:press": Variable<string>;
   "interactive.elevated.backgroundColor:press": Variable<string>;
@@ -128,20 +135,34 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
   };
 
   const theme = {
-    backgroundColor,
-    backgroundColorTranslucent:
+    screenBackgroundColor: getColor(1),
+    "screenBackgroundColor.elevated": getColor(
+      mode === "dark" ? 2 : 1,
+      undefined,
+      false,
+    ),
+    "screenBackgroundColor.translucent":
       mode === "dark"
         ? alouetteTokens.color.blackBackgroundTranslucent
         : alouetteTokens.color.whiteBackgroundTranslucent,
-    "gradientColor:start": getColor(mode === "dark" ? 3 : 6, undefined, false),
-    "gradientColor:middle": getColor(mode === "dark" ? 4 : 7, undefined, false),
-    "gradientColor:end": getColor(mode === "dark" ? 2 : 5, undefined, false),
-    textColor,
-    pageBackgroundColor: getColor(1),
     nonInteractiveBackgroundColor: getColor(3),
+    "nonInteractiveBackgroundColor.elevated": getColor(
+      mode === "dark" ? 4 : 3,
+      undefined,
+      false,
+    ),
+
+    "gradientColor:start": getColor(mode === "dark" ? 5 : 6, undefined, false),
+    "gradientColor:middle": getColor(mode === "dark" ? 6 : 7, undefined, false),
+    "gradientColor:end": getColor(mode === "dark" ? 4 : 5, undefined, false),
+
+    textColor,
     accentTextColor: getColor(9),
     borderColor: getColor(8),
-    shadowColor: getColor(8),
+    shadowColor:
+      mode === "dark"
+        ? alouetteTokens.color.transparent
+        : getColor(8, "grayscale", false),
     "textColor:disabled": getColor(mode === "dark" ? 8 : 7, "grayscale", false),
 
     "interactive.linkTextColor": getColor(9),
@@ -151,29 +172,41 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
     "interactive.linkTextColor:disabled": getColor(9, "grayscale"),
 
     "interactive.contained.backgroundColor": getColor(6),
-    "interactive.elevated.backgroundColor": backgroundColor,
-    "interactive.elevated.shadowColor": getColor(8),
-    "interactive.elevated.borderColor": getColor(1),
+    "interactive.elevated.backgroundColor":
+      mode === "dark" ? getColor(4, "grayscale", false) : backgroundColor,
+    "interactive.elevated.shadowColor":
+      mode === "dark" ? alouetteTokens.color.transparent : getColor(8),
+    "interactive.elevated.borderColor": getColor(mode === "dark" ? 7 : 1),
     "interactive.outlined.backgroundColor": backgroundColor,
     "interactive.outlined.borderColor": getColor(7),
 
     "interactive.contained.backgroundColor:hover": getColor(5),
     "interactive.elevated.backgroundColor:hover": getColor(2),
-    "interactive.elevated.borderColor:hover": getColor(1),
-    "interactive.outlined.backgroundColor:hover": getColor(2),
-    "interactive.outlined.borderColor:hover": getColor(6),
+    "interactive.elevated.borderColor:hover": getColor(mode === "dark" ? 8 : 1),
+    "interactive.outlined.backgroundColor:hover": backgroundColor,
+    "interactive.outlined.borderColor:hover": getColor(8),
 
     "interactive.contained.backgroundColor:focus": getColor(5),
     "interactive.elevated.backgroundColor:focus": getColor(2),
-    "interactive.elevated.borderColor:focus": getColor(1),
-    "interactive.outlined.backgroundColor:focus": getColor(2),
-    "interactive.outlined.borderColor:focus": getColor(6),
+    "interactive.elevated.borderColor:focus": getColor(mode === "dark" ? 8 : 1),
+    "interactive.outlined.backgroundColor:focus": backgroundColor,
+    "interactive.outlined.borderColor:focus": getColor(8),
+
+    "interactive.contained.outlineColor:focus": getColor(
+      mode === "dark" ? 7 : 8,
+    ),
+    "interactive.outlined.outlineColor:focus": getColor(
+      mode === "dark" ? 7 : 8,
+    ),
+    "interactive.elevated.outlineColor:focus": getColor(
+      mode === "dark" ? 7 : 8,
+    ),
 
     "interactive.contained.backgroundColor:press": getColor(3),
     "interactive.elevated.backgroundColor:press": getColor(4),
-    "interactive.elevated.borderColor:press": getColor(1),
-    "interactive.outlined.backgroundColor:press": getColor(4),
-    "interactive.outlined.borderColor:press": getColor(6),
+    "interactive.elevated.borderColor:press": getColor(mode === "dark" ? 8 : 1),
+    "interactive.outlined.backgroundColor:press": backgroundColor,
+    "interactive.outlined.borderColor:press": getColor(8),
 
     "interactive.contained.backgroundColor:disabled": getColor(
       4,
@@ -184,7 +217,7 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
     "interactive.elevated.shadowColor:disabled": getColor(8, "grayscale"),
     "interactive.elevated.borderColor:disabled": getColor(1, "grayscale"),
     "interactive.outlined.backgroundColor:disabled": backgroundColor,
-    "interactive.outlined.borderColor:disabled": getColor(7, "grayscale"),
+    "interactive.outlined.borderColor:disabled": getColor(6, "grayscale"),
 
     "interactive.forms.textColor": textColor,
     "interactive.forms.placeholderTextColor": getColor(8, "grayscale"),
@@ -195,8 +228,16 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
     "interactive.forms.backgroundColor:press": getColor(4),
     "interactive.forms.borderColor": getColor(7),
     "interactive.forms.borderColor:disabled": getColor(7, "grayscale"),
-    "interactive.forms.borderColor:hover": getColor(6),
-    "interactive.forms.borderColor:focus": getColor(6),
+    "interactive.forms.borderColor:hover": getColor(
+      mode === "dark" ? 8 : 6,
+      undefined,
+      false,
+    ),
+    "interactive.forms.borderColor:focus": getColor(
+      mode === "dark" ? 8 : 6,
+      undefined,
+      false,
+    ),
     "interactive.forms.borderColor:press": getColor(6),
   } satisfies FullTheme;
 
@@ -205,7 +246,7 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
     warnOnContrastIssues(
       intent,
       theme.textColor.val,
-      theme.backgroundColor.val,
+      theme.screenBackgroundColor.val,
     );
   }
 

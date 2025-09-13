@@ -1,103 +1,205 @@
 import type { SizeTokens, VariantSpreadExtras, ViewStyle } from "@tamagui/core";
 export declare const withBorder: (val: SizeTokens | boolean, { props }: VariantSpreadExtras<any>) => {
     readonly shadowColor?: undefined;
+    readonly focusVisibleStyle?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
     readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 } | {
     readonly shadowColor: `$${string}.shadowColor`;
+    readonly focusVisibleStyle?: undefined;
+    readonly hoverStyle?: undefined;
+    readonly pressStyle?: undefined;
+    readonly focusStyle?: undefined;
+    readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
+} | {
+    readonly focusVisibleStyle: {
+        readonly outlineWidth: 2;
+        readonly outlineStyle: "solid";
+        readonly outlineOffset: 2;
+        readonly outlineColor: `$${string}.outlineColor:focus`;
+    };
+    readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
     readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 } | {
     readonly hoverStyle: {
-        readonly [x: string]: `$${string}.backgroundColor:hover` | `$${string}.borderColor:hover`;
+        readonly [x: string]: `$${string}.borderColor:hover` | `$${string}.backgroundColor:hover`;
     };
     readonly pressStyle: {
-        readonly [x: string]: `$${string}.backgroundColor:press` | `$${string}.borderColor:press`;
+        readonly [x: string]: `$${string}.borderColor:press` | `$${string}.backgroundColor:press`;
     };
     readonly focusStyle: {
-        readonly [x: string]: `$${string}.backgroundColor:focus` | `$${string}.borderColor:focus`;
+        readonly [x: string]: `$${string}.borderColor:focus` | `$${string}.backgroundColor:focus`;
     };
     readonly shadowColor?: undefined;
+    readonly focusVisibleStyle?: undefined;
     readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 } | {
     readonly borderColor: string;
     readonly borderWidth: 1 | import("@tamagui/web").UnionableNumber | import("@tamagui/web").UnionableString;
 };
 export declare const withBackground: (val: boolean, { props }: VariantSpreadExtras<any>) => {
-    readonly [x: string]: `$${string}.backgroundColor:disabled` | `$${string}.borderColor:disabled` | `$${string}.shadowColor:disabled`;
+    readonly [x: string]: `$${string}.borderColor:disabled` | `$${string}.shadowColor:disabled` | `$${string}.backgroundColor:disabled` | `$${string}.outlineColor:disabled`;
     readonly shadowColor?: undefined;
+    readonly focusVisibleStyle?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
 } | {
     readonly shadowColor: `$${string}.shadowColor`;
+    readonly focusVisibleStyle?: undefined;
+    readonly hoverStyle?: undefined;
+    readonly pressStyle?: undefined;
+    readonly focusStyle?: undefined;
+} | {
+    readonly focusVisibleStyle: {
+        readonly outlineWidth: 2;
+        readonly outlineStyle: "solid";
+        readonly outlineOffset: 2;
+        readonly outlineColor: `$${string}.outlineColor:focus`;
+    };
+    readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
 } | {
     readonly [x: string]: string | {
-        readonly [x: string]: `$${string}.backgroundColor:hover` | `$${string}.borderColor:hover`;
+        readonly [x: string]: `$${string}.borderColor:hover` | `$${string}.backgroundColor:hover`;
     } | {
-        readonly [x: string]: `$${string}.backgroundColor:press` | `$${string}.borderColor:press`;
+        readonly [x: string]: `$${string}.borderColor:press` | `$${string}.backgroundColor:press`;
     } | {
-        readonly [x: string]: `$${string}.backgroundColor:focus` | `$${string}.borderColor:focus`;
+        readonly [x: string]: `$${string}.borderColor:focus` | `$${string}.backgroundColor:focus`;
     };
     readonly hoverStyle: {
-        readonly [x: string]: `$${string}.backgroundColor:hover` | `$${string}.borderColor:hover`;
+        readonly [x: string]: `$${string}.borderColor:hover` | `$${string}.backgroundColor:hover`;
     };
     readonly pressStyle: {
-        readonly [x: string]: `$${string}.backgroundColor:press` | `$${string}.borderColor:press`;
+        readonly [x: string]: `$${string}.borderColor:press` | `$${string}.backgroundColor:press`;
     };
     readonly focusStyle: {
-        readonly [x: string]: `$${string}.backgroundColor:focus` | `$${string}.borderColor:focus`;
+        readonly [x: string]: `$${string}.borderColor:focus` | `$${string}.backgroundColor:focus`;
     };
     readonly shadowColor?: undefined;
+    readonly focusVisibleStyle?: undefined;
+} | {
+    readonly focusVisibleStyle: {
+        readonly outlineWidth: 2;
+        readonly outlineStyle: "solid";
+        readonly outlineOffset: 2;
+        readonly outlineColor: `$${string}.outlineColor:focus`;
+    };
+    readonly shadowColor: `$${string}.shadowColor`;
+    readonly hoverStyle?: undefined;
+    readonly pressStyle?: undefined;
+    readonly focusStyle?: undefined;
+} | {
+    readonly hoverStyle: {
+        readonly [x: string]: `$${string}.borderColor:hover` | `$${string}.backgroundColor:hover`;
+    };
+    readonly pressStyle: {
+        readonly [x: string]: `$${string}.borderColor:press` | `$${string}.backgroundColor:press`;
+    };
+    readonly focusStyle: {
+        readonly [x: string]: `$${string}.borderColor:focus` | `$${string}.backgroundColor:focus`;
+    };
+    readonly shadowColor: `$${string}.shadowColor`;
+    readonly focusVisibleStyle?: undefined;
+} | {
+    readonly hoverStyle: {
+        readonly [x: string]: `$${string}.borderColor:hover` | `$${string}.backgroundColor:hover`;
+    };
+    readonly pressStyle: {
+        readonly [x: string]: `$${string}.borderColor:press` | `$${string}.backgroundColor:press`;
+    };
+    readonly focusStyle: {
+        readonly [x: string]: `$${string}.borderColor:focus` | `$${string}.backgroundColor:focus`;
+    };
+    readonly shadowColor?: undefined;
+    readonly focusVisibleStyle: {
+        readonly outlineWidth: 2;
+        readonly outlineStyle: "solid";
+        readonly outlineOffset: 2;
+        readonly outlineColor: `$${string}.outlineColor:focus`;
+    };
 } | {
     readonly backgroundColor: string;
 };
+export declare const withScreenBackground: (val: boolean | "translucent", { props }: VariantSpreadExtras<any>) => {
+    readonly backgroundColor?: undefined;
+    readonly backdropFilter?: undefined;
+} | {
+    readonly backgroundColor: "$screenBackgroundColor.translucent";
+    readonly backdropFilter: "blur(14px)";
+} | {
+    readonly backgroundColor: "$screenBackgroundColor.elevated";
+    readonly backdropFilter?: undefined;
+} | {
+    readonly backgroundColor: "$screenBackgroundColor";
+    readonly backdropFilter?: undefined;
+};
 export declare const withElevation: (val: boolean, { props }: VariantSpreadExtras<any>) => {
+    readonly shadowColor?: undefined;
+    readonly focusVisibleStyle?: undefined;
+    readonly hoverStyle?: undefined;
+    readonly pressStyle?: undefined;
+    readonly focusStyle?: undefined;
+    readonly elevationAndroid?: number | undefined;
+    readonly shadowOffset?: {
+        width: number;
+        height: number;
+    } | undefined;
+    readonly shadowOpacity?: number | undefined;
+    readonly shadowRadius?: number | undefined;
+} | {
+    readonly focusVisibleStyle: {
+        readonly outlineWidth: 2;
+        readonly outlineStyle: "solid";
+        readonly outlineOffset: 2;
+        readonly outlineColor: `$${string}.outlineColor:focus`;
+    };
     readonly shadowColor?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
     readonly focusStyle?: undefined;
+    readonly elevationAndroid?: number | undefined;
     readonly shadowOffset?: {
         width: number;
         height: number;
     } | undefined;
     readonly shadowOpacity?: number | undefined;
     readonly shadowRadius?: number | undefined;
-    readonly elevation?: number | undefined;
 } | {
     readonly hoverStyle: {
-        readonly [x: string]: `$${string}.backgroundColor:hover` | `$${string}.borderColor:hover`;
+        readonly [x: string]: `$${string}.borderColor:hover` | `$${string}.backgroundColor:hover`;
     };
     readonly pressStyle: {
-        readonly [x: string]: `$${string}.backgroundColor:press` | `$${string}.borderColor:press`;
+        readonly [x: string]: `$${string}.borderColor:press` | `$${string}.backgroundColor:press`;
     };
     readonly focusStyle: {
-        readonly [x: string]: `$${string}.backgroundColor:focus` | `$${string}.borderColor:focus`;
+        readonly [x: string]: `$${string}.borderColor:focus` | `$${string}.backgroundColor:focus`;
     };
     readonly shadowColor?: undefined;
+    readonly focusVisibleStyle?: undefined;
+    readonly elevationAndroid?: number | undefined;
     readonly shadowOffset?: {
         width: number;
         height: number;
     } | undefined;
     readonly shadowOpacity?: number | undefined;
     readonly shadowRadius?: number | undefined;
-    readonly elevation?: number | undefined;
 } | {
     readonly shadowColor: string;
+    readonly elevationAndroid?: number | undefined;
     readonly shadowOffset?: {
         width: number;
         height: number;
     } | undefined;
     readonly shadowOpacity?: number | undefined;
     readonly shadowRadius?: number | undefined;
-    readonly elevation?: number | undefined;
 };
 export declare const size: (val: number) => {
     readonly width: number;
