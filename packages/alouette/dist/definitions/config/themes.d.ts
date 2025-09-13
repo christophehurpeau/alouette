@@ -2,10 +2,11 @@ import type { Variable } from "@tamagui/core";
 import type { AlouetteColorIntent, AlouetteColorScales } from "./colorScales";
 import type { createAlouetteTokens } from "./createAlouetteTokens";
 export interface ColorTheme {
-    backgroundColor: Variable<string>;
-    backgroundColorTranslucent: Variable<string>;
-    pageBackgroundColor: Variable<string>;
+    screenBackgroundColor: Variable<string>;
+    "screenBackgroundColor.translucent": Variable<string>;
+    "screenBackgroundColor.elevated": Variable<string>;
     nonInteractiveBackgroundColor: Variable<string>;
+    "nonInteractiveBackgroundColor.elevated": Variable<string>;
     "gradientColor:start": Variable<string>;
     "gradientColor:middle": Variable<string>;
     "gradientColor:end": Variable<string>;
@@ -35,6 +36,9 @@ export interface ColorTheme {
     "interactive.elevated.borderColor:focus": Variable<string>;
     "interactive.outlined.backgroundColor:focus": Variable<string>;
     "interactive.outlined.borderColor:focus": Variable<string>;
+    "interactive.contained.outlineColor:focus": Variable<string>;
+    "interactive.elevated.outlineColor:focus": Variable<string>;
+    "interactive.outlined.outlineColor:focus": Variable<string>;
     "interactive.contained.backgroundColor:press": Variable<string>;
     "interactive.elevated.backgroundColor:press": Variable<string>;
     "interactive.elevated.borderColor:press": Variable<string>;
@@ -58,14 +62,15 @@ export interface ColorTheme {
 }
 export type FullTheme = ColorTheme;
 export declare const createColorTheme: <const ColorIntent extends AlouetteColorIntent>(tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>, intent: ColorIntent, mode?: "dark" | "light", backgroundColor?: Variable<string>, textColor?: Variable<string>) => {
-    backgroundColor: Variable<string>;
-    backgroundColorTranslucent: Variable<string>;
+    screenBackgroundColor: Variable<string>;
+    "screenBackgroundColor.elevated": Variable<string>;
+    "screenBackgroundColor.translucent": Variable<string>;
+    nonInteractiveBackgroundColor: Variable<string>;
+    "nonInteractiveBackgroundColor.elevated": Variable<string>;
     "gradientColor:start": Variable<string>;
     "gradientColor:middle": Variable<string>;
     "gradientColor:end": Variable<string>;
     textColor: Variable<string>;
-    pageBackgroundColor: Variable<string>;
-    nonInteractiveBackgroundColor: Variable<string>;
     accentTextColor: Variable<string>;
     borderColor: Variable<string>;
     shadowColor: Variable<string>;
@@ -91,6 +96,9 @@ export declare const createColorTheme: <const ColorIntent extends AlouetteColorI
     "interactive.elevated.borderColor:focus": Variable<string>;
     "interactive.outlined.backgroundColor:focus": Variable<string>;
     "interactive.outlined.borderColor:focus": Variable<string>;
+    "interactive.contained.outlineColor:focus": Variable<string>;
+    "interactive.outlined.outlineColor:focus": Variable<string>;
+    "interactive.elevated.outlineColor:focus": Variable<string>;
     "interactive.contained.backgroundColor:press": Variable<string>;
     "interactive.elevated.backgroundColor:press": Variable<string>;
     "interactive.elevated.borderColor:press": Variable<string>;
@@ -114,14 +122,15 @@ export declare const createColorTheme: <const ColorIntent extends AlouetteColorI
 };
 export declare const createAlouetteThemes: <const ColorScales extends AlouetteColorScales>(tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>) => {
     readonly light: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -147,6 +156,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -169,14 +181,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly light_info: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -202,6 +215,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -224,14 +240,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly light_success: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -257,6 +274,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -279,14 +299,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly light_warning: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -312,6 +333,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -334,14 +358,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly light_danger: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -367,6 +392,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -389,14 +417,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly light_primary: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -422,6 +451,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -444,14 +476,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly dark: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -477,6 +510,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -499,14 +535,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly dark_info: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -532,6 +569,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -554,14 +594,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly dark_success: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -587,6 +628,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -609,14 +653,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly dark_warning: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -642,6 +687,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -664,14 +712,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly dark_danger: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -697,6 +746,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;
@@ -719,14 +771,15 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.forms.borderColor:press": Variable<string>;
     };
     readonly dark_primary: {
-        backgroundColor: Variable<string>;
-        backgroundColorTranslucent: Variable<string>;
+        screenBackgroundColor: Variable<string>;
+        "screenBackgroundColor.elevated": Variable<string>;
+        "screenBackgroundColor.translucent": Variable<string>;
+        nonInteractiveBackgroundColor: Variable<string>;
+        "nonInteractiveBackgroundColor.elevated": Variable<string>;
         "gradientColor:start": Variable<string>;
         "gradientColor:middle": Variable<string>;
         "gradientColor:end": Variable<string>;
         textColor: Variable<string>;
-        pageBackgroundColor: Variable<string>;
-        nonInteractiveBackgroundColor: Variable<string>;
         accentTextColor: Variable<string>;
         borderColor: Variable<string>;
         shadowColor: Variable<string>;
@@ -752,6 +805,9 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.elevated.borderColor:focus": Variable<string>;
         "interactive.outlined.backgroundColor:focus": Variable<string>;
         "interactive.outlined.borderColor:focus": Variable<string>;
+        "interactive.contained.outlineColor:focus": Variable<string>;
+        "interactive.outlined.outlineColor:focus": Variable<string>;
+        "interactive.elevated.outlineColor:focus": Variable<string>;
         "interactive.contained.backgroundColor:press": Variable<string>;
         "interactive.elevated.backgroundColor:press": Variable<string>;
         "interactive.elevated.borderColor:press": Variable<string>;

@@ -9,6 +9,7 @@ declare const _default: {
         variant?: "contained" | "outlined" | "elevated" | "ghost-contained" | "ghost-outlined" | undefined;
         withBorder?: boolean | import("@tamagui/web").SizeTokens | undefined;
         withBackground?: boolean | undefined;
+        withScreenBackground?: boolean | "translucent" | undefined;
         withElevation?: boolean | undefined;
         circular?: boolean | undefined;
         fullscreen?: boolean | undefined;

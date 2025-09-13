@@ -63,10 +63,12 @@ export const createAlouetteTokens = <
     color: {
       blackBackground: "#1f1e1e",
       whiteBackground: "#ffffff",
-      blackBackgroundTranslucent: "#1f1e1ecc",
-      whiteBackgroundTranslucent: "#ffffffdd",
+      // https://github.com/tamagui/tamagui/issues/3601 does not work at the moment
+      blackBackgroundTranslucent: "#1f1e1e77",
+      whiteBackgroundTranslucent: "#ffffff99",
       blackText: "#000000",
       whiteText: "#fdfdfd",
+      transparent: "transparent",
       ...transformColorScalesToTokens(colorScales),
     },
     radius: {

@@ -1,5 +1,5 @@
 import { jsx, jsxs } from 'react/jsx-runtime';
-import { styled, View, usePropsAndStyle, Text, isWeb, TamaguiProvider, useMedia, Stack as Stack$1, useTheme, Theme } from '@tamagui/core';
+import { isAndroid, styled, View, usePropsAndStyle, Text, isWeb, TamaguiProvider, useMedia, Stack as Stack$1, useTheme, Theme } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
 import { cloneElement, Fragment, Children, createContext, useState, useEffect, useContext } from 'react';
 import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
@@ -25,6 +25,16 @@ const getInteractionStyles = (name, { disabled, interactive, variant }) => {
   if (name === "shadowColor") {
     return { [name]: `$${prefix}.${name}` };
   }
+  if (name === "outlineColor") {
+    return {
+      focusVisibleStyle: {
+        outlineWidth: 2,
+        outlineStyle: "solid",
+        outlineOffset: 2,
+        outlineColor: `$${prefix}.${name}:focus`
+      }
+    };
+  }
   return {
     [name]: isGhost ? "transparent" : `$${prefix}.${name}`,
     hoverStyle: { [name]: `$${prefix}.${name}:hover` },
@@ -45,17 +55,40 @@ const withBackground = (val, { props }) => {
     throw new Error("A role prop is required while using interactive");
   }
   return {
-    ...props.interactive ? getInteractionStyles("backgroundColor", props) : { backgroundColor: "$nonInteractiveBackgroundColor" }
+    ...props.interactive ? {
+      ...getInteractionStyles("backgroundColor", props),
+      ...getInteractionStyles("outlineColor", props)
+    } : {
+      backgroundColor: props.withElevation ? "$nonInteractiveBackgroundColor.elevated" : "$nonInteractiveBackgroundColor"
+    }
+  };
+};
+const withScreenBackground = (val, { props }) => {
+  if (!val) return {};
+  if (val === "translucent") {
+    return {
+      backgroundColor: "$screenBackgroundColor.translucent",
+      backdropFilter: "blur(14px)"
+    };
+  }
+  if (props.withElevation) {
+    return {
+      backgroundColor: "$screenBackgroundColor.elevated"
+    };
+  }
+  return {
+    backgroundColor: "$screenBackgroundColor"
   };
 };
 const withElevation = (val, { props }) => {
   if (!val) return {};
+  const height = 2;
   return {
     ...props.disabled ? {} : {
-      shadowOffset: { width: 0, height: 2 },
+      shadowOffset: { width: 0, height },
       shadowOpacity: 0.65,
       shadowRadius: 6,
-      elevation: 5
+      ...isAndroid ? { elevationAndroid: height * 2 } : void 0
     },
     ...props.interactive ? getInteractionStyles("shadowColor", props) : { shadowColor: "$shadowColor" }
   };
@@ -119,7 +152,8 @@ const variants$1 = /*#__PURE__*/Object.defineProperty({
   size,
   withBackground,
   withBorder,
-  withElevation
+  withElevation,
+  withScreenBackground
 }, Symbol.toStringTag, { value: 'Module' });
 
 const Box = styled(View, {
@@ -561,16 +595,7 @@ function Story({
         children: documentation
       }
     ),
-    ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsx(
-      Box,
-      {
-        theme,
-        backgroundColor: "$backgroundColor",
-        padding: "$md",
-        children
-      },
-      theme
-    ))
+    ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsx(Box, { withScreenBackground: true, theme, padding: "$md", children }, theme))
   ] });
 }
 Story.Section = StorySection;

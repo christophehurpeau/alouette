@@ -27,15 +27,15 @@ const createColorScale = (
 
   const lightnessSteps =
     kind === "light"
-      ? [96, 92, 86, 82, 78, 72, 56, 38, 32, 18]
+      ? [hue === 0 ? 100 : 96, 92, 86, 82, 78, 72, 56, 38, 32, 18]
       : [
-          hue === 0 ? 10 : 6,
+          hue === 0 ? 12 : 6,
           hue === 0 ? 12 : 12,
           hue === 0 ? 16 : 16,
           hue === 0 ? 20 : 20,
           hue === 0 ? 24 : 26,
           hue === 0 ? 28 : 30,
-          hue === 0 ? 32 : 32,
+          hue === 0 ? 32 : 48,
           62,
           68,
           82,
@@ -48,7 +48,7 @@ const createColorScale = (
     4: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[3]])}`,
     5: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[4]])}`,
     6: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[5]])}`,
-    7: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[6]])}`,
+    7: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[6]])}`,
     8: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[7] + boostTextContrast])}`,
     9: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[8] + boostTextContrast])}`,
     10: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[9] + boostTextContrast])}`,
@@ -191,27 +191,25 @@ if (process.argv[2] === "generate") {
           `  ${step.padStart(2, " ")}:`,
           swatch,
           color,
-          ...(step === "7"
-            ? ["N/A"]
-            : [
-                getContrastGrade(
-                  getContrastRatio(
-                    color,
-                    Number(step) < 7
-                      ? colorToCompareForStepBefore7
-                      : colorToCompareForStepAfter7,
-                  ),
-                ),
-                ["3", "4", "5", "6"].includes(step)
-                  ? "/ vs high contrast: " +
-                    getContrastGrade(getContrastRatio(color, highContrastColor))
-                  : null,
+          ...[
+            getContrastGrade(
+              getContrastRatio(
+                color,
+                Number(step) < 7
+                  ? colorToCompareForStepBefore7
+                  : colorToCompareForStepAfter7,
+              ),
+            ),
+            ["3", "4", "5", "6", "7"].includes(step)
+              ? "/ vs high contrast: " +
+                getContrastGrade(getContrastRatio(color, highContrastColor))
+              : null,
 
-                ["8", "9", "10"].includes(step)
-                  ? "/ vs .1: " +
-                    getContrastGrade(getContrastRatio(color, palette["1"]))
-                  : null,
-              ]),
+            ["8", "9", "10"].includes(step)
+              ? "/ vs .1: " +
+                getContrastGrade(getContrastRatio(color, palette["1"]))
+              : null,
+          ],
         ]
           .filter(Boolean)
           .join(" "),

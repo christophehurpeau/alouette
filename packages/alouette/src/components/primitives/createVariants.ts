@@ -11,7 +11,7 @@ export const fullscreenStyle = {
 export type InternalPseudoState = "focus" | "hover" | "press";
 
 export const getInteractionStyles = (
-  name: "backgroundColor" | "borderColor" | "shadowColor",
+  name: "backgroundColor" | "borderColor" | "outlineColor" | "shadowColor",
   { disabled, interactive, variant }: VariantSpreadExtras<any>["props"],
 ) => {
   const isGhost = variant?.startsWith("ghost-");
@@ -28,6 +28,17 @@ export const getInteractionStyles = (
   if (name === "shadowColor") {
     // no need to add :hover, :focus, :press, and causes issues because all of the box-shadow is set and resets width etc
     return { [name]: `$${prefix}.${name}` } as const;
+  }
+
+  if (name === "outlineColor") {
+    return {
+      focusVisibleStyle: {
+        outlineWidth: 2,
+        outlineStyle: "solid",
+        outlineOffset: 2,
+        outlineColor: `$${prefix}.${name}:focus`,
+      },
+    } as const;
   }
 
   return {
