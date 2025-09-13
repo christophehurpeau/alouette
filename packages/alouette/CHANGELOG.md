@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.6.0](https://github.com/christophehurpeau/alouette/compare/alouette@13.5.1...alouette@13.6.0) (2025-09-13)
+
+### Features
+
+* improve gradient background stories as well as colors to match ([8825eb3](https://github.com/christophehurpeau/alouette/commit/8825eb333c0430fb1cae3b41987d092b9638ec1b))
+
 ## [13.5.1](https://github.com/christophehurpeau/alouette/compare/alouette@13.5.0...alouette@13.5.1) (2025-09-11)
 
 ### Bug Fixes
