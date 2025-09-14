@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.0](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@3.1.2...storybook-native-app@4.0.0) (2025-09-14)
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to expo 54
+* use sora font
+
+### Features
+
+* upgrade to expo 54 ([f4fbf72](https://github.com/christophehurpeau/alouette/commit/f4fbf724765c1f2d97451164eb2fb766bbd8d342))
+* use sora font ([557bd50](https://github.com/christophehurpeau/alouette/commit/557bd509ad3c4612728834658cd3db58f57d6f6b))
+
 ## [3.1.2](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@3.1.1...storybook-native-app@3.1.2) (2025-09-11)
 
 ### Bug Fixes

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@5.1.2...alouette-icons@6.0.0) (2025-09-14)
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to expo 54
+
+### Features
+
+* upgrade to expo 54 ([f4fbf72](https://github.com/christophehurpeau/alouette/commit/f4fbf724765c1f2d97451164eb2fb766bbd8d342))
+
 ## [5.1.2](https://github.com/christophehurpeau/alouette/compare/alouette-icons@5.1.1...alouette-icons@5.1.2) (2025-09-11)
 
 ### Bug Fixes
