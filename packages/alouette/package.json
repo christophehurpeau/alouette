@@ -100,8 +100,8 @@
   "peerDependencies": {
     "alouette-icons": "*",
     "expo-linear-gradient": "*",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-native": "*",
     "react-native-svg": "*"
   },
@@ -114,21 +114,21 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.132.15",
-    "@tamagui/animations-react-native": "1.132.15",
-    "@tamagui/core": "1.132.15",
+    "@tamagui/animations-css": "1.132.24",
+    "@tamagui/animations-react-native": "1.132.24",
+    "@tamagui/core": "1.132.24",
     "alouette-icons": "5.1.2",
-    "expo-linear-gradient": "14.1.5",
+    "expo-linear-gradient": "15.0.7",
     "type-fest": "4.41.0"
   },
   "devDependencies": {
     "@pob/rollup-esbuild": "6.6.0",
     "@rollup/plugin-replace": "6.0.2",
     "@types/node": "24.3.1",
-    "@types/react": "19.1.8",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "react-native": "0.79.4",
+    "@types/react": "19.1.13",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native": "0.81.4",
     "react-native-svg": "15.12.1",
     "typescript": "5.9.2"
   }
