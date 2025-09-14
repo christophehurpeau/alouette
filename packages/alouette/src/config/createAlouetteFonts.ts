@@ -14,9 +14,9 @@ export interface AlouetteFontsOptions {
 }
 
 export const createAlouetteFonts = ({
-  headingFontFamily = "Inter",
+  headingFontFamily = "Sora",
   headingFontSizes = defaultHeadingFontSizes,
-  bodyFontFamily = "Inter",
+  bodyFontFamily = "Sora",
   bodyFontSizes = defaultBodyFontSizes,
 }: AlouetteFontsOptions = {}) => ({
   heading: createFont({
@@ -24,12 +24,12 @@ export const createAlouetteFonts = ({
     weight: {
       regular: "400",
       bold: "700",
-      black: "900",
+      extraBold: "800",
     },
     face: {
       400: { normal: `${headingFontFamily}Regular` },
       700: { normal: `${headingFontFamily}Bold` },
-      900: { normal: `${headingFontFamily}Black` },
+      800: { normal: `${headingFontFamily}ExtraBold` },
     },
     size: headingFontSizes,
     lineHeight: {
@@ -45,12 +45,12 @@ export const createAlouetteFonts = ({
     weight: {
       regular: "400",
       bold: "700",
-      black: "900",
+      extraBold: "800",
     },
     face: {
       400: { normal: `${bodyFontFamily}Regular` },
       700: { normal: `${bodyFontFamily}Bold` },
-      900: { normal: `${bodyFontFamily}Black` },
+      800: { normal: `${bodyFontFamily}ExtraBold` },
     },
     size: bodyFontSizes,
     lineHeight: {

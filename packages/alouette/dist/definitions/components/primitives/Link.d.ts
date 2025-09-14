@@ -6,7 +6,7 @@ declare const Anchor: import("@tamagui/web").TamaguiComponent<import("@tamagui/w
     inherit?: boolean | undefined;
     family?: "$body" | "$heading" | undefined;
     accent?: boolean | undefined;
-    weight?: "$regular" | "$bold" | "$black" | undefined;
+    weight?: "$regular" | "$bold" | "$extraBold" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 type AnchorProps = GetProps<typeof Anchor>;
 export type LinkProps = DistributedOmit<AnchorProps, "href"> & {
@@ -18,7 +18,7 @@ export declare const Link: import("react").ForwardRefExoticComponent<Omit<import
     inherit?: boolean | undefined;
     family?: "$body" | "$heading" | undefined;
     accent?: boolean | undefined;
-    weight?: "$regular" | "$bold" | "$black" | undefined;
+    weight?: "$regular" | "$bold" | "$extraBold" | undefined;
 }>, "href"> & {
     href: string;
 } & import("react").RefAttributes<HTMLAnchorElement>>;

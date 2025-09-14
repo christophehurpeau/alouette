@@ -9,7 +9,7 @@ declare const _default: {
         inherit?: boolean | undefined;
         family?: "$body" | "$heading" | undefined;
         accent?: boolean | undefined;
-        weight?: "$regular" | "$bold" | "$black" | undefined;
+        weight?: "$regular" | "$bold" | "$extraBold" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     parameters: {
         componentSubtitle: string;

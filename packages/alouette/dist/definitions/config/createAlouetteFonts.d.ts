@@ -24,7 +24,7 @@ export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes
         weight: {
             regular: string;
             bold: string;
-            black: string;
+            extraBold: string;
         };
         face: {
             400: {
@@ -33,7 +33,7 @@ export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes
             700: {
                 normal: string;
             };
-            900: {
+            800: {
                 normal: string;
             };
         };
@@ -57,7 +57,7 @@ export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes
         weight: {
             regular: string;
             bold: string;
-            black: string;
+            extraBold: string;
         };
         face: {
             400: {
@@ -66,7 +66,7 @@ export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes
             700: {
                 normal: string;
             };
-            900: {
+            800: {
                 normal: string;
             };
         };

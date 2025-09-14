@@ -52,6 +52,7 @@ export interface ColorTheme {
     "interactive.outlined.borderColor:disabled": Variable<string>;
     "interactive.forms.textColor": Variable<string>;
     "interactive.forms.placeholderTextColor": Variable<string>;
+    "interactive.forms.outlineColor:focus": Variable<string>;
     "interactive.forms.backgroundColor:focus": Variable<string>;
     "interactive.forms.backgroundColor:press": Variable<string>;
     "interactive.forms.borderColor": Variable<string>;
@@ -112,6 +113,7 @@ export declare const createColorTheme: <const ColorIntent extends AlouetteColorI
     "interactive.outlined.borderColor:disabled": Variable<string>;
     "interactive.forms.textColor": Variable<string>;
     "interactive.forms.placeholderTextColor": Variable<string>;
+    "interactive.forms.outlineColor:focus": Variable<string>;
     "interactive.forms.backgroundColor:focus": Variable<string>;
     "interactive.forms.backgroundColor:press": Variable<string>;
     "interactive.forms.borderColor": Variable<string>;
@@ -172,6 +174,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -231,6 +234,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -290,6 +294,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -349,6 +354,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -408,6 +414,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -467,6 +474,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -526,6 +534,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -585,6 +594,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -644,6 +654,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -703,6 +714,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -762,6 +774,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;
@@ -821,6 +834,7 @@ export declare const createAlouetteThemes: <const ColorScales extends AlouetteCo
         "interactive.outlined.borderColor:disabled": Variable<string>;
         "interactive.forms.textColor": Variable<string>;
         "interactive.forms.placeholderTextColor": Variable<string>;
+        "interactive.forms.outlineColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:focus": Variable<string>;
         "interactive.forms.backgroundColor:press": Variable<string>;
         "interactive.forms.borderColor": Variable<string>;

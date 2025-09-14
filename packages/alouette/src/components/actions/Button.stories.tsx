@@ -127,10 +127,9 @@ export default {
 export const PreviewButtonStory: ThisStory = {
   args: {
     theme: "primary",
-    icon: <ArrowLeftRegularIcon />,
     text: "Example",
   },
-  render: (args) => <Button {...args} />,
+  render: (args) => <Button {...args} icon={<ArrowLeftRegularIcon />} />,
 };
 
 export const VariantsStory: ThisStory = {

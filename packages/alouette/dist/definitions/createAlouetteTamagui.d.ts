@@ -79,7 +79,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
         weight: {
             regular: string;
             bold: string;
-            black: string;
+            extraBold: string;
         };
         face: {
             400: {
@@ -88,7 +88,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
             700: {
                 normal: string;
             };
-            900: {
+            800: {
                 normal: string;
             };
         };
@@ -112,7 +112,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
         weight: {
             regular: string;
             bold: string;
-            black: string;
+            extraBold: string;
         };
         face: {
             400: {
@@ -121,7 +121,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
             700: {
                 normal: string;
             };
-            900: {
+            800: {
                 normal: string;
             };
         };

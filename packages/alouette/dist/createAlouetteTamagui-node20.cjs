@@ -46,9 +46,9 @@ const defaultHeadingFontSizes = { xl: 48, lg: 40, md: 32, sm: 24, xs: 18 };
 const defaultBodyFontSizes = { xl: 24, lg: 18, md: 16, sm: 14, xs: 12 };
 const roundWith1Precision = (value) => Math.round(value * 10) / 10;
 const createAlouetteFonts = ({
-  headingFontFamily = "Inter",
+  headingFontFamily = "Sora",
   headingFontSizes = defaultHeadingFontSizes,
-  bodyFontFamily = "Inter",
+  bodyFontFamily = "Sora",
   bodyFontSizes = defaultBodyFontSizes
 } = {}) => ({
   heading: core.createFont({
@@ -56,12 +56,12 @@ const createAlouetteFonts = ({
     weight: {
       regular: "400",
       bold: "700",
-      black: "900"
+      extraBold: "800"
     },
     face: {
       400: { normal: `${headingFontFamily}Regular` },
       700: { normal: `${headingFontFamily}Bold` },
-      900: { normal: `${headingFontFamily}Black` }
+      800: { normal: `${headingFontFamily}ExtraBold` }
     },
     size: headingFontSizes,
     lineHeight: {
@@ -77,12 +77,12 @@ const createAlouetteFonts = ({
     weight: {
       regular: "400",
       bold: "700",
-      black: "900"
+      extraBold: "800"
     },
     face: {
       400: { normal: `${bodyFontFamily}Regular` },
       700: { normal: `${bodyFontFamily}Bold` },
-      900: { normal: `${bodyFontFamily}Black` }
+      800: { normal: `${bodyFontFamily}ExtraBold` }
     },
     size: bodyFontSizes,
     lineHeight: {
@@ -291,15 +291,9 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
     "interactive.elevated.borderColor:focus": getColor(mode === "dark" ? 8 : 1),
     "interactive.outlined.backgroundColor:focus": backgroundColor,
     "interactive.outlined.borderColor:focus": getColor(8),
-    "interactive.contained.outlineColor:focus": getColor(
-      mode === "dark" ? 7 : 8
-    ),
-    "interactive.outlined.outlineColor:focus": getColor(
-      mode === "dark" ? 7 : 8
-    ),
-    "interactive.elevated.outlineColor:focus": getColor(
-      mode === "dark" ? 7 : 8
-    ),
+    "interactive.contained.outlineColor:focus": getColor(7, void 0, false),
+    "interactive.outlined.outlineColor:focus": getColor(7, void 0, false),
+    "interactive.elevated.outlineColor:focus": getColor(7, void 0, false),
     "interactive.contained.backgroundColor:press": getColor(3),
     "interactive.elevated.backgroundColor:press": getColor(4),
     "interactive.elevated.borderColor:press": getColor(mode === "dark" ? 8 : 1),
@@ -317,6 +311,7 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
     "interactive.outlined.borderColor:disabled": getColor(6, "grayscale"),
     "interactive.forms.textColor": textColor,
     "interactive.forms.placeholderTextColor": getColor(8, "grayscale"),
+    "interactive.forms.outlineColor:focus": getColor(7, void 0, false),
     // "interactive.forms.backgroundColor": undefined,
     // "interactive.forms.backgroundColor:hover": undefined,
     "interactive.forms.backgroundColor:focus": getColor(2),

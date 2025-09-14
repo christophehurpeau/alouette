@@ -15,13 +15,13 @@ export default {
       description: {
         component: `### Features
 - **Sizes**: Available in 5 sizes (xs, sm, md, lg, xl) with matching line heights
-- **Weights**: Supports 3 font weights (regular, bold, black)
+- **Weights**: Supports 3 font weights (regular, bold, extraBold)
 - **Font Families**: Can switch between body and heading font families
 - **Contrast**: Optional high contrast mode for better visibility
 
 ### Variants
 - \`size\`: Controls font size and line height (xs | sm | md | lg | xl)
-- \`weight\`: Sets font weight (regular | bold | black)
+- \`weight\`: Sets font weight (regular | bold | extraBold)
 - \`family\`: Changes font family (body | heading)
 - \`contrast\`: Toggles between normal and high contrast text color (boolean)
 
@@ -49,7 +49,7 @@ export const BodyStory: ThisStory = {
     <Story>
       <Story.Section title="Sizes">
         {(["$xl", "$lg", "$md", "$sm", "$xs"] as const).flatMap((size) =>
-          (["$regular", "$bold", "$black"] as const).map((weight) => (
+          (["$regular", "$bold", "$extraBold"] as const).map((weight) => (
             <View key={`${size}-${weight}`}>
               <Typography size={size} weight={weight}>
                 Body {size}/{weight}
@@ -60,7 +60,7 @@ export const BodyStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Paragraph">
-        <TypographyParagraph size="$xl" color="black">
+        <TypographyParagraph size="$xl" color="extraBold">
           The future is in{" "}
           <Typography inherit weight="$bold">
             our{" "}

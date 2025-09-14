@@ -4,7 +4,7 @@ import { Typography } from "../typography/Typography";
 
 export const StoryTitle = styled(Typography, {
   family: "$heading",
-  weight: "$black",
+  weight: "$extraBold",
   variants: {
     level: {
       1: { size: "$xl", marginBottom: "$8" },

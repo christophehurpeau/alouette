@@ -23,7 +23,7 @@ export const Typography = styled(Text, {
     weight: {
       $regular: { fontWeight: "$regular" },
       $bold: { fontWeight: "$bold" },
-      $black: { fontWeight: "$black" },
+      $extraBold: { fontWeight: "$extraBold" },
     },
     family: {
       $heading: { fontFamily: "$heading" },

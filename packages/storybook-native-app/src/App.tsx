@@ -1,4 +1,11 @@
+import {
+  Sora_700Bold as SoraBold,
+  Sora_800ExtraBold as SoraExtraBold,
+  Sora_400Regular as SoraRegular,
+  useFonts,
+} from "@expo-google-fonts/sora";
 import { StyleSheet, Text, View } from "react-native";
+import { StorybookUIRoot } from "../.rnstorybook";
 
 const styles = StyleSheet.create({
   container: {
@@ -9,15 +16,25 @@ const styles = StyleSheet.create({
   },
 });
 
-function App() {
+export function App() {
+  const [fontsLoaded, errorFonts] = useFonts({
+    SoraRegular,
+    SoraBold,
+    SoraExtraBold,
+  });
+  if (errorFonts) {
+    throw errorFonts;
+  }
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  if (process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === "true") {
+    return <StorybookUIRoot />;
+  }
   return (
     <View style={styles.container}>
       <Text>EXPO_PUBLIC_STORYBOOK_ENABLED is not enabled</Text>
     </View>
   );
 }
-
-export default process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === "true"
-  ? // eslint-disable-next-line unicorn/prefer-module
-    require("../.rnstorybook").StorybookUIRoot
-  : App;

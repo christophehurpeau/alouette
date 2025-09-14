@@ -92,11 +92,10 @@ export default {
 export const PreviewIconButtonStory: ThisStory = {
   args: {
     theme: "primary",
-    icon: <ArrowLeftRegularIcon />,
     size: 40,
     "aria-label": "Go back",
   },
-  render: (args) => <IconButton {...args} />,
+  render: (args) => <IconButton {...args} icon={<ArrowLeftRegularIcon />} />,
 };
 
 export const Variants: ThisStory = {

@@ -2280,6 +2280,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo-google-fonts/sora@npm:0.4.2":
+  version: 0.4.2
+  resolution: "@expo-google-fonts/sora@npm:0.4.2"
+  checksum: 10c0/9e576c471ce24c5f3fb69e4236f53bd0f85181257ade551512cd74e110cecf41a81d5e29cd67f5165aea0395ac94d8f06441dee7580535923bd70a3e28622192
+  languageName: node
+  linkType: hard
+
 "@expo/cli@npm:54.0.5":
   version: 54.0.5
   resolution: "@expo/cli@npm:54.0.5"
@@ -13711,6 +13718,7 @@ __metadata:
     "@babel/core": "npm:7.28.4"
     "@babel/preset-env": "npm:7.28.3"
     "@chromatic-com/storybook": "npm:4.1.1"
+    "@expo-google-fonts/sora": "npm:0.4.2"
     "@expo/metro-runtime": "npm:6.1.2"
     "@gorhom/bottom-sheet": "npm:5.2.6"
     "@react-native-async-storage/async-storage": "npm:2.2.0"

@@ -310,7 +310,7 @@ const Typography = styled(Text, {
     weight: {
       $regular: { fontWeight: "$regular" },
       $bold: { fontWeight: "$bold" },
-      $black: { fontWeight: "$black" }
+      $extraBold: { fontWeight: "$extraBold" }
     },
     family: {
       $heading: { fontFamily: "$heading" },
@@ -530,7 +530,7 @@ const ScrollView = styled(
 
 const StoryTitle = styled(Typography, {
   family: "$heading",
-  weight: "$black",
+  weight: "$extraBold",
   variants: {
     level: {
       1: { size: "$xl", marginBottom: "$8" },
