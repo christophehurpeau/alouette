@@ -9,12 +9,13 @@
       "documentation": false,
       "typescript": true,
       "eslint": true,
-      "packageNames": ["alouette-icons", "alouette", "storybook-app"]
+      "packageNames": ["alouette-icons", "alouette", "storybook-native-app"]
     },
     "project": {
       "type": "lib",
       "packageManager": "yarn",
-      "yarnNodeLinker": "node-modules"
+      "yarnNodeLinker": "node-modules",
+      "ci": true
     }
   }
 }

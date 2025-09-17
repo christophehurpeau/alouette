@@ -13,7 +13,7 @@
   "homepage": "https://github.com/christophehurpeau/alouette",
   "type": "module",
   "engines": {
-    "node": ">=20.11.0"
+    "node": ">=22.18.0"
   },
   "sideEffects": false,
   "main": "./dist/index-node20.mjs",
@@ -67,6 +67,15 @@
     "lint:eslint": "yarn ../.. run eslint --quiet packages/alouette",
     "test": "yarn ../../ run test -- packages/alouette"
   },
+  "browserslist": {
+    "production": [
+      "defaults",
+      "> 0.2%",
+      "not ie < 12",
+      "not safari < 10",
+      "not ios_saf < 10"
+    ]
+  },
   "pob": {
     "bundler": "rollup-esbuild",
     "entries": [
@@ -75,15 +84,11 @@
     ],
     "envs": [
       {
-        "target": "react-native",
-        "formats": [
-          "cjs",
-          "es"
-        ]
+        "target": "node",
+        "version": "22"
       },
       {
-        "target": "node",
-        "version": "20",
+        "target": "react-native",
         "formats": [
           "cjs",
           "es"
@@ -122,7 +127,7 @@
     "type-fest": "4.41.0"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "6.6.0",
+    "@pob/rollup-esbuild": "7.1.0",
     "@rollup/plugin-replace": "6.0.2",
     "@types/node": "24.3.1",
     "@types/react": "19.1.13",
