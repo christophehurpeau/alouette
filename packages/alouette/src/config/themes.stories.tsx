@@ -50,7 +50,7 @@ export const TokensStory: StoryObj<unknown> = {
             {(Object.entries(themes) as Entries<typeof themes>).map(
               ([themeName, theme]) => (
                 <Story.Section key={themeName} title={themeName}>
-                  <Box withBackground padding="$md" theme={themeName as string}>
+                  <Box withBackground padding="$sm" theme={themeName as string}>
                     <Typography>Demo</Typography>
                   </Box>
 
@@ -61,11 +61,10 @@ export const TokensStory: StoryObj<unknown> = {
                           <VStack
                             key={`${groupName}-${key}`}
                             alignItems="stretch"
-                            gap="$1"
                             minWidth={60}
                             flexGrow={1}
                           >
-                            <Typography>{key}</Typography>
+                            <Typography size="$xs">{key}</Typography>
                             <View backgroundColor={variable.val} height={10} />
                           </VStack>
                         </StoryGrid.Col>
