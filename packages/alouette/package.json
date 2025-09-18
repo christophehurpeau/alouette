@@ -129,7 +129,7 @@
   "devDependencies": {
     "@pob/rollup-esbuild": "7.1.0",
     "@rollup/plugin-replace": "6.0.2",
-    "@types/node": "24.3.1",
+    "@types/node": "24.5.2",
     "@types/react": "19.1.13",
     "react": "19.1.0",
     "react-dom": "19.1.0",
