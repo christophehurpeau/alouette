@@ -119,9 +119,9 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.132.24",
-    "@tamagui/animations-react-native": "1.132.24",
-    "@tamagui/core": "1.132.24",
+    "@tamagui/animations-css": "1.133.0",
+    "@tamagui/animations-react-native": "1.133.0",
+    "@tamagui/core": "1.133.0",
     "alouette-icons": "6.0.0",
     "expo-linear-gradient": "15.0.7",
     "react-native-safe-area-context": "5.6.1",
@@ -130,12 +130,12 @@
   "devDependencies": {
     "@pob/rollup-esbuild": "7.1.0",
     "@rollup/plugin-replace": "6.0.2",
-    "@types/node": "24.3.1",
+    "@types/node": "24.5.2",
     "@types/react": "19.1.13",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
     "react-native": "0.81.4",
-    "react-native-svg": "15.12.1",
+    "react-native-svg": "15.13.0",
     "typescript": "5.9.2"
   }
 }
