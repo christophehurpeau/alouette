@@ -43,5 +43,5 @@ export type { PressableListItemProps } from "./components/layout/list";
 export { GradientBackground } from "./components/layout/GradientBackground";
 export type { GradientBackgroundProps } from "./components/layout/GradientBackground";
 export * as containersVariants from "./components/containers/variants";
-export { useSafeAreaInsets } from "react-native-safe-area-context";
+export { useSafeAreaInsets } from "./core/useSafeAreaInsets";
 //# sourceMappingURL=index.d.ts.map

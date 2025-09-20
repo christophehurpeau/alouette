@@ -7,7 +7,7 @@ declare const _default: {
         size?: import("@tamagui/web").FontSizeTokens | undefined;
         disabled?: boolean | undefined;
         inherit?: boolean | undefined;
-        family?: "$body" | "$heading" | undefined;
+        family?: "$body" | "$heading" | "$monospace" | undefined;
         accent?: boolean | undefined;
         weight?: "$regular" | "$bold" | "$extraBold" | undefined;
     }>, "href"> & {

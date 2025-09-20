@@ -328,7 +328,8 @@ const Typography = styled(Text, {
     },
     family: {
       $heading: { fontFamily: "$heading" },
-      $body: { fontFamily: "$body" }
+      $body: { fontFamily: "$body" },
+      $monospace: { fontFamily: "$monospace" }
     },
     accent: {
       true: {

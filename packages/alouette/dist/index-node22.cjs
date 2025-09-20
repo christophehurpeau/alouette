@@ -1,12 +1,14 @@
-import { jsx, jsxs } from 'react/jsx-runtime';
-import { isAndroid, styled, View, usePropsAndStyle, Text, isWeb, TamaguiProvider, useMedia, Stack as Stack$1, useTheme, Theme } from '@tamagui/core';
-export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
-import { useSafeAreaInsets as useSafeAreaInsets$1 } from 'react-native-safe-area-context';
-import { cloneElement, Fragment, Children, createContext, useState, useEffect, useContext } from 'react';
-import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
-import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Pressable, StyleSheet } from 'react-native-web';
-import '@tamagui/core/reset.css';
-import { LinearGradient } from 'expo-linear-gradient';
+'use strict';
+
+Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+
+const jsxRuntime = require('react/jsx-runtime');
+const core = require('@tamagui/core');
+const reactNativeSafeAreaContext = require('react-native-safe-area-context');
+const react = require('react');
+const phosphorIcons = require('alouette-icons/phosphor-icons');
+const reactNative = require('react-native');
+const expoLinearGradient = require('expo-linear-gradient');
 
 const fullscreenStyle = {
   position: "absolute",
@@ -90,7 +92,7 @@ const withElevation = (val, { props }) => {
       shadowOffset: { width: 0, height },
       shadowOpacity: 0.65,
       shadowRadius: 6,
-      ...isAndroid ? { elevationAndroid: height * 2 } : void 0
+      ...core.isAndroid ? { elevationAndroid: height * 2 } : void 0
     },
     ...props.interactive ? getInteractionStyles("shadowColor", props) : { shadowColor: "$shadowColor" }
   };
@@ -158,14 +160,14 @@ const variants$1 = /*#__PURE__*/Object.defineProperty({
   withScreenBackground
 }, Symbol.toStringTag, { value: 'Module' });
 
-const Box = styled(View, {
+const Box = core.styled(core.View, {
   name: "Box",
   variants: variants$1,
   animation: "fast"
 });
 const SafeAreaBox = Box.styleable((props) => {
-  const insets = useSafeAreaInsets$1();
-  return /* @__PURE__ */ jsx(
+  const insets = reactNativeSafeAreaContext.useSafeAreaInsets();
+  return /* @__PURE__ */ jsxRuntime.jsx(
     Box,
     {
       ...props,
@@ -177,7 +179,7 @@ const SafeAreaBox = Box.styleable((props) => {
   );
 });
 
-const PressableBox = styled(Box, {
+const PressableBox = core.styled(Box, {
   interactive: true,
   variants: {
     variant: {
@@ -220,14 +222,14 @@ function Icon({
   accent,
   color = getDefaultColor(disabled, accent)
 }) {
-  const [props, style] = usePropsAndStyle(
+  const [props, style] = core.usePropsAndStyle(
     { color, width: size, height: size },
-    { forComponent: Text }
+    { forComponent: core.Text }
   );
-  return cloneElement(icon, { style, ...props });
+  return react.cloneElement(icon, { style, ...props });
 }
 
-const IconButtonFrame = styled(PressableBox, {
+const IconButtonFrame = core.styled(PressableBox, {
   name: "IconButtonFrame",
   role: "button",
   centered: true,
@@ -266,14 +268,14 @@ function IconButton({
   variant = "contained",
   ...pressableProps
 }) {
-  return /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxRuntime.jsx(
     IconButtonFrame,
     {
       size,
       variant,
       disabled,
       ...pressableProps,
-      children: /* @__PURE__ */ jsx(Icon, { size: size / 2, disabled, icon })
+      children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { size: size / 2, disabled, icon })
     }
   );
 }
@@ -283,7 +285,7 @@ const variants = {
     true: fullscreenStyle
   }
 };
-const Stack = styled(View, {
+const Stack = core.styled(core.View, {
   name: "Stack",
   variants: {
     ...variants,
@@ -293,17 +295,17 @@ const Stack = styled(View, {
     }
   }
 });
-const HStack = styled(View, {
+const HStack = core.styled(core.View, {
   name: "HStack",
   flexDirection: "row",
   variants
 });
-const VStack = styled(View, {
+const VStack = core.styled(core.View, {
   name: "VStack",
   flexDirection: "column"
 });
 
-const Typography = styled(Text, {
+const Typography = core.styled(core.Text, {
   name: "Typography",
   fontFamily: "$body",
   color: "$textColor",
@@ -347,14 +349,14 @@ const Typography = styled(Text, {
     // contrast: false,
   }
 });
-const TypographyParagraph = styled(Typography, {
+const TypographyParagraph = core.styled(Typography, {
   name: "TypographyParagraph",
   tag: "p",
   userSelect: "auto",
   family: "$body"
 });
 
-const ButtonFrame = styled(PressableBox, {
+const ButtonFrame = core.styled(PressableBox, {
   name: "ButtonFrame",
   role: "button",
   centered: true,
@@ -385,15 +387,15 @@ function Button({
   size = "md",
   ...pressableProps
 }) {
-  return /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxRuntime.jsx(
     ButtonFrame,
     {
       disabled,
       variant,
       size,
       ...pressableProps,
-      children: /* @__PURE__ */ jsxs(HStack, { gap: "$xs", alignItems: "center", children: [
-        icon && /* @__PURE__ */ jsx(
+      children: /* @__PURE__ */ jsxRuntime.jsxs(HStack, { gap: "$xs", alignItems: "center", children: [
+        icon && /* @__PURE__ */ jsxRuntime.jsx(
           Icon,
           {
             disabled,
@@ -401,7 +403,7 @@ function Button({
             size: size === "sm" ? 16 : 20
           }
         ),
-        /* @__PURE__ */ jsx(
+        /* @__PURE__ */ jsxRuntime.jsx(
           Typography,
           {
             size: size === "sm" ? "$sm" : "$md",
@@ -416,7 +418,7 @@ function Button({
   );
 }
 function ExternalLinkButton(props) {
-  return /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxRuntime.jsx(
     Button,
     {
       ...props,
@@ -429,23 +431,23 @@ function ExternalLinkButton(props) {
   );
 }
 function InternalLinkButton(props) {
-  return /* @__PURE__ */ jsx(Button, { ...props, tag: "a", role: "link" });
+  return /* @__PURE__ */ jsxRuntime.jsx(Button, { ...props, tag: "a", role: "link" });
 }
 
 function FeedbackIcon({ type }) {
   switch (type) {
     case "warning":
-      return /* @__PURE__ */ jsx(WarningCircleRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.WarningCircleRegularIcon, {});
     case "success":
-      return /* @__PURE__ */ jsx(CheckRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.CheckRegularIcon, {});
     case "danger":
-      return /* @__PURE__ */ jsx(WarningRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.WarningRegularIcon, {});
     default:
-      return /* @__PURE__ */ jsx(InfoRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.InfoRegularIcon, {});
   }
 }
 
-const MessageFrame = styled(Box, {
+const MessageFrame = core.styled(Box, {
   name: "MessageFrame",
   alignItems: "center",
   withBackground: true,
@@ -454,7 +456,7 @@ const MessageFrame = styled(Box, {
   flexDirection: "row",
   gap: "$4"
 });
-const MessageText = styled(Typography, {
+const MessageText = core.styled(Typography, {
   name: "MessageText",
   // contrast: true,
   size: "$md",
@@ -469,11 +471,11 @@ const MessageText = styled(Typography, {
     }
   }
 });
-const MessageIconContainer = styled(View, {
+const MessageIconContainer = core.styled(core.View, {
   name: "MessageIconContainer",
   alignItems: "center"
 });
-const MessageDismissButtonContainer = styled(View, {
+const MessageDismissButtonContainer = core.styled(core.View, {
   name: "MessageDismissButtonContainer",
   marginRight: "$2"
 });
@@ -483,13 +485,13 @@ function Message({
   children,
   onDismiss
 }) {
-  return /* @__PURE__ */ jsxs(MessageFrame, { theme, children: [
-    textCentered ? null : /* @__PURE__ */ jsx(MessageIconContainer, { children: /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(FeedbackIcon, { type: theme }) }) }),
-    /* @__PURE__ */ jsx(MessageText, { centered: textCentered, children }),
-    onDismiss ? /* @__PURE__ */ jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxRuntime.jsxs(MessageFrame, { theme, children: [
+    textCentered ? null : /* @__PURE__ */ jsxRuntime.jsx(MessageIconContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(FeedbackIcon, { type: theme }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(MessageText, { centered: textCentered, children }),
+    onDismiss ? /* @__PURE__ */ jsxRuntime.jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(
       IconButton,
       {
-        icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
+        icon: /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.XRegularIcon, {}),
         size: 40,
         variant: "ghost-contained"
       }
@@ -497,8 +499,8 @@ function Message({
   ] });
 }
 
-const StyledInputText = styled(
-  TextInput,
+const StyledInputText = core.styled(
+  reactNative.TextInput,
   {
     variants: variants$1,
     padding: "$xs",
@@ -515,18 +517,18 @@ const StyledInputText = styled(
   },
   { isInput: true }
 );
-const InputText = styled(StyledInputText, {
+const InputText = core.styled(StyledInputText, {
   name: "InputText",
   interactive: "text",
   theme: "primary"
   // animation: "formElement", // remove all style ?
 });
-const TextArea = styled(InputText, {
+const TextArea = core.styled(InputText, {
   multiline: true
 });
 
-const ScrollView = styled(
-  ScrollView$1,
+const ScrollView = core.styled(
+  reactNative.ScrollView,
   {
     name: "ScrollView",
     scrollEnabled: true,
@@ -543,7 +545,7 @@ const ScrollView = styled(
   }
 );
 
-const StoryTitle = styled(Typography, {
+const StoryTitle = core.styled(Typography, {
   family: "$heading",
   weight: "$extraBold",
   variants: {
@@ -559,7 +561,7 @@ const StoryTitle = styled(Typography, {
   }
 });
 
-const InternalStorySection = styled(VStack, {
+const InternalStorySection = core.styled(VStack, {
   marginBottom: "$8",
   paddingHorizontal: "$4",
   marginHorizontal: "$-4",
@@ -578,8 +580,8 @@ function StorySection({
   withBackground,
   ...props
 }) {
-  return /* @__PURE__ */ jsxs(InternalStorySection, { withBackground, ...props, children: [
-    /* @__PURE__ */ jsx(StoryTitle, { level: level + 1, children: title }),
+  return /* @__PURE__ */ jsxRuntime.jsxs(InternalStorySection, { withBackground, ...props, children: [
+    /* @__PURE__ */ jsxRuntime.jsx(StoryTitle, { level: level + 1, children: title }),
     children
   ] });
 }
@@ -588,19 +590,19 @@ function SubSection({
   children,
   ...props
 }) {
-  return /* @__PURE__ */ jsxs(InternalStorySection, { marginBottom: "$4", ...props, children: [
-    /* @__PURE__ */ jsx(StoryTitle, { level: 3, children: title }),
+  return /* @__PURE__ */ jsxRuntime.jsxs(InternalStorySection, { marginBottom: "$4", ...props, children: [
+    /* @__PURE__ */ jsxRuntime.jsx(StoryTitle, { level: 3, children: title }),
     children
   ] });
 }
-const ScrollViewNative = isWeb ? Fragment : ScrollView;
+const ScrollViewNative = core.isWeb ? react.Fragment : ScrollView;
 function Story({
   documentation,
   children,
   noDarkTheme
 }) {
-  return /* @__PURE__ */ jsxs(ScrollViewNative, { children: [
-    documentation && /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxRuntime.jsxs(ScrollViewNative, { children: [
+    documentation && /* @__PURE__ */ jsxRuntime.jsx(
       Box,
       {
         withBorder: "$2",
@@ -611,7 +613,7 @@ function Story({
         children: documentation
       }
     ),
-    ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsx(Box, { withScreenBackground: true, theme, padding: "$md", children }, theme))
+    ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsxRuntime.jsx(Box, { withScreenBackground: true, theme, padding: "$md", children }, theme))
   ] });
 }
 Story.Section = StorySection;
@@ -621,15 +623,15 @@ function StoryContainer({
   title,
   children
 }) {
-  return /* @__PURE__ */ jsxs(ScrollView, { theme: "light", backgroundColor: "#fff", padding: "$4", children: [
-    /* @__PURE__ */ jsx(StoryTitle, { level: 1, children: title }),
+  return /* @__PURE__ */ jsxRuntime.jsxs(ScrollView, { theme: "light", backgroundColor: "#fff", padding: "$4", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(StoryTitle, { level: 1, children: title }),
     children
   ] });
 }
 
 const StoryDecorator = (storyFn, { name, container }) => {
   if (container === false) return storyFn();
-  return /* @__PURE__ */ jsx(StoryContainer, { title: name, children: storyFn() });
+  return /* @__PURE__ */ jsxRuntime.jsx(StoryContainer, { title: name, children: storyFn() });
 };
 
 function StoryGridRow({
@@ -637,8 +639,8 @@ function StoryGridRow({
   breakpoint = "small",
   flexWrap
 }) {
-  return /* @__PURE__ */ jsx(
-    View,
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    core.View,
     {
       flexDirection: "column",
       ...{
@@ -650,8 +652,8 @@ function StoryGridRow({
           gap: flexWrap ? "$xs" : void 0
         }
       },
-      children: Children.map(children, (child) => /* @__PURE__ */ jsx(
-        View,
+      children: react.Children.map(children, (child) => /* @__PURE__ */ jsxRuntime.jsx(
+        core.View,
         {
           paddingTop: "$2",
           paddingBottom: "$4",
@@ -675,15 +677,15 @@ function StoryGridCol({
   children,
   platform = "all"
 }) {
-  const isNative = Platform.OS === "ios" || Platform.OS === "android";
-  if (Platform.OS === "web" && platform === "native") {
+  const isNative = reactNative.Platform.OS === "ios" || reactNative.Platform.OS === "android";
+  if (reactNative.Platform.OS === "web" && platform === "native") {
     return null;
   }
   if (isNative && platform === "web") {
     return null;
   }
-  return title ? /* @__PURE__ */ jsxs(VStack, { children: [
-    /* @__PURE__ */ jsx(StoryTitle, { level: 4, numberOfLines: 1, children: title }),
+  return title ? /* @__PURE__ */ jsxRuntime.jsxs(VStack, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(StoryTitle, { level: 4, numberOfLines: 1, children: title }),
     children
   ] }) : children;
 }
@@ -692,12 +694,8 @@ const StoryGrid = {
   Col: StoryGridCol
 };
 
-function SafeAreaProvider({ children }) {
-  return children;
-}
-
 const useDefaultThemeFromColorScheme = () => {
-  const colorScheme = useColorScheme();
+  const colorScheme = reactNative.useColorScheme();
   return colorScheme || "light";
 };
 function AlouetteProvider({
@@ -706,8 +704,8 @@ function AlouetteProvider({
   defaultTheme = "light",
   disableInjectCSS
 }) {
-  return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(
-    TamaguiProvider,
+  return /* @__PURE__ */ jsxRuntime.jsx(reactNativeSafeAreaContext.SafeAreaProvider, { children: /* @__PURE__ */ jsxRuntime.jsx(
+    core.TamaguiProvider,
     {
       config: tamaguiConfig,
       defaultTheme,
@@ -717,11 +715,11 @@ function AlouetteProvider({
   ) });
 }
 
-const AlouetteTamaguiConfigContext = createContext(null);
+const AlouetteTamaguiConfigContext = react.createContext(null);
 const AlouetteDecorator = (storyFn, context) => {
-  const systemColorScheme = useColorScheme();
-  const [theme, setTheme] = useState(systemColorScheme || "light");
-  useEffect(() => {
+  const systemColorScheme = reactNative.useColorScheme();
+  const [theme, setTheme] = react.useState(systemColorScheme || "light");
+  react.useEffect(() => {
     const backgroundColor = context.globals.backgrounds?.value;
     if (backgroundColor === "#000000") {
       setTheme("dark");
@@ -729,12 +727,12 @@ const AlouetteDecorator = (storyFn, context) => {
       setTheme("light");
     }
   }, [context.globals.backgrounds?.value]);
-  return /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsxRuntime.jsx(
     AlouetteProvider,
     {
       tamaguiConfig: context.parameters.tamaguiConfig,
       defaultTheme: theme,
-      children: /* @__PURE__ */ jsx(
+      children: /* @__PURE__ */ jsxRuntime.jsx(
         AlouetteTamaguiConfigContext.Provider,
         {
           value: context.parameters.tamaguiConfig,
@@ -748,7 +746,7 @@ const AlouetteDecorator = (storyFn, context) => {
 function WithTamaguiConfig({
   render
 }) {
-  const config = useContext(AlouetteTamaguiConfigContext);
+  const config = react.useContext(AlouetteTamaguiConfigContext);
   if (!config) {
     throw new Error(
       "No config found, check that AlouetteDecorator is used in the story"
@@ -767,7 +765,7 @@ var BreakpointNameEnum = /* @__PURE__ */ ((BreakpointNameEnum2) => {
 })(BreakpointNameEnum || {});
 
 function useCurrentBreakpointName() {
-  const media = useMedia();
+  const media = core.useMedia();
   if (media.wide) return BreakpointNameEnum.WIDE;
   if (media.large) return BreakpointNameEnum.LARGE;
   if (media.medium) return BreakpointNameEnum.MEDIUM;
@@ -775,7 +773,7 @@ function useCurrentBreakpointName() {
   return BreakpointNameEnum.BASE;
 }
 function useCurrentBreakpointNameFiltered(names) {
-  const media = useMedia();
+  const media = core.useMedia();
   if (names.includes(BreakpointNameEnum.WIDE) && media.wide) {
     return BreakpointNameEnum.WIDE;
   }
@@ -796,8 +794,8 @@ function SwitchBreakpointsUsingDisplayNone({
 }) {
   const entries = Object.entries(breakpoints);
   return entries.map(([name, node], index) => {
-    return /* @__PURE__ */ jsx(
-      View,
+    return /* @__PURE__ */ jsxRuntime.jsx(
+      core.View,
       {
         display: name === "base" ? "flex" : "none",
         ...name === "base" ? void 0 : { display: "none", [`$${name}`]: { display: "flex" } },
@@ -818,7 +816,7 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-const Separator = styled(Stack$1, {
+const Separator = core.styled(core.Stack, {
   name: "Separator",
   flexGrow: 1,
   flexShrink: 0,
@@ -848,15 +846,15 @@ function PressableListItem({
   children,
   onPress
 }) {
-  return /* @__PURE__ */ jsx(Pressable, { onPress, children: /* @__PURE__ */ jsxs(
+  return /* @__PURE__ */ jsxRuntime.jsx(reactNative.Pressable, { onPress, children: /* @__PURE__ */ jsxRuntime.jsxs(
     HStack,
     {
       justifyContent: "space-between",
       paddingHorizontal: "$4",
       paddingVertical: "$3",
       children: [
-        /* @__PURE__ */ jsx(View, { children }),
-        /* @__PURE__ */ jsx(Stack, { justifyContent: "center", children: /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}), size: 20 }) })
+        /* @__PURE__ */ jsxRuntime.jsx(core.View, { children }),
+        /* @__PURE__ */ jsxRuntime.jsx(Stack, { justifyContent: "center", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.CaretRightRegularIcon, {}), size: 20 }) })
       ]
     }
   ) });
@@ -866,31 +864,61 @@ function GradientBackground({
   theme: themeName,
   children
 }) {
-  const theme = useTheme({ name: themeName });
+  const theme = core.useTheme({ name: themeName });
   const colors = [
     theme["gradientColor:start"]?.get("web"),
     theme["gradientColor:middle"]?.get("web"),
     theme["gradientColor:end"]?.get("web")
   ];
-  return /* @__PURE__ */ jsx(Theme, { name: themeName, children: /* @__PURE__ */ jsx(
-    LinearGradient,
+  return /* @__PURE__ */ jsxRuntime.jsx(core.Theme, { name: themeName, children: /* @__PURE__ */ jsxRuntime.jsx(
+    expoLinearGradient.LinearGradient,
     {
       colors,
       start: { x: 0, y: 0 },
       end: { x: 1, y: 1 },
       locations: [0.2, 0.7, 1],
-      style: StyleSheet.absoluteFill,
+      style: reactNative.StyleSheet.absoluteFill,
       children
     }
   ) });
 }
 
-const useSafeAreaInsets = () => ({
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0
-});
-
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, PressableBox, PressableListItem, SafeAreaBox, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, variants$1 as containersVariants, useCurrentBreakpointName, useDefaultThemeFromColorScheme, useSafeAreaInsets };
-//# sourceMappingURL=index-browser.es.js.map
+exports.Theme = core.Theme;
+exports.View = core.View;
+exports.styled = core.styled;
+exports.withStaticProperties = core.withStaticProperties;
+exports.useSafeAreaInsets = reactNativeSafeAreaContext.useSafeAreaInsets;
+exports.AlouetteDecorator = AlouetteDecorator;
+exports.AlouetteProvider = AlouetteProvider;
+exports.Box = Box;
+exports.Button = Button;
+exports.ExternalLinkButton = ExternalLinkButton;
+exports.GradientBackground = GradientBackground;
+exports.HStack = HStack;
+exports.Icon = Icon;
+exports.IconButton = IconButton;
+exports.InputText = InputText;
+exports.InternalLinkButton = InternalLinkButton;
+exports.Message = Message;
+exports.PressableBox = PressableBox;
+exports.PressableListItem = PressableListItem;
+exports.SafeAreaBox = SafeAreaBox;
+exports.ScrollView = ScrollView;
+exports.Separator = Separator;
+exports.Stack = Stack;
+exports.Story = Story;
+exports.StoryContainer = StoryContainer;
+exports.StoryDecorator = StoryDecorator;
+exports.StoryGrid = StoryGrid;
+exports.StoryTitle = StoryTitle;
+exports.SwitchBreakpointsUsingDisplayNone = SwitchBreakpointsUsingDisplayNone;
+exports.SwitchBreakpointsUsingNull = SwitchBreakpointsUsingNull;
+exports.TextArea = TextArea;
+exports.Typography = Typography;
+exports.TypographyParagraph = TypographyParagraph;
+exports.VStack = VStack;
+exports.WithTamaguiConfig = WithTamaguiConfig;
+exports.containersVariants = variants$1;
+exports.useCurrentBreakpointName = useCurrentBreakpointName;
+exports.useDefaultThemeFromColorScheme = useDefaultThemeFromColorScheme;
+//# sourceMappingURL=index-node22.cjs.map

@@ -17,8 +17,43 @@ export interface AlouetteFontsOptions {
     headingFontSizes?: typeof defaultHeadingFontSizes;
     bodyFontFamily?: string;
     bodyFontSizes?: typeof defaultBodyFontSizes;
+    monospaceFontFamily?: string;
+    monospaceFontSizes?: typeof defaultBodyFontSizes;
 }
-export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes, bodyFontFamily, bodyFontSizes, }?: AlouetteFontsOptions) => {
+export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes, bodyFontFamily, bodyFontSizes, monospaceFontFamily, monospaceFontSizes, }?: AlouetteFontsOptions) => {
+    monospace?: {
+        family: string;
+        weight: {
+            regular: string;
+            bold: string;
+            extraBold: string;
+        };
+        face: {
+            400: {
+                normal: string;
+            };
+            700: {
+                normal: string;
+            };
+            800: {
+                normal: string;
+            };
+        };
+        size: {
+            xl: number;
+            lg: number;
+            md: number;
+            sm: number;
+            xs: number;
+        };
+        lineHeight: {
+            xl: number;
+            lg: number;
+            md: number;
+            sm: number;
+            xs: number;
+        };
+    } | undefined;
     heading: {
         family: string;
         weight: {

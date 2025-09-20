@@ -8,7 +8,7 @@ import {
   Stories,
 } from "@storybook/addon-docs/blocks";
 
-const primaryColor = "#1c7193";
+const primaryColor = "#23C8FB";
 
 const sectionStyle = {
   marginBottom: "24px",

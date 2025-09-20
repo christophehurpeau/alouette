@@ -16,7 +16,9 @@ const createAlouetteFonts = ({
   headingFontFamily = "Sora",
   headingFontSizes = defaultHeadingFontSizes,
   bodyFontFamily = "Sora",
-  bodyFontSizes = defaultBodyFontSizes
+  bodyFontSizes = defaultBodyFontSizes,
+  monospaceFontFamily,
+  monospaceFontSizes = defaultBodyFontSizes
 } = {}) => ({
   heading: createFont({
     family: headingFontFamily,
@@ -59,7 +61,30 @@ const createAlouetteFonts = ({
       sm: roundWith1Precision(1.4 * bodyFontSizes.sm),
       xs: roundWith1Precision(1.4 * bodyFontSizes.xs)
     }
-  })
+  }),
+  ...monospaceFontFamily ? {
+    monospace: createFont({
+      family: monospaceFontFamily,
+      weight: {
+        regular: "400",
+        bold: "700",
+        extraBold: "800"
+      },
+      face: {
+        400: { normal: `${monospaceFontFamily}Regular` },
+        700: { normal: `${monospaceFontFamily}Bold` },
+        800: { normal: `${monospaceFontFamily}ExtraBold` }
+      },
+      size: monospaceFontSizes,
+      lineHeight: {
+        xl: roundWith1Precision(1.1 * monospaceFontSizes.xl),
+        lg: roundWith1Precision(1.1 * monospaceFontSizes.lg),
+        md: roundWith1Precision(1.2 * monospaceFontSizes.md),
+        sm: roundWith1Precision(1.3 * monospaceFontSizes.sm),
+        xs: roundWith1Precision(1.3 * monospaceFontSizes.xs)
+      }
+    })
+  } : {}
 });
 
 const Breakpoints = {
@@ -279,8 +304,8 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
     "interactive.forms.textColor": textColor,
     "interactive.forms.placeholderTextColor": getColor(8, "grayscale"),
     "interactive.forms.outlineColor:focus": getColor(7, void 0, false),
-    // "interactive.forms.backgroundColor": undefined,
-    // "interactive.forms.backgroundColor:hover": undefined,
+    "interactive.forms.backgroundColor": backgroundColor,
+    "interactive.forms.backgroundColor:hover": backgroundColor,
     "interactive.forms.backgroundColor:focus": getColor(2),
     "interactive.forms.backgroundColor:press": getColor(4),
     "interactive.forms.borderColor": getColor(7),

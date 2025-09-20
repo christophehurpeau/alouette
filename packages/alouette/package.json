@@ -85,7 +85,11 @@
     "envs": [
       {
         "target": "node",
-        "version": "22"
+        "version": "22",
+        "formats": [
+          "cjs",
+          "es"
+        ]
       },
       {
         "target": "react-native",
@@ -132,8 +136,8 @@
     "@rollup/plugin-replace": "6.0.2",
     "@types/node": "24.5.2",
     "@types/react": "19.1.13",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "react-native": "0.81.4",
     "react-native-svg": "15.13.0",
     "typescript": "5.9.2"

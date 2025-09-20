@@ -11,6 +11,8 @@ export interface AlouetteFontsOptions {
   headingFontSizes?: typeof defaultHeadingFontSizes;
   bodyFontFamily?: string;
   bodyFontSizes?: typeof defaultBodyFontSizes;
+  monospaceFontFamily?: string;
+  monospaceFontSizes?: typeof defaultBodyFontSizes;
 }
 
 export const createAlouetteFonts = ({
@@ -18,6 +20,8 @@ export const createAlouetteFonts = ({
   headingFontSizes = defaultHeadingFontSizes,
   bodyFontFamily = "Sora",
   bodyFontSizes = defaultBodyFontSizes,
+  monospaceFontFamily,
+  monospaceFontSizes = defaultBodyFontSizes,
 }: AlouetteFontsOptions = {}) => ({
   heading: createFont({
     family: headingFontFamily,
@@ -61,4 +65,29 @@ export const createAlouetteFonts = ({
       xs: roundWith1Precision(1.4 * bodyFontSizes.xs),
     },
   }),
+  ...(monospaceFontFamily
+    ? {
+        monospace: createFont({
+          family: monospaceFontFamily,
+          weight: {
+            regular: "400",
+            bold: "700",
+            extraBold: "800",
+          },
+          face: {
+            400: { normal: `${monospaceFontFamily}Regular` },
+            700: { normal: `${monospaceFontFamily}Bold` },
+            800: { normal: `${monospaceFontFamily}ExtraBold` },
+          },
+          size: monospaceFontSizes,
+          lineHeight: {
+            xl: roundWith1Precision(1.1 * monospaceFontSizes.xl),
+            lg: roundWith1Precision(1.1 * monospaceFontSizes.lg),
+            md: roundWith1Precision(1.2 * monospaceFontSizes.md),
+            sm: roundWith1Precision(1.3 * monospaceFontSizes.sm),
+            xs: roundWith1Precision(1.3 * monospaceFontSizes.xs),
+          },
+        }),
+      }
+    : {}),
 });

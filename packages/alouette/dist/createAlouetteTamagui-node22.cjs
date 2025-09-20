@@ -1,7 +1,11 @@
-import { createFont, createTokens, createTamagui } from '@tamagui/core';
-import { createAnimations } from '@tamagui/animations-react-native';
+'use strict';
 
-const animations = createAnimations({
+Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+
+const core = require('@tamagui/core');
+const animationsReactNative = require('@tamagui/animations-react-native');
+
+const animations = animationsReactNative.createAnimations({
   fast: {
     type: "timing",
     duration: 100,
@@ -46,7 +50,7 @@ const createAlouetteFonts = ({
   monospaceFontFamily,
   monospaceFontSizes = defaultBodyFontSizes
 } = {}) => ({
-  heading: createFont({
+  heading: core.createFont({
     family: headingFontFamily,
     weight: {
       regular: "400",
@@ -67,7 +71,7 @@ const createAlouetteFonts = ({
       xs: roundWith1Precision(1.3 * headingFontSizes.xs)
     }
   }),
-  body: createFont({
+  body: core.createFont({
     family: bodyFontFamily,
     weight: {
       regular: "400",
@@ -89,7 +93,7 @@ const createAlouetteFonts = ({
     }
   }),
   ...monospaceFontFamily ? {
-    monospace: createFont({
+    monospace: core.createFont({
       family: monospaceFontFamily,
       weight: {
         regular: "400",
@@ -162,7 +166,7 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
     -spacing,
     true
   );
-  return createTokens({
+  return core.createTokens({
     color: {
       blackBackground: "#1f1e1e",
       whiteBackground: "#ffffff",
@@ -523,7 +527,7 @@ const defaultColorScales = {
 };
 
 const createAlouetteTamagui = (tokens, themes, options = {}) => {
-  return createTamagui({
+  return core.createTamagui({
     fonts: createAlouetteFonts(options.fonts),
     tokens,
     themes,
@@ -537,5 +541,10 @@ const createAlouetteTamagui = (tokens, themes, options = {}) => {
   });
 };
 
-export { createAlouetteTamagui, createAlouetteThemes, createAlouetteTokens, createColorScale, createColorTheme, defaultColorScales };
-//# sourceMappingURL=createAlouetteTamagui-node22.mjs.map
+exports.createAlouetteTamagui = createAlouetteTamagui;
+exports.createAlouetteThemes = createAlouetteThemes;
+exports.createAlouetteTokens = createAlouetteTokens;
+exports.createColorScale = createColorScale;
+exports.createColorTheme = createColorTheme;
+exports.defaultColorScales = defaultColorScales;
+//# sourceMappingURL=createAlouetteTamagui-node22.cjs.map

@@ -14,7 +14,7 @@ export declare const MessageText: import("@tamagui/web").TamaguiComponent<import
     size?: import("@tamagui/web").FontSizeTokens | undefined;
     disabled?: boolean | undefined;
     inherit?: boolean | undefined;
-    family?: "$body" | "$heading" | undefined;
+    family?: "$body" | "$heading" | "$monospace" | undefined;
     centered?: boolean | undefined;
     accent?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$extraBold" | undefined;

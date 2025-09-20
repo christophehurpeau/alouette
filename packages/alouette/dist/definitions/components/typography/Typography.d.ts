@@ -3,7 +3,7 @@ export declare const Typography: import("@tamagui/web").TamaguiComponent<import(
     size?: import("@tamagui/web").FontSizeTokens | undefined;
     disabled?: boolean | undefined;
     inherit?: boolean | undefined;
-    family?: "$body" | "$heading" | undefined;
+    family?: "$body" | "$heading" | "$monospace" | undefined;
     accent?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$extraBold" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
@@ -12,7 +12,7 @@ export declare const TypographyParagraph: import("@tamagui/web").TamaguiComponen
     size?: import("@tamagui/web").FontSizeTokens | undefined;
     disabled?: boolean | undefined;
     inherit?: boolean | undefined;
-    family?: "$body" | "$heading" | undefined;
+    family?: "$body" | "$heading" | "$monospace" | undefined;
     accent?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$extraBold" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;

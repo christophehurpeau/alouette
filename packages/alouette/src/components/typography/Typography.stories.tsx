@@ -54,6 +54,9 @@ export const BodyStory: ThisStory = {
               <Typography size={size} weight={weight}>
                 Body {size}/{weight}
               </Typography>
+              <Typography family="$monospace" size={size} weight={weight}>
+                Monospace {size}/{weight}
+              </Typography>
             </View>
           )),
         )}

@@ -4,7 +4,7 @@ declare const Anchor: import("@tamagui/web").TamaguiComponent<import("@tamagui/w
     size?: import("@tamagui/web").FontSizeTokens | undefined;
     disabled?: boolean | undefined;
     inherit?: boolean | undefined;
-    family?: "$body" | "$heading" | undefined;
+    family?: "$body" | "$heading" | "$monospace" | undefined;
     accent?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$extraBold" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
@@ -16,7 +16,7 @@ export declare const Link: import("react").ForwardRefExoticComponent<Omit<import
     size?: import("@tamagui/web").FontSizeTokens | undefined;
     disabled?: boolean | undefined;
     inherit?: boolean | undefined;
-    family?: "$body" | "$heading" | undefined;
+    family?: "$body" | "$heading" | "$monospace" | undefined;
     accent?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$extraBold" | undefined;
 }>, "href"> & {

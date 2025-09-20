@@ -1,4 +1,9 @@
 import {
+  ChivoMono_700Bold as ChivoMonoBold,
+  ChivoMono_800ExtraBold as ChivoMonoExtraBold,
+  ChivoMono_400Regular as ChivoMonoRegular,
+} from "@expo-google-fonts/chivo-mono";
+import {
   Sora_700Bold as SoraBold,
   Sora_800ExtraBold as SoraExtraBold,
   Sora_400Regular as SoraRegular,
@@ -21,6 +26,9 @@ export function App() {
     SoraRegular,
     SoraBold,
     SoraExtraBold,
+    ChivoMonoRegular,
+    ChivoMonoBold,
+    ChivoMonoExtraBold,
   });
   if (errorFonts) {
     throw errorFonts;

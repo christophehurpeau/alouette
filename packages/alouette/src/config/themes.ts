@@ -81,8 +81,8 @@ export interface ColorTheme {
   "interactive.forms.textColor": Variable<string>;
   "interactive.forms.placeholderTextColor": Variable<string>;
   "interactive.forms.outlineColor:focus": Variable<string>;
-  // "interactive.forms.backgroundColor": Variable<string>,
-  // "interactive.forms.backgroundColor:hover": Variable<string>,
+  "interactive.forms.backgroundColor": Variable<string>;
+  "interactive.forms.backgroundColor:hover": Variable<string>;
   "interactive.forms.backgroundColor:focus": Variable<string>;
   "interactive.forms.backgroundColor:press": Variable<string>;
   "interactive.forms.borderColor": Variable<string>;
@@ -218,8 +218,8 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
     "interactive.forms.placeholderTextColor": getColor(8, "grayscale"),
     "interactive.forms.outlineColor:focus": getColor(7, undefined, false),
 
-    // "interactive.forms.backgroundColor": undefined,
-    // "interactive.forms.backgroundColor:hover": undefined,
+    "interactive.forms.backgroundColor": backgroundColor,
+    "interactive.forms.backgroundColor:hover": backgroundColor,
     "interactive.forms.backgroundColor:focus": getColor(2),
     "interactive.forms.backgroundColor:press": getColor(4),
     "interactive.forms.borderColor": getColor(7),

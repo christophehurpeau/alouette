@@ -74,6 +74,39 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
         stiffness: number;
     };
 }, {
+    monospace?: {
+        family: string;
+        weight: {
+            regular: string;
+            bold: string;
+            extraBold: string;
+        };
+        face: {
+            400: {
+                normal: string;
+            };
+            700: {
+                normal: string;
+            };
+            800: {
+                normal: string;
+            };
+        };
+        size: {
+            xl: number;
+            lg: number;
+            md: number;
+            sm: number;
+            xs: number;
+        };
+        lineHeight: {
+            xl: number;
+            lg: number;
+            md: number;
+            sm: number;
+            xs: number;
+        };
+    } | undefined;
     heading: {
         family: string;
         weight: {

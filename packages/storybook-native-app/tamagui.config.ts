@@ -1,3 +1,4 @@
+import { isWeb } from "@tamagui/core";
 import {
   createAlouetteTamagui,
   createAlouetteThemes,
@@ -6,7 +7,11 @@ import {
 } from "../alouette/src/createAlouetteTamagui";
 
 const tokens = createAlouetteTokens(defaultColorScales);
-const config = createAlouetteTamagui(tokens, createAlouetteThemes(tokens));
+const config = createAlouetteTamagui(tokens, createAlouetteThemes(tokens), {
+  fonts: {
+    monospaceFontFamily: isWeb ? "Chivo Mono" : "ChivoMono",
+  },
+});
 
 export type AppConfig = typeof config;
 

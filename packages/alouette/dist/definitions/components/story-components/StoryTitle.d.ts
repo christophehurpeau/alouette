@@ -3,7 +3,7 @@ export declare const StoryTitle: import("@tamagui/web").TamaguiComponent<import(
     size?: import("@tamagui/web").FontSizeTokens | undefined;
     disabled?: boolean | undefined;
     inherit?: boolean | undefined;
-    family?: "$body" | "$heading" | undefined;
+    family?: "$body" | "$heading" | "$monospace" | undefined;
     accent?: boolean | undefined;
     weight?: "$regular" | "$bold" | "$extraBold" | undefined;
     level?: 1 | 4 | 3 | 2 | undefined;
