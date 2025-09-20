@@ -7,7 +7,7 @@ export {
   InternalLinkButton,
 } from "./components/actions/Button";
 export type { BoxProps } from "./components/containers/Box";
-export { Box } from "./components/containers/Box";
+export { Box, SafeAreaBox } from "./components/containers/Box";
 export type { PressableBoxProps } from "./components/containers/PressableBox";
 export { PressableBox } from "./components/containers/PressableBox";
 export type { MessageProps } from "./components/feedback/Message";
@@ -69,3 +69,4 @@ export type { PressableListItemProps } from "./components/layout/list";
 export { GradientBackground } from "./components/layout/GradientBackground";
 export type { GradientBackgroundProps } from "./components/layout/GradientBackground";
 export * as containersVariants from "./components/containers/variants";
+export { useSafeAreaInsets } from "react-native-safe-area-context";

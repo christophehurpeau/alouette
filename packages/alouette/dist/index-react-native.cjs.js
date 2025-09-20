@@ -4,6 +4,7 @@ Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 
 const jsxRuntime = require('react/jsx-runtime');
 const core = require('@tamagui/core');
+const reactNativeSafeAreaContext = require('react-native-safe-area-context');
 const react = require('react');
 const phosphorIcons = require('alouette-icons/phosphor-icons');
 const reactNative = require('react-native');
@@ -163,6 +164,19 @@ const Box = core.styled(core.View, {
   name: "Box",
   variants: variants$1,
   animation: "fast"
+});
+const SafeAreaBox = Box.styleable((props) => {
+  const insets = reactNativeSafeAreaContext.useSafeAreaInsets();
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    Box,
+    {
+      ...props,
+      paddingTop: insets.top,
+      paddingBottom: insets.bottom,
+      paddingLeft: insets.left,
+      paddingRight: insets.right
+    }
+  );
 });
 
 const PressableBox = core.styled(Box, {
@@ -689,7 +703,7 @@ function AlouetteProvider({
   defaultTheme = "light",
   disableInjectCSS
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ jsxRuntime.jsx(reactNativeSafeAreaContext.SafeAreaProvider, { children: /* @__PURE__ */ jsxRuntime.jsx(
     core.TamaguiProvider,
     {
       config: tamaguiConfig,
@@ -697,7 +711,7 @@ function AlouetteProvider({
       disableInjectCSS,
       children
     }
-  );
+  ) });
 }
 
 const AlouetteTamaguiConfigContext = react.createContext(null);
@@ -872,6 +886,7 @@ exports.Theme = core.Theme;
 exports.View = core.View;
 exports.styled = core.styled;
 exports.withStaticProperties = core.withStaticProperties;
+exports.useSafeAreaInsets = reactNativeSafeAreaContext.useSafeAreaInsets;
 exports.AlouetteDecorator = AlouetteDecorator;
 exports.AlouetteProvider = AlouetteProvider;
 exports.Box = Box;
@@ -886,6 +901,7 @@ exports.InternalLinkButton = InternalLinkButton;
 exports.Message = Message;
 exports.PressableBox = PressableBox;
 exports.PressableListItem = PressableListItem;
+exports.SafeAreaBox = SafeAreaBox;
 exports.ScrollView = ScrollView;
 exports.Separator = Separator;
 exports.Stack = Stack;

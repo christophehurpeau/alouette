@@ -124,6 +124,7 @@
     "@tamagui/core": "1.132.24",
     "alouette-icons": "6.0.0",
     "expo-linear-gradient": "15.0.7",
+    "react-native-safe-area-context": "5.6.1",
     "type-fest": "4.41.0"
   },
   "devDependencies": {

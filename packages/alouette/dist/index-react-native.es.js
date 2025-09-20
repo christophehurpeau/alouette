@@ -1,6 +1,8 @@
 import { jsx, jsxs } from 'react/jsx-runtime';
 import { isAndroid, styled, View, usePropsAndStyle, Text, isWeb, TamaguiProvider, useMedia, Stack as Stack$1, useTheme, Theme } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
+import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
+export { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { cloneElement, Fragment, Children, createContext, useState, useEffect, useContext } from 'react';
 import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
 import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Pressable, StyleSheet } from 'react-native';
@@ -160,6 +162,19 @@ const Box = styled(View, {
   name: "Box",
   variants: variants$1,
   animation: "fast"
+});
+const SafeAreaBox = Box.styleable((props) => {
+  const insets = useSafeAreaInsets();
+  return /* @__PURE__ */ jsx(
+    Box,
+    {
+      ...props,
+      paddingTop: insets.top,
+      paddingBottom: insets.bottom,
+      paddingLeft: insets.left,
+      paddingRight: insets.right
+    }
+  );
 });
 
 const PressableBox = styled(Box, {
@@ -686,7 +701,7 @@ function AlouetteProvider({
   defaultTheme = "light",
   disableInjectCSS
 }) {
-  return /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(
     TamaguiProvider,
     {
       config: tamaguiConfig,
@@ -694,7 +709,7 @@ function AlouetteProvider({
       disableInjectCSS,
       children
     }
-  );
+  ) });
 }
 
 const AlouetteTamaguiConfigContext = createContext(null);
@@ -865,5 +880,5 @@ function GradientBackground({
   ) });
 }
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, PressableBox, PressableListItem, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, variants$1 as containersVariants, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
+export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, PressableBox, PressableListItem, SafeAreaBox, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, variants$1 as containersVariants, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
 //# sourceMappingURL=index-react-native.es.js.map
