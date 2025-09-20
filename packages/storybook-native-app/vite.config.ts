@@ -55,6 +55,9 @@ export default defineConfig({
     extensions,
     alias: {
       alouette: fileURLToPath(new URL("../alouette/src", import.meta.url)),
+      "alouette/createAlouetteTamagui": fileURLToPath(
+        new URL("../alouette/src/createAlouetteTamagui.ts", import.meta.url),
+      ),
     },
   },
   plugins: [
@@ -69,6 +72,7 @@ export default defineConfig({
       config: "./tamagui.config.ts",
       components: ["alouette"],
       optimize: process.env.NODE_ENV === "production",
+      excludeReactNativeWebExports: [], // TODO properly exclude
     }),
     // {
     //   name: "fix-expo-linear-gradient",

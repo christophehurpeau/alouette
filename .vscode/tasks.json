@@ -25,7 +25,7 @@
       "group": {
         "kind": "none"
       },
-      "dependsOn": ["build"],
+      "dependsOn": [],
       "problemMatcher": []
     },
     {
@@ -38,7 +38,7 @@
       "group": {
         "kind": "none"
       },
-      "dependsOn": ["build"],
+      "dependsOn": [],
       "problemMatcher": []
     }
   ]

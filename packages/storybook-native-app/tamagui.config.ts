@@ -3,7 +3,7 @@ import {
   createAlouetteThemes,
   createAlouetteTokens,
   defaultColorScales,
-} from "alouette/createAlouetteTamagui";
+} from "../alouette/src/createAlouetteTamagui";
 
 const tokens = createAlouetteTokens(defaultColorScales);
 const config = createAlouetteTamagui(tokens, createAlouetteThemes(tokens));
