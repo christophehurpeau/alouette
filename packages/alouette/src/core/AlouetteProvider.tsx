@@ -2,7 +2,7 @@ import type { TamaguiProviderProps } from "@tamagui/core";
 import { TamaguiProvider } from "@tamagui/core";
 import type { ReactNode } from "react";
 import { useColorScheme } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider } from "./SafeAreaProvider";
 import "./reset";
 
 export interface AlouetteProviderProps
