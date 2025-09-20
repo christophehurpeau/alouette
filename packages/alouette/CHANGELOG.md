@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@14.0.0...alouette@15.0.0) (2025-09-20)
+
+### ⚠ BREAKING CHANGES
+
+* drop node 20
+
+### Features
+
+* add optional monospace font with example ([d6f40c2](https://github.com/christophehurpeau/alouette/commit/d6f40c272dc5b7971e76c43d8d62b270c80bdd00))
+* drop node 20 ([3c6d62d](https://github.com/christophehurpeau/alouette/commit/3c6d62d42b3e1651c05a3ff677bfc52471d5e267))
+* react-native-safe-area-context ([488c642](https://github.com/christophehurpeau/alouette/commit/488c64279b2c67d5f8b3b0408648369990140b43))
+* update deps ([aaaa8a7](https://github.com/christophehurpeau/alouette/commit/aaaa8a784227db1324980c897714fb2649517985))
+
+### Bug Fixes
+
+* disable react-native-safe-area-context for web ([c68fb2a](https://github.com/christophehurpeau/alouette/commit/c68fb2ad21bebc81320471ff3dfd0543f9693ba0))
+* fix exports ([11346f1](https://github.com/christophehurpeau/alouette/commit/11346f1945b018c93d8b34b5890d030a2fdd73ce))
+
+Version bump for dependency: alouette-icons
+
+
 ## [14.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@13.6.0...alouette@14.0.0) (2025-09-14)
 
 ### ⚠ BREAKING CHANGES

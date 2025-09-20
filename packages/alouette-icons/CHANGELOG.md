@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@6.0.0...alouette-icons@7.0.0) (2025-09-20)
+
+### ⚠ BREAKING CHANGES
+
+* drop node 20
+
+### Features
+
+* drop node 20 ([3c6d62d](https://github.com/christophehurpeau/alouette/commit/3c6d62d42b3e1651c05a3ff677bfc52471d5e267))
+
 ## [6.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@5.1.2...alouette-icons@6.0.0) (2025-09-14)
 
 ### ⚠ BREAKING CHANGES
