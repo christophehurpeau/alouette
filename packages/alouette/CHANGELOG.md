@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@15.0.0...alouette@15.1.0) (2025-09-21)
+
+### Features
+
+* xxl ([e898707](https://github.com/christophehurpeau/alouette/commit/e898707f073014d380a13b66dc63de726ad9a7eb))
+
 ## [15.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@14.0.0...alouette@15.0.0) (2025-09-20)
 
 ### ⚠ BREAKING CHANGES
