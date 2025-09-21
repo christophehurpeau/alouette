@@ -35,8 +35,22 @@ if ("navigator" in global) {
   }
 }
 
-const defaultHeadingFontSizes = { xl: 48, lg: 40, md: 32, sm: 24, xs: 18 };
-const defaultBodyFontSizes = { xl: 24, lg: 18, md: 16, sm: 14, xs: 12 };
+const defaultHeadingFontSizes = {
+  xxl: 64,
+  xl: 48,
+  lg: 40,
+  md: 32,
+  sm: 24,
+  xs: 18
+};
+const defaultBodyFontSizes = {
+  xxl: 48,
+  xl: 24,
+  lg: 18,
+  md: 16,
+  sm: 14,
+  xs: 12
+};
 const roundWith1Precision = (value) => Math.round(value * 10) / 10;
 const createAlouetteFonts = ({
   headingFontFamily = "Sora",
@@ -60,6 +74,7 @@ const createAlouetteFonts = ({
     },
     size: headingFontSizes,
     lineHeight: {
+      xxl: roundWith1Precision(1.1 * headingFontSizes.xxl),
       xl: roundWith1Precision(1.1 * headingFontSizes.xl),
       lg: roundWith1Precision(1.1 * headingFontSizes.lg),
       md: roundWith1Precision(1.2 * headingFontSizes.md),
@@ -81,6 +96,7 @@ const createAlouetteFonts = ({
     },
     size: bodyFontSizes,
     lineHeight: {
+      xxl: roundWith1Precision(1.4 * bodyFontSizes.xxl),
       xl: roundWith1Precision(1.4 * bodyFontSizes.xl),
       lg: roundWith1Precision(1.4 * bodyFontSizes.lg),
       md: roundWith1Precision(1.4 * bodyFontSizes.md),
@@ -103,11 +119,12 @@ const createAlouetteFonts = ({
       },
       size: monospaceFontSizes,
       lineHeight: {
-        xl: roundWith1Precision(1.1 * monospaceFontSizes.xl),
-        lg: roundWith1Precision(1.1 * monospaceFontSizes.lg),
-        md: roundWith1Precision(1.2 * monospaceFontSizes.md),
-        sm: roundWith1Precision(1.3 * monospaceFontSizes.sm),
-        xs: roundWith1Precision(1.3 * monospaceFontSizes.xs)
+        xxl: roundWith1Precision(1.4 * monospaceFontSizes.xxl),
+        xl: roundWith1Precision(1.4 * monospaceFontSizes.xl),
+        lg: roundWith1Precision(1.4 * monospaceFontSizes.lg),
+        md: roundWith1Precision(1.4 * monospaceFontSizes.md),
+        sm: roundWith1Precision(1.4 * monospaceFontSizes.sm),
+        xs: roundWith1Precision(1.4 * monospaceFontSizes.xs)
       }
     })
   } : {}

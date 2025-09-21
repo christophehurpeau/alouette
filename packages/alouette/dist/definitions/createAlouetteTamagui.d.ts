@@ -93,6 +93,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
             };
         };
         size: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
@@ -100,6 +101,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
             xs: number;
         };
         lineHeight: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
@@ -126,6 +128,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
             };
         };
         size: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
@@ -133,6 +136,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
             xs: number;
         };
         lineHeight: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
@@ -159,6 +163,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
             };
         };
         size: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
@@ -166,6 +171,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
             xs: number;
         };
         lineHeight: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;

@@ -1,4 +1,5 @@
 declare const defaultHeadingFontSizes: {
+    xxl: number;
     xl: number;
     lg: number;
     md: number;
@@ -6,6 +7,7 @@ declare const defaultHeadingFontSizes: {
     xs: number;
 };
 declare const defaultBodyFontSizes: {
+    xxl: number;
     xl: number;
     lg: number;
     md: number;
@@ -40,6 +42,7 @@ export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes
             };
         };
         size: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
@@ -47,6 +50,7 @@ export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes
             xs: number;
         };
         lineHeight: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
@@ -73,6 +77,7 @@ export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes
             };
         };
         size: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
@@ -80,6 +85,7 @@ export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes
             xs: number;
         };
         lineHeight: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
@@ -106,6 +112,7 @@ export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes
             };
         };
         size: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
@@ -113,6 +120,7 @@ export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes
             xs: number;
         };
         lineHeight: {
+            xxl: number;
             xl: number;
             lg: number;
             md: number;
