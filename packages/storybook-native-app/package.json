@@ -58,7 +58,7 @@
     "expo-svg-transformer": "3.1.0",
     "storybook": "9.1.7",
     "typescript": "5.9.2",
-    "vite": "7.1.6",
+    "vite": "7.1.9",
     "vite-plugin-svgr": "4.5.0"
   }
 }
