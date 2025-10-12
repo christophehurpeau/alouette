@@ -54,7 +54,7 @@
     "@tamagui/vite-plugin": "1.133.0",
     "@types/react": "19.1.13",
     "@vitejs/plugin-react": "5.0.3",
-    "cross-env": "7.0.3",
+    "cross-env": "10.1.0",
     "expo-svg-transformer": "3.1.0",
     "storybook": "9.1.7",
     "typescript": "5.9.2",
