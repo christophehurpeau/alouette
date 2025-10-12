@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@15.2.1...alouette@15.3.0) (2025-10-12)
+
+### Features
+
+* export SVGIconElement type from Icon component ([31ac499](https://github.com/christophehurpeau/alouette/commit/31ac49994eb7fbc7f23fa5f91ad8423bf2c6cf02))
+
 ## [15.2.1](https://github.com/christophehurpeau/alouette/compare/alouette@15.2.0...alouette@15.2.1) (2025-10-12)
 
 Version bump for dependency: alouette-icons
