@@ -69,6 +69,6 @@
     "@babel/core": "7.28.4",
     "@babel/preset-react": "7.27.1",
     "react-native": "0.81.4",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   }
 }
