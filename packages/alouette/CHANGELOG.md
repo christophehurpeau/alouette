@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@15.1.0...alouette@15.2.0) (2025-10-12)
+
+### Features
+
+* export type AlouetteColorIntent ([52f4a6d](https://github.com/christophehurpeau/alouette/commit/52f4a6d2b01f770e73bfebcd41dfd3b20f403d00))
+
 ## [15.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@15.0.0...alouette@15.1.0) (2025-09-21)
 
 ### Features
