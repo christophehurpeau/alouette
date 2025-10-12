@@ -21,6 +21,7 @@ export {
 
 export {
   createColorScale,
+  type AlouetteColorIntent,
   type AlouetteColorScales,
   type AlouetteColorScale,
 } from "./config/colorScales";
