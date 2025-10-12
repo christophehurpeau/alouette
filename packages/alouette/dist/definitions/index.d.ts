@@ -44,4 +44,5 @@ export { GradientBackground } from "./components/layout/GradientBackground";
 export type { GradientBackgroundProps } from "./components/layout/GradientBackground";
 export * as containersVariants from "./components/containers/variants";
 export { useSafeAreaInsets } from "./core/useSafeAreaInsets";
+export type { SVGIconElement } from "./components/primitives/Icon";
 //# sourceMappingURL=index.d.ts.map
