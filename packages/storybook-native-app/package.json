@@ -26,7 +26,7 @@
     "@react-native-community/slider": "5.0.1",
     "alouette": "workspace:*",
     "alouette-icons": "workspace:*",
-    "expo": "54.0.9",
+    "expo": "54.0.13",
     "expo-constants": "18.0.9",
     "expo-status-bar": "3.0.8",
     "react": "19.1.0",
