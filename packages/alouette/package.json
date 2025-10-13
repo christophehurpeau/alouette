@@ -132,7 +132,7 @@
     "type-fest": "4.41.0"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "7.1.0",
+    "@pob/rollup-esbuild": "7.2.0",
     "@rollup/plugin-replace": "6.0.2",
     "@types/node": "24.5.2",
     "@types/react": "19.1.13",
