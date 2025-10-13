@@ -14,8 +14,15 @@ export declare const mappingLightToDark: {
 export type AlouetteColorScaleNumber = IntRange<1, 11>;
 export type AlouetteColorScale = Record<AlouetteColorScaleNumber, string>;
 export declare const createColorScale: <const T extends AlouetteColorScale>(colorScale: T) => T;
-export type AlouetteColorIntent = "danger" | "grayscale" | "info" | "primary" | "success" | "warning";
-export type AlouetteColorScaleNames = `${AlouetteColorIntent}.dark` | `${AlouetteColorIntent}.light`;
+export interface AlouetteThemeNames {
+    primary: "primary";
+    info: "info";
+    success: "success";
+    warning: "warning";
+    danger: "danger";
+    grayscale: "grayscale";
+}
+export type AlouetteColorScaleNames = `${keyof AlouetteThemeNames}.dark` | `${keyof AlouetteThemeNames}.light`;
 export type ColorScaleTokens = {
     [K in AlouetteColorScaleNames as `${K}.${AlouetteColorScaleNumber}`]: string;
 };

@@ -246,7 +246,7 @@ const warnOnContrastIssues = (themeName, textColor, backgroundColor) => {
   }
 };
 
-const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textColor) => {
+const createColorTheme = (tokens, themeName, mode = "light", backgroundColor, textColor) => {
   const alouetteTokens = tokens;
   if (!backgroundColor) {
     backgroundColor = mode === "dark" ? alouetteTokens.color.blackBackground : alouetteTokens.color.whiteBackground;
@@ -255,7 +255,7 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
     textColor = mode === "dark" ? alouetteTokens.color.whiteText : alouetteTokens.color.blackText;
   }
   const getColor = (scaleNumber, tint, adaptForDarkMode = true) => {
-    return tokens.color[`${tint || intent}.${mode}.${mode === "dark" && adaptForDarkMode ? mappingLightToDark[scaleNumber] : scaleNumber}`];
+    return tokens.color[`${tint || themeName}.${mode}.${mode === "dark" && adaptForDarkMode ? mappingLightToDark[scaleNumber] : scaleNumber}`];
   };
   const theme = {
     screenBackgroundColor: getColor(1),
@@ -341,7 +341,7 @@ const createColorTheme = (tokens, intent, mode = "light", backgroundColor, textC
   };
   if (process.env.NODE_ENV === "development") {
     warnOnContrastIssues(
-      intent,
+      themeName,
       theme.textColor.val,
       theme.screenBackgroundColor.val
     );

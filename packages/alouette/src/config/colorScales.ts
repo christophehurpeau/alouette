@@ -48,17 +48,18 @@ export const createColorScale = <const T extends AlouetteColorScale>(
   colorScale: T,
 ): T => colorScale;
 
-export type AlouetteColorIntent =
-  | "danger"
-  | "grayscale"
-  | "info"
-  | "primary"
-  | "success"
-  | "warning";
+export interface AlouetteThemeNames {
+  primary: "primary";
+  info: "info";
+  success: "success";
+  warning: "warning";
+  danger: "danger";
+  grayscale: "grayscale";
+}
 
 export type AlouetteColorScaleNames =
-  | `${AlouetteColorIntent}.dark`
-  | `${AlouetteColorIntent}.light`;
+  | `${keyof AlouetteThemeNames}.dark`
+  | `${keyof AlouetteThemeNames}.light`;
 
 export type ColorScaleTokens = {
   [K in AlouetteColorScaleNames as `${K}.${AlouetteColorScaleNumber}`]: string; //(typeof colorScales)[K][AlouetteColorScaleNumber];

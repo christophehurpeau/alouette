@@ -3,9 +3,9 @@
 import type { Variable } from "@tamagui/core";
 import { mappingLightToDark } from "./colorScales";
 import type {
-  AlouetteColorIntent,
   AlouetteColorScaleNumber,
   AlouetteColorScales,
+  AlouetteThemeNames,
 } from "./colorScales";
 import type { createAlouetteTokens } from "./createAlouetteTokens";
 import { warnOnContrastIssues } from "./utils/colorContrast";
@@ -101,9 +101,11 @@ export type FullTheme = ColorTheme;
 //   return theme satisfies RootTheme as unknown as FullTheme;
 // };
 
-export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
+export const createColorTheme = <
+  const ColorTheme extends keyof AlouetteThemeNames,
+>(
   tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>,
-  intent: ColorIntent,
+  themeName: ColorTheme,
   mode: "dark" | "light" = "light",
   // TODO replace by color in scale
   backgroundColor?: Variable<string>,
@@ -131,7 +133,7 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
     adaptForDarkMode = true,
   ) => {
     return tokens.color[
-      `${tint || intent}.${mode}.${mode === "dark" && adaptForDarkMode ? mappingLightToDark[scaleNumber] : scaleNumber}` as keyof typeof tokens.color
+      `${tint || themeName}.${mode}.${mode === "dark" && adaptForDarkMode ? mappingLightToDark[scaleNumber] : scaleNumber}` as keyof typeof tokens.color
     ];
   };
 
@@ -240,7 +242,7 @@ export const createColorTheme = <const ColorIntent extends AlouetteColorIntent>(
   if (process.env.NODE_ENV === "development") {
     // Check main text contrast
     warnOnContrastIssues(
-      intent,
+      themeName,
       theme.textColor.val,
       theme.screenBackgroundColor.val,
     );

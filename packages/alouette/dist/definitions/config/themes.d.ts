@@ -1,5 +1,5 @@
 import type { Variable } from "@tamagui/core";
-import type { AlouetteColorIntent, AlouetteColorScales } from "./colorScales";
+import type { AlouetteColorScales, AlouetteThemeNames } from "./colorScales";
 import type { createAlouetteTokens } from "./createAlouetteTokens";
 export interface ColorTheme {
     screenBackgroundColor: Variable<string>;
@@ -64,7 +64,7 @@ export interface ColorTheme {
     "interactive.forms.borderColor:disabled": Variable<string>;
 }
 export type FullTheme = ColorTheme;
-export declare const createColorTheme: <const ColorIntent extends AlouetteColorIntent>(tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>, intent: ColorIntent, mode?: "dark" | "light", backgroundColor?: Variable<string>, textColor?: Variable<string>) => {
+export declare const createColorTheme: <const ColorTheme extends keyof AlouetteThemeNames>(tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>, themeName: ColorTheme, mode?: "dark" | "light", backgroundColor?: Variable<string>, textColor?: Variable<string>) => {
     screenBackgroundColor: Variable<string>;
     "screenBackgroundColor.elevated": Variable<string>;
     "screenBackgroundColor.translucent": Variable<string>;
