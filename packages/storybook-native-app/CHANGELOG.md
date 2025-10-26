@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.0](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@5.0.2...storybook-native-app@5.1.0) (2025-10-26)
+
+### Features
+
+* **deps:** update dependency expo to v54.0.13 ([#253](https://github.com/christophehurpeau/alouette/issues/253)) ([6a9065d](https://github.com/christophehurpeau/alouette/commit/6a9065d3eda8657095ec5476e984e93fc23c20e7))
+
 ## [5.0.2](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@5.0.1...storybook-native-app@5.0.2) (2025-10-12)
 
 Note: no notable changes
