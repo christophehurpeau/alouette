@@ -255,23 +255,24 @@ export const createAlouetteThemes = <
   const ColorScales extends AlouetteColorScales,
 >(
   tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>,
+  customCreateColorTheme = createColorTheme,
 ) => {
   const alouetteTokens: ReturnType<
     typeof createAlouetteTokens<AlouetteColorScales>
   > = tokens;
   return {
-    light: createColorTheme(alouetteTokens, "grayscale", "light"),
-    light_info: createColorTheme(alouetteTokens, "info", "light"),
-    light_success: createColorTheme(alouetteTokens, "success", "light"),
-    light_warning: createColorTheme(alouetteTokens, "warning", "light"),
-    light_danger: createColorTheme(alouetteTokens, "danger", "light"),
-    light_primary: createColorTheme(alouetteTokens, "primary", "light"),
+    light: customCreateColorTheme(alouetteTokens, "grayscale", "light"),
+    light_info: customCreateColorTheme(alouetteTokens, "info", "light"),
+    light_success: customCreateColorTheme(alouetteTokens, "success", "light"),
+    light_warning: customCreateColorTheme(alouetteTokens, "warning", "light"),
+    light_danger: customCreateColorTheme(alouetteTokens, "danger", "light"),
+    light_primary: customCreateColorTheme(alouetteTokens, "primary", "light"),
 
-    dark: createColorTheme(alouetteTokens, "grayscale", "dark"),
-    dark_info: createColorTheme(alouetteTokens, "info", "dark"),
-    dark_success: createColorTheme(alouetteTokens, "success", "dark"),
-    dark_warning: createColorTheme(alouetteTokens, "warning", "dark"),
-    dark_danger: createColorTheme(alouetteTokens, "danger", "dark"),
-    dark_primary: createColorTheme(alouetteTokens, "primary", "dark"),
+    dark: customCreateColorTheme(alouetteTokens, "grayscale", "dark"),
+    dark_info: customCreateColorTheme(alouetteTokens, "info", "dark"),
+    dark_success: customCreateColorTheme(alouetteTokens, "success", "dark"),
+    dark_warning: customCreateColorTheme(alouetteTokens, "warning", "dark"),
+    dark_danger: customCreateColorTheme(alouetteTokens, "danger", "dark"),
+    dark_primary: customCreateColorTheme(alouetteTokens, "primary", "dark"),
   } as const;
 };
