@@ -17,7 +17,7 @@
     "storybook-generate": "sb-rn-get-stories"
   },
   "dependencies": {
-    "@babel/core": "7.28.4",
+    "@babel/core": "7.28.5",
     "@expo-google-fonts/chivo-mono": "0.4.2",
     "@expo-google-fonts/sora": "0.4.2",
     "@gorhom/bottom-sheet": "5.2.6",
@@ -40,7 +40,7 @@
     "react-native-worklets": "0.5.1"
   },
   "devDependencies": {
-    "@babel/preset-env": "7.28.3",
+    "@babel/preset-env": "7.28.5",
     "@chromatic-com/storybook": "4.1.1",
     "@expo/metro-runtime": "6.1.2",
     "@storybook/addon-docs": "9.1.10",
