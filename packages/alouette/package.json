@@ -28,13 +28,13 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/definitions/index.d.ts",
-      "react-native": {
-        "import": "./dist/index-react-native.es.js",
-        "require": "./dist/index-react-native.cjs.js"
-      },
       "node": {
         "import": "./dist/index-node22.mjs",
         "require": "./dist/index-node22.cjs"
+      },
+      "react-native": {
+        "import": "./dist/index-react-native.es.js",
+        "require": "./dist/index-react-native.cjs.js"
       },
       "browser": {
         "import": "./dist/index-browser.es.js"
@@ -42,13 +42,13 @@
     },
     "./createAlouetteTamagui": {
       "types": "./dist/definitions/createAlouetteTamagui.d.ts",
-      "react-native": {
-        "import": "./dist/createAlouetteTamagui-react-native.es.js",
-        "require": "./dist/createAlouetteTamagui-react-native.cjs.js"
-      },
       "node": {
         "import": "./dist/createAlouetteTamagui-node22.mjs",
         "require": "./dist/createAlouetteTamagui-node22.cjs"
+      },
+      "react-native": {
+        "import": "./dist/createAlouetteTamagui-react-native.es.js",
+        "require": "./dist/createAlouetteTamagui-react-native.cjs.js"
       },
       "browser": {
         "import": "./dist/createAlouetteTamagui-browser.es.js"
@@ -132,7 +132,7 @@
     "type-fest": "4.41.0"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "7.2.0",
+    "@pob/rollup-esbuild": "7.3.0",
     "@rollup/plugin-replace": "6.0.2",
     "@types/node": "24.7.2",
     "@types/react": "19.1.13",
