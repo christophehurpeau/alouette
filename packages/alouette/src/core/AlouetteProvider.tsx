@@ -2,7 +2,6 @@ import type { TamaguiProviderProps } from "@tamagui/core";
 import { TamaguiProvider } from "@tamagui/core";
 import type { ReactNode } from "react";
 import { useColorScheme } from "react-native";
-import { SafeAreaProvider } from "./SafeAreaProvider";
 import "./reset";
 
 export interface AlouetteProviderProps
@@ -24,14 +23,12 @@ export function AlouetteProvider({
   disableInjectCSS,
 }: AlouetteProviderProps): ReactNode {
   return (
-    <SafeAreaProvider>
-      <TamaguiProvider
-        config={tamaguiConfig}
-        defaultTheme={defaultTheme}
-        disableInjectCSS={disableInjectCSS}
-      >
-        {children}
-      </TamaguiProvider>
-    </SafeAreaProvider>
+    <TamaguiProvider
+      config={tamaguiConfig}
+      defaultTheme={defaultTheme}
+      disableInjectCSS={disableInjectCSS}
+    >
+      {children}
+    </TamaguiProvider>
   );
 }

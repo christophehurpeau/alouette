@@ -4,6 +4,7 @@ import type { TamaguiProviderProps } from "@tamagui/core";
 import { createContext, useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 import { AlouetteProvider } from "./AlouetteProvider";
+import { SafeAreaProvider } from "./SafeAreaProvider";
 
 export const AlouetteTamaguiConfigContext = createContext<
   TamaguiProviderProps["config"] | null
@@ -24,15 +25,17 @@ export const AlouetteDecorator: Decorator = (storyFn, context) => {
   }, [context.globals.backgrounds?.value]);
 
   return (
-    <AlouetteProvider
-      tamaguiConfig={context.parameters.tamaguiConfig}
-      defaultTheme={theme}
-    >
-      <AlouetteTamaguiConfigContext.Provider
-        value={context.parameters.tamaguiConfig}
+    <SafeAreaProvider>
+      <AlouetteProvider
+        tamaguiConfig={context.parameters.tamaguiConfig}
+        defaultTheme={theme}
       >
-        {storyFn(context)}
-      </AlouetteTamaguiConfigContext.Provider>
-    </AlouetteProvider>
+        <AlouetteTamaguiConfigContext.Provider
+          value={context.parameters.tamaguiConfig}
+        >
+          {storyFn(context)}
+        </AlouetteTamaguiConfigContext.Provider>
+      </AlouetteProvider>
+    </SafeAreaProvider>
   );
 };
