@@ -49,6 +49,11 @@ export const withScreenBackground = (
   if (!val) return {} as const;
 
   if (val === "translucent") {
+    if (process.env.NODE_ENV !== "production" && props.withElevation) {
+      throw new Error(
+        "Cannot use withElevation and translucent screen background together",
+      );
+    }
     return {
       backgroundColor: "$screenBackgroundColor.translucent",
       backdropFilter: "blur(14px)",
