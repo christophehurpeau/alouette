@@ -1,0 +1,21 @@
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+import Svg, { Path } from "react-native-svg";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export const WaveSawtoothDuotoneIcon = (props) =>
+  /*#__PURE__*/ _jsxs(Svg, {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: [
+      /*#__PURE__*/ _jsx(Path, {
+        d: "M128,64v64H24Zm104,64H128v64Z",
+        opacity: 0.2,
+      }),
+      /*#__PURE__*/ _jsx(Path, {
+        d: "M236.19,134.81l-104,64A8,8,0,0,1,120,192V78.32L28.19,134.81a8,8,0,0,1-8.38-13.62l104-64A8,8,0,0,1,136,64V177.68l91.81-56.49a8,8,0,0,1,8.38,13.62Z",
+      }),
+    ],
+  });

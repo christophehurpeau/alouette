@@ -1,0 +1,21 @@
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+import Svg, { Path } from "react-native-svg";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export const FolderDuotoneIcon = (props) =>
+  /*#__PURE__*/ _jsxs(Svg, {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: [
+      /*#__PURE__*/ _jsx(Path, {
+        d: "M128,80H32V56a8,8,0,0,1,8-8H92.69a8,8,0,0,1,5.65,2.34Z",
+        opacity: 0.2,
+      }),
+      /*#__PURE__*/ _jsx(Path, {
+        d: "M216,72H131.31L104,44.69A15.86,15.86,0,0,0,92.69,40H40A16,16,0,0,0,24,56V200.62A15.4,15.4,0,0,0,39.38,216H216.89A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72ZM92.69,56l16,16H40V56ZM216,200H40V88H216Z",
+      }),
+    ],
+  });

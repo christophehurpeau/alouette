@@ -21,24 +21,23 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./phosphor-icons": {
-      "types": "./lib/phosphor-icons.d.ts",
-      "browser": "./lib/phosphor-icons.mjs",
+    "./phosphor-icons/*": {
+      "types": "./lib/phosphor-icons/*.d.ts",
       "react-native": {
-        "import": "./lib/phosphor-icons.mjs",
-        "require": "./lib/phosphor-icons.cjs"
+        "import": "./lib/phosphor-icons/*.mjs"
       },
+      "browser": "./lib/phosphor-icons/*.web.mjs",
+      "web": "./lib/phosphor-icons/*.web.mjs",
       "node": {
         "web": {
-          "import": "./lib/phosphor-icons.node.web.mjs"
+          "import": "./lib/phosphor-icons/*.web.mjs"
         },
         "react-native": {
-          "import": "./lib/phosphor-icons.node.react-native.mjs"
+          "import": "./lib/phosphor-icons/*.react-native.mjs"
         },
-        "import": "./lib/phosphor-icons.node.web.mjs"
+        "import": "./lib/phosphor-icons/*.web.mjs"
       }
-    },
-    "./lib/phosphor-icons.cjs": "./lib/phosphor-icons.cjs"
+    }
   },
   "files": [
     "lib"
@@ -62,12 +61,10 @@
     "react-native": "*",
     "react-native-svg": "*"
   },
-  "dependencies": {
-    "@phosphor-icons/core": "2.1.1"
-  },
   "devDependencies": {
     "@babel/core": "7.28.5",
     "@babel/preset-react": "7.28.5",
+    "@phosphor-icons/core": "2.1.1",
     "react-native": "0.81.4",
     "typescript": "5.9.3"
   }

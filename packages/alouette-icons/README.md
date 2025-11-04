@@ -23,7 +23,7 @@ npm install --save alouette alouette-icons
 
 ```tsx
 import { Icon } from "alouette";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
 
 function Component() {
   return <Icon icon={<ArrowLeftRegularIcon />} />;

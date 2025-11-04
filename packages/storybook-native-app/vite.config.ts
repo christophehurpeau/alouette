@@ -49,7 +49,7 @@ export default defineConfig({
     //   extension,
     // ]),
     holdUntilCrawlEnd: true,
-    exclude: ["expo-linear-gradient"],
+    exclude: ["expo-linear-gradient", "alouette-icons"],
   },
   resolve: {
     extensions,

@@ -1,0 +1,20 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+export const BeanieDuotoneIcon = (props) =>
+  /*#__PURE__*/ _jsxs("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: [
+      /*#__PURE__*/ _jsx("path", {
+        d: "M216,144v24H40V144a88,88,0,0,1,176,0Z",
+        opacity: 0.2,
+      }),
+      /*#__PURE__*/ _jsx("path", {
+        d: "M224,162.16V144a96.18,96.18,0,0,0-72.34-93,28,28,0,1,0-47.32,0A96.18,96.18,0,0,0,32,144v18.16A16,16,0,0,0,24,176v32a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V176A16,16,0,0,0,224,162.16ZM116,36a12,12,0,1,1,12,12A12,12,0,0,1,116,36Zm12,28a80.09,80.09,0,0,1,80,80v16H48V144A80.09,80.09,0,0,1,128,64Zm-8,112v32H80V176Zm16,0h40v32H136Zm-96,0H64v32H40Zm176,32H192V176h24v32Z",
+      }),
+    ],
+  });

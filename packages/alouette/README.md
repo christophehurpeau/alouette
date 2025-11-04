@@ -91,7 +91,7 @@ For detailed examples and API documentation, visit our [Storybook](https://www.c
 Icons are provided through the integrated `alouette-icons` package:
 
 ```tsx
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
 
 function MyComponent() {
   return <ArrowLeftRegularIcon />;
@@ -138,7 +138,7 @@ function MyComponent() {
 
 ```tsx
 import { Button } from "alouette";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
 
 function MyComponent() {
   return (

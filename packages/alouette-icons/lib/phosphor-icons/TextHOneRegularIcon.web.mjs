@@ -1,0 +1,14 @@
+import { jsx as _jsx } from "react/jsx-runtime";
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+export const TextHOneRegularIcon = (props) =>
+  /*#__PURE__*/ _jsx("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: /*#__PURE__*/ _jsx("path", {
+      d: "M152,56V176a8,8,0,0,1-16,0V124H48v52a8,8,0,0,1-16,0V56a8,8,0,0,1,16,0v52h88V56a8,8,0,0,1,16,0Zm75.77,49a8,8,0,0,0-8.21.39l-24,16a8,8,0,1,0,8.88,13.32L216,127V208a8,8,0,0,0,16,0V112A8,8,0,0,0,227.77,105Z",
+    }),
+  });

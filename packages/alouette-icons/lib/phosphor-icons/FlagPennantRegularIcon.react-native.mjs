@@ -1,0 +1,15 @@
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+import Svg, { Path } from "react-native-svg";
+import { jsx as _jsx } from "react/jsx-runtime";
+export const FlagPennantRegularIcon = (props) =>
+  /*#__PURE__*/ _jsx(Svg, {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: /*#__PURE__*/ _jsx(Path, {
+      d: "M242.63,96.44l-184-64A8,8,0,0,0,48,40V216a8,8,0,0,0,16,0V173.69l178.63-62.13a8,8,0,0,0,0-15.12ZM64,156.75V51.25L215.65,104Z",
+    }),
+  });

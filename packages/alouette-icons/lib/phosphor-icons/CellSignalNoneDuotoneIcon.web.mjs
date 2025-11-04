@@ -1,0 +1,14 @@
+import { jsx as _jsx } from "react/jsx-runtime";
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+export const CellSignalNoneDuotoneIcon = (props) =>
+  /*#__PURE__*/ _jsx("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: /*#__PURE__*/ _jsx("path", {
+      d: "M198.12,25.23a16,16,0,0,0-17.43,3.47l-160,160A16,16,0,0,0,32,216H192a16,16,0,0,0,16-16V40A16,16,0,0,0,198.12,25.23ZM192,200H32L192,40Z",
+    }),
+  });

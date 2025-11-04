@@ -2,10 +2,15 @@ import { jsx, jsxs } from 'react/jsx-runtime';
 import { isAndroid, styled, View, usePropsAndStyle, Text, isWeb, TamaguiProvider, useMedia, Stack as Stack$1, useTheme, Theme } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
 import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
-export { useSafeAreaInsets } from 'react-native-safe-area-context';
+export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { cloneElement, Fragment, Children, createContext, useState, useEffect, useContext } from 'react';
-import { InfoRegularIcon, WarningRegularIcon, CheckRegularIcon, WarningCircleRegularIcon, XRegularIcon, CaretRightRegularIcon } from 'alouette-icons/phosphor-icons';
+import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
+import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
+import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
+import { WarningCircleRegularIcon } from 'alouette-icons/phosphor-icons/WarningCircleRegularIcon';
+import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Pressable, StyleSheet } from 'react-native';
+import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const fullscreenStyle = {
@@ -68,6 +73,11 @@ const withBackground = (val, { props }) => {
 const withScreenBackground = (val, { props }) => {
   if (!val) return {};
   if (val === "translucent") {
+    if (process.env.NODE_ENV !== "production" && props.withElevation) {
+      throw new Error(
+        "Cannot use withElevation and translucent screen background together"
+      );
+    }
     return {
       backgroundColor: "$screenBackgroundColor.translucent",
       backdropFilter: "blur(14px)"
@@ -435,13 +445,13 @@ function InternalLinkButton(props) {
 function FeedbackIcon({ type }) {
   switch (type) {
     case "warning":
-      return /* @__PURE__ */ jsx(WarningCircleRegularIcon, {});
+      return /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(WarningCircleRegularIcon, {}) });
     case "success":
-      return /* @__PURE__ */ jsx(CheckRegularIcon, {});
+      return /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
     case "danger":
-      return /* @__PURE__ */ jsx(WarningRegularIcon, {});
+      return /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
     default:
-      return /* @__PURE__ */ jsx(InfoRegularIcon, {});
+      return /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
   }
 }
 
@@ -470,11 +480,9 @@ const MessageText = styled(Typography, {
   }
 });
 const MessageIconContainer = styled(View, {
-  name: "MessageIconContainer",
   alignItems: "center"
 });
 const MessageDismissButtonContainer = styled(View, {
-  name: "MessageDismissButtonContainer",
   marginRight: "$2"
 });
 function Message({
@@ -484,7 +492,7 @@ function Message({
   onDismiss
 }) {
   return /* @__PURE__ */ jsxs(MessageFrame, { theme, children: [
-    textCentered ? null : /* @__PURE__ */ jsx(MessageIconContainer, { children: /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(FeedbackIcon, { type: theme }) }) }),
+    textCentered ? null : /* @__PURE__ */ jsx(MessageIconContainer, { children: /* @__PURE__ */ jsx(FeedbackIcon, { type: theme }) }),
     /* @__PURE__ */ jsx(MessageText, { centered: textCentered, children }),
     onDismiss ? /* @__PURE__ */ jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsx(
       IconButton,
@@ -702,7 +710,7 @@ function AlouetteProvider({
   defaultTheme = "light",
   disableInjectCSS
 }) {
-  return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsx(
     TamaguiProvider,
     {
       config: tamaguiConfig,
@@ -710,7 +718,7 @@ function AlouetteProvider({
       disableInjectCSS,
       children
     }
-  ) });
+  );
 }
 
 const AlouetteTamaguiConfigContext = createContext(null);
@@ -725,7 +733,7 @@ const AlouetteDecorator = (storyFn, context) => {
       setTheme("light");
     }
   }, [context.globals.backgrounds?.value]);
-  return /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(
     AlouetteProvider,
     {
       tamaguiConfig: context.parameters.tamaguiConfig,
@@ -738,7 +746,7 @@ const AlouetteDecorator = (storyFn, context) => {
         }
       )
     }
-  );
+  ) });
 };
 
 function WithTamaguiConfig({

@@ -1,4 +1,4 @@
-import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons";
+import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons/CaretRightRegularIcon";
 import type { ReactNode } from "react";
 import { Pressable } from "react-native";
 import { Icon } from "../primitives/Icon";

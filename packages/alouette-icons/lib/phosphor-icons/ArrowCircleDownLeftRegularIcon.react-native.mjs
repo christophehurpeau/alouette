@@ -1,0 +1,15 @@
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+import Svg, { Path } from "react-native-svg";
+import { jsx as _jsx } from "react/jsx-runtime";
+export const ArrowCircleDownLeftRegularIcon = (props) =>
+  /*#__PURE__*/ _jsx(Svg, {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: /*#__PURE__*/ _jsx(Path, {
+      d: "M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM165.66,90.34a8,8,0,0,1,0,11.32L115.31,152H144a8,8,0,0,1,0,16H96a8,8,0,0,1-8-8V112a8,8,0,0,1,16,0v28.69l50.34-50.35A8,8,0,0,1,165.66,90.34Z",
+    }),
+  });

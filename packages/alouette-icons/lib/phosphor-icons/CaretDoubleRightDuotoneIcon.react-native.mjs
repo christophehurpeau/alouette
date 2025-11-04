@@ -1,0 +1,21 @@
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+import Svg, { Path } from "react-native-svg";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export const CaretDoubleRightDuotoneIcon = (props) =>
+  /*#__PURE__*/ _jsxs(Svg, {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: [
+      /*#__PURE__*/ _jsx(Path, {
+        d: "M136,128,56,208V48Z",
+        opacity: 0.2,
+      }),
+      /*#__PURE__*/ _jsx(Path, {
+        d: "M141.66,122.34l-80-80A8,8,0,0,0,48,48V208a8,8,0,0,0,13.66,5.66l80-80A8,8,0,0,0,141.66,122.34ZM64,188.69V67.31L124.69,128Zm157.66-55-80,80a8,8,0,0,1-11.32-11.32L204.69,128,130.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,221.66,133.66Z",
+      }),
+    ],
+  });

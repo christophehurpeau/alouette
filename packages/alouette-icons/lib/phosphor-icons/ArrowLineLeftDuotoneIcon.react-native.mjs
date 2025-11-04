@@ -1,0 +1,21 @@
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+import Svg, { Path } from "react-native-svg";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export const ArrowLineLeftDuotoneIcon = (props) =>
+  /*#__PURE__*/ _jsxs(Svg, {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: [
+      /*#__PURE__*/ _jsx(Path, {
+        d: "M144,56V200L72,128Z",
+        opacity: 0.2,
+      }),
+      /*#__PURE__*/ _jsx(Path, {
+        d: "M224,120H152V56a8,8,0,0,0-13.66-5.66l-72,72a8,8,0,0,0,0,11.32l72,72A8,8,0,0,0,152,200V136h72a8,8,0,0,0,0-16Zm-88,60.69L83.31,128,136,75.31ZM48,40V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0Z",
+      }),
+    ],
+  });

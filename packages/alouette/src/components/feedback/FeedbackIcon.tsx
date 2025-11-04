@@ -1,10 +1,9 @@
-import {
-  CheckRegularIcon,
-  InfoRegularIcon,
-  WarningCircleRegularIcon,
-  WarningRegularIcon,
-} from "alouette-icons/phosphor-icons";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
+import { InfoRegularIcon } from "alouette-icons/phosphor-icons/InfoRegularIcon";
+import { WarningCircleRegularIcon } from "alouette-icons/phosphor-icons/WarningCircleRegularIcon";
+import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
 import type { ReactNode } from "react";
+import { Icon } from "../primitives/Icon";
 import type { MessageProps } from "./Message";
 
 interface FeedbackIconProps {
@@ -14,12 +13,12 @@ interface FeedbackIconProps {
 export function FeedbackIcon({ type }: FeedbackIconProps): ReactNode {
   switch (type) {
     case "warning":
-      return <WarningCircleRegularIcon />;
+      return <Icon icon={<WarningCircleRegularIcon />} />;
     case "success":
-      return <CheckRegularIcon />;
+      return <Icon icon={<CheckRegularIcon />} />;
     case "danger":
-      return <WarningRegularIcon />;
+      return <Icon icon={<WarningRegularIcon />} />;
     default:
-      return <InfoRegularIcon />;
+      return <Icon icon={<InfoRegularIcon />} />;
   }
 }

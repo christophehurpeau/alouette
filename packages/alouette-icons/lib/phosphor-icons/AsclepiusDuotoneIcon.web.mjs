@@ -1,0 +1,20 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+export const AsclepiusDuotoneIcon = (props) =>
+  /*#__PURE__*/ _jsxs("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: [
+      /*#__PURE__*/ _jsx("path", {
+        d: "M88,48v8A32,32,0,0,1,56,88H32V80A32,32,0,0,1,64,48Z",
+        opacity: 0.2,
+      }),
+      /*#__PURE__*/ _jsx("path", {
+        d: "M216,79v1a40,40,0,0,1-40,40H136v80h8a16,16,0,0,0,10.67-27.93,8,8,0,0,1,10.66-11.92A32,32,0,0,1,144,216h-8v16a8,8,0,0,1-16,0V216H96a8,8,0,0,1,0-16h24V120H96a16,16,0,0,0,0,32,8,8,0,0,1,0,16,32,32,0,0,1,0-64h24V24a8,8,0,0,1,16,0v80h40a24,24,0,0,0,24-24V79a23,23,0,0,0-23-23H160a8,8,0,0,1,0-16h17a39,39,0,0,1,39,39ZM56,96H32a8,8,0,0,1-8-8V80A40,40,0,0,1,64,40H96a8,8,0,0,1,0,16A40,40,0,0,1,56,96ZM80,56H64A24,24,0,0,0,40,80H56A24,24,0,0,0,80,56Z",
+      }),
+    ],
+  });

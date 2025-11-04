@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
 import { Box } from "../containers/Box";
 import { VStack } from "../primitives/stacks";
 import { Story } from "../story-components/Story";

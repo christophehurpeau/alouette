@@ -1,0 +1,21 @@
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+// @ts-nocheck
+
+import Svg, { Path } from "react-native-svg";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export const CellSignalSlashDuotoneIcon = (props) =>
+  /*#__PURE__*/ _jsxs(Svg, {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 256 256",
+    fill: "currentColor",
+    ...props,
+    children: [
+      /*#__PURE__*/ _jsx(Path, {
+        d: "M200,40V200a8,8,0,0,1-8,8H32a8,8,0,0,1-5.66-13.66l160-160A8,8,0,0,1,200,40Z",
+        opacity: 0.2,
+      }),
+      /*#__PURE__*/ _jsx(Path, {
+        d: "M213.92,210.62l-160-176A8,8,0,1,0,42.07,45.38l58.07,63.86L20.69,188.68A16,16,0,0,0,32,216H192a16.13,16.13,0,0,0,4.56-.68l5.52,6.06a8,8,0,1,0,11.84-10.76ZM32,200l78.9-78.89L182.64,200ZM128.18,92.51a8,8,0,0,1,0-11.31l52.51-52.5A16,16,0,0,1,208,40V159.63a8,8,0,0,1-16,0V40L139.5,92.51A8,8,0,0,1,128.18,92.51Z",
+      }),
+    ],
+  });

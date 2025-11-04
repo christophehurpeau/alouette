@@ -1,9 +1,8 @@
 import { View, styled } from "@tamagui/core";
-import { XRegularIcon } from "alouette-icons/phosphor-icons";
+import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
 import type { ComponentProps, ReactNode } from "react";
 import { IconButton } from "../actions/IconButton";
 import { Box } from "../containers/Box";
-import { Icon } from "../primitives/Icon";
 import { Typography } from "../typography/Typography";
 import { FeedbackIcon } from "./FeedbackIcon";
 
@@ -34,12 +33,10 @@ export const MessageText = styled(Typography, {
 } as const);
 
 const MessageIconContainer = styled(View, {
-  name: "MessageIconContainer",
   alignItems: "center",
 });
 
 const MessageDismissButtonContainer = styled(View, {
-  name: "MessageDismissButtonContainer",
   marginRight: "$2",
 });
 
@@ -60,7 +57,7 @@ export function Message({
     <MessageFrame theme={theme}>
       {textCentered ? null : (
         <MessageIconContainer>
-          <Icon icon={<FeedbackIcon type={theme} />} />
+          <FeedbackIcon type={theme} />
         </MessageIconContainer>
       )}
       <MessageText centered={textCentered}>{children}</MessageText>

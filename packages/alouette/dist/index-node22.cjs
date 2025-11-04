@@ -6,8 +6,13 @@ const jsxRuntime = require('react/jsx-runtime');
 const core = require('@tamagui/core');
 const reactNativeSafeAreaContext = require('react-native-safe-area-context');
 const react = require('react');
-const phosphorIcons = require('alouette-icons/phosphor-icons');
+const XRegularIcon = require('alouette-icons/phosphor-icons/XRegularIcon');
+const CheckRegularIcon = require('alouette-icons/phosphor-icons/CheckRegularIcon');
+const InfoRegularIcon = require('alouette-icons/phosphor-icons/InfoRegularIcon');
+const WarningCircleRegularIcon = require('alouette-icons/phosphor-icons/WarningCircleRegularIcon');
+const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegularIcon');
 const reactNative = require('react-native');
+const CaretRightRegularIcon = require('alouette-icons/phosphor-icons/CaretRightRegularIcon');
 const expoLinearGradient = require('expo-linear-gradient');
 
 const fullscreenStyle = {
@@ -70,6 +75,11 @@ const withBackground = (val, { props }) => {
 const withScreenBackground = (val, { props }) => {
   if (!val) return {};
   if (val === "translucent") {
+    if (process.env.NODE_ENV !== "production" && props.withElevation) {
+      throw new Error(
+        "Cannot use withElevation and translucent screen background together"
+      );
+    }
     return {
       backgroundColor: "$screenBackgroundColor.translucent",
       backdropFilter: "blur(14px)"
@@ -437,13 +447,13 @@ function InternalLinkButton(props) {
 function FeedbackIcon({ type }) {
   switch (type) {
     case "warning":
-      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.WarningCircleRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(WarningCircleRegularIcon.WarningCircleRegularIcon, {}) });
     case "success":
-      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.CheckRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(CheckRegularIcon.CheckRegularIcon, {}) });
     case "danger":
-      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.WarningRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(WarningRegularIcon.WarningRegularIcon, {}) });
     default:
-      return /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.InfoRegularIcon, {});
+      return /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(InfoRegularIcon.InfoRegularIcon, {}) });
   }
 }
 
@@ -472,11 +482,9 @@ const MessageText = core.styled(Typography, {
   }
 });
 const MessageIconContainer = core.styled(core.View, {
-  name: "MessageIconContainer",
   alignItems: "center"
 });
 const MessageDismissButtonContainer = core.styled(core.View, {
-  name: "MessageDismissButtonContainer",
   marginRight: "$2"
 });
 function Message({
@@ -486,12 +494,12 @@ function Message({
   onDismiss
 }) {
   return /* @__PURE__ */ jsxRuntime.jsxs(MessageFrame, { theme, children: [
-    textCentered ? null : /* @__PURE__ */ jsxRuntime.jsx(MessageIconContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(FeedbackIcon, { type: theme }) }) }),
+    textCentered ? null : /* @__PURE__ */ jsxRuntime.jsx(MessageIconContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(FeedbackIcon, { type: theme }) }),
     /* @__PURE__ */ jsxRuntime.jsx(MessageText, { centered: textCentered, children }),
     onDismiss ? /* @__PURE__ */ jsxRuntime.jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(
       IconButton,
       {
-        icon: /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.XRegularIcon, {}),
+        icon: /* @__PURE__ */ jsxRuntime.jsx(XRegularIcon.XRegularIcon, {}),
         size: 40,
         variant: "ghost-contained"
       }
@@ -704,7 +712,7 @@ function AlouetteProvider({
   defaultTheme = "light",
   disableInjectCSS
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(reactNativeSafeAreaContext.SafeAreaProvider, { children: /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ jsxRuntime.jsx(
     core.TamaguiProvider,
     {
       config: tamaguiConfig,
@@ -712,7 +720,7 @@ function AlouetteProvider({
       disableInjectCSS,
       children
     }
-  ) });
+  );
 }
 
 const AlouetteTamaguiConfigContext = react.createContext(null);
@@ -727,7 +735,7 @@ const AlouetteDecorator = (storyFn, context) => {
       setTheme("light");
     }
   }, [context.globals.backgrounds?.value]);
-  return /* @__PURE__ */ jsxRuntime.jsx(
+  return /* @__PURE__ */ jsxRuntime.jsx(reactNativeSafeAreaContext.SafeAreaProvider, { children: /* @__PURE__ */ jsxRuntime.jsx(
     AlouetteProvider,
     {
       tamaguiConfig: context.parameters.tamaguiConfig,
@@ -740,7 +748,7 @@ const AlouetteDecorator = (storyFn, context) => {
         }
       )
     }
-  );
+  ) });
 };
 
 function WithTamaguiConfig({
@@ -854,7 +862,7 @@ function PressableListItem({
       paddingVertical: "$3",
       children: [
         /* @__PURE__ */ jsxRuntime.jsx(core.View, { children }),
-        /* @__PURE__ */ jsxRuntime.jsx(Stack, { justifyContent: "center", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(phosphorIcons.CaretRightRegularIcon, {}), size: 20 }) })
+        /* @__PURE__ */ jsxRuntime.jsx(Stack, { justifyContent: "center", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(CaretRightRegularIcon.CaretRightRegularIcon, {}), size: 20 }) })
       ]
     }
   ) });
@@ -887,6 +895,7 @@ exports.Theme = core.Theme;
 exports.View = core.View;
 exports.styled = core.styled;
 exports.withStaticProperties = core.withStaticProperties;
+exports.SafeAreaProvider = reactNativeSafeAreaContext.SafeAreaProvider;
 exports.useSafeAreaInsets = reactNativeSafeAreaContext.useSafeAreaInsets;
 exports.AlouetteDecorator = AlouetteDecorator;
 exports.AlouetteProvider = AlouetteProvider;

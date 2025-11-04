@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import * as AllPhosphorIcons from "alouette-icons/phosphor-icons";
+import { ArrowUpLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowUpLeftRegularIcon";
 import { Box } from "../containers/Box";
 import { Story } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
@@ -61,7 +61,7 @@ export default {
 
 export const PreviewIconStory: StoryObj<typeof Icon> = {
   args: {
-    icon: <AllPhosphorIcons.ArrowUpLeftRegularIcon />,
+    icon: <ArrowUpLeftRegularIcon />,
     size: 24,
   },
   render: (args) => <Icon {...args} />,
@@ -74,16 +74,10 @@ export const VariantsIconStory: StoryObj<typeof Icon> = {
       <Story.Section title="Size">
         <StoryGrid.Row>
           <StoryGrid.Col title="24">
-            <Icon
-              icon={<AllPhosphorIcons.ArrowUpLeftRegularIcon />}
-              size={24}
-            />
+            <Icon icon={<ArrowUpLeftRegularIcon />} size={24} />
           </StoryGrid.Col>
           <StoryGrid.Col title="40">
-            <Icon
-              icon={<AllPhosphorIcons.ArrowUpLeftRegularIcon />}
-              size={40}
-            />
+            <Icon icon={<ArrowUpLeftRegularIcon />} size={40} />
           </StoryGrid.Col>
         </StoryGrid.Row>
       </Story.Section>
@@ -91,25 +85,14 @@ export const VariantsIconStory: StoryObj<typeof Icon> = {
       <Story.Section title="Color">
         <StoryGrid.Row>
           <StoryGrid.Col title="Default">
-            <Icon
-              icon={<AllPhosphorIcons.ArrowUpLeftRegularIcon />}
-              size={24}
-            />
+            <Icon icon={<ArrowUpLeftRegularIcon />} size={24} />
           </StoryGrid.Col>
           <StoryGrid.Col title="Disabled">
-            <Icon
-              disabled
-              icon={<AllPhosphorIcons.ArrowUpLeftRegularIcon />}
-              size={24}
-            />
+            <Icon disabled icon={<ArrowUpLeftRegularIcon />} size={24} />
           </StoryGrid.Col>
           <StoryGrid.Col title="Primary">
             <Box theme="primary">
-              <Icon
-                accent
-                icon={<AllPhosphorIcons.ArrowUpLeftRegularIcon />}
-                size={24}
-              />
+              <Icon accent icon={<ArrowUpLeftRegularIcon />} size={24} />
             </Box>
           </StoryGrid.Col>
         </StoryGrid.Row>

@@ -1,7 +1,14 @@
 #!/usr/bin/env node
-import { readFileSync, writeFileSync } from "node:fs";
+import {
+  readFileSync,
+  writeFileSync,
+  rmdirSync,
+  existsSync,
+  mkdirSync,
+  copyFileSync,
+} from "node:fs";
 import path from "node:path";
-import { transformSync as babelTransform } from "@babel/core";
+import { transformSync as babelTransformSync } from "@babel/core";
 import { icons } from "@phosphor-icons/core";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { transform as svgrTransform } from "@svgr/core";
@@ -12,14 +19,50 @@ import prettier from "prettier";
 
 const header =
   "// This file is generated automatically by scripts/generate-phosphor-icons.mjs\n";
-let fileContent = `${header}// @ts-nocheck\n\n`;
-let nodeFileContent = `${fileContent}import Svg, { Path } from "react-native-svg";\n`;
-let nodeWebFileContent = `${fileContent}`;
-let fileDTSContent = `${header}\nimport * as React from 'react';
+let headerWithTsNoCheck = `${header}// @ts-nocheck\n\n`;
+const importReactNativeSvgHeader = `${headerWithTsNoCheck}import Svg, { Path } from "react-native-svg";\n`;
+const dtsContentHeader = `${header}\nimport * as React from 'react';
 
-const SVGComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement> & { title?: string }>;
+const SVGComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 `;
-let fileCJSForReactNativeContent = `"use strict";\n${fileContent}module.exports = {\n`;
+
+// let fileContent = `${headerWithTsNoCheck}`;
+// let nodeFileContent = `${importReactNativeSvgHeader}`;
+// let nodeWebFileContent = `${headerWithTsNoCheck}`;
+// let fileDTSContent = dtsContentHeader;
+// let fileCJSForReactNativeContent = `"use strict";\n${fileContent}module.exports = {\n`;
+
+const formatWithPrettierAndSave = async (filename, content) => {
+  writeFileSync(
+    new URL(`../lib/${filename}`, import.meta.url),
+    await prettier.format(content, {
+      filepath: filename,
+    }),
+  );
+};
+
+if (existsSync(new URL("../lib/phosphor-icons", import.meta.url))) {
+  console.log("Removing old phosphor-icons directory...");
+  rmdirSync(new URL("../lib/phosphor-icons", import.meta.url), {
+    recursive: true,
+    force: true,
+  });
+}
+
+console.log("Creating new phosphor-icons directory...");
+mkdirSync(new URL("../lib/phosphor-icons", import.meta.url));
+
+const babelTransformContent = (code) => {
+  return babelTransformSync(code, {
+    babelrc: false,
+    configFile: false,
+    presets: [
+      ["@babel/preset-react", { useSpread: true, runtime: "automatic" }],
+    ],
+    minified: false,
+    compact: false,
+  }).code;
+};
 
 for (const icon of icons) {
   // aliases
@@ -37,13 +80,31 @@ for (const icon of icons) {
     continue;
   }
 
+  console.log(`Generating icon: ${icon.name}...`);
+
   for (const [componentName, filepathInAssets] of [
     [`${icon.pascal_name}RegularIcon`, `regular/${icon.name}`],
-    [`${icon.pascal_name}FillIcon`, `fill/${icon.name}-fill`],
+    [`${icon.pascal_name}DuotoneIcon`, `duotone/${icon.name}-duotone`],
   ]) {
-    fileContent += `export { ReactComponent as ${componentName} } from "@phosphor-icons/core/assets/${filepathInAssets}.svg";\n`;
-    fileDTSContent += `declare const ${componentName} = SVGComponent;\n`;
-    fileCJSForReactNativeContent += `  get ${componentName}() { return require("@phosphor-icons/core/assets/${filepathInAssets}.svg").ReactComponent },\n`;
+    // const mjsContent = `export { ReactComponent as ${componentName} } from "@phosphor-icons/core/assets/${filepathInAssets}.svg";\n`;
+    // const dtsContent = `declare const ${componentName}: SVGComponent;\n`;
+    // const cjsReactNativeContent = `  get ${componentName}() { return require("@phosphor-icons/core/assets/${filepathInAssets}.svg").ReactComponent },\n`;
+
+    // fileContent += mjsContent;
+    // fileDTSContent += dtsContent;
+    // fileCJSForReactNativeContent += cjsReactNativeContent;
+
+    await Promise.all([
+      // formatWithPrettierAndSave(
+      //   `phosphor-icons/${componentName}.mjs`,
+      //   `${headerWithTsNoCheck}${mjsContent}`,
+      // ),
+      formatWithPrettierAndSave(
+        `phosphor-icons/${componentName}.d.ts`,
+        // `${dtsContentHeader}${dtsContent}`,
+        `${header}\nimport * as React from 'react';\n\ndeclare const ${componentName}: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;\n`,
+      ),
+    ]);
 
     const filePath = path.resolve(
       // eslint-disable-next-line n/no-unsupported-features/node-builtins
@@ -75,58 +136,53 @@ for (const icon of icons) {
         },
       );
       if (platform === "native") {
-        nodeFileContent += jsCode
+        const nodeContent = jsCode
           .replace('import Svg, { Path } from "react-native-svg";', "")
           .replace(`const ${componentName}`, `export const ${componentName}`)
           .replace(`export { ${componentName} };`, "");
+        // nodeFileContent += nodeContent;
+
+        await formatWithPrettierAndSave(
+          `phosphor-icons/${componentName}.react-native.mjs`,
+          babelTransformContent(`${importReactNativeSvgHeader}${nodeContent}`),
+        );
       } else {
-        nodeWebFileContent += jsCode
+        const nodeWebContent = jsCode
           .replace(`const ${componentName}`, `export const ${componentName}`)
           .replace(`export { ${componentName} };`, "");
+        // nodeWebFileContent += nodeWebContent;
+
+        await formatWithPrettierAndSave(
+          `phosphor-icons/${componentName}.web.mjs`,
+          babelTransformContent(`${headerWithTsNoCheck}${nodeWebContent}`),
+        );
       }
     }
   }
 }
 
-fileCJSForReactNativeContent += "};\n";
+// fileCJSForReactNativeContent += "};\n";
 
-const formatWithPrettierAndSave = async (filename, content) => {
-  writeFileSync(
-    new URL(`../lib/${filename}`, import.meta.url),
-    await prettier.format(content, {
-      filepath: filename,
-    }),
-  );
-};
+// await formatWithPrettierAndSave("phosphor-icons.mjs", fileContent);
+// await formatWithPrettierAndSave(
+//   "phosphor-icons.cjs",
+//   fileCJSForReactNativeContent,
+// );
+// await formatWithPrettierAndSave("phosphor-icons.d.ts", fileDTSContent);
 
-await formatWithPrettierAndSave("phosphor-icons.mjs", fileContent);
-await formatWithPrettierAndSave(
-  "phosphor-icons.cjs",
-  fileCJSForReactNativeContent,
-);
-await formatWithPrettierAndSave("phosphor-icons.d.ts", fileDTSContent);
+// await formatWithPrettierAndSave(
+//   "phosphor-icons.node.react-native.mjs",
+//   babelTransformContent(nodeFileContent),
+// );
+// await formatWithPrettierAndSave(
+//   "phosphor-icons.node.web.mjs",
+//   babelTransformContent(nodeWebFileContent),
+// );
 
-await formatWithPrettierAndSave(
-  "phosphor-icons.node.react-native.mjs",
-  babelTransform(nodeFileContent, {
-    babelrc: false,
-    configFile: false,
-    presets: [
-      ["@babel/preset-react", { useSpread: true, runtime: "automatic" }],
-    ],
-    minified: false,
-    compact: false,
-  }).code,
-);
-await formatWithPrettierAndSave(
-  "phosphor-icons.node.web.mjs",
-  babelTransform(nodeWebFileContent, {
-    babelrc: false,
-    configFile: false,
-    presets: [
-      ["@babel/preset-react", { useSpread: true, runtime: "automatic" }],
-    ],
-    minified: false,
-    compact: false,
-  }).code,
+await copyFileSync(
+  new URL(
+    "../../../node_modules/@phosphor-icons/core/LICENSE",
+    import.meta.url,
+  ),
+  new URL("../lib/phosphor-icons/LICENSE", import.meta.url),
 );
