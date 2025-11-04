@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](///compare/storybook-native-app@5.1.0...storybook-native-app@6.0.0) (2025-11-04)
+
+### ⚠ BREAKING CHANGES
+
+* each icon has its own file to reduce generated bundle size, drop cjs
+
+### Features
+
+* **deps:** update babel monorepo to v7.28.5 ([#265](undefined/undefined/undefined/issues/265))
+* **deps:** update dependency react-native-reanimated to v4.1.3 ([#258](undefined/undefined/undefined/issues/258))
+* **deps:** update dependency react-native-svg to v15.14.0 ([#262](undefined/undefined/undefined/issues/262))
+* **deps:** update dependency react-native-web to v0.21.2 ([#266](undefined/undefined/undefined/issues/266))
+* **deps:** update tamagui to v1.135.4 ([#269](undefined/undefined/undefined/issues/269))
+* each icon has its own file to reduce generated bundle size, drop cjs
+
+### Bug Fixes
+
+* **deps:** update dependency react-native-safe-area-context to v5.6.2 ([#274](undefined/undefined/undefined/issues/274))
+* **deps:** update dependency react-native-worklets to v0.5.2 ([#275](undefined/undefined/undefined/issues/275))
+* **deps:** update expo monorepo ([#268](undefined/undefined/undefined/issues/268))
+
 ## [5.1.0](https://github.com/christophehurpeau/alouette/compare/storybook-native-app@5.0.2...storybook-native-app@5.1.0) (2025-10-26)
 
 ### Features

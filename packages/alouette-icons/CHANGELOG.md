@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@7.0.1...alouette-icons@8.0.0) (2025-11-04)
+
+### ⚠ BREAKING CHANGES
+
+* each icon has its own file to reduce generated bundle size, drop cjs
+
+### Features
+
+* **deps:** update babel monorepo to v7.28.5 ([#265](https://github.com/christophehurpeau/alouette/issues/265))
+* each icon has its own file to reduce generated bundle size, drop cjs
+
 ## [7.0.1](https://github.com/christophehurpeau/alouette/compare/alouette-icons@7.0.0...alouette-icons@7.0.1) (2025-10-12)
 
 Note: no notable changes

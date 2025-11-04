@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@15.4.0...alouette@16.0.0) (2025-11-04)
+
+### ⚠ BREAKING CHANGES
+
+* each icon has its own file to reduce generated bundle size, drop cjs
+* remove SafeAreaProvider from AlouetteProvider
+
+### Features
+
+* **deps:** update dependency react-native-svg to v15.14.0 ([#262](https://github.com/christophehurpeau/alouette/issues/262))
+* **deps:** update tamagui to v1.135.4 ([#269](https://github.com/christophehurpeau/alouette/issues/269))
+* each icon has its own file to reduce generated bundle size, drop cjs
+* remove SafeAreaProvider from AlouetteProvider
+
+### Bug Fixes
+
+* **deps:** update dependency react-native-safe-area-context to v5.6.2 ([#274](https://github.com/christophehurpeau/alouette/issues/274))
+* throw error when withElevation and translucent screen background used together as it creates a weird shadow below on android
+
+Version bump for dependency: alouette-icons
+
+
 ## [15.4.0](https://github.com/christophehurpeau/alouette/compare/alouette@15.3.2...alouette@15.4.0) (2025-10-26)
 
 ### Features
