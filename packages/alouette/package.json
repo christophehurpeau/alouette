@@ -123,9 +123,9 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.135.4",
-    "@tamagui/animations-react-native": "1.135.4",
-    "@tamagui/core": "1.135.4",
+    "@tamagui/animations-css": "1.136.1",
+    "@tamagui/animations-react-native": "1.136.1",
+    "@tamagui/core": "1.136.1",
     "alouette-icons": "8.0.0",
     "expo-linear-gradient": "15.0.7",
     "react-native-safe-area-context": "5.6.2",
