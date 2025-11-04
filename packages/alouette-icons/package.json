@@ -24,7 +24,7 @@
     "./phosphor-icons/*": {
       "types": "./lib/phosphor-icons/*.d.ts",
       "react-native": {
-        "import": "./lib/phosphor-icons/*.mjs"
+        "import": "./lib/phosphor-icons/*.react-native.mjs"
       },
       "browser": "./lib/phosphor-icons/*.web.mjs",
       "web": "./lib/phosphor-icons/*.web.mjs",
