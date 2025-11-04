@@ -11861,9 +11861,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-worklets@npm:0.5.1":
-  version: 0.5.1
-  resolution: "react-native-worklets@npm:0.5.1"
+"react-native-worklets@npm:0.5.2":
+  version: 0.5.2
+  resolution: "react-native-worklets@npm:0.5.2"
   dependencies:
     "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
     "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
@@ -11880,7 +11880,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 10c0/9eb9e6dea9abaf889400a6618355ef59af3075f5004a4bec9e4cba6dcfd13d8b63de0d4b29d75c00a3dcf5ad422e1bdb71636c75b1a2ad1c43d8b512f198bdab
+  checksum: 10c0/504f05e67f321bbbab6eab0c4d36fdca296de4e3bc789627f05a316b89c9ac97f06236a9c87ce70df50eaf6d3c3b82344322955e85771b134e196df44d0bf366
   languageName: node
   linkType: hard
 
@@ -12994,7 +12994,7 @@ __metadata:
     react-native-safe-area-context: "npm:5.6.1"
     react-native-svg: "npm:15.14.0"
     react-native-web: "npm:0.21.2"
-    react-native-worklets: "npm:0.5.1"
+    react-native-worklets: "npm:0.5.2"
     storybook: "npm:9.1.16"
     typescript: "npm:5.9.3"
     vite: "npm:7.1.12"
