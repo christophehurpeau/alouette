@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.1](https://github.com/christophehurpeau/alouette/compare/alouette-icons@8.0.0...alouette-icons@8.0.1) (2025-11-04)
+
+### Bug Fixes
+
+* fix react-native exports in packagejson
+
 ## [8.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@7.0.1...alouette-icons@8.0.0) (2025-11-04)
 
 ### ⚠ BREAKING CHANGES
