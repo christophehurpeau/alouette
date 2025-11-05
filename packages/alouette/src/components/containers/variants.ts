@@ -140,6 +140,9 @@ export const interactive = (
         ? "pointer"
         : isInteractiveOrInteractiveCursorType,
 
+    // fix to properly reset press/hover styles
+    transform: [{ scale: 1 }],
+
     hoverStyle: {
       transform: [{ scale: 1.02 }],
     },

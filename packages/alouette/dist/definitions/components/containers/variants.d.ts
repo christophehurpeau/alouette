@@ -234,10 +234,14 @@ export declare const fullscreen: {
 };
 export declare const interactive: (isInteractiveOrInteractiveCursorType: ViewStyle["cursor"] | boolean, { props }: VariantSpreadExtras<any>) => {
     readonly cursor: "not-allowed";
+    readonly transform?: undefined;
     readonly hoverStyle?: undefined;
     readonly pressStyle?: undefined;
 } | {
     readonly cursor: import("csstype").Property.Cursor;
+    readonly transform: readonly [{
+        readonly scale: 1;
+    }];
     readonly hoverStyle: {
         readonly transform: readonly [{
             readonly scale: 1.02;

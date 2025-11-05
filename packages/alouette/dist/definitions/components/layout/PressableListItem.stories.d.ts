@@ -1,5 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
-import { PressableListItem } from "./list";
+import { PressableListItem } from "./PressableListItem";
+type ThisStory = StoryObj<typeof PressableListItem>;
 declare const _default: {
     title: string;
     component: typeof PressableListItem;
@@ -13,6 +14,6 @@ declare const _default: {
     };
 };
 export default _default;
-export declare const PreviewListStory: StoryObj<typeof PressableListItem>;
-export declare const Variants: StoryObj<typeof PressableListItem>;
-//# sourceMappingURL=list.stories.d.ts.map
+export declare const PreviewListStory: ThisStory;
+export declare const Variants: ThisStory;
+//# sourceMappingURL=PressableListItem.stories.d.ts.map

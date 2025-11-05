@@ -142,6 +142,8 @@ const interactive = (isInteractiveOrInteractiveCursorType, { props }) => {
   }
   return {
     cursor: isInteractiveOrInteractiveCursorType === true ? "pointer" : isInteractiveOrInteractiveCursorType,
+    // fix to properly reset press/hover styles
+    transform: [{ scale: 1 }],
     hoverStyle: {
       transform: [{ scale: 1.02 }]
     },
@@ -851,21 +853,40 @@ const Separator = core.styled(core.Stack, {
 });
 
 function PressableListItem({
+  theme,
+  variant,
+  withBackground,
+  borderRadius,
+  role = "button",
   children,
   onPress
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(reactNative.Pressable, { onPress, children: /* @__PURE__ */ jsxRuntime.jsxs(
-    HStack,
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    PressableBox,
     {
-      justifyContent: "space-between",
-      paddingHorizontal: "$4",
-      paddingVertical: "$3",
-      children: [
-        /* @__PURE__ */ jsxRuntime.jsx(core.View, { children }),
-        /* @__PURE__ */ jsxRuntime.jsx(Stack, { justifyContent: "center", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(CaretRightRegularIcon.CaretRightRegularIcon, {}), size: 20 }) })
-      ]
+      theme,
+      variant,
+      withBackground,
+      borderRadius,
+      role,
+      marginHorizontal: "$4",
+      marginVertical: "$1",
+      onPress,
+      children: /* @__PURE__ */ jsxRuntime.jsxs(
+        HStack,
+        {
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingHorizontal: "$4",
+          paddingVertical: "$4",
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx(core.View, { flex: 1, children }),
+            /* @__PURE__ */ jsxRuntime.jsx(VStack, { justifyContent: "center", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { accent: true, icon: /* @__PURE__ */ jsxRuntime.jsx(CaretRightRegularIcon.CaretRightRegularIcon, {}), size: 18 }) })
+          ]
+        }
+      )
     }
-  ) });
+  );
 }
 
 function GradientBackground({

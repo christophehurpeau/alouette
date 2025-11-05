@@ -8,7 +8,7 @@ import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon
 import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
 import { WarningCircleRegularIcon } from 'alouette-icons/phosphor-icons/WarningCircleRegularIcon';
 import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
-import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Pressable, StyleSheet } from 'react-native-web';
+import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, StyleSheet } from 'react-native-web';
 import '@tamagui/core/reset.css';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -140,6 +140,8 @@ const interactive = (isInteractiveOrInteractiveCursorType, { props }) => {
   }
   return {
     cursor: isInteractiveOrInteractiveCursorType === true ? "pointer" : isInteractiveOrInteractiveCursorType,
+    // fix to properly reset press/hover styles
+    transform: [{ scale: 1 }],
     hoverStyle: {
       transform: [{ scale: 1.02 }]
     },
@@ -853,21 +855,40 @@ const Separator = styled(Stack$1, {
 });
 
 function PressableListItem({
+  theme,
+  variant,
+  withBackground,
+  borderRadius,
+  role = "button",
   children,
   onPress
 }) {
-  return /* @__PURE__ */ jsx(Pressable, { onPress, children: /* @__PURE__ */ jsxs(
-    HStack,
+  return /* @__PURE__ */ jsx(
+    PressableBox,
     {
-      justifyContent: "space-between",
-      paddingHorizontal: "$4",
-      paddingVertical: "$3",
-      children: [
-        /* @__PURE__ */ jsx(View, { children }),
-        /* @__PURE__ */ jsx(Stack, { justifyContent: "center", children: /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}), size: 20 }) })
-      ]
+      theme,
+      variant,
+      withBackground,
+      borderRadius,
+      role,
+      marginHorizontal: "$4",
+      marginVertical: "$1",
+      onPress,
+      children: /* @__PURE__ */ jsxs(
+        HStack,
+        {
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingHorizontal: "$4",
+          paddingVertical: "$4",
+          children: [
+            /* @__PURE__ */ jsx(View, { flex: 1, children }),
+            /* @__PURE__ */ jsx(VStack, { justifyContent: "center", children: /* @__PURE__ */ jsx(Icon, { accent: true, icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}), size: 18 }) })
+          ]
+        }
+      )
     }
-  ) });
+  );
 }
 
 function GradientBackground({
