@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@16.1.1...alouette@16.2.0) (2025-11-05)
+
+### Features
+
+* greatly improve PressableListItem
+
 ## [16.1.1](https://github.com/christophehurpeau/alouette/compare/alouette@16.1.0...alouette@16.1.1) (2025-11-04)
 
 Version bump for dependency: alouette-icons
