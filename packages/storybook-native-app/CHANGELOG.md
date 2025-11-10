@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.1](///compare/storybook-native-app@6.1.0...storybook-native-app@6.1.1) (2025-11-10)
+
+### Bug Fixes
+
+* **deps:** update dependency expo to v54.0.22 ([#281](undefined/undefined/undefined/issues/281))
+
 ## [6.1.0](///compare/storybook-native-app@6.0.0...storybook-native-app@6.1.0) (2025-11-04)
 
 ### Features
