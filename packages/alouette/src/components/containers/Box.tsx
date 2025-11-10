@@ -1,6 +1,6 @@
 import type { GetProps } from "@tamagui/core";
 import { View, styled } from "@tamagui/core";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "../../core/useSafeAreaInsets";
 import * as variants from "./variants";
 
 /** View with alouette variants */

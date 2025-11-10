@@ -1,7 +1,6 @@
 import { jsx, jsxs } from 'react/jsx-runtime';
 import { isAndroid, styled, View, usePropsAndStyle, Text, isWeb, TamaguiProvider, useMedia, Stack as Stack$1, useTheme, Theme } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
-import { useSafeAreaInsets as useSafeAreaInsets$1 } from 'react-native-safe-area-context';
 import { cloneElement, Fragment, Children, createContext, useState, useEffect, useContext } from 'react';
 import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
 import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
@@ -12,6 +11,13 @@ import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, StyleS
 import '@tamagui/core/reset.css';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
 import { LinearGradient } from 'expo-linear-gradient';
+
+const useSafeAreaInsets = () => ({
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0
+});
 
 const fullscreenStyle = {
   position: "absolute",
@@ -176,7 +182,7 @@ const Box = styled(View, {
   animation: "fast"
 });
 const SafeAreaBox = Box.styleable((props) => {
-  const insets = useSafeAreaInsets$1();
+  const insets = useSafeAreaInsets();
   return /* @__PURE__ */ jsx(
     Box,
     {
@@ -913,13 +919,6 @@ function GradientBackground({
     }
   ) });
 }
-
-const useSafeAreaInsets = () => ({
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0
-});
 
 export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, variants$1 as containersVariants, useCurrentBreakpointName, useDefaultThemeFromColorScheme, useSafeAreaInsets };
 //# sourceMappingURL=index-browser.es.js.map
