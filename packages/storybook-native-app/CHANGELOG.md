@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.0](///compare/storybook-native-app@6.1.1...storybook-native-app@6.2.0) (2025-11-11)
+
+### Features
+
+* update tamagui
+
 ## [6.1.1](///compare/storybook-native-app@6.1.0...storybook-native-app@6.1.1) (2025-11-10)
 
 ### Bug Fixes

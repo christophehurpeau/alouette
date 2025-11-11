@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [16.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@16.2.1...alouette@16.3.0) (2025-11-11)
+
+### Features
+
+* update tamagui
+
 ## [16.2.1](https://github.com/christophehurpeau/alouette/compare/alouette@16.2.0...alouette@16.2.1) (2025-11-10)
 
 ### Bug Fixes
