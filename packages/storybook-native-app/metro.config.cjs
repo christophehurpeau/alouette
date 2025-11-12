@@ -11,6 +11,7 @@ module.exports = withStorybook(
   withTamagui(withExpoSvgTransformer(defaultConfig), {
     config: "./tamagui.config.ts",
     components: ["alouette"],
+    nodeModulesPaths: ["node_modules", "src"],
   }),
   {
     enabled: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === "true",
