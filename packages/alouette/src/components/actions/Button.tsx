@@ -11,7 +11,7 @@ import { Typography } from "../typography/Typography";
 const ButtonFrame = styled(PressableBox, {
   name: "ButtonFrame",
   role: "button",
-  centered: true,
+  center: true,
   minHeight: 42,
 
   variants: {

@@ -5,13 +5,13 @@ declare const _default: {
     component: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").TextInput, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/web").TextStylePropsBase, {
         size?: number | undefined;
         interactive?: boolean | import("csstype").Property.Cursor | undefined;
+        center?: boolean | undefined;
         withBorder?: boolean | import("@tamagui/web").SizeTokens | undefined;
         withBackground?: boolean | undefined;
         withScreenBackground?: boolean | "translucent" | undefined;
         withElevation?: boolean | undefined;
         circular?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        centered?: boolean | undefined;
     }, {
         isInput: true;
     } & import("@tamagui/web").StaticConfigPublic>;

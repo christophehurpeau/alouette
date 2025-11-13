@@ -14,7 +14,7 @@ export default {
 
 function Content() {
   return (
-    <Box fullscreen centered flexGrow={1}>
+    <Box fullscreen center flexGrow={1}>
       <VStack gap="$4" minWidth="80%">
         <Typography>Text</Typography>
         <Box

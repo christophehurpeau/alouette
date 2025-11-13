@@ -8,7 +8,7 @@ import { Icon } from "../primitives/Icon";
 const IconButtonFrame = styled(PressableBox, {
   name: "IconButtonFrame",
   role: "button",
-  centered: true,
+  center: true,
   borderRadius: 10_000,
 
   variants: {

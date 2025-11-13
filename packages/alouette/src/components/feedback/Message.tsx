@@ -23,7 +23,7 @@ export const MessageText = styled(Typography, {
   flexGrow: 1,
   paddingVertical: "$4",
   variants: {
-    centered: {
+    center: {
       true: {
         textAlign: "center",
         paddingHorizontal: "$4",
@@ -60,7 +60,7 @@ export function Message({
           <FeedbackIcon type={theme} />
         </MessageIconContainer>
       )}
-      <MessageText centered={textCentered}>{children}</MessageText>
+      <MessageText center={textCentered}>{children}</MessageText>
       {onDismiss ? (
         <MessageDismissButtonContainer>
           <IconButton

@@ -65,4 +65,5 @@ declare const _default: {
 export default _default;
 export declare const PreviewIconButtonStory: ThisStory;
 export declare const Variants: ThisStory;
+export declare const AccessibilityStory: ThisStory;
 //# sourceMappingURL=IconButton.stories.d.ts.map

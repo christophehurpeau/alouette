@@ -75,7 +75,7 @@ export const TokensStory: StoryObj<unknown> = {
                 {(["$sm", "$md"] as const).map((proportion) => (
                   <Box
                     key={proportion}
-                    centered
+                    center
                     withBackground
                     borderRadius={proportion}
                     size={50}
@@ -93,7 +93,7 @@ export const TokensStory: StoryObj<unknown> = {
                 {Object.entries<Variable>(tokens.space).map(([key, value]) => (
                   <Box
                     key={key}
-                    centered
+                    center
                     withBackground
                     theme="primary"
                     paddingVertical="$4"

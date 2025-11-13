@@ -153,7 +153,7 @@ export const interactive = (
   } as const;
 };
 
-export const centered = {
+export const center = {
   true: {
     alignItems: "center",
     justifyContent: "center",

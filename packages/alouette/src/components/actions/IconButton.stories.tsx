@@ -105,7 +105,11 @@ export const Variants: ThisStory = {
         <StoryGrid.Row>
           {([24, 40] as const).map((size) => (
             <StoryGrid.Col key={size} title={size.toString()}>
-              <IconButton size={size} icon={<ArrowLeftRegularIcon />} />
+              <IconButton
+                size={size}
+                icon={<ArrowLeftRegularIcon />}
+                aria-label="Go back"
+              />
             </StoryGrid.Col>
           ))}
         </StoryGrid.Row>
@@ -154,6 +158,7 @@ export const Variants: ThisStory = {
                               state === "disabled" ? undefined : state
                             }
                             icon={<ArrowLeftRegularIcon />}
+                            aria-label="Go back"
                           />
                         </Box>
                         <Typography size="$xs">{variant}</Typography>
@@ -165,6 +170,35 @@ export const Variants: ThisStory = {
             </StoryGrid.Row>
           </Story.SubSection>
         ))}
+      </Story.Section>
+    </Story>
+  ),
+};
+
+export const AccessibilityStory: ThisStory = {
+  name: "Accessibility",
+  render: () => (
+    <Story>
+      <Story.Section title="With aria-label (Good)">
+        <VStack gap="$sm">
+          <Typography size="$xs" color="$textSecondary">
+            Screen readers will announce "Delete button"
+          </Typography>
+          <IconButton
+            icon={<ArrowLeftRegularIcon />}
+            aria-label="Delete"
+            variant="outlined"
+          />
+        </VStack>
+      </Story.Section>
+
+      <Story.Section title="Without aria-label (Bad)">
+        <VStack gap="$sm">
+          <Typography size="$xs" color="$textSecondary">
+            Screen readers cannot describe the button's purpose
+          </Typography>
+          <IconButton icon={<ArrowLeftRegularIcon />} variant="outlined" />
+        </VStack>
       </Story.Section>
     </Story>
   ),

@@ -112,10 +112,10 @@ export const StackStory: Story = {
     gap: "$4",
     theme: "primary",
     children: [
-      <Box key="1" centered withBackground flexGrow={1}>
+      <Box key="1" center withBackground flexGrow={1}>
         <Typography>1</Typography>
       </Box>,
-      <Box key="2" centered withBackground flexGrow={1}>
+      <Box key="2" center withBackground flexGrow={1}>
         <Typography>2</Typography>
       </Box>,
     ],
@@ -128,10 +128,10 @@ export const HStackStory: StoryObj<typeof HStack> = {
     <Story>
       <Story.Section title="Basic">
         <HStack gap="$4">
-          <Box centered withBackground flexGrow={1}>
+          <Box center withBackground flexGrow={1}>
             <Typography>1</Typography>
           </Box>
-          <Box centered withBackground flexGrow={1}>
+          <Box center withBackground flexGrow={1}>
             <Typography>2</Typography>
           </Box>
         </HStack>
@@ -139,10 +139,10 @@ export const HStackStory: StoryObj<typeof HStack> = {
 
       <Story.Section title="With theme">
         <HStack theme="primary" gap="$4">
-          <Box centered withBackground flexGrow={1}>
+          <Box center withBackground flexGrow={1}>
             <Typography>1</Typography>
           </Box>
-          <Box centered withBackground flexGrow={1}>
+          <Box center withBackground flexGrow={1}>
             <Typography>2</Typography>
           </Box>
         </HStack>
@@ -150,10 +150,10 @@ export const HStackStory: StoryObj<typeof HStack> = {
 
       <Story.Section title="With justifyContent">
         <HStack theme="info" gap="$4" justifyContent="space-between">
-          <Box centered withBackground>
+          <Box center withBackground>
             <Typography>1</Typography>
           </Box>
-          <Box centered withBackground>
+          <Box center withBackground>
             <Typography>2</Typography>
           </Box>
         </HStack>
@@ -168,10 +168,10 @@ export const VStackStory: StoryObj<typeof VStack> = {
     <Story>
       <Story.Section title="Basic">
         <VStack gap="$4">
-          <Box centered withBackground flexGrow={1}>
+          <Box center withBackground flexGrow={1}>
             <Typography>1</Typography>
           </Box>
-          <Box centered withBackground flexGrow={1}>
+          <Box center withBackground flexGrow={1}>
             <Typography>2</Typography>
           </Box>
         </VStack>
@@ -179,10 +179,10 @@ export const VStackStory: StoryObj<typeof VStack> = {
 
       <Story.Section title="With theme">
         <VStack theme="primary" gap="$4">
-          <Box centered withBackground flexGrow={1}>
+          <Box center withBackground flexGrow={1}>
             <Typography>1</Typography>
           </Box>
-          <Box centered withBackground flexGrow={1}>
+          <Box center withBackground flexGrow={1}>
             <Typography>2</Typography>
           </Box>
         </VStack>
@@ -190,10 +190,10 @@ export const VStackStory: StoryObj<typeof VStack> = {
 
       <Story.Section title="With alignItems">
         <VStack theme="warning" gap="$4" alignItems="center">
-          <Box centered withBackground padding="$4">
+          <Box center withBackground padding="$4">
             <Typography>1</Typography>
           </Box>
-          <Box centered withBackground padding="$8">
+          <Box center withBackground padding="$8">
             <Typography>2</Typography>
           </Box>
         </VStack>

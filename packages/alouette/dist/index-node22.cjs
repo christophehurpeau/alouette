@@ -152,7 +152,7 @@ const interactive = (isInteractiveOrInteractiveCursorType, { props }) => {
     }
   };
 };
-const centered = {
+const center = {
   true: {
     alignItems: "center",
     justifyContent: "center"
@@ -161,7 +161,7 @@ const centered = {
 
 const variants$1 = /*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  centered,
+  center,
   circular,
   fullscreen,
   interactive,
@@ -244,7 +244,7 @@ function Icon({
 const IconButtonFrame = core.styled(PressableBox, {
   name: "IconButtonFrame",
   role: "button",
-  centered: true,
+  center: true,
   borderRadius: 1e4,
   variants: {
     variant: {
@@ -371,7 +371,7 @@ const TypographyParagraph = core.styled(Typography, {
 const ButtonFrame = core.styled(PressableBox, {
   name: "ButtonFrame",
   role: "button",
-  centered: true,
+  center: true,
   minHeight: 42,
   variants: {
     size: {
@@ -475,7 +475,7 @@ const MessageText = core.styled(Typography, {
   flexGrow: 1,
   paddingVertical: "$4",
   variants: {
-    centered: {
+    center: {
       true: {
         textAlign: "center",
         paddingHorizontal: "$4"
@@ -497,7 +497,7 @@ function Message({
 }) {
   return /* @__PURE__ */ jsxRuntime.jsxs(MessageFrame, { theme, children: [
     textCentered ? null : /* @__PURE__ */ jsxRuntime.jsx(MessageIconContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(FeedbackIcon, { type: theme }) }),
-    /* @__PURE__ */ jsxRuntime.jsx(MessageText, { centered: textCentered, children }),
+    /* @__PURE__ */ jsxRuntime.jsx(MessageText, { center: textCentered, children }),
     onDismiss ? /* @__PURE__ */ jsxRuntime.jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsxRuntime.jsx(
       IconButton,
       {

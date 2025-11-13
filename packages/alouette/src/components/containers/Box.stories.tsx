@@ -28,7 +28,7 @@ export default {
 - \`interactive\`: Enables hover, focus, and press states
 - \`padding\`: Spacing around content ($sm | $md | $lg)
 - \`borderRadius\`: Corner rounding ($sm | $md | $lg)
-- \`centered\`: Centers content horizontally and vertically
+- \`center\`: Centers content horizontally and vertically
 - \`asChild\`: Allows rendering as a different element
 
 ### Usage
@@ -53,7 +53,7 @@ export default {
 <Box
   theme="success"
   withBackground
-  centered
+  center
   padding="$lg"
   style={{ width: 200, height: 200 }}
 >
@@ -156,7 +156,7 @@ export const Variants: ThisStory = {
             <Box
               key={proportion}
               asChild
-              centered
+              center
               withBackground
               borderRadius={proportion}
               padding={proportion}

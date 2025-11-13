@@ -7,13 +7,13 @@ declare const _default: {
         size?: number | undefined;
         interactive?: boolean | import("csstype").Property.Cursor | undefined;
         variant?: "contained" | "outlined" | "elevated" | "ghost-contained" | "ghost-outlined" | undefined;
+        center?: boolean | undefined;
         withBorder?: boolean | import("@tamagui/web").SizeTokens | undefined;
         withBackground?: boolean | undefined;
         withScreenBackground?: boolean | "translucent" | undefined;
         withElevation?: boolean | undefined;
         circular?: boolean | undefined;
         fullscreen?: boolean | undefined;
-        centered?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     parameters: {
         componentSubtitle: string;

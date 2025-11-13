@@ -253,7 +253,7 @@ export declare const interactive: (isInteractiveOrInteractiveCursorType: ViewSty
         }];
     };
 } | null;
-export declare const centered: {
+export declare const center: {
     readonly true: {
         readonly alignItems: "center";
         readonly justifyContent: "center";
