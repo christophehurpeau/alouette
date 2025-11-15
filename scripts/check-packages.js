@@ -6,7 +6,7 @@ await createCheckPackageWithWorkspaces()
     onlyWarnsForInMonorepoPackagesDependencies: {
       "storybook-native-app": {
         "*": {
-          duplicateDirectDependency: ["react-native-web"],
+          duplicateDirectDependency: [],
         },
       },
     },
