@@ -46,7 +46,7 @@
     "build": "yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
     "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn ../.. run eslint --quiet packages/alouette-icons",
+    "lint:eslint": "yarn ../.. run eslint --quiet 'packages/alouette-icons'",
     "test": "yarn ../../ run test -- packages/alouette-icons"
   },
   "pob": {

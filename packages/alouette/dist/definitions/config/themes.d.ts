@@ -63,7 +63,8 @@ export interface ColorTheme {
     "interactive.forms.borderColor:press": Variable<string>;
     "interactive.forms.borderColor:disabled": Variable<string>;
 }
-export type FullTheme = ColorTheme;
+export interface FullTheme extends ColorTheme {
+}
 export declare const createColorTheme: <const ColorTheme extends keyof AlouetteThemeNames>(tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>, themeName: ColorTheme, mode?: "dark" | "light", backgroundColor?: Variable<string>, textColor?: Variable<string>) => {
     screenBackgroundColor: Variable<string>;
     "screenBackgroundColor.elevated": Variable<string>;

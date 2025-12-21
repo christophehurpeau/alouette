@@ -7,7 +7,7 @@
   "repository": "https://github.com/christophehurpeau/alouette.git",
   "homepage": "https://github.com/christophehurpeau/alouette",
   "type": "module",
-  "packageManager": "yarn@4.10.3",
+  "packageManager": "yarn@4.12.0",
   "engines": {
     "node": ">=22.18.0"
   },
@@ -38,8 +38,8 @@
   "devDependencies": {
     "@pob/eslint-config": "62.0.0",
     "@pob/eslint-config-typescript-react": "62.0.0",
-    "@pob/rollup-esbuild": "7.3.2",
-    "@pob/root": "19.7.1",
+    "@pob/rollup-esbuild": "7.4.2",
+    "@pob/root": "20.4.2",
     "check-package-dependencies": "10.5.0",
     "color-convert": "3.1.2",
     "eslint": "9.39.1",

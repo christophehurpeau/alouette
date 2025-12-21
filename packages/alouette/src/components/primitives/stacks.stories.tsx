@@ -162,10 +162,10 @@ export const HStackStory: StoryObj<typeof HStack> = {
       <Story.Section title="With flexGrow">
         <HStack theme="info" gap="$4" justifyContent="space-between">
           <Box withBackground flexGrow={1} flexBasis={0}>
-            <Typography contrast>1</Typography>
+            <Typography>1</Typography>
           </Box>
           <Box withBackground flexGrow={2} flexBasis={0}>
-            <Typography contrast>2</Typography>
+            <Typography>2</Typography>
           </Box>
         </HStack>
       </Story.Section>
