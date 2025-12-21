@@ -10,8 +10,8 @@ jobs:
         with:
           fetch-depth: 10
 
-      - name: Install bun
-        uses: oven-sh/setup-bun@v2
+      - name: Enable Corepack
+        run: corepack enable
 
       - uses: actions/setup-node@v6
         with:
@@ -19,16 +19,16 @@ jobs:
           check-latest: true
 
       - name: Install Dependencies
-        run: bun i --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Run Chromatic (main branch)
-        run: cd ./packages/storybook-native-app && bun chromatic --auto-accept-changes
+        run: cd ./packages/storybook-native-app && yarn chromatic --auto-accept-changes
         if: ${{ github.ref == 'refs/heads/main' }}
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
       - name: Run Chromatic
-        run: cd ./packages/storybook-native-app && bun chromatic
+        run: cd ./packages/storybook-native-app && yarn chromatic
         if: ${{ github.ref != 'refs/heads/main' }}
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

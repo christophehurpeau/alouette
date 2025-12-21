@@ -1,4 +1,6 @@
 CHANGELOG.md
+/.yarnrc.yml
+/.yarn/**/*
 /packages/*/.tamagui
 /packages/*/dist
 /packages/*/.expo/**/*
