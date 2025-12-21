@@ -16,9 +16,6 @@
     "node": ">=22.18.0"
   },
   "sideEffects": false,
-  "react-native": {
-    "./phosphor-icons": "./lib/phosphor-icons.cjs"
-  },
   "exports": {
     "./package.json": "./package.json",
     "./phosphor-icons/*": {
