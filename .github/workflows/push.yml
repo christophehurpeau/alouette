@@ -42,7 +42,7 @@ jobs:
         if: startsWith(matrix.node-version, '22.')
 
       - name: Typescript
-        run: yarn run tsc
+        run: bun run tsc
         if: startsWith(matrix.node-version, '22.')
 
       - name: Eslint
@@ -51,4 +51,4 @@ jobs:
 
       - name: Check nothing was forgotten before commit
         if: startsWith(matrix.node-version, '22.')
-        run: yarn run repository-check-dirty
+        run: bun run repository-check-dirty
