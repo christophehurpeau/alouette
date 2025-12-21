@@ -93,7 +93,8 @@ export interface ColorTheme {
 }
 
 // export interface FullTheme extends ColorTheme, RootTheme {}
-export type FullTheme = ColorTheme;
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface FullTheme extends ColorTheme {}
 
 // export const createRootTheme = <T extends MinimalRootTheme>(
 //   theme: T,
