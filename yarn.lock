@@ -3177,9 +3177,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/datetimepicker@npm:8.4.5":
-  version: 8.4.5
-  resolution: "@react-native-community/datetimepicker@npm:8.4.5"
+"@react-native-community/datetimepicker@npm:8.5.1":
+  version: 8.5.1
+  resolution: "@react-native-community/datetimepicker@npm:8.5.1"
   dependencies:
     invariant: "npm:^2.2.4"
   peerDependencies:
@@ -3192,7 +3192,7 @@ __metadata:
       optional: true
     react-native-windows:
       optional: true
-  checksum: 10c0/26a32496968bf6c57eb67e7d183327ca2b02f730589b1658e9dcce0cce874c36053ce6df6762fe920b8a27c9ebd503c046ca5735e21765b1b7df7b52b51a6bbc
+  checksum: 10c0/3c9e5889b7616c4b611d280cdceaa9cca7b03fce44e1a9bdd34c5f710882ec5c5c1b085df7c4ed9d315678d3e6d2094cd8e1ce5876e82491db80421f62867d5d
   languageName: node
   linkType: hard
 
@@ -12760,7 +12760,7 @@ __metadata:
     "@expo/metro-runtime": "npm:6.1.2"
     "@gorhom/bottom-sheet": "npm:5.2.6"
     "@react-native-async-storage/async-storage": "npm:2.2.0"
-    "@react-native-community/datetimepicker": "npm:8.4.5"
+    "@react-native-community/datetimepicker": "npm:8.5.1"
     "@react-native-community/slider": "npm:5.0.1"
     "@storybook/addon-docs": "npm:9.1.16"
     "@storybook/addon-ondevice-actions": "npm:9.1.4"
