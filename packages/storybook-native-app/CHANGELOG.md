@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.0](///compare/storybook-native-app@6.2.0...storybook-native-app@7.0.0) (2025-12-21)
+
+### Features
+
+* **deps:** update dependency @react-native-community/datetimepicker to v8.5.1 ([#277](undefined/undefined/undefined/issues/277))
+* update tamagui
+
+### Bug Fixes
+
+* add nodeModulesPaths to tamagui configuration in metro.config
+
+Version bump for dependency: alouette
+Version bump for dependency: alouette-icons
+
+
 ## [6.2.0](///compare/storybook-native-app@6.1.1...storybook-native-app@6.2.0) (2025-11-11)
 
 ### Features

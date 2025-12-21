@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [17.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@16.3.0...alouette@17.0.0) (2025-12-21)
+
+### ⚠ BREAKING CHANGES
+
+* rename 'centered' to 'center' for consistency across components
+
+### Features
+
+* add new HStack story with flexGrow example
+* rename 'centered' to 'center' for consistency across components
+* update tamagui
+
+### Bug Fixes
+
+* update expo-linear-gradient version to use tilde for patch updates
+* update FullTheme type definition to extend ColorTheme interface
+
+Version bump for dependency: alouette-icons
+
+
 ## [16.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@16.2.1...alouette@16.3.0) (2025-11-11)
 
 ### Features
