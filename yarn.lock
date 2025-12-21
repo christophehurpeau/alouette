@@ -5457,7 +5457,7 @@ __metadata:
     "@types/node": "npm:24.10.1"
     "@types/react": "npm:19.1.13"
     alouette-icons: "npm:8.0.1"
-    expo-linear-gradient: "npm:15.0.7"
+    expo-linear-gradient: "npm:~15.0.7"
     react: "npm:19.1.0"
     react-dom: "npm:19.1.0"
     react-native: "npm:0.81.4"
@@ -8087,14 +8087,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linear-gradient@npm:15.0.7":
-  version: 15.0.7
-  resolution: "expo-linear-gradient@npm:15.0.7"
+"expo-linear-gradient@npm:~15.0.7":
+  version: 15.0.8
+  resolution: "expo-linear-gradient@npm:15.0.8"
   peerDependencies:
     expo: "*"
     react: "*"
     react-native: "*"
-  checksum: 10c0/ee9984f4bc8985b3ad32f8a59138fd7336e16e782c1d2d10110f70b2e05b9c563382d2c16cfbe21e6463fa896f573dcc3d70d0afd32f8d435bccd9afadf8b006
+  checksum: 10c0/2ac3bff62143083e3d5b894fccc4c76de058277f65ed123232636cf26c88da6d566fa3cd46be4101f86e66b89ede7c058e12c93493b752df562da2fa971dcd66
   languageName: node
   linkType: hard
 
