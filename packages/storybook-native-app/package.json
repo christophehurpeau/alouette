@@ -50,6 +50,7 @@
     "@storybook/addon-ondevice-notes": "9.1.4",
     "@storybook/react-native": "9.1.4",
     "@storybook/react-native-web-vite": "9.1.16",
+    "@storybook/react-vite": "9.1.16",
     "@tamagui/metro-plugin": "1.138.0",
     "@tamagui/vite-plugin": "1.138.0",
     "@types/react": "19.1.13",
