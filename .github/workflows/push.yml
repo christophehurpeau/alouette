@@ -34,7 +34,7 @@ jobs:
         if: startsWith(matrix.node-version, '22.')
 
       - name: Build
-        run: yarn run build
+        run: bun run build
         if: startsWith(matrix.node-version, '22.')
 
       - name: Prettier

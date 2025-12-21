@@ -8,8 +8,8 @@
   "scripts": {
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic",
-    "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn ../.. run eslint --quiet packages/storybook-app",
+    "lint": "bun run lint:eslint",
+    "lint:eslint": "bun run --cwd '../..' eslint --quiet packages/storybook-app",
     "start": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED='true' expo start",
     "start:android": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED='true' expo start --android",
     "start:ios": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED='true' expo start --ios",

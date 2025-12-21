@@ -43,11 +43,11 @@
     "lib"
   ],
   "scripts": {
-    "build": "yarn run build:definitions",
+    "build": "bun run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
     "lint": "bun run lint:eslint",
     "lint:eslint": "bun run --cwd '../..' eslint --quiet 'packages/alouette-icons'",
-    "test": "yarn ../../ run test -- packages/alouette-icons"
+    "test": "bun run --cwd '../..' run test -- packages/alouette-icons"
   },
   "pob": {
     "entries": [
