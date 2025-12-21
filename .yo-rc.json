@@ -13,7 +13,7 @@
     },
     "project": {
       "type": "lib",
-      "packageManager": "yarn",
+      "packageManager": "bun",
       "yarnNodeLinker": "node-modules",
       "ci": true
     }

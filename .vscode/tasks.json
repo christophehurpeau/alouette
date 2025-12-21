@@ -6,7 +6,7 @@
     {
       "label": "build",
       "type": "shell",
-      "command": "yarn build",
+      "command": "bun build",
       "options": {
         "cwd": "${workspaceFolder}/packages/alouette"
       },
@@ -18,7 +18,7 @@
     {
       "label": "storybook-native-app:web",
       "type": "shell",
-      "command": "yarn start:web",
+      "command": "bun start:web",
       "options": {
         "cwd": "${workspaceFolder}/packages/storybook-native-app"
       },
@@ -31,7 +31,7 @@
     {
       "label": "storybook-native-app:native",
       "type": "shell",
-      "command": "yarn start",
+      "command": "bun start",
       "options": {
         "cwd": "${workspaceFolder}/packages/storybook-native-app"
       },

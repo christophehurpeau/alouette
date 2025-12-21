@@ -45,8 +45,8 @@
   "scripts": {
     "build": "yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
-    "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn ../.. run eslint --quiet 'packages/alouette-icons'",
+    "lint": "bun run lint:eslint",
+    "lint:eslint": "bun run --cwd '../..' eslint --quiet 'packages/alouette-icons'",
     "test": "yarn ../../ run test -- packages/alouette-icons"
   },
   "pob": {
@@ -65,7 +65,6 @@
     "@babel/core": "7.28.5",
     "@babel/preset-react": "7.28.5",
     "@phosphor-icons/core": "2.1.1",
-    "react-native": "0.81.4",
-    "typescript": "5.9.3"
+    "react-native": "0.81.4"
   }
 }

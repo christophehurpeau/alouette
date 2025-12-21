@@ -10,25 +10,25 @@ jobs:
         with:
           fetch-depth: 10
 
-      - name: Use Node.js 22
-        uses: actions/setup-node@v4
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
-
-      - name: Enable Corepack
-        run: corepack enable
+          check-latest: true
 
       - name: Install Dependencies
-        run: yarn install --immutable
+        run: bun i --frozen-lockfile
 
       - name: Run Chromatic (main branch)
-        run: yarn ./packages/storybook-native-app chromatic --auto-accept-changes
+        run: cd ./packages/storybook-native-app && bun chromatic --auto-accept-changes
         if: ${{ github.ref == 'refs/heads/main' }}
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
       - name: Run Chromatic
-        run: yarn ./packages/storybook-native-app chromatic
+        run: cd ./packages/storybook-native-app && bun chromatic
         if: ${{ github.ref != 'refs/heads/main' }}
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
