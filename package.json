@@ -14,19 +14,18 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn clean:build && rollup --config rollup.config.mjs && bun run build:definitions",
+    "build": "rollup --config rollup.config.mjs && bun run build:definitions",
     "build:definitions": "tsc -b",
     "checks": "node scripts/check-packages.js",
-    "clean:build": "yarn workspaces foreach --parallel -A run clean:build",
     "lint": "bun run lint:prettier && bun run lint:eslint",
     "lint:eslint": "eslint --quiet .",
     "lint:prettier": "pob-root-prettier --check .",
     "lint:prettier:fix": "pob-root-prettier --write .",
     "prepare": "pob-root-postinstall",
-    "storybook": "yarn ./packages/storybook-app start",
+    "storybook": "bun run --cwd './packages/storybook-app' start",
     "test": "node --disable-warning=ExperimentalWarning --experimental-strip-types --test packages/alouette/src/**/*.test.ts",
     "tsc": "tsc -b",
-    "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
+    "watch": "rollup --config rollup.config.mjs --watch"
   },
   "commitlint": {
     "extends": [
