@@ -51,7 +51,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.28.5, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.20.0, @babel/core@npm:^7.21.3, @babel/core@npm:^7.25.2, @babel/core@npm:^7.28.0, @babel/core@npm:^7.28.4":
+"@babel/core@npm:7.28.5, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.20.0, @babel/core@npm:^7.21.3, @babel/core@npm:^7.25.2, @babel/core@npm:^7.28.0, @babel/core@npm:^7.28.5":
   version: 7.28.5
   resolution: "@babel/core@npm:7.28.5"
   dependencies:
@@ -3450,10 +3450,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rolldown/pluginutils@npm:1.0.0-beta.38":
-  version: 1.0.0-beta.38
-  resolution: "@rolldown/pluginutils@npm:1.0.0-beta.38"
-  checksum: 10c0/8353ec2528349f79e27d1a3193806725b85830da334e935cbb606d88c1177c58ea6519c578e4e93e5f677f5b22aecb8738894dbed14603e14b6bffe3facf1002
+"@rolldown/pluginutils@npm:1.0.0-beta.53":
+  version: 1.0.0-beta.53
+  resolution: "@rolldown/pluginutils@npm:1.0.0-beta.53"
+  checksum: 10c0/e8b0a7eb76be22f6f103171f28072de821525a4e400454850516da91a7381957932ff0ce495f227bcb168e86815788b0c1d249ca9e34dca366a82c8825b714ce
   languageName: node
   linkType: hard
 
@@ -5044,19 +5044,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:5.0.4":
-  version: 5.0.4
-  resolution: "@vitejs/plugin-react@npm:5.0.4"
+"@vitejs/plugin-react@npm:5.1.2":
+  version: 5.1.2
+  resolution: "@vitejs/plugin-react@npm:5.1.2"
   dependencies:
-    "@babel/core": "npm:^7.28.4"
+    "@babel/core": "npm:^7.28.5"
     "@babel/plugin-transform-react-jsx-self": "npm:^7.27.1"
     "@babel/plugin-transform-react-jsx-source": "npm:^7.27.1"
-    "@rolldown/pluginutils": "npm:1.0.0-beta.38"
+    "@rolldown/pluginutils": "npm:1.0.0-beta.53"
     "@types/babel__core": "npm:^7.20.5"
-    react-refresh: "npm:^0.17.0"
+    react-refresh: "npm:^0.18.0"
   peerDependencies:
     vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
-  checksum: 10c0/bb9360a4b4c0abf064d22211756b999faf23889ac150de490590ca7bd029b0ef7f4cd8ba3a32b86682a62d46fb7bebd75b3fa9835c57c78123f4a646de2e0136
+  checksum: 10c0/d788f269cdf7474425071ba7c4ea7013f174ddaef12b758defe809a551a03ac62a4a80cd858872deb618e7936ccc7cffe178bc12b62e9c836a467e13f15b9390
   languageName: node
   linkType: hard
 
@@ -11776,6 +11776,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-refresh@npm:^0.18.0":
+  version: 0.18.0
+  resolution: "react-refresh@npm:0.18.0"
+  checksum: 10c0/34a262f7fd803433a534f50deb27a148112a81adcae440c7d1cbae7ef14d21ea8f2b3d783e858cb7698968183b77755a38b4d4b5b1d79b4f4689c2f6d358fff2
+  languageName: node
+  linkType: hard
+
 "react@npm:19.1.0, react@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0":
   version: 19.1.0
   resolution: "react@npm:19.1.0"
@@ -12764,7 +12771,7 @@ __metadata:
     "@tamagui/metro-plugin": "npm:1.138.0"
     "@tamagui/vite-plugin": "npm:1.138.0"
     "@types/react": "npm:19.1.13"
-    "@vitejs/plugin-react": "npm:5.0.4"
+    "@vitejs/plugin-react": "npm:5.1.2"
     alouette: "workspace:*"
     alouette-icons: "workspace:*"
     cross-env: "npm:10.1.0"
