@@ -20,7 +20,7 @@
     "@babel/core": "7.28.5",
     "@expo-google-fonts/chivo-mono": "0.4.2",
     "@expo-google-fonts/sora": "0.4.2",
-    "@gorhom/bottom-sheet": "5.2.6",
+    "@gorhom/bottom-sheet": "5.2.8",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-community/datetimepicker": "8.5.1",
     "@react-native-community/slider": "5.0.1",
