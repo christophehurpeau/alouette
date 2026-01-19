@@ -54,7 +54,7 @@
     "@tamagui/metro-plugin": "1.138.0",
     "@tamagui/vite-plugin": "1.138.0",
     "@types/react": "19.1.13",
-    "@vitejs/plugin-react": "5.0.4",
+    "@vitejs/plugin-react": "5.1.2",
     "cross-env": "10.1.0",
     "expo-svg-transformer": "3.1.0",
     "storybook": "9.1.17",
