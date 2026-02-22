@@ -8,11 +8,7 @@ const { withExpoSvgTransformer } = require("expo-svg-transformer");
 const defaultConfig = getDefaultConfig(__dirname);
 
 module.exports = withStorybook(
-  withTamagui(withExpoSvgTransformer(defaultConfig), {
-    config: "./tamagui.config.ts",
-    components: ["alouette"],
-    nodeModulesPaths: ["node_modules", "src"],
-  }),
+  withTamagui(withExpoSvgTransformer(defaultConfig)),
   {
     enabled: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === "true",
     onDisabledRemoveStorybook: true,

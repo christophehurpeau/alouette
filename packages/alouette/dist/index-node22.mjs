@@ -1,30 +1,34 @@
 import { jsx, jsxs } from 'react/jsx-runtime';
-import { isAndroid, styled, View, usePropsAndStyle, Text, isWeb, TamaguiProvider, useMedia, Stack as Stack$1, useTheme, Theme } from '@tamagui/core';
+import { styled, View, usePropsAndStyle, Text as Text$1, isWeb, useMedia, TamaguiProvider } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
 import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { cloneElement, Fragment, Children, createContext, useState, useEffect, useContext } from 'react';
+import { cloneElement, Fragment, Children, createContext, useState, useEffect } from 'react';
+import 'alouette-icons/phosphor-icons/CheckRegularIcon';
+import 'alouette-icons/phosphor-icons/InfoRegularIcon';
+import 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
-import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
-import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
-import { WarningCircleRegularIcon } from 'alouette-icons/phosphor-icons/WarningCircleRegularIcon';
-import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
-import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, StyleSheet } from 'react-native';
+import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme } from 'react-native';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
-import { LinearGradient } from 'expo-linear-gradient';
 
-const fullscreenStyle = {
+const absoluteFillStyle = {
   position: "absolute",
   top: 0,
   left: 0,
   right: 0,
   bottom: 0
 };
-const getInteractionStyles = (name, { disabled, interactive, variant }) => {
+
+const getInteractionStyles = (name, {
+  disabled,
+  interactive,
+  variant = name === "borderColor" ? "outlined" : "contained",
+  tint
+}) => {
   const isGhost = variant?.startsWith("ghost-");
   const prefix = interactive === "text" ? "interactive.forms" : (
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    `interactive.${(isGhost ? variant.slice(6) : variant) || "contained"}`
+    `interactive${tint === "accent" ? "-accent" : ""}.${isGhost ? variant.slice(6) : variant}`
   );
   if (disabled) {
     return { [name]: `$${prefix}.${name}:disabled` };
@@ -35,9 +39,9 @@ const getInteractionStyles = (name, { disabled, interactive, variant }) => {
   if (name === "outlineColor") {
     return {
       focusVisibleStyle: {
-        outlineWidth: 2,
+        outlineWidth: interactive === "text" ? 0 : 2,
         outlineStyle: "solid",
-        outlineOffset: 2,
+        outlineOffset: variant === "outlined" || variant === "ghost-outlined" ? 2 : 0,
         outlineColor: `$${prefix}.${name}:focus`
       }
     };
@@ -45,137 +49,152 @@ const getInteractionStyles = (name, { disabled, interactive, variant }) => {
   return {
     [name]: isGhost ? "transparent" : `$${prefix}.${name}`,
     hoverStyle: { [name]: `$${prefix}.${name}:hover` },
+    focusStyle: { [name]: `$${prefix}.${name}:focus` },
     pressStyle: { [name]: `$${prefix}.${name}:press` },
-    focusStyle: { [name]: `$${prefix}.${name}:focus` }
+    disabledStyle: { [name]: `$${prefix}.${name}:disabled` }
   };
 };
 
-const withBorder = (val, { props }) => {
-  return {
-    borderWidth: typeof val !== "boolean" ? val : 1,
-    ...props.interactive ? getInteractionStyles("borderColor", props) : { borderColor: "$borderColor" }
-  };
+const absoluteFill = {
+  true: absoluteFillStyle
 };
-const withBackground = (val, { props }) => {
-  if (!val) return {};
-  if (!props.role && !props.outlineStyle && props.interactive) {
-    throw new Error("A role prop is required while using interactive");
+const center = {
+  true: {
+    justifyContent: "center",
+    alignItems: "center"
   }
-  return {
-    ...props.interactive ? {
-      ...getInteractionStyles("backgroundColor", props),
-      ...getInteractionStyles("outlineColor", props)
-    } : {
-      backgroundColor: props.withElevation ? "$nonInteractiveBackgroundColor.elevated" : "$nonInteractiveBackgroundColor"
-    }
-  };
 };
-const withScreenBackground = (val, { props }) => {
-  if (!val) return {};
-  if (val === "translucent") {
-    if (process.env.NODE_ENV !== "production" && props.withElevation) {
-      throw new Error(
-        "Cannot use withElevation and translucent screen background together"
-      );
-    }
+const tint = {
+  accent: {}
+  // used in interactive variant
+};
+function interactive(isInteractiveOrInteractiveCursorType, { props }) {
+  if (!isInteractiveOrInteractiveCursorType) return null;
+  if (isInteractiveOrInteractiveCursorType === true) {
     return {
-      backgroundColor: "$screenBackgroundColor.translucent",
-      backdropFilter: "blur(14px)"
-    };
-  }
-  if (props.withElevation) {
-    return {
-      backgroundColor: "$screenBackgroundColor.elevated"
+      cursor: "pointer",
+      pressStyle: {
+        transform: [{ scale: 0.975 }]
+      },
+      disabledStyle: {
+        cursor: "not-allowed",
+        opacity: "$opacity.disabled",
+        transform: [{ scale: 1 }]
+      }
     };
   }
   return {
-    backgroundColor: "$screenBackgroundColor"
+    cursor: isInteractiveOrInteractiveCursorType,
+    disabledStyle: {
+      cursor: "not-allowed",
+      opacity: "$opacity.disabled"
+    }
   };
+}
+const layer = {
+  surface: {
+    backgroundColor: "$bg-surface"
+  },
+  highlight: {
+    backgroundColor: "$bg-highlight"
+  },
+  "highlight-accent": {
+    backgroundColor: "$bg-highlight-accent"
+  },
+  lowered: {
+    backgroundColor: "$bg-lowered"
+  }
 };
-const withElevation = (val, { props }) => {
-  if (!val) return {};
-  const height = 2;
-  return {
-    ...props.disabled ? {} : {
-      shadowOffset: { width: 0, height },
-      shadowOpacity: 0.65,
-      shadowRadius: 6,
-      ...isAndroid ? { elevationAndroid: height * 2 } : void 0
-    },
-    ...props.interactive ? getInteractionStyles("shadowColor", props) : { shadowColor: "$shadowColor" }
-  };
-};
-const circularStyle = {
-  borderRadius: 1e5,
-  padding: 0
+const shadow = {
+  none: {
+    boxShadow: "none",
+    elevationAndroid: 0
+  },
+  s: {
+    boxShadow: "inset 0 1px 2px #ffffff40, 0 1px 2px #00000040, 0 2px 4px #00000025",
+    elevationAndroid: 2
+  },
+  m: {
+    boxShadow: "inset 0 1px 2px #ffffff40, 0 2px 4px #00000040, 0 4px 8px #00000025",
+    elevationAndroid: 4
+  },
+  l: {
+    boxShadow: "inset 0 1px 2px #ffffff40, 0 4px 6px #00000040, 0 6px 10px #00000025",
+    elevationAndroid: 6
+  },
+  lowered: {
+    boxShadow: "inset 0 1px 2px #00000040, inset 0 -2px 2px #ffffff15"
+  }
 };
 const size = (val) => {
   return { width: val, height: val };
 };
-const circular = {
-  true: (val, { props, tokens }) => {
-    if (!("size" in props)) {
-      return circularStyle;
-    }
-    const sizePropValue = props.size;
-    const sizeValue = tokens.size[sizePropValue];
-    return {
-      ...circularStyle,
-      width: sizeValue,
-      height: sizeValue,
-      maxWidth: sizeValue,
-      maxHeight: sizeValue,
-      minWidth: sizeValue,
-      minHeight: sizeValue
-    };
-  }
-};
-const fullscreen = {
-  true: fullscreenStyle
-};
-const interactive = (isInteractiveOrInteractiveCursorType, { props }) => {
-  if (!isInteractiveOrInteractiveCursorType) return null;
-  if (props.disabled) {
-    return { cursor: "not-allowed" };
+const withBorder = (val, { props }) => {
+  if (props.shadow && props.shadow !== "lowered") {
+    throw new Error("Cannot use border with shadow variant");
   }
   return {
-    cursor: isInteractiveOrInteractiveCursorType === true ? "pointer" : isInteractiveOrInteractiveCursorType,
-    // fix to properly reset press/hover styles
-    transform: [{ scale: 1 }],
-    hoverStyle: {
-      transform: [{ scale: 1.02 }]
-    },
-    pressStyle: {
-      transform: [{ scale: 0.98 }]
+    borderWidth: val,
+    ...props.interactive ? getInteractionStyles("borderColor", props) : { borderColor: "$border-sharp" }
+  };
+};
+const withFocusVisibleOutline = (val, { props }) => {
+  if (!val) return null;
+  return {
+    ...props.interactive ? getInteractionStyles("outlineColor", props) : { outlineColor: "$outlineColor" },
+    disabledStyle: {
+      outlineWidth: 0
     }
   };
 };
-const center = {
-  true: {
-    alignItems: "center",
-    justifyContent: "center"
-  }
+const withBackground = (val, { props }) => {
+  return props.interactive && val === "interactive" ? getInteractionStyles("backgroundColor", props) : {
+    backgroundColor: val === "surface" ? "$bg-surface" : "$bg-highlight"
+  };
 };
 
-const variants$1 = /*#__PURE__*/Object.defineProperty({
+const containerVariants = /*#__PURE__*/Object.defineProperty({
   __proto__: null,
+  absoluteFill,
   center,
-  circular,
-  fullscreen,
   interactive,
+  layer,
+  shadow,
   size,
+  tint,
   withBackground,
   withBorder,
-  withElevation,
-  withScreenBackground
+  withFocusVisibleOutline
 }, Symbol.toStringTag, { value: 'Module' });
 
-const Box = styled(View, {
-  name: "Box",
-  variants: variants$1,
-  animation: "fast"
+const BoxFrame = styled(View, {
+  // never apply overflow hidden here, as it will break shadows
+  flexShrink: 1,
+  // allow to shrink by default, as Box is often used in VSTack and HStack. See button for an example.
+  variants: containerVariants
 });
-const SafeAreaBox = Box.styleable((props) => {
+const InteractiveBoxFrame = styled(BoxFrame, {
+  interactive: true,
+  tabIndex: 0,
+  transition: "fast",
+  variants: {
+    disabled: {
+      true: {
+        tabIndex: -1
+      }
+    }
+  }
+});
+const Box = process.env.NODE_ENV !== "production" ? (props) => {
+  if (process.env.NODE_ENV !== "production" && props.shadow === "lowered" && props.layer !== "lowered") {
+    throw new Error(
+      'shadow="lowered" must only be used with layer="lowered"'
+    );
+  }
+  return /* @__PURE__ */ jsx(BoxFrame, { ...props });
+} : BoxFrame;
+const InteractiveBox = InteractiveBoxFrame;
+const SafeAreaBoxFrame = BoxFrame.styleable((props) => {
   const insets = useSafeAreaInsets();
   return /* @__PURE__ */ jsx(
     Box,
@@ -188,30 +207,32 @@ const SafeAreaBox = Box.styleable((props) => {
     }
   );
 });
+const SafeAreaBox = SafeAreaBoxFrame;
 
-const PressableBox = styled(Box, {
-  interactive: true,
+const PressableBox = styled(InteractiveBox, {
+  role: "button",
+  overflow: "hidden",
+  withFocusVisibleOutline: true,
   variants: {
     variant: {
       contained: {
-        withBackground: true
+        withBackground: "interactive",
+        shadow: "s",
+        borderRadius: "$sm"
       },
       outlined: {
-        withBackground: true,
-        withBorder: 2
-      },
-      elevated: {
-        withBackground: true,
-        withElevation: true,
-        withBorder: true,
-        borderColor: "$contrastBorderColor"
+        // withBackground: "highlight",
+        withBorder: 1
       },
       "ghost-contained": {
-        withBackground: true
+        withBackground: "interactive",
+        backgroundColor: "transparent"
       },
       "ghost-outlined": {
-        withBorder: 2,
-        withBackground: true
+        // withBackground: "surface",
+        withBorder: 1,
+        backgroundColor: "transparent",
+        borderColor: "transparent"
       }
     }
   },
@@ -220,21 +241,32 @@ const PressableBox = styled(Box, {
   }
 });
 
-const getDefaultColor = (disabled, accent) => {
-  if (disabled) return "$textColor:disabled";
-  if (accent) return "$accentTextColor";
-  return "$textColor";
+const getDefaultColor = (disabled, disabledSharp, tint) => {
+  if (disabled) {
+    return disabledSharp ? "$text-disabled-sharp" : "$text-disabled-muted";
+  }
+  if (tint === "accent") return "$text-accent";
+  if (tint === "accent-muted") return "$text-accent-muted";
+  if (tint === "muted") return "$text-muted";
+  if (tint === "onAccent") return "$text-onAccent";
+  if (tint === "onAccent-muted") return "$text-onAccent-muted";
+  return "$text-sharp";
 };
 function Icon({
   icon,
+  // TODO should size be normalized ?
   size = 20,
   disabled,
-  accent,
-  color = getDefaultColor(disabled, accent)
+  disabledSharp,
+  tint
 }) {
   const [props, style] = usePropsAndStyle(
-    { color, width: size, height: size },
-    { forComponent: Text }
+    {
+      color: getDefaultColor(disabled, disabledSharp, tint),
+      width: size,
+      height: size
+    },
+    { forComponent: Text$1 }
   );
   return cloneElement(icon, { style, ...props });
 }
@@ -243,40 +275,15 @@ const IconButtonFrame = styled(PressableBox, {
   name: "IconButtonFrame",
   role: "button",
   center: true,
-  borderRadius: 1e4,
-  variants: {
-    variant: {
-      contained: {
-        withBackground: true
-      },
-      outlined: {
-        withBackground: true,
-        withBorder: 1
-      },
-      elevated: {
-        withBackground: true,
-        withElevation: true,
-        withBorder: 1
-      },
-      "ghost-contained": {
-        withBackground: true
-      },
-      "ghost-outlined": {
-        withBackground: true,
-        withBorder: 1
-      }
-    }
-  },
-  defaultVariants: {
-    variant: "contained"
-  }
+  borderRadius: 1e4
 });
 function IconButton({
   icon,
   disabled,
   size = 40,
+  iconSize,
   variant = "contained",
-  ...pressableProps
+  ...pressableBoxProps
 }) {
   return /* @__PURE__ */ jsx(
     IconButtonFrame,
@@ -284,15 +291,420 @@ function IconButton({
       size,
       variant,
       disabled,
-      ...pressableProps,
-      children: /* @__PURE__ */ jsx(Icon, { size: size / 2, disabled, icon })
+      ...pressableBoxProps,
+      children: /* @__PURE__ */ jsx(
+        Icon,
+        {
+          size: iconSize === "fill" ? size * 0.8 : size * 0.5,
+          disabled,
+          icon
+        }
+      )
     }
   );
 }
 
+const TextStyled = styled(Text$1, {
+  variants: {
+    inherit: {
+      false: {
+        size: "$md",
+        weight: "$regular",
+        fontFamily: "$body",
+        tint: "sharp"
+      }
+    },
+    size: {
+      "...fontSize": (size) => ({
+        fontSize: size,
+        lineHeight: size
+      })
+    },
+    weight: {
+      $regular: { fontWeight: "$regular" },
+      $bold: { fontWeight: "$bold" },
+      $extraBold: { fontWeight: "$extraBold" }
+    },
+    family: {
+      $heading: { fontFamily: "$heading" },
+      $body: { fontFamily: "$body" },
+      "$body-monospace": { fontFamily: "$body-monospace" }
+    },
+    tint: {
+      sharp: {
+        color: "$text-sharp",
+        disabledStyle: {
+          color: "$text-disabled-muted"
+        }
+      },
+      muted: {
+        color: "$text-muted",
+        disabledStyle: {
+          color: "$text-disabled-muted"
+        }
+      },
+      accent: {
+        color: "$text-accent"
+      },
+      onAccent: {
+        color: "$text-onAccent"
+      }
+    },
+    disabledSharp: {
+      true: {
+        disabledStyle: {
+          color: "$text-disabled-sharp"
+        }
+      }
+    }
+  },
+  defaultVariants: {
+    inherit: false
+  }
+});
+const Text = TextStyled;
+const ParagraphStyled = styled(TextStyled, {
+  render: "p",
+  userSelect: "auto",
+  inherit: false
+});
+const Paragraph = ParagraphStyled;
+
+const ButtonFrame = styled(PressableBox, {
+  name: "ButtonFrame",
+  role: "button",
+  center: true,
+  flexDirection: "row",
+  alignItems: "center",
+  variants: {
+    size: {
+      sm: {
+        paddingHorizontal: "$0.5",
+        gap: "$0.25",
+        borderRadius: "$sm",
+        minHeight: 38
+      },
+      md: {
+        paddingHorizontal: "$1.0",
+        gap: "$0.5",
+        borderRadius: "$sm",
+        minHeight: 44
+      }
+    }
+  },
+  defaultVariants: {
+    size: "md"
+  }
+});
+const ButtonText = styled(Text, {
+  textAlign: "center",
+  weight: "$bold",
+  variants: {
+    "button-size": {
+      sm: {
+        paddingVertical: "$0.25",
+        size: "$sm"
+      },
+      md: {
+        paddingVertical: "$0.5",
+        size: "$md"
+      }
+    }
+  }
+});
+function Button({
+  icon,
+  text,
+  disabled,
+  variant = "contained",
+  size = "md",
+  ...pressableProps
+}) {
+  return /* @__PURE__ */ jsxs(
+    ButtonFrame,
+    {
+      variant,
+      size,
+      disabled,
+      ...pressableProps,
+      children: [
+        icon && /* @__PURE__ */ jsx(
+          Icon,
+          {
+            tint: variant === "contained" ? "onAccent" : void 0,
+            disabled,
+            disabledSharp: variant === "contained",
+            icon,
+            size: size === "sm" ? 16 : 20
+          }
+        ),
+        /* @__PURE__ */ jsx(
+          ButtonText,
+          {
+            tint: variant === "contained" ? "onAccent" : void 0,
+            "button-size": size,
+            disabled,
+            disabledSharp: variant === "contained",
+            textAlign: icon ? "left" : "center",
+            children: text
+          }
+        )
+      ]
+    }
+  );
+}
+function ExternalLinkButton(props) {
+  return /* @__PURE__ */ jsx(
+    Button,
+    {
+      ...props,
+      render: "a",
+      role: "link",
+      target: "_blank",
+      rel: "noopener noreferrer",
+      style: { textDecorationLine: "none" }
+    }
+  );
+}
+function InternalLinkButton(props) {
+  return /* @__PURE__ */ jsx(Button, { ...props, render: "a", role: "link" });
+}
+
+const SurfaceFrame = styled(Box, {
+  shadow: "s",
+  overflow: "hidden",
+  // make sure the boxshadow respects the borderRadius.
+  variants: {
+    size: {
+      sm: {
+        padding: "$1.0",
+        borderRadius: "$sm"
+      },
+      md: {
+        padding: "$2.0",
+        borderRadius: "$md"
+      },
+      lg: {
+        padding: "$3.0",
+        borderRadius: "$lg"
+      }
+    },
+    highlight: {
+      true: {
+        layer: "highlight"
+      },
+      false: {
+        layer: "surface"
+      },
+      accent: {
+        layer: "highlight-accent"
+      }
+    },
+    lowered: {
+      true: {
+        layer: "lowered",
+        shadow: "lowered"
+      }
+    }
+  },
+  defaultVariants: {
+    highlight: false,
+    size: "md"
+  }
+});
+const Surface = SurfaceFrame;
+
+const MessageFrame = styled(Surface, {
+  name: "MessageFrame",
+  alignItems: "center",
+  flexDirection: "row",
+  highlight: "accent",
+  variants: {
+    size: {
+      sm: {
+        gap: "$0.5"
+      },
+      md: {
+        gap: "$1.0"
+      },
+      lg: {
+        gap: "$1.5"
+      }
+    }
+  },
+  defaultVariants: {
+    size: "md"
+  }
+});
+const MessageText = styled(Text, {
+  size: "$md",
+  flexGrow: 1,
+  tint: "accent"
+});
+const MessageIconContainer = styled(View, {
+  alignItems: "center"
+});
+const MessageDismissButtonContainer = styled(View, {
+  position: "relative",
+  alignItems: "center",
+  justifyContent: "center",
+  variants: {
+    size: {
+      sm: {
+        height: 24,
+        width: 24
+      },
+      md: {
+        height: 40,
+        width: 40
+      },
+      lg: {
+        height: 40,
+        width: 40
+      }
+    }
+  },
+  defaultVariants: {
+    size: "md"
+  }
+});
+function Message({
+  icon,
+  size = "md",
+  theme,
+  children,
+  onDismiss,
+  dismissIconAriaLabel
+}) {
+  return /* @__PURE__ */ jsxs(MessageFrame, { theme, size, children: [
+    /* @__PURE__ */ jsx(MessageIconContainer, { children: /* @__PURE__ */ jsx(Icon, { size: size === "sm" ? 20 : 24, icon, tint: "accent" }) }),
+    /* @__PURE__ */ jsx(MessageText, { children }),
+    onDismiss ? /* @__PURE__ */ jsx(MessageDismissButtonContainer, { size, children: /* @__PURE__ */ jsx(
+      IconButton,
+      {
+        icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
+        iconSize: size === "sm" ? "fill" : void 0,
+        size: size === "sm" ? 24 : 40,
+        variant: "outlined",
+        tint: "accent",
+        "aria-label": dismissIconAriaLabel
+      }
+    ) }) : null
+  ] });
+}
+
+const inputStyle = {
+  fontFamily: "$body",
+  fontSize: "$md",
+  color: "$text-sharp",
+  paddingHorizontal: "$1.0",
+  paddingVertical: "$0.5",
+  borderRadius: "$md"
+};
+
+const PlatformInputText = styled(
+  TextInput,
+  {
+    ...inputStyle,
+    focusable: true,
+    variants: {
+      mode: {
+        password: {
+          secureTextEntry: true
+        },
+        number: {
+          inputMode: "numeric",
+          keyboardType: "numeric"
+        },
+        tel: {
+          inputMode: "tel",
+          autoComplete: "tel",
+          keyboardType: "phone-pad"
+        },
+        email: {
+          inputMode: "email",
+          autoComplete: "email",
+          keyboardType: "email-address"
+        },
+        url: {
+          inputMode: "url",
+          keyboardType: "url"
+        },
+        search: {
+          inputMode: "search"
+        },
+        webSearch: {
+          inputMode: "search",
+          keyboardType: "web-search"
+        }
+      }
+    }
+  },
+  {
+    isInput: true,
+    validStyles: Text$1.staticConfig.validStyles
+  }
+);
+
+const NativeInputText = styled(PlatformInputText, {
+  render: "input",
+  theme: "brand",
+  variants: {
+    ...containerVariants,
+    disabled: {
+      true: {
+        color: "$text-disabled-muted",
+        cursor: "not-allowed",
+        opacity: "$opacity.disabled"
+      }
+    }
+  },
+  // @ts-expect-error -- variants not working when isInput is true
+  interactive: "text",
+  withBackground: "interactive",
+  withBorder: 1,
+  outlineWidth: 1,
+  outlineOffset: 0,
+  outlineStyle: "solid",
+  outlineColor: "transparent",
+  focusVisibleStyle: {
+    outlineWidth: 1,
+    outlineOffset: 0,
+    outlineStyle: "solid",
+    outlineColor: "$interactive.forms.outlineColor:focus"
+  },
+  focusStyle: {
+    outlineWidth: 1,
+    outlineOffset: 0,
+    outlineStyle: "solid",
+    outlineColor: "$interactive.forms.outlineColor:focus"
+  }
+});
+const InputText = NativeInputText;
+
+const TextAreaFrame = styled(InputText, {
+  render: "textarea",
+  multiline: true,
+  height: "auto",
+  minHeight: 80,
+  borderRadius: "$1.0",
+  paddingHorizontal: "$0.75"
+});
+const TextArea = TextAreaFrame;
+
+const ScrollView = styled(
+  ScrollView$1,
+  {},
+  {
+    accept: {
+      contentContainerStyle: "style"
+    }
+  }
+);
+
 const variants = {
-  fullscreen: {
-    true: fullscreenStyle
+  absoluteFill: {
+    true: absoluteFillStyle
   }
 };
 const Stack = styled(View, {
@@ -314,254 +726,21 @@ const VStack = styled(View, {
   name: "VStack",
   flexDirection: "column"
 });
-
-const Typography = styled(Text, {
-  name: "Typography",
-  fontFamily: "$body",
-  color: "$textColor",
-  variants: {
-    inherit: {
-      false: {
-        size: "$md",
-        weight: "$regular",
-        family: "$body"
-      }
-    },
-    size: {
-      "...fontSize": (size) => ({
-        fontSize: size,
-        lineHeight: size
-      })
-    },
-    weight: {
-      $regular: { fontWeight: "$regular" },
-      $bold: { fontWeight: "$bold" },
-      $extraBold: { fontWeight: "$extraBold" }
-    },
-    family: {
-      $heading: { fontFamily: "$heading" },
-      $body: { fontFamily: "$body" },
-      $monospace: { fontFamily: "$monospace" }
-    },
-    accent: {
-      true: {
-        color: "$accentTextColor"
-      }
-    },
-    disabled: {
-      true: {
-        color: "$textColor:disabled"
-      }
-    }
-  },
-  defaultVariants: {
-    inherit: false
-    // contrast: false,
-  }
-});
-const TypographyParagraph = styled(Typography, {
-  name: "TypographyParagraph",
-  tag: "p",
-  userSelect: "auto",
-  family: "$body"
-});
-
-const ButtonFrame = styled(PressableBox, {
-  name: "ButtonFrame",
-  role: "button",
-  center: true,
-  minHeight: 42,
-  variants: {
-    size: {
-      sm: {
-        paddingHorizontal: "$sm",
-        borderRadius: "$3",
-        minHeight: 32
-      },
-      md: {
-        paddingHorizontal: "$md",
-        borderRadius: "$sm",
-        minHeight: 42
-      }
-    }
-  },
-  defaultVariants: {
-    size: "md"
-  }
-});
-function Button({
-  icon,
-  text,
-  disabled,
-  variant = "contained",
-  size = "md",
-  ...pressableProps
-}) {
-  return /* @__PURE__ */ jsx(
-    ButtonFrame,
-    {
-      disabled,
-      variant,
-      size,
-      ...pressableProps,
-      children: /* @__PURE__ */ jsxs(HStack, { gap: "$xs", alignItems: "center", children: [
-        icon && /* @__PURE__ */ jsx(
-          Icon,
-          {
-            disabled,
-            icon,
-            size: size === "sm" ? 16 : 20
-          }
-        ),
-        /* @__PURE__ */ jsx(
-          Typography,
-          {
-            size: size === "sm" ? "$sm" : "$md",
-            weight: "$bold",
-            paddingVertical: size === "sm" ? "$1" : "$xs",
-            disabled,
-            children: text
-          }
-        )
-      ] })
-    }
-  );
-}
-function ExternalLinkButton(props) {
-  return /* @__PURE__ */ jsx(
-    Button,
-    {
-      ...props,
-      tag: "a",
-      role: "link",
-      target: "_blank",
-      rel: "noopener noreferrer",
-      style: { textDecorationLine: "none" }
-    }
-  );
-}
-function InternalLinkButton(props) {
-  return /* @__PURE__ */ jsx(Button, { ...props, tag: "a", role: "link" });
-}
-
-function FeedbackIcon({ type }) {
-  switch (type) {
-    case "warning":
-      return /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(WarningCircleRegularIcon, {}) });
-    case "success":
-      return /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
-    case "danger":
-      return /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
-    default:
-      return /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
-  }
-}
-
-const MessageFrame = styled(Box, {
-  name: "MessageFrame",
+styled(View, {
+  justifyContent: "center",
   alignItems: "center",
-  withBackground: true,
-  borderRadius: "$md",
-  paddingHorizontal: "$4",
-  flexDirection: "row",
-  gap: "$4"
-});
-const MessageText = styled(Typography, {
-  name: "MessageText",
-  // contrast: true,
-  size: "$md",
-  flexGrow: 1,
-  paddingVertical: "$4",
-  variants: {
-    center: {
-      true: {
-        textAlign: "center",
-        paddingHorizontal: "$4"
-      }
-    }
-  }
-});
-const MessageIconContainer = styled(View, {
-  alignItems: "center"
-});
-const MessageDismissButtonContainer = styled(View, {
-  marginRight: "$2"
-});
-function Message({
-  theme,
-  textCentered,
-  children,
-  onDismiss
-}) {
-  return /* @__PURE__ */ jsxs(MessageFrame, { theme, children: [
-    textCentered ? null : /* @__PURE__ */ jsx(MessageIconContainer, { children: /* @__PURE__ */ jsx(FeedbackIcon, { type: theme }) }),
-    /* @__PURE__ */ jsx(MessageText, { center: textCentered, children }),
-    onDismiss ? /* @__PURE__ */ jsx(MessageDismissButtonContainer, { children: /* @__PURE__ */ jsx(
-      IconButton,
-      {
-        icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
-        size: 40,
-        variant: "ghost-contained"
-      }
-    ) }) : null
-  ] });
-}
-
-const StyledInputText = styled(
-  TextInput,
-  {
-    variants: variants$1,
-    padding: "$xs",
-    borderRadius: "$sm",
-    color: "$interactive.forms.textColor",
-    // currently not working in web unless we use tamagui Input
-    // placeholderTextColor: "$interactive.forms.placeholderTextColor",
-    // @ts-expect-error missing prop due to isInput but in does exist in variants
-    withBorder: true,
-    withBackground: true,
-    borderWidth: 1,
-    // reset browser style
-    outlineStyle: "none"
-  },
-  { isInput: true }
-);
-const InputText = styled(StyledInputText, {
-  name: "InputText",
-  interactive: "text",
-  theme: "primary"
-  // animation: "formElement", // remove all style ?
-});
-const TextArea = styled(InputText, {
-  multiline: true
+  variants
 });
 
-const ScrollView = styled(
-  ScrollView$1,
-  {
-    name: "ScrollView",
-    scrollEnabled: true,
-    variants: {
-      fullscreen: {
-        true: fullscreenStyle
-      }
-    }
-  },
-  {
-    accept: {
-      contentContainerStyle: "style"
-    }
-  }
-);
-
-const StoryTitle = styled(Typography, {
+const StoryTitle = styled(Text, {
   family: "$heading",
   weight: "$extraBold",
   variants: {
     level: {
-      1: { size: "$xl", marginBottom: "$8" },
-      2: { size: "$lg", marginBottom: "$8" },
-      3: { size: "$md", marginBottom: "$3" },
-      4: { size: "$sm", marginBottom: "$3" }
+      1: { size: "$xl", marginBottom: "$2.0" },
+      2: { size: "$lg", marginBottom: "$2.0" },
+      3: { size: "$md", marginBottom: "$1.0" },
+      4: { size: "$sm", marginBottom: "$1.0" }
     }
   },
   defaultVariants: {
@@ -570,37 +749,31 @@ const StoryTitle = styled(Typography, {
 });
 
 const InternalStorySection = styled(VStack, {
-  marginBottom: "$8",
-  paddingHorizontal: "$4",
-  marginHorizontal: "$-4",
-  variants: {
-    withBackground: {
-      true: {
-        backgroundColor: "$backgroundColor"
-      }
-    }
-  }
+  marginBottom: "$2.0",
+  marginHorizontal: "$-1.0",
+  paddingHorizontal: "$1.0"
 });
 function StorySection({
   title,
   children,
   level = 1,
-  withBackground,
+  withSurface = false,
   ...props
 }) {
-  return /* @__PURE__ */ jsxs(InternalStorySection, { withBackground, ...props, children: [
+  return /* @__PURE__ */ jsxs(InternalStorySection, { ...props, children: [
     /* @__PURE__ */ jsx(StoryTitle, { level: level + 1, children: title }),
-    children
+    withSurface ? /* @__PURE__ */ jsx(Surface, { children }) : /* @__PURE__ */ jsx(VStack, { gap: "$1.0", children })
   ] });
 }
 function SubSection({
   title,
   children,
+  withSurface = false,
   ...props
 }) {
-  return /* @__PURE__ */ jsxs(InternalStorySection, { marginBottom: "$4", ...props, children: [
+  return /* @__PURE__ */ jsxs(InternalStorySection, { marginBottom: "$1.0", ...props, children: [
     /* @__PURE__ */ jsx(StoryTitle, { level: 3, children: title }),
-    children
+    withSurface ? /* @__PURE__ */ jsx(Surface, { children }) : /* @__PURE__ */ jsx(VStack, { gap: "$1.0", children })
   ] });
 }
 const ScrollViewNative = isWeb ? Fragment : ScrollView;
@@ -610,18 +783,17 @@ function Story({
   noDarkTheme
 }) {
   return /* @__PURE__ */ jsxs(ScrollViewNative, { children: [
-    documentation && /* @__PURE__ */ jsx(
+    documentation && /* @__PURE__ */ jsx(Surface, { highlight: true, shadow: "s", theme: "brand", marginBottom: "$3.0", children: documentation }),
+    ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsx(
       Box,
       {
-        withBorder: "$2",
-        borderRadius: "$md",
-        padding: "$md",
-        theme: "primary",
-        marginBottom: "$12",
-        children: documentation
-      }
-    ),
-    ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsx(Box, { withScreenBackground: true, theme, padding: "$md", children }, theme))
+        theme,
+        backgroundColor: "$bg-screen",
+        padding: "$2.0",
+        children
+      },
+      theme
+    ))
   ] });
 }
 Story.Section = StorySection;
@@ -654,24 +826,23 @@ function StoryGridRow({
       ...{
         [`$${breakpoint}`]: {
           flexDirection: "row",
-          marginVertical: "$-1",
-          marginBottom: "$4",
+          marginBottom: "$2.0",
           flexWrap: flexWrap ? "wrap" : void 0,
-          gap: flexWrap ? "$xs" : void 0
+          gap: flexWrap ? "$1.0" : void 0
         }
       },
       children: Children.map(children, (child) => /* @__PURE__ */ jsx(
         View,
         {
-          paddingTop: "$2",
-          paddingBottom: "$4",
+          paddingTop: "$1.0",
+          paddingBottom: "$2.0",
           ...{
             [`$${breakpoint}`]: {
               flexGrow: 1,
               flexBasis: flexWrap ? void 0 : 0,
               paddingTop: 0,
               paddingBottom: 0,
-              marginVertical: "$2"
+              marginVertical: "$0.25"
             }
           },
           children: child
@@ -701,67 +872,6 @@ const StoryGrid = {
   Row: StoryGridRow,
   Col: StoryGridCol
 };
-
-const useDefaultThemeFromColorScheme = () => {
-  const colorScheme = useColorScheme();
-  return colorScheme || "light";
-};
-function AlouetteProvider({
-  children,
-  tamaguiConfig,
-  defaultTheme = "light",
-  disableInjectCSS
-}) {
-  return /* @__PURE__ */ jsx(
-    TamaguiProvider,
-    {
-      config: tamaguiConfig,
-      defaultTheme,
-      disableInjectCSS,
-      children
-    }
-  );
-}
-
-const AlouetteTamaguiConfigContext = createContext(null);
-const AlouetteDecorator = (storyFn, context) => {
-  const systemColorScheme = useColorScheme();
-  const [theme, setTheme] = useState(systemColorScheme || "light");
-  useEffect(() => {
-    const backgroundColor = context.globals.backgrounds?.value;
-    if (backgroundColor === "#000000") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  }, [context.globals.backgrounds?.value]);
-  return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(
-    AlouetteProvider,
-    {
-      tamaguiConfig: context.parameters.tamaguiConfig,
-      defaultTheme: theme,
-      children: /* @__PURE__ */ jsx(
-        AlouetteTamaguiConfigContext.Provider,
-        {
-          value: context.parameters.tamaguiConfig,
-          children: storyFn(context)
-        }
-      )
-    }
-  ) });
-};
-
-function WithTamaguiConfig({
-  render
-}) {
-  const config = useContext(AlouetteTamaguiConfigContext);
-  if (!config) {
-    throw new Error(
-      "No config found, check that AlouetteDecorator is used in the story"
-    );
-  }
-  return render(config);
-}
 
 var BreakpointNameEnum = /* @__PURE__ */ ((BreakpointNameEnum2) => {
   BreakpointNameEnum2["BASE"] = "base";
@@ -824,13 +934,61 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-const Separator = styled(Stack$1, {
-  name: "Separator",
+const useDefaultThemeFromColorScheme = () => {
+  const colorScheme = useColorScheme();
+  return colorScheme || "light";
+};
+function AlouetteProvider({
+  children,
+  tamaguiConfig,
+  defaultTheme = "light",
+  disableInjectCSS
+}) {
+  return /* @__PURE__ */ jsx(
+    TamaguiProvider,
+    {
+      config: tamaguiConfig,
+      defaultTheme,
+      disableInjectCSS,
+      children
+    }
+  );
+}
+
+const AlouetteTamaguiConfigContext = createContext(null);
+const AlouetteDecorator = (storyFn, context) => {
+  const systemColorScheme = useColorScheme();
+  const [theme, setTheme] = useState(systemColorScheme || "light");
+  useEffect(() => {
+    const backgroundColor = context.globals.backgrounds?.value;
+    if (backgroundColor === "#000000") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, [context.globals.backgrounds?.value]);
+  return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(
+    AlouetteProvider,
+    {
+      tamaguiConfig: context.parameters.tamaguiConfig,
+      defaultTheme: theme,
+      children: /* @__PURE__ */ jsx(
+        AlouetteTamaguiConfigContext.Provider,
+        {
+          value: context.parameters.tamaguiConfig,
+          children: storyFn(context)
+        }
+      )
+    }
+  ) });
+};
+
+const Separator = styled(View, {
   flexGrow: 1,
   flexShrink: 0,
   height: 0,
   maxHeight: 0,
-  borderColor: "$borderColor",
+  borderColor: "$border-sharp",
   borderWidth: 0,
   borderBottomWidth: 1,
   y: -0.5,
@@ -850,65 +1008,41 @@ const Separator = styled(Stack$1, {
   }
 });
 
+const PressableListItemFrame = styled(PressableBox, {
+  variant: "contained",
+  marginHorizontal: "$0.5",
+  marginVertical: "$0.25",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  paddingHorizontal: "$1.0",
+  paddingVertical: "$1.0"
+});
 function PressableListItem({
   theme,
-  variant,
-  withBackground,
-  borderRadius,
   role = "button",
   children,
   onPress
 }) {
-  return /* @__PURE__ */ jsx(
-    PressableBox,
-    {
-      theme,
-      variant,
-      withBackground,
-      borderRadius,
-      role,
-      marginHorizontal: "$4",
-      marginVertical: "$1",
-      onPress,
-      children: /* @__PURE__ */ jsxs(
-        HStack,
-        {
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingHorizontal: "$4",
-          paddingVertical: "$4",
-          children: [
-            /* @__PURE__ */ jsx(View, { flex: 1, children }),
-            /* @__PURE__ */ jsx(VStack, { justifyContent: "center", children: /* @__PURE__ */ jsx(Icon, { accent: true, icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}), size: 18 }) })
-          ]
-        }
-      )
-    }
-  );
+  return /* @__PURE__ */ jsxs(PressableListItemFrame, { theme, role, onPress, children: [
+    /* @__PURE__ */ jsx(View, { flex: 1, children }),
+    /* @__PURE__ */ jsx(VStack, { justifyContent: "center", children: /* @__PURE__ */ jsx(
+      Icon,
+      {
+        tint: "onAccent-muted",
+        icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}),
+        size: 18
+      }
+    ) })
+  ] });
 }
 
-function GradientBackground({
-  theme: themeName,
-  children
-}) {
-  const theme = useTheme({ name: themeName });
-  const colors = [
-    theme["gradientColor:start"]?.get("web"),
-    theme["gradientColor:middle"]?.get("web"),
-    theme["gradientColor:end"]?.get("web")
-  ];
-  return /* @__PURE__ */ jsx(Theme, { name: themeName, children: /* @__PURE__ */ jsx(
-    LinearGradient,
-    {
-      colors,
-      start: { x: 0, y: 0 },
-      end: { x: 1, y: 1 },
-      locations: [0.2, 0.7, 1],
-      style: StyleSheet.absoluteFill,
-      children
-    }
-  ) });
-}
+const GradientBackground = styled(Box, {
+  absoluteFill: true,
+  backgroundImage: "linear-gradient(0deg, $bg-screen-gradient-end 5%, $bg-screen-gradient-middle 80%, $bg-screen-gradient-start 98%)",
+  position: "absolute"
+  // needed to override "static" position for backgroundImage tamagui
+});
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, PressableBox, PressableListItem, SafeAreaBox, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, TextArea, Typography, TypographyParagraph, VStack, WithTamaguiConfig, variants$1 as containersVariants, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
+export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
 //# sourceMappingURL=index-node22.mjs.map

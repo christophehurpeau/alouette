@@ -23,7 +23,7 @@ export interface AlouetteFontsOptions {
     monospaceFontSizes?: typeof defaultBodyFontSizes;
 }
 export declare const createAlouetteFonts: ({ headingFontFamily, headingFontSizes, bodyFontFamily, bodyFontSizes, monospaceFontFamily, monospaceFontSizes, }?: AlouetteFontsOptions) => {
-    monospace?: {
+    "body-monospace"?: {
         family: string;
         weight: {
             regular: string;

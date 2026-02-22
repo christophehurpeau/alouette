@@ -46,6 +46,11 @@ export const createAlouetteTamagui = <
     settings: {
       allowedStyleValues: "somewhat-strict-web",
       autocompleteSpecificTokens: "except-special",
+      selectionStyles: (theme) => {
+        return {
+          backgroundColor: theme.selectionBackgroundColor,
+        };
+      },
     },
     components: ["alouette"],
   } as const);

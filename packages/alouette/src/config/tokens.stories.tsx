@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { Variable } from "@tamagui/core";
-import { Box } from "../components/containers/Box";
-import { View } from "../components/primitives/View";
-import { HStack, VStack } from "../components/primitives/stacks";
-import { Story } from "../components/story-components/Story";
-import { WithTamaguiConfig } from "../components/story-components/WithTamaguiConfig";
-import { Typography } from "../components/typography/Typography";
+import { Box } from "../ui/containers/Box";
+import { Text } from "../ui/primitives/Text";
+import { View } from "../ui/primitives/View";
+import { HStack, VStack } from "../ui/stacks/stacks";
+import { Story } from "../ui/story-components/Story";
+import { WithTamaguiConfig } from "../ui/story-components/WithTamaguiConfig";
 import { groupTokens } from "./utils/groupTokens";
 
 const meta = {
@@ -51,9 +51,9 @@ export const TokensStory: StoryObj<unknown> = {
         return (
           <Story>
             <Story.Section title="Colors">
-              <VStack gap="$md" flexWrap="wrap">
+              <VStack gap="$1.0" flexWrap="wrap">
                 {groupedEntries.map(([groupName, groupValues]) => (
-                  <HStack key={groupName} gap="$xs">
+                  <HStack key={groupName} gap="$1.0">
                     {groupValues.map(({ key, variable }) => (
                       <VStack
                         key={`${groupName}-${key}`}
@@ -61,7 +61,7 @@ export const TokensStory: StoryObj<unknown> = {
                         gap="$1"
                         minWidth={60}
                       >
-                        <Typography>{key}</Typography>
+                        <Text>{key}</Text>
                         <View backgroundColor={variable.val} height={10} />
                       </VStack>
                     ))}
@@ -71,37 +71,36 @@ export const TokensStory: StoryObj<unknown> = {
             </Story.Section>
 
             <Story.Section title="Radius">
-              <HStack gap="$xs" flexWrap="wrap">
+              <HStack gap="$1.0" flexWrap="wrap">
                 {(["$sm", "$md"] as const).map((proportion) => (
                   <Box
                     key={proportion}
                     center
-                    withBackground
+                    withBackground="highlight"
                     borderRadius={proportion}
                     size={50}
-                    theme="primary"
-                    margin="$4"
+                    theme="brand"
                   >
-                    <Typography>{proportion}</Typography>
+                    <Text>{proportion}</Text>
                   </Box>
                 ))}
               </HStack>
             </Story.Section>
 
             <Story.Section title="Spacings">
-              <HStack gap="$xs" flexWrap="wrap" alignItems="flex-start">
+              <HStack gap="$2.0" flexWrap="wrap" alignItems="flex-start">
                 {Object.entries<Variable>(tokens.space).map(([key, value]) => (
                   <Box
                     key={key}
                     center
-                    withBackground
-                    theme="primary"
+                    theme="brand"
+                    withBackground="highlight"
                     paddingVertical="$4"
-                    width={value.val}
+                    width={value.val < 0 ? -value.val : value.val}
                   >
-                    <VStack gap="$xs">
-                      <Typography size="$xs">${key}</Typography>
-                      <Typography size="$xs">{value.val}</Typography>
+                    <VStack gap="$1.0">
+                      <Text size="$xs">${key}</Text>
+                      <Text size="$xs">{value.val}</Text>
                     </VStack>
                   </Box>
                 ))}

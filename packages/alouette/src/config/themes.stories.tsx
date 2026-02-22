@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { Entries } from "type-fest";
-import { Box } from "../components/containers/Box";
-import { View } from "../components/primitives/View";
-import { VStack } from "../components/primitives/stacks";
-import { Story } from "../components/story-components/Story";
-import { StoryGrid } from "../components/story-components/StoryGrid";
-import { WithTamaguiConfig } from "../components/story-components/WithTamaguiConfig";
-import { Typography } from "../components/typography/Typography";
+import { Text } from "../ui/primitives/Text";
+import { View } from "../ui/primitives/View";
+import { VStack } from "../ui/stacks/stacks";
+import { Story } from "../ui/story-components/Story";
+import { StoryGrid } from "../ui/story-components/StoryGrid";
+import { WithTamaguiConfig } from "../ui/story-components/WithTamaguiConfig";
 import { groupTokens } from "./utils/groupTokens";
 
 const meta = {
@@ -50,10 +49,6 @@ export const TokensStory: StoryObj<unknown> = {
             {(Object.entries(themes) as Entries<typeof themes>).map(
               ([themeName, theme]) => (
                 <Story.Section key={themeName} title={themeName}>
-                  <Box withBackground padding="$sm" theme={themeName as string}>
-                    <Typography>Demo</Typography>
-                  </Box>
-
                   {groupTokens(theme).map(([groupName, tokens]) => (
                     <StoryGrid.Row key={groupName} flexWrap>
                       {tokens.map(({ key, variable }) => (
@@ -64,7 +59,7 @@ export const TokensStory: StoryObj<unknown> = {
                             minWidth={60}
                             flexGrow={1}
                           >
-                            <Typography size="$xs">{key}</Typography>
+                            <Text size="$xs">{key}</Text>
                             <View backgroundColor={variable.val} height={10} />
                           </VStack>
                         </StoryGrid.Col>

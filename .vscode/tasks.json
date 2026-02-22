@@ -16,6 +16,23 @@
       "problemMatcher": []
     },
     {
+      "label": "tsc",
+      "type": "shell",
+      "command": "yarn tsc",
+      "group": {
+        "kind": "test"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "close": true,
+        "revealProblems": "onProblem",
+        "panel": "dedicated"
+      },
+      "problemMatcher": ["$tsc"]
+    },
+    {
       "label": "storybook-native-app:web",
       "type": "shell",
       "command": "yarn start:web",

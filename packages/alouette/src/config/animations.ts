@@ -15,12 +15,13 @@ export const animations = createAnimations({
     stiffness: 250,
   },
   slow: {
+    duration: 450,
     damping: 20,
     stiffness: 60,
   },
   formElement: {
     type: "timing",
-    duration: 600,
+    duration: 200,
     damping: 20,
     stiffness: 250,
   },

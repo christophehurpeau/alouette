@@ -64,6 +64,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
         stiffness: number;
     };
     slow: {
+        duration: number;
         damping: number;
         stiffness: number;
     };
@@ -74,7 +75,7 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
         stiffness: number;
     };
 }, {
-    monospace?: {
+    "body-monospace"?: {
         family: string;
         weight: {
             regular: string;
@@ -182,5 +183,8 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
 }, {
     readonly allowedStyleValues: "somewhat-strict-web";
     readonly autocompleteSpecificTokens: "except-special";
+    readonly selectionStyles: (theme: Record<string, string>) => {
+        backgroundColor: string | undefined;
+    };
 }>;
 //# sourceMappingURL=createAlouetteTamagui.d.ts.map

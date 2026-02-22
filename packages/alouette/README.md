@@ -63,7 +63,7 @@ Alouette provides a comprehensive set of components following the atomic design 
 
 #### Actions
 
-- `Button`: Primary interaction component with multiple variants
+- `Button`: brand interaction component with multiple variants
 - `IconButton`: Circular button optimized for icon display
 
 #### Containers
@@ -79,10 +79,6 @@ Alouette provides a comprehensive set of components following the atomic design 
 
 - `Separator`: Visual divider with customizable orientation
 - `List`: Structured data display components
-
-#### Typography
-
-- `Typography`: Text component with semantic variants
 
 For detailed examples and API documentation, visit our [Storybook](https://www.chromatic.com/library?appId=679f9e8df3edc5f07975b64a).
 
@@ -126,7 +122,7 @@ import { Button } from "alouette";
 function MyComponent() {
   return (
     <Button
-      theme="primary"
+      theme="brand"
       text="Click me"
       onPress={() => console.log("Clicked!")}
     />
@@ -142,22 +138,7 @@ import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftReg
 
 function MyComponent() {
   return (
-    <Button theme="primary" icon={<ArrowLeftRegularIcon />} text="Go Back" />
-  );
-}
-```
-
-### Typography
-
-```tsx
-import { Typography } from "alouette";
-
-function MyComponent() {
-  return (
-    <>
-      <Typography variant="h1">Heading 1</Typography>
-      <Typography variant="body">Regular text content</Typography>
-    </>
+    <Button theme="brand" icon={<ArrowLeftRegularIcon />} text="Go Back" />
   );
 }
 ```

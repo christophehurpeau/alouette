@@ -108,14 +108,14 @@
   "prettier": "@pob/root/prettier-config",
   "peerDependencies": {
     "alouette-icons": "*",
-    "expo-linear-gradient": "*",
+    "expo-web-browser": "*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-native": "*",
     "react-native-svg": "*"
   },
   "peerDependenciesMeta": {
-    "expo-linear-gradient": {
+    "expo-web-browser": {
       "optional": true
     },
     "react-dom": {
@@ -123,11 +123,11 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "1.138.0",
-    "@tamagui/animations-react-native": "1.138.0",
-    "@tamagui/core": "1.138.0",
+    "@tamagui/animations-css": "2.0.0-rc.16",
+    "@tamagui/animations-react-native": "2.0.0-rc.16",
+    "@tamagui/core": "2.0.0-rc.16",
     "alouette-icons": "8.0.5",
-    "expo-linear-gradient": "~15.0.7",
+    "expo-web-browser": "~15.0.10",
     "react-native-safe-area-context": "5.6.2",
     "type-fest": "4.41.0"
   },

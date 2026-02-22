@@ -1,0 +1,1 @@
+{"version":3,"file":"ScreenCenterLayout.d.ts","sourceRoot":"","sources":["../../../../src/ui/layout/ScreenCenterLayout.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,OAAO,CAAC;AAGvC,UAAU,uBAAuB;IAC/B,MAAM,EAAE,SAAS,CAAC;IAClB,OAAO,EAAE,SAAS,CAAC;IACnB,MAAM,EAAE,SAAS,CAAC;CACnB;AAED,wBAAgB,kBAAkB,CAAC,EACjC,MAAM,EACN,OAAO,EACP,MAAM,GACP,EAAE,uBAAuB,2CAQzB"}

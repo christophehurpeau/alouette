@@ -83,7 +83,7 @@ export const createAlouetteFonts = ({
   }),
   ...(monospaceFontFamily
     ? {
-        monospace: createFont({
+        "body-monospace": createFont({
           family: monospaceFontFamily,
           weight: {
             regular: "400",

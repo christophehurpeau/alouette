@@ -1,22 +1,9 @@
 import { transformWithEsbuild } from "vite";
-import { tamaguiExtractPlugin, tamaguiPlugin } from "@tamagui/vite-plugin";
+import { tamaguiPlugin } from "@tamagui/vite-plugin";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import { defineConfig } from "vite";
 import { URL, fileURLToPath } from "url";
-
-// fix expo-linear-gradient https://github.com/vitejs/vite/discussions/3448
-// it would be better to only apply this to expo-linear-gradient
-// esbuild: {
-//   loader: "jsx",
-// },
-// optimizeDeps: {
-//   esbuildOptions: {
-//     loader: {
-//       ".js": "jsx",
-//     },
-//   },
-// },
 
 const extensions = [
   ".mjs",
@@ -49,7 +36,7 @@ export default defineConfig({
     //   extension,
     // ]),
     holdUntilCrawlEnd: true,
-    exclude: ["expo-linear-gradient", "alouette-icons"],
+    exclude: ["alouette-icons"],
   },
   resolve: {
     extensions,
@@ -71,20 +58,9 @@ export default defineConfig({
     tamaguiPlugin({
       config: "./tamagui.config.ts",
       components: ["alouette"],
-      optimize: process.env.NODE_ENV === "production",
       excludeReactNativeWebExports: [], // TODO properly exclude
+      useReactNativeWebLite: "without-animated",
+      disableExtraction: process.env.NODE_ENV !== "production",
     }),
-    // {
-    //   name: "fix-expo-linear-gradient",
-    //   transform(code: string, id: string) {
-    //     if (id.includes("expo-linear-gradient")) {
-    //       // fix expo-linear-gradient
-    //       return transformWithEsbuild(code, id, {
-    //         loader: "jsx",
-    //         jsx: "automatic", // 👈
-    //       });
-    //     }
-    //   },
-    // },
   ].filter(Boolean),
 });

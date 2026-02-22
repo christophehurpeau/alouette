@@ -1,7 +1,7 @@
 import convert from "color-convert";
 import fs from "node:fs";
 
-type ColorScale = Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10, string>;
+type ColorScale = Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11, string>;
 
 const createColorScale = (
   baseColor: string,
@@ -21,37 +21,51 @@ const createColorScale = (
           light: { standard: 0, medium: 0, moreSaturation: 0 },
         }
       : {
-          dark: { standard: 85, medium: 72, moreSaturation: 88 },
+          dark: { standard: 56, medium: 72, moreSaturation: 88 },
           light: { standard: 56, medium: 82 + boostLight, moreSaturation: 96 },
         };
 
   const lightnessSteps =
     kind === "light"
-      ? [hue === 0 ? 100 : 96, 92, 86, 82, 78, 72, 56, 38, 32, 18]
+      ? [
+          hue === 0 ? 100 : 98,
+          96, // hue === 0 ? 96 : 92,
+          92, // hue === 0 ? 92 : 86,
+          88, // hue === 0 ? 86 : 82,
+          78,
+          72,
+          56,
+          38,
+          28,
+          18,
+          8,
+        ]
       : [
-          hue === 0 ? 12 : 6,
-          hue === 0 ? 12 : 12,
-          hue === 0 ? 16 : 16,
-          hue === 0 ? 20 : 20,
+          6,
+          12,
+          16,
+          hue === 0 ? 20 : 22,
           hue === 0 ? 24 : 26,
           hue === 0 ? 28 : 30,
-          hue === 0 ? 32 : 48,
-          62,
-          68,
-          82,
+          hue === 0 ? 32 : 42,
+          66,
+          76,
+          86,
+          hue === 0 ? 96 : 92,
         ];
 
   const scale: ColorScale = {
     1: `#${convert.hsl.hex([hue, saturations[kind].standard, lightnessSteps[0]])}`,
-    2: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[1]])}`,
-    3: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[2]])}`,
+    2: `#${convert.hsl.hex([hue, saturations[kind].standard, lightnessSteps[1]])}`,
+    3: `#${convert.hsl.hex([hue, saturations[kind].standard, lightnessSteps[2]])}`,
     4: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[3]])}`,
     5: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[4]])}`,
     6: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[5]])}`,
-    7: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[6]])}`,
-    8: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[7] + boostTextContrast])}`,
+    7: `#${convert.hsl.hex([hue, kind === "dark" ? saturations[kind].medium : saturations[kind].moreSaturation, boostLight + lightnessSteps[6]])}`,
+    8: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[7]])}`,
     9: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[8] + boostTextContrast])}`,
     10: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[9] + boostTextContrast])}`,
+    11: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, lightnessSteps[10]])}`,
   };
 
   return scale;
@@ -77,12 +91,12 @@ const createColorPalettes = (
 const generatePalettes = () => {
   const palettes = {
     ...createColorPalettes("grayscale", "#8e8e8e", 0),
-    ...createColorPalettes("primary", "#31a1c4", 194, {
+    ...createColorPalettes("brand", "#31a1c4", 194, {
       boostLightTextContrast: 8,
     }),
     ...createColorPalettes("danger", "#b52a26", 2, {
-      boostLightTextContrast: 4,
-      boostLight: 6,
+      boostLightTextContrast: 8,
+      boostLight: 2,
     }),
     ...createColorPalettes("info", "#2ac8ff", 195, {
       boostLightTextContrast: 8,
@@ -92,7 +106,7 @@ const generatePalettes = () => {
     }),
     ...createColorPalettes("warning", "#ffb72a", 40, {
       boostLightTextContrast: 16,
-      boostLight: 4,
+      boostLight: -4,
     }),
   };
 

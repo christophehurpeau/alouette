@@ -1,60 +1,48 @@
-export type { IconButtonProps } from "./components/actions/IconButton";
-export { IconButton } from "./components/actions/IconButton";
-export type { ButtonProps } from "./components/actions/Button";
+export type { IconButtonProps } from "./ui/actions/IconButton";
+export { IconButton } from "./ui/actions/IconButton";
+export type { ButtonProps } from "./ui/actions/Button";
 export {
   Button,
   ExternalLinkButton,
   InternalLinkButton,
-} from "./components/actions/Button";
-export type { BoxProps } from "./components/containers/Box";
-export { Box, SafeAreaBox } from "./components/containers/Box";
-export type { PressableBoxProps } from "./components/containers/PressableBox";
-export { PressableBox } from "./components/containers/PressableBox";
-export type { MessageProps } from "./components/feedback/Message";
-export { Message } from "./components/feedback/Message";
-export type {
-  InputTextProps,
-  TextAreaProps,
-} from "./components/forms/InputText";
-export { InputText, TextArea } from "./components/forms/InputText";
-export type { IconProps } from "./components/primitives/Icon";
-export { Icon } from "./components/primitives/Icon";
-export type { ScrollViewProps } from "./components/primitives/ScrollView";
-export { ScrollView } from "./components/primitives/ScrollView";
-export type { ViewProps } from "./components/primitives/View";
-export { View } from "./components/primitives/View";
-export type {
-  HStackProps,
-  VStackProps,
-  StackProps,
-} from "./components/primitives/stacks";
-export { Stack, HStack, VStack } from "./components/primitives/stacks";
-export type { StoryProps } from "./components/story-components/Story";
-export { Story } from "./components/story-components/Story";
-export type { StoryContainerProps } from "./components/story-components/StoryContainer";
-export { StoryContainer } from "./components/story-components/StoryContainer";
-export { StoryDecorator } from "./components/story-components/StoryDecorator";
+} from "./ui/actions/Button";
+export type { BoxProps } from "./ui/containers/Box";
+export { Box, SafeAreaBox } from "./ui/containers/Box";
+export type { PressableBoxProps } from "./ui/data/PressableBox";
+export { PressableBox } from "./ui/data/PressableBox";
+export type { MessageProps } from "./ui/feedback/Message";
+export { Message } from "./ui/feedback/Message";
+export type { InputTextProps } from "./ui/inputs/InputText";
+export type { TextAreaProps } from "./ui/inputs/TextArea";
+export { InputText } from "./ui/inputs/InputText";
+export { TextArea } from "./ui/inputs/TextArea";
+export type { IconProps } from "./ui/primitives/Icon";
+export { Icon } from "./ui/primitives/Icon";
+export type { ScrollViewProps } from "./ui/primitives/ScrollView";
+export { ScrollView } from "./ui/primitives/ScrollView";
+export type { ViewProps } from "./ui/primitives/View";
+export { View } from "./ui/primitives/View";
+export type { HStackProps, VStackProps, StackProps } from "./ui/stacks/stacks";
+export { Stack, HStack, VStack } from "./ui/stacks/stacks";
+export type { StoryProps } from "./ui/story-components/Story";
+export { Story } from "./ui/story-components/Story";
+export type { StoryContainerProps } from "./ui/story-components/StoryContainer";
+export { StoryContainer } from "./ui/story-components/StoryContainer";
+export { StoryDecorator } from "./ui/story-components/StoryDecorator";
 export type {
   StoryGridColProps,
   StoryGridRowProps,
-} from "./components/story-components/StoryGrid";
-export { StoryGrid } from "./components/story-components/StoryGrid";
-export type { StoryTitleProps } from "./components/story-components/StoryTitle";
-export { StoryTitle } from "./components/story-components/StoryTitle";
-export { WithTamaguiConfig } from "./components/story-components/WithTamaguiConfig";
-export type {
-  TypographyProps,
-  TypographyParagraphProps,
-} from "./components/typography/Typography";
-export {
-  Typography,
-  TypographyParagraph,
-} from "./components/typography/Typography";
+} from "./ui/story-components/StoryGrid";
+export { StoryGrid } from "./ui/story-components/StoryGrid";
+export type { StoryTitleProps } from "./ui/story-components/StoryTitle";
+export { StoryTitle } from "./ui/story-components/StoryTitle";
+export type { TextProps, ParagraphProps } from "./ui/primitives/Text";
+export { Text, Paragraph } from "./ui/primitives/Text";
 export {
   SwitchBreakpointsUsingDisplayNone,
   SwitchBreakpointsUsingNull,
-} from "./components/windowSize/SwitchBreakpoints";
-export { useCurrentBreakpointName } from "./components/windowSize/useCurrentBreakpointName";
+} from "./windowSize/SwitchBreakpoints";
+export { useCurrentBreakpointName } from "./windowSize/useCurrentBreakpointName";
 export { AlouetteDecorator } from "./core/AlouetteDecorator";
 export {
   AlouetteProvider,
@@ -62,13 +50,12 @@ export {
 } from "./core/AlouetteProvider";
 export type { GetProps, ThemeProps } from "@tamagui/core";
 export { Theme, styled, withStaticProperties } from "@tamagui/core";
-export type { SeparatorProps } from "./components/layout/Separator";
-export { Separator } from "./components/layout/Separator";
-export { PressableListItem } from "./components/layout/PressableListItem";
-export type { PressableListItemProps } from "./components/layout/PressableListItem";
-export { GradientBackground } from "./components/layout/GradientBackground";
-export type { GradientBackgroundProps } from "./components/layout/GradientBackground";
-export * as containersVariants from "./components/containers/variants";
+export type { SeparatorProps } from "./ui/stacks/Separator";
+export { Separator } from "./ui/stacks/Separator";
+export { PressableListItem } from "./ui/data/PressableListItem";
+export type { PressableListItemProps } from "./ui/data/PressableListItem";
+export { GradientBackground } from "./ui/layout/GradientBackground";
+export type { GradientBackgroundProps } from "./ui/layout/GradientBackground";
 export { useSafeAreaInsets } from "./core/useSafeAreaInsets";
-export type { SVGIconElement } from "./components/primitives/Icon";
+export type { SVGIconElement } from "./ui/primitives/Icon";
 export { SafeAreaProvider } from "./core/SafeAreaProvider";

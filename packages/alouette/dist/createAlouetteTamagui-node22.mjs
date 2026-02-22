@@ -15,12 +15,13 @@ const animations = createAnimations({
     stiffness: 250
   },
   slow: {
+    duration: 450,
     damping: 20,
     stiffness: 60
   },
   formElement: {
     type: "timing",
-    duration: 600,
+    duration: 200,
     damping: 20,
     stiffness: 250
   }
@@ -105,7 +106,7 @@ const createAlouetteFonts = ({
     }
   }),
   ...monospaceFontFamily ? {
-    monospace: createFont({
+    "body-monospace": createFont({
       family: monospaceFontFamily,
       weight: {
         regular: "400",
@@ -156,14 +157,6 @@ const media = {
   wide: { minWidth: Breakpoints.WIDE }
 };
 
-const createAlouetteSizes = (spacing, negative) => {
-  const MAX_SIZE = 64;
-  const sizes = {};
-  for (let size = 0; size <= MAX_SIZE; size++) {
-    sizes[negative ? `-${size}` : `${size}`] = size * spacing;
-  }
-  return sizes;
-};
 const transformColorScalesToTokens = (colorScales) => {
   return Object.fromEntries(
     Object.entries(colorScales).flatMap(([colorName, colorScale]) => {
@@ -173,12 +166,7 @@ const transformColorScalesToTokens = (colorScales) => {
     })
   );
 };
-const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
-  const sizes = createAlouetteSizes(spacing, false);
-  const negativeSizes = createAlouetteSizes(
-    -spacing,
-    true
-  );
+const createAlouetteTokens = (colorScales, { spacing = 16 } = {}) => {
   return createTokens({
     color: {
       blackBackground: "#1f1e1e",
@@ -192,36 +180,37 @@ const createAlouetteTokens = (colorScales, { spacing = 4 } = {}) => {
       ...transformColorScalesToTokens(colorScales)
     },
     radius: {
-      ...sizes,
-      xs: spacing * 2,
-      sm: spacing * 4,
-      md: spacing * 8
+      xs: spacing / 2,
+      sm: spacing,
+      md: spacing * 2,
+      lg: spacing * 3
     },
     space: {
-      ...sizes,
-      ...negativeSizes,
-      xs: spacing * 2,
-      sm: spacing * 4,
-      md: spacing * 8
+      "-1.0": -spacing,
+      "0.25": spacing / 4,
+      "0.5": spacing / 2,
+      // previous $sm or $2
+      "0.75": spacing * 0.75,
+      // previous $3
+      "1.0": spacing,
+      // previous $md or $4
+      "1.25": spacing * 1.25,
+      // previous $5
+      "1.5": spacing * 1.5,
+      // previous $6
+      "2.0": spacing * 2,
+      // previous $8 or $md
+      "3.0": spacing * 3
+      // previous $12
     },
-    size: { ...sizes },
-    zIndex: {}
+    // size: { ...sizes },
+    size: {},
+    zIndex: {},
+    opacity: {
+      disabled: 0.7
+    }
   });
 };
-
-const mappingLightToDark = {
-  1: 1,
-  2: 4,
-  3: 3,
-  4: 2,
-  5: 6,
-  6: 5,
-  7: 7,
-  8: 8,
-  9: 9,
-  10: 10
-};
-const createColorScale = (colorScale) => colorScale;
 
 const getLuminance = (r, g, b) => {
   const values = [r, g, b].map((c) => {
@@ -272,104 +261,142 @@ const warnOnContrastIssues = (themeName, textColor, backgroundColor) => {
   }
 };
 
-const createColorTheme = (tokens, themeName, mode = "light", backgroundColor, textColor) => {
+const createColorTheme = (tokens, themeName, mode = "light", textColor) => {
   const alouetteTokens = tokens;
-  if (!backgroundColor) {
-    backgroundColor = mode === "dark" ? alouetteTokens.color.blackBackground : alouetteTokens.color.whiteBackground;
-  }
   if (!textColor) {
     textColor = mode === "dark" ? alouetteTokens.color.whiteText : alouetteTokens.color.blackText;
   }
-  const getColor = (scaleNumber, tint, adaptForDarkMode = true) => {
-    return tokens.color[`${tint || themeName}.${mode}.${mode === "dark" && adaptForDarkMode ? mappingLightToDark[scaleNumber] : scaleNumber}`];
+  const getSpecificColor = (scaleNumberDarkMode, scaleNumberLightMode) => {
+    return tokens.color[`${themeName}.${mode}.${mode === "dark" ? scaleNumberDarkMode : scaleNumberLightMode}`];
   };
+  const getSpecificGrayScaleColor = (scaleNumberDarkMode, scaleNumberLightMode) => {
+    return tokens.color[`grayscale.${mode}.${mode === "dark" ? scaleNumberDarkMode : scaleNumberLightMode}`];
+  };
+  const bgScreen = getSpecificColor(2, 3);
+  const bgSurface = getSpecificColor(3, 2);
+  const bgHighlight = getSpecificColor(4, 1);
   const theme = {
-    screenBackgroundColor: getColor(1),
-    "screenBackgroundColor.elevated": getColor(
-      mode === "dark" ? 2 : 1,
-      void 0,
-      false
-    ),
-    "screenBackgroundColor.translucent": mode === "dark" ? alouetteTokens.color.blackBackgroundTranslucent : alouetteTokens.color.whiteBackgroundTranslucent,
-    nonInteractiveBackgroundColor: getColor(3),
-    "nonInteractiveBackgroundColor.elevated": getColor(
-      mode === "dark" ? 4 : 3,
-      void 0,
-      false
-    ),
-    "gradientColor:start": getColor(mode === "dark" ? 5 : 6, void 0, false),
-    "gradientColor:middle": getColor(mode === "dark" ? 6 : 7, void 0, false),
-    "gradientColor:end": getColor(mode === "dark" ? 4 : 5, void 0, false),
-    textColor,
-    accentTextColor: getColor(9),
-    borderColor: getColor(8),
-    shadowColor: mode === "dark" ? alouetteTokens.color.transparent : getColor(8, "grayscale", false),
-    "textColor:disabled": getColor(mode === "dark" ? 8 : 7, "grayscale", false),
-    "interactive.linkTextColor": getColor(9),
-    "interactive.linkTextColor:hover": getColor(10),
-    "interactive.linkTextColor:focus": getColor(10),
-    "interactive.linkTextColor:press": getColor(8),
-    "interactive.linkTextColor:disabled": getColor(9, "grayscale"),
-    "interactive.contained.backgroundColor": getColor(6),
-    "interactive.elevated.backgroundColor": mode === "dark" ? getColor(4, "grayscale", false) : backgroundColor,
-    "interactive.elevated.shadowColor": mode === "dark" ? alouetteTokens.color.transparent : getColor(8),
-    "interactive.elevated.borderColor": getColor(mode === "dark" ? 7 : 1),
-    "interactive.outlined.backgroundColor": backgroundColor,
-    "interactive.outlined.borderColor": getColor(7),
-    "interactive.contained.backgroundColor:hover": getColor(5),
-    "interactive.elevated.backgroundColor:hover": getColor(2),
-    "interactive.elevated.borderColor:hover": getColor(mode === "dark" ? 8 : 1),
-    "interactive.outlined.backgroundColor:hover": backgroundColor,
-    "interactive.outlined.borderColor:hover": getColor(8),
-    "interactive.contained.backgroundColor:focus": getColor(5),
-    "interactive.elevated.backgroundColor:focus": getColor(2),
-    "interactive.elevated.borderColor:focus": getColor(mode === "dark" ? 8 : 1),
-    "interactive.outlined.backgroundColor:focus": backgroundColor,
-    "interactive.outlined.borderColor:focus": getColor(8),
-    "interactive.contained.outlineColor:focus": getColor(7, void 0, false),
-    "interactive.outlined.outlineColor:focus": getColor(7, void 0, false),
-    "interactive.elevated.outlineColor:focus": getColor(7, void 0, false),
-    "interactive.contained.backgroundColor:press": getColor(3),
-    "interactive.elevated.backgroundColor:press": getColor(4),
-    "interactive.elevated.borderColor:press": getColor(mode === "dark" ? 8 : 1),
-    "interactive.outlined.backgroundColor:press": backgroundColor,
-    "interactive.outlined.borderColor:press": getColor(8),
-    "interactive.contained.backgroundColor:disabled": getColor(
+    // NEW
+    "bg-screen": bgScreen,
+    "bg-surface": bgSurface,
+    "bg-highlight": bgHighlight,
+    "bg-highlight-accent": getSpecificColor(4, 4),
+    "bg-lowered": getSpecificColor(1, 4),
+    // deep, combine with deep shadow dark = 0% light = 82%
+    "bg-translucent": mode === "dark" ? alouetteTokens.color.blackBackgroundTranslucent : alouetteTokens.color.whiteBackgroundTranslucent,
+    "bg-screen-gradient-start": getSpecificColor(3, 4),
+    "bg-screen-gradient-middle": getSpecificColor(2, 5),
+    "bg-screen-gradient-end": getSpecificColor(1, 6),
+    "text-sharp": getSpecificColor(11, 11),
+    // headings, buttons, and important text dark = 96% light = 5%
+    "text-muted": getSpecificGrayScaleColor(9, 9),
+    // rest dark = 68% light = 30%
+    "text-accent": themeName === "grayscale" ? getSpecificColor(11, 11) : getSpecificColor(9, 9),
+    // same as sharp in default theme, same as muted in colored themes
+    "text-accent-muted": getSpecificColor(9, 8),
+    "text-onAccent": themeName === "grayscale" ? getSpecificColor(11, 11) : getSpecificColor(11, 9),
+    "text-onAccent-muted": themeName === "grayscale" ? getSpecificColor(9, 8) : getSpecificColor(9, 6),
+    "text-disabled-muted": getSpecificGrayScaleColor(8, 7),
+    "text-disabled-sharp": getSpecificGrayScaleColor(8, 8),
+    "border-sharp": getSpecificColor(8, 8),
+    "border-muted": getSpecificColor(7, 7),
+    selectionBackgroundColor: `${getSpecificColor(9, 9).val}40`,
+    // shadowTop: `${getSpecificColor(1, 1).val}40`,
+    // shadow2: `${getSpecificColor(11, 11).val}40`,
+    // shadow3: `${getSpecificColor(11, 11).val}20`,
+    // shadowLowered1: `${getSpecificColor(11, 11).val}40`,
+    // shadowLowered2: `${getSpecificColor(1, 1).val}40`,
+    // shadowLowered3: `${getSpecificColor(1, 1).val}20`,
+    // "shadowinset":
+    //   mode === "dark"
+    //     ? alouetteTokens.color.transparent
+    //     : getColor(8, "grayscale", false),
+    "interactive.linkTextColor": getSpecificColor(9, 9),
+    "interactive.linkTextColor:hover": getSpecificColor(10, 10),
+    "interactive.linkTextColor:focus": getSpecificColor(10, 10),
+    "interactive.linkTextColor:press": getSpecificColor(8, 8),
+    "interactive.linkTextColor:disabled": getSpecificGrayScaleColor(9, 9),
+    "interactive.link.outline:focus": getSpecificColor(7, 7),
+    "interactive.forms.placeholderText": getSpecificGrayScaleColor(8, 8),
+    "interactive.forms.disabledText": getSpecificGrayScaleColor(9, 9),
+    // identical to "surface"
+    "interactive.forms.backgroundColor": getSpecificGrayScaleColor(3, 1),
+    "interactive.forms.backgroundColor:hover": getSpecificGrayScaleColor(3, 1),
+    "interactive.forms.backgroundColor:focus": getSpecificGrayScaleColor(3, 1),
+    "interactive.forms.backgroundColor:press": getSpecificGrayScaleColor(3, 1),
+    "interactive.forms.backgroundColor:disabled": getSpecificGrayScaleColor(
       4,
-      "grayscale",
-      false
+      4
     ),
-    "interactive.elevated.backgroundColor:disabled": backgroundColor,
-    "interactive.elevated.shadowColor:disabled": getColor(8, "grayscale"),
-    "interactive.elevated.borderColor:disabled": getColor(1, "grayscale"),
-    "interactive.outlined.backgroundColor:disabled": backgroundColor,
-    "interactive.outlined.borderColor:disabled": getColor(6, "grayscale"),
-    "interactive.forms.textColor": textColor,
-    "interactive.forms.placeholderTextColor": getColor(8, "grayscale"),
-    "interactive.forms.outlineColor:focus": getColor(7, void 0, false),
-    "interactive.forms.backgroundColor": backgroundColor,
-    "interactive.forms.backgroundColor:hover": backgroundColor,
-    "interactive.forms.backgroundColor:focus": getColor(2),
-    "interactive.forms.backgroundColor:press": getColor(4),
-    "interactive.forms.borderColor": getColor(7),
-    "interactive.forms.borderColor:disabled": getColor(7, "grayscale"),
-    "interactive.forms.borderColor:hover": getColor(
-      mode === "dark" ? 8 : 6,
-      void 0,
-      false
+    "interactive.forms.borderColor": getSpecificColor(7, 7),
+    "interactive.forms.borderColor:disabled": getSpecificGrayScaleColor(7, 6),
+    "interactive.forms.borderColor:hover": getSpecificColor(8, 8),
+    "interactive.forms.borderColor:focus": getSpecificColor(8, 8),
+    "interactive.forms.borderColor:press": getSpecificColor(8, 8),
+    "interactive.forms.outlineColor:focus": getSpecificColor(8, 8),
+    // TODO
+    // borderColor: ,// same as backgroundBaseColor for light mode
+    // highlightBorder: "hsl(0 0 100%)", // dark = 60% light = 100%
+    // TODO interactive.background linear gradient 0 surface 5% raised
+    // TODO interactive.background:hover linear gradient 0 surface (100%?) raised
+    // TODO shadow 0 2px 2px hsla(0, 0, 0, 0.07), 0 4px 4px hsla(0, 0, 0, 0.15)
+    // LEGACY
+    "interactive.contained.backgroundColor": getSpecificColor(4, 1),
+    // interactive-accent should be used for interactive elements in accent color themes.
+    "interactive-accent.contained.backgroundColor": getSpecificColor(6, 3),
+    "interactive.contained.backgroundColor:hover": getSpecificColor(6, 4),
+    "interactive-accent.contained.backgroundColor:hover": getSpecificColor(
+      7,
+      2
     ),
-    "interactive.forms.borderColor:focus": getColor(
-      mode === "dark" ? 8 : 6,
-      void 0,
-      false
+    "interactive.contained.backgroundColor:focus": getSpecificColor(6, 4),
+    "interactive-accent.contained.backgroundColor:focus": getSpecificColor(
+      7,
+      2
     ),
-    "interactive.forms.borderColor:press": getColor(6)
+    "interactive.contained.outlineColor:focus": getSpecificColor(7, 7),
+    "interactive-accent.contained.outlineColor:focus": getSpecificColor(7, 7),
+    "interactive.contained.backgroundColor:press": getSpecificColor(6, 5),
+    "interactive-accent.contained.backgroundColor:press": getSpecificColor(
+      7,
+      2
+    ),
+    "interactive.contained.backgroundColor:disabled": getSpecificGrayScaleColor(
+      5,
+      5
+    ),
+    "interactive-accent.contained.backgroundColor:disabled": getSpecificGrayScaleColor(5, 3),
+    "interactive.outlined.borderColor": getSpecificColor(7, 7),
+    "interactive-accent.outlined.borderColor": getSpecificColor(7, 7),
+    "interactive.outlined.borderColor:hover": getSpecificColor(8, 8),
+    "interactive-accent.outlined.borderColor:hover": getSpecificColor(8, 8),
+    "interactive.outlined.borderColor:focus": getSpecificColor(8, 8),
+    "interactive-accent.outlined.borderColor:focus": getSpecificColor(8, 8),
+    "interactive.outlined.outlineColor:focus": getSpecificColor(7, 7),
+    "interactive-accent.outlined.outlineColor:focus": getSpecificColor(7, 7),
+    "interactive.outlined.borderColor:press": getSpecificColor(8, 8),
+    "interactive-accent.outlined.borderColor:press": getSpecificColor(8, 8),
+    "interactive.outlined.borderColor:disabled": getSpecificGrayScaleColor(
+      6,
+      6
+    ),
+    "interactive-accent.outlined.borderColor:disabled": getSpecificGrayScaleColor(6, 6)
   };
   if (process.env.NODE_ENV === "development") {
     warnOnContrastIssues(
       themeName,
-      theme.textColor.val,
-      theme.screenBackgroundColor.val
+      theme["text-sharp"].val,
+      theme["bg-screen"].val
+    );
+    warnOnContrastIssues(
+      themeName,
+      theme["text-sharp"].val,
+      theme["bg-surface"].val
+    );
+    warnOnContrastIssues(
+      themeName,
+      theme["text-muted"].val,
+      theme["bg-surface"].val
     );
   }
   return theme;
@@ -377,165 +404,179 @@ const createColorTheme = (tokens, themeName, mode = "light", backgroundColor, te
 const createAlouetteThemes = (tokens, customCreateColorTheme = createColorTheme) => {
   const alouetteTokens = tokens;
   return {
-    light: customCreateColorTheme(alouetteTokens, "grayscale", "light"),
-    light_info: customCreateColorTheme(alouetteTokens, "info", "light"),
-    light_success: customCreateColorTheme(alouetteTokens, "success", "light"),
-    light_warning: customCreateColorTheme(alouetteTokens, "warning", "light"),
-    light_danger: customCreateColorTheme(alouetteTokens, "danger", "light"),
-    light_primary: customCreateColorTheme(alouetteTokens, "primary", "light"),
     dark: customCreateColorTheme(alouetteTokens, "grayscale", "dark"),
+    light: customCreateColorTheme(alouetteTokens, "grayscale", "light"),
+    dark_brand: customCreateColorTheme(alouetteTokens, "brand", "dark"),
     dark_info: customCreateColorTheme(alouetteTokens, "info", "dark"),
     dark_success: customCreateColorTheme(alouetteTokens, "success", "dark"),
     dark_warning: customCreateColorTheme(alouetteTokens, "warning", "dark"),
     dark_danger: customCreateColorTheme(alouetteTokens, "danger", "dark"),
-    dark_primary: customCreateColorTheme(alouetteTokens, "primary", "dark")
+    light_brand: customCreateColorTheme(alouetteTokens, "brand", "light"),
+    light_info: customCreateColorTheme(alouetteTokens, "info", "light"),
+    light_success: customCreateColorTheme(alouetteTokens, "success", "light"),
+    light_warning: customCreateColorTheme(alouetteTokens, "warning", "light"),
+    light_danger: customCreateColorTheme(alouetteTokens, "danger", "light")
   };
 };
+
+const createColorScale = (colorScale) => colorScale;
 
 const defaultColorScales = {
   "grayscale.light": createColorScale({
     1: "#FFFFFF",
-    2: "#EBEBEB",
-    3: "#DBDBDB",
-    4: "#D1D1D1",
+    2: "#F5F5F5",
+    3: "#EBEBEB",
+    4: "#E0E0E0",
     5: "#C7C7C7",
     6: "#B8B8B8",
     7: "#8F8F8F",
     8: "#616161",
-    9: "#525252",
-    10: "#2E2E2E"
+    9: "#474747",
+    10: "#2E2E2E",
+    11: "#141414"
   }),
   "grayscale.dark": createColorScale({
-    1: "#1F1F1F",
+    1: "#0F0F0F",
     2: "#1F1F1F",
     3: "#292929",
     4: "#333333",
     5: "#3D3D3D",
     6: "#474747",
     7: "#525252",
-    8: "#9E9E9E",
-    9: "#ADADAD",
-    10: "#D1D1D1"
+    8: "#A8A8A8",
+    9: "#C2C2C2",
+    10: "#DBDBDB",
+    11: "#F5F5F5"
   }),
-  "primary.light": createColorScale({
-    1: "#EFF8FB",
-    2: "#DAF4FB",
-    3: "#BEEBF9",
-    4: "#ABE5F7",
+  "brand.light": createColorScale({
+    1: "#F7FBFD",
+    2: "#EFF8FB",
+    3: "#DFF1F6",
+    4: "#C7EEF9",
     5: "#99DFF5",
     6: "#7DD7F2",
     7: "#23C8FB",
-    8: "#037496",
-    9: "#025D78",
-    10: "#012732"
+    8: "#0493BE",
+    9: "#024D64",
+    10: "#012732",
+    11: "#011F28"
   }),
-  "primary.dark": createColorScale({
-    1: "#02161C",
-    2: "#092A35",
-    3: "#0B3846",
-    4: "#0E4758",
+  "brand.dark": createColorScale({
+    1: "#071418",
+    2: "#0D2830",
+    3: "#123540",
+    4: "#104E60",
     5: "#135C72",
     6: "#156A84",
-    7: "#0FB4E6",
-    8: "#49CCF3",
-    9: "#66D4F5",
-    10: "#A9E7F9"
+    7: "#1E94B8",
+    8: "#5CD1F5",
+    9: "#8CDFF8",
+    10: "#BCECFB",
+    11: "#D9F4FD"
   }),
   "danger.light": createColorScale({
-    1: "#FBEFEF",
-    2: "#FEF6F5",
-    3: "#FDDAD9",
-    4: "#FBC7C5",
-    5: "#FAB5B2",
-    6: "#F89996",
-    7: "#FB4741",
+    1: "#FDF7F7",
+    2: "#FBEFEF",
+    3: "#F6E0DF",
+    4: "#FBD2D0",
+    5: "#F7A4A1",
+    6: "#F48985",
+    7: "#FB342D",
     8: "#C80B04",
-    9: "#AA0903",
-    10: "#640502"
+    9: "#6E0602",
+    10: "#3C0301",
+    11: "#280201"
   }),
   "danger.dark": createColorScale({
-    1: "#1C0302",
-    2: "#4F0F0D",
-    3: "#601210",
-    4: "#721613",
-    5: "#8C1B17",
-    6: "#9E1E1A",
-    7: "#F12922",
+    1: "#180707",
+    2: "#300F0D",
+    3: "#401312",
+    4: "#691411",
+    5: "#7B1714",
+    6: "#8C1B17",
+    7: "#C1251F",
     8: "#F56A66",
-    9: "#F78682",
-    10: "#FBC7C5"
+    9: "#F89996",
+    10: "#FBC7C5",
+    11: "#FDDAD9"
   }),
   "info.light": createColorScale({
-    1: "#EFF8FB",
-    2: "#DAF3FB",
-    3: "#BEEAF9",
-    4: "#ABE4F7",
+    1: "#F7FBFD",
+    2: "#EFF8FB",
+    3: "#DFF0F6",
+    4: "#C7EDF9",
     5: "#99DEF5",
     6: "#7DD5F2",
     7: "#23C5FB",
-    8: "#037196",
-    9: "#025B78",
-    10: "#012632"
+    8: "#048FBE",
+    9: "#024B64",
+    10: "#012632",
+    11: "#011E28"
   }),
   "info.dark": createColorScale({
-    1: "#02161C",
-    2: "#092A35",
-    3: "#0B3746",
-    4: "#0E4558",
+    1: "#071418",
+    2: "#0D2730",
+    3: "#123440",
+    4: "#104C60",
     5: "#135A72",
     6: "#156884",
-    7: "#0FB0E6",
-    8: "#49C9F3",
-    9: "#66D1F5",
-    10: "#A9E5F9"
+    7: "#1E92B8",
+    8: "#5CCEF5",
+    9: "#8CDDF8",
+    10: "#BCEBFB",
+    11: "#D9F4FD"
   }),
   "success.light": createColorScale({
-    1: "#EFFBEF",
-    2: "#DAFBDA",
-    3: "#BEF9BE",
-    4: "#ABF7AB",
+    1: "#F7FDF7",
+    2: "#EFFBEF",
+    3: "#DFF6DF",
+    4: "#C7F9C7",
     5: "#99F599",
     6: "#7DF27D",
     7: "#23FB23",
-    8: "#038203",
-    9: "#026402",
-    10: "#011E01"
+    8: "#04BE04",
+    9: "#025002",
+    10: "#011E01",
+    11: "#012801"
   }),
   "success.dark": createColorScale({
-    1: "#021C02",
-    2: "#093509",
-    3: "#0B460B",
-    4: "#0E580E",
+    1: "#071807",
+    2: "#0D300D",
+    3: "#124012",
+    4: "#106010",
     5: "#137213",
     6: "#158415",
-    7: "#0FE60F",
-    8: "#49F349",
-    9: "#66F566",
-    10: "#A9F9A9"
+    7: "#1EB81E",
+    8: "#5CF55C",
+    9: "#8CF88C",
+    10: "#BCFBBC",
+    11: "#D9FDD9"
   }),
   "warning.light": createColorScale({
-    1: "#FBF7EF",
-    2: "#FEF8EC",
-    3: "#FBEDD0",
-    4: "#FAE6BD",
-    5: "#F9DEAA",
-    6: "#F6D38D",
-    7: "#FBBA37",
-    8: "#825803",
-    9: "#644302",
-    10: "#1E1401"
+    1: "#FDFBF7",
+    2: "#FBF7EF",
+    3: "#F6EEDF",
+    4: "#F6E1B6",
+    5: "#F0CE89",
+    6: "#EDC36E",
+    7: "#FAAC0F",
+    8: "#AA7203",
+    9: "#281B01",
+    10: "#F6F900",
+    11: "#281B01"
   }),
   "warning.dark": createColorScale({
-    1: "#1C1402",
-    2: "#46330B",
-    3: "#583F0E",
-    4: "#694C11",
-    5: "#845F15",
-    6: "#956C18",
-    7: "#F0A919",
-    8: "#F5C25C",
+    1: "#181207",
+    2: "#30240D",
+    3: "#403012",
+    4: "#4F390D",
+    5: "#604610",
+    6: "#725213",
+    7: "#A7781B",
+    8: "#F3BB49",
     9: "#F6CD79",
-    10: "#FBE6BC"
+    10: "#F9DFA9",
+    11: "#FDF1D9"
   })
 };
 
@@ -548,7 +589,12 @@ const createAlouetteTamagui = (tokens, themes, options = {}) => {
     animations,
     settings: {
       allowedStyleValues: "somewhat-strict-web",
-      autocompleteSpecificTokens: "except-special"
+      autocompleteSpecificTokens: "except-special",
+      selectionStyles: (theme) => {
+        return {
+          backgroundColor: theme.selectionBackgroundColor
+        };
+      }
     },
     components: ["alouette"]
   });
