@@ -11,13 +11,9 @@ const variants = {
 
 export const Stack = styled(View, {
   name: "Stack",
-  variants: {
-    ...variants,
-    type: {
-      h: { flexDirection: "row" },
-      v: { flexDirection: "column" },
-    },
-  } as const,
+  flexDirection: "row",
+  flexWrap: "wrap",
+  variants,
 });
 
 export type StackProps = GetProps<typeof Stack>;

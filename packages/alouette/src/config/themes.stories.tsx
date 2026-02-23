@@ -41,6 +41,9 @@ export default meta;
 
 export const TokensStory: StoryObj<unknown> = {
   name: "Themes",
+  parameters: {
+    chromatic: { disableSnapshot: true }, // this story exceeds maximum height
+  },
   render: () => (
     <WithTamaguiConfig
       render={({ themes }) => {

@@ -49,7 +49,7 @@ export const Variants: ThisStory = {
       </Story.Section>
 
       <Story.Section title="States">
-        <VStack gap="$4">
+        <VStack gap="$2.0">
           <ExternalLink
             disabled
             as={LinkText}

@@ -9,10 +9,11 @@ import { Text } from "../primitives/Text";
 
 const ButtonFrame = styled(PressableBox, {
   name: "ButtonFrame",
-  role: "button",
+  render: "button",
+  // @ts-expect-error missing type definition
+  type: "button",
   center: true,
   flexDirection: "row",
-  alignItems: "center",
 
   variants: {
     size: {
@@ -39,6 +40,7 @@ const ButtonFrame = styled(PressableBox, {
 const ButtonText = styled(Text, {
   textAlign: "center",
   weight: "$bold",
+  flexShrink: 1,
 
   variants: {
     "button-size": {

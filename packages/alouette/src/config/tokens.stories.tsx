@@ -95,7 +95,7 @@ export const TokensStory: StoryObj<unknown> = {
                     center
                     theme="brand"
                     withBackground="highlight"
-                    paddingVertical="$4"
+                    paddingVertical="$2.0"
                     width={value.val < 0 ? -value.val : value.val}
                   >
                     <VStack gap="$1.0">

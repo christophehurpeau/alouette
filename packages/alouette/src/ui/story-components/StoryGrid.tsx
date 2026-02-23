@@ -35,6 +35,7 @@ function StoryGridRow({
           {...{
             [`$${breakpoint}`]: {
               flexGrow: 1,
+              flexShrink: 1,
               flexBasis: flexWrap ? undefined : 0,
               paddingTop: 0,
               paddingBottom: 0,

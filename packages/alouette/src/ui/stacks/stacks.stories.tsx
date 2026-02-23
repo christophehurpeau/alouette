@@ -44,13 +44,13 @@ const meta = {
 ### Usage
 ~~~tsx
 // Basic horizontal stack
-<HStack gap="$4" alignItems="center">
+<HStack gap="$1.0" alignItems="center">
   <Box>Left</Box>
   <Box>Right</Box>
 </HStack>
 
 // Vertical stack with alignment
-<VStack gap="$4" alignItems="stretch">
+<VStack gap="$1.0" alignItems="stretch">
   <Box>Top</Box>
   <Box>Bottom</Box>
 </VStack>
@@ -59,14 +59,6 @@ const meta = {
     },
   },
   argTypes: {
-    type: {
-      description: "Stack direction (only for Stack component)",
-      control: "select",
-      options: ["h", "v"],
-      table: {
-        defaultValue: { summary: "v" },
-      },
-    },
     gap: {
       description: "Space between stack items",
       control: "select",
@@ -108,14 +100,13 @@ type Story = StoryObj<typeof Stack>;
 export const StackStory: Story = {
   name: "Stack",
   args: {
-    type: "v",
     gap: "$2.0",
     theme: "brand",
     children: [
-      <Box key="1" center background="highlight" flexGrow={1}>
+      <Box key="1" center layer="highlight" flexGrow={1}>
         <Text>1</Text>
       </Box>,
-      <Box key="2" center background="highlight" flexGrow={1}>
+      <Box key="2" center layer="highlight" flexGrow={1}>
         <Text>2</Text>
       </Box>,
     ],
@@ -127,44 +118,44 @@ export const HStackStory: StoryObj<typeof HStack> = {
   render: () => (
     <Story>
       <Story.Section title="Basic">
-        <HStack gap="$4">
-          <Box center background="highlight" flexGrow={1}>
+        <HStack gap="$2.0">
+          <Box center layer="highlight" flexGrow={1}>
             <Text>1</Text>
           </Box>
-          <Box center background="highlight" flexGrow={1}>
+          <Box center layer="highlight" flexGrow={1}>
             <Text>2</Text>
           </Box>
         </HStack>
       </Story.Section>
 
       <Story.Section title="With theme">
-        <HStack theme="brand" gap="$4">
-          <Box center background="highlight" flexGrow={1}>
+        <HStack theme="brand" gap="$2.0">
+          <Box center layer="highlight-accent" flexGrow={1}>
             <Text>1</Text>
           </Box>
-          <Box center background="highlight" flexGrow={1}>
+          <Box center layer="highlight-accent" flexGrow={1}>
             <Text>2</Text>
           </Box>
         </HStack>
       </Story.Section>
 
       <Story.Section title="With justifyContent">
-        <HStack theme="info" gap="$4" justifyContent="space-between">
-          <Box center background="highlight">
+        <HStack gap="$2.0" justifyContent="space-between">
+          <Box center layer="highlight">
             <Text>1</Text>
           </Box>
-          <Box center background="highlight">
+          <Box center layer="highlight">
             <Text>2</Text>
           </Box>
         </HStack>
       </Story.Section>
 
       <Story.Section title="With flexGrow">
-        <HStack theme="info" gap="$4" justifyContent="space-between">
-          <Box background="highlight" flexGrow={1} flexBasis={0}>
+        <HStack gap="$2.0" justifyContent="space-between">
+          <Box layer="highlight" flexGrow={1} flexBasis={0}>
             <Text>1</Text>
           </Box>
-          <Box background="highlight" flexGrow={2} flexBasis={0}>
+          <Box layer="highlight" flexGrow={2} flexBasis={0}>
             <Text>2</Text>
           </Box>
         </HStack>
@@ -178,33 +169,33 @@ export const VStackStory: StoryObj<typeof VStack> = {
   render: () => (
     <Story>
       <Story.Section title="Basic">
-        <VStack gap="$4">
-          <Box center background="highlight" flexGrow={1}>
+        <VStack gap="$2.0">
+          <Box center layer="highlight" flexGrow={1}>
             <Text>1</Text>
           </Box>
-          <Box center background="highlight" flexGrow={1}>
+          <Box center layer="highlight" flexGrow={1}>
             <Text>2</Text>
           </Box>
         </VStack>
       </Story.Section>
 
       <Story.Section title="With theme">
-        <VStack theme="brand" gap="$4">
-          <Box center background="highlight" flexGrow={1}>
+        <VStack theme="brand" gap="$2.0">
+          <Box center layer="highlight" flexGrow={1}>
             <Text>1</Text>
           </Box>
-          <Box center background="highlight" flexGrow={1}>
+          <Box center layer="highlight" flexGrow={1}>
             <Text>2</Text>
           </Box>
         </VStack>
       </Story.Section>
 
       <Story.Section title="With alignItems">
-        <VStack theme="warning" gap="$4" alignItems="center">
-          <Box center background="highlight" padding="$4">
+        <VStack theme="warning" gap="$2.0" alignItems="center">
+          <Box center layer="highlight" padding="$2.0">
             <Text>1</Text>
           </Box>
-          <Box center background="highlight" padding="$8">
+          <Box center layer="highlight" padding="$1.0">
             <Text>2</Text>
           </Box>
         </VStack>
