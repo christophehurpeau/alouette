@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-// eslint-disable-next-line import/extensions
 import { checkContrast, getContrastRatio } from "./colorContrast.ts";
 
 test("colorContrast", async (t) => {
