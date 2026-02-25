@@ -43,5 +43,31 @@ export default [
       // }),
     ],
   }),
+  {
+    files: ["**/*.stories.{ts,tsx}"],
+    settings: {
+      "import-x/core-modules": ["storybook", "storybook/test"],
+    },
+  },
+  {
+    files: ["**/*.test.{ts,tsx}"],
+    rules: {
+      "import-x/extensions": [
+        "error",
+        "always",
+        {
+          ignorePackages: true,
+          pattern: {
+            js: "always",
+            cjs: "always",
+            mjs: "always",
+            cts: "always",
+            mts: "always",
+            ts: "always",
+          },
+        },
+      ],
+    },
+  },
   ...storybook.configs["flat/recommended"],
 ];

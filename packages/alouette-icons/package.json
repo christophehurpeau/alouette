@@ -33,7 +33,8 @@
           "import": "./lib/phosphor-icons/*.react-native.mjs"
         },
         "import": "./lib/phosphor-icons/*.web.mjs"
-      }
+      },
+      "import": "./lib/phosphor-icons/*.web.mjs"
     }
   },
   "files": [
