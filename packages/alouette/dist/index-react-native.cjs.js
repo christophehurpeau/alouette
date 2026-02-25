@@ -374,10 +374,11 @@ const Paragraph = ParagraphStyled;
 
 const ButtonFrame = core.styled(PressableBox, {
   name: "ButtonFrame",
-  role: "button",
+  render: "button",
+  // @ts-expect-error missing type definition
+  type: "button",
   center: true,
   flexDirection: "row",
-  alignItems: "center",
   variants: {
     size: {
       sm: {
@@ -401,6 +402,7 @@ const ButtonFrame = core.styled(PressableBox, {
 const ButtonText = core.styled(Text, {
   textAlign: "center",
   weight: "$bold",
+  flexShrink: 1,
   variants: {
     "button-size": {
       sm: {
@@ -711,13 +713,9 @@ const variants = {
 };
 const Stack = core.styled(core.View, {
   name: "Stack",
-  variants: {
-    ...variants,
-    type: {
-      h: { flexDirection: "row" },
-      v: { flexDirection: "column" }
-    }
-  }
+  flexDirection: "row",
+  flexWrap: "wrap",
+  variants
 });
 const HStack = core.styled(core.View, {
   name: "HStack",
@@ -841,6 +839,7 @@ function StoryGridRow({
           ...{
             [`$${breakpoint}`]: {
               flexGrow: 1,
+              flexShrink: 1,
               flexBasis: flexWrap ? void 0 : 0,
               paddingTop: 0,
               paddingBottom: 0,

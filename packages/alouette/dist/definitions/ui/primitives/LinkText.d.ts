@@ -9,7 +9,7 @@ declare const LinkTextStyled: import("@tamagui/web").TamaguiComponent<import("@t
     weight?: "$regular" | "$bold" | "$extraBold" | undefined;
     subtle?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
-export type LinkTextProps = Pick<GetProps<typeof LinkTextStyled>, "children" | "subtle" | "tint" | "disabled" | "theme">;
+export type LinkTextProps = Pick<GetProps<typeof LinkTextStyled>, "children" | "disabled" | "subtle" | "theme" | "tint">;
 export declare const LinkText: FunctionComponent<LinkTextProps>;
 export {};
 //# sourceMappingURL=LinkText.d.ts.map

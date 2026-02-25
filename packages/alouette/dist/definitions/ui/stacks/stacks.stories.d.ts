@@ -5,7 +5,6 @@ declare const meta: {
     title: string;
     component: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         absoluteFill?: boolean | undefined;
-        type?: "h" | "v" | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     subcomponents: {
         HStack: any;
@@ -20,16 +19,6 @@ declare const meta: {
         };
     };
     argTypes: {
-        type: {
-            description: string;
-            control: "select";
-            options: string[];
-            table: {
-                defaultValue: {
-                    summary: string;
-                };
-            };
-        };
         gap: {
             description: string;
             control: "select";
