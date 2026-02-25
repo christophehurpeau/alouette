@@ -1,3 +1,4 @@
+import type { GetProps } from "@tamagui/core";
 import { View, styled } from "@tamagui/core";
 import type { ScrollViewProps } from "../primitives/ScrollView";
 import { ScrollView } from "../primitives/ScrollView";
@@ -38,3 +39,5 @@ export const GradientScrollView = ScrollView.styleable<{
     {children}
   </ScrollView>
 ));
+
+export type GradientScrollViewProps = GetProps<typeof GradientScrollView>;
