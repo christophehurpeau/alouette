@@ -24,7 +24,7 @@ const InteractiveBoxFrame = styled(BoxFrame, {
         tabIndex: -1 as const,
       },
     },
-  },
+  } as const,
 });
 
 export type BoxProps = Pick<
