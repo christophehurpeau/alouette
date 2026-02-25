@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [18.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@17.0.3...alouette@18.0.0) (2026-02-25)
+
+### ⚠ BREAKING CHANGES
+
+* new major redesign
+
+### Features
+
+* enhance layout and styling in stories and components
+* new major redesign
+
 ## [17.0.3](https://github.com/christophehurpeau/alouette/compare/alouette@17.0.2...alouette@17.0.3) (2025-12-21)
 
 Version bump for dependency: alouette-icons
