@@ -7,17 +7,17 @@ const preview: Preview = {
 
   parameters: {
     backgrounds: {
-      default: "light",
-      values: [
-        {
+      options: {
+        light: {
           name: "light",
           value: "#ffffff",
         },
-        {
+
+        dark: {
           name: "dark",
           value: "#000000",
         },
-      ],
+      },
     },
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
@@ -27,6 +27,12 @@ const preview: Preview = {
       // },
     },
     tamaguiConfig,
+  },
+
+  initialGlobals: {
+    backgrounds: {
+      value: "light",
+    },
   },
 };
 

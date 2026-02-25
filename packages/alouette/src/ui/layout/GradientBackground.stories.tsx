@@ -11,7 +11,6 @@ import { GradientScrollView } from "./GradientScrollView";
 export default {
   title: "alouette/layout/GradientBackground",
   component: GradientBackground,
-  parameters: {},
 } satisfies Meta<typeof GradientBackground>;
 
 function Content() {
