@@ -35,7 +35,6 @@ declare const _default: {
         withFocusVisibleOutline?: boolean | undefined;
         withBackground?: "interactive" | "highlight" | "surface" | undefined;
     }>>, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
-    parameters: {};
 };
 export default _default;
 export declare const PreviewGradientBackgroundStoryLightBrand: StoryObj;
