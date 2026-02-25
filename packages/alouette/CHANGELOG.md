@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [18.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.0.0...alouette@18.1.0) (2026-02-25)
+
+### Features
+
+* add GradientScrollView and its props to index export
+
+### Bug Fixes
+
+* add missing type assertion for variants in InteractiveBoxFrame
+
 ## [18.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@17.0.3...alouette@18.0.0) (2026-02-25)
 
 ### ⚠ BREAKING CHANGES
