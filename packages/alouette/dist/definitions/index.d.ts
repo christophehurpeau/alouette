@@ -46,4 +46,6 @@ export type { GradientBackgroundProps } from "./ui/layout/GradientBackground";
 export { useSafeAreaInsets } from "./core/useSafeAreaInsets";
 export type { SVGIconElement } from "./ui/primitives/Icon";
 export { SafeAreaProvider } from "./core/SafeAreaProvider";
+export { GradientScrollView } from "./ui/layout/GradientScrollView";
+export type { GradientScrollViewProps } from "./ui/layout/GradientScrollView";
 //# sourceMappingURL=index.d.ts.map

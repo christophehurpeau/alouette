@@ -1045,6 +1045,41 @@ const GradientBackground = core.styled(Box, {
   // needed to override "static" position for backgroundImage tamagui
 });
 
+const TopScrollOffset = core.styled(core.View, {
+  backgroundColor: "$bg-screen",
+  position: "absolute",
+  top: -600,
+  left: 0,
+  right: 0,
+  height: 600
+});
+const BottomScrollOffset = core.styled(core.View, {
+  backgroundColor: "$bg-screen",
+  position: "absolute",
+  bottom: -600,
+  left: 0,
+  right: 0,
+  height: 600
+});
+const GradientScrollView = ScrollView.styleable(({ gradientTheme, children, ...scrollViewProps }) => /* @__PURE__ */ jsxRuntime.jsxs(ScrollView, { ...scrollViewProps, children: [
+  /* @__PURE__ */ jsxRuntime.jsx(
+    TopScrollOffset,
+    {
+      theme: gradientTheme,
+      backgroundColor: "$bg-screen-gradient-start"
+    }
+  ),
+  /* @__PURE__ */ jsxRuntime.jsx(
+    BottomScrollOffset,
+    {
+      theme: gradientTheme,
+      backgroundColor: "$bg-screen-gradient-end"
+    }
+  ),
+  /* @__PURE__ */ jsxRuntime.jsx(GradientBackground, { theme: gradientTheme }),
+  children
+] }));
+
 exports.Theme = core.Theme;
 exports.View = core.View;
 exports.styled = core.styled;
@@ -1057,6 +1092,7 @@ exports.Box = Box;
 exports.Button = Button;
 exports.ExternalLinkButton = ExternalLinkButton;
 exports.GradientBackground = GradientBackground;
+exports.GradientScrollView = GradientScrollView;
 exports.HStack = HStack;
 exports.Icon = Icon;
 exports.IconButton = IconButton;

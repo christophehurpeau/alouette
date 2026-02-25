@@ -1,3 +1,4 @@
+import type { GetProps } from "@tamagui/core";
 import type { ScrollViewProps } from "../primitives/ScrollView";
 export declare const GradientScrollView: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/web").StackStyleBase & {
     readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<typeof import("react-native").ScrollView, {
@@ -20,4 +21,5 @@ export declare const GradientScrollView: import("@tamagui/web").TamaguiComponent
         readonly contentContainerStyle: "style";
     };
 }>;
+export type GradientScrollViewProps = GetProps<typeof GradientScrollView>;
 //# sourceMappingURL=GradientScrollView.d.ts.map

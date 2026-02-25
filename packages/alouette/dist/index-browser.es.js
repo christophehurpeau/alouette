@@ -1061,5 +1061,40 @@ const GradientBackground = styled(Box, {
   // needed to override "static" position for backgroundImage tamagui
 });
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, useCurrentBreakpointName, useDefaultThemeFromColorScheme, useSafeAreaInsets };
+const TopScrollOffset = styled(View, {
+  backgroundColor: "$bg-screen",
+  position: "absolute",
+  top: -600,
+  left: 0,
+  right: 0,
+  height: 600
+});
+const BottomScrollOffset = styled(View, {
+  backgroundColor: "$bg-screen",
+  position: "absolute",
+  bottom: -600,
+  left: 0,
+  right: 0,
+  height: 600
+});
+const GradientScrollView = ScrollView.styleable(({ gradientTheme, children, ...scrollViewProps }) => /* @__PURE__ */ jsxs(ScrollView, { ...scrollViewProps, children: [
+  /* @__PURE__ */ jsx(
+    TopScrollOffset,
+    {
+      theme: gradientTheme,
+      backgroundColor: "$bg-screen-gradient-start"
+    }
+  ),
+  /* @__PURE__ */ jsx(
+    BottomScrollOffset,
+    {
+      theme: gradientTheme,
+      backgroundColor: "$bg-screen-gradient-end"
+    }
+  ),
+  /* @__PURE__ */ jsx(GradientBackground, { theme: gradientTheme }),
+  children
+] }));
+
+export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, useCurrentBreakpointName, useDefaultThemeFromColorScheme, useSafeAreaInsets };
 //# sourceMappingURL=index-browser.es.js.map
