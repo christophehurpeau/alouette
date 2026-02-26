@@ -13,12 +13,6 @@ declare const _default: {
         };
     };
     argTypes: {
-        highlight: {
-            description: string;
-            control: {
-                type: "boolean";
-            };
-        };
         shadow: {
             description: string;
             control: {

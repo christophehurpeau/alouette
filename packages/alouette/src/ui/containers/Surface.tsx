@@ -4,6 +4,7 @@ import type { ComponentType } from "react";
 import { Box } from "./Box";
 
 export const SurfaceFrame = styled(Box, {
+  layer: "surface",
   shadow: "s",
 
   overflow: "hidden", // make sure the boxshadow respects the borderRadius.
@@ -24,17 +25,6 @@ export const SurfaceFrame = styled(Box, {
       },
     },
 
-    highlight: {
-      true: {
-        layer: "highlight",
-      },
-      false: {
-        layer: "surface",
-      },
-      accent: {
-        layer: "highlight-accent",
-      },
-    },
     lowered: {
       true: {
         layer: "lowered",
@@ -44,7 +34,6 @@ export const SurfaceFrame = styled(Box, {
   } as const,
 
   defaultVariants: {
-    highlight: false,
     size: "md",
   },
 });
@@ -54,7 +43,7 @@ type SurfaceFrameProps = GetProps<typeof SurfaceFrame>;
 export type SurfaceProps = Pick<
   SurfaceFrameProps,
   | "children"
-  | "highlight"
+  | "layer"
   | "lowered"
   | "marginBottom"
   | "marginTop"

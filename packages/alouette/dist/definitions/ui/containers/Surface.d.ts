@@ -6,7 +6,7 @@ export declare const SurfaceFrame: import("@tamagui/web").TamaguiComponent<impor
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
@@ -17,7 +17,7 @@ export declare const SurfaceFrame: import("@tamagui/web").TamaguiComponent<impor
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
@@ -28,18 +28,17 @@ export declare const SurfaceFrame: import("@tamagui/web").TamaguiComponent<impor
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
     withBackground?: "interactive" | "highlight" | "surface" | undefined;
 }>>, import("@tamagui/web").StackStyleBase, {
     size?: "lg" | "md" | "sm" | undefined;
-    highlight?: boolean | "accent" | undefined;
     lowered?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 type SurfaceFrameProps = GetProps<typeof SurfaceFrame>;
-export type SurfaceProps = Pick<SurfaceFrameProps, "children" | "highlight" | "lowered" | "marginBottom" | "marginTop" | "shadow" | "size" | "theme">;
+export type SurfaceProps = Pick<SurfaceFrameProps, "children" | "layer" | "lowered" | "marginBottom" | "marginTop" | "shadow" | "size" | "theme">;
 export declare const Surface: ComponentType<SurfaceProps>;
 export {};
 //# sourceMappingURL=Surface.d.ts.map

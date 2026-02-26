@@ -62,6 +62,9 @@ export const layer = {
   lowered: {
     backgroundColor: "$bg-lowered",
   },
+  translucent: {
+    backgroundColor: "$bg-translucent",
+  },
 } as const;
 
 export const shadow = {

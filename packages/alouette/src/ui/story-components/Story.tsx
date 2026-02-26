@@ -75,7 +75,7 @@ export function Story({
   return (
     <ScrollViewNative>
       {documentation && (
-        <Surface highlight shadow="s" theme="brand" marginBottom="$3.0">
+        <Surface layer="highlight" shadow="s" theme="brand" marginBottom="$3.0">
           {documentation}
         </Surface>
       )}

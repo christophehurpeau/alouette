@@ -64,8 +64,8 @@ export const createAlouetteTokens = <
       blackBackground: "#1f1e1e",
       whiteBackground: "#ffffff",
       // https://github.com/tamagui/tamagui/issues/3601 does not work at the moment
-      blackBackgroundTranslucent: "#1f1e1e77",
-      whiteBackgroundTranslucent: "#ffffff99",
+      blackBackgroundTranslucent: "#1f1e1e55",
+      whiteBackgroundTranslucent: "#ffffff66",
       blackText: "#000000",
       whiteText: "#fdfdfd",
       transparent: "transparent",

@@ -53,6 +53,9 @@ export declare const layer: {
     readonly lowered: {
         readonly backgroundColor: "$bg-lowered";
     };
+    readonly translucent: {
+        readonly backgroundColor: "$bg-translucent";
+    };
 };
 export declare const shadow: {
     readonly none: {

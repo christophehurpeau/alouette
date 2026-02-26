@@ -16,7 +16,7 @@ export const MessageFrame = styled(Surface, {
   name: "MessageFrame",
   alignItems: "center",
   flexDirection: "row",
-  highlight: "accent",
+  layer: "highlight-accent",
 
   variants: {
     size: {

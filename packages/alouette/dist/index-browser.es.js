@@ -109,6 +109,9 @@ const layer = {
   },
   lowered: {
     backgroundColor: "$bg-lowered"
+  },
+  translucent: {
+    backgroundColor: "$bg-translucent"
   }
 };
 const shadow = {
@@ -478,6 +481,7 @@ function InternalLinkButton(props) {
 }
 
 const SurfaceFrame = styled(Box, {
+  layer: "surface",
   shadow: "s",
   overflow: "hidden",
   // make sure the boxshadow respects the borderRadius.
@@ -496,17 +500,6 @@ const SurfaceFrame = styled(Box, {
         borderRadius: "$lg"
       }
     },
-    highlight: {
-      true: {
-        layer: "highlight"
-      },
-      false: {
-        layer: "surface"
-      },
-      accent: {
-        layer: "highlight-accent"
-      }
-    },
     lowered: {
       true: {
         layer: "lowered",
@@ -515,7 +508,6 @@ const SurfaceFrame = styled(Box, {
     }
   },
   defaultVariants: {
-    highlight: false,
     size: "md"
   }
 });
@@ -525,7 +517,7 @@ const MessageFrame = styled(Surface, {
   name: "MessageFrame",
   alignItems: "center",
   flexDirection: "row",
-  highlight: "accent",
+  layer: "highlight-accent",
   variants: {
     size: {
       sm: {
@@ -794,7 +786,7 @@ function Story({
   noDarkTheme
 }) {
   return /* @__PURE__ */ jsxs(ScrollViewNative, { children: [
-    documentation && /* @__PURE__ */ jsx(Surface, { highlight: true, shadow: "s", theme: "brand", marginBottom: "$3.0", children: documentation }),
+    documentation && /* @__PURE__ */ jsx(Surface, { layer: "highlight", shadow: "s", theme: "brand", marginBottom: "$3.0", children: documentation }),
     ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsx(
       Box,
       {
@@ -1095,7 +1087,7 @@ const GradientScrollView = ScrollView.styleable(({ gradientTheme, children, ...s
   children
 ] }));
 
-const useControllableCheckedState = (checked, onChange) => {
+const useControllableCheckedState = (checked, onChange, onValueChange) => {
   const [checkedState, setCheckedState] = useState(checked ?? false);
   return [
     checked !== void 0 ? checked : checkedState,
@@ -1103,6 +1095,7 @@ const useControllableCheckedState = (checked, onChange) => {
       setCheckedState((prevValue) => {
         if (prevValue !== newChecked) {
           onChange?.(e);
+          onValueChange?.(newChecked);
         }
         return newChecked;
       });
@@ -1191,10 +1184,11 @@ const SwitchThumb = styled(Box, {
   }
 });
 const Switch = SwitchFrame.styleable(
-  ({ checked, disabled, onChange, ...rest }) => {
+  ({ checked, disabled, onChange, onValueChange, ...rest }) => {
     const [currentChecked, setCurrentChecked] = useControllableCheckedState(
       checked,
-      onChange
+      onChange,
+      onValueChange
     );
     return /* @__PURE__ */ jsx(
       SwitchFrame,

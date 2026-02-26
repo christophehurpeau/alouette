@@ -29,10 +29,6 @@ export default {
     },
   },
   argTypes: {
-    highlight: {
-      description: "Visual highlight variant for the surface",
-      control: { type: "boolean" },
-    },
     shadow: {
       description:
         'Optional elevation visual (s | m | l). Use "lowered" only with layer="lowered".',
@@ -69,7 +65,7 @@ export const VariantsSurfaceStory: ThisStory = {
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Surface highlight>
+            <Surface layer="highlight">
               <Text>Highlight surface</Text>
             </Surface>
           </StoryGrid.Col>

@@ -5,7 +5,7 @@ declare const SwitchFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
@@ -16,7 +16,7 @@ declare const SwitchFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
@@ -27,7 +27,7 @@ declare const SwitchFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
@@ -38,6 +38,7 @@ declare const SwitchFrame: import("@tamagui/web").TamaguiComponent<import("@tama
 interface SwitchAdditionalProps {
     checked: boolean;
     onChange: (e: GestureReponderEvent) => void;
+    onValueChange?: (newValue: boolean) => void;
 }
 export type SwitchProps = Pick<GetProps<typeof SwitchFrame>, "aria-labelledby" | "disabled"> & SwitchAdditionalProps;
 export declare const Switch: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "interactive" | "tint" | "center" | keyof import("@tamagui/web").StackStyleBase | "absoluteFill" | "layer" | "shadow" | "withBorder" | "withFocusVisibleOutline" | "withBackground"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
@@ -46,7 +47,7 @@ export declare const Switch: import("@tamagui/web").TamaguiComponent<Omit<import
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
@@ -57,7 +58,7 @@ export declare const Switch: import("@tamagui/web").TamaguiComponent<Omit<import
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
@@ -68,7 +69,7 @@ export declare const Switch: import("@tamagui/web").TamaguiComponent<Omit<import
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
@@ -81,7 +82,7 @@ export declare const Switch: import("@tamagui/web").TamaguiComponent<Omit<import
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
@@ -92,7 +93,7 @@ export declare const Switch: import("@tamagui/web").TamaguiComponent<Omit<import
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;
@@ -103,7 +104,7 @@ export declare const Switch: import("@tamagui/web").TamaguiComponent<Omit<import
     tint?: "accent" | undefined;
     center?: boolean | undefined;
     absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
     shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
     withBorder?: import("@tamagui/web").SizeTokens | undefined;
     withFocusVisibleOutline?: boolean | undefined;

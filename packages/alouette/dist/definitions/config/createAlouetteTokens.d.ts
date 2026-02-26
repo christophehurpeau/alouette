@@ -9,8 +9,8 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     color: {
         readonly blackBackground: "#1f1e1e";
         readonly whiteBackground: "#ffffff";
-        readonly blackBackgroundTranslucent: "#1f1e1e77";
-        readonly whiteBackgroundTranslucent: "#ffffff99";
+        readonly blackBackgroundTranslucent: "#1f1e1e55";
+        readonly whiteBackgroundTranslucent: "#ffffff66";
         readonly blackText: "#000000";
         readonly whiteText: "#fdfdfd";
         readonly transparent: "transparent";
@@ -38,8 +38,8 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
     readonly color: {
         readonly blackBackground: "#1f1e1e";
         readonly whiteBackground: "#ffffff";
-        readonly blackBackgroundTranslucent: "#1f1e1e77";
-        readonly whiteBackgroundTranslucent: "#ffffff99";
+        readonly blackBackgroundTranslucent: "#1f1e1e55";
+        readonly whiteBackgroundTranslucent: "#ffffff66";
         readonly blackText: "#000000";
         readonly whiteText: "#fdfdfd";
         readonly transparent: "transparent";
