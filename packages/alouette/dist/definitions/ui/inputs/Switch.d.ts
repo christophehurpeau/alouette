@@ -1,6 +1,9 @@
-import type { ComponentProps } from "react";
+import { type ThemeName } from "@tamagui/core";
+import type { ComponentProps, ReactNode } from "react";
 import { Switch as NativeSwitch } from "react-native";
-export declare function Switch({ checked, ...rest }: Pick<ComponentProps<typeof NativeSwitch>, "aria-labelledby" | "disabled" | "onValueChange"> & {
+export type SwitchProps = Pick<ComponentProps<typeof NativeSwitch>, "aria-labelledby" | "disabled" | "onValueChange"> & {
+    theme?: ThemeName;
     checked?: boolean;
-}): import("react/jsx-runtime").JSX.Element;
+};
+export declare function Switch({ theme, ...rest }: SwitchProps): ReactNode;
 //# sourceMappingURL=Switch.d.ts.map

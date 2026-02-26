@@ -1,5 +1,5 @@
 import { jsx, jsxs } from 'react/jsx-runtime';
-import { styled, View, usePropsAndStyle, Text as Text$1, isWeb, useMedia, TamaguiProvider } from '@tamagui/core';
+import { styled, View, usePropsAndStyle, Text as Text$1, isWeb, useMedia, TamaguiProvider, Theme, useTheme } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
 import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,7 +8,7 @@ import 'alouette-icons/phosphor-icons/CheckRegularIcon';
 import 'alouette-icons/phosphor-icons/InfoRegularIcon';
 import 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
-import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme } from 'react-native';
+import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Switch as Switch$1 } from 'react-native';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
 
 const absoluteFillStyle = {
@@ -1078,5 +1078,34 @@ const GradientScrollView = ScrollView.styleable(({ gradientTheme, children, ...s
   children
 ] }));
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
+function ThemedNativeSwitch({
+  checked,
+  ...rest
+}) {
+  const theme = useTheme();
+  const backgroundColor = rest.disabled ? theme["$interactive.forms.backgroundColor:disabled"]?.get() : theme["$bg-lowered"]?.get();
+  const thumbColor = rest.disabled ? theme["$text-disabled-muted"]?.get() : theme["$bg-highlight"]?.get();
+  return /* @__PURE__ */ jsx(
+    Switch$1,
+    {
+      ios_backgroundColor: backgroundColor,
+      trackColor: {
+        false: backgroundColor,
+        true: backgroundColor
+      },
+      thumbColor,
+      value: checked,
+      ...rest
+    }
+  );
+}
+function Switch({
+  // checkedTheme,
+  theme,
+  ...rest
+}) {
+  return /* @__PURE__ */ jsx(Theme, { name: theme, children: /* @__PURE__ */ jsx(ThemedNativeSwitch, { ...rest }) });
+}
+
+export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
 //# sourceMappingURL=index-node22.mjs.map

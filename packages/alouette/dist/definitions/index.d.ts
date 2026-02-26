@@ -48,4 +48,6 @@ export type { SVGIconElement } from "./ui/primitives/Icon";
 export { SafeAreaProvider } from "./core/SafeAreaProvider";
 export { GradientScrollView } from "./ui/layout/GradientScrollView";
 export type { GradientScrollViewProps } from "./ui/layout/GradientScrollView";
+export { Switch } from "./ui/inputs/Switch";
+export type { SwitchProps } from "./ui/inputs/Switch";
 //# sourceMappingURL=index.d.ts.map

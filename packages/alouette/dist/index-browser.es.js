@@ -1096,5 +1096,121 @@ const GradientScrollView = ScrollView.styleable(({ gradientTheme, children, ...s
   children
 ] }));
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, useCurrentBreakpointName, useDefaultThemeFromColorScheme, useSafeAreaInsets };
+const useControllableCheckedState = (checked, onChange) => {
+  const [checkedState, setCheckedState] = useState(checked ?? false);
+  return [
+    checked !== void 0 ? checked : checkedState,
+    (newChecked, e) => {
+      setCheckedState((prevValue) => {
+        if (prevValue !== newChecked) {
+          onChange?.(e);
+        }
+        return newChecked;
+      });
+    }
+  ];
+};
+const SwitchFrame = styled(InteractiveBox, {
+  theme: "brand",
+  render: "button",
+  role: "switch",
+  layer: "lowered",
+  shadow: "lowered",
+  position: "relative",
+  tabIndex: 0,
+  borderRadius: 1e3,
+  transition: "formElement",
+  disabledStyle: {
+    backgroundColor: "$interactive.forms.backgroundColor:disabled"
+  },
+  // TODO hover/focus
+  focusVisibleStyle: {
+    outlineColor: "$interactive.forms.outlineColor:focus",
+    outlineWidth: 2,
+    outlineStyle: "solid",
+    outlineOffset: 2
+  },
+  variants: {
+    size: {
+      md: {
+        height: 44,
+        width: 66
+      }
+    }
+  },
+  defaultVariants: {
+    size: "md"
+  }
+});
+const thumbSize = 44 * 0.8;
+const SwitchThumb = styled(Box, {
+  withBackground: "highlight",
+  position: "absolute",
+  top: 44 * 0.1,
+  borderRadius: 1e3,
+  center: true,
+  transition: "formElement",
+  shadow: "s",
+  variants: {
+    size: {
+      md: {
+        height: thumbSize,
+        width: thumbSize
+      }
+    },
+    disabled: {
+      true: {
+        backgroundColor: "$text-disabled-muted",
+        shadow: "none"
+      }
+    },
+    checked: {
+      false: {
+        left: 44 * 0.1,
+        hoverStyle: {
+          width: thumbSize + 2
+        },
+        pressStyle: {
+          width: thumbSize + 8
+        }
+      },
+      true: {
+        left: 44 * 0.6,
+        hoverStyle: {
+          left: 44 * 0.6 - 2,
+          width: thumbSize + 2
+        },
+        pressStyle: {
+          left: 44 * 0.6 - 8,
+          width: thumbSize + 8
+        }
+      }
+    }
+  },
+  defaultVariants: {
+    size: "md"
+  }
+});
+const Switch = SwitchFrame.styleable(
+  ({ checked, disabled, onChange, ...rest }) => {
+    const [currentChecked, setCurrentChecked] = useControllableCheckedState(
+      checked,
+      onChange
+    );
+    return /* @__PURE__ */ jsx(
+      SwitchFrame,
+      {
+        "aria-checked": currentChecked,
+        disabled,
+        ...rest,
+        onPress: (e) => {
+          setCurrentChecked(!currentChecked, e);
+        },
+        children: /* @__PURE__ */ jsx(SwitchThumb, { checked: currentChecked, disabled })
+      }
+    );
+  }
+);
+
+export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, useCurrentBreakpointName, useDefaultThemeFromColorScheme, useSafeAreaInsets };
 //# sourceMappingURL=index-browser.es.js.map

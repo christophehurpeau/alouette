@@ -1080,6 +1080,35 @@ const GradientScrollView = ScrollView.styleable(({ gradientTheme, children, ...s
   children
 ] }));
 
+function ThemedNativeSwitch({
+  checked,
+  ...rest
+}) {
+  const theme = core.useTheme();
+  const backgroundColor = rest.disabled ? theme["$interactive.forms.backgroundColor:disabled"]?.get() : theme["$bg-lowered"]?.get();
+  const thumbColor = rest.disabled ? theme["$text-disabled-muted"]?.get() : theme["$bg-highlight"]?.get();
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    reactNative.Switch,
+    {
+      ios_backgroundColor: backgroundColor,
+      trackColor: {
+        false: backgroundColor,
+        true: backgroundColor
+      },
+      thumbColor,
+      value: checked,
+      ...rest
+    }
+  );
+}
+function Switch({
+  // checkedTheme,
+  theme,
+  ...rest
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(core.Theme, { name: theme, children: /* @__PURE__ */ jsxRuntime.jsx(ThemedNativeSwitch, { ...rest }) });
+}
+
 exports.Theme = core.Theme;
 exports.View = core.View;
 exports.styled = core.styled;
@@ -1111,6 +1140,7 @@ exports.StoryContainer = StoryContainer;
 exports.StoryDecorator = StoryDecorator;
 exports.StoryGrid = StoryGrid;
 exports.StoryTitle = StoryTitle;
+exports.Switch = Switch;
 exports.SwitchBreakpointsUsingDisplayNone = SwitchBreakpointsUsingDisplayNone;
 exports.SwitchBreakpointsUsingNull = SwitchBreakpointsUsingNull;
 exports.Text = Text;
