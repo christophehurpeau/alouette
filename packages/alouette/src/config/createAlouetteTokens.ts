@@ -87,6 +87,7 @@ export const createAlouetteTokens = <
       "1.5": spacing * 1.5, // previous $6
       "2.0": spacing * 2, // previous $8 or $md
       "3.0": spacing * 3, // previous $12
+      "4.0": spacing * 4, // previous $16 or $lg
     },
     // size: { ...sizes },
     size: {},
