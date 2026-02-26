@@ -9,6 +9,7 @@ import { Box, InteractiveBox } from "../containers/Box";
 const useControllableCheckedState = (
   checked: boolean | undefined,
   onChange?: (e: GestureReponderEvent) => void,
+  onValueChange?: (newValue: boolean) => void,
 ) => {
   const [checkedState, setCheckedState] = useState(checked ?? false);
 
@@ -18,6 +19,7 @@ const useControllableCheckedState = (
       setCheckedState((prevValue) => {
         if (prevValue !== newChecked) {
           onChange?.(e);
+          onValueChange?.(newChecked);
         }
         return newChecked;
       });
@@ -153,6 +155,7 @@ interface SwitchAdditionalProps {
   checked: boolean;
   // checkedTheme?: GetProps<typeof SwitchFrame>["theme"];
   onChange: (e: GestureReponderEvent) => void;
+  onValueChange?: (newValue: boolean) => void;
 }
 
 export type SwitchProps = Pick<
@@ -162,10 +165,11 @@ export type SwitchProps = Pick<
   SwitchAdditionalProps;
 
 export const Switch = SwitchFrame.styleable<SwitchAdditionalProps>(
-  ({ checked, disabled, onChange, ...rest }) => {
+  ({ checked, disabled, onChange, onValueChange, ...rest }) => {
     const [currentChecked, setCurrentChecked] = useControllableCheckedState(
       checked,
       onChange,
+      onValueChange,
     );
     return (
       <SwitchFrame
