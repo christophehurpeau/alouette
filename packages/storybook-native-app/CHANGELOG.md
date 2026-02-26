@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.0](///compare/storybook-native-app@8.1.0...storybook-native-app@8.2.0) (2026-02-26)
+
+### Features
+
+* improve switch render on native
+
+### Bug Fixes
+
+* **deps:** update expo monorepo ([#291](undefined/undefined/undefined/issues/291))
+
+Version bump for dependency: alouette
+Version bump for dependency: alouette-icons
+
+
 ## [8.1.0](///compare/storybook-native-app@8.0.0...storybook-native-app@8.1.0) (2026-02-25)
 
 Version bump for dependency: alouette

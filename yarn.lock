@@ -5627,7 +5627,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alouette-icons@npm:8.0.5, alouette-icons@workspace:*, alouette-icons@workspace:packages/alouette-icons":
+"alouette-icons@npm:8.0.6, alouette-icons@workspace:*, alouette-icons@workspace:packages/alouette-icons":
   version: 0.0.0-use.local
   resolution: "alouette-icons@workspace:packages/alouette-icons"
   dependencies:
@@ -5671,7 +5671,7 @@ __metadata:
     "@tamagui/core": "npm:2.0.0-rc.16"
     "@types/node": "npm:24.10.1"
     "@types/react": "npm:19.1.13"
-    alouette-icons: "npm:8.0.5"
+    alouette-icons: "npm:8.0.6"
     expo-web-browser: "npm:~15.0.10"
     react: "npm:19.1.0"
     react-dom: "npm:19.1.0"

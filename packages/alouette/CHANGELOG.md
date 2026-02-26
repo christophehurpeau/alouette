@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [18.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.1.0...alouette@18.2.0) (2026-02-26)
+
+### Features
+
+* export Switch component and its props
+* improve switch render on native
+
+Version bump for dependency: alouette-icons
+
+
 ## [18.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.0.0...alouette@18.1.0) (2026-02-25)
 
 ### Features
