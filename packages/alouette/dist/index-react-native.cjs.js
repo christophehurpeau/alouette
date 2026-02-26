@@ -196,7 +196,7 @@ const Box = process.env.NODE_ENV !== "production" ? (props) => {
   return /* @__PURE__ */ jsxRuntime.jsx(BoxFrame, { ...props });
 } : BoxFrame;
 const InteractiveBox = InteractiveBoxFrame;
-const SafeAreaBoxFrame = BoxFrame.styleable((props) => {
+const SafeAreaBox = BoxFrame.styleable((props) => {
   const insets = reactNativeSafeAreaContext.useSafeAreaInsets();
   return /* @__PURE__ */ jsxRuntime.jsx(
     Box,
@@ -209,7 +209,6 @@ const SafeAreaBoxFrame = BoxFrame.styleable((props) => {
     }
   );
 });
-const SafeAreaBox = SafeAreaBoxFrame;
 
 const PressableBox = core.styled(InteractiveBox, {
   role: "button",

@@ -16,7 +16,7 @@ type BoxFrameProps = GetProps<typeof BoxFrame>;
 export type BoxProps = Pick<BoxFrameProps, "absoluteFill" | "children" | "layer" | "shadow">;
 export declare const Box: ComponentType<BoxFrameProps>;
 export declare const InteractiveBox: ComponentType<BoxFrameProps>;
-export declare const SafeAreaBoxFrame: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+export declare const SafeAreaBox: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | undefined;
     interactive?: boolean | import("csstype").Property.Cursor | undefined;
     tint?: "accent" | undefined;
@@ -51,8 +51,6 @@ export declare const SafeAreaBoxFrame: import("@tamagui/web").TamaguiComponent<O
     withFocusVisibleOutline?: boolean | undefined;
     withBackground?: "interactive" | "highlight" | "surface" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
-type SafeAreaBoxFrameProps = GetProps<typeof SafeAreaBoxFrame>;
-export type SafeAreaBoxProps = Pick<SafeAreaBoxFrameProps, "children" | "layer" | "shadow">;
-export declare const SafeAreaBox: ComponentType<SafeAreaBoxProps>;
+export type SafeAreaBoxProps = GetProps<typeof SafeAreaBox>;
 export {};
 //# sourceMappingURL=Box.d.ts.map

@@ -194,7 +194,7 @@ const Box = process.env.NODE_ENV !== "production" ? (props) => {
   return /* @__PURE__ */ jsx(BoxFrame, { ...props });
 } : BoxFrame;
 const InteractiveBox = InteractiveBoxFrame;
-const SafeAreaBoxFrame = BoxFrame.styleable((props) => {
+const SafeAreaBox = BoxFrame.styleable((props) => {
   const insets = useSafeAreaInsets();
   return /* @__PURE__ */ jsx(
     Box,
@@ -207,7 +207,6 @@ const SafeAreaBoxFrame = BoxFrame.styleable((props) => {
     }
   );
 });
-const SafeAreaBox = SafeAreaBoxFrame;
 
 const PressableBox = styled(InteractiveBox, {
   role: "button",

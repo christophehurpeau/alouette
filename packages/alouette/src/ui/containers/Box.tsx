@@ -51,7 +51,7 @@ export const Box: ComponentType<BoxFrameProps> =
 
 export const InteractiveBox: ComponentType<BoxFrameProps> = InteractiveBoxFrame;
 
-export const SafeAreaBoxFrame = BoxFrame.styleable<{
+export const SafeAreaBox = BoxFrame.styleable<{
   padding?: never;
   paddingTop?: never;
   paddingBottom?: never;
@@ -70,11 +70,4 @@ export const SafeAreaBoxFrame = BoxFrame.styleable<{
   );
 });
 
-type SafeAreaBoxFrameProps = GetProps<typeof SafeAreaBoxFrame>;
-
-export type SafeAreaBoxProps = Pick<
-  SafeAreaBoxFrameProps,
-  "children" | "layer" | "shadow"
->;
-
-export const SafeAreaBox: ComponentType<SafeAreaBoxProps> = SafeAreaBoxFrame;
+export type SafeAreaBoxProps = GetProps<typeof SafeAreaBox>;
