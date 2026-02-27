@@ -27,9 +27,24 @@ const InteractiveBoxFrame = styled(BoxFrame, {
   } as const,
 });
 
+type PaddingPropNames =
+  | "padding"
+  | "paddingBottom"
+  | "paddingHorizontal"
+  | "paddingLeft"
+  | "paddingRight"
+  | "paddingTop"
+  | "paddingVertical";
+
 export type BoxProps = Pick<
   BoxFrameProps,
-  "absoluteFill" | "children" | "layer" | "shadow"
+  | PaddingPropNames
+  | "absoluteFill"
+  | "borderRadius"
+  | "center"
+  | "children"
+  | "layer"
+  | "shadow"
 >;
 
 export const Box: ComponentType<BoxFrameProps> =

@@ -13,7 +13,8 @@ declare const BoxFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui
     withBackground?: "interactive" | "highlight" | "surface" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 type BoxFrameProps = GetProps<typeof BoxFrame>;
-export type BoxProps = Pick<BoxFrameProps, "absoluteFill" | "children" | "layer" | "shadow">;
+type PaddingPropNames = "padding" | "paddingBottom" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingTop" | "paddingVertical";
+export type BoxProps = Pick<BoxFrameProps, PaddingPropNames | "absoluteFill" | "borderRadius" | "center" | "children" | "layer" | "shadow">;
 export declare const Box: ComponentType<BoxFrameProps>;
 export declare const InteractiveBox: ComponentType<BoxFrameProps>;
 export declare const SafeAreaBox: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
