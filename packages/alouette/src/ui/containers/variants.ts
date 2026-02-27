@@ -95,7 +95,7 @@ export const shadow = {
   },
 } as const;
 
-export const size = (val: number) => {
+export const square = (val: number) => {
   return { width: val, height: val };
 };
 

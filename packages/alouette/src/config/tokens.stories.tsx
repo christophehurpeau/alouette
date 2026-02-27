@@ -78,7 +78,7 @@ export const TokensStory: StoryObj<unknown> = {
                     center
                     withBackground="highlight"
                     borderRadius={proportion}
-                    size={50}
+                    square={50}
                     theme="brand"
                   >
                     <Text>{proportion}</Text>

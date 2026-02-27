@@ -5,12 +5,22 @@ import type { SetRequired } from "type-fest";
 import { PressableBox } from "../data/PressableBox";
 import type { SVGIconElement } from "../primitives/Icon";
 import { Icon } from "../primitives/Icon";
+import { buttonHeight } from "./Button";
 
 const IconButtonFrame = styled(PressableBox, {
   name: "IconButtonFrame",
   role: "button",
   center: true,
   borderRadius: 10_000,
+  variants: {
+    size: {
+      ":number": (val: number) => ({
+        square: val,
+      }),
+      sm: { square: buttonHeight.sm },
+      md: { square: buttonHeight.md },
+    },
+  },
 });
 
 type IconButtonFrameProps = GetProps<typeof IconButtonFrame>;
@@ -24,11 +34,12 @@ export interface IconButtonProps
 export function IconButton({
   icon,
   disabled,
-  size = 40,
+  size = "md",
   iconSize,
   variant = "contained",
   ...pressableBoxProps
 }: IconButtonProps): ReactNode {
+  const sizeAsValue = typeof size === "number" ? size : buttonHeight[size];
   return (
     <IconButtonFrame
       size={size}
@@ -37,7 +48,7 @@ export function IconButton({
       {...pressableBoxProps}
     >
       <Icon
-        size={iconSize === "fill" ? size * 0.8 : size * 0.5}
+        size={iconSize === "fill" ? sizeAsValue * 0.8 : sizeAsValue * 0.5}
         disabled={disabled}
         icon={icon}
       />

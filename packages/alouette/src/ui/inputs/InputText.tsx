@@ -60,7 +60,6 @@ export type InputTextProps = Pick<
   | "onChange"
   | "placeholder"
   | "readOnly"
-  | "size"
   | "theme"
   | "value"
 >;

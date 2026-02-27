@@ -78,7 +78,7 @@ export declare const shadow: {
         readonly boxShadow: "inset 0 1px 2px #00000040, inset 0 -2px 2px #ffffff15";
     };
 };
-export declare const size: (val: number) => {
+export declare const square: (val: number) => {
     width: number;
     height: number;
 };

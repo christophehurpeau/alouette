@@ -18,7 +18,7 @@ const CardFrame = styled(Box, {
         layer: "surface",
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     withHeader: false,
@@ -49,7 +49,7 @@ const CardBodyFrame = styled(Box, {
         layer: "surface",
       },
     },
-  },
+  } as const,
 });
 
 export const Card = CardFrame.styleable<{

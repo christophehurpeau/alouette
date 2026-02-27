@@ -1,9 +1,8 @@
 import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
-import type { ComponentType } from "react";
 import { Box } from "./Box";
 
-export const SurfaceFrame = styled(Box, {
+export const Surface = styled(Box, {
   layer: "surface",
   shadow: "s",
 
@@ -38,18 +37,4 @@ export const SurfaceFrame = styled(Box, {
   },
 });
 
-type SurfaceFrameProps = GetProps<typeof SurfaceFrame>;
-
-export type SurfaceProps = Pick<
-  SurfaceFrameProps,
-  | "children"
-  | "layer"
-  | "lowered"
-  | "marginBottom"
-  | "marginTop"
-  | "shadow"
-  | "size"
-  | "theme"
->;
-
-export const Surface: ComponentType<SurfaceProps> = SurfaceFrame;
+export type SurfaceProps = GetProps<typeof Surface>;

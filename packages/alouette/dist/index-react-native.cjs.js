@@ -131,7 +131,7 @@ const shadow = {
     boxShadow: "inset 0 1px 2px #00000040, inset 0 -2px 2px #ffffff15"
   }
 };
-const size = (val) => {
+const square = (val) => {
   return { width: val, height: val };
 };
 const withBorder = (val, { props }) => {
@@ -165,7 +165,7 @@ const containerVariants = /*#__PURE__*/Object.defineProperty({
   interactive,
   layer,
   shadow,
-  size,
+  square,
   tint,
   withBackground,
   withBorder,
@@ -178,7 +178,15 @@ const BoxFrame = core.styled(core.View, {
   // allow to shrink by default, as Box is often used in VSTack and HStack. See button for an example.
   variants: containerVariants
 });
-const InteractiveBoxFrame = core.styled(BoxFrame, {
+const Box = process.env.NODE_ENV !== "production" ? BoxFrame.styleable((props) => {
+  if (process.env.NODE_ENV !== "production" && props.shadow === "lowered" && props.layer !== "lowered") {
+    throw new Error(
+      'shadow="lowered" must only be used with layer="lowered"'
+    );
+  }
+  return /* @__PURE__ */ jsxRuntime.jsx(BoxFrame, { ...props });
+}) : BoxFrame;
+const InteractiveBox = core.styled(BoxFrame, {
   interactive: true,
   tabIndex: 0,
   transition: "fast",
@@ -190,15 +198,6 @@ const InteractiveBoxFrame = core.styled(BoxFrame, {
     }
   }
 });
-const Box = process.env.NODE_ENV !== "production" ? (props) => {
-  if (process.env.NODE_ENV !== "production" && props.shadow === "lowered" && props.layer !== "lowered") {
-    throw new Error(
-      'shadow="lowered" must only be used with layer="lowered"'
-    );
-  }
-  return /* @__PURE__ */ jsxRuntime.jsx(BoxFrame, { ...props });
-} : BoxFrame;
-const InteractiveBox = InteractiveBoxFrame;
 const SafeAreaBox = BoxFrame.styleable((props) => {
   const insets = reactNativeSafeAreaContext.useSafeAreaInsets();
   return /* @__PURE__ */ jsxRuntime.jsx(
@@ -275,39 +274,6 @@ function Icon({
   return react.cloneElement(icon, { style, ...props });
 }
 
-const IconButtonFrame = core.styled(PressableBox, {
-  name: "IconButtonFrame",
-  role: "button",
-  center: true,
-  borderRadius: 1e4
-});
-function IconButton({
-  icon,
-  disabled,
-  size = 40,
-  iconSize,
-  variant = "contained",
-  ...pressableBoxProps
-}) {
-  return /* @__PURE__ */ jsxRuntime.jsx(
-    IconButtonFrame,
-    {
-      size,
-      variant,
-      disabled,
-      ...pressableBoxProps,
-      children: /* @__PURE__ */ jsxRuntime.jsx(
-        Icon,
-        {
-          size: iconSize === "fill" ? size * 0.8 : size * 0.5,
-          disabled,
-          icon
-        }
-      )
-    }
-  );
-}
-
 const TextStyled = core.styled(core.Text, {
   variants: {
     inherit: {
@@ -374,6 +340,10 @@ const ParagraphStyled = core.styled(TextStyled, {
 });
 const Paragraph = ParagraphStyled;
 
+const buttonHeight = {
+  sm: 38,
+  md: 44
+};
 const ButtonFrame = core.styled(PressableBox, {
   name: "ButtonFrame",
   render: "button",
@@ -387,13 +357,13 @@ const ButtonFrame = core.styled(PressableBox, {
         paddingHorizontal: "$0.5",
         gap: "$0.25",
         borderRadius: "$sm",
-        minHeight: 38
+        minHeight: buttonHeight.sm
       },
       md: {
         paddingHorizontal: "$1.0",
         gap: "$0.5",
         borderRadius: "$sm",
-        minHeight: 44
+        minHeight: buttonHeight.md
       }
     }
   },
@@ -476,7 +446,50 @@ function InternalLinkButton(props) {
   return /* @__PURE__ */ jsxRuntime.jsx(Button, { ...props, render: "a", role: "link" });
 }
 
-const SurfaceFrame = core.styled(Box, {
+const IconButtonFrame = core.styled(PressableBox, {
+  name: "IconButtonFrame",
+  role: "button",
+  center: true,
+  borderRadius: 1e4,
+  variants: {
+    size: {
+      ":number": (val) => ({
+        square: val
+      }),
+      sm: { square: buttonHeight.sm },
+      md: { square: buttonHeight.md }
+    }
+  }
+});
+function IconButton({
+  icon,
+  disabled,
+  size = "md",
+  iconSize,
+  variant = "contained",
+  ...pressableBoxProps
+}) {
+  const sizeAsValue = typeof size === "number" ? size : buttonHeight[size];
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    IconButtonFrame,
+    {
+      size,
+      variant,
+      disabled,
+      ...pressableBoxProps,
+      children: /* @__PURE__ */ jsxRuntime.jsx(
+        Icon,
+        {
+          size: iconSize === "fill" ? sizeAsValue * 0.8 : sizeAsValue * 0.5,
+          disabled,
+          icon
+        }
+      )
+    }
+  );
+}
+
+const Surface = core.styled(Box, {
   layer: "surface",
   shadow: "s",
   overflow: "hidden",
@@ -507,7 +520,6 @@ const SurfaceFrame = core.styled(Box, {
     size: "md"
   }
 });
-const Surface = SurfaceFrame;
 
 const MessageFrame = core.styled(Surface, {
   name: "MessageFrame",

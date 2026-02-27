@@ -7,6 +7,11 @@ import { Icon } from "../primitives/Icon";
 import type { SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 
+export const buttonHeight = {
+  sm: 38,
+  md: 44,
+};
+
 const ButtonFrame = styled(PressableBox, {
   name: "ButtonFrame",
   render: "button",
@@ -21,13 +26,13 @@ const ButtonFrame = styled(PressableBox, {
         paddingHorizontal: "$0.5",
         gap: "$0.25",
         borderRadius: "$sm",
-        minHeight: 38,
+        minHeight: buttonHeight.sm,
       },
       md: {
         paddingHorizontal: "$1.0",
         gap: "$0.5",
         borderRadius: "$sm",
-        minHeight: 44,
+        minHeight: buttonHeight.md,
       },
     },
   },

@@ -40,7 +40,7 @@ export default {
     size: {
       description: "Size of the button in pixels",
       control: "select",
-      options: [24, 40],
+      options: [24, 40, "md", "sm"],
       table: {
         defaultValue: { summary: "40" },
       },

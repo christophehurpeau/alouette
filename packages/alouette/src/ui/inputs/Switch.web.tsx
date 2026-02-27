@@ -114,7 +114,7 @@ const SwitchThumb = styled(Box, {
         },
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     size: "md",

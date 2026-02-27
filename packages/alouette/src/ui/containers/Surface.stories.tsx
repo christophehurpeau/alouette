@@ -50,7 +50,7 @@ export const PreviewSurfaceStory: ThisStory = {
   args: {
     children: <Text>Surface content</Text>,
   },
-  render: (args) => <Surface {...(args as any)} />,
+  render: (args) => <Surface {...args} />,
 };
 
 export const VariantsSurfaceStory: ThisStory = {

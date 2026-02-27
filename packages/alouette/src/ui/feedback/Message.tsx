@@ -30,7 +30,7 @@ export const MessageFrame = styled(Surface, {
         gap: "$1.5",
       },
     },
-  },
+  } as const,
 
   defaultVariants: {
     size: "md",

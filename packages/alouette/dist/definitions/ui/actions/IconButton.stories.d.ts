@@ -20,7 +20,7 @@ declare const _default: {
         size: {
             description: string;
             control: "select";
-            options: number[];
+            options: (string | number)[];
             table: {
                 defaultValue: {
                     summary: string;

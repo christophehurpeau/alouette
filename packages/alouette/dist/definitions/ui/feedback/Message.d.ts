@@ -2,8 +2,19 @@ import type { ReactNode } from "react";
 import type { Except } from "type-fest";
 import type { SurfaceProps } from "../containers/Surface";
 import type { IconProps } from "../primitives/Icon";
-export declare const MessageFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, unknown, import("@tamagui/web").TamaguiComponentPropsBaseBase & SurfaceProps, import("@tamagui/web").StackStyleBase, {
+export declare const MessageFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps | (import("@tamagui/core").RNTamaguiViewNonStyleProps & void), import("@tamagui/web").StackStyleBase, {
     size?: "lg" | "md" | "sm" | undefined;
+    interactive?: boolean | import("csstype").Property.Cursor | undefined;
+    tint?: "accent" | undefined;
+    center?: boolean | undefined;
+    lowered?: boolean | undefined;
+    absoluteFill?: boolean | undefined;
+    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
+    shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
+    square?: number | undefined;
+    withBorder?: import("@tamagui/web").SizeTokens | undefined;
+    withFocusVisibleOutline?: boolean | undefined;
+    withBackground?: "interactive" | "highlight" | "surface" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const MessageText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, unknown, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("../..").TextProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
 interface MessageBaseProps {

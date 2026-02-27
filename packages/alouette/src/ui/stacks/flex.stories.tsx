@@ -58,14 +58,14 @@ export const Documentation: StoryObj = {
 
       <Story.Section title="multiple items">
         <Stack>
-          <Box size={100} layer="highlight">
+          <Box square={100} layer="highlight">
             <Text>one item</Text>
           </Box>
         </Stack>
 
         <Stack gap="$1.0">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-            <Box key={i} size={100} layer="highlight">
+            <Box key={i} square={100} layer="highlight">
               <Text>item {i}</Text>
             </Box>
           ))}

@@ -1,6 +1,5 @@
 import type { GetProps } from "@tamagui/core";
 import { View, styled } from "@tamagui/core";
-import type { ComponentType } from "react";
 import { useSafeAreaInsets } from "../../core/useSafeAreaInsets";
 import * as variants from "./variants";
 
@@ -12,9 +11,26 @@ const BoxFrame = styled(View, {
   variants,
 });
 
-type BoxFrameProps = GetProps<typeof BoxFrame>;
+export type BoxProps = GetProps<typeof BoxFrame>;
 
-const InteractiveBoxFrame = styled(BoxFrame, {
+export const Box =
+  process.env.NODE_ENV !== "production"
+    ? BoxFrame.styleable((props) => {
+        if (
+          process.env.NODE_ENV !== "production" &&
+          props.shadow === "lowered" &&
+          props.layer !== "lowered"
+        ) {
+          throw new Error(
+            'shadow="lowered" must only be used with layer="lowered"',
+          );
+        }
+
+        return <BoxFrame {...props} />;
+      })
+    : BoxFrame;
+
+export const InteractiveBox = styled(BoxFrame, {
   interactive: true,
   tabIndex: 0,
   transition: "fast",
@@ -27,44 +43,7 @@ const InteractiveBoxFrame = styled(BoxFrame, {
   } as const,
 });
 
-type PaddingPropNames =
-  | "padding"
-  | "paddingBottom"
-  | "paddingHorizontal"
-  | "paddingLeft"
-  | "paddingRight"
-  | "paddingTop"
-  | "paddingVertical";
-
-export type BoxProps = Pick<
-  BoxFrameProps,
-  | PaddingPropNames
-  | "absoluteFill"
-  | "borderRadius"
-  | "center"
-  | "children"
-  | "layer"
-  | "shadow"
->;
-
-export const Box: ComponentType<BoxFrameProps> =
-  process.env.NODE_ENV !== "production"
-    ? (props) => {
-        if (
-          process.env.NODE_ENV !== "production" &&
-          props.shadow === "lowered" &&
-          props.layer !== "lowered"
-        ) {
-          throw new Error(
-            'shadow="lowered" must only be used with layer="lowered"',
-          );
-        }
-
-        return <BoxFrame {...props} />;
-      }
-    : BoxFrame;
-
-export const InteractiveBox: ComponentType<BoxFrameProps> = InteractiveBoxFrame;
+export type InteractiveBoxProps = GetProps<typeof InteractiveBox>;
 
 export const SafeAreaBox = BoxFrame.styleable<{
   padding?: never;
