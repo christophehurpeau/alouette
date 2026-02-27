@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [18.5.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.4.0...alouette@18.5.0) (2026-02-27)
+
+### Features
+
+* add new spacing token for 4.0 in createAlouetteTokens
+* button and icon button use consistent height values; update stories and variants for improved clarity and usability
+* extend BoxProps to include additional padding properties
+
 ## [18.4.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.3.0...alouette@18.4.0) (2026-02-26)
 
 ### Features
