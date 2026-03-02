@@ -1,9 +1,8 @@
 import type { GetProps } from "@tamagui/core";
 import { styled } from "@tamagui/core";
-import type { FunctionComponent } from "react";
-import { TextStyled } from "./Text";
+import { Text } from "./Text";
 
-const LinkTextStyled = styled(TextStyled, {
+export const LinkText = styled(Text, {
   render: "a",
   theme: "brand",
   color: "$interactive.linkTextColor",
@@ -38,9 +37,4 @@ const LinkTextStyled = styled(TextStyled, {
   } as const,
 });
 
-export type LinkTextProps = Pick<
-  GetProps<typeof LinkTextStyled>,
-  "children" | "disabled" | "subtle" | "theme" | "tint"
->;
-
-export const LinkText: FunctionComponent<LinkTextProps> = LinkTextStyled;
+export type LinkTextProps = GetProps<typeof LinkText>;

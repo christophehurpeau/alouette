@@ -274,7 +274,7 @@ function Icon({
   return react.cloneElement(icon, { style, ...props });
 }
 
-const TextStyled = core.styled(core.Text, {
+const Text = core.styled(core.Text, {
   variants: {
     inherit: {
       false: {
@@ -332,13 +332,11 @@ const TextStyled = core.styled(core.Text, {
     inherit: false
   }
 });
-const Text = TextStyled;
-const ParagraphStyled = core.styled(TextStyled, {
+const Paragraph = core.styled(Text, {
   render: "p",
   userSelect: "auto",
   inherit: false
 });
-const Paragraph = ParagraphStyled;
 
 const buttonHeight = {
   sm: 38,

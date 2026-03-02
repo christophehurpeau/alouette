@@ -16,7 +16,14 @@ export declare const MessageFrame: import("@tamagui/web").TamaguiComponent<impor
     withFocusVisibleOutline?: boolean | undefined;
     withBackground?: "interactive" | "highlight" | "surface" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
-export declare const MessageText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, unknown, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("../..").TextProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
+export declare const MessageText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+    size?: import("@tamagui/web").FontSizeTokens | undefined;
+    tint?: "accent" | "muted" | "onAccent" | "sharp" | undefined;
+    inherit?: boolean | undefined;
+    family?: "$body" | "$heading" | "$body-monospace" | undefined;
+    disabledSharp?: boolean | undefined;
+    weight?: "$regular" | "$bold" | "$extraBold" | undefined;
+}, import("@tamagui/web").StaticConfigPublic>;
 interface MessageBaseProps {
     theme: NonNullable<SurfaceProps["theme"]>;
     size?: NonNullable<SurfaceProps["size"]>;

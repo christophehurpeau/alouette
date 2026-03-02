@@ -1,8 +1,7 @@
 import type { GetProps } from "@tamagui/core";
 import { Text as CoreText, styled } from "@tamagui/core";
-import type { FunctionComponent } from "react";
 
-export const TextStyled = styled(CoreText, {
+export const Text = styled(CoreText, {
   variants: {
     inherit: {
       false: {
@@ -64,30 +63,12 @@ export const TextStyled = styled(CoreText, {
   },
 } as const);
 
-export type TextProps = Pick<
-  GetProps<typeof TextStyled>,
-  | "children"
-  | "disabledSharp"
-  | "family"
-  | "inherit"
-  | "numberOfLines"
-  | "size"
-  | "textAlign"
-  | "theme"
-  | "tint"
-  | "weight"
->;
-export const Text: FunctionComponent<TextProps> = TextStyled;
+export type TextProps = GetProps<typeof Text>;
 
-const ParagraphStyled = styled(TextStyled, {
+export const Paragraph = styled(Text, {
   render: "p",
   userSelect: "auto",
   inherit: false,
 });
 
-export type ParagraphProps = Pick<
-  GetProps<typeof ParagraphStyled>,
-  "children" | "size" | "theme" | "tint"
->;
-
-export const Paragraph: FunctionComponent<ParagraphProps> = ParagraphStyled;
+export type ParagraphProps = GetProps<typeof Paragraph>;
