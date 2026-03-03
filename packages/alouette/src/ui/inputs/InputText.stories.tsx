@@ -1,3 +1,4 @@
+import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Story } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
@@ -178,4 +179,35 @@ export const Variants: StoryObj<typeof InputText> = {
       </Story.Section>
     </Story>
   ),
+};
+
+export const Tests: StoryObj<typeof InputText> = {
+  name: "InputText Tests",
+
+  render: () => (
+    <Story noDarkTheme>
+      <Story.Section title="Modes">
+        <InputText testID="password-input" mode="password" />
+      </Story.Section>
+      <Story.Section title="Accessibility">
+        <InputText
+          placeholder="Accessible input"
+          aria-label="Accessible input"
+        />
+      </Story.Section>
+    </Story>
+  ),
+
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Modes
+    const passwordInput = canvas.getByTestId("password-input");
+    await expect(passwordInput.tagName).toBe("INPUT");
+    await expect(passwordInput).toHaveAttribute("type", "password");
+
+    // Accessibility
+    const input = canvas.getByPlaceholderText("Accessible input");
+    await expect(input).toHaveAttribute("aria-label", "Accessible input");
+  },
 };

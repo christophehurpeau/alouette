@@ -1,3 +1,4 @@
+import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { View } from "@tamagui/core";
 import { Story } from "../story-components/Story";
@@ -102,4 +103,24 @@ export const TextStory: ThisStory = {
       </Story.Section>
     </Story>
   ),
+};
+
+export const Tests: ThisStory = {
+  name: "Text Tests",
+  render() {
+    return (
+      <Story noDarkTheme>
+        <Story.Section title="Paragraph">
+          <Paragraph>Paragraph content</Paragraph>
+        </Story.Section>
+      </Story>
+    );
+  },
+
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const paragraph = canvas.getByText("Paragraph content");
+    await expect(paragraph).toBeInTheDocument();
+    await expect(paragraph.tagName).toBe("P");
+  },
 };
