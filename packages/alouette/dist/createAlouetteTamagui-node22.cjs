@@ -206,8 +206,9 @@ const createAlouetteTokens = (colorScales, { spacing = 16 } = {}) => {
       // previous $8 or $md
       "3.0": spacing * 3,
       // previous $12
-      "4.0": spacing * 4
+      "4.0": spacing * 4,
       // previous $16 or $lg
+      "8.0": spacing * 8
     },
     // size: { ...sizes },
     size: {},

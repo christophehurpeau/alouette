@@ -26,6 +26,7 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
         readonly "2.0": import("@tamagui/web").Variable<number>;
         readonly "3.0": import("@tamagui/web").Variable<number>;
         readonly "4.0": import("@tamagui/web").Variable<number>;
+        readonly "8.0": import("@tamagui/web").Variable<number>;
     };
     size: {};
     radius: {
@@ -62,6 +63,7 @@ export declare const createAlouetteTokens: <const ColorScales extends AlouetteCo
         readonly "2.0": import("@tamagui/web").Variable<number>;
         readonly "3.0": import("@tamagui/web").Variable<number>;
         readonly "4.0": import("@tamagui/web").Variable<number>;
+        readonly "8.0": import("@tamagui/web").Variable<number>;
     };
     readonly size: {};
     readonly zIndex: {};
