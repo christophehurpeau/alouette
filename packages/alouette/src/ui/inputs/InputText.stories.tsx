@@ -63,6 +63,10 @@ export default {
       description: "The current value of the input",
       control: "text",
     },
+    maxLength: {
+      description: "Maximum number of characters allowed",
+      control: "number",
+    },
   },
 } satisfies Meta<typeof InputText>;
 
@@ -195,6 +199,13 @@ export const Tests: StoryObj<typeof InputText> = {
           aria-label="Accessible input"
         />
       </Story.Section>
+      <Story.Section title="Max Length">
+        <InputText
+          testID="maxlength-input"
+          placeholder="Max length"
+          maxLength={5}
+        />
+      </Story.Section>
     </Story>
   ),
 
@@ -209,5 +220,10 @@ export const Tests: StoryObj<typeof InputText> = {
     // Accessibility
     const input = canvas.getByPlaceholderText("Accessible input");
     await expect(input).toHaveAttribute("aria-label", "Accessible input");
+
+    // Max length
+    const maxlengthInput = canvas.getByTestId("maxlength-input");
+    await expect(maxlengthInput).toBeInTheDocument();
+    await expect(maxlengthInput).toHaveAttribute("maxlength", "5");
   },
 };

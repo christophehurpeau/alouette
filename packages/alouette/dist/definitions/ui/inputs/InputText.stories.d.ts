@@ -39,6 +39,10 @@ declare const _default: {
             description: string;
             control: "text";
         };
+        maxLength: {
+            description: string;
+            control: "number";
+        };
     };
 };
 export default _default;

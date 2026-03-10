@@ -54,6 +54,7 @@ export type InputTextProps = Pick<
   | "disabled"
   | "forceStyle"
   | "id"
+  | "maxLength"
   | "mode"
   /** @internal use Textarea */
   | "multiline"
