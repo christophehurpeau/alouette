@@ -11,7 +11,12 @@ export { Box, SafeAreaBox } from "./ui/containers/Box";
 export type { PressableBoxProps } from "./ui/data/PressableBox";
 export { PressableBox } from "./ui/data/PressableBox";
 export type { MessageProps } from "./ui/feedback/Message";
-export { Message } from "./ui/feedback/Message";
+export {
+  Message,
+  WarningMessage,
+  InfoMessage,
+  ConfirmationMessage,
+} from "./ui/feedback/Message";
 export type { InputTextProps } from "./ui/inputs/InputText";
 export type { TextAreaProps } from "./ui/inputs/TextArea";
 export { InputText } from "./ui/inputs/InputText";
