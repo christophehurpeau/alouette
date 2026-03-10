@@ -186,5 +186,5 @@ export declare const createAlouetteTamagui: <const ColorScales extends AlouetteC
     readonly selectionStyles: (theme: Record<string, string>) => {
         backgroundColor: string | undefined;
     };
-}>;
+}, "default">;
 //# sourceMappingURL=createAlouetteTamagui.d.ts.map

@@ -29,6 +29,6 @@ export declare const AlouetteTamaguiConfigContext: import("react").Context<impor
     [key: string]: string | any[] | {
         [key: string]: any;
     };
-}, import("@tamagui/web").GenericFonts, import("@tamagui/web").GenericTamaguiSettings> | null | undefined>;
+}, import("@tamagui/web").GenericFonts, import("@tamagui/web").GenericTamaguiSettings, string> | null | undefined>;
 export declare const AlouetteDecorator: Decorator;
 //# sourceMappingURL=AlouetteDecorator.d.ts.map
