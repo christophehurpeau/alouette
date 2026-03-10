@@ -6,9 +6,9 @@ const jsxRuntime = require('react/jsx-runtime');
 const core = require('@tamagui/core');
 const reactNativeSafeAreaContext = require('react-native-safe-area-context');
 const react = require('react');
-require('alouette-icons/phosphor-icons/CheckRegularIcon');
-require('alouette-icons/phosphor-icons/InfoRegularIcon');
-require('alouette-icons/phosphor-icons/WarningRegularIcon');
+const CheckRegularIcon = require('alouette-icons/phosphor-icons/CheckRegularIcon');
+const InfoRegularIcon = require('alouette-icons/phosphor-icons/InfoRegularIcon');
+const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegularIcon');
 const XRegularIcon = require('alouette-icons/phosphor-icons/XRegularIcon');
 const reactNative = require('react-native');
 const CaretRightRegularIcon = require('alouette-icons/phosphor-icons/CaretRightRegularIcon');
@@ -597,6 +597,15 @@ function Message({
     ) }) : null
   ] });
 }
+function InfoMessage(props) {
+  return /* @__PURE__ */ jsxRuntime.jsx(Message, { ...props, theme: "info", icon: /* @__PURE__ */ jsxRuntime.jsx(InfoRegularIcon.InfoRegularIcon, {}) });
+}
+function ConfirmationMessage(props) {
+  return /* @__PURE__ */ jsxRuntime.jsx(Message, { ...props, theme: "success", icon: /* @__PURE__ */ jsxRuntime.jsx(CheckRegularIcon.CheckRegularIcon, {}) });
+}
+function WarningMessage(props) {
+  return /* @__PURE__ */ jsxRuntime.jsx(Message, { ...props, theme: "warning", icon: /* @__PURE__ */ jsxRuntime.jsx(WarningRegularIcon.WarningRegularIcon, {}) });
+}
 
 const inputStyle = {
   fontFamily: "$body",
@@ -1120,12 +1129,14 @@ exports.AlouetteDecorator = AlouetteDecorator;
 exports.AlouetteProvider = AlouetteProvider;
 exports.Box = Box;
 exports.Button = Button;
+exports.ConfirmationMessage = ConfirmationMessage;
 exports.ExternalLinkButton = ExternalLinkButton;
 exports.GradientBackground = GradientBackground;
 exports.GradientScrollView = GradientScrollView;
 exports.HStack = HStack;
 exports.Icon = Icon;
 exports.IconButton = IconButton;
+exports.InfoMessage = InfoMessage;
 exports.InputText = InputText;
 exports.InternalLinkButton = InternalLinkButton;
 exports.Message = Message;
@@ -1147,6 +1158,7 @@ exports.SwitchBreakpointsUsingNull = SwitchBreakpointsUsingNull;
 exports.Text = Text;
 exports.TextArea = TextArea;
 exports.VStack = VStack;
+exports.WarningMessage = WarningMessage;
 exports.useCurrentBreakpointName = useCurrentBreakpointName;
 exports.useDefaultThemeFromColorScheme = useDefaultThemeFromColorScheme;
 //# sourceMappingURL=index-react-native.cjs.js.map

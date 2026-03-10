@@ -19,9 +19,9 @@ declare const NativeInputText: import("@tamagui/web").TamaguiComponent<import("@
         [key: string]: boolean;
     } | undefined;
 } & import("@tamagui/web").StaticConfigPublic>;
-export type InputTextProps = Pick<GetProps<typeof NativeInputText>, "aria-labelledby" | "autoCapitalize" | "autoCorrect" | "defaultValue" | "disabled" | "forceStyle" | "id" | "mode"
+export type InputTextProps = Pick<GetProps<typeof NativeInputText>, "aria-labelledby" | "autoCapitalize" | "autoCorrect" | "defaultValue" | "disabled" | "forceStyle" | "id" | "maxLength" | "mode"
 /** @internal use Textarea */
- | "multiline" | "onChange" | "placeholder" | "readOnly" | "theme" | "value">;
+ | "multiline" | "onChange" | "placeholder" | "readOnly" | "testID" | "theme" | "value">;
 export declare const InputText: FunctionComponent<InputTextProps>;
 export {};
 //# sourceMappingURL=InputText.d.ts.map

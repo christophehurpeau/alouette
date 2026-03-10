@@ -25,4 +25,5 @@ declare const _default: {
 export default _default;
 export declare const PreviewSwitchStory: StoryObj<typeof Switch>;
 export declare const Variants: StoryObj<typeof Switch>;
+export declare const Tests: StoryObj<typeof Switch>;
 //# sourceMappingURL=Switch.stories.d.ts.map

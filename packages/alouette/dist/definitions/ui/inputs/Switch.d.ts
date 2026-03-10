@@ -1,7 +1,7 @@
 import { type ThemeName } from "@tamagui/core";
 import type { ComponentProps, ReactNode } from "react";
 import { Switch as NativeSwitch } from "react-native";
-export type SwitchProps = Pick<ComponentProps<typeof NativeSwitch>, "aria-labelledby" | "disabled" | "onValueChange"> & {
+export type SwitchProps = Pick<ComponentProps<typeof NativeSwitch>, "aria-labelledby" | "disabled" | "onValueChange" | "testID"> & {
     theme?: ThemeName;
     checked?: boolean;
 };

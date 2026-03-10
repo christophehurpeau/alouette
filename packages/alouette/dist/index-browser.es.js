@@ -2,9 +2,9 @@ import { jsx, jsxs } from 'react/jsx-runtime';
 import { styled, View, usePropsAndStyle, Text as Text$1, isWeb, useMedia, TamaguiProvider } from '@tamagui/core';
 export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
 import { cloneElement, Fragment, Children, createContext, useState, useEffect } from 'react';
-import 'alouette-icons/phosphor-icons/CheckRegularIcon';
-import 'alouette-icons/phosphor-icons/InfoRegularIcon';
-import 'alouette-icons/phosphor-icons/WarningRegularIcon';
+import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
+import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
+import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
 import { ScrollView as ScrollView$1, Platform, useColorScheme } from 'react-native-web';
 import '@tamagui/core/reset.css';
@@ -601,6 +601,15 @@ function Message({
     ) }) : null
   ] });
 }
+function InfoMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, theme: "info", icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
+}
+function ConfirmationMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, theme: "success", icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
+}
+function WarningMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, theme: "warning", icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
+}
 
 const inputStyle = {
   fontFamily: "$body",
@@ -1115,6 +1124,8 @@ const useControllableCheckedState = (checked, onChange, onValueChange) => {
 const SwitchFrame = styled(InteractiveBox, {
   theme: "brand",
   render: "button",
+  // @ts-expect-error web only prop missing definition
+  type: "button",
   role: "switch",
   layer: "lowered",
   shadow: "lowered",
@@ -1215,5 +1226,5 @@ const Switch = SwitchFrame.styleable(
   }
 );
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, useCurrentBreakpointName, useDefaultThemeFromColorScheme, useSafeAreaInsets };
+export { AlouetteDecorator, AlouetteProvider, Box, Button, ConfirmationMessage, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, WarningMessage, useCurrentBreakpointName, useDefaultThemeFromColorScheme, useSafeAreaInsets };
 //# sourceMappingURL=index-browser.es.js.map

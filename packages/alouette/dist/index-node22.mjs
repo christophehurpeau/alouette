@@ -4,9 +4,9 @@ export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
 import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { cloneElement, Fragment, Children, createContext, useState, useEffect } from 'react';
-import 'alouette-icons/phosphor-icons/CheckRegularIcon';
-import 'alouette-icons/phosphor-icons/InfoRegularIcon';
-import 'alouette-icons/phosphor-icons/WarningRegularIcon';
+import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
+import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
+import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
 import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Switch as Switch$1 } from 'react-native';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
@@ -595,6 +595,15 @@ function Message({
     ) }) : null
   ] });
 }
+function InfoMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, theme: "info", icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
+}
+function ConfirmationMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, theme: "success", icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
+}
+function WarningMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, theme: "warning", icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
+}
 
 const inputStyle = {
   fontFamily: "$body",
@@ -1108,5 +1117,5 @@ function Switch({
   return /* @__PURE__ */ jsx(Theme, { name: theme, children: /* @__PURE__ */ jsx(ThemedNativeSwitch, { ...rest }) });
 }
 
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
+export { AlouetteDecorator, AlouetteProvider, Box, Button, ConfirmationMessage, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, WarningMessage, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
 //# sourceMappingURL=index-node22.mjs.map
