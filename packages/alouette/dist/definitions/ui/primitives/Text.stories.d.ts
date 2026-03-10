@@ -22,4 +22,5 @@ declare const _default: {
 };
 export default _default;
 export declare const TextStory: ThisStory;
+export declare const Tests: ThisStory;
 //# sourceMappingURL=Text.stories.d.ts.map

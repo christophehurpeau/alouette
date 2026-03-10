@@ -1115,6 +1115,8 @@ const useControllableCheckedState = (checked, onChange, onValueChange) => {
 const SwitchFrame = styled(InteractiveBox, {
   theme: "brand",
   render: "button",
+  // @ts-expect-error web only prop missing definition
+  type: "button",
   role: "switch",
   layer: "lowered",
   shadow: "lowered",

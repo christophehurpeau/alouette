@@ -44,4 +44,5 @@ declare const _default: {
 export default _default;
 export declare const PreviewInputTextStory: StoryObj<typeof InputText>;
 export declare const Variants: StoryObj<typeof InputText>;
+export declare const Tests: StoryObj<typeof InputText>;
 //# sourceMappingURL=InputText.stories.d.ts.map
