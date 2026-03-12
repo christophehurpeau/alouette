@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [18.6.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.5.0...alouette@18.6.0) (2026-03-12)
+
+### Features
+
+* add spacing $8.0
+* expose semantic messages
+* **input:** add maxlength
+
+### Bug Fixes
+
+* **deps:** update tamagui to v2.0.0-rc.22 ([#302](https://github.com/christophehurpeau/alouette/issues/302))
+* switch button type
+
 ## [18.5.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.4.0...alouette@18.5.0) (2026-02-27)
 
 ### Features
