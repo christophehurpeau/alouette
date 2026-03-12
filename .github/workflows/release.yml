@@ -41,7 +41,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           check-latest: true
           registry-url: "https://registry.npmjs.org"
 
@@ -79,12 +79,5 @@ jobs:
       - name: Publish to npm
         if: github.ref == 'refs/heads/main' && !inputs.dry-run
         run: |
-          if [ -z "$NPM_AUTH_TOKEN" ]; then
-            echo "Missing env variable NPM_AUTH_TOKEN"
-            exit 1
-          fi
-          echo >> ./.yarnrc.yml
-          echo "npmAuthToken: $NPM_AUTH_TOKEN" >> ./.yarnrc.yml
+          npm --version
           yarn workspaces foreach --all --parallel --no-private npm publish --tolerate-republish
-        env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
