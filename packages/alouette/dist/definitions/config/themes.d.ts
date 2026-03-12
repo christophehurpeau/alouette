@@ -68,7 +68,7 @@ export interface ColorTheme {
 }
 export interface FullTheme extends ColorTheme {
 }
-export declare const createColorTheme: <const ColorTheme extends keyof AlouetteThemeNames>(tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>, themeName: ColorTheme, mode?: "dark" | "light", textColor?: Variable<string>) => {
+export declare const createColorTheme: <const ColorTheme extends keyof AlouetteThemeNames>(tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>, themeName: ColorTheme, mode?: "dark" | "light") => {
     "bg-screen": Variable<string>;
     "bg-surface": Variable<string>;
     "bg-highlight": Variable<string>;
@@ -133,7 +133,7 @@ export declare const createColorTheme: <const ColorTheme extends keyof AlouetteT
     "interactive.outlined.borderColor:disabled": Variable<string>;
     "interactive-accent.outlined.borderColor:disabled": Variable<string>;
 };
-export declare const createAlouetteThemes: <const ColorScales extends AlouetteColorScales>(tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>, customCreateColorTheme?: <const ColorTheme extends keyof AlouetteThemeNames>(tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>, themeName: ColorTheme, mode?: "dark" | "light", textColor?: Variable<string>) => {
+export declare const createAlouetteThemes: <const ColorScales extends AlouetteColorScales>(tokens: ReturnType<typeof createAlouetteTokens<ColorScales>>, customCreateColorTheme?: <const ColorTheme extends keyof AlouetteThemeNames>(tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>, themeName: ColorTheme, mode?: "dark" | "light") => {
     "bg-screen": Variable<string>;
     "bg-surface": Variable<string>;
     "bg-highlight": Variable<string>;

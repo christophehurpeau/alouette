@@ -264,11 +264,8 @@ const warnOnContrastIssues = (themeName, textColor, backgroundColor) => {
   }
 };
 
-const createColorTheme = (tokens, themeName, mode = "light", textColor) => {
+const createColorTheme = (tokens, themeName, mode = "light") => {
   const alouetteTokens = tokens;
-  if (!textColor) {
-    textColor = mode === "dark" ? alouetteTokens.color.whiteText : alouetteTokens.color.blackText;
-  }
   const getSpecificColor = (scaleNumberDarkMode, scaleNumberLightMode) => {
     return tokens.color[`${themeName}.${mode}.${mode === "dark" ? scaleNumberDarkMode : scaleNumberLightMode}`];
   };

@@ -113,17 +113,10 @@ export const createColorTheme = <
   tokens: ReturnType<typeof createAlouetteTokens<AlouetteColorScales>>,
   themeName: ColorTheme,
   mode: "dark" | "light" = "light",
-  textColor?: Variable<string>,
 ) => {
   const alouetteTokens: ReturnType<
     typeof createAlouetteTokens<AlouetteColorScales>
   > = tokens;
-  if (!textColor) {
-    textColor =
-      mode === "dark"
-        ? alouetteTokens.color.whiteText
-        : alouetteTokens.color.blackText;
-  }
 
   const getSpecificColor = (
     scaleNumberDarkMode: AlouetteColorScaleNumber,

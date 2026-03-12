@@ -78,4 +78,5 @@ jobs:
 
       - name: Publish to npm
         if: github.ref == 'refs/heads/main' && !inputs.dry-run
-        run: yarn workspaces foreach --all --parallel --no-private npm publish --tolerate-republish
+        run: |
+          yarn workspaces foreach --all --parallel --no-private npm publish --tolerate-republish

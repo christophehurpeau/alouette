@@ -4,8 +4,10 @@ import type { ReactNode } from "react";
 import { useColorScheme } from "react-native";
 import "./reset";
 
-export interface AlouetteProviderProps
-  extends Pick<TamaguiProviderProps, "disableInjectCSS"> {
+export interface AlouetteProviderProps extends Pick<
+  TamaguiProviderProps,
+  "disableInjectCSS"
+> {
   children: ReactNode;
   tamaguiConfig: NonNullable<TamaguiProviderProps["config"]>;
   defaultTheme?: "dark" | "light";

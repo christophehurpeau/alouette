@@ -25,8 +25,10 @@ const IconButtonFrame = styled(PressableBox, {
 
 type IconButtonFrameProps = GetProps<typeof IconButtonFrame>;
 
-export interface IconButtonProps
-  extends SetRequired<IconButtonFrameProps, "aria-label"> {
+export interface IconButtonProps extends SetRequired<
+  IconButtonFrameProps,
+  "aria-label"
+> {
   icon: NonNullable<SVGIconElement>;
   iconSize?: "fill";
 }
