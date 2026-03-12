@@ -59,6 +59,7 @@ export type InputTextProps = Pick<
   /** @internal use Textarea */
   | "multiline"
   | "onChange"
+  | "onChangeText"
   | "placeholder"
   | "readOnly"
   | "testID"

@@ -662,13 +662,19 @@ const PlatformInputTextFrame = styled(
     validStyles: Text$1.staticConfig.validStyles
   }
 );
-const PlatformInputText = PlatformInputTextFrame.styleable(({ autoCorrect, ...rest }) => /* @__PURE__ */ jsx(
+const PlatformInputText = PlatformInputTextFrame.styleable(({ autoCorrect, onChangeText, onChange, ...rest }) => /* @__PURE__ */ jsx(
   PlatformInputTextFrame,
   {
     ...{
       autoCorrect: autoCorrect ? "on" : "off"
     },
-    ...rest
+    ...rest,
+    onChange: (e) => {
+      if (onChangeText) {
+        onChangeText(e.target.value);
+      }
+      onChange?.(e);
+    }
   }
 ));
 

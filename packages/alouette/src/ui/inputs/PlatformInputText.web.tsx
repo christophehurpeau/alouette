@@ -47,11 +47,18 @@ const PlatformInputTextFrame = styled(
 export const PlatformInputText = PlatformInputTextFrame.styleable<{
   autoCorrect?: boolean;
   autoCapitalize?: "characters" | "none" | "sentences" | "words";
-}>(({ autoCorrect, ...rest }) => (
+  onChangeText?: (value: string) => void;
+}>(({ autoCorrect, onChangeText, onChange, ...rest }) => (
   <PlatformInputTextFrame
     {...({
       autoCorrect: autoCorrect ? "on" : "off",
     } as any)}
     {...rest}
+    onChange={(e) => {
+      if (onChangeText) {
+        onChangeText((e.target as HTMLInputElement).value);
+      }
+      onChange?.(e);
+    }}
   />
 ));
