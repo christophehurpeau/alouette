@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.6.1](///compare/storybook-native-app@8.6.0...storybook-native-app@8.6.1) (2026-03-12)
+
+Version bump for dependency: alouette
+
+
 ## [8.6.0](///compare/storybook-native-app@8.5.0...storybook-native-app@8.6.0) (2026-03-12)
 
 ### Bug Fixes
