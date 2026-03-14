@@ -107,7 +107,7 @@
   },
   "prettier": "@pob/root/prettier-config",
   "peerDependencies": {
-    "@tamagui/metro-plugin": "2.0.0-rc.22",
+    "@tamagui/metro-plugin": "2.0.0-rc.26",
     "alouette-icons": "*",
     "expo-web-browser": "*",
     "react": "^19.1.0",
@@ -124,9 +124,9 @@
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "2.0.0-rc.22",
-    "@tamagui/animations-react-native": "2.0.0-rc.22",
-    "@tamagui/core": "2.0.0-rc.22",
+    "@tamagui/animations-css": "2.0.0-rc.26",
+    "@tamagui/animations-react-native": "2.0.0-rc.26",
+    "@tamagui/core": "2.0.0-rc.26",
     "alouette-icons": "8.0.6",
     "expo-web-browser": "~15.0.10",
     "react-native-safe-area-context": "5.6.2",
@@ -135,7 +135,7 @@
   "devDependencies": {
     "@pob/rollup-esbuild": "8.1.1",
     "@rollup/plugin-replace": "6.0.3",
-    "@tamagui/metro-plugin": "2.0.0-rc.22",
+    "@tamagui/metro-plugin": "2.0.0-rc.26",
     "@types/node": "24.10.1",
     "@types/react": "19.1.13",
     "react": "19.1.0",
