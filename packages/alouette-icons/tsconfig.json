@@ -6,8 +6,10 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
+    "noImplicitAny": false,
     "tsBuildInfoFile": "node_modules/.cache/tsc/tsbuildinfo",
     "composite": true,
+    "types": ["node"],
     "noEmit": true
   },
   "include": ["lib/**/*.js", "lib/**/*.mjs", "lib/**/*.cjs", "lib/**/*.d.ts"]

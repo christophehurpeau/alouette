@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [22.x, 24.x]
 
     steps:
       - uses: actions/checkout@v6
@@ -21,7 +21,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          check-latest: true
           registry-url: "https://registry.npmjs.org"
 
       - name: Install Dependencies
@@ -29,24 +28,24 @@ jobs:
 
       - name: Checks
         run: yarn run checks
-        if: startsWith(matrix.node-version, '22.')
+        if: startsWith(matrix.node-version, '24.')
 
       - name: Build
         run: yarn run build
-        if: startsWith(matrix.node-version, '22.')
+        if: startsWith(matrix.node-version, '24.')
 
       - name: Prettier
         run: yarn run lint:prettier
-        if: startsWith(matrix.node-version, '22.')
+        if: startsWith(matrix.node-version, '24.')
 
       - name: Typescript
         run: yarn run tsc
-        if: startsWith(matrix.node-version, '22.')
+        if: startsWith(matrix.node-version, '24.')
 
       - name: Eslint
         run: yarn run lint:eslint
-        if: startsWith(matrix.node-version, '22.')
+        if: startsWith(matrix.node-version, '24.')
 
       - name: Check nothing was forgotten before commit
-        if: startsWith(matrix.node-version, '22.')
+        if: startsWith(matrix.node-version, '24.')
         run: yarn run repository-check-dirty

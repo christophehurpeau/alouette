@@ -133,7 +133,7 @@
     "type-fest": "5.4.4"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "8.1.1",
+    "@pob/rollup-esbuild": "8.3.0",
     "@rollup/plugin-replace": "6.0.3",
     "@tamagui/metro-plugin": "2.0.0-rc.41",
     "@types/node": "24.10.1",
