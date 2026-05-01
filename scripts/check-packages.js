@@ -8,13 +8,7 @@ await createCheckPackageWithWorkspaces({
       "storybook-native-app": {
         "*": {
           duplicateDirectDependency: [],
-        },
-      },
-    },
-    onlyWarnsForInMonorepoPackagesDependencies: {
-      "storybook-native-app": {
-        "@tamagui/vite-plugin": {
-          duplicateDirectDependency: ["@tamagui/react-native-web-lite"],
+          invalidPeerDependencyVersion: ["vite"],
         },
       },
     },
