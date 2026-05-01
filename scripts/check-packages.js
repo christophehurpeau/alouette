@@ -8,6 +8,7 @@ await createCheckPackageWithWorkspaces({
       "storybook-native-app": {
         "*": {
           duplicateDirectDependency: [],
+          invalidPeerDependencyVersion: ["vite"],
         },
       },
     },
