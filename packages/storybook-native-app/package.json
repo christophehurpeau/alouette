@@ -27,7 +27,7 @@
     "@tamagui/react-native-web-lite": "2.0.0-rc.41",
     "alouette": "workspace:*",
     "alouette-icons": "workspace:*",
-    "expo": "54.0.33",
+    "expo": "54.0.34",
     "expo-constants": "18.0.13",
     "expo-status-bar": "3.0.9",
     "react": "19.1.0",
