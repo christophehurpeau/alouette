@@ -3207,11 +3207,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pob/eslint-config-typescript-react@npm:65.4.2":
-  version: 65.4.2
-  resolution: "@pob/eslint-config-typescript-react@npm:65.4.2"
+"@pob/eslint-config-typescript-react@npm:65.4.3":
+  version: 65.4.3
+  resolution: "@pob/eslint-config-typescript-react@npm:65.4.3"
   dependencies:
-    "@pob/eslint-config": "npm:65.4.2"
+    "@pob/eslint-config": "npm:65.4.3"
     "@pob/eslint-plugin": "npm:65.4.1"
     eslint-plugin-import-x: "npm:4.16.2"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
@@ -3220,13 +3220,13 @@ __metadata:
   peerDependencies:
     eslint: ^9.39.1 || ^10.0.2
     typescript: ">=5.0.0 <7.0.0"
-  checksum: 10c0/873e9ca576c209ea2bc85d9ae28688fb9f3257c8d3840fb59a2c7eae9383b23ded6300e42b43e237fab53636bb0bd6a0a42f2701b8800ff882629f7dfefae13c
+  checksum: 10c0/183878af297228d6e4e522887e609d010adeaeba6d0bdd6378a2836bc1269eda231d9e162a19e29f5785b9fea8ebd9694fa29298d6a842ce0cb40b727c1c3711
   languageName: node
   linkType: hard
 
-"@pob/eslint-config@npm:65.4.2":
-  version: 65.4.2
-  resolution: "@pob/eslint-config@npm:65.4.2"
+"@pob/eslint-config@npm:65.4.3":
+  version: 65.4.3
+  resolution: "@pob/eslint-config@npm:65.4.3"
   dependencies:
     "@eslint/js": "npm:^10.0.1"
     "@eslint/json": "npm:^1.2.0"
@@ -3245,7 +3245,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/b3ca75dedf2b6d97323ef1bc756a357cb09d8397e8d7ed036e9acaa1b69efef4f5a829e4205e7df7bb21d2b98fed61c9f6eee46ca9b1775c7f4730836377c176
+  checksum: 10c0/76c601403f507a1f4f64ee1c85911aa9b14ba3bd01e88be9cc924c0de81cf3df6137b409f9e1cfb4bf1068abd653e52b1ef2fa2b6743daa4f56287a1834a3ca6
   languageName: node
   linkType: hard
 
@@ -5681,8 +5681,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "alouette-monorepo@workspace:."
   dependencies:
-    "@pob/eslint-config": "npm:65.4.2"
-    "@pob/eslint-config-typescript-react": "npm:65.4.2"
+    "@pob/eslint-config": "npm:65.4.3"
+    "@pob/eslint-config-typescript-react": "npm:65.4.3"
     "@pob/rollup-esbuild": "npm:8.3.0"
     "@pob/root": "npm:23.2.0"
     check-package-dependencies: "npm:10.5.0"
