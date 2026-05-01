@@ -8074,16 +8074,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-svg-transformer@npm:3.1.0":
-  version: 3.1.0
-  resolution: "expo-svg-transformer@npm:3.1.0"
+"expo-svg-transformer@npm:3.2.0":
+  version: 3.2.0
+  resolution: "expo-svg-transformer@npm:3.2.0"
   dependencies:
     "@svgr/core": "npm:^8.1.0"
     "@svgr/plugin-jsx": "npm:^8.1.0"
   peerDependencies:
     react-native: ">=0.59.0"
     react-native-svg: ">=12.0.0"
-  checksum: 10c0/65ead3b79af101592f92a72904e35422d28ce9463d46eb1ff3e4e69c20d8bcb9be601e0a4562ef3e5f69950f128c6e0465d19fad29c8e35b8be2338c56f759fa
+  checksum: 10c0/f439bb0f98073e0d06b5840718d325337dd9ecdd58548c46bc897e4810f2aa58b35051937d7128e3ecd7626dfcac1c7e91ec9092deee381fb245096f5eede8e8
   languageName: node
   linkType: hard
 
@@ -12747,7 +12747,7 @@ __metadata:
     expo: "npm:54.0.33"
     expo-constants: "npm:18.0.13"
     expo-status-bar: "npm:3.0.9"
-    expo-svg-transformer: "npm:3.1.0"
+    expo-svg-transformer: "npm:3.2.0"
     react: "npm:19.1.0"
     react-dom: "npm:19.1.0"
     react-native: "npm:0.81.4"
