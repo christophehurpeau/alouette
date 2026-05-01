@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.8.0](///compare/storybook-native-app@8.7.0...storybook-native-app@8.8.0) (2026-05-01)
+
+### Features
+
+* **deps:** update dependency @react-native-community/slider to v5.2.0 ([#278](undefined/undefined/undefined/issues/278))
+
+### Bug Fixes
+
+* **deps:** update tamagui to v2.0.0-rc.41 ([#305](undefined/undefined/undefined/issues/305))
+
+Version bump for dependency: alouette
+Version bump for dependency: alouette-icons
+
+
 ## [8.7.0](///compare/storybook-native-app@8.6.1...storybook-native-app@8.7.0) (2026-03-12)
 
 Version bump for dependency: alouette

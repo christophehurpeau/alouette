@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [18.8.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.7.0...alouette@18.8.0) (2026-05-01)
+
+### Features
+
+* **deps:** update dependency type-fest to v5 ([#248](https://github.com/christophehurpeau/alouette/issues/248))
+
+### Bug Fixes
+
+* add @tamagui/metro-plugin to have warning when version is not compatible
+* **deps:** update tamagui to v2.0.0-rc.41 ([#305](https://github.com/christophehurpeau/alouette/issues/305))
+
+Version bump for dependency: alouette-icons
+
+
 ## [18.7.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.6.1...alouette@18.7.0) (2026-03-12)
 
 ### Features

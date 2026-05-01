@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.7](https://github.com/christophehurpeau/alouette/compare/alouette-icons@8.0.6...alouette-icons@8.0.7) (2026-05-01)
+
+Note: no notable changes
+
+
 ## [8.0.6](https://github.com/christophehurpeau/alouette/compare/alouette-icons@8.0.5...alouette-icons@8.0.6) (2026-02-26)
 
 Note: no notable changes
