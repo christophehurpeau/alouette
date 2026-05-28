@@ -4359,6 +4359,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@standard-schema/spec@npm:^1.0.0":
+  version: 1.1.0
+  resolution: "@standard-schema/spec@npm:1.1.0"
+  checksum: 10c0/d90f55acde4b2deb983529c87e8025fa693de1a5e8b49ecc6eb84d1fd96328add0e03d7d551442156c7432fd78165b2c26ff561b970a9a881f046abb78d6a526
+  languageName: node
+  linkType: hard
+
 "@storybook/addon-docs@npm:10.4.1":
   version: 10.4.1
   resolution: "@storybook/addon-docs@npm:10.4.1"
@@ -4380,39 +4387,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-ondevice-actions@npm:10.2.3":
-  version: 10.2.3
-  resolution: "@storybook/addon-ondevice-actions@npm:10.2.3"
+"@storybook/addon-ondevice-actions@npm:10.4.4":
+  version: 10.4.4
+  resolution: "@storybook/addon-ondevice-actions@npm:10.4.4"
   dependencies:
+    "@storybook/react-native-theming": "npm:^10.4.4"
     fast-deep-equal: "npm:^3.1.3"
   peerDependencies:
     react: "*"
     react-native: "*"
     storybook: ">=10 || ^10"
-  checksum: 10c0/c8c614a37be3513e9bcb22cb128946c77f59b86a6ec7f48679c00069f8623d7325540a39599ee58125379442f084fc819d640269d9e55f59e0b64e99092bc698
+  checksum: 10c0/f7868d7e2e271ec85c2d3bf6557ab2eef9f9266016708b5d492cf329d33507292e47c53e6e7e4cddf2d81888a5b9f8483b5b9c806f777f14db5eb040c2a371a4
   languageName: node
   linkType: hard
 
-"@storybook/addon-ondevice-backgrounds@npm:10.2.3":
-  version: 10.2.3
-  resolution: "@storybook/addon-ondevice-backgrounds@npm:10.2.3"
+"@storybook/addon-ondevice-backgrounds@npm:10.4.4":
+  version: 10.4.4
+  resolution: "@storybook/addon-ondevice-backgrounds@npm:10.4.4"
   dependencies:
-    "@storybook/react-native-theming": "npm:^10.2.3"
+    "@storybook/react-native-theming": "npm:^10.4.4"
   peerDependencies:
     react: "*"
     react-native: "*"
     storybook: ">=10 || ^10"
-  checksum: 10c0/9750bec72307d7e07af40e2b592e12fcceed9483f87153dec6f11c9d38c3101f8cb212c8adcfb8734ff212a177f9a94297a2f05195f58b99a91e46b4e93d15ea
+  checksum: 10c0/4afcb27e602500a809815412aed03eae542dcf6b4a5fcdb182bf049ee3ea8de350b707ec9336913b5f7d8a339c2fdde6f81ec503dc020d0556b12a0dd9d02243
   languageName: node
   linkType: hard
 
-"@storybook/addon-ondevice-controls@npm:10.2.3":
-  version: 10.2.3
-  resolution: "@storybook/addon-ondevice-controls@npm:10.2.3"
+"@storybook/addon-ondevice-controls@npm:10.4.4":
+  version: 10.4.4
+  resolution: "@storybook/addon-ondevice-controls@npm:10.4.4"
   dependencies:
     "@gorhom/portal": "npm:^1.0.14"
-    "@storybook/react-native-theming": "npm:^10.2.3"
-    "@storybook/react-native-ui-common": "npm:^10.2.3"
+    "@storybook/react-native-theming": "npm:^10.4.4"
+    "@storybook/react-native-ui-common": "npm:^10.4.4"
     polished: "npm:^4.3.1"
     react-native-modal-datetime-picker: "npm:^18.0.0"
     tinycolor2: "npm:^1.6.0"
@@ -4426,21 +4434,21 @@ __metadata:
   peerDependenciesMeta:
     "@gorhom/bottom-sheet":
       optional: true
-  checksum: 10c0/64eea313153bef1b13fcdae9258078625631bbcf555220f8be6fe68e64e215f01c0271b6e8c3ba7485e3eca9be694934d275a7efc3d5ef8e3541204c7c0ee34e
+  checksum: 10c0/4aaf64349a5ac854fa1a40aad8a4046a3ac46e43c8d6d0b2ff3cd663ae915d93e0fd20ec50b96693bd90b62e21c20b00a4e672cd05fb78fb6fc8c7e6c0ed1dc9
   languageName: node
   linkType: hard
 
-"@storybook/addon-ondevice-notes@npm:10.2.3":
-  version: 10.2.3
-  resolution: "@storybook/addon-ondevice-notes@npm:10.2.3"
+"@storybook/addon-ondevice-notes@npm:10.4.4":
+  version: 10.4.4
+  resolution: "@storybook/addon-ondevice-notes@npm:10.4.4"
   dependencies:
-    "@storybook/react-native-theming": "npm:^10.2.3"
+    "@storybook/react-native-theming": "npm:^10.4.4"
   peerDependencies:
     "@storybook/react": ^10
     react: "*"
     react-native: "*"
     storybook: ">=10 || ^10"
-  checksum: 10c0/5cd9294b74e97bfcadc92a400f0487b5a0b8e3d8f2a24bc6c7a9d505fcdaf7c5319ade5923b66ac2b49c2ef8a212b15272e229db71f73e7f0351be22f357ec84
+  checksum: 10c0/050ce4ee8e905b3c63eb44c3087eb94b97b948a5ca344bd08a96dfedc74f73f6b43a8c9dff45302ed564a86bf83b0b08055e9ca57a7783651911c1942d76bd95
   languageName: node
   linkType: hard
 
@@ -4498,6 +4506,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/mcp@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "@storybook/mcp@npm:0.7.0"
+  dependencies:
+    "@tmcp/adapter-valibot": "npm:^0.1.5"
+    "@tmcp/transport-http": "npm:^0.8.5"
+    tmcp: "npm:^1.19.3"
+    valibot: "npm:1.2.0"
+  checksum: 10c0/56c90e597684e55e40451da47fc41e581d21365f405990c3cfbaaf8a19b71da17ede83399ed1524c6a1726050b0e0ba55474de5344cdeefe0cf9045faccb92b8
+  languageName: node
+  linkType: hard
+
 "@storybook/react-dom-shim@npm:10.4.1":
   version: 10.4.1
   resolution: "@storybook/react-dom-shim@npm:10.4.1"
@@ -4516,45 +4536,45 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react-native-theming@npm:^10.2.3":
-  version: 10.2.3
-  resolution: "@storybook/react-native-theming@npm:10.2.3"
+"@storybook/react-native-theming@npm:^10.4.4":
+  version: 10.4.4
+  resolution: "@storybook/react-native-theming@npm:10.4.4"
   dependencies:
     polished: "npm:^4.3.1"
   peerDependencies:
     react: "*"
     react-native: ">=0.57.0"
-  checksum: 10c0/a196dc4ca7ed500f4408fc19bd4b047c5bd31d6fe7e3ea3728c8f81b6ce6571e921bc50af2c4216297885ea7dfb2c672286cc9834ad8822d38886af5fe609296
+  checksum: 10c0/3ce11cea3de6ebbfd3cfdd5bf7f4b00ff86484412091c0de217a521af012b57e800f68e1235e682e24f7be9b56d6f7029caf17b1117eb49e61d97d299a0c8967
   languageName: node
   linkType: hard
 
-"@storybook/react-native-ui-common@npm:^10.2.3":
-  version: 10.2.3
-  resolution: "@storybook/react-native-ui-common@npm:10.2.3"
+"@storybook/react-native-ui-common@npm:^10.4.4":
+  version: 10.4.4
+  resolution: "@storybook/react-native-ui-common@npm:10.4.4"
   dependencies:
     "@nozbe/microfuzz": "npm:^1.0.0"
-    "@storybook/react": "npm:^10.2.3"
-    "@storybook/react-native-theming": "npm:^10.2.3"
-    es-toolkit: "npm:^1.41.0"
+    "@storybook/react": "npm:^10.4.0"
+    "@storybook/react-native-theming": "npm:^10.4.4"
+    es-toolkit: "npm:^1.45.1"
     memoizerific: "npm:^1.11.3"
     ts-dedent: "npm:^2.2.0"
   peerDependencies:
     react: "*"
     react-native: ">=0.57.0"
     storybook: ">=10 || ^10"
-  checksum: 10c0/6da1d259561de1b5d982ab08ee4e20b37c41ee234bfa18061d55938ca6a76e5a5eec04d434d171259b7018f5202901449c7231e26dc7f8d3c9cf755b1c013680
+  checksum: 10c0/2f4f6e27f20e6dac396854d252af7747416839b832daf4c21d69f2b6d71d16d5ef1dbb12c0a8129cfb53a8fedfc5a64e86d8948adae646edae4389c8e22c945b
   languageName: node
   linkType: hard
 
-"@storybook/react-native-ui@npm:^10.2.3":
-  version: 10.2.3
-  resolution: "@storybook/react-native-ui@npm:10.2.3"
+"@storybook/react-native-ui@npm:^10.4.4":
+  version: 10.4.4
+  resolution: "@storybook/react-native-ui@npm:10.4.4"
   dependencies:
     "@gorhom/portal": "npm:^1.0.14"
     "@nozbe/microfuzz": "npm:^1.0.0"
-    "@storybook/react": "npm:^10.2.3"
-    "@storybook/react-native-theming": "npm:^10.2.3"
-    "@storybook/react-native-ui-common": "npm:^10.2.3"
+    "@storybook/react": "npm:^10.4.0"
+    "@storybook/react-native-theming": "npm:^10.4.4"
+    "@storybook/react-native-ui-common": "npm:^10.4.4"
     polished: "npm:^4.3.1"
   peerDependencies:
     "@gorhom/bottom-sheet": ">=4"
@@ -4565,7 +4585,7 @@ __metadata:
     react-native-safe-area-context: "*"
     react-native-svg: ">=14"
     storybook: ">=10 || ^10"
-  checksum: 10c0/ec1daba8d9bc676d4e6f1fac9a8b097759d49a45da9adc76ef1ea7e9c16ba4b8169e6b8430ce1a102ccbeeb7e96e12cf7af942280b75eeaaed11c3ef3a28684f
+  checksum: 10c0/db537244314d8ac447c747bbe33403e1407d66e359b9a3891c43baaccc869c325206f916e0f72c1f9342bd046b113ce50437163c34a2449028c35c71183b8883
   languageName: node
   linkType: hard
 
@@ -4589,22 +4609,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react-native@npm:10.2.3":
-  version: 10.2.3
-  resolution: "@storybook/react-native@npm:10.2.3"
+"@storybook/react-native@npm:10.4.4":
+  version: 10.4.4
+  resolution: "@storybook/react-native@npm:10.4.4"
   dependencies:
-    "@storybook/react": "npm:^10.2.3"
-    "@storybook/react-native-theming": "npm:^10.2.3"
-    "@storybook/react-native-ui": "npm:^10.2.3"
-    "@storybook/react-native-ui-common": "npm:^10.2.3"
+    "@storybook/mcp": "npm:^0.7.0"
+    "@storybook/react": "npm:^10.4.0"
+    "@storybook/react-native-theming": "npm:^10.4.4"
+    "@storybook/react-native-ui": "npm:^10.4.4"
+    "@storybook/react-native-ui-common": "npm:^10.4.4"
+    "@tmcp/adapter-valibot": "npm:^0.1.4"
+    "@tmcp/transport-http": "npm:^0.8.5"
     commander: "npm:^14.0.2"
-    dedent: "npm:^1.7.0"
+    dedent: "npm:^1.7.2"
     deepmerge: "npm:^4.3.1"
     esbuild-register: "npm:^3.6.0"
     glob: "npm:^13.0.0"
     react-native-url-polyfill: "npm:^3.0.0"
     setimmediate: "npm:^1.0.5"
-    ws: "npm:^8.18.3"
+    tmcp: "npm:^1.19.3"
+    valibot: "npm:^1.3.1"
+    ws: "npm:^8.20.0"
   peerDependencies:
     "@gorhom/bottom-sheet": ">=4"
     react: "*"
@@ -4620,11 +4645,9 @@ __metadata:
       optional: true
     react-native-reanimated:
       optional: true
-    react-native-safe-area-context:
-      optional: true
   bin:
-    sb-rn-get-stories: bin/get-stories.js
-  checksum: 10c0/04d711e863c5aa85a51539ac78949f4fd53c569bf5604e3c81a27116839892d5190e7c54ad1b1ef987d5231c73f6c863ca4b8eef8451e90c927a048ccd18b54f
+    sb-rn-get-stories: ./bin/get-stories.js
+  checksum: 10c0/4fa323eaa401044a6a87346712e46e24cddd2287bb00283a358466be1847979c6921b901429d7b07cd56eb4bea981be50af10eebd107a035ec1b8fb097d72fd8
   languageName: node
   linkType: hard
 
@@ -4650,7 +4673,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react@npm:10.4.1, @storybook/react@npm:^10.2.3":
+"@storybook/react@npm:10.4.1, @storybook/react@npm:^10.4.0":
   version: 10.4.1
   resolution: "@storybook/react@npm:10.4.1"
   dependencies:
@@ -5322,6 +5345,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tmcp/adapter-valibot@npm:^0.1.4, @tmcp/adapter-valibot@npm:^0.1.5":
+  version: 0.1.6
+  resolution: "@tmcp/adapter-valibot@npm:0.1.6"
+  dependencies:
+    "@standard-schema/spec": "npm:^1.0.0"
+    "@valibot/to-json-schema": "npm:^1.3.0"
+    valibot: "npm:^1.1.0"
+  peerDependencies:
+    tmcp: ^1.17.0
+    valibot: ^1.1.0
+  checksum: 10c0/4261efa7318f335eb7a8787f16a4db285a3e38288c31bc3b21fe61808c7e0c2057e09675d7b86d14cbe3ba2babad2ffe1891c4498001b27f74cb22fa135eef02
+  languageName: node
+  linkType: hard
+
+"@tmcp/session-manager@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@tmcp/session-manager@npm:0.2.2"
+  peerDependencies:
+    tmcp: ^1.16.3
+  checksum: 10c0/a29507e7e36568f4eb5f0e7525c651adf4ec16d11273499f538f2e5cc4071920294c08cc4771b11cb52bc9f999e3a1a32466bb6521f605fc482cc932139b5d25
+  languageName: node
+  linkType: hard
+
+"@tmcp/transport-http@npm:^0.8.5":
+  version: 0.8.6
+  resolution: "@tmcp/transport-http@npm:0.8.6"
+  dependencies:
+    "@tmcp/session-manager": "npm:^0.2.2"
+    esm-env: "npm:^1.2.2"
+  peerDependencies:
+    "@tmcp/auth": ^0.3.3 || ^0.4.0
+    tmcp: ^1.18.0
+  peerDependenciesMeta:
+    "@tmcp/auth":
+      optional: true
+  checksum: 10c0/da9a734cf15bcc84527194b2848ebcb33815fb9c26d579a90b2f0052eb193d764c1857f4c172f87167a51339f78cf7e17eba2b15f8a90459158b54a519291527
+  languageName: node
+  linkType: hard
+
 "@tybys/wasm-util@npm:^0.10.0, @tybys/wasm-util@npm:^0.10.1":
   version: 0.10.1
   resolution: "@tybys/wasm-util@npm:0.10.1"
@@ -5822,6 +5884,15 @@ __metadata:
   peerDependencies:
     "@urql/core": ^5.0.0
   checksum: 10c0/3d7e9879aef81714ca04c8b4dc1633d61b2090f5a6d5b8aac538633d41c26e8749e18bf66bed2936b209d038b3acdd21f20bc5ec4229a449b5a0b13d5694effe
+  languageName: node
+  linkType: hard
+
+"@valibot/to-json-schema@npm:^1.3.0":
+  version: 1.7.0
+  resolution: "@valibot/to-json-schema@npm:1.7.0"
+  peerDependencies:
+    valibot: ^1.4.0
+  checksum: 10c0/d354217270f5855ceea547bcf696546e30075b04016757603c9e826b4395aefecbd0f8a79bea4431838b28960e09a2b7543aa5c5f8672c9abb2ab7d39354f533
   languageName: node
   linkType: hard
 
@@ -7477,15 +7548,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dedent@npm:^1.7.0":
-  version: 1.7.1
-  resolution: "dedent@npm:1.7.1"
+"dedent@npm:^1.7.2":
+  version: 1.7.2
+  resolution: "dedent@npm:1.7.2"
   peerDependencies:
     babel-plugin-macros: ^3.1.0
   peerDependenciesMeta:
     babel-plugin-macros:
       optional: true
-  checksum: 10c0/ae29ec1c5bd5216c698c9f23acaa5b720260fd4cef3c8b5af887eb5f8c9e6fdd5fed8668767437b4efea35e2991bd798987717633411a1734807c28255769b78
+  checksum: 10c0/acaff07cac355b93f17b1b17ebbb84d3cc55af6ab4b7814c3f505e061903e168bc6bf9ddce331552d64dee1525f0b4c549c9ade46aebfac6f69caaed74e90751
   languageName: node
   linkType: hard
 
@@ -8007,15 +8078,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-toolkit@npm:^1.41.0":
-  version: 1.44.0
-  resolution: "es-toolkit@npm:1.44.0"
+"es-toolkit@npm:^1.45.1":
+  version: 1.47.0
+  resolution: "es-toolkit@npm:1.47.0"
   dependenciesMeta:
     "@trivago/prettier-plugin-sort-imports@4.3.0":
       unplugged: true
     prettier-plugin-sort-re-exports@0.0.1:
       unplugged: true
-  checksum: 10c0/b80ff52ddc85ba26914cda57c9d4e46379ccc38c60dc097ef0d065cc0b20f95a16cf8d537969eea600b51c6687b5900a6cce67489db16d5ccc14d47597a29c34
+    vitepress-plugin-sandpack@1.1.4:
+      unplugged: true
+  checksum: 10c0/6edc9709fccc409fa4adddd318971d8a18335de9225f2dc99021aacba44fe66a2437a831923589c643865caab261a087bd974338294a60bb5a74932caa102901
   languageName: node
   linkType: hard
 
@@ -8522,6 +8595,13 @@ __metadata:
   bin:
     eslint: bin/eslint.js
   checksum: 10c0/6bf644dc08fa5a6b23157d23a4a4638d45823d03a67da1daac8dc1085b03934fa98013efd2eac2cd6ec90fe88d36b336bdf38d5f000325f22d823a15f2031426
+  languageName: node
+  linkType: hard
+
+"esm-env@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "esm-env@npm:1.2.2"
+  checksum: 10c0/3d25c973f2fd69c25ffff29c964399cea573fe10795ecc1d26f6f957ce0483d3254e1cceddb34bf3296a0d7b0f1d53a28992f064ba509dfe6366751e752c4166
   languageName: node
   linkType: hard
 
@@ -10262,6 +10342,13 @@ __metadata:
   version: 2.3.1
   resolution: "json-parse-even-better-errors@npm:2.3.1"
   checksum: 10c0/140932564c8f0b88455432e0f33c4cb4086b8868e37524e07e723f4eaedb9425bdc2bafd71bd1d9765bd15fd1e2d126972bc83990f55c467168c228c24d665f3
+  languageName: node
+  linkType: hard
+
+"json-rpc-2.0@npm:^1.7.1":
+  version: 1.7.1
+  resolution: "json-rpc-2.0@npm:1.7.1"
+  checksum: 10c0/260f573fd2f38c04bce63076b9293ed0c222c10bff12dd14fed8b926555af6d390c4bcc888b01dd42f28a8759056b8e4420b9f65f09e64d12d042a541fd88695
   languageName: node
   linkType: hard
 
@@ -13484,6 +13571,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sqids@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "sqids@npm:0.3.0"
+  checksum: 10c0/2ce528b83f2780166b2e8025ece1e8262ee217ed51ab5656959cb6e1a885eee5b6ea86627ce6b0321d7b0eeb34a2ed455476c01c44e6e55e18cee52b3e1b9eb3
+  languageName: node
+  linkType: hard
+
 "ssri@npm:^13.0.0":
   version: 13.0.1
   resolution: "ssri@npm:13.0.1"
@@ -13564,11 +13658,11 @@ __metadata:
     "@react-native-community/datetimepicker": "npm:8.5.1"
     "@react-native-community/slider": "npm:5.2.0"
     "@storybook/addon-docs": "npm:10.4.1"
-    "@storybook/addon-ondevice-actions": "npm:10.2.3"
-    "@storybook/addon-ondevice-backgrounds": "npm:10.2.3"
-    "@storybook/addon-ondevice-controls": "npm:10.2.3"
-    "@storybook/addon-ondevice-notes": "npm:10.2.3"
-    "@storybook/react-native": "npm:10.2.3"
+    "@storybook/addon-ondevice-actions": "npm:10.4.4"
+    "@storybook/addon-ondevice-backgrounds": "npm:10.4.4"
+    "@storybook/addon-ondevice-controls": "npm:10.4.4"
+    "@storybook/addon-ondevice-notes": "npm:10.4.4"
+    "@storybook/react-native": "npm:10.4.4"
     "@storybook/react-native-web-vite": "npm:10.4.1"
     "@storybook/react-vite": "npm:10.4.1"
     "@tamagui/metro-plugin": "npm:2.0.0-rc.41"
@@ -14045,6 +14139,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tmcp@npm:^1.19.3":
+  version: 1.19.4
+  resolution: "tmcp@npm:1.19.4"
+  dependencies:
+    "@standard-schema/spec": "npm:^1.0.0"
+    json-rpc-2.0: "npm:^1.7.1"
+    sqids: "npm:^0.3.0"
+    uri-template-matcher: "npm:^1.1.1"
+    valibot: "npm:^1.1.0"
+  checksum: 10c0/fcb275c74fe4dd80da3eb4702d7631423e73f2dd9ec537228457b997a9206ece899295035a492a9238184e28a46017034f63c6a4aa82d1fe0ee486fb7b33449a
+  languageName: node
+  linkType: hard
+
 "tmpl@npm:1.0.5":
   version: 1.0.5
   resolution: "tmpl@npm:1.0.5"
@@ -14492,6 +14599,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uri-template-matcher@npm:^1.1.1":
+  version: 1.1.2
+  resolution: "uri-template-matcher@npm:1.1.2"
+  checksum: 10c0/27bf1880a9110b85aff4d09157869b3b37c4355f1c8212e17f698394116fc79da1896c2f03f795eb5bee0007434b448c4f3002ade257e604a1176c14b8157d12
+  languageName: node
+  linkType: hard
+
 "use-sync-external-store@npm:^1.5.0":
   version: 1.6.0
   resolution: "use-sync-external-store@npm:1.6.0"
@@ -14514,6 +14628,30 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 10c0/2eee5723b0fcce8256f5bfd3112af6c453b5471db00af9c3533e3d5a6e57de83513f9a145a570890457bd7abf2c2aa05797291d950ac666e5a074895dc63168b
+  languageName: node
+  linkType: hard
+
+"valibot@npm:1.2.0":
+  version: 1.2.0
+  resolution: "valibot@npm:1.2.0"
+  peerDependencies:
+    typescript: ">=5"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/e6897ed2008fc900380a6ce39b62bc5fca45fd5e070f70571c6380ede3ba026d0b7016230215d87f7f3d672a28dbde5a0522d39830b493fdc3dccd1a59ef4ee6
+  languageName: node
+  linkType: hard
+
+"valibot@npm:^1.1.0, valibot@npm:^1.3.1":
+  version: 1.4.1
+  resolution: "valibot@npm:1.4.1"
+  peerDependencies:
+    typescript: ">=5"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/8a492d9c6d21032abea4fa29eafa355e5c31f1df6a3ba4b207abf20433c00b66b30884f60b225c3348113a327f20bb19e01e9b7771663e462cf94398ff39d233
   languageName: node
   linkType: hard
 
@@ -14916,9 +15054,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:^8.12.1, ws@npm:^8.18.0, ws@npm:^8.18.3":
-  version: 8.18.3
-  resolution: "ws@npm:8.18.3"
+"ws@npm:^8.12.1, ws@npm:^8.18.0, ws@npm:^8.20.0":
+  version: 8.21.0
+  resolution: "ws@npm:8.21.0"
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ">=5.0.2"
@@ -14927,7 +15065,7 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 10c0/eac918213de265ef7cb3d4ca348b891a51a520d839aa51cdb8ca93d4fa7ff9f6ccb339ccee89e4075324097f0a55157c89fa3f7147bde9d8d7e90335dc087b53
+  checksum: 10c0/ef4a243476283fc49bc7550966c4af4aa0eef56273837211e700de3b664e08604a760cdddcb5ba43c049140e74ccfec5b0ee0bb439e08c2adf9138902fdde5f9
   languageName: node
   linkType: hard
 
