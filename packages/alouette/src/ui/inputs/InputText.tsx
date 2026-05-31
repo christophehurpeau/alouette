@@ -1,70 +1,112 @@
-import type { GetProps } from "@tamagui/core";
-import { styled } from "@tamagui/core";
-import type { FunctionComponent } from "react";
-import * as containerVariants from "../containers/variants";
-import { PlatformInputText } from "./PlatformInputText";
+import { forwardRef } from "react";
+import {
+  TextInput as RNTextInput,
+  type TextInputProps as RNTextInputProps,
+} from "react-native";
+import { type VariantProps, tv } from "tailwind-variants";
+import { useCSSVariable } from "uniwind";
 
-const NativeInputText = styled(PlatformInputText, {
-  render: "input",
-  theme: "brand",
-
-  variants: {
-    ...containerVariants,
-
-    disabled: {
-      true: {
-        color: "$text-disabled-muted",
-        cursor: "not-allowed",
-        opacity: "$opacity.disabled",
+const inputVariants = tv(
+  {
+    base: [
+      "body-md text-sharp",
+      "border",
+      "transition-[border-color,background-color,outline-color] duration-200 ease-in",
+      "outline-interactive-outlined-pressable", // to have proper outline color transition
+      process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+        ? ""
+        : "bg-form-bg border-interactive-outlined-pressable",
+      "hover:bg-form-bg-hover hover:border-interactive-outlined-hover",
+      "focus:bg-form-bg-focus focus:border-interactive-outlined-focus",
+      "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
+      "active:bg-form-bg-active active:border-interactive-outlined-active",
+      "disabled:bg-form-bg-disabled disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed",
+    ].join(" "),
+    variants: {
+      multiline: {
+        false: "rounded-md px-m py-xs",
+        true: "min-h-[80px] rounded-xs px-xs py-xs",
+      },
+      forceStyle: {
+        undefined: "bg-form-bg border-interactive-outlined-pressable",
+        hover: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? "bg-form-bg-hover border-interactive-outlined-hover"
+          : "",
+        focus: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? "bg-form-bg-focus border-interactive-outlined-focus outline-1 outline-interactive-outlined-focus outline-offset-0"
+          : "",
+        press: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? "bg-form-bg-active border-interactive-outlined-active"
+          : "",
       },
     },
-  } as const,
-
-  // @ts-expect-error -- variants not working when isInput is true
-  interactive: "text",
-  withBackground: "interactive",
-  withBorder: 1,
-
-  outlineWidth: 1,
-  outlineOffset: 0,
-  outlineStyle: "solid",
-  outlineColor: "transparent",
-
-  focusVisibleStyle: {
-    outlineWidth: 1,
-    outlineOffset: 0,
-    outlineStyle: "solid",
-    outlineColor: "$interactive.forms.outlineColor:focus",
+    defaultVariants: {
+      forceStyle: "undefined",
+    },
   },
+  { twMerge: false },
+);
 
-  focusStyle: {
-    outlineWidth: 1,
-    outlineOffset: 0,
-    outlineStyle: "solid",
-    outlineColor: "$interactive.forms.outlineColor:focus",
+type InputVariantProps = VariantProps<typeof inputVariants>;
+
+const MODE_PROPS = {
+  password: {
+    secureTextEntry: true,
+    autoComplete: "current-password",
   },
-});
+  number: {
+    inputMode: "numeric",
+    keyboardType: "numeric",
+  },
+  tel: {
+    inputMode: "tel",
+    autoComplete: "tel",
+    keyboardType: "phone-pad",
+  },
+  email: {
+    inputMode: "email",
+    autoComplete: "email",
+    keyboardType: "email-address",
+  },
+  url: {
+    inputMode: "url",
+    keyboardType: "url",
+  },
+  search: {
+    inputMode: "search",
+  },
+  webSearch: {
+    inputMode: "search",
+    keyboardType: "web-search",
+  },
+} as const satisfies Record<string, Partial<RNTextInputProps>>;
 
-export type InputTextProps = Pick<
-  GetProps<typeof NativeInputText>,
-  | "aria-labelledby"
-  | "autoCapitalize"
-  | "autoCorrect"
-  | "defaultValue"
-  | "disabled"
-  | "forceStyle"
-  | "id"
-  | "maxLength"
-  | "mode"
-  /** @internal use Textarea */
-  | "multiline"
-  | "onChange"
-  | "onChangeText"
-  | "placeholder"
-  | "readOnly"
-  | "testID"
-  | "theme"
-  | "value"
->;
+export type InputTextMode = keyof typeof MODE_PROPS;
 
-export const InputText: FunctionComponent<InputTextProps> = NativeInputText;
+export interface InputTextProps
+  extends Omit<RNTextInputProps, "editable">, InputVariantProps {
+  className?: string;
+  disabled?: boolean;
+  mode?: InputTextMode;
+}
+
+export const InputText = forwardRef<RNTextInput, InputTextProps>(
+  ({ className, disabled, mode, multiline, forceStyle, ...props }, ref) => {
+    const placeholderColor = useCSSVariable("--color-form-placeholder");
+    const modeProps = mode ? MODE_PROPS[mode] : undefined;
+    return (
+      <RNTextInput
+        ref={ref}
+        editable={!disabled}
+        aria-disabled={disabled === true}
+        multiline={multiline === true}
+        placeholderTextColor={
+          typeof placeholderColor === "string" ? placeholderColor : undefined
+        }
+        className={inputVariants({ multiline, forceStyle, className })}
+        {...modeProps}
+        {...props}
+      />
+    );
+  },
+);

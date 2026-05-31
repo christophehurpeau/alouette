@@ -1,5 +1,6 @@
 import type { StoryObj } from "@storybook/react-vite";
 import { Switch } from "./Switch";
+type ThisStory = StoryObj<typeof Switch>;
 declare const _default: {
     title: string;
     component: typeof Switch;
@@ -8,22 +9,15 @@ declare const _default: {
     };
     argTypes: {
         disabled: {
-            description: string;
             control: "boolean";
-            table: {
-                defaultValue: {
-                    summary: string;
-                };
-            };
         };
         checked: {
-            description: string;
             control: "boolean";
         };
     };
 };
 export default _default;
-export declare const PreviewSwitchStory: StoryObj<typeof Switch>;
-export declare const Variants: StoryObj<typeof Switch>;
+export declare const PreviewSwitchStory: ThisStory;
+export declare const Variants: ThisStory;
 export declare const Tests: StoryObj<typeof Switch>;
 //# sourceMappingURL=Switch.stories.d.ts.map

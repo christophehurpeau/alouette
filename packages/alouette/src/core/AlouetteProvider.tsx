@@ -1,15 +1,10 @@
-import type { TamaguiProviderProps } from "@tamagui/core";
-import { TamaguiProvider } from "@tamagui/core";
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 import { useColorScheme } from "react-native";
-import "./reset";
+import { Uniwind } from "uniwind";
 
-export interface AlouetteProviderProps extends Pick<
-  TamaguiProviderProps,
-  "disableInjectCSS"
-> {
+export interface AlouetteProviderProps {
   children: ReactNode;
-  tamaguiConfig: NonNullable<TamaguiProviderProps["config"]>;
   defaultTheme?: "dark" | "light";
 }
 
@@ -20,17 +15,10 @@ export const useDefaultThemeFromColorScheme = () => {
 
 export function AlouetteProvider({
   children,
-  tamaguiConfig,
   defaultTheme = "light",
-  disableInjectCSS,
 }: AlouetteProviderProps): ReactNode {
-  return (
-    <TamaguiProvider
-      config={tamaguiConfig}
-      defaultTheme={defaultTheme}
-      disableInjectCSS={disableInjectCSS}
-    >
-      {children}
-    </TamaguiProvider>
-  );
+  useEffect(() => {
+    Uniwind.setTheme(defaultTheme);
+  }, [defaultTheme]);
+  return children;
 }

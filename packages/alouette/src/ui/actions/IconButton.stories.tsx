@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
-import { Box } from "../containers/Box";
 import { Text } from "../primitives/Text";
 import { HStack, VStack } from "../stacks/stacks";
-import { Story } from "../story-components/Story";
+import { Story, semanticRoles } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { IconButton } from "./IconButton";
 
@@ -14,77 +13,22 @@ export default {
   component: IconButton,
   parameters: {
     componentSubtitle:
-      "A standardized way to create clickable icons with consistent touch targets, visual feedback, and accessibility",
+      "A standardized circular icon button with consistent touch targets, visual feedback, and accessibility",
     docs: {
       description: {
-        component: `
-### Implementation Details
-- Flexible sizing, 40px is the standard size
-- Circular shape with centered icon and equal padding
-- Supports all semantic themes with appropriate contrast ratios
-- Built-in state management for hover, focus, press, and disabled
-
-### Technical Guidelines
-- Required prop: icon (ReactNode from alouette-icons)
-- Optional props: size (number), theme, variant, disabled
-- aria-label must be provided when icon meaning isn't obvious
-- Recommended minimum size of 40px for touch targets on mobile`,
+        component: `### Variants
+- \`size\`: \`sm\` | \`md\` | any number (custom diameter px)
+- \`iconSize\`: \`"fill"\` makes the icon fill 80% of the button (default 50%)
+- \`variant\`: contained | outlined | ghost-contained | ghost-outlined
+- Wrap in \`<AccentTheme accent="brand"/>\` (or any accent: brand|info|success|warning|danger) to switch the interactive token set; it composes with current light/dark mode`,
       },
-    },
-  },
-  argTypes: {
-    icon: {
-      description: "The icon to display (from alouette-icons)",
-      control: "boolean",
-    },
-    size: {
-      description: "Size of the button in pixels",
-      control: "select",
-      options: [24, 40, "md", "sm"],
-      table: {
-        defaultValue: { summary: "40" },
-      },
-    },
-    variant: {
-      description: "Visual style variant of the button",
-      control: "select",
-      options: [
-        "contained",
-        "outlined",
-        "elevated",
-        "ghost-contained",
-        "ghost-outlined",
-      ],
-      table: {
-        defaultValue: { summary: "contained" },
-      },
-    },
-    theme: {
-      description: "Theme color for the button",
-      control: "select",
-      options: ["brand", "info", "success", "warning", "danger"],
-      table: {
-        defaultValue: { summary: "brand" },
-      },
-    },
-    disabled: {
-      description: "Whether the button is disabled",
-      control: "boolean",
-      table: {
-        defaultValue: { summary: "false" },
-      },
-    },
-    "aria-label": {
-      description: "Accessible label for the button",
-      control: "text",
     },
   },
 } satisfies Meta<typeof IconButton>;
 
 export const PreviewIconButtonStory: ThisStory = {
   args: {
-    theme: "brand",
-    size: 40,
+    size: "md",
     "aria-label": "Go back",
   },
   render: (args) => <IconButton {...args} icon={<ArrowLeftRegularIcon />} />,
@@ -93,10 +37,10 @@ export const PreviewIconButtonStory: ThisStory = {
 export const Variants: ThisStory = {
   render: () => (
     <Story>
-      <Story.Section title="Size">
+      <Story.Section title="Sizes">
         <StoryGrid.Row>
           {([24, 40] as const).map((size) => (
-            <StoryGrid.Col key={size} title={size.toString()}>
+            <StoryGrid.Col key={size} title={String(size)}>
               <IconButton
                 size={size}
                 icon={<ArrowLeftRegularIcon />}
@@ -107,48 +51,46 @@ export const Variants: ThisStory = {
         </StoryGrid.Row>
       </Story.Section>
 
-      <Story.Section title="Variants">
-        {(
-          [undefined, "brand", "info", "success", "warning", "danger"] as const
-        ).map((theme) => (
-          <Story.SubSection key={theme} title={theme ?? "Default"}>
+      <Story.Section withSurface title="Variants">
+        {[undefined, ...semanticRoles].map((semanticRole) => (
+          <Story.SubSection
+            key={semanticRole || "default"}
+            title={semanticRole ?? "default"}
+            semanticRole={semanticRole}
+          >
             <StoryGrid.Row>
               {(
-                [undefined, "hover", "focus", "press", "disabled"] as const
+                [
+                  undefined,
+                  "ghost",
+                  "hover",
+                  "focus",
+                  "press",
+                  "disabled",
+                ] as const
               ).map((state) => (
                 <StoryGrid.Col
                   key={state || "default"}
                   title={state || "default"}
                 >
-                  <VStack gap="$0.5">
-                    {(
-                      [
-                        "contained",
-                        "outlined",
-                        "ghost-contained",
-                        "ghost-outlined",
-                      ] as const
-                    ).map((variant) => (
-                      <HStack key={variant} gap="$0.5" alignItems="center">
-                        <Box
-                          theme={theme}
-                          background={
-                            variant === "ghost-contained"
-                              ? "surface"
-                              : undefined
+                  <VStack className="gap-xs">
+                    {(["contained", "outlined"] as const).map((variant) => (
+                      <HStack key={variant} className="gap-xs items-center">
+                        <IconButton
+                          ghost={state === "ghost"}
+                          variant={variant}
+                          disabled={state === "disabled"}
+                          forceStyle={
+                            state === "disabled" || state === "ghost"
+                              ? undefined
+                              : state
                           }
-                        >
-                          <IconButton
-                            variant={variant}
-                            disabled={state === "disabled"}
-                            forceStyle={
-                              state === "disabled" ? undefined : state
-                            }
-                            icon={<ArrowLeftRegularIcon />}
-                            aria-label="Go back"
-                          />
-                        </Box>
-                        <Text size="$xs">{variant}</Text>
+                          icon={<ArrowLeftRegularIcon />}
+                          aria-label="Go back"
+                        />
+                        <Text className="text-xs">
+                          {variant} {state === "ghost" ? "ghost" : ""}
+                        </Text>
                       </HStack>
                     ))}
                   </VStack>

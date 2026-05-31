@@ -1,864 +1,499 @@
-import { jsx, jsxs } from 'react/jsx-runtime';
-import { styled, View, usePropsAndStyle, Text as Text$1, isWeb, useMedia, TamaguiProvider, Theme, useTheme } from '@tamagui/core';
-export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
-import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
+import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
+import { useEffect, forwardRef, Fragment, Children, cloneElement, useState, useCallback } from 'react';
+import { Uniwind, useUniwind, ScopedTheme, useCSSVariable } from 'uniwind';
+export { ScopedTheme, Uniwind, useCSSVariable } from 'uniwind';
+import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, Pressable, Platform, TextInput, Switch as Switch$1, useWindowDimensions, Linking } from 'react-native';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { cloneElement, Fragment, Children, createContext, useState, useEffect } from 'react';
+import { extendTailwindMerge, twMerge as twMerge$1 } from 'tailwind-merge';
+import { tv } from 'tailwind-variants';
 import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
 import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
 import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
-import { TextInput, ScrollView as ScrollView$1, Platform, useColorScheme, Switch as Switch$1 } from 'react-native';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as WebBrowser from 'expo-web-browser';
+import { WebBrowserPresentationStyle } from 'expo-web-browser';
 
-const absoluteFillStyle = {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0
+const useDefaultThemeFromColorScheme = () => {
+  const colorScheme = useColorScheme();
+  return colorScheme || "light";
 };
-
-const getInteractionStyles = (name, {
-  disabled,
-  interactive,
-  variant = name === "borderColor" ? "outlined" : "contained",
-  tint
-}) => {
-  const isGhost = variant?.startsWith("ghost-");
-  const prefix = interactive === "text" ? "interactive.forms" : (
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    `interactive${tint === "accent" ? "-accent" : ""}.${isGhost ? variant.slice(6) : variant}`
-  );
-  if (disabled) {
-    return { [name]: `$${prefix}.${name}:disabled` };
-  }
-  if (name === "shadowColor") {
-    return { [name]: `$${prefix}.${name}` };
-  }
-  if (name === "outlineColor") {
-    return {
-      focusVisibleStyle: {
-        outlineWidth: interactive === "text" ? 0 : 2,
-        outlineStyle: "solid",
-        outlineOffset: variant === "outlined" || variant === "ghost-outlined" ? 2 : 0,
-        outlineColor: `$${prefix}.${name}:focus`
-      }
-    };
-  }
-  return {
-    [name]: isGhost ? "transparent" : `$${prefix}.${name}`,
-    hoverStyle: { [name]: `$${prefix}.${name}:hover` },
-    focusStyle: { [name]: `$${prefix}.${name}:focus` },
-    pressStyle: { [name]: `$${prefix}.${name}:press` },
-    disabledStyle: { [name]: `$${prefix}.${name}:disabled` }
-  };
-};
-
-const absoluteFill = {
-  true: absoluteFillStyle
-};
-const center = {
-  true: {
-    justifyContent: "center",
-    alignItems: "center"
-  }
-};
-const tint = {
-  accent: {}
-  // used in interactive variant
-};
-function interactive(isInteractiveOrInteractiveCursorType, { props }) {
-  if (!isInteractiveOrInteractiveCursorType) return null;
-  if (isInteractiveOrInteractiveCursorType === true) {
-    return {
-      cursor: "pointer",
-      pressStyle: {
-        transform: [{ scale: 0.975 }]
-      },
-      disabledStyle: {
-        cursor: "not-allowed",
-        opacity: "$opacity.disabled",
-        transform: [{ scale: 1 }]
-      }
-    };
-  }
-  return {
-    cursor: isInteractiveOrInteractiveCursorType,
-    disabledStyle: {
-      cursor: "not-allowed",
-      opacity: "$opacity.disabled"
-    }
-  };
-}
-const layer = {
-  surface: {
-    backgroundColor: "$bg-surface"
-  },
-  highlight: {
-    backgroundColor: "$bg-highlight"
-  },
-  "highlight-accent": {
-    backgroundColor: "$bg-highlight-accent"
-  },
-  lowered: {
-    backgroundColor: "$bg-lowered"
-  },
-  translucent: {
-    backgroundColor: "$bg-translucent"
-  }
-};
-const shadow = {
-  none: {
-    boxShadow: "none",
-    elevationAndroid: 0
-  },
-  s: {
-    boxShadow: "inset 0 1px 2px #ffffff40, 0 1px 2px #00000040, 0 2px 4px #00000025",
-    elevationAndroid: 2
-  },
-  m: {
-    boxShadow: "inset 0 1px 2px #ffffff40, 0 2px 4px #00000040, 0 4px 8px #00000025",
-    elevationAndroid: 4
-  },
-  l: {
-    boxShadow: "inset 0 1px 2px #ffffff40, 0 4px 6px #00000040, 0 6px 10px #00000025",
-    elevationAndroid: 6
-  },
-  lowered: {
-    boxShadow: "inset 0 1px 2px #00000040, inset 0 -2px 2px #ffffff15"
-  }
-};
-const square = (val) => {
-  return { width: val, height: val };
-};
-const withBorder = (val, { props }) => {
-  if (props.shadow && props.shadow !== "lowered") {
-    throw new Error("Cannot use border with shadow variant");
-  }
-  return {
-    borderWidth: val,
-    ...props.interactive ? getInteractionStyles("borderColor", props) : { borderColor: "$border-sharp" }
-  };
-};
-const withFocusVisibleOutline = (val, { props }) => {
-  if (!val) return null;
-  return {
-    ...props.interactive ? getInteractionStyles("outlineColor", props) : { outlineColor: "$outlineColor" },
-    disabledStyle: {
-      outlineWidth: 0
-    }
-  };
-};
-const withBackground = (val, { props }) => {
-  return props.interactive && val === "interactive" ? getInteractionStyles("backgroundColor", props) : {
-    backgroundColor: val === "surface" ? "$bg-surface" : "$bg-highlight"
-  };
-};
-
-const containerVariants = /*#__PURE__*/Object.defineProperty({
-  __proto__: null,
-  absoluteFill,
-  center,
-  interactive,
-  layer,
-  shadow,
-  square,
-  tint,
-  withBackground,
-  withBorder,
-  withFocusVisibleOutline
-}, Symbol.toStringTag, { value: 'Module' });
-
-const BoxFrame = styled(View, {
-  // never apply overflow hidden here, as it will break shadows
-  flexShrink: 1,
-  // allow to shrink by default, as Box is often used in VSTack and HStack. See button for an example.
-  variants: containerVariants
-});
-const Box = process.env.NODE_ENV !== "production" ? BoxFrame.styleable((props) => {
-  if (process.env.NODE_ENV !== "production" && props.shadow === "lowered" && props.layer !== "lowered") {
-    throw new Error(
-      'shadow="lowered" must only be used with layer="lowered"'
-    );
-  }
-  return /* @__PURE__ */ jsx(BoxFrame, { ...props });
-}) : BoxFrame;
-const InteractiveBox = styled(BoxFrame, {
-  interactive: true,
-  tabIndex: 0,
-  transition: "fast",
-  variants: {
-    disabled: {
-      true: {
-        tabIndex: -1
-      }
-    }
-  }
-});
-const SafeAreaBox = BoxFrame.styleable((props) => {
-  const insets = useSafeAreaInsets();
-  return /* @__PURE__ */ jsx(
-    Box,
-    {
-      ...props,
-      paddingTop: insets.top,
-      paddingBottom: insets.bottom,
-      paddingLeft: insets.left,
-      paddingRight: insets.right
-    }
-  );
-});
-
-const PressableBox = styled(InteractiveBox, {
-  role: "button",
-  overflow: "hidden",
-  withFocusVisibleOutline: true,
-  variants: {
-    variant: {
-      contained: {
-        withBackground: "interactive",
-        shadow: "s",
-        borderRadius: "$sm"
-      },
-      outlined: {
-        // withBackground: "highlight",
-        withBorder: 1
-      },
-      "ghost-contained": {
-        withBackground: "interactive",
-        backgroundColor: "transparent"
-      },
-      "ghost-outlined": {
-        // withBackground: "surface",
-        withBorder: 1,
-        backgroundColor: "transparent",
-        borderColor: "transparent"
-      }
-    }
-  },
-  defaultVariants: {
-    variant: "contained"
-  }
-});
-
-const getDefaultColor = (disabled, disabledSharp, tint) => {
-  if (disabled) {
-    return disabledSharp ? "$text-disabled-sharp" : "$text-disabled-muted";
-  }
-  if (tint === "accent") return "$text-accent";
-  if (tint === "accent-muted") return "$text-accent-muted";
-  if (tint === "muted") return "$text-muted";
-  if (tint === "onAccent") return "$text-onAccent";
-  if (tint === "onAccent-muted") return "$text-onAccent-muted";
-  return "$text-sharp";
-};
-function Icon({
-  icon,
-  // TODO should size be normalized ?
-  size = 20,
-  disabled,
-  disabledSharp,
-  tint
+function AlouetteProvider({
+  children,
+  defaultTheme = "light"
 }) {
-  const [props, style] = usePropsAndStyle(
-    {
-      color: getDefaultColor(disabled, disabledSharp, tint),
-      width: size,
-      height: size
-    },
-    { forComponent: Text$1 }
-  );
-  return cloneElement(icon, { style, ...props });
+  useEffect(() => {
+    Uniwind.setTheme(defaultTheme);
+  }, [defaultTheme]);
+  return children;
 }
 
-const Text = styled(Text$1, {
-  variants: {
-    inherit: {
-      false: {
-        size: "$md",
-        weight: "$regular",
-        fontFamily: "$body",
-        tint: "sharp"
-      }
-    },
-    size: {
-      "...fontSize": (size) => ({
-        fontSize: size,
-        lineHeight: size
-      })
-    },
-    weight: {
-      $regular: { fontWeight: "$regular" },
-      $bold: { fontWeight: "$bold" },
-      $extraBold: { fontWeight: "$extraBold" }
-    },
-    family: {
-      $heading: { fontFamily: "$heading" },
-      $body: { fontFamily: "$body" },
-      "$body-monospace": { fontFamily: "$body-monospace" }
-    },
-    tint: {
-      sharp: {
-        color: "$text-sharp",
-        disabledStyle: {
-          color: "$text-disabled-muted"
-        }
-      },
-      muted: {
-        color: "$text-muted",
-        disabledStyle: {
-          color: "$text-disabled-muted"
-        }
-      },
-      accent: {
-        color: "$text-accent"
-      },
-      onAccent: {
-        color: "$text-onAccent"
-      }
-    },
-    disabledSharp: {
-      true: {
-        disabledStyle: {
-          color: "$text-disabled-sharp"
-        }
-      }
-    }
-  },
-  defaultVariants: {
-    inherit: false
-  }
-});
-const Paragraph = styled(Text, {
-  render: "p",
-  userSelect: "auto",
-  inherit: false
+const AlouetteDecorator = (storyFn, context) => {
+  const theme = context.globals.backgrounds?.value === "#000000" ? "dark" : "light";
+  useEffect(() => {
+    Uniwind.setTheme(theme);
+  }, [theme]);
+  return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(AlouetteProvider, { defaultTheme: theme, children: storyFn(context) }) });
+};
+
+const View = forwardRef((props, ref) => {
+  return /* @__PURE__ */ jsx(View$1, { ref, ...props });
 });
 
-const buttonHeight = {
-  sm: 38,
-  md: 44
-};
-const ButtonFrame = styled(PressableBox, {
-  name: "ButtonFrame",
-  render: "button",
-  // @ts-expect-error missing type definition
-  type: "button",
-  center: true,
-  flexDirection: "row",
-  variants: {
-    size: {
-      sm: {
-        paddingHorizontal: "$0.5",
-        gap: "$0.25",
-        borderRadius: "$sm",
-        minHeight: buttonHeight.sm
-      },
-      md: {
-        paddingHorizontal: "$1.0",
-        gap: "$0.5",
-        borderRadius: "$sm",
-        minHeight: buttonHeight.md
-      }
-    }
-  },
-  defaultVariants: {
-    size: "md"
-  }
-});
-const ButtonText = styled(Text, {
-  textAlign: "center",
-  weight: "$bold",
-  flexShrink: 1,
-  variants: {
-    "button-size": {
-      sm: {
-        paddingVertical: "$0.25",
-        size: "$sm"
-      },
-      md: {
-        paddingVertical: "$0.5",
-        size: "$md"
-      }
-    }
-  }
-});
-function Button({
-  icon,
-  text,
-  disabled,
-  variant = "contained",
-  size = "md",
-  ...pressableProps
-}) {
-  return /* @__PURE__ */ jsxs(
-    ButtonFrame,
-    {
-      variant,
-      size,
-      disabled,
-      ...pressableProps,
-      children: [
-        icon && /* @__PURE__ */ jsx(
-          Icon,
-          {
-            tint: variant === "contained" ? "onAccent" : void 0,
-            disabled,
-            disabledSharp: variant === "contained",
-            icon,
-            size: size === "sm" ? 16 : 20
-          }
-        ),
-        /* @__PURE__ */ jsx(
-          ButtonText,
-          {
-            tint: variant === "contained" ? "onAccent" : void 0,
-            "button-size": size,
-            disabled,
-            disabledSharp: variant === "contained",
-            textAlign: icon ? "left" : "center",
-            children: text
-          }
-        )
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      "font-size": [
+        "body-xs",
+        "body-sm",
+        "body-md",
+        "body-lg",
+        "body-xl",
+        "body-xxl",
+        "body-3xl",
+        "heading-xs",
+        "heading-sm",
+        "heading-md",
+        "heading-lg",
+        "heading-xl",
+        "heading-xxl",
+        "heading-3xl",
+        "mono-xs",
+        "mono-sm",
+        "mono-md",
+        "mono-lg",
+        "mono-xl",
+        "mono-xxl",
+        "mono-3xl"
       ]
     }
-  );
-}
-function ExternalLinkButton(props) {
-  return /* @__PURE__ */ jsx(
-    Button,
-    {
-      ...props,
-      render: "a",
-      role: "link",
-      target: "_blank",
-      rel: "noopener noreferrer",
-      style: { textDecorationLine: "none" }
-    }
-  );
-}
-function InternalLinkButton(props) {
-  return /* @__PURE__ */ jsx(Button, { ...props, render: "a", role: "link" });
-}
+  }
+});
+const Text = forwardRef(
+  ({ className, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      Text$1,
+      {
+        ref,
+        className: twMerge("text-sharp", className),
+        ...props
+      }
+    );
+  }
+);
+const Paragraph = forwardRef(
+  ({ className, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      Text,
+      {
+        ref,
+        role: "paragraph",
+        className: `select-auto ${className ?? ""}`,
+        ...props
+      }
+    );
+  }
+);
 
-const IconButtonFrame = styled(PressableBox, {
-  name: "IconButtonFrame",
-  role: "button",
-  center: true,
-  borderRadius: 1e4,
+const ScrollView = forwardRef(
+  (props, ref) => {
+    return /* @__PURE__ */ jsx(ScrollView$1, { ref, ...props });
+  }
+);
+
+const stackVariants = tv({
   variants: {
-    size: {
-      ":number": (val) => ({
-        square: val
-      }),
-      sm: { square: buttonHeight.sm },
-      md: { square: buttonHeight.md }
+    absoluteFill: {
+      true: "absolute inset-0"
     }
   }
 });
-function IconButton({
-  icon,
-  disabled,
-  size = "md",
-  iconSize,
-  variant = "contained",
-  ...pressableBoxProps
-}) {
-  const sizeAsValue = typeof size === "number" ? size : buttonHeight[size];
-  return /* @__PURE__ */ jsx(
-    IconButtonFrame,
-    {
-      size,
-      variant,
-      disabled,
-      ...pressableBoxProps,
-      children: /* @__PURE__ */ jsx(
-        Icon,
-        {
-          size: iconSize === "fill" ? sizeAsValue * 0.8 : sizeAsValue * 0.5,
-          disabled,
-          icon
-        }
-      )
+const Stack = forwardRef(
+  ({ className, absoluteFill, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      View$1,
+      {
+        ref,
+        className: stackVariants({
+          absoluteFill,
+          className: `flex-row flex-wrap ${className ?? ""}`
+        }),
+        ...props
+      }
+    );
+  }
+);
+const HStack = forwardRef(
+  ({ className, absoluteFill, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      View$1,
+      {
+        ref,
+        className: stackVariants({
+          absoluteFill,
+          className: `flex-row ${className ?? ""}`
+        }),
+        ...props
+      }
+    );
+  }
+);
+const VStack = forwardRef(
+  ({ className, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(View$1, { ref, className: `flex-col ${className ?? ""}`, ...props });
+  }
+);
+
+const separatorVariants = tv({
+  base: "border-border-sharp",
+  variants: {
+    vertical: {
+      true: "self-stretch border-r w-px",
+      false: "self-stretch border-b h-px"
     }
-  );
+  },
+  defaultVariants: {
+    vertical: false
+  }
+});
+const Separator = forwardRef(
+  ({ className, vertical, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      View$1,
+      {
+        ref,
+        className: separatorVariants({ vertical, className }),
+        ...props
+      }
+    );
+  }
+);
+
+function SemanticScope({
+  mode: forcedMode,
+  semanticRole,
+  children
+}) {
+  const { theme } = useUniwind();
+  if (!semanticRole) {
+    return children;
+  }
+  const mode = theme.startsWith("dark") ? "dark" : "light";
+  if (forcedMode && forcedMode !== mode) {
+    return (
+      // we need to set the mode first to initialize the correct shared variables
+      /* @__PURE__ */ jsx(ScopedTheme, { theme: forcedMode, children: /* @__PURE__ */ jsx(ScopedTheme, { theme: `${forcedMode}_${semanticRole}`, children }) })
+    );
+  }
+  return /* @__PURE__ */ jsx(ScopedTheme, { theme: `${mode}_${semanticRole}`, children });
 }
 
-const Surface = styled(Box, {
-  layer: "surface",
-  shadow: "s",
-  overflow: "hidden",
-  // make sure the boxshadow respects the borderRadius.
+const boxBaseClasses = "shrink";
+const boxVariants = tv(
+  {
+    base: boxBaseClasses,
+    variants: {
+      layer: {
+        surface: "bg-surface",
+        highlight: "bg-highlight",
+        "highlight-accent": "bg-highlight-accent",
+        lowered: "bg-lowered",
+        translucent: "bg-translucent"
+      },
+      shadow: {
+        none: "shadow-none",
+        s: "shadow-s",
+        m: "shadow-m",
+        l: "shadow-l",
+        lowered: "shadow-lowered"
+      },
+      tint: {
+        accent: ""
+      },
+      absoluteFill: {
+        true: "absolute inset-0"
+      },
+      center: {
+        true: "items-center justify-center"
+      }
+    }
+  },
+  // Disable tw-merge: variants set distinct properties (bg-*, shadow-*, ...)
+  // that don't actually conflict despite sharing prefixes in some cases.
+  { twMerge: false }
+);
+
+const Box = forwardRef(
+  ({ className, layer, shadow, tint, absoluteFill, center, ...props }, ref) => {
+    if (process.env.NODE_ENV !== "production" && shadow === "lowered" && layer !== "lowered") {
+      console.error(
+        'alouette Box: shadow="lowered" must only be used with layer="lowered"'
+      );
+    }
+    return /* @__PURE__ */ jsx(
+      View$1,
+      {
+        ref,
+        className: boxVariants({
+          layer,
+          shadow,
+          tint,
+          absoluteFill,
+          center,
+          className
+        }),
+        ...props
+      }
+    );
+  }
+);
+const interactiveBoxVariants = tv({
+  // TODO is it possible to define transition utilities
+  base: [
+    boxBaseClasses,
+    "cursor-pointer",
+    "transition-[transform,background-color,border-color] duration-200 ease-in",
+    "disabled:cursor-not-allowed disabled:opacity-70",
+    "active:scale-[0.975]"
+  ].join(" "),
   variants: {
-    size: {
-      sm: {
-        padding: "$1.0",
-        borderRadius: "$sm"
-      },
-      md: {
-        padding: "$2.0",
-        borderRadius: "$md"
-      },
-      lg: {
-        padding: "$3.0",
-        borderRadius: "$lg"
+    withFocusVisibleOutline: {
+      true: "focus-visible:outline-2 focus-visible:outline-offset-2"
+    }
+  }
+});
+const InteractiveBox = forwardRef(
+  ({ withFocusVisibleOutline, className, ...rest }, ref) => /* @__PURE__ */ jsx(
+    Pressable,
+    {
+      ref,
+      pointerEvents: "auto",
+      ...rest,
+      className: interactiveBoxVariants({ withFocusVisibleOutline, className })
+    }
+  )
+);
+const SafeAreaBox = forwardRef(
+  (props, ref) => {
+    const insets = useSafeAreaInsets();
+    return /* @__PURE__ */ jsx(
+      Box,
+      {
+        ref,
+        style: {
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right
+        },
+        ...props
+      }
+    );
+  }
+);
+
+const surfaceVariants = tv(
+  {
+    // overflow-hidden so the multi-layer shadow respects the rounded corners.
+    base: "overflow-hidden",
+    variants: {
+      size: {
+        sm: "p-m rounded-xs",
+        md: "p-xl rounded-sm",
+        lg: "p-xxl rounded-md"
       }
     },
-    lowered: {
-      true: {
-        layer: "lowered",
-        shadow: "lowered"
-      }
+    defaultVariants: {
+      size: "md"
     }
   },
-  defaultVariants: {
-    size: "md"
-  }
-});
-
-const MessageFrame = styled(Surface, {
-  name: "MessageFrame",
-  alignItems: "center",
-  flexDirection: "row",
-  layer: "highlight-accent",
-  variants: {
-    size: {
-      sm: {
-        gap: "$0.5"
-      },
-      md: {
-        gap: "$1.0"
-      },
-      lg: {
-        gap: "$1.5"
-      }
-    }
-  },
-  defaultVariants: {
-    size: "md"
-  }
-});
-const MessageText = styled(Text, {
-  size: "$md",
-  flexGrow: 1,
-  tint: "accent"
-});
-const MessageIconContainer = styled(View, {
-  alignItems: "center"
-});
-const MessageDismissButtonContainer = styled(View, {
-  position: "relative",
-  alignItems: "center",
-  justifyContent: "center",
-  variants: {
-    size: {
-      sm: {
-        height: 24,
-        width: 24
-      },
-      md: {
-        height: 40,
-        width: 40
-      },
-      lg: {
-        height: 40,
-        width: 40
-      }
-    }
-  },
-  defaultVariants: {
-    size: "md"
-  }
-});
-function Message({
-  icon,
-  size = "md",
-  theme,
-  children,
-  onDismiss,
-  dismissIconAriaLabel
-}) {
-  return /* @__PURE__ */ jsxs(MessageFrame, { theme, size, children: [
-    /* @__PURE__ */ jsx(MessageIconContainer, { children: /* @__PURE__ */ jsx(Icon, { size: size === "sm" ? 20 : 24, icon, tint: "accent" }) }),
-    /* @__PURE__ */ jsx(MessageText, { children }),
-    onDismiss ? /* @__PURE__ */ jsx(MessageDismissButtonContainer, { size, children: /* @__PURE__ */ jsx(
-      IconButton,
+  { twMerge: false }
+);
+const Surface = forwardRef(
+  ({ className, size, variant, shadow, semanticRole, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(SemanticScope, { semanticRole, children: /* @__PURE__ */ jsx(
+      Box,
       {
-        icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
-        iconSize: size === "sm" ? "fill" : void 0,
-        size: size === "sm" ? 24 : 40,
-        variant: "outlined",
-        tint: "accent",
-        "aria-label": dismissIconAriaLabel
+        ref,
+        layer: variant || "surface",
+        shadow: shadow ?? (variant === "lowered" ? "lowered" : "s"),
+        className: surfaceVariants({ size, className }),
+        ...props
       }
-    ) }) : null
-  ] });
-}
-function InfoMessage(props) {
-  return /* @__PURE__ */ jsx(Message, { ...props, theme: "info", icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
-}
-function ConfirmationMessage(props) {
-  return /* @__PURE__ */ jsx(Message, { ...props, theme: "success", icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
-}
-function WarningMessage(props) {
-  return /* @__PURE__ */ jsx(Message, { ...props, theme: "warning", icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
-}
-
-const inputStyle = {
-  fontFamily: "$body",
-  fontSize: "$md",
-  color: "$text-sharp",
-  paddingHorizontal: "$1.0",
-  paddingVertical: "$0.5",
-  borderRadius: "$md"
-};
-
-const PlatformInputText = styled(
-  TextInput,
-  {
-    ...inputStyle,
-    focusable: true,
-    variants: {
-      mode: {
-        password: {
-          secureTextEntry: true
-        },
-        number: {
-          inputMode: "numeric",
-          keyboardType: "numeric"
-        },
-        tel: {
-          inputMode: "tel",
-          autoComplete: "tel",
-          keyboardType: "phone-pad"
-        },
-        email: {
-          inputMode: "email",
-          autoComplete: "email",
-          keyboardType: "email-address"
-        },
-        url: {
-          inputMode: "url",
-          keyboardType: "url"
-        },
-        search: {
-          inputMode: "search"
-        },
-        webSearch: {
-          inputMode: "search",
-          keyboardType: "web-search"
-        }
-      }
-    }
-  },
-  {
-    isInput: true,
-    validStyles: Text$1.staticConfig.validStyles
+    ) });
   }
 );
 
-const NativeInputText = styled(PlatformInputText, {
-  render: "input",
-  theme: "brand",
-  variants: {
-    ...containerVariants,
-    disabled: {
-      true: {
-        color: "$text-disabled-muted",
-        cursor: "not-allowed",
-        opacity: "$opacity.disabled"
+function styled(Component, defaultClassName) {
+  function StyledComponent({ className, ...props }) {
+    return /* @__PURE__ */ jsx(
+      Component,
+      {
+        className: twMerge$1(defaultClassName, className),
+        ...props
       }
-    }
-  },
-  // @ts-expect-error -- variants not working when isInput is true
-  interactive: "text",
-  withBackground: "interactive",
-  withBorder: 1,
-  outlineWidth: 1,
-  outlineOffset: 0,
-  outlineStyle: "solid",
-  outlineColor: "transparent",
-  focusVisibleStyle: {
-    outlineWidth: 1,
-    outlineOffset: 0,
-    outlineStyle: "solid",
-    outlineColor: "$interactive.forms.outlineColor:focus"
-  },
-  focusStyle: {
-    outlineWidth: 1,
-    outlineOffset: 0,
-    outlineStyle: "solid",
-    outlineColor: "$interactive.forms.outlineColor:focus"
+    );
   }
-});
-const InputText = NativeInputText;
+  StyledComponent.displayName = `Styled(${Component.displayName ?? Component.name ?? "Component"})`;
+  StyledComponent.__isStyledComponent = true;
+  return StyledComponent;
+}
 
-const TextAreaFrame = styled(InputText, {
-  render: "textarea",
-  multiline: true,
-  height: "auto",
-  minHeight: 80,
-  borderRadius: "$1.0",
-  paddingHorizontal: "$0.75"
-});
-const TextArea = TextAreaFrame;
-
-const ScrollView = styled(
-  ScrollView$1,
-  {},
-  {
-    accept: {
-      contentContainerStyle: "style"
-    }
-  }
-);
-
-const variants = {
-  absoluteFill: {
-    true: absoluteFillStyle
-  }
-};
-const Stack = styled(View, {
-  name: "Stack",
-  flexDirection: "row",
-  flexWrap: "wrap",
-  variants
-});
-const HStack = styled(View, {
-  name: "HStack",
-  flexDirection: "row",
-  variants
-});
-const VStack = styled(View, {
-  name: "VStack",
-  flexDirection: "column"
-});
-styled(View, {
-  justifyContent: "center",
-  alignItems: "center",
-  variants
-});
-
-const StoryTitle = styled(Text, {
-  family: "$heading",
-  weight: "$extraBold",
+const storyTitleVariants = tv({
+  base: "font-extrabold text-sharp",
   variants: {
     level: {
-      1: { size: "$xl", marginBottom: "$2.0" },
-      2: { size: "$lg", marginBottom: "$2.0" },
-      3: { size: "$md", marginBottom: "$1.0" },
-      4: { size: "$sm", marginBottom: "$1.0" }
+      1: "heading-xl mb-xl",
+      2: "heading-lg mb-xl",
+      3: "heading-md mb-m",
+      4: "heading-sm mb-m"
     }
   },
   defaultVariants: {
     level: 1
   }
 });
+const StoryTitle = forwardRef(
+  ({ className, level, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      Text,
+      {
+        ref,
+        className: storyTitleVariants({ level, className }),
+        ...props
+      }
+    );
+  }
+);
 
-const InternalStorySection = styled(VStack, {
-  marginBottom: "$2.0",
-  marginHorizontal: "$-1.0",
-  paddingHorizontal: "$1.0"
-});
+const InternalStorySection = styled(View, "-mx-l px-l");
 function StorySection({
   title,
   children,
   level = 1,
-  withSurface = false,
-  ...props
+  modeTheme,
+  semanticRole,
+  withSurface = false
 }) {
-  return /* @__PURE__ */ jsxs(InternalStorySection, { ...props, children: [
+  const content = /* @__PURE__ */ jsx(InternalStorySection, { className: "pb-xl bg-screen", children: withSurface ? /* @__PURE__ */ jsxs(Surface, { children: [
     /* @__PURE__ */ jsx(StoryTitle, { level: level + 1, children: title }),
-    withSurface ? /* @__PURE__ */ jsx(Surface, { children }) : /* @__PURE__ */ jsx(VStack, { gap: "$1.0", children })
-  ] });
+    /* @__PURE__ */ jsx(VStack, { className: "gap-m", children })
+  ] }) : /* @__PURE__ */ jsxs(Fragment$1, { children: [
+    /* @__PURE__ */ jsx(StoryTitle, { level: level + 1, children: title }),
+    /* @__PURE__ */ jsx(VStack, { className: "gap-m", children })
+  ] }) });
+  if (modeTheme) {
+    return /* @__PURE__ */ jsx(ScopedTheme, { theme: modeTheme, children: content });
+  }
+  if (semanticRole) {
+    return /* @__PURE__ */ jsx(SemanticScope, { semanticRole, children: content });
+  }
+  return content;
 }
-function SubSection({
+function StorySubSection({
   title,
   children,
-  withSurface = false,
-  ...props
+  modeTheme,
+  semanticRole,
+  withSurface = false
 }) {
-  return /* @__PURE__ */ jsxs(InternalStorySection, { marginBottom: "$1.0", ...props, children: [
+  const content = /* @__PURE__ */ jsx(InternalStorySection, { className: "mb-m", children: withSurface ? /* @__PURE__ */ jsxs(Surface, { children: [
     /* @__PURE__ */ jsx(StoryTitle, { level: 3, children: title }),
-    withSurface ? /* @__PURE__ */ jsx(Surface, { children }) : /* @__PURE__ */ jsx(VStack, { gap: "$1.0", children })
-  ] });
+    /* @__PURE__ */ jsx(VStack, { className: "gap-m", children })
+  ] }) : /* @__PURE__ */ jsxs(Fragment$1, { children: [
+    /* @__PURE__ */ jsx(StoryTitle, { level: 3, children: title }),
+    /* @__PURE__ */ jsx(VStack, { className: "gap-m", children })
+  ] }) });
+  if (modeTheme) {
+    return /* @__PURE__ */ jsx(ScopedTheme, { theme: modeTheme, children: content });
+  }
+  if (semanticRole) {
+    return /* @__PURE__ */ jsx(SemanticScope, { semanticRole, children: content });
+  }
+  return content;
 }
-const ScrollViewNative = isWeb ? Fragment : ScrollView;
+const ScrollWrapper = Platform.OS === "web" ? Fragment : ScrollView;
 function Story({
   documentation,
   children,
-  noDarkTheme
+  noDarkMode
 }) {
-  return /* @__PURE__ */ jsxs(ScrollViewNative, { children: [
-    documentation && /* @__PURE__ */ jsx(Surface, { layer: "highlight", shadow: "s", theme: "brand", marginBottom: "$3.0", children: documentation }),
-    ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsx(
-      Box,
-      {
-        theme,
-        backgroundColor: "$bg-screen",
-        padding: "$2.0",
-        children
-      },
-      theme
-    ))
+  return /* @__PURE__ */ jsxs(ScrollWrapper, { children: [
+    documentation && /* @__PURE__ */ jsx(Surface, { semanticRole: "info", className: "mb-xxl", children: documentation }),
+    ["light", ...noDarkMode ? [] : ["dark"]].map((mode) => /* @__PURE__ */ jsx(ScopedTheme, { theme: mode, children: /* @__PURE__ */ jsx(View, { className: "bg-screen p-l", children }) }, mode))
   ] });
 }
 Story.Section = StorySection;
-Story.SubSection = SubSection;
+Story.SubSection = StorySubSection;
 
 function StoryContainer({
   title,
   children
 }) {
-  return /* @__PURE__ */ jsxs(ScrollView, { theme: "light", backgroundColor: "#fff", padding: "$4", children: [
+  return /* @__PURE__ */ jsx(ScopedTheme, { theme: "light", children: /* @__PURE__ */ jsxs(ScrollView, { className: "bg-white p-3xl", children: [
     /* @__PURE__ */ jsx(StoryTitle, { level: 1, children: title }),
     children
-  ] });
+  ] }) });
 }
 
-const StoryDecorator = (storyFn, { name, container }) => {
-  if (container === false) return storyFn();
+const StoryDecorator = (storyFn, { name, parameters }) => {
+  if (parameters?.container === false) return storyFn();
   return /* @__PURE__ */ jsx(StoryContainer, { title: name, children: storyFn() });
 };
 
+const rowVariants = tv(
+  {
+    base: "flex-col",
+    variants: {
+      breakpoint: {
+        small: "sm:flex-row sm:mb-xl",
+        medium: "md:flex-row md:mb-xl"
+      },
+      flexWrap: { true: "" }
+    },
+    compoundVariants: [
+      { breakpoint: "small", flexWrap: true, class: "sm:flex-wrap sm:gap-m" },
+      { breakpoint: "medium", flexWrap: true, class: "md:flex-wrap md:gap-m" }
+    ]
+  },
+  { twMerge: false }
+);
+const itemVariants = tv(
+  {
+    base: "pt-m pb-xl",
+    variants: {
+      breakpoint: {
+        small: "sm:pt-0 sm:pb-0 sm:my-xxs shrink",
+        medium: "md:pt-0 md:pb-0 md:my-xxs shrink"
+      },
+      flexWrap: {
+        true: "",
+        false: ""
+      },
+      loose: {
+        true: "",
+        false: "grow"
+      }
+    },
+    compoundVariants: [
+      { breakpoint: "small", flexWrap: false, class: "sm:basis-0" },
+      { breakpoint: "medium", flexWrap: false, class: "md:basis-0" }
+    ],
+    defaultVariants: {
+      flexWrap: false
+    }
+  },
+  { twMerge: false }
+);
 function StoryGridRow({
   children,
   breakpoint = "small",
-  flexWrap
+  flexWrap,
+  loose
 }) {
-  return /* @__PURE__ */ jsx(
-    View,
-    {
-      flexDirection: "column",
-      ...{
-        [`$${breakpoint}`]: {
-          flexDirection: "row",
-          marginBottom: "$2.0",
-          flexWrap: flexWrap ? "wrap" : void 0,
-          gap: flexWrap ? "$1.0" : void 0
-        }
-      },
-      children: Children.map(children, (child) => /* @__PURE__ */ jsx(
-        View,
-        {
-          paddingTop: "$1.0",
-          paddingBottom: "$2.0",
-          ...{
-            [`$${breakpoint}`]: {
-              flexGrow: 1,
-              flexShrink: 1,
-              flexBasis: flexWrap ? void 0 : 0,
-              paddingTop: 0,
-              paddingBottom: 0,
-              marginVertical: "$0.25"
-            }
-          },
-          children: child
-        }
-      ))
-    }
-  );
+  return /* @__PURE__ */ jsx(View, { className: rowVariants({ breakpoint, flexWrap }), children: Children.map(children, (child) => /* @__PURE__ */ jsx(View, { className: itemVariants({ breakpoint, flexWrap, loose }), children: child })) });
 }
 function StoryGridCol({
   title,
@@ -882,6 +517,591 @@ const StoryGrid = {
   Col: StoryGridCol
 };
 
+const TINT_TO_VAR = {
+  sharp: "sharp",
+  muted: "muted",
+  accent: "accent",
+  "accent-muted": "accent-muted",
+  onAccent: "on-accent",
+  "onAccent-muted": "on-accent-muted"
+};
+function pickColorVar(tint, disabled, disabledSharp) {
+  if (disabled) {
+    return disabledSharp ? "--color-disabled-sharp" : "--color-disabled-muted";
+  }
+  return `--color-${TINT_TO_VAR[tint]}`;
+}
+function Icon({
+  icon,
+  size = 20,
+  tint = "sharp",
+  disabled = false,
+  disabledSharp = false
+}) {
+  const color = useCSSVariable(pickColorVar(tint, disabled, disabledSharp));
+  return cloneElement(icon, {
+    color,
+    width: size,
+    height: size
+  });
+}
+
+const pressableBoxVariants = tv(
+  {
+    extend: interactiveBoxVariants,
+    base: ["overflow-hidden"].join(" "),
+    variants: {
+      variant: {
+        contained: [
+          "rounded-sm",
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "shadow-s bg-interactive-contained-pressable",
+          "hover:bg-interactive-contained-hover",
+          "focus:bg-interactive-contained-focus",
+          "active:bg-interactive-contained-active",
+          "disabled:bg-interactive-contained-disabled",
+          "focus-visible:outline-border-muted"
+        ].join(" "),
+        outlined: [
+          "border",
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "border-interactive-outlined-pressable",
+          "hover:border-interactive-outlined-hover",
+          "focus:border-interactive-outlined-focus",
+          "active:border-interactive-outlined-active",
+          "disabled:border-interactive-outlined-disabled",
+          "focus-visible:outline-interactive-outlined-outline-focus"
+        ].join(" ")
+      },
+      ghost: {
+        true: "bg-transparent border-transparent shadow-none"
+      },
+      forceStyle: {
+        hover: "",
+        focus: "",
+        press: "scale-[0.975]"
+      }
+    },
+    compoundVariants: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? [
+      /* contained */
+      {
+        variant: "contained",
+        forceStyle: void 0,
+        ghost: false,
+        className: "shadow-s bg-interactive-contained-pressable"
+      },
+      {
+        variant: "contained",
+        forceStyle: "hover",
+        className: "shadow-s bg-interactive-contained-hover"
+      },
+      {
+        variant: "contained",
+        forceStyle: "focus",
+        className: "shadow-s bg-interactive-contained-focus"
+      },
+      {
+        variant: "contained",
+        forceStyle: "press",
+        className: "shadow-s bg-interactive-contained-active"
+      },
+      /* outlined */
+      {
+        variant: "outlined",
+        forceStyle: void 0,
+        ghost: false,
+        className: "border-interactive-outlined-pressable"
+      },
+      {
+        variant: "outlined",
+        forceStyle: "hover",
+        className: "border-interactive-outlined-hover"
+      },
+      {
+        variant: "outlined",
+        forceStyle: "focus",
+        className: "border-interactive-outlined-focus"
+      },
+      {
+        variant: "outlined",
+        forceStyle: "press",
+        className: "border-interactive-outlined-active"
+      }
+    ] : void 0,
+    defaultVariants: {
+      variant: "contained"
+    }
+  },
+  { twMerge: false }
+);
+const PressableBox = forwardRef(
+  ({ className, variant, ghost = false, forceStyle, semanticRole, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(SemanticScope, { semanticRole, children: /* @__PURE__ */ jsx(
+      InteractiveBox,
+      {
+        ref,
+        withFocusVisibleOutline: true,
+        role: "button",
+        className: pressableBoxVariants({
+          variant,
+          ghost,
+          className,
+          forceStyle
+        }),
+        ...props
+      }
+    ) });
+  }
+);
+
+const buttonHeight = {
+  sm: 38,
+  md: 44
+};
+const buttonFrameVariants = tv(
+  {
+    base: "flex-row items-center justify-center",
+    variants: {
+      size: {
+        sm: "rounded-sm px-xs gap-xxs min-h-[38px]",
+        md: "rounded-sm px-m gap-xs min-h-[44px]"
+      }
+    },
+    defaultVariants: { size: "md" }
+  },
+  { twMerge: false }
+);
+const buttonTextVariants = tv(
+  {
+    base: "font-bold text-center text-sharp shrink",
+    variants: {
+      size: {
+        sm: "body-sm py-xxs",
+        md: "body-md py-xs"
+      },
+      variant: {
+        contained: "text-on-accent disabled:text-disabled-sharp",
+        outlined: "text-sharp disabled:text-disabled-muted"
+      }
+    },
+    defaultVariants: {
+      size: "md",
+      variant: "contained"
+    }
+  }
+  // { twMerge: false },
+);
+function Button({
+  icon,
+  text,
+  disabled,
+  semanticRole = "brand",
+  variant = "contained",
+  size = "md",
+  className,
+  ...pressableProps
+}) {
+  const onAccent = variant === "contained";
+  return /* @__PURE__ */ jsxs(
+    PressableBox,
+    {
+      semanticRole,
+      variant,
+      disabled,
+      className: buttonFrameVariants({ size, className }),
+      ...pressableProps,
+      children: [
+        icon ? /* @__PURE__ */ jsx(
+          Icon,
+          {
+            icon,
+            tint: onAccent ? "onAccent" : "sharp",
+            disabled: disabled === true,
+            disabledSharp: onAccent,
+            size: size === "sm" ? 16 : 20
+          }
+        ) : null,
+        /* @__PURE__ */ jsx(
+          Text,
+          {
+            "aria-disabled": disabled === true,
+            className: buttonTextVariants({ size, variant }),
+            children: text
+          }
+        )
+      ]
+    }
+  );
+}
+function ExternalLinkButton({
+  href,
+  onPress,
+  ...buttonProps
+}) {
+  return /* @__PURE__ */ jsx(
+    Button,
+    {
+      ...buttonProps,
+      role: "link",
+      onPress: (event) => {
+        onPress?.(event);
+        if (event.defaultPrevented) return;
+        if (Platform.OS === "web") {
+          window.open(href, "_blank", "noopener,noreferrer");
+        } else {
+          throw new Error("todo");
+        }
+      }
+    }
+  );
+}
+function InternalLinkButton({
+  href: _href,
+  ...buttonProps
+}) {
+  return /* @__PURE__ */ jsx(Button, { ...buttonProps, role: "link" });
+}
+
+function IconButton({
+  icon,
+  disabled,
+  size = "md",
+  iconSize,
+  variant = "contained",
+  className,
+  ...pressableProps
+}) {
+  const diameter = typeof size === "number" ? size : buttonHeight[size];
+  const isDisabled = disabled === true;
+  const onAccent = variant === "contained";
+  return /* @__PURE__ */ jsx(
+    PressableBox,
+    {
+      variant,
+      disabled,
+      className: `shrink-0 items-center justify-center rounded-full ${className ?? ""}`,
+      style: { width: diameter, height: diameter },
+      ...pressableProps,
+      children: /* @__PURE__ */ jsx(
+        Icon,
+        {
+          icon,
+          size: diameter * (iconSize === "fill" ? 0.8 : 0.55),
+          disabled: isDisabled,
+          tint: onAccent ? "onAccent" : "sharp",
+          disabledSharp: onAccent
+        }
+      )
+    }
+  );
+}
+
+const inputVariants = tv(
+  {
+    base: [
+      "body-md text-sharp",
+      "border",
+      "transition-[border-color,background-color,outline-color] duration-200 ease-in",
+      "outline-interactive-outlined-pressable",
+      // to have proper outline color transition
+      process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "bg-form-bg border-interactive-outlined-pressable",
+      "hover:bg-form-bg-hover hover:border-interactive-outlined-hover",
+      "focus:bg-form-bg-focus focus:border-interactive-outlined-focus",
+      "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
+      "active:bg-form-bg-active active:border-interactive-outlined-active",
+      "disabled:bg-form-bg-disabled disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed"
+    ].join(" "),
+    variants: {
+      multiline: {
+        false: "rounded-md px-m py-xs",
+        true: "min-h-[80px] rounded-xs px-xs py-xs"
+      },
+      forceStyle: {
+        undefined: "bg-form-bg border-interactive-outlined-pressable",
+        hover: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg-hover border-interactive-outlined-hover" : "",
+        focus: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg-focus border-interactive-outlined-focus outline-1 outline-interactive-outlined-focus outline-offset-0" : "",
+        press: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg-active border-interactive-outlined-active" : ""
+      }
+    },
+    defaultVariants: {
+      forceStyle: "undefined"
+    }
+  },
+  { twMerge: false }
+);
+const MODE_PROPS = {
+  password: {
+    secureTextEntry: true,
+    autoComplete: "current-password"
+  },
+  number: {
+    inputMode: "numeric",
+    keyboardType: "numeric"
+  },
+  tel: {
+    inputMode: "tel",
+    autoComplete: "tel",
+    keyboardType: "phone-pad"
+  },
+  email: {
+    inputMode: "email",
+    autoComplete: "email",
+    keyboardType: "email-address"
+  },
+  url: {
+    inputMode: "url",
+    keyboardType: "url"
+  },
+  search: {
+    inputMode: "search"
+  },
+  webSearch: {
+    inputMode: "search",
+    keyboardType: "web-search"
+  }
+};
+const InputText = forwardRef(
+  ({ className, disabled, mode, multiline, forceStyle, ...props }, ref) => {
+    const placeholderColor = useCSSVariable("--color-form-placeholder");
+    const modeProps = mode ? MODE_PROPS[mode] : void 0;
+    return /* @__PURE__ */ jsx(
+      TextInput,
+      {
+        ref,
+        editable: !disabled,
+        "aria-disabled": disabled === true,
+        multiline: multiline === true,
+        placeholderTextColor: typeof placeholderColor === "string" ? placeholderColor : void 0,
+        className: inputVariants({ multiline, forceStyle, className }),
+        ...modeProps,
+        ...props
+      }
+    );
+  }
+);
+
+const TextArea = forwardRef((props, ref) => {
+  return /* @__PURE__ */ jsx(InputText, { ref, multiline: true, ...props });
+});
+
+function useControllableChecked(controlled, onValueChange) {
+  const [internal, setInternal] = useState(controlled ?? false);
+  const value = controlled ?? internal;
+  const onChange = useCallback(
+    (next) => {
+      if (controlled === void 0) {
+        setInternal(next);
+      }
+      if (next !== value) {
+        onValueChange?.(next);
+      }
+    },
+    [controlled, onValueChange, value]
+  );
+  return [value, onChange];
+}
+function SwitchInner({
+  checked,
+  disabled,
+  onValueChange,
+  ...props
+}) {
+  const [value, setValue] = useControllableChecked(checked, onValueChange);
+  const [trackBg, thumb, disabledTrackBg, disabledThumb] = useCSSVariable([
+    "--color-lowered",
+    "--color-highlight",
+    "--color-form-bg-disabled",
+    "--color-disabled-muted"
+  ]);
+  const track = disabled ? disabledTrackBg : trackBg;
+  const thumbColor = disabled ? disabledThumb : thumb;
+  return /* @__PURE__ */ jsx(
+    Switch$1,
+    {
+      value,
+      disabled,
+      ios_backgroundColor: track,
+      trackColor: { false: track, true: track },
+      thumbColor,
+      onValueChange: setValue,
+      ...props
+    }
+  );
+}
+function Switch({ semanticRole, ...rest }) {
+  return /* @__PURE__ */ jsx(SemanticScope, { semanticRole, children: /* @__PURE__ */ jsx(SwitchInner, { ...rest }) });
+}
+
+const messageFrameVariants = tv(
+  {
+    base: "flex-row items-center bg-highlight-accent overflow-hidden",
+    variants: {
+      size: {
+        sm: "gap-xs p-sm rounded-xs",
+        md: "gap-m p-m rounded-sm",
+        lg: "gap-l p-l rounded-md"
+      }
+    },
+    defaultVariants: { size: "md" }
+  },
+  { twMerge: false }
+);
+const ICON_SIZE = { sm: 20, md: 24, lg: 28 };
+const DISMISS_BUTTON_SIZE = {
+  sm: 24,
+  md: 40,
+  lg: 40
+};
+function Message({
+  icon,
+  size = "md",
+  semanticRole,
+  children,
+  onDismiss,
+  dismissIconAriaLabel
+}) {
+  const dismissDiameter = DISMISS_BUTTON_SIZE[size];
+  return /* @__PURE__ */ jsx(SemanticScope, { semanticRole, children: /* @__PURE__ */ jsxs(Box, { shadow: "m", className: messageFrameVariants({ size }), children: [
+    /* @__PURE__ */ jsx(Icon, { icon, size: ICON_SIZE[size], tint: "accent" }),
+    /* @__PURE__ */ jsx(Text, { className: "text-accent grow", children }),
+    onDismiss ? /* @__PURE__ */ jsx(
+      Box,
+      {
+        style: { width: dismissDiameter, height: dismissDiameter },
+        className: "items-center justify-center",
+        children: /* @__PURE__ */ jsx(
+          IconButton,
+          {
+            ghost: true,
+            icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
+            iconSize: size === "sm" ? "fill" : void 0,
+            size: dismissDiameter,
+            variant: "outlined",
+            "aria-label": dismissIconAriaLabel,
+            onPress: onDismiss
+          }
+        )
+      }
+    ) : null
+  ] }) });
+}
+function InfoMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, semanticRole: "info", icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
+}
+function ConfirmationMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, semanticRole: "success", icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
+}
+function WarningMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, semanticRole: "warning", icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
+}
+
+function PressableListItem({
+  variant = "contained",
+  role = "button",
+  semanticRole,
+  children,
+  onPress
+}) {
+  return /* @__PURE__ */ jsxs(
+    PressableBox,
+    {
+      variant,
+      role,
+      semanticRole,
+      className: "flex-row items-center justify-between mx-xs my-xxs px-m py-m",
+      onPress,
+      children: [
+        /* @__PURE__ */ jsx(View$1, { className: "flex-1", children }),
+        /* @__PURE__ */ jsx(View$1, { className: "justify-center", children: /* @__PURE__ */ jsx(
+          Icon,
+          {
+            tint: variant === "contained" ? "onAccent-muted" : "muted",
+            icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}),
+            size: 18
+          }
+        ) })
+      ]
+    }
+  );
+}
+
+function GradientBackground({
+  children
+}) {
+  const [start, middle, end] = useCSSVariable([
+    "--color-screen-gradient-start",
+    "--color-screen-gradient-middle",
+    "--color-screen-gradient-end"
+  ]);
+  return /* @__PURE__ */ jsxs(View$1, { className: "absolute inset-0", children: [
+    /* @__PURE__ */ jsx(
+      LinearGradient,
+      {
+        colors: [end, middle, start],
+        locations: [0.05, 0.8, 0.98],
+        style: { flex: 1 }
+      }
+    ),
+    children
+  ] });
+}
+
+const GradientScrollViewInner = forwardRef(({ children, ...scrollViewProps }, ref) => {
+  const [gradientStart, gradientEnd] = useCSSVariable([
+    "--color-screen-gradient-start",
+    "--color-screen-gradient-end"
+  ]);
+  return /* @__PURE__ */ jsxs(ScrollView$1, { ref, ...scrollViewProps, children: [
+    /* @__PURE__ */ jsx(
+      View$1,
+      {
+        className: "absolute left-0 right-0",
+        style: {
+          top: -600,
+          height: 600,
+          backgroundColor: gradientStart
+        }
+      }
+    ),
+    /* @__PURE__ */ jsx(
+      View$1,
+      {
+        className: "absolute left-0 right-0",
+        style: {
+          bottom: -600,
+          height: 600,
+          backgroundColor: gradientEnd
+        }
+      }
+    ),
+    /* @__PURE__ */ jsx(GradientBackground, {}),
+    children
+  ] });
+});
+const GradientScrollView = forwardRef(({ semanticRole, children, ...scrollViewProps }, ref) => {
+  return /* @__PURE__ */ jsx(SemanticScope, { semanticRole, children: /* @__PURE__ */ jsx(GradientScrollViewInner, { ref, ...scrollViewProps, children }) });
+});
+
+const Breakpoints = {
+  /**
+   * min-width: 0
+   */
+  BASE: 0,
+  /**
+   * min-width: 480px
+   */
+  SMALL: 480,
+  /**
+   * min-width: 768px
+   */
+  MEDIUM: 768,
+  /**
+   * min-width: 1024px
+   */
+  LARGE: 1024,
+  /**
+   * min-width: 1280px
+   */
+  WIDE: 1280
+};
 var BreakpointNameEnum = /* @__PURE__ */ ((BreakpointNameEnum2) => {
   BreakpointNameEnum2["BASE"] = "base";
   BreakpointNameEnum2["SMALL"] = "small";
@@ -892,45 +1112,55 @@ var BreakpointNameEnum = /* @__PURE__ */ ((BreakpointNameEnum2) => {
 })(BreakpointNameEnum || {});
 
 function useCurrentBreakpointName() {
-  const media = useMedia();
-  if (media.wide) return BreakpointNameEnum.WIDE;
-  if (media.large) return BreakpointNameEnum.LARGE;
-  if (media.medium) return BreakpointNameEnum.MEDIUM;
-  if (media.small) return BreakpointNameEnum.SMALL;
+  const { width } = useWindowDimensions();
+  if (width >= Breakpoints.WIDE) return BreakpointNameEnum.WIDE;
+  if (width >= Breakpoints.LARGE) return BreakpointNameEnum.LARGE;
+  if (width >= Breakpoints.MEDIUM) return BreakpointNameEnum.MEDIUM;
+  if (width >= Breakpoints.SMALL) return BreakpointNameEnum.SMALL;
   return BreakpointNameEnum.BASE;
 }
 function useCurrentBreakpointNameFiltered(names) {
-  const media = useMedia();
-  if (names.includes(BreakpointNameEnum.WIDE) && media.wide) {
-    return BreakpointNameEnum.WIDE;
-  }
-  if (names.includes(BreakpointNameEnum.LARGE) && media.large) {
-    return BreakpointNameEnum.LARGE;
-  }
-  if (names.includes(BreakpointNameEnum.MEDIUM) && media.medium) {
-    return BreakpointNameEnum.MEDIUM;
-  }
-  if (names.includes(BreakpointNameEnum.SMALL) && media.small) {
-    return BreakpointNameEnum.SMALL;
+  const current = useCurrentBreakpointName();
+  const ordered = [
+    BreakpointNameEnum.WIDE,
+    BreakpointNameEnum.LARGE,
+    BreakpointNameEnum.MEDIUM,
+    BreakpointNameEnum.SMALL,
+    BreakpointNameEnum.BASE
+  ];
+  const startIndex = ordered.indexOf(current);
+  for (let i = startIndex; i < ordered.length; i++) {
+    const candidate = ordered[i];
+    if (names.includes(candidate)) return candidate;
   }
   return BreakpointNameEnum.BASE;
 }
 
+const VISIBILITY_CLASS = {
+  "base:end": "flex",
+  "base:small": "flex sm:hidden",
+  "base:medium": "flex md:hidden",
+  "base:large": "flex lg:hidden",
+  "base:wide": "flex xl:hidden",
+  "small:end": "hidden sm:flex",
+  "small:medium": "hidden sm:flex md:hidden",
+  "small:large": "hidden sm:flex lg:hidden",
+  "small:wide": "hidden sm:flex xl:hidden",
+  "medium:end": "hidden md:flex",
+  "medium:large": "hidden md:flex lg:hidden",
+  "medium:wide": "hidden md:flex xl:hidden",
+  "large:end": "hidden lg:flex",
+  "large:wide": "hidden lg:flex xl:hidden",
+  "wide:end": "hidden xl:flex"
+};
 function SwitchBreakpointsUsingDisplayNone({
   ...breakpoints
 }) {
   const entries = Object.entries(breakpoints);
   return entries.map(([name, node], index) => {
-    return /* @__PURE__ */ jsx(
-      View,
-      {
-        display: name === "base" ? "flex" : "none",
-        ...name === "base" ? void 0 : { display: "none", [`$${name}`]: { display: "flex" } },
-        ...index + 1 in entries ? { [`$${entries[index + 1][0]}`]: { display: "none" } } : void 0,
-        children: node
-      },
-      name
-    );
+    const next = entries[index + 1]?.[0] ?? "end";
+    const className = VISIBILITY_CLASS[`${name}:${next}`] ?? "flex";
+    return /* @__PURE__ */ jsx(View$1, { className, children: node }, name);
   });
 }
 function SwitchBreakpointsUsingNull({
@@ -943,179 +1173,55 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-const useDefaultThemeFromColorScheme = () => {
-  const colorScheme = useColorScheme();
-  return colorScheme || "light";
-};
-function AlouetteProvider({
-  children,
-  tamaguiConfig,
-  defaultTheme = "light",
-  disableInjectCSS
-}) {
-  return /* @__PURE__ */ jsx(
-    TamaguiProvider,
-    {
-      config: tamaguiConfig,
-      defaultTheme,
-      disableInjectCSS,
-      children
-    }
-  );
-}
-
-const AlouetteTamaguiConfigContext = createContext(null);
-const AlouetteDecorator = (storyFn, context) => {
-  const systemColorScheme = useColorScheme();
-  const [theme, setTheme] = useState(systemColorScheme || "light");
-  useEffect(() => {
-    const backgroundColor = context.globals.backgrounds?.value;
-    if (backgroundColor === "#000000") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  }, [context.globals.backgrounds?.value]);
-  return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(
-    AlouetteProvider,
-    {
-      tamaguiConfig: context.parameters.tamaguiConfig,
-      defaultTheme: theme,
-      children: /* @__PURE__ */ jsx(
-        AlouetteTamaguiConfigContext.Provider,
-        {
-          value: context.parameters.tamaguiConfig,
-          children: storyFn(context)
-        }
-      )
-    }
-  ) });
-};
-
-const Separator = styled(View, {
-  flexGrow: 1,
-  flexShrink: 0,
-  height: 0,
-  maxHeight: 0,
-  borderColor: "$border-sharp",
-  borderWidth: 0,
-  borderBottomWidth: 1,
-  y: -0.5,
-  variants: {
-    vertical: {
-      true: {
-        height: "auto",
-        maxHeight: "auto",
-        width: 0,
-        maxWidth: 0,
-        borderBottomWidth: 0,
-        borderRightWidth: 1,
-        y: 0,
-        x: -0.5
+const useOpenExternalLink = () => {
+  const [textSharp, bgSurface] = useCSSVariable([
+    "--color-text-sharp",
+    "--color-bg-surface"
+  ]);
+  return async (href, openLinkBehavior) => {
+    switch (openLinkBehavior.native) {
+      case "webBrowser": {
+        return WebBrowser.openBrowserAsync(href, {
+          controlsColor: textSharp,
+          dismissButtonStyle: "close",
+          presentationStyle: WebBrowserPresentationStyle.PAGE_SHEET,
+          toolbarColor: bgSurface,
+          secondaryToolbarColor: bgSurface,
+          readerMode: false,
+          enableBarCollapsing: false,
+          showTitle: true,
+          enableDefaultShareMenuItem: true
+        });
+      }
+      case "linking": {
+        return Linking.openURL(href);
+      }
+      default: {
+        throw new Error(
+          `Unsupported openLinkBehavior.native: ${openLinkBehavior.native}`
+        );
       }
     }
-  }
-});
-
-const PressableListItemFrame = styled(PressableBox, {
-  variant: "contained",
-  marginHorizontal: "$0.5",
-  marginVertical: "$0.25",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  paddingHorizontal: "$1.0",
-  paddingVertical: "$1.0"
-});
-function PressableListItem({
-  theme,
-  role = "button",
-  children,
-  onPress
+  };
+};
+function ExternalLink({
+  as: C,
+  href,
+  openLinkBehavior,
+  onPress,
+  ...props
 }) {
-  return /* @__PURE__ */ jsxs(PressableListItemFrame, { theme, role, onPress, children: [
-    /* @__PURE__ */ jsx(View, { flex: 1, children }),
-    /* @__PURE__ */ jsx(VStack, { justifyContent: "center", children: /* @__PURE__ */ jsx(
-      Icon,
-      {
-        tint: "onAccent-muted",
-        icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}),
-        size: 18
-      }
-    ) })
-  ] });
+  const openExternalLink = useOpenExternalLink();
+  const handlePress = (e) => {
+    if (onPress) {
+      onPress(e);
+      if (e?.defaultPrevented) return;
+    }
+    if (!href) return;
+    return openExternalLink(href, openLinkBehavior);
+  };
+  return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
 }
 
-const GradientBackground = styled(Box, {
-  absoluteFill: true,
-  backgroundImage: "linear-gradient(0deg, $bg-screen-gradient-end 5%, $bg-screen-gradient-middle 80%, $bg-screen-gradient-start 98%)",
-  position: "absolute"
-  // needed to override "static" position for backgroundImage tamagui
-});
-
-const TopScrollOffset = styled(View, {
-  backgroundColor: "$bg-screen",
-  position: "absolute",
-  top: -600,
-  left: 0,
-  right: 0,
-  height: 600
-});
-const BottomScrollOffset = styled(View, {
-  backgroundColor: "$bg-screen",
-  position: "absolute",
-  bottom: -600,
-  left: 0,
-  right: 0,
-  height: 600
-});
-const GradientScrollView = ScrollView.styleable(({ gradientTheme, children, ...scrollViewProps }) => /* @__PURE__ */ jsxs(ScrollView, { ...scrollViewProps, children: [
-  /* @__PURE__ */ jsx(
-    TopScrollOffset,
-    {
-      theme: gradientTheme,
-      backgroundColor: "$bg-screen-gradient-start"
-    }
-  ),
-  /* @__PURE__ */ jsx(
-    BottomScrollOffset,
-    {
-      theme: gradientTheme,
-      backgroundColor: "$bg-screen-gradient-end"
-    }
-  ),
-  /* @__PURE__ */ jsx(GradientBackground, { theme: gradientTheme }),
-  children
-] }));
-
-function ThemedNativeSwitch({
-  checked,
-  ...rest
-}) {
-  const theme = useTheme();
-  const backgroundColor = rest.disabled ? theme["$interactive.forms.backgroundColor:disabled"]?.get() : theme["$bg-lowered"]?.get();
-  const thumbColor = rest.disabled ? theme["$text-disabled-muted"]?.get() : theme["$bg-highlight"]?.get();
-  return /* @__PURE__ */ jsx(
-    Switch$1,
-    {
-      ios_backgroundColor: backgroundColor,
-      trackColor: {
-        false: backgroundColor,
-        true: backgroundColor
-      },
-      thumbColor,
-      value: checked,
-      ...rest
-    }
-  );
-}
-function Switch({
-  // checkedTheme,
-  theme,
-  ...rest
-}) {
-  return /* @__PURE__ */ jsx(Theme, { name: theme, children: /* @__PURE__ */ jsx(ThemedNativeSwitch, { ...rest }) });
-}
-
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ConfirmationMessage, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, WarningMessage, useCurrentBreakpointName, useDefaultThemeFromColorScheme };
+export { AlouetteDecorator, AlouetteProvider, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, ScrollView, SemanticScope, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useDefaultThemeFromColorScheme };
 //# sourceMappingURL=index-react-native.es.js.map

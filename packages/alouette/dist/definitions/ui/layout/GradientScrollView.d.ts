@@ -1,25 +1,9 @@
-import type { GetProps } from "@tamagui/core";
-import type { ScrollViewProps } from "../primitives/ScrollView";
-export declare const GradientScrollView: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/web").StackStyleBase & {
-    readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<typeof import("react-native").ScrollView, {
-        readonly accept: {
-            readonly contentContainerStyle: "style";
-        };
-    }>> | undefined;
-}, {}>, "gradientTheme"> & {
-    gradientTheme?: ScrollViewProps["theme"];
-}, import("react-native").ScrollView, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps & {
-    gradientTheme?: ScrollViewProps["theme"];
-}, import("@tamagui/web").StackStyleBase & {
-    readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<typeof import("react-native").ScrollView, {
-        readonly accept: {
-            readonly contentContainerStyle: "style";
-        };
-    }>> | undefined;
-}, {}, {
-    readonly accept: {
-        readonly contentContainerStyle: "style";
-    };
-}>;
-export type GradientScrollViewProps = GetProps<typeof GradientScrollView>;
+import { type ReactNode } from "react";
+import { ScrollView as RNScrollView, type ScrollViewProps as RNScrollViewProps } from "react-native";
+import type { SemanticRole } from "../../core/AlouetteConfig";
+export interface GradientScrollViewProps extends RNScrollViewProps {
+    children?: ReactNode;
+    semanticRole: SemanticRole;
+}
+export declare const GradientScrollView: import("react").ForwardRefExoticComponent<GradientScrollViewProps & import("react").RefAttributes<RNScrollView>>;
 //# sourceMappingURL=GradientScrollView.d.ts.map

@@ -16,6 +16,18 @@
       "problemMatcher": []
     },
     {
+      "label": "build:css",
+      "type": "shell",
+      "command": "yarn build:css",
+      "options": {
+        "cwd": "${workspaceFolder}/packages/alouette"
+      },
+      "group": {
+        "kind": "none"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "tsc",
       "type": "shell",
       "command": "yarn tsc",

@@ -1,97 +1,136 @@
-import { isWeb, styled } from "@tamagui/core";
-import { Fragment } from "react";
-import type { ReactNode } from "react";
-import type { Except } from "type-fest";
-import { Box } from "../containers/Box";
+import { Fragment, type ReactNode } from "react";
+import { Platform } from "react-native";
+import { ScopedTheme } from "uniwind";
+import type {
+  AlouetteModeTheme,
+  SemanticRole,
+} from "../../core/AlouetteConfig";
+import { SemanticScope } from "../containers/SemanticScope";
 import { Surface } from "../containers/Surface";
 import { ScrollView } from "../primitives/ScrollView";
+import { View } from "../primitives/View";
 import { VStack } from "../stacks/stacks";
-import type { VStackProps } from "../stacks/stacks";
+import { styled } from "../styled";
 import { StoryTitle } from "./StoryTitle";
 
-const InternalStorySection = styled(VStack, {
-  marginBottom: "$2.0",
-  marginHorizontal: "$-1.0",
-  paddingHorizontal: "$1.0",
-});
-
-export type StorySectionProps = Except<VStackProps, "marginBottom"> & {
+export interface StorySectionProps {
   title: ReactNode;
   children: ReactNode;
   level?: 1 | 2;
+  /**
+   * Optional uniwind theme name to scope this section to (e.g. "light_brand").
+   * Full theme name (e.g. "light_brand"). No automatic light/dark composition —
+   * consumers must pass the full name.
+   */
+  modeTheme?: AlouetteModeTheme;
+  semanticRole?: SemanticRole;
   withSurface?: boolean;
-};
+}
+
+const InternalStorySection = styled(View, "-mx-l px-l");
 
 function StorySection({
   title,
   children,
   level = 1,
+  modeTheme,
+  semanticRole,
   withSurface = false,
-  ...props
 }: StorySectionProps): ReactNode {
-  return (
-    <InternalStorySection {...props}>
-      <StoryTitle level={(level + 1) as 2 | 3}>{title}</StoryTitle>
+  const content = (
+    <InternalStorySection className="pb-xl bg-screen">
       {withSurface ? (
-        <Surface>{children}</Surface>
+        <Surface>
+          <StoryTitle level={(level + 1) as 2 | 3}>{title}</StoryTitle>
+          <VStack className="gap-m">{children}</VStack>
+        </Surface>
       ) : (
-        <VStack gap="$1.0">{children}</VStack>
+        <>
+          <StoryTitle level={(level + 1) as 2 | 3}>{title}</StoryTitle>
+          <VStack className="gap-m">{children}</VStack>
+        </>
       )}
     </InternalStorySection>
   );
+
+  if (modeTheme) {
+    return <ScopedTheme theme={modeTheme}>{content}</ScopedTheme>;
+  }
+  if (semanticRole) {
+    return <SemanticScope semanticRole={semanticRole}>{content}</SemanticScope>;
+  }
+  return content;
 }
 
-function SubSection({
+function StorySubSection({
   title,
   children,
+  modeTheme,
+  semanticRole,
   withSurface = false,
-  ...props
 }: StorySectionProps): ReactNode {
-  return (
-    <InternalStorySection marginBottom="$1.0" {...props}>
-      <StoryTitle level={3}>{title}</StoryTitle>
+  const content = (
+    <InternalStorySection className="mb-m">
       {withSurface ? (
-        <Surface>{children}</Surface>
+        <Surface>
+          <StoryTitle level={3}>{title}</StoryTitle>
+          <VStack className="gap-m">{children}</VStack>
+        </Surface>
       ) : (
-        <VStack gap="$1.0">{children}</VStack>
+        <>
+          <StoryTitle level={3}>{title}</StoryTitle>
+          <VStack className="gap-m">{children}</VStack>
+        </>
       )}
     </InternalStorySection>
   );
+  if (modeTheme) {
+    return <ScopedTheme theme={modeTheme}>{content}</ScopedTheme>;
+  }
+  if (semanticRole) {
+    return <SemanticScope semanticRole={semanticRole}>{content}</SemanticScope>;
+  }
+  return content;
 }
 
-const ScrollViewNative = isWeb ? Fragment : ScrollView;
+// const SimpleWebScrollView = styled(View, "h-full overflow-auto");
+
+const ScrollWrapper = Platform.OS === "web" ? Fragment : ScrollView;
 
 export interface StoryProps {
   documentation?: NonNullable<ReactNode>;
   children?: NonNullable<ReactNode>;
-  noDarkTheme?: boolean;
+  noDarkMode?: boolean;
 }
 
 export function Story({
   documentation,
   children,
-  noDarkTheme,
+  noDarkMode,
 }: StoryProps): ReactNode {
   return (
-    <ScrollViewNative>
+    <ScrollWrapper>
       {documentation && (
-        <Surface layer="highlight" shadow="s" theme="brand" marginBottom="$3.0">
+        <Surface semanticRole="info" className="mb-xxl">
           {documentation}
         </Surface>
       )}
-      {["light", ...(noDarkTheme ? [] : ["dark"])].map((theme) => (
-        <Box
-          key={theme}
-          theme={theme}
-          backgroundColor="$bg-screen"
-          padding="$2.0"
-        >
-          {children}
-        </Box>
+      {(["light", ...(noDarkMode ? [] : ["dark"])] as const).map((mode) => (
+        <ScopedTheme key={mode} theme={mode}>
+          <View className="bg-screen p-l">{children}</View>
+        </ScopedTheme>
       ))}
-    </ScrollViewNative>
+    </ScrollWrapper>
   );
 }
 
 Story.Section = StorySection;
-Story.SubSection = SubSection;
+Story.SubSection = StorySubSection;
+
+export const semanticRoles: SemanticRole[] = [
+  "brand",
+  "danger",
+  "info",
+  "success",
+  "warning",
+];

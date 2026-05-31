@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ScopedTheme } from "uniwind";
 import { ScrollView } from "../primitives/ScrollView";
 import { StoryTitle } from "./StoryTitle";
 
@@ -12,9 +13,11 @@ export function StoryContainer({
   children,
 }: StoryContainerProps): ReactNode {
   return (
-    <ScrollView theme="light" backgroundColor="#fff" padding="$4">
-      <StoryTitle level={1}>{title}</StoryTitle>
-      {children}
-    </ScrollView>
+    <ScopedTheme theme="light">
+      <ScrollView className="bg-white p-3xl">
+        <StoryTitle level={1}>{title}</StoryTitle>
+        {children}
+      </ScrollView>
+    </ScopedTheme>
   );
 }

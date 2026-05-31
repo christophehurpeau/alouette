@@ -1,93 +1,41 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Story } from "../story-components/Story";
+import { Story, semanticRoles } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { InputText } from "./InputText";
+
+type ThisStory = StoryObj<typeof InputText>;
 
 export default {
   title: "alouette/Inputs/InputText",
   component: InputText,
   parameters: {
     componentSubtitle:
-      "A consistent and accessible text input field with theme support",
-    docs: {
-      description: {
-        component: `
-### Features
-- Multiple semantic themes (brand, danger, success)
-- Interactive states (hover, focus, press)
-- Support for disabled state
-- Customizable placeholder text
-- Accessible by default
-- Controlled and uncontrolled modes
-
-### Variants
-- \`theme\`: Semantic theme (brand | danger | success)
-- \`disabled\`: Disables input interaction
-- \`placeholder\`: Shows placeholder text when empty
-- \`value\`: Controls input value (controlled mode)
-- \`defaultValue\`: Sets initial value (uncontrolled mode)
-
-### Usage
-~~~tsx
-<InputText
-  theme="brand"
-  placeholder="Enter your name..."
-  onChange={(e) => console.log(e.target.value)}
-/>
-~~~`,
-      },
-    },
+      "Single-line text input with theme support, modes, and platform-aware keyboards.",
   },
   argTypes: {
-    theme: {
-      description: "The semantic theme of the input",
-      control: "select",
-      options: ["brand", "danger", "success"],
-      table: {
-        defaultValue: { summary: "brand" },
-      },
-    },
-    placeholder: {
-      description: "Placeholder text when input is empty",
-      control: "text",
-    },
-    disabled: {
-      description: "Whether the input is disabled",
-      control: "boolean",
-      table: {
-        defaultValue: { summary: "false" },
-      },
-    },
-    value: {
-      description: "The current value of the input",
-      control: "text",
-    },
-    maxLength: {
-      description: "Maximum number of characters allowed",
-      control: "number",
-    },
+    placeholder: { control: "text" },
+    disabled: { control: "boolean" },
+    value: { control: "text" },
+    maxLength: { control: "number" },
   },
 } satisfies Meta<typeof InputText>;
 
-export const PreviewInputTextStory: StoryObj<typeof InputText> = {
-  args: {
-    theme: "brand",
-    placeholder: "Enter text...",
-  },
+export const PreviewInputTextStory: ThisStory = {
+  args: { placeholder: "Enter text..." },
   render: (args) => <InputText {...args} />,
 };
 
-export const Variants: StoryObj<typeof InputText> = {
+export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        {([undefined, "brand", "danger", "success"] as const).map((theme) => (
+        {([undefined, ...semanticRoles] as const).map((semanticRole) => (
           <Story.SubSection
-            key={theme}
+            key={semanticRole || "default"}
             withSurface
-            title={theme ?? "Default"}
-            theme={theme}
+            title={semanticRole ?? "Default"}
+            semanticRole={semanticRole}
           >
             <StoryGrid.Row flexWrap>
               {(
@@ -98,7 +46,6 @@ export const Variants: StoryObj<typeof InputText> = {
                   title={state || "default"}
                 >
                   <InputText
-                    {...(theme ? { theme } : {})}
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
                   />
@@ -114,7 +61,6 @@ export const Variants: StoryObj<typeof InputText> = {
                   title={state || "default"}
                 >
                   <InputText
-                    {...(theme ? { theme } : {})}
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
                     placeholder="Placeholder"
@@ -131,7 +77,6 @@ export const Variants: StoryObj<typeof InputText> = {
                   title={state || "default"}
                 >
                   <InputText
-                    {...(theme ? { theme } : {})}
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
                     value="Value"
@@ -143,7 +88,7 @@ export const Variants: StoryObj<typeof InputText> = {
         ))}
       </Story.Section>
 
-      <Story.Section title="Mode">
+      <Story.Section title="Modes">
         <Story.SubSection title="Password">
           <InputText mode="password" />
         </Story.SubSection>
@@ -177,8 +122,8 @@ export const Variants: StoryObj<typeof InputText> = {
       </Story.Section>
 
       <Story.Section title="Edge Cases">
-        <Story.SubSection title="Very Long text">
-          <InputText value="Very very very very very very very very very very very very very very very very very very very very very very very very very very very long text Example" />
+        <Story.SubSection title="Very long text">
+          <InputText defaultValue="Very very very very very very very very very very very very very very very very very very very very very long value" />
         </Story.SubSection>
       </Story.Section>
     </Story>
@@ -189,7 +134,7 @@ export const Tests: StoryObj<typeof InputText> = {
   name: "InputText Tests",
 
   render: () => (
-    <Story noDarkTheme>
+    <Story noDarkMode>
       <Story.Section title="Modes">
         <InputText testID="password-input" mode="password" />
       </Story.Section>

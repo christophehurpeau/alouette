@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Story } from "../story-components/Story";
 import { Text } from "./Text";
 import { View } from "./View";
 
@@ -10,40 +11,20 @@ export default {
       "A foundational layout component that provides a flexible container with responsive capabilities",
     docs: {
       description: {
-        component: `
-### Features
-- Responsive layout support
-- Flexible sizing and positioning
-- Platform-agnostic container
-- Style prop support
-- Media query breakpoints
-
-### Variants
-- \`width\`: Container width
-- \`height\`: Container height
-- \`flex\`: Flex properties
-- \`$breakpoint\`: Responsive styles for different screen sizes
-
-### Guidelines
-- Use for basic layout containers
-- Prefer semantic components when available
-- Keep nesting levels minimal
-- Consider responsive breakpoints
-- Use semantic HTML when possible
+        component: `### Features
+- Responsive layout via Tailwind breakpoint prefixes (sm:, md:, lg:, xl:)
+- Flexible sizing and positioning via className
+- Platform-agnostic container (RN View)
 
 ### Usage
 ~~~tsx
 // Basic container
-<View padding={10}>
+<View className="p-xs">
   <Text>Content</Text>
 </View>
 
 // Responsive width
-<View
-  width={200}
-  $medium={{ width: 400 }}
-  $large={{ width: 600 }}
->
+<View className="w-[200px] md:w-[400px] lg:w-[600px]">
   <Text>Responsive Content</Text>
 </View>
 ~~~`,
@@ -55,15 +36,18 @@ export default {
 export const ViewStory: StoryObj = {
   name: "View",
   render: () => (
-    <>
-      <View>
-        <Text>This is a view</Text>
-      </View>
-      <View width={50} $medium={{ width: 80 }}>
-        <Text>
-          This is another view with a width of "base": 50px "medium": 80px
-        </Text>
-      </View>
-    </>
+    <Story>
+      <Story.Section title="Basic">
+        <View>
+          <Text>This is a view</Text>
+        </View>
+      </Story.Section>
+
+      <Story.Section title="Responsive width">
+        <View className="w-[50px] md:w-[80px] lg:w-[120px]">
+          <Text>Width: 50px (base), 80px (md), 120px (lg)</Text>
+        </View>
+      </Story.Section>
+    </Story>
   ),
 };

@@ -1,74 +1,62 @@
-import type { GetProps } from "@tamagui/core";
-import { Text as CoreText, styled } from "@tamagui/core";
+import { forwardRef } from "react";
+import { Text as RNText, type TextProps as RNTextProps } from "react-native";
+import { extendTailwindMerge } from "tailwind-merge";
 
-export const Text = styled(CoreText, {
-  variants: {
-    inherit: {
-      false: {
-        size: "$md",
-        weight: "$regular",
-        fontFamily: "$body",
-        tint: "sharp",
-      },
-    },
-    size: {
-      "...fontSize": (size) => ({
-        fontSize: size,
-        lineHeight: size,
-      }),
-    },
-    weight: {
-      $regular: { fontWeight: "$regular" },
-      $bold: { fontWeight: "$bold" },
-      $extraBold: { fontWeight: "$extraBold" },
-    },
-    family: {
-      $heading: { fontFamily: "$heading" },
-      $body: { fontFamily: "$body" },
-      "$body-monospace": { fontFamily: "$body-monospace" },
-    },
-    tint: {
-      sharp: {
-        color: "$text-sharp",
-
-        disabledStyle: {
-          color: "$text-disabled-muted",
-        },
-      },
-      muted: {
-        color: "$text-muted",
-
-        disabledStyle: {
-          color: "$text-disabled-muted",
-        },
-      },
-      accent: {
-        color: "$text-accent",
-      },
-      onAccent: {
-        color: "$text-onAccent",
-      },
-    },
-    disabledSharp: {
-      true: {
-        disabledStyle: {
-          color: "$text-disabled-sharp",
-        },
-      },
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      "font-size": [
+        "body-xs",
+        "body-sm",
+        "body-md",
+        "body-lg",
+        "body-xl",
+        "body-xxl",
+        "body-3xl",
+        "heading-xs",
+        "heading-sm",
+        "heading-md",
+        "heading-lg",
+        "heading-xl",
+        "heading-xxl",
+        "heading-3xl",
+        "mono-xs",
+        "mono-sm",
+        "mono-md",
+        "mono-lg",
+        "mono-xl",
+        "mono-xxl",
+        "mono-3xl",
+      ],
     },
   },
-
-  defaultVariants: {
-    inherit: false,
-  },
-} as const);
-
-export type TextProps = GetProps<typeof Text>;
-
-export const Paragraph = styled(Text, {
-  render: "p",
-  userSelect: "auto",
-  inherit: false,
 });
 
-export type ParagraphProps = GetProps<typeof Paragraph>;
+export type TextProps = RNTextProps;
+
+export const Text = forwardRef<RNText, TextProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <RNText
+        ref={ref}
+        className={twMerge("text-sharp", className)}
+        {...props}
+      />
+    );
+  },
+);
+
+export type ParagraphProps = TextProps;
+
+export const Paragraph = forwardRef<RNText, ParagraphProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <Text
+        ref={ref}
+        role="paragraph"
+        className={`select-auto ${className ?? ""}`}
+        {...props}
+      />
+    );
+  },
+);

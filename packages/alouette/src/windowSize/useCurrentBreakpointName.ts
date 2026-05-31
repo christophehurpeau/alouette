@@ -1,33 +1,36 @@
-import { useMedia } from "@tamagui/core";
-import type { BreakpointNames } from "../config/Breakpoints";
-import { BreakpointNameEnum } from "../config/Breakpoints";
+import { useWindowDimensions } from "react-native";
+import {
+  BreakpointNameEnum,
+  type BreakpointNames,
+  Breakpoints,
+} from "../config/Breakpoints";
 
 export function useCurrentBreakpointName(): BreakpointNameEnum {
-  const media = useMedia();
-
-  if (media.wide) return BreakpointNameEnum.WIDE;
-  if (media.large) return BreakpointNameEnum.LARGE;
-  if (media.medium) return BreakpointNameEnum.MEDIUM;
-  if (media.small) return BreakpointNameEnum.SMALL;
+  const { width } = useWindowDimensions();
+  if (width >= Breakpoints.WIDE) return BreakpointNameEnum.WIDE;
+  if (width >= Breakpoints.LARGE) return BreakpointNameEnum.LARGE;
+  if (width >= Breakpoints.MEDIUM) return BreakpointNameEnum.MEDIUM;
+  if (width >= Breakpoints.SMALL) return BreakpointNameEnum.SMALL;
   return BreakpointNameEnum.BASE;
 }
 
 export function useCurrentBreakpointNameFiltered<
   Names extends BreakpointNames[],
 >(names: Names): Names[number] {
-  const media = useMedia();
-
-  if (names.includes(BreakpointNameEnum.WIDE) && media.wide) {
-    return BreakpointNameEnum.WIDE;
-  }
-  if (names.includes(BreakpointNameEnum.LARGE) && media.large) {
-    return BreakpointNameEnum.LARGE;
-  }
-  if (names.includes(BreakpointNameEnum.MEDIUM) && media.medium) {
-    return BreakpointNameEnum.MEDIUM;
-  }
-  if (names.includes(BreakpointNameEnum.SMALL) && media.small) {
-    return BreakpointNameEnum.SMALL;
+  const current = useCurrentBreakpointName();
+  // Walk from the largest matching breakpoint down to BASE; pick the first
+  // one the consumer asked for.
+  const ordered = [
+    BreakpointNameEnum.WIDE,
+    BreakpointNameEnum.LARGE,
+    BreakpointNameEnum.MEDIUM,
+    BreakpointNameEnum.SMALL,
+    BreakpointNameEnum.BASE,
+  ] as const;
+  const startIndex = ordered.indexOf(current);
+  for (let i = startIndex; i < ordered.length; i++) {
+    const candidate = ordered[i]!;
+    if (names.includes(candidate)) return candidate;
   }
   return BreakpointNameEnum.BASE;
 }

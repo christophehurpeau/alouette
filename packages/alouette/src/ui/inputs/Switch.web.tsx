@@ -1,212 +1,106 @@
-import type { GestureReponderEvent, GetProps } from "@tamagui/core";
-import { styled } from "@tamagui/core";
-// import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
-// import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
-import { useState } from "react";
-import { Box, InteractiveBox } from "../containers/Box";
-// import { Icon } from "../primitives/Icon";
+import { type ReactNode, useCallback, useState } from "react";
+import { View } from "react-native";
+import { tv } from "tailwind-variants";
+import { InteractiveBox } from "../containers/Box";
 
-const useControllableCheckedState = (
-  checked: boolean | undefined,
-  onChange?: (e: GestureReponderEvent) => void,
-  onValueChange?: (newValue: boolean) => void,
-) => {
-  const [checkedState, setCheckedState] = useState(checked ?? false);
+const TRACK_HEIGHT = 44;
+const TRACK_WIDTH = 66;
+const THUMB_PADDING = TRACK_HEIGHT * 0.1;
+const THUMB_SIZE = TRACK_HEIGHT * 0.8;
+const TRAVEL_X = TRACK_WIDTH - THUMB_SIZE - THUMB_PADDING * 2;
 
-  return [
-    checked !== undefined ? checked : checkedState,
-    (newChecked: boolean, e: GestureReponderEvent) => {
-      setCheckedState((prevValue) => {
-        if (prevValue !== newChecked) {
-          onChange?.(e);
-          onValueChange?.(newChecked);
-        }
-        return newChecked;
-      });
+const trackVariants = tv(
+  {
+    base: "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto outline-interactive-outlined-outline-focus",
+    variants: {
+      checked: {
+        true: "bg-lowered disabled:bg-form-bg-disabled",
+        false: "bg-lowered disabled:bg-form-bg-disabled",
+      },
     },
-  ] as const;
-};
-
-const SwitchFrame = styled(InteractiveBox, {
-  theme: "brand",
-  render: "button",
-  // @ts-expect-error web only prop missing definition
-  type: "button",
-  role: "switch",
-  layer: "lowered",
-  shadow: "lowered",
-
-  position: "relative",
-  tabIndex: 0,
-  borderRadius: 1000,
-
-  transition: "formElement",
-
-  disabledStyle: {
-    backgroundColor: "$interactive.forms.backgroundColor:disabled",
   },
+  { twMerge: false },
+);
 
-  // TODO hover/focus
-
-  focusVisibleStyle: {
-    outlineColor: "$interactive.forms.outlineColor:focus",
-    outlineWidth: 2,
-    outlineStyle: "solid",
-    outlineOffset: 2,
+const thumbVariants = tv(
+  {
+    base: [
+      "absolute rounded-full shadow-s",
+      "transition-transform duration-200 ease-in",
+      "bg-highlight disabled:bg-disabled-muted",
+    ].join(" "),
   },
+  { twMerge: false },
+);
 
-  variants: {
-    size: {
-      md: {
-        height: 44,
-        width: 66,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    size: "md",
-  },
-});
-
-const thumbSize = 44 * 0.8;
-const SwitchThumb = styled(Box, {
-  withBackground: "highlight",
-  position: "absolute",
-  top: 44 * 0.1,
-  borderRadius: 1000,
-  center: true,
-  transition: "formElement",
-  shadow: "s",
-
-  variants: {
-    size: {
-      md: {
-        height: thumbSize,
-        width: thumbSize,
-      },
-    },
-
-    disabled: {
-      true: {
-        backgroundColor: "$text-disabled-muted",
-        shadow: "none",
-      },
-    },
-
-    checked: {
-      false: {
-        left: 44 * 0.1,
-        hoverStyle: {
-          width: thumbSize + 2,
-        },
-        pressStyle: {
-          width: thumbSize + 8,
-        },
-      },
-      true: {
-        left: 44 * 0.6,
-        hoverStyle: {
-          left: 44 * 0.6 - 2,
-          width: thumbSize + 2,
-        },
-        pressStyle: {
-          left: 44 * 0.6 - 8,
-          width: thumbSize + 8,
-        },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    size: "md",
-  },
-});
-
-// const iconSize = 16;
-
-// const SwitchIconContainer = styled(View, {
-//   width: iconSize,
-//   height: iconSize,
-//   position: "absolute",
-//   top: "50%",
-//   transform: "translate(-50%, -50%)",
-//   transition: "formElement",
-
-//   variants: {
-//     iconPosition: {
-//       left: {
-//         left: thumbSize / 2,
-//       },
-//       right: {
-//         right: iconSize + 3 - thumbSize / 2,
-//       },
-//     },
-//     showed: {
-//       false: {
-//         opacity: 0,
-//       },
-//       true: {
-//         opacity: 1,
-//       },
-//     },
-//   },
-// });
-
-interface SwitchAdditionalProps {
-  checked: boolean;
-  // checkedTheme?: GetProps<typeof SwitchFrame>["theme"];
-  onChange: (e: GestureReponderEvent) => void;
-  onValueChange?: (newValue: boolean) => void;
+export interface SwitchProps {
+  checked?: boolean;
+  disabled?: boolean;
+  onValueChange?: (value: boolean) => void;
+  "aria-labelledby"?: string;
+  testID?: string;
 }
 
-export type SwitchProps = Pick<
-  GetProps<typeof SwitchFrame>,
-  "aria-labelledby" | "disabled"
-> &
-  SwitchAdditionalProps;
+function useControllableChecked(
+  controlled: boolean | undefined,
+  onValueChange?: (value: boolean) => void,
+): readonly [boolean, (next: boolean) => void] {
+  const [internal, setInternal] = useState(controlled ?? false);
+  const value = controlled ?? internal;
+  const onChange = useCallback(
+    (next: boolean) => {
+      if (controlled === undefined) {
+        setInternal(next);
+      }
+      if (next !== value) {
+        onValueChange?.(next);
+      }
+    },
+    [controlled, onValueChange, value],
+  );
+  return [value, onChange] as const;
+}
 
-export const Switch = SwitchFrame.styleable<SwitchAdditionalProps>(
-  ({ checked, disabled, onChange, onValueChange, ...rest }) => {
-    const [currentChecked, setCurrentChecked] = useControllableCheckedState(
-      checked,
-      onChange,
-      onValueChange,
-    );
-    return (
-      <SwitchFrame
-        aria-checked={currentChecked}
-        disabled={disabled}
-        {...rest}
-        // {...(currentChecked && checkedTheme ? { theme: checkedTheme } : {})}
-        onPress={(e) => {
-          setCurrentChecked(!currentChecked, e);
+function SwitchInner({
+  checked,
+  disabled,
+  onValueChange,
+  ...props
+}: SwitchProps): ReactNode {
+  const [value, setValue] = useControllableChecked(checked, onValueChange);
+
+  return (
+    <InteractiveBox
+      withFocusVisibleOutline
+      role="switch"
+      aria-checked={value}
+      aria-disabled={disabled === true}
+      disabled={disabled}
+      className={trackVariants({ checked: value })}
+      style={{
+        width: TRACK_WIDTH,
+        height: TRACK_HEIGHT,
+      }}
+      onPress={() => {
+        setValue(!value);
+      }}
+      {...props}
+    >
+      <View
+        aria-disabled={disabled === true}
+        className={thumbVariants({})}
+        style={{
+          width: THUMB_SIZE,
+          height: THUMB_SIZE,
+          top: THUMB_PADDING,
+          left: THUMB_PADDING,
+          transform: [{ translateX: value ? TRAVEL_X : 0 }],
         }}
-      >
-        <SwitchThumb checked={currentChecked} disabled={disabled}>
-          {/* <SwitchIconContainer showed={!currentChecked} iconPosition="left">
-              <Icon tint="accent" size={16} icon={<XRegularIcon />} />
-            </SwitchIconContainer>
-            <SwitchIconContainer showed={currentChecked} iconPosition="right">
-              <Icon tint="accent" size={16} icon={<CheckRegularIcon />} />
-            </SwitchIconContainer> */}
-        </SwitchThumb>
+      />
+    </InteractiveBox>
+  );
+}
 
-        {/* <input
-            aria-hidden
-            value="true"
-            type="checkbox"
-            checked={checked}
-            disabled={disabled}
-            tabIndex={-1}
-            style={{
-              position: "absolute",
-              pointerEvents: "none",
-              opacity: 0,
-              margin: 0,
-            }}
-          /> */}
-      </SwitchFrame>
-    );
-  },
-);
+export function Switch(props: SwitchProps): ReactNode {
+  return <SwitchInner {...props} />;
+}

@@ -1,47 +1,40 @@
-import { styled } from "@tamagui/core";
-import type { PressableBoxProps } from "alouette";
 import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons/CaretRightRegularIcon";
 import type { ReactNode } from "react";
+import { View } from "react-native";
 import { Icon } from "../primitives/Icon";
-import { View } from "../primitives/View";
-import { VStack } from "../stacks/stacks";
-import { PressableBox } from "./PressableBox";
-
-const PressableListItemFrame = styled(PressableBox, {
-  variant: "contained",
-  marginHorizontal: "$0.5",
-  marginVertical: "$0.25",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  paddingHorizontal: "$1.0",
-  paddingVertical: "$1.0",
-});
+import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
 export interface PressableListItemProps {
-  theme?: PressableBoxProps["theme"];
-  role?: PressableBoxProps["role"];
   variant?: PressableBoxProps["variant"];
+  semanticRole?: PressableBoxProps["semanticRole"];
+  role?: PressableBoxProps["role"];
   children: ReactNode;
   onPress: () => void;
 }
 
 export function PressableListItem({
-  theme,
+  variant = "contained",
   role = "button",
+  semanticRole,
   children,
   onPress,
 }: PressableListItemProps): ReactNode {
   return (
-    <PressableListItemFrame theme={theme} role={role} onPress={onPress}>
-      <View flex={1}>{children}</View>
-      <VStack justifyContent="center">
+    <PressableBox
+      variant={variant}
+      role={role}
+      semanticRole={semanticRole}
+      className="flex-row items-center justify-between mx-xs my-xxs px-m py-m"
+      onPress={onPress}
+    >
+      <View className="flex-1">{children}</View>
+      <View className="justify-center">
         <Icon
-          tint="onAccent-muted"
+          tint={variant === "contained" ? "onAccent-muted" : "muted"}
           icon={<CaretRightRegularIcon />}
           size={18}
         />
-      </VStack>
-    </PressableListItemFrame>
+      </View>
+    </PressableBox>
   );
 }

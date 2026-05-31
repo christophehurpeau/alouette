@@ -1,90 +1,52 @@
-import { View, styled } from "@tamagui/core";
 import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
 import { InfoRegularIcon } from "alouette-icons/phosphor-icons/InfoRegularIcon";
 import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
 import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
 import type { ReactNode } from "react";
+import { type VariantProps, tv } from "tailwind-variants";
 import type { Except } from "type-fest";
+import type { SemanticRole } from "../../core/AlouetteConfig";
 import { IconButton } from "../actions/IconButton";
-import type { SurfaceProps } from "../containers/Surface";
-import { Surface } from "../containers/Surface";
-import type { IconProps } from "../primitives/Icon";
-import { Icon } from "../primitives/Icon";
+import { Box } from "../containers/Box";
+import { SemanticScope } from "../containers/SemanticScope";
+import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 
-export const MessageFrame = styled(Surface, {
-  name: "MessageFrame",
-  alignItems: "center",
-  flexDirection: "row",
-  layer: "highlight-accent",
-
-  variants: {
-    size: {
-      sm: {
-        gap: "$0.5",
-      },
-      md: {
-        gap: "$1.0",
-      },
-      lg: {
-        gap: "$1.5",
+const messageFrameVariants = tv(
+  {
+    base: "flex-row items-center bg-highlight-accent overflow-hidden",
+    variants: {
+      size: {
+        sm: "gap-xs p-sm rounded-xs",
+        md: "gap-m p-m rounded-sm",
+        lg: "gap-l p-l rounded-md",
       },
     },
-  } as const,
-
-  defaultVariants: {
-    size: "md",
+    defaultVariants: { size: "md" },
   },
-} as const);
+  { twMerge: false },
+);
 
-export const MessageText = styled(Text, {
-  size: "$md",
-  flexGrow: 1,
-  tint: "accent",
-} as const);
+type MessageVariantProps = VariantProps<typeof messageFrameVariants>;
+type MessageSize = NonNullable<MessageVariantProps["size"]>;
 
-const MessageIconContainer = styled(View, {
-  alignItems: "center",
-});
-
-const MessageDismissButtonContainer = styled(View, {
-  position: "relative",
-  alignItems: "center",
-  justifyContent: "center",
-
-  variants: {
-    size: {
-      sm: {
-        height: 24,
-        width: 24,
-      },
-      md: {
-        height: 40,
-        width: 40,
-      },
-      lg: {
-        height: 40,
-        width: 40,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    size: "md",
-  },
-});
+const ICON_SIZE: Record<MessageSize, number> = { sm: 20, md: 24, lg: 28 };
+const DISMISS_BUTTON_SIZE: Record<MessageSize, number> = {
+  sm: 24,
+  md: 40,
+  lg: 40,
+};
 
 interface MessageBaseProps {
-  theme: NonNullable<SurfaceProps["theme"]>;
-  size?: NonNullable<SurfaceProps["size"]>;
-  icon: IconProps["icon"];
+  semanticRole: SemanticRole;
+  size?: MessageSize;
+  icon: SVGIconElement;
   children?: ReactNode;
 }
 interface MessagePropsWithDismiss extends MessageBaseProps {
   onDismiss: () => void;
   dismissIconAriaLabel: string;
 }
-
 interface MessagePropsWithoutDismiss extends MessageBaseProps {
   onDismiss?: undefined;
   dismissIconAriaLabel?: undefined;
@@ -95,43 +57,52 @@ export type MessageProps = MessagePropsWithDismiss | MessagePropsWithoutDismiss;
 export function Message({
   icon,
   size = "md",
-  theme,
+  semanticRole,
   children,
   onDismiss,
   dismissIconAriaLabel,
 }: MessageProps): ReactNode {
+  const dismissDiameter = DISMISS_BUTTON_SIZE[size];
   return (
-    <MessageFrame theme={theme} size={size}>
-      <MessageIconContainer>
-        <Icon size={size === "sm" ? 20 : 24} icon={icon} tint="accent" />
-      </MessageIconContainer>
-      <MessageText>{children}</MessageText>
-      {onDismiss ? (
-        <MessageDismissButtonContainer size={size}>
-          <IconButton
-            icon={<XRegularIcon />}
-            iconSize={size === "sm" ? "fill" : undefined}
-            size={size === "sm" ? 24 : 40}
-            variant="outlined"
-            tint="accent"
-            aria-label={dismissIconAriaLabel}
-          />
-        </MessageDismissButtonContainer>
-      ) : null}
-    </MessageFrame>
+    <SemanticScope semanticRole={semanticRole}>
+      <Box shadow="m" className={messageFrameVariants({ size })}>
+        <Icon icon={icon} size={ICON_SIZE[size]} tint="accent" />
+        <Text className="text-accent grow">{children}</Text>
+        {onDismiss ? (
+          <Box
+            style={{ width: dismissDiameter, height: dismissDiameter }}
+            className="items-center justify-center"
+          >
+            <IconButton
+              ghost
+              icon={<XRegularIcon />}
+              iconSize={size === "sm" ? "fill" : undefined}
+              size={dismissDiameter}
+              variant="outlined"
+              aria-label={dismissIconAriaLabel}
+              onPress={onDismiss}
+            />
+          </Box>
+        ) : null}
+      </Box>
+    </SemanticScope>
   );
 }
 
-type SemanticMessageProps = Except<MessageProps, "icon" | "theme">;
+type SemanticMessageProps = Except<MessageProps, "icon" | "semanticRole">;
 
 export function InfoMessage(props: SemanticMessageProps): ReactNode {
-  return <Message {...props} theme="info" icon={<InfoRegularIcon />} />;
+  return <Message {...props} semanticRole="info" icon={<InfoRegularIcon />} />;
 }
 
 export function ConfirmationMessage(props: SemanticMessageProps): ReactNode {
-  return <Message {...props} theme="success" icon={<CheckRegularIcon />} />;
+  return (
+    <Message {...props} semanticRole="success" icon={<CheckRegularIcon />} />
+  );
 }
 
 export function WarningMessage(props: SemanticMessageProps): ReactNode {
-  return <Message {...props} theme="warning" icon={<WarningRegularIcon />} />;
+  return (
+    <Message {...props} semanticRole="warning" icon={<WarningRegularIcon />} />
+  );
 }

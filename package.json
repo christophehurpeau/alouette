@@ -25,7 +25,10 @@
     "lint:prettier:fix": "pob-root-prettier --write .",
     "postinstall": "pob-root-postinstall",
     "storybook": "yarn ./packages/storybook-app start",
-    "test": "node --disable-warning=ExperimentalWarning --experimental-strip-types --test packages/alouette/src/**/*.test.ts",
+    "test": "TZ=UTC vitest",
+    "test:coverage": "TZ=UTC POB_VITEST_COVERAGE=json,text vitest run --coverage",
+    "test:coverage:json": "TZ=UTC POB_VITEST_COVERAGE=json vitest run --coverage",
+    "test:watch": "TZ=UTC vitest --watch",
     "tsc": "tsc -b",
     "watch": "yarn clean:build && rollup --config rollup.config.mjs --watch"
   },
@@ -40,11 +43,19 @@
     "@pob/eslint-config-typescript-react": "65.4.3",
     "@pob/rollup-esbuild": "8.3.0",
     "@pob/root": "23.2.0",
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/react": "16.3.2",
+    "@vitest/coverage-v8": "4.1.5",
     "check-package-dependencies": "10.5.0",
     "color-convert": "3.1.3",
     "eslint": "10.2.1",
     "eslint-plugin-storybook": "10.3.3",
+    "happy-dom": "20.9.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "storybook": "10.3.3",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vite": "8.0.10",
+    "vitest": "4.1.5"
   }
 }

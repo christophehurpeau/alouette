@@ -1,36 +1,15 @@
-import type { GetProps } from "@tamagui/core";
-import { styled } from "@tamagui/core";
 import type { ReactNode } from "react";
-import type { SetRequired } from "type-fest";
-import { PressableBox } from "../data/PressableBox";
-import type { SVGIconElement } from "../primitives/Icon";
-import { Icon } from "../primitives/Icon";
+import { PressableBox, type PressableBoxProps } from "../data/PressableBox";
+import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { buttonHeight } from "./Button";
 
-const IconButtonFrame = styled(PressableBox, {
-  name: "IconButtonFrame",
-  role: "button",
-  center: true,
-  borderRadius: 10_000,
-  variants: {
-    size: {
-      ":number": (val: number) => ({
-        square: val,
-      }),
-      sm: { square: buttonHeight.sm },
-      md: { square: buttonHeight.md },
-    },
-  },
-});
-
-type IconButtonFrameProps = GetProps<typeof IconButtonFrame>;
-
-export interface IconButtonProps extends SetRequired<
-  IconButtonFrameProps,
-  "aria-label"
-> {
-  icon: NonNullable<SVGIconElement>;
+export interface IconButtonProps extends Omit<PressableBoxProps, "children"> {
+  icon: SVGIconElement;
+  /** Preset size token, or any number for a custom diameter (px). */
+  size?: number | "md" | "sm";
+  /** When "fill", the icon takes 80% of the button; default uses 50%. */
   iconSize?: "fill";
+  "aria-label": string;
 }
 
 export function IconButton({
@@ -39,21 +18,28 @@ export function IconButton({
   size = "md",
   iconSize,
   variant = "contained",
-  ...pressableBoxProps
+  className,
+  ...pressableProps
 }: IconButtonProps): ReactNode {
-  const sizeAsValue = typeof size === "number" ? size : buttonHeight[size];
+  const diameter = typeof size === "number" ? size : buttonHeight[size];
+  const isDisabled = disabled === true;
+  const onAccent = variant === "contained";
+
   return (
-    <IconButtonFrame
-      size={size}
+    <PressableBox
       variant={variant}
       disabled={disabled}
-      {...pressableBoxProps}
+      className={`shrink-0 items-center justify-center rounded-full ${className ?? ""}`}
+      style={{ width: diameter, height: diameter }}
+      {...pressableProps}
     >
       <Icon
-        size={iconSize === "fill" ? sizeAsValue * 0.8 : sizeAsValue * 0.5}
-        disabled={disabled}
         icon={icon}
+        size={diameter * (iconSize === "fill" ? 0.8 : 0.55)}
+        disabled={isDisabled}
+        tint={onAccent ? "onAccent" : "sharp"}
+        disabledSharp={onAccent}
       />
-    </IconButtonFrame>
+    </PressableBox>
   );
 }

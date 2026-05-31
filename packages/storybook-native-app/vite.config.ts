@@ -1,6 +1,6 @@
-import { transformWithEsbuild } from "vite";
-import { tamaguiPlugin } from "@tamagui/vite-plugin";
-import react from "@vitejs/plugin-react";
+import { uniwind } from "uniwind/vite";
+import { rnw } from "vite-plugin-rnw";
+import tailwindcss from "@tailwindcss/vite";
 import svgr from "vite-plugin-svgr";
 import { defineConfig } from "vite";
 import { URL, fileURLToPath } from "url";
@@ -31,10 +31,6 @@ export default defineConfig({
         ".web.mts": "ts",
       },
     },
-    // extensions: [`.mjs`, `.js`, `.ts`, `.mts`].flatMap((extension) => [
-    //   ".web" + extension,
-    //   extension,
-    // ]),
     holdUntilCrawlEnd: true,
     exclude: ["alouette-icons"],
   },
@@ -42,9 +38,6 @@ export default defineConfig({
     extensions,
     alias: {
       alouette: fileURLToPath(new URL("../alouette/src", import.meta.url)),
-      "alouette/createAlouetteTamagui": fileURLToPath(
-        new URL("../alouette/src/createAlouetteTamagui.ts", import.meta.url),
-      ),
     },
   },
   plugins: [
@@ -54,13 +47,23 @@ export default defineConfig({
         exportType: "named",
       },
     }),
-    react(),
-    tamaguiPlugin({
-      config: "./tamagui.config.ts",
-      components: ["alouette"],
-      excludeReactNativeWebExports: [], // TODO properly exclude
-      useReactNativeWebLite: "without-animated",
-      disableExtraction: process.env.NODE_ENV !== "production",
+    rnw(),
+    tailwindcss(),
+    uniwind({
+      cssEntryFile: "./src/global.css",
+      dtsFile: "./src/uniwind-types.d.ts",
+      extraThemes: [
+        "light_brand",
+        "dark_brand",
+        "light_info",
+        "dark_info",
+        "light_success",
+        "dark_success",
+        "light_warning",
+        "dark_warning",
+        "light_danger",
+        "dark_danger",
+      ],
     }),
-  ].filter(Boolean),
+  ],
 });

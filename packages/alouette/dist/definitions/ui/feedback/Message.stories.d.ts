@@ -6,17 +6,12 @@ declare const _default: {
     component: typeof Message;
     parameters: {
         componentSubtitle: string;
-        docs: {
-            description: {
-                component: string;
-            };
-        };
     };
     argTypes: {
-        theme: {
+        semanticRole: {
             description: string;
             control: "select";
-            options: string[];
+            options: import("../../core/AlouetteConfig").SemanticRole[];
             table: {
                 defaultValue: {
                     summary: string;

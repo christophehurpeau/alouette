@@ -1,6 +1,7 @@
+// @ts-expect-error missing css types
+import "../src/global.css";
 import { Preview } from "@storybook/react-vite";
 import { AlouetteDecorator } from "alouette";
-import tamaguiConfig from "../tamagui.config";
 import { DocTemplate } from "./DocTemplate";
 
 const preview: Preview = {
@@ -12,7 +13,6 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    tamaguiConfig,
     layout: "fullscreen",
     docs: {
       toc: true,

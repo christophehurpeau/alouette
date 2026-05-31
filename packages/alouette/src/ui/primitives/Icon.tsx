@@ -1,55 +1,57 @@
-import type { ColorTokens } from "@tamagui/core";
-import { Text, usePropsAndStyle } from "@tamagui/core";
-import { cloneElement } from "react";
-import type { ReactElement, ReactNode, SVGProps } from "react";
+import {
+  type ReactElement,
+  type ReactNode,
+  type SVGProps,
+  cloneElement,
+} from "react";
+import { useCSSVariable } from "uniwind";
 
 export type SVGIconElement = ReactElement<SVGProps<SVGSVGElement>>;
 
+const TINT_TO_VAR = {
+  sharp: "sharp",
+  muted: "muted",
+  accent: "accent",
+  "accent-muted": "accent-muted",
+  onAccent: "on-accent",
+  "onAccent-muted": "on-accent-muted",
+} as const;
+
+export type IconTint = keyof typeof TINT_TO_VAR;
+
 export interface IconProps {
   icon: SVGIconElement;
-  disabled?: boolean;
-  disabledSharp?: boolean;
-  tint?:
-    | "accent-muted"
-    | "accent"
-    | "muted"
-    | "onAccent-muted"
-    | "onAccent"
-    | "sharp";
+  /** Square size in px. Defaults to 20. */
   size?: number;
+  tint?: IconTint;
+  /** Renders in the disabled-text colour instead of the active tint. */
+  disabled?: boolean;
+  /** When disabled, use the sharp disabled colour rather than the muted one. */
+  disabledSharp?: boolean;
 }
 
-const getDefaultColor = (
-  disabled?: boolean,
-  disabledSharp?: boolean,
-  tint?: IconProps["tint"],
-): ColorTokens => {
+function pickColorVar(
+  tint: IconTint,
+  disabled: boolean,
+  disabledSharp: boolean,
+): string {
   if (disabled) {
-    return disabledSharp ? "$text-disabled-sharp" : "$text-disabled-muted";
+    return disabledSharp ? "--color-disabled-sharp" : "--color-disabled-muted";
   }
-  if (tint === "accent") return "$text-accent";
-  if (tint === "accent-muted") return "$text-accent-muted";
-  if (tint === "muted") return "$text-muted";
-  if (tint === "onAccent") return "$text-onAccent";
-  if (tint === "onAccent-muted") return "$text-onAccent-muted";
-  return "$text-sharp";
-};
+  return `--color-${TINT_TO_VAR[tint]}`;
+}
 
 export function Icon({
   icon,
-  // TODO should size be normalized ?
   size = 20,
-  disabled,
-  disabledSharp,
-  tint,
+  tint = "sharp",
+  disabled = false,
+  disabledSharp = false,
 }: IconProps): ReactNode {
-  const [props, style] = usePropsAndStyle(
-    {
-      color: getDefaultColor(disabled, disabledSharp, tint),
-      width: size,
-      height: size,
-    },
-    { forComponent: Text },
-  );
-  return cloneElement(icon, { style, ...props } as any);
+  const color = useCSSVariable(pickColorVar(tint, disabled, disabledSharp));
+  return cloneElement(icon, {
+    color: color as string,
+    width: size,
+    height: size,
+  });
 }

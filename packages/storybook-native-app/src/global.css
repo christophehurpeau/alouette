@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "uniwind";
+@import "alouette/global.css";
+
+@source '../../alouette/src';

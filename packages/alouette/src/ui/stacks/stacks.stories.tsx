@@ -4,6 +4,14 @@ import { Text } from "../primitives/Text";
 import { Story } from "../story-components/Story";
 import { HStack, Stack, VStack } from "./stacks";
 
+function Item({ children }: { children: React.ReactNode }) {
+  return (
+    <Box center layer="highlight" className="grow p-xs rounded-sm">
+      <Text>{children}</Text>
+    </Box>
+  );
+}
+
 const meta = {
   title: "alouette/Layout/Stacks",
   component: Stack,
@@ -13,104 +21,38 @@ const meta = {
       "Flexible stack layout components that provide an easy way to arrange elements vertically or horizontally with consistent spacing",
     docs: {
       description: {
-        component: `
-### Components
-- \`Stack\`: Base component with configurable direction
-- \`HStack\`: Horizontal stack (row layout)
-- \`VStack\`: Vertical stack (column layout)
-
-### Features
-- Configurable gap between elements
-- Theme support for background colors
-- Responsive layout changes
-- Flexible alignment and distribution
-- Proper spacing on all screen sizes
+        component: `### Components
+- \`Stack\`: Row layout that wraps
+- \`HStack\`: Horizontal stack (no wrap)
+- \`VStack\`: Vertical stack
 
 ### Variants
-- \`type\`: Stack direction (h | v) - Stack only
-- \`gap\`: Space between items ($xs | $sm | $md | $lg | $xl)
-- \`alignItems\`: Cross-axis alignment
-- \`justifyContent\`: Main-axis alignment
-- \`flexWrap\`: Enable wrapping to next line
+- \`absoluteFill\` (Stack/HStack): position absolute, inset-0
 
-### Guidelines
-- Use Stack when direction might change responsively
-- Use HStack for navigation bars, toolbars, inline actions
-- Use VStack for forms, content sections, lists
-- Always specify gap for consistent spacing
-- Consider alignment needs (start, center, end)
-- Use flexWrap for responsive layouts
-
-### Usage
-~~~tsx
-// Basic horizontal stack
-<HStack gap="$1.0" alignItems="center">
-  <Box>Left</Box>
-  <Box>Right</Box>
-</HStack>
-
-// Vertical stack with alignment
-<VStack gap="$1.0" alignItems="stretch">
-  <Box>Top</Box>
-  <Box>Bottom</Box>
-</VStack>
-~~~`,
+Use Tailwind classes for gap/alignment/justification:
+- \`gap-{n}\`, \`items-{position}\`, \`justify-{position}\`, \`flex-wrap\``,
       },
-    },
-  },
-  argTypes: {
-    gap: {
-      description: "Space between stack items",
-      control: "select",
-      options: ["$xs", "$sm", "$md", "$lg", "$xl", "$20"],
-    },
-    theme: {
-      description: "Theme color for the stack background",
-      control: "select",
-      options: ["brand", "info", "success", "warning", "danger"],
-    },
-    alignItems: {
-      description: "Alignment of items along the cross axis",
-      control: "select",
-      options: ["flex-start", "center", "flex-end", "stretch"],
-    },
-    justifyContent: {
-      description: "Alignment of items along the main axis",
-      control: "select",
-      options: [
-        "flex-start",
-        "center",
-        "flex-end",
-        "space-between",
-        "space-around",
-        "space-evenly",
-      ],
-    },
-    flexWrap: {
-      description: "Whether items should wrap to the next line",
-      control: "boolean",
     },
   },
 } satisfies Meta<typeof Stack>;
 
 export default meta;
 
-type Story = StoryObj<typeof Stack>;
+type ThisStory = StoryObj<typeof Stack>;
 
-export const StackStory: Story = {
+export const StackStory: ThisStory = {
   name: "Stack",
-  args: {
-    gap: "$2.0",
-    theme: "brand",
-    children: [
-      <Box key="1" center layer="highlight" flexGrow={1}>
-        <Text>1</Text>
-      </Box>,
-      <Box key="2" center layer="highlight" flexGrow={1}>
-        <Text>2</Text>
-      </Box>,
-    ],
-  },
+  render: () => (
+    <Story>
+      <Story.Section title="Basic (wraps)">
+        <Stack className="gap-m">
+          {Array.from({ length: 8 }, (_, i) => (
+            <Item key={i}>{i + 1}</Item>
+          ))}
+        </Stack>
+      </Story.Section>
+    </Story>
+  ),
 };
 
 export const HStackStory: StoryObj<typeof HStack> = {
@@ -118,44 +60,37 @@ export const HStackStory: StoryObj<typeof HStack> = {
   render: () => (
     <Story>
       <Story.Section title="Basic">
-        <HStack gap="$2.0">
-          <Box center layer="highlight" flexGrow={1}>
-            <Text>1</Text>
-          </Box>
-          <Box center layer="highlight" flexGrow={1}>
-            <Text>2</Text>
-          </Box>
+        <HStack className="gap-m">
+          <Item>1</Item>
+          <Item>2</Item>
         </HStack>
       </Story.Section>
 
-      <Story.Section title="With theme">
-        <HStack theme="brand" gap="$2.0">
-          <Box center layer="highlight-accent" flexGrow={1}>
+      <Story.Section title="With justify-between">
+        <HStack className="gap-m justify-between">
+          <Box center layer="highlight" className="p-xs rounded-sm">
             <Text>1</Text>
           </Box>
-          <Box center layer="highlight-accent" flexGrow={1}>
-            <Text>2</Text>
-          </Box>
-        </HStack>
-      </Story.Section>
-
-      <Story.Section title="With justifyContent">
-        <HStack gap="$2.0" justifyContent="space-between">
-          <Box center layer="highlight">
-            <Text>1</Text>
-          </Box>
-          <Box center layer="highlight">
+          <Box center layer="highlight" className="p-xs rounded-sm">
             <Text>2</Text>
           </Box>
         </HStack>
       </Story.Section>
 
       <Story.Section title="With flexGrow">
-        <HStack gap="$2.0" justifyContent="space-between">
-          <Box layer="highlight" flexGrow={1} flexBasis={0}>
+        <HStack className="gap-m justify-between">
+          <Box
+            center
+            layer="highlight"
+            className="grow basis-0 p-xs rounded-sm"
+          >
             <Text>1</Text>
           </Box>
-          <Box layer="highlight" flexGrow={2} flexBasis={0}>
+          <Box
+            center
+            layer="highlight"
+            className="grow-2 basis-0 p-xs rounded-sm"
+          >
             <Text>2</Text>
           </Box>
         </HStack>
@@ -169,33 +104,18 @@ export const VStackStory: StoryObj<typeof VStack> = {
   render: () => (
     <Story>
       <Story.Section title="Basic">
-        <VStack gap="$2.0">
-          <Box center layer="highlight" flexGrow={1}>
-            <Text>1</Text>
-          </Box>
-          <Box center layer="highlight" flexGrow={1}>
-            <Text>2</Text>
-          </Box>
+        <VStack className="gap-m">
+          <Item>1</Item>
+          <Item>2</Item>
         </VStack>
       </Story.Section>
 
-      <Story.Section title="With theme">
-        <VStack theme="brand" gap="$2.0">
-          <Box center layer="highlight" flexGrow={1}>
+      <Story.Section title="With items-center">
+        <VStack className="gap-m items-center">
+          <Box center layer="highlight" className="p-m rounded-sm">
             <Text>1</Text>
           </Box>
-          <Box center layer="highlight" flexGrow={1}>
-            <Text>2</Text>
-          </Box>
-        </VStack>
-      </Story.Section>
-
-      <Story.Section title="With alignItems">
-        <VStack theme="warning" gap="$2.0" alignItems="center">
-          <Box center layer="highlight" padding="$2.0">
-            <Text>1</Text>
-          </Box>
-          <Box center layer="highlight" padding="$1.0">
+          <Box center layer="highlight" className="p-xs rounded-sm">
             <Text>2</Text>
           </Box>
         </VStack>

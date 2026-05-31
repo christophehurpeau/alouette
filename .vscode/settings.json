@@ -29,5 +29,8 @@
 
   // format config
   "eslint.format.enable": false,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // tailwind config
+  "tailwindCSS.classFunctions": ["tv"]
 }

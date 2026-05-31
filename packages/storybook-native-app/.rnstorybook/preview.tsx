@@ -1,6 +1,7 @@
 import type { Preview } from "@storybook/react-native";
 import { AlouetteDecorator } from "alouette";
-import tamaguiConfig from "../tamagui.config";
+// @ts-expect-error missing css types
+import "./preview.css";
 
 const preview: Preview = {
   decorators: [AlouetteDecorator],
@@ -20,13 +21,7 @@ const preview: Preview = {
       },
     },
     actions: { argTypesRegex: "^on[A-Z].*" },
-    controls: {
-      // matchers: {
-      //   color: /(background|color)$/i,
-      //   date: /Date$/,
-      // },
-    },
-    tamaguiConfig,
+    controls: {},
   },
 
   initialGlobals: {

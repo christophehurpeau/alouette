@@ -1,128 +1,132 @@
-import type { GetProps } from "@tamagui/core";
-import { styled } from "@tamagui/core";
 import type { ReactNode } from "react";
-import type { Except } from "type-fest";
-import { PressableBox } from "../data/PressableBox";
-import { Icon } from "../primitives/Icon";
-import type { SVGIconElement } from "../primitives/Icon";
+import { Platform } from "react-native";
+import { type VariantProps, tv } from "tailwind-variants";
+import type { SemanticRole } from "../../core/AlouetteConfig";
+import { PressableBox, type PressableBoxProps } from "../data/PressableBox";
+import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 
 export const buttonHeight = {
   sm: 38,
   md: 44,
-};
+} as const;
 
-const ButtonFrame = styled(PressableBox, {
-  name: "ButtonFrame",
-  render: "button",
-  // @ts-expect-error missing type definition
-  type: "button",
-  center: true,
-  flexDirection: "row",
-
-  variants: {
-    size: {
-      sm: {
-        paddingHorizontal: "$0.5",
-        gap: "$0.25",
-        borderRadius: "$sm",
-        minHeight: buttonHeight.sm,
-      },
-      md: {
-        paddingHorizontal: "$1.0",
-        gap: "$0.5",
-        borderRadius: "$sm",
-        minHeight: buttonHeight.md,
+const buttonFrameVariants = tv(
+  {
+    base: "flex-row items-center justify-center",
+    variants: {
+      size: {
+        sm: "rounded-sm px-xs gap-xxs min-h-[38px]",
+        md: "rounded-sm px-m gap-xs min-h-[44px]",
       },
     },
+    defaultVariants: { size: "md" },
   },
+  { twMerge: false },
+);
 
-  defaultVariants: {
-    size: "md",
-  },
-} as const);
-
-const ButtonText = styled(Text, {
-  textAlign: "center",
-  weight: "$bold",
-  flexShrink: 1,
-
-  variants: {
-    "button-size": {
-      sm: {
-        paddingVertical: "$0.25",
-        size: "$sm",
+const buttonTextVariants = tv(
+  {
+    base: "font-bold text-center text-sharp shrink",
+    variants: {
+      size: {
+        sm: "body-sm py-xxs",
+        md: "body-md py-xs",
       },
-      md: {
-        paddingVertical: "$0.5",
-        size: "$md",
+      variant: {
+        contained: "text-on-accent disabled:text-disabled-sharp",
+        outlined: "text-sharp disabled:text-disabled-muted",
       },
     },
+    defaultVariants: {
+      size: "md",
+      variant: "contained",
+    },
   },
-});
+  // { twMerge: false },
+);
 
-type ButtonFrameProps = GetProps<typeof ButtonFrame>;
+type ButtonSizeProps = VariantProps<typeof buttonFrameVariants>;
 
-export interface ButtonProps extends Except<ButtonFrameProps, "size"> {
-  icon?: NonNullable<SVGIconElement>;
+export interface ButtonProps
+  extends Omit<PressableBoxProps, "children">, ButtonSizeProps {
+  icon?: SVGIconElement;
+  semanticRole?: SemanticRole;
   text: ReactNode;
-  size?: "md" | "sm";
 }
 
 export function Button({
   icon,
   text,
   disabled,
+  semanticRole = "brand",
   variant = "contained",
   size = "md",
+  className,
   ...pressableProps
 }: ButtonProps): ReactNode {
+  const onAccent = variant === "contained";
   return (
-    <ButtonFrame
+    <PressableBox
+      semanticRole={semanticRole}
       variant={variant}
-      size={size}
       disabled={disabled}
+      className={buttonFrameVariants({ size, className })}
       {...pressableProps}
     >
-      {icon && (
+      {icon ? (
         <Icon
-          tint={variant === "contained" ? "onAccent" : undefined}
-          disabled={disabled}
-          disabledSharp={variant === "contained"}
           icon={icon}
+          tint={onAccent ? "onAccent" : "sharp"}
+          disabled={disabled === true}
+          disabledSharp={onAccent}
           size={size === "sm" ? 16 : 20}
         />
-      )}
-      <ButtonText
-        tint={variant === "contained" ? "onAccent" : undefined}
-        button-size={size}
-        disabled={disabled}
-        disabledSharp={variant === "contained"}
-        textAlign={icon ? "left" : "center"}
+      ) : null}
+      <Text
+        aria-disabled={disabled === true}
+        className={buttonTextVariants({ size, variant })}
       >
         {text}
-      </ButtonText>
-    </ButtonFrame>
+      </Text>
+    </PressableBox>
   );
 }
 
-export function ExternalLinkButton(
-  props: Except<ButtonProps, "render" | "role"> & { href: string },
-): ReactNode {
+export interface ExternalLinkButtonProps extends ButtonProps {
+  href: string;
+}
+
+export function ExternalLinkButton({
+  href,
+  onPress,
+  ...buttonProps
+}: ExternalLinkButtonProps): ReactNode {
   return (
     <Button
-      {...props}
-      render="a"
+      {...buttonProps}
       role="link"
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ textDecorationLine: "none" }}
+      onPress={(event) => {
+        onPress?.(event);
+        if (event.defaultPrevented) return;
+        if (Platform.OS === "web") {
+          window.open(href, "_blank", "noopener,noreferrer");
+        } else {
+          throw new Error("todo");
+          // Linking.openURL(href);
+        }
+      }}
     />
   );
 }
 
-export function InternalLinkButton(
-  props: Except<ButtonProps, "render" | "role"> & { href: string },
-): ReactNode {
-  return <Button {...props} render="a" role="link" />;
+export interface InternalLinkButtonProps extends ButtonProps {
+  href: string;
+}
+
+export function InternalLinkButton({
+  href: _href,
+  ...buttonProps
+}: InternalLinkButtonProps): ReactNode {
+  return <Button {...buttonProps} role="link" />;
 }

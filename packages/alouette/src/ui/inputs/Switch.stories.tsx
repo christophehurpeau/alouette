@@ -1,81 +1,72 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { isWeb } from "@tamagui/core";
 import { Story } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Switch } from "./Switch";
+
+type ThisStory = StoryObj<typeof Switch>;
 
 export default {
   title: "alouette/Inputs/Switch",
   component: Switch,
   parameters: {
-    componentSubtitle: "A switch input for toggling between two states",
+    componentSubtitle:
+      "Toggle switch with platform-native rendering on iOS/Android.",
   },
   argTypes: {
-    disabled: {
-      description: "Whether the input is disabled",
-      control: "boolean",
-      table: {
-        defaultValue: { summary: "false" },
-      },
-    },
-    checked: {
-      description: "The controlled checked state of the input",
-      control: "boolean",
-    },
+    disabled: { control: "boolean" },
+    checked: { control: "boolean" },
   },
 } satisfies Meta<typeof Switch>;
 
-export const PreviewSwitchStory: StoryObj<typeof Switch> = {
+export const PreviewSwitchStory: ThisStory = {
   render: (args) => <Switch {...args} />,
 };
 
-export const Variants: StoryObj<typeof Switch> = {
+export const Variants: ThisStory = {
   render: () => (
-    <Story>
+    <Story noDarkMode>
       <Story.Section title="Variants">
-        {([undefined, "brand", "danger", "success"] as const).map((theme) => (
-          <Story.SubSection
-            key={theme}
-            withSurface
-            title={theme ?? "Default"}
-            theme={theme}
-          >
-            <StoryGrid.Row flexWrap>
-              {(
-                [
-                  undefined,
-                  "hover",
-                  "focus",
-                  "press",
-                  "disabled",
-                  "checked",
-                ] as const
-              ).map((state) => (
-                <StoryGrid.Col
-                  key={state || "default"}
-                  title={state || "default"}
-                >
-                  <Switch
-                    {...(theme ? { theme } : {})}
-                    disabled={state === "disabled"}
-                    {...(isWeb
-                      ? ({
-                          forceStyle: state === "disabled" ? undefined : state,
-                        } as any)
-                      : {})}
-                    {...(state === "checked" ? { checked: true } : {})}
-                  />
-                </StoryGrid.Col>
-              ))}
-            </StoryGrid.Row>
-          </Story.SubSection>
-        ))}
+        {([undefined, "brand", "danger", "success"] as const).map(
+          (semanticRole) => (
+            <Story.SubSection
+              key={semanticRole || "default"}
+              withSurface
+              title={semanticRole ?? "Default"}
+              semanticRole={semanticRole}
+            >
+              <StoryGrid.Row flexWrap>
+                {(
+                  [
+                    undefined,
+                    "hover",
+                    "focus",
+                    "press",
+                    "disabled",
+                    "checked",
+                  ] as const
+                ).map((state) => (
+                  <StoryGrid.Col
+                    key={state || "default"}
+                    title={state || "default"}
+                  >
+                    <Switch
+                      disabled={state === "disabled"}
+                      {...(process.env.EXPO_OS === "web"
+                        ? ({
+                            forceStyle:
+                              state === "disabled" ? undefined : state,
+                          } as any)
+                        : {})}
+                      {...(state === "checked" ? { checked: true } : {})}
+                    />
+                  </StoryGrid.Col>
+                ))}
+              </StoryGrid.Row>
+            </Story.SubSection>
+          ),
+        )}
       </Story.Section>
-
-      {/* <Story.Section title="Checked theme">
-        <Switch value checkedTheme="success" />
-      </Story.Section> */}
     </Story>
   ),
 };
@@ -84,7 +75,7 @@ export const Tests: StoryObj<typeof Switch> = {
   name: "Switch Tests",
   render() {
     return (
-      <Story noDarkTheme>
+      <Story noDarkMode>
         <Story.Section title="Uncontrolled">
           <Switch testID="uncontrolled" />
         </Story.Section>

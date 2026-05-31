@@ -5,7 +5,7 @@ import { StoryGrid } from "../story-components/StoryGrid";
 import { Box } from "./Box";
 
 const meta = {
-  title: "alouette/containers/Box",
+  title: "alouette/Containers/Box",
   parameters: {
     componentSubtitle:
       "Box is a high-level container that has depth and elevation.",
@@ -20,7 +20,7 @@ export const PreviewStory: StoryObj<unknown> = {
     layout: "padded",
   },
   render: () => (
-    <Box>
+    <Box className="p-m">
       <Text>Box content</Text>
     </Box>
   ),
@@ -33,22 +33,22 @@ export const VariantsStory: StoryObj<unknown> = {
       <Story.Section title="Depths">
         <StoryGrid.Row flexWrap>
           <StoryGrid.Col>
-            <Box>
+            <Box className="p-m">
               <Text>Default Box</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Box layer="surface">
+            <Box layer="surface" className="p-m">
               <Text>Surface Box</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Box layer="highlight">
+            <Box layer="highlight" className="p-m">
               <Text>Highlight Box</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Box layer="lowered">
+            <Box layer="lowered" className="p-m">
               <Text>Lowered Box</Text>
             </Box>
           </StoryGrid.Col>
@@ -57,23 +57,25 @@ export const VariantsStory: StoryObj<unknown> = {
       <Story.Section title="Elevation">
         <StoryGrid.Row flexWrap>
           <StoryGrid.Col title="Small">
-            <Box shadow="s">
-              <Text>shadow="s"</Text>
+            <Box shadow="s" className="p-m">
+              <Text>shadow=&quot;s&quot;</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col title="Medium">
-            <Box shadow="m">
-              <Text>shadow="m"</Text>
+            <Box shadow="m" className="p-m">
+              <Text>shadow=&quot;m&quot;</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col title="Large">
-            <Box shadow="l">
-              <Text>shadow="l"</Text>
+            <Box shadow="l" className="p-m">
+              <Text>shadow=&quot;l&quot;</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col title="Lowered (depth lowered)">
-            <Box layer="lowered" shadow="lowered" margin="$2">
-              <Text>shadow="lowered" + layer="lowered"</Text>
+            <Box layer="lowered" shadow="lowered" className="m-xs p-m">
+              <Text>
+                shadow=&quot;lowered&quot; + layer=&quot;lowered&quot;
+              </Text>
             </Box>
           </StoryGrid.Col>
         </StoryGrid.Row>

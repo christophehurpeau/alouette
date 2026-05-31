@@ -1,33 +1,33 @@
 import type { ReactNode } from "react";
+import { type VariantProps } from "tailwind-variants";
 import type { Except } from "type-fest";
-import type { SurfaceProps } from "../containers/Surface";
-import type { IconProps } from "../primitives/Icon";
-export declare const MessageFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps | (import("@tamagui/core").RNTamaguiViewNonStyleProps & void), import("@tamagui/web").StackStyleBase, {
-    size?: "lg" | "md" | "sm" | undefined;
-    interactive?: boolean | import("csstype").Property.Cursor | undefined;
-    tint?: "accent" | undefined;
-    center?: boolean | undefined;
-    lowered?: boolean | undefined;
-    absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
-    shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
-    square?: number | undefined;
-    withBorder?: import("@tamagui/web").SizeTokens | undefined;
-    withFocusVisibleOutline?: boolean | undefined;
-    withBackground?: "interactive" | "highlight" | "surface" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
-export declare const MessageText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    size?: import("@tamagui/web").FontSizeTokens | undefined;
-    tint?: "accent" | "muted" | "onAccent" | "sharp" | undefined;
-    inherit?: boolean | undefined;
-    family?: "$body" | "$heading" | "$body-monospace" | undefined;
-    disabledSharp?: boolean | undefined;
-    weight?: "$regular" | "$bold" | "$extraBold" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
+import type { SemanticRole } from "../../core/AlouetteConfig";
+import { type SVGIconElement } from "../primitives/Icon";
+declare const messageFrameVariants: import("tailwind-variants").TVReturnType<{
+    size: {
+        sm: string;
+        md: string;
+        lg: string;
+    };
+}, undefined, "flex-row items-center bg-highlight-accent overflow-hidden", {
+    size: {
+        sm: string;
+        md: string;
+        lg: string;
+    };
+}, undefined, import("tailwind-variants").TVReturnType<{
+    size: {
+        sm: string;
+        md: string;
+        lg: string;
+    };
+}, undefined, "flex-row items-center bg-highlight-accent overflow-hidden", unknown, unknown, undefined>>;
+type MessageVariantProps = VariantProps<typeof messageFrameVariants>;
+type MessageSize = NonNullable<MessageVariantProps["size"]>;
 interface MessageBaseProps {
-    theme: NonNullable<SurfaceProps["theme"]>;
-    size?: NonNullable<SurfaceProps["size"]>;
-    icon: IconProps["icon"];
+    semanticRole: SemanticRole;
+    size?: MessageSize;
+    icon: SVGIconElement;
     children?: ReactNode;
 }
 interface MessagePropsWithDismiss extends MessageBaseProps {
@@ -39,8 +39,8 @@ interface MessagePropsWithoutDismiss extends MessageBaseProps {
     dismissIconAriaLabel?: undefined;
 }
 export type MessageProps = MessagePropsWithDismiss | MessagePropsWithoutDismiss;
-export declare function Message({ icon, size, theme, children, onDismiss, dismissIconAriaLabel, }: MessageProps): ReactNode;
-type SemanticMessageProps = Except<MessageProps, "icon" | "theme">;
+export declare function Message({ icon, size, semanticRole, children, onDismiss, dismissIconAriaLabel, }: MessageProps): ReactNode;
+type SemanticMessageProps = Except<MessageProps, "icon" | "semanticRole">;
 export declare function InfoMessage(props: SemanticMessageProps): ReactNode;
 export declare function ConfirmationMessage(props: SemanticMessageProps): ReactNode;
 export declare function WarningMessage(props: SemanticMessageProps): ReactNode;

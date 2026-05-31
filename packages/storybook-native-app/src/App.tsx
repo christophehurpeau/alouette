@@ -1,3 +1,4 @@
+import "./global.css";
 import {
   ChivoMono_700Bold as ChivoMonoBold,
   ChivoMono_800ExtraBold as ChivoMonoExtraBold,

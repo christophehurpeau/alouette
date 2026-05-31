@@ -1,15 +1,12 @@
 import type { StoryObj } from "@storybook/react-vite";
-declare const meta: {
+declare const _default: {
     title: string;
     parameters: {
-        componentSubtitle: string;
-        docs: {
-            description: {
-                component: string;
-            };
+        chromatic: {
+            disableSnapshot: boolean;
         };
     };
 };
-export default meta;
-export declare const TokensStory: StoryObj<unknown>;
+export default _default;
+export declare const Tokens: StoryObj;
 //# sourceMappingURL=tokens.stories.d.ts.map

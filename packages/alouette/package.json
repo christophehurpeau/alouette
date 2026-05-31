@@ -22,10 +22,11 @@
   "browser": "./dist/index-browser.es.js",
   "react-native": {
     ".": "./src/index.ts",
-    "./createAlouetteTamagui": "./src/createAlouetteTamagui.ts"
+    "./global.css": "./src/global.css"
   },
   "exports": {
     "./package.json": "./package.json",
+    "./global.css": "./src/global.css",
     ".": {
       "types": "./dist/definitions/index.d.ts",
       "node": {
@@ -39,20 +40,6 @@
       "browser": {
         "import": "./dist/index-browser.es.js"
       }
-    },
-    "./createAlouetteTamagui": {
-      "types": "./dist/definitions/createAlouetteTamagui.d.ts",
-      "node": {
-        "import": "./dist/createAlouetteTamagui-node22.mjs",
-        "require": "./dist/createAlouetteTamagui-node22.cjs"
-      },
-      "react-native": {
-        "import": "./dist/createAlouetteTamagui-react-native.es.js",
-        "require": "./dist/createAlouetteTamagui-react-native.cjs.js"
-      },
-      "browser": {
-        "import": "./dist/createAlouetteTamagui-browser.es.js"
-      }
     }
   },
   "files": [
@@ -60,7 +47,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
+    "build": "yarn run build:css && yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
+    "build:css": "node --experimental-strip-types scripts/build-css.ts",
     "build:definitions": "tsc -p tsconfig.json",
     "clean:build": "pob-esbuild-clean-out dist",
     "lint": "yarn run lint:eslint",
@@ -79,8 +67,7 @@
   "pob": {
     "bundler": "rollup-esbuild",
     "entries": [
-      "index",
-      "createAlouetteTamagui"
+      "index"
     ],
     "envs": [
       {
@@ -107,41 +94,55 @@
   },
   "prettier": "@pob/root/prettier-config",
   "peerDependencies": {
-    "@tamagui/metro-plugin": "2.0.0-rc.41",
     "alouette-icons": "*",
+    "expo-linear-gradient": "*",
     "expo-web-browser": "*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-native": "*",
-    "react-native-svg": "*"
+    "react-native-reanimated": "*",
+    "react-native-svg": "*",
+    "tailwindcss": "^4",
+    "uniwind": "^1.6.3"
   },
   "peerDependenciesMeta": {
+    "expo-linear-gradient": {
+      "optional": true
+    },
     "expo-web-browser": {
       "optional": true
     },
     "react-dom": {
       "optional": true
+    },
+    "react-native-reanimated": {
+      "optional": true
     }
   },
   "dependencies": {
-    "@tamagui/animations-css": "2.0.0-rc.41",
-    "@tamagui/animations-react-native": "2.0.0-rc.41",
-    "@tamagui/core": "2.0.0-rc.41",
     "alouette-icons": "8.0.7",
     "expo-web-browser": "~15.0.10",
     "react-native-safe-area-context": "5.6.2",
+    "tailwind-merge": "3.5.0",
+    "tailwind-variants": "3.2.2",
     "type-fest": "5.4.4"
   },
   "devDependencies": {
     "@pob/rollup-esbuild": "8.3.0",
     "@rollup/plugin-replace": "6.0.3",
-    "@tamagui/metro-plugin": "2.0.0-rc.41",
     "@types/node": "24.10.1",
     "@types/react": "19.1.13",
+    "@types/react-native-web": "0.19.2",
+    "@types/react-test-renderer": "19.1.0",
+    "expo-linear-gradient": "15.0.8",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.4",
+    "react-native-reanimated": "4.1.3",
     "react-native-svg": "15.14.0",
-    "typescript": "5.9.3"
+    "react-test-renderer": "19.1.0",
+    "tailwindcss": "4.2.4",
+    "typescript": "5.9.3",
+    "uniwind": "1.6.3"
   }
 }

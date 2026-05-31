@@ -1,9 +1,12 @@
-import { type ThemeName } from "@tamagui/core";
-import type { ComponentProps, ReactNode } from "react";
-import { Switch as NativeSwitch } from "react-native";
-export type SwitchProps = Pick<ComponentProps<typeof NativeSwitch>, "aria-labelledby" | "disabled" | "onValueChange" | "testID"> & {
-    theme?: ThemeName;
+import { type ReactNode } from "react";
+import { type SemanticScopeProps } from "../containers/SemanticScope";
+export interface SwitchProps {
+    semanticRole?: SemanticScopeProps["semanticRole"];
     checked?: boolean;
-};
-export declare function Switch({ theme, ...rest }: SwitchProps): ReactNode;
+    disabled?: boolean;
+    onValueChange?: (value: boolean) => void;
+    "aria-labelledby"?: string;
+    testID?: string;
+}
+export declare function Switch({ semanticRole, ...rest }: SwitchProps): ReactNode;
 //# sourceMappingURL=Switch.d.ts.map

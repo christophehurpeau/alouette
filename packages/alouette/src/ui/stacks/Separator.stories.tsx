@@ -6,41 +6,28 @@ import { Separator } from "./Separator";
 import { HStack } from "./stacks";
 
 export default {
-  title: "alouette/layout/Separator",
+  title: "alouette/Layout/Separator",
   component: Separator,
   parameters: {
     componentSubtitle:
       "A flexible divider component for creating visual separation between content",
     docs: {
       description: {
-        component: `
-### Features
-- Horizontal and vertical orientations
-- Theme support for different visual styles
-- Automatic spacing and alignment
-- Semantic HTML with proper ARIA roles
-- Flexible sizing based on container
+        component: `### Features
+- Horizontal (default) and vertical orientations
+- Picks up the current theme's \`border-sharp\` color
 
 ### Variants
-- \`vertical\`: Changes orientation to vertical
-
-### Guidelines
-- Use horizontal separators for content sections
-- Use vertical separators for side-by-side elements
-- Maintain consistent spacing around separators
-- Consider using margins instead for subtle separation
-- Avoid overusing separators in dense layouts
+- \`vertical\`: switches orientation
 
 ### Usage
 ~~~tsx
-// Horizontal separator
 <Separator />
 
-// Vertical separator between elements
-<HStack height={100}>
-  <View>Left Content</View>
+<HStack className="h-24">
+  <View>Left</View>
   <Separator vertical />
-  <View>Right Content</View>
+  <View>Right</View>
 </HStack>
 ~~~`,
       },
@@ -56,22 +43,22 @@ export const Variants: StoryObj = {
   render: () => (
     <Story>
       <Story.Section title="Themes">
-        <Story.SubSection title="brand">
-          <Separator theme="brand" />
+        <Story.SubSection title="brand" semanticRole="brand">
+          <Separator />
         </Story.SubSection>
 
-        <Story.SubSection title="success">
-          <Separator theme="success" />
+        <Story.SubSection title="success" semanticRole="success">
+          <Separator />
         </Story.SubSection>
       </Story.Section>
       <Story.Section title="Vertical">
-        <HStack height={100}>
-          <View flexGrow={1}>
-            <Text />
+        <HStack className="h-24">
+          <View className="grow items-center justify-center">
+            <Text>Left</Text>
           </View>
           <Separator vertical />
-          <View flexGrow={1}>
-            <Text />
+          <View className="grow items-center justify-center">
+            <Text>Right</Text>
           </View>
         </HStack>
       </Story.Section>
