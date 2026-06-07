@@ -1,7 +1,9 @@
 import { type PressableProps, View as RNView, type ViewProps as RNViewProps } from "react-native";
 import type { VariantProps } from "tailwind-variants";
-import { type BoxVariantProps } from "./boxVariants";
-export interface BoxProps extends RNViewProps, BoxVariantProps {
+import type { Accent } from "../../core/AlouetteConfig";
+export declare const boxBaseClasses = "shrink";
+export interface BoxProps extends RNViewProps {
+    accent?: Accent;
 }
 export declare const Box: import("react").ForwardRefExoticComponent<BoxProps & import("react").RefAttributes<RNView>>;
 export declare const interactiveBoxVariants: import("tailwind-variants").TVReturnType<{

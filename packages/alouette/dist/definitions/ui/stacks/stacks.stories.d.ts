@@ -2,7 +2,7 @@ import type { StoryObj } from "@storybook/react-vite";
 import { HStack, Stack, VStack } from "./stacks";
 declare const meta: {
     title: string;
-    component: import("react").ForwardRefExoticComponent<import("./stacks").StackProps & import("react").RefAttributes<import("react-native").View>>;
+    component: import("react").ForwardRefExoticComponent<import("react-native").ViewProps & import("react").RefAttributes<import("react-native").View>>;
     subcomponents: {
         HStack: any;
         VStack: any;

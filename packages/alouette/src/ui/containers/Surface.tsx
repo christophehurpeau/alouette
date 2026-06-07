@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
 import type { View as RNView } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
-import type { SemanticRole } from "../../core/AlouetteConfig";
+import type { Accent } from "../../core/AlouetteConfig";
+import { AccentScope } from "./AccentScope";
 import { Box, type BoxProps } from "./Box";
-import { SemanticScope } from "./SemanticScope";
 
 const surfaceVariants = tv(
   {
@@ -15,9 +15,24 @@ const surfaceVariants = tv(
         md: "p-xl rounded-sm",
         lg: "p-xxl rounded-md",
       },
+      variant: {
+        surface: "bg-surface",
+        highlight: "bg-highlight",
+        "highlight-accent": "bg-highlight-accent",
+        lowered: "bg-lowered",
+        translucent: "bg-translucent",
+      },
+      shadow: {
+        none: "shadow-none",
+        s: "shadow-s",
+        m: "shadow-m",
+        l: "shadow-l",
+        lowered: "shadow-lowered",
+      },
     },
     defaultVariants: {
       size: "md",
+      variant: "surface",
     },
   },
   { twMerge: false },
@@ -25,25 +40,27 @@ const surfaceVariants = tv(
 
 type SurfaceVariantProps = VariantProps<typeof surfaceVariants>;
 
-export interface SurfaceProps
-  extends Omit<BoxProps, "layer">, SurfaceVariantProps {
-  variant?: /** Pairs layer="lowered" with shadow="lowered" for a sunken look. */
-    "lowered" | "translucent";
-  semanticRole?: SemanticRole;
+export interface SurfaceProps extends BoxProps, SurfaceVariantProps {
+  accent?: Accent;
 }
 
 export const Surface = forwardRef<RNView, SurfaceProps>(
-  ({ className, size, variant, shadow, semanticRole, ...props }, ref) => {
+  ({ className, size, variant, shadow, accent, ...props }, ref) => {
+    // shadow defaults to "s", or "lowered" when variant="lowered".
+    const resolvedShadow = shadow ?? (variant === "lowered" ? "lowered" : "s");
     return (
-      <SemanticScope semanticRole={semanticRole}>
+      <AccentScope accent={accent}>
         <Box
           ref={ref}
-          layer={variant || "surface"}
-          shadow={shadow ?? (variant === "lowered" ? "lowered" : "s")}
-          className={surfaceVariants({ size, className })}
+          className={surfaceVariants({
+            size,
+            variant,
+            shadow: resolvedShadow,
+            className,
+          })}
           {...props}
         />
-      </SemanticScope>
+      </AccentScope>
     );
   },
 );

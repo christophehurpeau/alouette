@@ -27,45 +27,42 @@ export const Variants: ThisStory = {
   render: () => (
     <Story noDarkMode>
       <Story.Section title="Variants">
-        {([undefined, "brand", "danger", "success"] as const).map(
-          (semanticRole) => (
-            <Story.SubSection
-              key={semanticRole || "default"}
-              withSurface
-              title={semanticRole ?? "Default"}
-              semanticRole={semanticRole}
-            >
-              <StoryGrid.Row flexWrap>
-                {(
-                  [
-                    undefined,
-                    "hover",
-                    "focus",
-                    "press",
-                    "disabled",
-                    "checked",
-                  ] as const
-                ).map((state) => (
-                  <StoryGrid.Col
-                    key={state || "default"}
-                    title={state || "default"}
-                  >
-                    <Switch
-                      disabled={state === "disabled"}
-                      {...(process.env.EXPO_OS === "web"
-                        ? ({
-                            forceStyle:
-                              state === "disabled" ? undefined : state,
-                          } as any)
-                        : {})}
-                      {...(state === "checked" ? { checked: true } : {})}
-                    />
-                  </StoryGrid.Col>
-                ))}
-              </StoryGrid.Row>
-            </Story.SubSection>
-          ),
-        )}
+        {([undefined, "brand", "danger", "success"] as const).map((accent) => (
+          <Story.SubSection
+            key={accent || "default"}
+            withSurface
+            title={accent ?? "Default"}
+            accent={accent}
+          >
+            <StoryGrid.Row flexWrap>
+              {(
+                [
+                  undefined,
+                  "hover",
+                  "focus",
+                  "press",
+                  "disabled",
+                  "checked",
+                ] as const
+              ).map((state) => (
+                <StoryGrid.Col
+                  key={state || "default"}
+                  title={state || "default"}
+                >
+                  <Switch
+                    disabled={state === "disabled"}
+                    {...(process.env.EXPO_OS === "web"
+                      ? ({
+                          forceStyle: state === "disabled" ? undefined : state,
+                        } as any)
+                      : {})}
+                    {...(state === "checked" ? { checked: true } : {})}
+                  />
+                </StoryGrid.Col>
+              ))}
+            </StoryGrid.Row>
+          </Story.SubSection>
+        ))}
       </Story.Section>
     </Story>
   ),

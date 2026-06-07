@@ -5,10 +5,10 @@ import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
 import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Except } from "type-fest";
-import type { SemanticRole } from "../../core/AlouetteConfig";
+import type { Accent } from "../../core/AlouetteConfig";
 import { IconButton } from "../actions/IconButton";
+import { AccentScope } from "../containers/AccentScope";
 import { Box } from "../containers/Box";
-import { SemanticScope } from "../containers/SemanticScope";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 
@@ -38,7 +38,7 @@ const DISMISS_BUTTON_SIZE: Record<MessageSize, number> = {
 };
 
 interface MessageBaseProps {
-  semanticRole: SemanticRole;
+  accent: Accent;
   size?: MessageSize;
   icon: SVGIconElement;
   children?: ReactNode;
@@ -57,21 +57,21 @@ export type MessageProps = MessagePropsWithDismiss | MessagePropsWithoutDismiss;
 export function Message({
   icon,
   size = "md",
-  semanticRole,
+  accent,
   children,
   onDismiss,
   dismissIconAriaLabel,
 }: MessageProps): ReactNode {
   const dismissDiameter = DISMISS_BUTTON_SIZE[size];
   return (
-    <SemanticScope semanticRole={semanticRole}>
-      <Box shadow="m" className={messageFrameVariants({ size })}>
-        <Icon icon={icon} size={ICON_SIZE[size]} tint="accent" />
+    <AccentScope accent={accent}>
+      <Box className={`shadow-m ${messageFrameVariants({ size })}`}>
+        <Icon icon={icon} size={ICON_SIZE[size]} className="text-accent" />
         <Text className="text-accent grow">{children}</Text>
         {onDismiss ? (
           <Box
             style={{ width: dismissDiameter, height: dismissDiameter }}
-            className="items-center justify-center"
+            className="flex-center"
           >
             <IconButton
               ghost
@@ -85,24 +85,20 @@ export function Message({
           </Box>
         ) : null}
       </Box>
-    </SemanticScope>
+    </AccentScope>
   );
 }
 
-type SemanticMessageProps = Except<MessageProps, "icon" | "semanticRole">;
+type AccentMessageProps = Except<MessageProps, "accent" | "icon">;
 
-export function InfoMessage(props: SemanticMessageProps): ReactNode {
-  return <Message {...props} semanticRole="info" icon={<InfoRegularIcon />} />;
+export function InfoMessage(props: AccentMessageProps): ReactNode {
+  return <Message {...props} accent="info" icon={<InfoRegularIcon />} />;
 }
 
-export function ConfirmationMessage(props: SemanticMessageProps): ReactNode {
-  return (
-    <Message {...props} semanticRole="success" icon={<CheckRegularIcon />} />
-  );
+export function ConfirmationMessage(props: AccentMessageProps): ReactNode {
+  return <Message {...props} accent="success" icon={<CheckRegularIcon />} />;
 }
 
-export function WarningMessage(props: SemanticMessageProps): ReactNode {
-  return (
-    <Message {...props} semanticRole="warning" icon={<WarningRegularIcon />} />
-  );
+export function WarningMessage(props: AccentMessageProps): ReactNode {
+  return <Message {...props} accent="warning" icon={<WarningRegularIcon />} />;
 }

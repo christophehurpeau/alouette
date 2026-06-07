@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { type VariantProps } from "tailwind-variants";
 import type { Except } from "type-fest";
-import type { SemanticRole } from "../../core/AlouetteConfig";
+import type { Accent } from "../../core/AlouetteConfig";
 import { type SVGIconElement } from "../primitives/Icon";
 declare const messageFrameVariants: import("tailwind-variants").TVReturnType<{
     size: {
@@ -25,7 +25,7 @@ declare const messageFrameVariants: import("tailwind-variants").TVReturnType<{
 type MessageVariantProps = VariantProps<typeof messageFrameVariants>;
 type MessageSize = NonNullable<MessageVariantProps["size"]>;
 interface MessageBaseProps {
-    semanticRole: SemanticRole;
+    accent: Accent;
     size?: MessageSize;
     icon: SVGIconElement;
     children?: ReactNode;
@@ -39,10 +39,10 @@ interface MessagePropsWithoutDismiss extends MessageBaseProps {
     dismissIconAriaLabel?: undefined;
 }
 export type MessageProps = MessagePropsWithDismiss | MessagePropsWithoutDismiss;
-export declare function Message({ icon, size, semanticRole, children, onDismiss, dismissIconAriaLabel, }: MessageProps): ReactNode;
-type SemanticMessageProps = Except<MessageProps, "icon" | "semanticRole">;
-export declare function InfoMessage(props: SemanticMessageProps): ReactNode;
-export declare function ConfirmationMessage(props: SemanticMessageProps): ReactNode;
-export declare function WarningMessage(props: SemanticMessageProps): ReactNode;
+export declare function Message({ icon, size, accent, children, onDismiss, dismissIconAriaLabel, }: MessageProps): ReactNode;
+type AccentMessageProps = Except<MessageProps, "accent" | "icon">;
+export declare function InfoMessage(props: AccentMessageProps): ReactNode;
+export declare function ConfirmationMessage(props: AccentMessageProps): ReactNode;
+export declare function WarningMessage(props: AccentMessageProps): ReactNode;
 export {};
 //# sourceMappingURL=Message.d.ts.map

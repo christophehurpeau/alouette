@@ -4,12 +4,12 @@ import {
   type TextInputProps as RNTextInputProps,
 } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
-import { useCSSVariable } from "uniwind";
+import { useThemeToken } from "../../core/useThemeToken";
 
 const inputVariants = tv(
   {
     base: [
-      "body-md text-sharp",
+      "text-base text-sharp",
       "border",
       "transition-[border-color,background-color,outline-color] duration-200 ease-in",
       "outline-interactive-outlined-pressable", // to have proper outline color transition
@@ -92,7 +92,7 @@ export interface InputTextProps
 
 export const InputText = forwardRef<RNTextInput, InputTextProps>(
   ({ className, disabled, mode, multiline, forceStyle, ...props }, ref) => {
-    const placeholderColor = useCSSVariable("--color-form-placeholder");
+    const placeholderColor = useThemeToken("--color-form-placeholder");
     const modeProps = mode ? MODE_PROPS[mode] : undefined;
     return (
       <RNTextInput

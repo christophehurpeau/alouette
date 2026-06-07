@@ -21,55 +21,63 @@ vi.mock("react-native", () => ({
   ),
 }));
 
+// AccentScope pulls in the NativeWind runtime (nativewind → react-native
+// internals), which can't be parsed here. Stub it to a passthrough so the test
+// stays focused on className merging.
+vi.mock("../containers/AccentScope", () => ({
+  AccentScope: ({ children }: { children?: ReactNode }) => children,
+}));
+
 const { Text } = await import("./Text.tsx");
 
 afterEach(cleanup);
 
 describe("Text", () => {
-  it("passes className through", () => {
-    render(createElement(Text, { className: "body-md", testID: "t" }));
-    expect(screen.getByTestId("t").className).toBe("text-sharp body-md");
+  it("renders default classes when no className given", () => {
+    render(createElement(Text, { testID: "t" }));
+    expect(screen.getByTestId("t").className).toBe("font-body text-sharp");
   });
 
-  it("deduplicates body-* font-size classes", () => {
-    render(createElement(Text, { className: "body-xs body-xl", testID: "t" }));
-    expect(screen.getByTestId("t").className).toBe("text-sharp body-xl");
-  });
-
-  it("deduplicates heading-* font-size classes", () => {
-    render(
-      createElement(Text, {
-        className: "heading-sm heading-3xl",
-        testID: "t",
-      }),
-    );
-    expect(screen.getByTestId("t").className).toBe("text-sharp heading-3xl");
-  });
-
-  it("deduplicates mono-* font-size classes", () => {
-    render(createElement(Text, { className: "mono-md mono-lg", testID: "t" }));
-    expect(screen.getByTestId("t").className).toBe("text-sharp mono-lg");
-  });
-
-  it("font-size classes conflict across body/heading/mono", () => {
-    render(
-      createElement(Text, {
-        className: "body-md heading-xl",
-        testID: "t",
-      }),
-    );
-    expect(screen.getByTestId("t").className).toBe("text-sharp heading-xl");
-  });
-
-  it("preserves unrelated classes alongside font-size", () => {
-    render(
-      createElement(Text, {
-        className: "body-md text-sharp font-bold",
-        testID: "t",
-      }),
-    );
+  it("passes a size class through alongside defaults", () => {
+    render(createElement(Text, { className: "text-base", testID: "t" }));
     expect(screen.getByTestId("t").className).toBe(
-      "body-md text-sharp font-bold",
+      "font-body text-sharp text-base",
     );
+  });
+
+  it("overrides font-family group: font-heading-bold replaces font-body", () => {
+    render(
+      createElement(Text, { className: "font-heading-bold", testID: "t" }),
+    );
+    const cls = screen.getByTestId("t").className;
+    expect(cls).toContain("font-heading-bold");
+    expect(cls).not.toContain("font-body");
+  });
+
+  it("last font-family utility wins when two are passed", () => {
+    render(
+      createElement(Text, {
+        className: "font-heading text-2xl font-heading-extrabold text-4xl",
+        testID: "t",
+      }),
+    );
+    const cls = screen.getByTestId("t").className;
+    expect(cls).toContain("font-heading-extrabold");
+    expect(cls).not.toContain("font-heading ");
+    expect(cls).toContain("text-4xl");
+    expect(cls).not.toContain("text-2xl");
+  });
+
+  it("preserves unrelated classes alongside font-family and size", () => {
+    render(
+      createElement(Text, {
+        className: "font-body-bold text-base text-muted",
+        testID: "t",
+      }),
+    );
+    const cls = screen.getByTestId("t").className;
+    expect(cls).toContain("font-body-bold");
+    expect(cls).toContain("text-base");
+    expect(cls).toContain("text-muted");
   });
 });

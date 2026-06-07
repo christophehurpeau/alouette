@@ -3,7 +3,7 @@ import { Text } from "./Text";
 type ThisStory = StoryObj<typeof Text>;
 declare const _default: {
     title: string;
-    component: import("react").ForwardRefExoticComponent<import("react-native").TextProps & import("react").RefAttributes<import("react-native").Text>>;
+    component: import("react").ForwardRefExoticComponent<import("./Text").TextProps & import("react").RefAttributes<import("react-native").Text>>;
     parameters: {
         componentSubtitle: string;
         docs: {

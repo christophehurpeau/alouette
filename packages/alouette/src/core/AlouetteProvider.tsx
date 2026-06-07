@@ -1,24 +1,20 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
 import { useColorScheme } from "react-native";
-import { Uniwind } from "uniwind";
+import { ScopedTheme } from "../ui/containers/ScopedTheme";
 
 export interface AlouetteProviderProps {
   children: ReactNode;
-  defaultTheme?: "dark" | "light";
 }
-
-export const useDefaultThemeFromColorScheme = () => {
-  const colorScheme = useColorScheme();
-  return colorScheme || "light";
-};
 
 export function AlouetteProvider({
   children,
-  defaultTheme = "light",
 }: AlouetteProviderProps): ReactNode {
-  useEffect(() => {
-    Uniwind.setTheme(defaultTheme);
-  }, [defaultTheme]);
-  return children;
+  // Apply the OS light/dark scheme as the root theme so base tokens resolve
+  // correctly app-wide. Subtrees can override via ScopedTheme / AccentScope.
+  const colorScheme = useColorScheme();
+  return (
+    <ScopedTheme theme={colorScheme === "dark" ? "dark" : "light"}>
+      {children}
+    </ScopedTheme>
+  );
 }

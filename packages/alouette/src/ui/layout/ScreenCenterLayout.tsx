@@ -16,7 +16,7 @@ export function ScreenCenterLayout({
   return (
     <VStack className="grow gap-xl min-h-screen">
       {header}
-      <View className="grow items-center justify-center">{content}</View>
+      <View className="grow flex-center">{content}</View>
       {footer}
     </VStack>
   );

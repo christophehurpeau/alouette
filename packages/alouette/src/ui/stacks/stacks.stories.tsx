@@ -6,7 +6,7 @@ import { HStack, Stack, VStack } from "./stacks";
 
 function Item({ children }: { children: React.ReactNode }) {
   return (
-    <Box center layer="highlight" className="grow p-xs rounded-sm">
+    <Box className="flex-center bg-highlight grow p-xs rounded-sm">
       <Text>{children}</Text>
     </Box>
   );
@@ -26,11 +26,8 @@ const meta = {
 - \`HStack\`: Horizontal stack (no wrap)
 - \`VStack\`: Vertical stack
 
-### Variants
-- \`absoluteFill\` (Stack/HStack): position absolute, inset-0
-
-Use Tailwind classes for gap/alignment/justification:
-- \`gap-{n}\`, \`items-{position}\`, \`justify-{position}\`, \`flex-wrap\``,
+Use Tailwind classes for everything else (gap/alignment/justification/positioning):
+- \`gap-{n}\`, \`items-{position}\`, \`justify-{position}\`, \`flex-wrap\`, \`absolute inset-0\``,
       },
     },
   },
@@ -68,10 +65,10 @@ export const HStackStory: StoryObj<typeof HStack> = {
 
       <Story.Section title="With justify-between">
         <HStack className="gap-m justify-between">
-          <Box center layer="highlight" className="p-xs rounded-sm">
+          <Box className="flex-center bg-highlight p-xs rounded-sm">
             <Text>1</Text>
           </Box>
-          <Box center layer="highlight" className="p-xs rounded-sm">
+          <Box className="flex-center bg-highlight p-xs rounded-sm">
             <Text>2</Text>
           </Box>
         </HStack>
@@ -79,18 +76,10 @@ export const HStackStory: StoryObj<typeof HStack> = {
 
       <Story.Section title="With flexGrow">
         <HStack className="gap-m justify-between">
-          <Box
-            center
-            layer="highlight"
-            className="grow basis-0 p-xs rounded-sm"
-          >
+          <Box className="flex-center bg-highlight grow basis-0 p-xs rounded-sm">
             <Text>1</Text>
           </Box>
-          <Box
-            center
-            layer="highlight"
-            className="grow-2 basis-0 p-xs rounded-sm"
-          >
+          <Box className="flex-center bg-highlight grow-2 basis-0 p-xs rounded-sm">
             <Text>2</Text>
           </Box>
         </HStack>
@@ -112,10 +101,10 @@ export const VStackStory: StoryObj<typeof VStack> = {
 
       <Story.Section title="With items-center">
         <VStack className="gap-m items-center">
-          <Box center layer="highlight" className="p-m rounded-sm">
+          <Box className="flex-center bg-highlight p-m rounded-sm">
             <Text>1</Text>
           </Box>
-          <Box center layer="highlight" className="p-xs rounded-sm">
+          <Box className="flex-center bg-highlight p-xs rounded-sm">
             <Text>2</Text>
           </Box>
         </VStack>

@@ -7,3 +7,9 @@ CHANGELOG.md
 /packages/*/.rnstorybook/storybook.requires.ts
 /packages/storybook-native-app/storybook-static
 /packages/alouette-icons/lib/phosphor-icons
+/packages/alouette/src/global.css
+/packages/alouette/src/themeVariables.ts
+/packages/alouette/src/animationDurationsMs.ts
+/_artifacts
+/docs
+/packages/*/skills

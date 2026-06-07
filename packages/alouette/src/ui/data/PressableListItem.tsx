@@ -6,7 +6,7 @@ import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
 export interface PressableListItemProps {
   variant?: PressableBoxProps["variant"];
-  semanticRole?: PressableBoxProps["semanticRole"];
+  accent?: PressableBoxProps["accent"];
   role?: PressableBoxProps["role"];
   children: ReactNode;
   onPress: () => void;
@@ -15,7 +15,7 @@ export interface PressableListItemProps {
 export function PressableListItem({
   variant = "contained",
   role = "button",
-  semanticRole,
+  accent,
   children,
   onPress,
 }: PressableListItemProps): ReactNode {
@@ -23,14 +23,16 @@ export function PressableListItem({
     <PressableBox
       variant={variant}
       role={role}
-      semanticRole={semanticRole}
+      accent={accent}
       className="flex-row items-center justify-between mx-xs my-xxs px-m py-m"
       onPress={onPress}
     >
       <View className="flex-1">{children}</View>
       <View className="justify-center">
         <Icon
-          tint={variant === "contained" ? "onAccent-muted" : "muted"}
+          className={
+            variant === "contained" ? "text-on-accent-muted" : "text-muted"
+          }
           icon={<CaretRightRegularIcon />}
           size={18}
         />

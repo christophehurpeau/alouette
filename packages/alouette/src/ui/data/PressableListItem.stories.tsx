@@ -51,7 +51,7 @@ export const Variants: ThisStory = {
             <Text>Third Item</Text>
           </PressableListItem>
           <PressableListItem
-            semanticRole="danger"
+            accent="danger"
             onPress={() => {
               console.log("Danger pressed");
             }}
@@ -68,8 +68,8 @@ export const Variants: ThisStory = {
             }}
           >
             <VStack className="gap-xxs">
-              <Text className="font-bold">Notifications</Text>
-              <Text className="body-sm text-muted">
+              <Text className="font-body-bold">Notifications</Text>
+              <Text className="text-sm text-muted">
                 Manage your notification preferences
               </Text>
             </VStack>
@@ -80,8 +80,8 @@ export const Variants: ThisStory = {
             }}
           >
             <VStack className="gap-xxs">
-              <Text className="font-bold">Privacy & Security</Text>
-              <Text className="body-sm text-muted">
+              <Text className="font-body-bold">Privacy & Security</Text>
+              <Text className="text-sm text-muted">
                 Control your privacy settings
               </Text>
             </VStack>
@@ -92,8 +92,8 @@ export const Variants: ThisStory = {
             }}
           >
             <VStack className="gap-xxs">
-              <Text className="font-bold">Account Settings</Text>
-              <Text className="body-sm text-muted">
+              <Text className="font-body-bold">Account Settings</Text>
+              <Text className="text-sm text-muted">
                 Update your account information
               </Text>
             </VStack>
@@ -128,7 +128,7 @@ export const Variants: ThisStory = {
               <Text>Share Profile</Text>
             </PressableListItem>
             <PressableListItem
-              semanticRole="danger"
+              accent="danger"
               variant="contained"
               onPress={() => {
                 console.log("Logout");

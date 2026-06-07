@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { SemanticScope } from "../..";
+import { AccentScope } from "../..";
 import { Button } from "../actions/Button";
 import { Box } from "../containers/Box";
 import { Surface } from "../containers/Surface";
@@ -15,7 +15,7 @@ export default {
 
 function Content() {
   return (
-    <Box absoluteFill center>
+    <Box className="absolute inset-0 flex-center">
       <VStack className="gap-xl min-w-[80%]">
         <Text>Text</Text>
         <Surface variant="translucent">
@@ -30,7 +30,7 @@ function Content() {
             <Button text="Button" />
           </VStack>
         </Surface>
-        <Box layer="highlight" shadow="s" className="p-xl rounded-sm">
+        <Box className="bg-highlight shadow-s p-xl rounded-sm">
           <VStack className="gap-m">
             <Text>Highlight</Text>
             <Button variant="outlined" text="Button" />
@@ -43,28 +43,28 @@ function Content() {
 
 export const PreviewGradientBackgroundStoryLightBrand: StoryObj = {
   render: () => (
-    <SemanticScope mode="light" semanticRole="brand">
+    <AccentScope mode="light" accent="brand">
       <GradientBackground>
         <Content />
       </GradientBackground>
-    </SemanticScope>
+    </AccentScope>
   ),
 };
 
 export const PreviewGradientBackgroundStoryDarkBrand: StoryObj = {
   render: () => (
-    <SemanticScope mode="dark" semanticRole="brand">
+    <AccentScope mode="dark" accent="brand">
       <GradientBackground>
         <Content />
       </GradientBackground>
-    </SemanticScope>
+    </AccentScope>
   ),
 };
 
 export const PreviewGradientWithScroll: StoryObj = {
   render: () => (
     <GradientScrollView
-      semanticRole="brand"
+      accent="brand"
       contentContainerStyle={{
         paddingVertical: 48,
         paddingHorizontal: 32,
@@ -72,7 +72,7 @@ export const PreviewGradientWithScroll: StoryObj = {
     >
       <VStack className="gap-xl min-w-[80%]">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-          <Box key={i} layer="highlight" shadow="s" className="p-xl rounded-sm">
+          <Box key={i} className="bg-highlight shadow-s p-xl rounded-sm">
             <VStack className="gap-m">
               <Text>Highlight {i}</Text>
               <Button text="Button" />

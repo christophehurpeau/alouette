@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import { useCSSVariable } from "uniwind";
-import type { SemanticRole } from "../core/AlouetteConfig";
+import type { Accent } from "../core/AlouetteConfig";
+import { useThemeToken } from "../core/useThemeToken";
 import { Text } from "../ui/primitives/Text";
 import { View } from "../ui/primitives/View";
 import { VStack } from "../ui/stacks/stacks";
-import { Story, semanticRoles } from "../ui/story-components/Story";
+import { Story, accents } from "../ui/story-components/Story";
 import { StoryGrid } from "../ui/story-components/StoryGrid";
 
 interface TokenSwatchProps {
@@ -13,10 +13,10 @@ interface TokenSwatchProps {
 }
 
 function TokenSwatch({ token }: TokenSwatchProps): ReactNode {
-  const color = useCSSVariable(`--color-${token}`) as string;
+  const color = useThemeToken(`--color-${token}`);
   return (
     <VStack className="min-w-20 gap-0.5">
-      <Text className="body-xs text-muted leading-tight">{token}</Text>
+      <Text className="text-xs text-muted leading-tight">{token}</Text>
       <View className="h-3" style={{ backgroundColor: color }} />
     </VStack>
   );
@@ -30,7 +30,7 @@ interface TokenGroupProps {
 function TokenGroup({ group, children }: TokenGroupProps): ReactNode {
   return (
     <VStack className="gap-xxs">
-      <Text className="body-xs text-muted font-bold">{group}</Text>
+      <Text className="font-body-bold text-xs text-muted">{group}</Text>
       <StoryGrid.Row flexWrap loose>
         {children}
       </StoryGrid.Row>
@@ -38,16 +38,16 @@ function TokenGroup({ group, children }: TokenGroupProps): ReactNode {
   );
 }
 
-interface SemanticTokensProps {
-  semanticRole?: SemanticRole;
+interface AccentTokensProps {
+  accent?: Accent;
 }
 
-function SemanticTokens({ semanticRole }: SemanticTokensProps): ReactNode {
+function AccentTokens({ accent }: AccentTokensProps): ReactNode {
   return (
     <Story.SubSection
       withSurface
-      title={semanticRole ? `Semantic role: ${semanticRole}` : "Default"}
-      semanticRole={semanticRole}
+      title={accent ? `Accent: ${accent}` : "Default"}
+      accent={accent}
     >
       <TokenGroup group="Backgrounds">
         <TokenSwatch token="screen" />
@@ -125,9 +125,9 @@ function ThemeTokens({ themeMode }: ThemeTokensProps): ReactNode {
           <TokenSwatch token="interactive-accent-outlined-border-disabled" />
         </TokenGroup>
       </Story.SubSection>
-      <SemanticTokens />
-      {semanticRoles.map((role) => (
-        <SemanticTokens key={role} semanticRole={role} />
+      <AccentTokens />
+      {accents.map((accent) => (
+        <AccentTokens key={accent} accent={accent} />
       ))}
     </Story.Section>
   );

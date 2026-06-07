@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "../primitives/Text";
 import { HStack, VStack } from "../stacks/stacks";
-import { Story, semanticRoles } from "../story-components/Story";
+import { Story, accents } from "../story-components/Story";
 import { PressableBox } from "./PressableBox";
 
 type ThisStory = StoryObj<typeof PressableBox>;
@@ -49,12 +49,12 @@ export const Variants: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Accent themes">
-        {semanticRoles.map((semanticRole) => (
+        {accents.map((accent) => (
           <Story.SubSection
-            key={semanticRole}
+            key={accent}
             withSurface
-            title={semanticRole}
-            semanticRole={semanticRole}
+            title={accent}
+            accent={accent}
           >
             <VStack className="gap-xs">
               {VARIANTS.map((variant) => (

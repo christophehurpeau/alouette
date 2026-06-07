@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Platform } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
-import type { SemanticRole } from "../../core/AlouetteConfig";
+import type { Accent } from "../../core/AlouetteConfig";
 import { PressableBox, type PressableBoxProps } from "../data/PressableBox";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
@@ -11,47 +11,59 @@ export const buttonHeight = {
   md: 44,
 } as const;
 
-const buttonFrameVariants = tv(
+const buttonVariants = tv(
   {
-    base: "flex-row items-center justify-center",
+    slots: {
+      frame: "flex-row flex-center",
+      text: "font-body-bold text-center shrink",
+      icon: "",
+    },
     variants: {
       size: {
-        sm: "rounded-sm px-xs gap-xxs min-h-[38px]",
-        md: "rounded-sm px-m gap-xs min-h-[44px]",
+        sm: {
+          frame: "rounded-sm px-xs gap-xxs min-h-[38px]",
+          text: "text-sm py-xxs",
+        },
+        md: {
+          frame: "rounded-sm px-m gap-xs min-h-[44px]",
+          text: "text-base py-xs",
+        },
       },
+      variant: {
+        contained: { text: "text-on-accent disabled:text-disabled-sharp" },
+        outlined: { text: "text-sharp disabled:text-disabled-muted" },
+      },
+      disabled: { true: {}, false: {} },
     },
-    defaultVariants: { size: "md" },
+    compoundVariants: [
+      {
+        variant: "contained",
+        disabled: false,
+        class: { icon: "text-on-accent" },
+      },
+      { variant: "outlined", disabled: false, class: { icon: "text-sharp" } },
+      {
+        variant: "contained",
+        disabled: true,
+        class: { icon: "text-disabled-sharp" },
+      },
+      {
+        variant: "outlined",
+        disabled: true,
+        class: { icon: "text-disabled-muted" },
+      },
+    ],
+    defaultVariants: { size: "md", variant: "contained" },
   },
   { twMerge: false },
 );
 
-const buttonTextVariants = tv(
-  {
-    base: "font-bold text-center text-sharp shrink",
-    variants: {
-      size: {
-        sm: "body-sm py-xxs",
-        md: "body-md py-xs",
-      },
-      variant: {
-        contained: "text-on-accent disabled:text-disabled-sharp",
-        outlined: "text-sharp disabled:text-disabled-muted",
-      },
-    },
-    defaultVariants: {
-      size: "md",
-      variant: "contained",
-    },
-  },
-  // { twMerge: false },
-);
-
-type ButtonSizeProps = VariantProps<typeof buttonFrameVariants>;
+type ButtonSizeProps = Pick<VariantProps<typeof buttonVariants>, "size">;
 
 export interface ButtonProps
   extends Omit<PressableBoxProps, "children">, ButtonSizeProps {
   icon?: SVGIconElement;
-  semanticRole?: SemanticRole;
+  accent?: Accent;
   text: ReactNode;
 }
 
@@ -59,34 +71,29 @@ export function Button({
   icon,
   text,
   disabled,
-  semanticRole = "brand",
+  accent = "brand",
   variant = "contained",
   size = "md",
   className,
   ...pressableProps
 }: ButtonProps): ReactNode {
-  const onAccent = variant === "contained";
+  const styles = buttonVariants({ size, variant, disabled: disabled === true });
   return (
     <PressableBox
-      semanticRole={semanticRole}
+      accent={accent}
       variant={variant}
       disabled={disabled}
-      className={buttonFrameVariants({ size, className })}
+      className={styles.frame({ className })}
       {...pressableProps}
     >
       {icon ? (
         <Icon
           icon={icon}
-          tint={onAccent ? "onAccent" : "sharp"}
-          disabled={disabled === true}
-          disabledSharp={onAccent}
+          className={styles.icon()}
           size={size === "sm" ? 16 : 20}
         />
       ) : null}
-      <Text
-        aria-disabled={disabled === true}
-        className={buttonTextVariants({ size, variant })}
-      >
+      <Text aria-disabled={disabled === true} className={styles.text()}>
         {text}
       </Text>
     </PressableBox>

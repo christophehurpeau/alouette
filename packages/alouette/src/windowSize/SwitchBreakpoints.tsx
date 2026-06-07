@@ -9,7 +9,7 @@ type SwitchBreakpointsProps = SetRequired<
   "base"
 > & { children?: never };
 
-// Static lookup table so the Tailwind/Uniwind scanner sees every classname.
+// Static lookup table so the Tailwind/NativeWind scanner sees every classname.
 // Keys are `"<currentBreakpoint>:<nextDefinedBreakpointOrEnd>"`. The value
 // is the className that makes the slot visible from `current` (inclusive)
 // up to `next` (exclusive).
@@ -41,7 +41,7 @@ const VISIBILITY_CLASS: Record<string, string> = {
  * Display based on current breakpoint via responsive utility classes.
  *
  * On web this is SSR-friendly (CSS handles the switching). On native it
- * still relies on Uniwind's runtime media-query evaluation.
+ * still relies on NativeWind's runtime media-query evaluation.
  */
 export function SwitchBreakpointsUsingDisplayNone({
   ...breakpoints

@@ -1,6 +1,6 @@
 import type { PressableProps as RNPressableProps, View as RNView } from "react-native";
 import { type VariantProps } from "tailwind-variants";
-import type { SemanticRole } from "../../core/AlouetteConfig";
+import type { Accent } from "../../core/AlouetteConfig";
 declare const pressableBoxVariants: import("tailwind-variants").TVReturnType<{
     variant: {
         contained: string;
@@ -14,7 +14,7 @@ declare const pressableBoxVariants: import("tailwind-variants").TVReturnType<{
         focus: string;
         press: string;
     };
-}, undefined, string, {
+}, undefined, "overflow-hidden", {
     withFocusVisibleOutline: {
         true: string;
     };
@@ -33,7 +33,7 @@ declare const pressableBoxVariants: import("tailwind-variants").TVReturnType<{
 }, undefined, string, unknown, unknown, undefined>>>;
 type PressableBoxVariantProps = VariantProps<typeof pressableBoxVariants>;
 export interface PressableBoxProps extends RNPressableProps, PressableBoxVariantProps {
-    semanticRole?: SemanticRole;
+    accent?: Accent;
     className?: string;
     forceStyle?: "focus" | "hover" | "press";
 }

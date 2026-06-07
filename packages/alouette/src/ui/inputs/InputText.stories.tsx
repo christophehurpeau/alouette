@@ -1,6 +1,6 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Story, semanticRoles } from "../story-components/Story";
+import { Story, accents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { InputText } from "./InputText";
 
@@ -30,12 +30,12 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        {([undefined, ...semanticRoles] as const).map((semanticRole) => (
+        {([undefined, ...accents] as const).map((accent) => (
           <Story.SubSection
-            key={semanticRole || "default"}
+            key={accent || "default"}
             withSurface
-            title={semanticRole ?? "Default"}
-            semanticRole={semanticRole}
+            title={accent ?? "Default"}
+            accent={accent}
           >
             <StoryGrid.Row flexWrap>
               {(

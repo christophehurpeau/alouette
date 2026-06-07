@@ -1,6 +1,6 @@
 import type { View as RNView } from "react-native";
 import { type VariantProps } from "tailwind-variants";
-import type { SemanticRole } from "../../core/AlouetteConfig";
+import type { Accent } from "../../core/AlouetteConfig";
 import { type BoxProps } from "./Box";
 declare const surfaceVariants: import("tailwind-variants").TVReturnType<{
     size: {
@@ -8,11 +8,39 @@ declare const surfaceVariants: import("tailwind-variants").TVReturnType<{
         md: string;
         lg: string;
     };
+    variant: {
+        surface: string;
+        highlight: string;
+        "highlight-accent": string;
+        lowered: string;
+        translucent: string;
+    };
+    shadow: {
+        none: string;
+        s: string;
+        m: string;
+        l: string;
+        lowered: string;
+    };
 }, undefined, "overflow-hidden", {
     size: {
         sm: string;
         md: string;
         lg: string;
+    };
+    variant: {
+        surface: string;
+        highlight: string;
+        "highlight-accent": string;
+        lowered: string;
+        translucent: string;
+    };
+    shadow: {
+        none: string;
+        s: string;
+        m: string;
+        l: string;
+        lowered: string;
     };
 }, undefined, import("tailwind-variants").TVReturnType<{
     size: {
@@ -20,11 +48,24 @@ declare const surfaceVariants: import("tailwind-variants").TVReturnType<{
         md: string;
         lg: string;
     };
+    variant: {
+        surface: string;
+        highlight: string;
+        "highlight-accent": string;
+        lowered: string;
+        translucent: string;
+    };
+    shadow: {
+        none: string;
+        s: string;
+        m: string;
+        l: string;
+        lowered: string;
+    };
 }, undefined, "overflow-hidden", unknown, unknown, undefined>>;
 type SurfaceVariantProps = VariantProps<typeof surfaceVariants>;
-export interface SurfaceProps extends Omit<BoxProps, "layer">, SurfaceVariantProps {
-    variant?: /** Pairs layer="lowered" with shadow="lowered" for a sunken look. */ "lowered" | "translucent";
-    semanticRole?: SemanticRole;
+export interface SurfaceProps extends BoxProps, SurfaceVariantProps {
+    accent?: Accent;
 }
 export declare const Surface: import("react").ForwardRefExoticComponent<SurfaceProps & import("react").RefAttributes<RNView>>;
 export {};

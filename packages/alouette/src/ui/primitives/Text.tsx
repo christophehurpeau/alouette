@@ -1,47 +1,41 @@
 import { forwardRef } from "react";
 import { Text as RNText, type TextProps as RNTextProps } from "react-native";
 import { extendTailwindMerge } from "tailwind-merge";
+import type { Accent } from "../../core/AlouetteConfig";
+import { AccentScope } from "../containers/AccentScope";
 
 const twMerge = extendTailwindMerge({
   extend: {
     classGroups: {
-      "font-size": [
-        "body-xs",
-        "body-sm",
-        "body-md",
-        "body-lg",
-        "body-xl",
-        "body-xxl",
-        "body-3xl",
-        "heading-xs",
-        "heading-sm",
-        "heading-md",
-        "heading-lg",
-        "heading-xl",
-        "heading-xxl",
-        "heading-3xl",
-        "mono-xs",
-        "mono-sm",
-        "mono-md",
-        "mono-lg",
-        "mono-xl",
-        "mono-xxl",
-        "mono-3xl",
+      "font-family": [
+        "font-body",
+        "font-body-bold",
+        "font-body-extrabold",
+        "font-heading",
+        "font-heading-bold",
+        "font-heading-extrabold",
+        "font-mono",
+        "font-mono-bold",
+        "font-mono-extrabold",
       ],
     },
   },
 });
 
-export type TextProps = RNTextProps;
+export interface TextProps extends RNTextProps {
+  accent?: Accent;
+}
 
 export const Text = forwardRef<RNText, TextProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, accent, ...props }, ref) => {
     return (
-      <RNText
-        ref={ref}
-        className={twMerge("text-sharp", className)}
-        {...props}
-      />
+      <AccentScope accent={accent}>
+        <RNText
+          ref={ref}
+          className={twMerge("font-body text-sharp", className)}
+          {...props}
+        />
+      </AccentScope>
     );
   },
 );

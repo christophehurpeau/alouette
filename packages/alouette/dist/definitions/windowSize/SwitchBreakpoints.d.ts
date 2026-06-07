@@ -8,7 +8,7 @@ type SwitchBreakpointsProps = SetRequired<Partial<Record<BreakpointNames, ReactN
  * Display based on current breakpoint via responsive utility classes.
  *
  * On web this is SSR-friendly (CSS handles the switching). On native it
- * still relies on Uniwind's runtime media-query evaluation.
+ * still relies on NativeWind's runtime media-query evaluation.
  */
 export declare function SwitchBreakpointsUsingDisplayNone({ ...breakpoints }: SwitchBreakpointsProps): ReactNode;
 /**

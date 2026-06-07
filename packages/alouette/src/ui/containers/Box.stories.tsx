@@ -38,17 +38,17 @@ export const VariantsStory: StoryObj<unknown> = {
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Box layer="surface" className="p-m">
+            <Box className="bg-surface p-m">
               <Text>Surface Box</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Box layer="highlight" className="p-m">
+            <Box className="bg-highlight p-m">
               <Text>Highlight Box</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Box layer="lowered" className="p-m">
+            <Box className="bg-lowered p-m">
               <Text>Lowered Box</Text>
             </Box>
           </StoryGrid.Col>
@@ -57,22 +57,22 @@ export const VariantsStory: StoryObj<unknown> = {
       <Story.Section title="Elevation">
         <StoryGrid.Row flexWrap>
           <StoryGrid.Col title="Small">
-            <Box shadow="s" className="p-m">
+            <Box className="shadow-s p-m">
               <Text>shadow=&quot;s&quot;</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col title="Medium">
-            <Box shadow="m" className="p-m">
+            <Box className="shadow-m p-m">
               <Text>shadow=&quot;m&quot;</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col title="Large">
-            <Box shadow="l" className="p-m">
+            <Box className="shadow-l p-m">
               <Text>shadow=&quot;l&quot;</Text>
             </Box>
           </StoryGrid.Col>
           <StoryGrid.Col title="Lowered (depth lowered)">
-            <Box layer="lowered" shadow="lowered" className="m-xs p-m">
+            <Box className="bg-lowered shadow-lowered m-xs p-m">
               <Text>
                 shadow=&quot;lowered&quot; + layer=&quot;lowered&quot;
               </Text>

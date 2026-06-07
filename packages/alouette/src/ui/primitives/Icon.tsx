@@ -4,53 +4,51 @@ import {
   type SVGProps,
   cloneElement,
 } from "react";
-import { useCSSVariable } from "uniwind";
+import { useThemeToken } from "../../core/useThemeToken";
 
 export type SVGIconElement = ReactElement<SVGProps<SVGSVGElement>>;
-
-const TINT_TO_VAR = {
-  sharp: "sharp",
-  muted: "muted",
-  accent: "accent",
-  "accent-muted": "accent-muted",
-  onAccent: "on-accent",
-  "onAccent-muted": "on-accent-muted",
-} as const;
-
-export type IconTint = keyof typeof TINT_TO_VAR;
 
 export interface IconProps {
   icon: SVGIconElement;
   /** Square size in px. Defaults to 20. */
   size?: number;
-  tint?: IconTint;
-  /** Renders in the disabled-text colour instead of the active tint. */
-  disabled?: boolean;
-  /** When disabled, use the sharp disabled colour rather than the muted one. */
-  disabledSharp?: boolean;
-}
-
-function pickColorVar(
-  tint: IconTint,
-  disabled: boolean,
-  disabledSharp: boolean,
-): string {
-  if (disabled) {
-    return disabledSharp ? "--color-disabled-sharp" : "--color-disabled-muted";
-  }
-  return `--color-${TINT_TO_VAR[tint]}`;
+  /**
+   * Text-colour className driving the icon tint, e.g. `text-sharp`,
+   * `text-muted`, `text-accent`, `text-on-accent`, `text-disabled-muted`.
+   * Defaults to `text-sharp`.
+   */
+  className?:
+    | string // keeping string to allow tailwind-variants usage
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-accent"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-disabled-muted"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-disabled"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-muted"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-on-accent-muted"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-on-accent"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-sharp";
 }
 
 export function Icon({
   icon,
   size = 20,
-  tint = "sharp",
-  disabled = false,
-  disabledSharp = false,
+  className = "text-sharp",
 }: IconProps): ReactNode {
-  const color = useCSSVariable(pickColorVar(tint, disabled, disabledSharp));
+  // RN SVG needs a concrete color, not a className. Resolve the text-* color
+  // class to its --color-* token value via the active theme.
+  const token = className
+    .split(/\s+/)
+    .find((part) => part.startsWith("text-"))
+    ?.slice("text-".length);
+  const color = useThemeToken(`--color-${token ?? "sharp"}`);
   return cloneElement(icon, {
-    color: color as string,
+    color,
     width: size,
     height: size,
   });

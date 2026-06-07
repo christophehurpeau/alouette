@@ -7,46 +7,33 @@ import {
 } from "react-native";
 import type { VariantProps } from "tailwind-variants";
 import { tv } from "tailwind-variants";
+import type { Accent } from "../../core/AlouetteConfig";
 import { useSafeAreaInsets } from "../../core/useSafeAreaInsets";
-import {
-  type BoxVariantProps,
-  boxBaseClasses,
-  boxVariants,
-} from "./boxVariants";
+import { AccentScope } from "./AccentScope";
+// Allow Box to shrink when used inside HStack/VStack (matches the original
+// BoxFrame default). overflow is intentionally left off so multi-layer
+// box-shadows are not clipped.
+export const boxBaseClasses = "shrink";
 
-export interface BoxProps extends RNViewProps, BoxVariantProps {}
+export interface BoxProps extends RNViewProps {
+  accent?: Accent;
+}
 
 export const Box = forwardRef<RNView, BoxProps>(
-  ({ className, layer, shadow, tint, absoluteFill, center, ...props }, ref) => {
-    if (
-      process.env.NODE_ENV !== "production" &&
-      shadow === "lowered" &&
-      layer !== "lowered"
-    ) {
-      console.error(
-        'alouette Box: shadow="lowered" must only be used with layer="lowered"',
-      );
-    }
-
+  ({ className, accent, ...props }, ref) => {
     return (
-      <RNView
-        ref={ref}
-        className={boxVariants({
-          layer,
-          shadow,
-          tint,
-          absoluteFill,
-          center,
-          className,
-        })}
-        {...props}
-      />
+      <AccentScope accent={accent}>
+        <RNView
+          ref={ref}
+          className={`${boxBaseClasses} ${className ?? ""}`}
+          {...props}
+        />
+      </AccentScope>
     );
   },
 );
 
 export const interactiveBoxVariants = tv({
-  // TODO is it possible to define transition utilities
   base: [
     boxBaseClasses,
     "cursor-pointer",

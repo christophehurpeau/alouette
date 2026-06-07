@@ -43,21 +43,21 @@ export const Variants: StoryObj = {
   render: () => (
     <Story>
       <Story.Section title="Themes">
-        <Story.SubSection title="brand" semanticRole="brand">
+        <Story.SubSection title="brand" accent="brand">
           <Separator />
         </Story.SubSection>
 
-        <Story.SubSection title="success" semanticRole="success">
+        <Story.SubSection title="success" accent="success">
           <Separator />
         </Story.SubSection>
       </Story.Section>
       <Story.Section title="Vertical">
         <HStack className="h-24">
-          <View className="grow items-center justify-center">
+          <View className="grow flex-center">
             <Text>Left</Text>
           </View>
           <Separator vertical />
-          <View className="grow items-center justify-center">
+          <View className="grow flex-center">
             <Text>Right</Text>
           </View>
         </HStack>

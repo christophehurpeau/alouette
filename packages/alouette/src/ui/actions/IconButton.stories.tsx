@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
 import { Text } from "../primitives/Text";
 import { HStack, VStack } from "../stacks/stacks";
-import { Story, semanticRoles } from "../story-components/Story";
+import { Story, accents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { IconButton } from "./IconButton";
 
@@ -52,11 +52,11 @@ export const Variants: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Variants">
-        {[undefined, ...semanticRoles].map((semanticRole) => (
+        {[undefined, ...accents].map((accent) => (
           <Story.SubSection
-            key={semanticRole || "default"}
-            title={semanticRole ?? "default"}
-            semanticRole={semanticRole}
+            key={accent || "default"}
+            title={accent ?? "default"}
+            accent={accent}
           >
             <StoryGrid.Row>
               {(

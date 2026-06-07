@@ -1,7 +1,51 @@
 import type { ReactNode } from "react";
+import { tv } from "tailwind-variants";
 import { PressableBox, type PressableBoxProps } from "../data/PressableBox";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { buttonHeight } from "./Button";
+
+const iconButtonVariants = tv(
+  {
+    slots: {
+      frame: "shrink-0 flex-center rounded-full",
+      icon: "",
+    },
+    variants: {
+      variant: {
+        contained: {},
+        outlined: {},
+      },
+      disabled: {
+        true: {},
+        false: {},
+      },
+    },
+    compoundVariants: [
+      {
+        variant: "contained",
+        disabled: false,
+        class: { icon: "text-on-accent" },
+      },
+      {
+        variant: "outlined",
+        disabled: false,
+        class: { icon: "text-sharp" },
+      },
+      {
+        variant: "contained",
+        disabled: true,
+        class: { icon: "text-disabled-sharp" },
+      },
+      {
+        variant: "outlined",
+        disabled: true,
+        class: { icon: "text-disabled-muted" },
+      },
+    ],
+    defaultVariants: { variant: "contained" },
+  },
+  { twMerge: false },
+);
 
 export interface IconButtonProps extends Omit<PressableBoxProps, "children"> {
   icon: SVGIconElement;
@@ -22,23 +66,20 @@ export function IconButton({
   ...pressableProps
 }: IconButtonProps): ReactNode {
   const diameter = typeof size === "number" ? size : buttonHeight[size];
-  const isDisabled = disabled === true;
-  const onAccent = variant === "contained";
+  const styles = iconButtonVariants({ variant, disabled: disabled === true });
 
   return (
     <PressableBox
       variant={variant}
       disabled={disabled}
-      className={`shrink-0 items-center justify-center rounded-full ${className ?? ""}`}
+      className={styles.frame({ className })}
       style={{ width: diameter, height: diameter }}
       {...pressableProps}
     >
       <Icon
         icon={icon}
         size={diameter * (iconSize === "fill" ? 0.8 : 0.55)}
-        disabled={isDisabled}
-        tint={onAccent ? "onAccent" : "sharp"}
-        disabledSharp={onAccent}
+        className={styles.icon()}
       />
     </PressableBox>
   );

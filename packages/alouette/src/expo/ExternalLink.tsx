@@ -3,7 +3,7 @@ import { WebBrowserPresentationStyle } from "expo-web-browser";
 import type { ComponentProps, FunctionComponent, ReactNode } from "react";
 import { Linking } from "react-native";
 import type { GestureResponderEvent } from "react-native";
-import { useCSSVariable } from "uniwind";
+import { useThemeToken } from "../core/useThemeToken";
 
 export interface ExternalLinkRequiredComponentProps {
   onPress?: (event: GestureResponderEvent) => Promise<void> | void;
@@ -14,10 +14,10 @@ export interface ExternalOpenLinkBehavior {
   web: "targetBlank" | "targetSelf";
 }
 const useOpenExternalLink = () => {
-  const [textSharp, bgSurface] = useCSSVariable([
-    "--color-text-sharp",
-    "--color-bg-surface",
-  ]) as [string | undefined, string | undefined];
+  const [textSharp, bgSurface] = useThemeToken([
+    "--color-sharp",
+    "--color-surface",
+  ]);
   return async (href: string, openLinkBehavior: ExternalOpenLinkBehavior) => {
     switch (openLinkBehavior.native) {
       case "webBrowser": {

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
 import { VStack } from "../stacks/stacks";
-import { Story, semanticRoles } from "../story-components/Story";
+import { Story, accents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Button, ExternalLinkButton } from "./Button";
 
@@ -59,8 +59,8 @@ export const Variants: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Variants">
-        {semanticRoles.map((semanticRole) => (
-          <Story.SubSection key={semanticRole} title={semanticRole}>
+        {accents.map((accent) => (
+          <Story.SubSection key={accent} title={accent}>
             <StoryGrid.Row flexWrap>
               {(
                 [
@@ -80,7 +80,7 @@ export const Variants: ThisStory = {
                     {(["contained", "outlined"] as const).map((variant) => (
                       <Button
                         key={variant}
-                        semanticRole={semanticRole}
+                        accent={accent}
                         disabled={state === "disabled"}
                         ghost={state === "ghost"}
                         variant={variant}

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ScopedTheme } from "uniwind";
+import { ScopedTheme } from "../containers/ScopedTheme";
 import { ScrollView } from "../primitives/ScrollView";
 import { StoryTitle } from "./StoryTitle";
 

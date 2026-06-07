@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SwatchesRegularIcon } from "alouette-icons/phosphor-icons/SwatchesRegularIcon";
 import { Text } from "../primitives/Text";
 import { VStack } from "../stacks/stacks";
-import { Story, semanticRoles } from "../story-components/Story";
+import { Story, accents } from "../story-components/Story";
 import {
   ConfirmationMessage,
   InfoMessage,
@@ -21,10 +21,10 @@ export default {
     componentSubtitle: "A versatile component for displaying feedback to users",
   },
   argTypes: {
-    semanticRole: {
-      description: "The semantic role of the message",
+    accent: {
+      description: "The accent of the message",
       control: "select",
-      options: semanticRoles,
+      options: accents,
       table: { defaultValue: { summary: "info" } },
     },
     onDismiss: {
@@ -39,7 +39,7 @@ export default {
 } satisfies Meta<typeof Message>;
 
 export const PreviewMessageStory: ThisStory = {
-  args: { semanticRole: "info" },
+  args: { accent: "info" },
   render: (args) => (
     <Message {...args} icon={<SwatchesRegularIcon />}>
       <Text>Example Message</Text>
@@ -51,12 +51,12 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section withSurface title="Defaults">
-        <Message icon={<SwatchesRegularIcon />} semanticRole="info">
+        <Message icon={<SwatchesRegularIcon />} accent="info">
           Example Message
         </Message>
         <Message
           icon={<SwatchesRegularIcon />}
-          semanticRole="info"
+          accent="info"
           dismissIconAriaLabel="Close message"
           onDismiss={() => {}}
         >
@@ -64,14 +64,10 @@ export const Variants: ThisStory = {
         </Message>
       </Story.Section>
 
-      <Story.Section withSurface title="Semantic Roles">
-        {semanticRoles.map((semanticRole) => (
-          <Message
-            key={semanticRole}
-            icon={<SwatchesRegularIcon />}
-            semanticRole={semanticRole}
-          >
-            {`${semanticRole} message`}
+      <Story.Section withSurface title="Accents">
+        {accents.map((accent) => (
+          <Message key={accent} icon={<SwatchesRegularIcon />} accent={accent}>
+            {`${accent} message`}
           </Message>
         ))}
       </Story.Section>
@@ -79,16 +75,12 @@ export const Variants: ThisStory = {
       <Story.Section withSurface title="Sizes">
         {SIZES.map((size) => (
           <VStack key={size} className="gap-xs">
-            <Message
-              icon={<SwatchesRegularIcon />}
-              semanticRole="info"
-              size={size}
-            >
+            <Message icon={<SwatchesRegularIcon />} accent="info" size={size}>
               {`Example ${size} Message`}
             </Message>
             <Message
               icon={<SwatchesRegularIcon />}
-              semanticRole="info"
+              accent="info"
               size={size}
               dismissIconAriaLabel="Close message"
               onDismiss={() => {}}
@@ -99,14 +91,14 @@ export const Variants: ThisStory = {
         ))}
       </Story.Section>
 
-      <Story.Section withSurface title="Semantic Messages">
+      <Story.Section withSurface title="Accent Messages">
         <InfoMessage>Info Message</InfoMessage>
         <ConfirmationMessage>Success Message</ConfirmationMessage>
         <WarningMessage>Warning Message</WarningMessage>
       </Story.Section>
 
       <Story.Section withSurface title="Edge Cases">
-        <Message icon={<SwatchesRegularIcon />} semanticRole="info">
+        <Message icon={<SwatchesRegularIcon />} accent="info">
           Example Message with very very very very very very very very very very
           very very very very very very very very very very very very very long
           text
@@ -114,7 +106,7 @@ export const Variants: ThisStory = {
 
         <Message
           icon={<SwatchesRegularIcon />}
-          semanticRole="info"
+          accent="info"
           dismissIconAriaLabel="Close message"
           onDismiss={() => {}}
         >

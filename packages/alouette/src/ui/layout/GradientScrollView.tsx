@@ -4,9 +4,9 @@ import {
   type ScrollViewProps as RNScrollViewProps,
   View,
 } from "react-native";
-import { useCSSVariable } from "uniwind";
-import type { SemanticRole } from "../../core/AlouetteConfig";
-import { SemanticScope } from "../containers/SemanticScope";
+import type { Accent } from "../../core/AlouetteConfig";
+import { useThemeToken } from "../../core/useThemeToken";
+import { AccentScope } from "../containers/AccentScope";
 import { GradientBackground } from "./GradientBackground";
 
 interface GradientScrollViewInnerProps extends RNScrollViewProps {
@@ -17,7 +17,7 @@ const GradientScrollViewInner = forwardRef<
   RNScrollView,
   GradientScrollViewInnerProps
 >(({ children, ...scrollViewProps }, ref) => {
-  const [gradientStart, gradientEnd] = useCSSVariable([
+  const [gradientStart, gradientEnd] = useThemeToken([
     "--color-screen-gradient-start",
     "--color-screen-gradient-end",
   ]);
@@ -28,7 +28,7 @@ const GradientScrollViewInner = forwardRef<
         style={{
           top: -600,
           height: 600,
-          backgroundColor: gradientStart as string,
+          backgroundColor: gradientStart,
         }}
       />
       <View
@@ -36,7 +36,7 @@ const GradientScrollViewInner = forwardRef<
         style={{
           bottom: -600,
           height: 600,
-          backgroundColor: gradientEnd as string,
+          backgroundColor: gradientEnd,
         }}
       />
       <GradientBackground />
@@ -47,18 +47,18 @@ const GradientScrollViewInner = forwardRef<
 
 export interface GradientScrollViewProps extends RNScrollViewProps {
   children?: ReactNode;
-  semanticRole: SemanticRole;
+  accent: Accent;
 }
 
 export const GradientScrollView = forwardRef<
   RNScrollView,
   GradientScrollViewProps
->(({ semanticRole, children, ...scrollViewProps }, ref) => {
+>(({ accent, children, ...scrollViewProps }, ref) => {
   return (
-    <SemanticScope semanticRole={semanticRole}>
+    <AccentScope accent={accent}>
       <GradientScrollViewInner ref={ref} {...scrollViewProps}>
         {children}
       </GradientScrollViewInner>
-    </SemanticScope>
+    </AccentScope>
   );
 });

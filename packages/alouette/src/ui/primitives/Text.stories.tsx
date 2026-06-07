@@ -1,5 +1,6 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Surface } from "../containers/Surface";
 import { Story } from "../story-components/Story";
 import { Paragraph, Text } from "./Text";
 
@@ -14,15 +15,15 @@ export default {
     docs: {
       description: {
         component: `### Usage
-All styling via \`className\`:
-- **Sizes + family**: \`body-xs\`…\`body-3xl\`, \`heading-xs\`…\`heading-3xl\`, \`mono-xs\`…\`mono-3xl\`
-- **Weight**: \`font-normal\`, \`font-bold\`, \`font-extrabold\`
-- **Color**: \`text-sharp\`, \`text-muted\`, \`text-{nested-theme}-accent\`, \`text-{nested-theme}-on-accent\`
+All styling via \`className\`. \`<Text>\` defaults to \`font-body\` (regular body family), so plain body text needs no family class.
+- **Family + weight**: \`font-body\` (default, omit for regular), \`font-body-bold\`, \`font-body-extrabold\`; \`font-heading\`, \`font-heading-bold\`, \`font-heading-extrabold\`; \`font-mono\`, \`font-mono-bold\`, \`font-mono-extrabold\`
+- **Size**: standard Tailwind — \`text-xs\`, \`text-sm\`, \`text-base\`, \`text-lg\`, \`text-xl\`, \`text-2xl\`, \`text-3xl\`, \`text-4xl\`, \`text-5xl\`, \`text-6xl\`
+- **Color**: \`text-sharp\`, \`text-muted\`, \`text-accent\`, \`text-on-accent\`
 
 ~~~tsx
-<Text className="body-md font-bold text-sharp">Bold body text</Text>
-<Text className="heading-xl text-brand-accent">Accent heading</Text>
-<Text className="mono-sm text-muted">Muted monospace</Text>
+<Text className="font-body-bold text-base text-sharp">Bold body text</Text>
+<Text className="font-heading-extrabold text-4xl">Extrabold heading</Text>
+<Text className="font-mono text-sm text-muted">Muted monospace</Text>
 ~~~`,
       },
     },
@@ -36,49 +37,37 @@ export const PreviewStory: ThisStory = {
   },
 };
 
-function HeadingSizes() {
+function Sizes() {
   return (
-    <Story.Section title="Heading Sizes">
-      <Text className="heading-3xl">3xl — Heading</Text>
-      <Text className="heading-xxl">xxl — Heading</Text>
-      <Text className="heading-xl">xl — Heading</Text>
-      <Text className="heading-lg">lg — Heading</Text>
-      <Text className="heading-md">md — Heading</Text>
-      <Text className="heading-sm">sm — Heading</Text>
-      <Text className="heading-xs">xs — Heading</Text>
+    <Story.Section title="Sizes">
+      <Text className="text-6xl">text-6xl</Text>
+      <Text className="text-5xl">text-5xl</Text>
+      <Text className="text-4xl">text-4xl</Text>
+      <Text className="text-3xl">text-3xl</Text>
+      <Text className="text-2xl">text-2xl</Text>
+      <Text className="text-xl">text-xl</Text>
+      <Text className="text-lg">text-lg</Text>
+      <Text className="text-base">text-base</Text>
+      <Text className="text-sm">text-sm</Text>
+      <Text className="text-xs">text-xs</Text>
     </Story.Section>
   );
 }
 
-function BodySizes() {
+function FamiliesAndWeights() {
   return (
-    <Story.Section title="Body Sizes">
-      <Text className="body-3xl">3xl — Body</Text>
-      <Text className="body-xxl">xxl — Body</Text>
-      <Text className="body-xl">xl — Body</Text>
-      <Text className="body-lg">lg — Body</Text>
-      <Text className="body-md">md — Body</Text>
-      <Text className="body-sm">sm — Body</Text>
-      <Text className="body-xs">xs — Body</Text>
-    </Story.Section>
-  );
-}
-
-function Weights() {
-  return (
-    <Story.Section title="Weights">
-      <Text className="body-lg font-normal">font-normal</Text>
-      <Text className="body-lg font-bold">font-bold</Text>
-      <Text className="body-lg font-extrabold">font-extrabold</Text>
-    </Story.Section>
-  );
-}
-
-function Monospace() {
-  return (
-    <Story.Section title="Monospace">
-      <Text className="mono-lg font-normal">font-normal</Text>
-      <Text className="mono-lg font-bold">font-bold</Text>
+    <Story.Section title="Families & weights">
+      <Text className="text-lg">font-body (default regular)</Text>
+      <Text className="font-body-bold text-lg">font-body-bold</Text>
+      <Text className="font-body-extrabold text-lg">font-body-extrabold</Text>
+      <Text className="font-heading text-lg">font-heading</Text>
+      <Text className="font-heading-bold text-lg">font-heading-bold</Text>
+      <Text className="font-heading-extrabold text-lg">
+        font-heading-extrabold
+      </Text>
+      <Text className="font-mono text-lg">font-mono</Text>
+      <Text className="font-mono-bold text-lg">font-mono-bold</Text>
+      <Text className="font-mono-extrabold text-lg">font-mono-extrabold</Text>
     </Story.Section>
   );
 }
@@ -86,15 +75,15 @@ function Monospace() {
 function Colors() {
   return (
     <Story.Section title="Colors">
-      <Text className="body-lg text-sharp">text-sharp — Default text</Text>
-      <Text className="body-lg text-muted">text-muted — Secondary text</Text>
-      <Story.SubSection title="Accent Colors - brand">
-        <Text className="body-lg text-brand-accent">
-          text-brand-accent — Accented text
-        </Text>
-        <Text className="body-lg text-brand-on-accent">
-          text-brand-on-accent — Text on accent background
-        </Text>
+      <Text className="text-lg text-sharp">text-sharp — Default text</Text>
+      <Text className="text-lg text-muted">text-muted — Secondary text</Text>
+      <Story.SubSection title="Accent Colors - brand" accent="brand">
+        <Text className="text-lg text-accent">text-accent — Accented text</Text>
+        <Surface className="bg-highlight-accent">
+          <Text className="text-lg text-on-accent">
+            text-on-accent — Text on accent background
+          </Text>
+        </Surface>
       </Story.SubSection>
     </Story.Section>
   );
@@ -103,13 +92,19 @@ function Colors() {
 function NestedExample() {
   return (
     <Story.Section title="Nested">
-      <Paragraph className="body-xl">
+      <Paragraph className="text-xl">
         The future is in{" "}
-        <Text className="font-bold">
-          our <Text className="text-brand-accent">hands</Text>
+        <Text className="font-body-bold">
+          our{" "}
+          <Text accent="brand" className="text-accent">
+            hands
+          </Text>
         </Text>{" "}
-        <Text className="text-brand-accent">
-          to <Text className="text-danger-accent font-bold">shape</Text>
+        <Text accent="danger" className="text-accent">
+          to{" "}
+          <Text accent="brand" className="text-accent font-body-bold">
+            shape
+          </Text>
         </Text>
       </Paragraph>
     </Story.Section>
@@ -120,12 +115,16 @@ export const VariantsStory: ThisStory = {
   name: "Text Variants",
   render: () => (
     <Story>
-      <HeadingSizes />
-      <BodySizes />
-      <Weights />
-      <Monospace />
+      <Sizes />
+      <FamiliesAndWeights />
       <Colors />
       <NestedExample />
+      <Story.Section title="Invalid">
+        <Text className="font-bold">
+          font-bold would only work on web, so it's overrided. Use
+          font-body-bold instead.
+        </Text>
+      </Story.Section>
     </Story>
   ),
 };

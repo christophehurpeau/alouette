@@ -1,13 +1,10 @@
 import { type ReactNode, useCallback, useState } from "react";
 import { Switch as RNSwitch } from "react-native";
-import { useCSSVariable } from "uniwind";
-import {
-  SemanticScope,
-  type SemanticScopeProps,
-} from "../containers/SemanticScope";
+import { useThemeToken } from "../../core/useThemeToken";
+import { AccentScope, type AccentScopeProps } from "../containers/AccentScope";
 
 export interface SwitchProps {
-  semanticRole?: SemanticScopeProps["semanticRole"];
+  accent?: AccentScopeProps["accent"];
   checked?: boolean;
   disabled?: boolean;
   onValueChange?: (value: boolean) => void;
@@ -35,11 +32,6 @@ function useControllableChecked(
   return [value, onChange] as const;
 }
 
-// TODO(uniwind-themes): Switch colours are wrong on native — the resolved
-// CSS variables don't match the Tamagui-era track/thumb tones. Likely the
-// same root cause as the global theme issue documented in build-css.ts
-// (native vars[theme] map ends up empty for accent themes). Revisit once
-// native theme switching is resolved.
 function SwitchInner({
   checked,
   disabled,
@@ -47,14 +39,14 @@ function SwitchInner({
   ...props
 }: SwitchProps): ReactNode {
   const [value, setValue] = useControllableChecked(checked, onValueChange);
-  const [trackBg, thumb, disabledTrackBg, disabledThumb] = useCSSVariable([
+  const [trackBg, thumb, disabledTrackBg, disabledThumb] = useThemeToken([
     "--color-lowered",
     "--color-highlight",
     "--color-form-bg-disabled",
     "--color-disabled-muted",
   ]);
-  const track = (disabled ? disabledTrackBg : trackBg) as string | undefined;
-  const thumbColor = (disabled ? disabledThumb : thumb) as string | undefined;
+  const track = disabled ? disabledTrackBg : trackBg;
+  const thumbColor = disabled ? disabledThumb : thumb;
   return (
     <RNSwitch
       value={value}
@@ -68,10 +60,10 @@ function SwitchInner({
   );
 }
 
-export function Switch({ semanticRole, ...rest }: SwitchProps): ReactNode {
+export function Switch({ accent, ...rest }: SwitchProps): ReactNode {
   return (
-    <SemanticScope semanticRole={semanticRole}>
+    <AccentScope accent={accent}>
       <SwitchInner {...rest} />
-    </SemanticScope>
+    </AccentScope>
   );
 }

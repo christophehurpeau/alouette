@@ -8,10 +8,10 @@ declare const _default: {
         componentSubtitle: string;
     };
     argTypes: {
-        semanticRole: {
+        accent: {
             description: string;
             control: "select";
-            options: import("../../core/AlouetteConfig").SemanticRole[];
+            options: import("../..").Accent[];
             table: {
                 defaultValue: {
                     summary: string;

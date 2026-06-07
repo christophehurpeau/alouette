@@ -1,28 +1,22 @@
-import { LinearGradient } from "expo-linear-gradient";
 import type { ReactNode } from "react";
 import { View } from "react-native";
-import { useCSSVariable } from "uniwind";
+import type { Accent } from "../../core/AlouetteConfig";
+import { AccentScope } from "../containers/AccentScope";
 
 export interface GradientBackgroundProps {
   children?: ReactNode;
+  accent?: Accent;
 }
 
 export function GradientBackground({
+  accent,
   children,
 }: GradientBackgroundProps): ReactNode {
-  const [start, middle, end] = useCSSVariable([
-    "--color-screen-gradient-start",
-    "--color-screen-gradient-middle",
-    "--color-screen-gradient-end",
-  ]);
   return (
-    <View className="absolute inset-0">
-      <LinearGradient
-        colors={[end as string, middle as string, start as string]}
-        locations={[0.05, 0.8, 0.98]}
-        style={{ flex: 1 }}
-      />
-      {children}
-    </View>
+    <AccentScope accent={accent}>
+      <View className="absolute inset-0 bg-linear-to-t from-screen-gradient-end from-5% via-screen-gradient-middle via-80% to-screen-gradient-start to-98%">
+        {children}
+      </View>
+    </AccentScope>
   );
 }

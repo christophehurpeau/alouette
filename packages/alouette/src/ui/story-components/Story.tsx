@@ -1,11 +1,8 @@
 import { Fragment, type ReactNode } from "react";
 import { Platform } from "react-native";
-import { ScopedTheme } from "uniwind";
-import type {
-  AlouetteModeTheme,
-  SemanticRole,
-} from "../../core/AlouetteConfig";
-import { SemanticScope } from "../containers/SemanticScope";
+import type { Accent, AlouetteModeTheme } from "../../core/AlouetteConfig";
+import { AccentScope } from "../containers/AccentScope";
+import { ScopedTheme } from "../containers/ScopedTheme";
 import { Surface } from "../containers/Surface";
 import { ScrollView } from "../primitives/ScrollView";
 import { View } from "../primitives/View";
@@ -17,13 +14,8 @@ export interface StorySectionProps {
   title: ReactNode;
   children: ReactNode;
   level?: 1 | 2;
-  /**
-   * Optional uniwind theme name to scope this section to (e.g. "light_brand").
-   * Full theme name (e.g. "light_brand"). No automatic light/dark composition —
-   * consumers must pass the full name.
-   */
   modeTheme?: AlouetteModeTheme;
-  semanticRole?: SemanticRole;
+  accent?: Accent;
   withSurface?: boolean;
 }
 
@@ -34,7 +26,7 @@ function StorySection({
   children,
   level = 1,
   modeTheme,
-  semanticRole,
+  accent,
   withSurface = false,
 }: StorySectionProps): ReactNode {
   const content = (
@@ -56,8 +48,8 @@ function StorySection({
   if (modeTheme) {
     return <ScopedTheme theme={modeTheme}>{content}</ScopedTheme>;
   }
-  if (semanticRole) {
-    return <SemanticScope semanticRole={semanticRole}>{content}</SemanticScope>;
+  if (accent) {
+    return <AccentScope accent={accent}>{content}</AccentScope>;
   }
   return content;
 }
@@ -66,7 +58,7 @@ function StorySubSection({
   title,
   children,
   modeTheme,
-  semanticRole,
+  accent,
   withSurface = false,
 }: StorySectionProps): ReactNode {
   const content = (
@@ -87,8 +79,8 @@ function StorySubSection({
   if (modeTheme) {
     return <ScopedTheme theme={modeTheme}>{content}</ScopedTheme>;
   }
-  if (semanticRole) {
-    return <SemanticScope semanticRole={semanticRole}>{content}</SemanticScope>;
+  if (accent) {
+    return <AccentScope accent={accent}>{content}</AccentScope>;
   }
   return content;
 }
@@ -111,15 +103,17 @@ export function Story({
   return (
     <ScrollWrapper>
       {documentation && (
-        <Surface semanticRole="info" className="mb-xxl">
+        <Surface accent="info" className="mb-xxl">
           {documentation}
         </Surface>
       )}
-      {(["light", ...(noDarkMode ? [] : ["dark"])] as const).map((mode) => (
-        <ScopedTheme key={mode} theme={mode}>
-          <View className="bg-screen p-l">{children}</View>
-        </ScopedTheme>
-      ))}
+      {(["light", ...(noDarkMode ? [] : ["dark"])] as ("dark" | "light")[]).map(
+        (mode) => (
+          <ScopedTheme key={mode} theme={mode}>
+            <View className="bg-screen p-l">{children}</View>
+          </ScopedTheme>
+        ),
+      )}
     </ScrollWrapper>
   );
 }
@@ -127,7 +121,7 @@ export function Story({
 Story.Section = StorySection;
 Story.SubSection = StorySubSection;
 
-export const semanticRoles: SemanticRole[] = [
+export const accents: Accent[] = [
   "brand",
   "danger",
   "info",

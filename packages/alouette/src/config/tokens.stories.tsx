@@ -18,7 +18,7 @@ function SpacingSwatch({ name }: SpacingSwatchProps): ReactNode {
         className="h-4 rounded-xs bg-border-muted"
         style={{ width: `var(--spacing-${name})` as `${number}%` }}
       />
-      <Text className="body-xs text-muted">{name}</Text>
+      <Text className="text-xs text-muted">{name}</Text>
     </VStack>
   );
 }
@@ -46,7 +46,7 @@ function RadiusSwatch({ name }: RadiusSwatchProps): ReactNode {
   return (
     <VStack className="gap-xxs items-center w-20">
       <View className={radiuses({ name })} />
-      <Text className="body-xs text-muted">{name}</Text>
+      <Text className="text-xs text-muted">{name}</Text>
     </VStack>
   );
 }
@@ -74,7 +74,7 @@ function ShadowSwatch({ name }: ShadowSwatchProps): ReactNode {
   return (
     <VStack className="gap-xs items-center w-20">
       <View className={shadows({ name })} />
-      <Text className="mono-md text-muted">{name}</Text>
+      <Text className="font-mono text-base text-muted">{name}</Text>
     </VStack>
   );
 }

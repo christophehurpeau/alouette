@@ -1,1 +1,0 @@
-{"version":3,"file":"GradientBackground.web.d.ts","sourceRoot":"","sources":["../../../../src/ui/layout/GradientBackground.web.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,OAAO,CAAC;AAIvC,MAAM,WAAW,uBAAuB;IACtC,QAAQ,CAAC,EAAE,SAAS,CAAC;CACtB;AAED,wBAAgB,kBAAkB,CAAC,EACjC,QAAQ,GACT,EAAE,uBAAuB,GAAG,SAAS,CAkBrC"}

@@ -4,14 +4,14 @@ import type {
   View as RNView,
 } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
-import type { SemanticRole } from "../../core/AlouetteConfig";
+import type { Accent } from "../../core/AlouetteConfig";
+import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBox, interactiveBoxVariants } from "../containers/Box";
-import { SemanticScope } from "../containers/SemanticScope";
 
 const pressableBoxVariants = tv(
   {
     extend: interactiveBoxVariants,
-    base: ["overflow-hidden"].join(" "),
+    base: "overflow-hidden",
     variants: {
       variant: {
         contained: [
@@ -22,7 +22,7 @@ const pressableBoxVariants = tv(
           "hover:bg-interactive-contained-hover",
           "focus:bg-interactive-contained-focus",
           "active:bg-interactive-contained-active",
-          "disabled:bg-interactive-contained-disabled",
+          "disabled:bg-interactive-contained-disabled disabled:shadow-none",
           "focus-visible:outline-border-muted",
         ].join(" "),
         outlined: [
@@ -105,7 +105,7 @@ type PressableBoxVariantProps = VariantProps<typeof pressableBoxVariants>;
 
 export interface PressableBoxProps
   extends RNPressableProps, PressableBoxVariantProps {
-  semanticRole?: SemanticRole;
+  accent?: Accent;
   className?: string;
   forceStyle?: "focus" | "hover" | "press";
 }
@@ -113,11 +113,11 @@ export interface PressableBoxProps
 // TODO what is the diff between <Box interactive> and PressableBox ?
 export const PressableBox = forwardRef<RNView, PressableBoxProps>(
   (
-    { className, variant, ghost = false, forceStyle, semanticRole, ...props },
+    { className, variant, ghost = false, forceStyle, accent, ...props },
     ref,
   ) => {
     return (
-      <SemanticScope semanticRole={semanticRole}>
+      <AccentScope accent={accent}>
         <InteractiveBox
           ref={ref}
           withFocusVisibleOutline
@@ -130,7 +130,7 @@ export const PressableBox = forwardRef<RNView, PressableBoxProps>(
           })}
           {...props}
         />
-      </SemanticScope>
+      </AccentScope>
     );
   },
 );

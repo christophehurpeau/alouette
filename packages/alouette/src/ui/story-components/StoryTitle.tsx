@@ -4,13 +4,13 @@ import { type VariantProps, tv } from "tailwind-variants";
 import { Text, type TextProps } from "../primitives/Text";
 
 const storyTitleVariants = tv({
-  base: "font-extrabold text-sharp",
+  base: "font-heading-extrabold text-sharp",
   variants: {
     level: {
-      1: "heading-xl mb-xl",
-      2: "heading-lg mb-xl",
-      3: "heading-md mb-m",
-      4: "heading-sm mb-m",
+      1: "text-4xl mb-xl",
+      2: "text-3xl mb-xl",
+      3: "text-2xl mb-m",
+      4: "text-xl mb-m",
     },
   },
   defaultVariants: {

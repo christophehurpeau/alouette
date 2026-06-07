@@ -8,7 +8,7 @@ declare const storyTitleVariants: import("tailwind-variants").TVReturnType<{
         3: string;
         4: string;
     };
-}, undefined, "font-extrabold text-sharp", {
+}, undefined, "font-heading-extrabold text-sharp", {
     level: {
         1: string;
         2: string;
@@ -22,7 +22,7 @@ declare const storyTitleVariants: import("tailwind-variants").TVReturnType<{
         3: string;
         4: string;
     };
-}, undefined, "font-extrabold text-sharp", unknown, unknown, undefined>>;
+}, undefined, "font-heading-extrabold text-sharp", unknown, unknown, undefined>>;
 type StoryTitleVariantProps = VariantProps<typeof storyTitleVariants>;
 export interface StoryTitleProps extends TextProps, StoryTitleVariantProps {
 }
