@@ -15,6 +15,9 @@ await createCheckPackageWithWorkspaces({
           missingPeerDependency: [],
           invalidPeerDependencyVersion: [],
         },
+        "vite-plugin-rnw": {
+          duplicateDirectDependency: ["@vitejs/plugin-react"],
+        },
       },
     },
   })

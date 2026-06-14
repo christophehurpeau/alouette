@@ -5,6 +5,6 @@
  */
 export declare const animationDurationsMs: {
     readonly slide: 600;
-    readonly collapse: 400;
+    readonly collapse: 800;
 };
 //# sourceMappingURL=animationDurationsMs.d.ts.map

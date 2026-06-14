@@ -1245,7 +1245,7 @@ function PresenceOne({
 
 const animationDurationsMs = {
   "slide": 600,
-  "collapse": 400
+  "collapse": 800
 };
 
 function Icon({
@@ -1572,7 +1572,7 @@ const inputVariants = tv(
         true: "min-h-[80px] rounded-xs px-xs py-xs"
       },
       forceStyle: {
-        undefined: "bg-form-bg border-interactive-outlined-pressable",
+        undefined: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg border-interactive-outlined-pressable" : "",
         hover: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg-hover border-interactive-outlined-hover" : "",
         focus: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg-focus border-interactive-outlined-focus outline-1 outline-interactive-outlined-focus outline-offset-0" : "",
         press: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg-active border-interactive-outlined-active" : ""
