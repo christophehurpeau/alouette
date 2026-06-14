@@ -630,14 +630,15 @@
   :root { interpolate-size: allow-keywords; }
 
   /* mimic the native viewport full width/height + flex */
-  body,
+  /* body,
   #root {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    min-width: calc(100vw - (100vw - 100%)); /* reserve space for scrollbar */
+    min-width: calc(100vw - (100vw - 100%));
     margin: 0;
-  }
+  } */
+  /* reserve space for scrollbar */
 }
 
 /* keyframes referenced by the --animate-* theme tokens above. */

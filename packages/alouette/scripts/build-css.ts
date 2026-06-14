@@ -363,16 +363,6 @@ ${(["light", "dark"] as const)
 
   /* let height/width keyframes interpolate to/from auto (collapse-in/out) on web */
   :root { interpolate-size: allow-keywords; }
-
-  /* mimic the native viewport full width/height + flex */
-  body,
-  #root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    min-width: calc(100vw - (100vw - 100%)); /* reserve space for scrollbar */
-    margin: 0;
-  }
 }
 
 /* keyframes referenced by the --animate-* theme tokens above. */
@@ -536,3 +526,13 @@ const animationDurationsPath = join(
 );
 writeFileSync(animationDurationsPath, animationDurationsTs);
 console.log(`Wrote ${animationDurationsPath}`);
+
+// /* mimic the native viewport full width/height + flex */
+// body,
+// #root {
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 100vh;
+//   min-width: calc(100vw - (100vw - 100%)); /* reserve space for scrollbar */
+//   margin: 0;
+// }

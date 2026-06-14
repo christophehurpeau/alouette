@@ -24,6 +24,7 @@ const extensions = [
 export default defineConfig({
   define: {
     "process.env.STORYBOOK": "true",
+    "process.env.EXPO_PUBLIC_STORYBOOK_ENABLED": "true",
     EXPO_OS: JSON.stringify("web"),
     "process.env.EXPO_OS": JSON.stringify("web"),
   },

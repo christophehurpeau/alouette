@@ -28,7 +28,9 @@ const inputVariants = tv(
         true: "min-h-[80px] rounded-xs px-xs py-xs",
       },
       forceStyle: {
-        undefined: "bg-form-bg border-interactive-outlined-pressable",
+        undefined: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? "bg-form-bg border-interactive-outlined-pressable"
+          : "",
         hover: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
           ? "bg-form-bg-hover border-interactive-outlined-hover"
           : "",

@@ -7,5 +7,5 @@
  */
 export const animationDurationsMs = {
   "slide": 600,
-  "collapse": 400
+  "collapse": 800
 } as const;
