@@ -3,7 +3,6 @@ import type { StorybookConfig } from "@storybook/react-native";
 const main: StorybookConfig = {
   stories: ["../../alouette/src/**/*.stories.@(ts|tsx)"],
   addons: [
-    "@chromatic-com/storybook",
     "@storybook/addon-docs",
     "@storybook/addon-ondevice-notes",
     "@storybook/addon-ondevice-controls",

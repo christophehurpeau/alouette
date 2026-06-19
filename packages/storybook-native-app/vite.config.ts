@@ -28,7 +28,6 @@ export default defineConfig({
   define: {
     "process.env.STORYBOOK": "true",
     "process.env.EXPO_PUBLIC_STORYBOOK_ENABLED": "true",
-    EXPO_OS: JSON.stringify("web"),
     "process.env.EXPO_OS": JSON.stringify("web"),
   },
   // Tailwind runs through the @tailwindcss/vite plugin here; the inline (empty)
@@ -74,7 +73,24 @@ export default defineConfig({
       babel: {
         babelrc: false,
         configFile: false,
-        presets: [nativewindBabelPreset],
+        // The NativeWind preset rewrites `react-native` / `react-native-web`
+        // primitive imports to the className-aware `react-native-css/components`
+        // wrappers. vite-plugin-rnw keeps react-native(-web) and react-native-css
+        // in its transform set (their negative-lookahead exclude matches anything
+        // starting with "react-native") so flow/JSX still run on them — but the
+        // rewriting must only touch first-party code. Left unscoped it rewrites
+        // react-native-web's own index.js (re-exporting every primitive from the
+        // css wrappers) and react-native-css's own components, both of which
+        // create circular self-imports: at module init the base component is
+        // undefined and copyComponentProperties() throws on Object.entries().
+        // Dev hides it (unbundled live bindings); the production bundle's static
+        // init order surfaces it. Scope the preset to non-node_modules only.
+        overrides: [
+          {
+            exclude: /node_modules/,
+            presets: [nativewindBabelPreset],
+          },
+        ],
       },
     }),
     tailwindcss(),
