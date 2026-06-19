@@ -11,7 +11,8 @@ const TRAVEL_X = TRACK_WIDTH - THUMB_SIZE - THUMB_PADDING * 2;
 
 const trackVariants = tv(
   {
-    base: "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto outline-interactive-outlined-outline-focus bg-lowered disabled:bg-form-bg-disabled",
+    // TODO if we can fix web to use proper button, change aria-disabled to disabled
+    base: "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto outline-interactive-outlined-outline-focus bg-lowered aria-disabled:bg-form-bg-disabled",
     variants: {
       checked: {
         true: "",
@@ -27,7 +28,7 @@ const thumbVariants = tv(
     base: [
       "absolute rounded-full shadow-s",
       "transition-transform duration-200 ease-in",
-      "bg-highlight disabled:bg-disabled-muted",
+      "bg-highlight aria-disabled:bg-disabled-muted",
     ].join(" "),
   },
   { twMerge: false },
