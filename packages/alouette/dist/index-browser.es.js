@@ -1646,11 +1646,11 @@ const THUMB_SIZE = TRACK_HEIGHT * 0.8;
 const TRAVEL_X = TRACK_WIDTH - THUMB_SIZE - THUMB_PADDING * 2;
 const trackVariants = tv(
   {
-    base: "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto outline-interactive-outlined-outline-focus",
+    base: "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto outline-interactive-outlined-outline-focus bg-lowered disabled:bg-form-bg-disabled",
     variants: {
       checked: {
-        true: "bg-lowered disabled:bg-form-bg-disabled",
-        false: "bg-lowered disabled:bg-form-bg-disabled"
+        true: "",
+        false: ""
       }
     }
   },
