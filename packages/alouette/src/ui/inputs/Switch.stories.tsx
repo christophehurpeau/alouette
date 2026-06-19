@@ -88,8 +88,10 @@ export const Tests: StoryObj<typeof Switch> = {
 
     const uncontrolledSwitch = canvas.getByTestId("uncontrolled");
     await expect(uncontrolledSwitch).toBeInTheDocument();
-    await expect(uncontrolledSwitch.tagName).toBe("BUTTON");
-    await expect(uncontrolledSwitch).toHaveAttribute("type", "button");
+    // switch role does not transforms to button element https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/modules/AccessibilityUtil/propsToAccessibilityComponent.js
+    // await expect(uncontrolledSwitch.tagName).toBe("BUTTON");
+    await expect(uncontrolledSwitch.tagName).toBe("DIV");
+    // await expect(uncontrolledSwitch).toHaveAttribute("type", "button");
     await expect(uncontrolledSwitch).toHaveAttribute("role", "switch");
     await expect(uncontrolledSwitch).toHaveAttribute("aria-checked", "false");
 
@@ -101,8 +103,8 @@ export const Tests: StoryObj<typeof Switch> = {
 
     const uncheckedSwitch = canvas.getByTestId("unchecked");
     await expect(uncheckedSwitch).toBeInTheDocument();
-    await expect(uncheckedSwitch.tagName).toBe("BUTTON");
-    await expect(uncheckedSwitch).toHaveAttribute("type", "button");
+    // await expect(uncheckedSwitch.tagName).toBe("BUTTON");
+    // await expect(uncheckedSwitch).toHaveAttribute("type", "button");
     await expect(uncheckedSwitch).toHaveAttribute("role", "switch");
     await expect(uncheckedSwitch).toHaveAttribute("aria-checked", "false");
 
@@ -112,8 +114,8 @@ export const Tests: StoryObj<typeof Switch> = {
 
     const checkedSwitch = canvas.getByTestId("checked");
     await expect(checkedSwitch).toBeInTheDocument();
-    await expect(checkedSwitch.tagName).toBe("BUTTON");
-    await expect(checkedSwitch).toHaveAttribute("type", "button");
+    // await expect(checkedSwitch.tagName).toBe("BUTTON");
+    // await expect(checkedSwitch).toHaveAttribute("type", "button");
     await expect(checkedSwitch).toHaveAttribute("role", "switch");
     await expect(checkedSwitch).toHaveAttribute("aria-checked", "true");
 

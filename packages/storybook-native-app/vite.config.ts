@@ -3,7 +3,10 @@ import { rnw } from "vite-plugin-rnw";
 import tailwindcss from "@tailwindcss/vite";
 import svgr from "vite-plugin-svgr";
 import { defineConfig } from "vite";
+import { playwright } from "@vitest/browser-playwright";
 import { URL, fileURLToPath } from "url";
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
+import path from "path";
 
 // NativeWind's Babel preset is published as ESM that calls `require()` inside the
 // preset body, which throws in Vite's ESM config context. Load the CommonJS
@@ -76,4 +79,32 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
+  test: {
+    projects: [
+      {
+        extends: true,
+        plugins: [
+          // The plugin will run tests for the stories defined in your Storybook config
+          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+          storybookTest({
+            configDir: fileURLToPath(new URL(".storybook", import.meta.url)),
+          }),
+        ],
+        test: {
+          name: "storybook",
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright({}),
+            instances: [
+              {
+                browser: "chromium",
+              },
+            ],
+          },
+          setupFiles: [".storybook/vitest.setup.ts"],
+        },
+      },
+    ],
+  },
 });
