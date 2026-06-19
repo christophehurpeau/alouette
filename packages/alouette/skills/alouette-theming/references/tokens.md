@@ -49,7 +49,7 @@ Driven automatically by Button / IconButton / PressableBox / InputText state
 variants; you rarely apply them by hand. Families:
 `--color-interactive-contained-{pressable|hover|focus|active|disabled}`,
 `--color-interactive-outlined-{pressable|hover|focus|active|disabled}`,
-`--color-form-bg[-hover|-focus|-active|-disabled]`, `--color-form-placeholder`.
+`--color-form-placeholder`.
 
 ## Spacing scale
 

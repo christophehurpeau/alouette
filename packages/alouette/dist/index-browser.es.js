@@ -23,13 +23,9 @@ const themeVariables = {
     "--color-translucent": "#ffffff66",
     "--color-disabled-sharp": "#616161",
     "--color-disabled-muted": "#8F8F8F",
-    "--color-disabled-interactive": "#474747",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
     "--color-muted": "#474747",
-    "--color-form-bg": "#FFFFFF",
-    "--color-form-bg-hover": "#FFFFFF",
-    "--color-form-bg-focus": "#FFFFFF",
-    "--color-form-bg-active": "#FFFFFF",
-    "--color-form-bg-disabled": "#E0E0E0",
     "--color-form-border-disabled": "#B8B8B8",
     "--color-form-placeholder": "#616161",
     "--color-form-disabled-text": "#474747",
@@ -74,13 +70,9 @@ const themeVariables = {
     "--color-translucent": "#1f1e1e55",
     "--color-disabled-sharp": "#A8A8A8",
     "--color-disabled-muted": "#A8A8A8",
-    "--color-disabled-interactive": "#C2C2C2",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
     "--color-muted": "#C2C2C2",
-    "--color-form-bg": "#292929",
-    "--color-form-bg-hover": "#292929",
-    "--color-form-bg-focus": "#292929",
-    "--color-form-bg-active": "#292929",
-    "--color-form-bg-disabled": "#333333",
     "--color-form-border-disabled": "#525252",
     "--color-form-placeholder": "#A8A8A8",
     "--color-form-disabled-text": "#C2C2C2",
@@ -125,13 +117,9 @@ const themeVariables = {
     "--color-translucent": "#ffffff66",
     "--color-disabled-sharp": "#616161",
     "--color-disabled-muted": "#8F8F8F",
-    "--color-disabled-interactive": "#474747",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
     "--color-muted": "#474747",
-    "--color-form-bg": "#FFFFFF",
-    "--color-form-bg-hover": "#FFFFFF",
-    "--color-form-bg-focus": "#FFFFFF",
-    "--color-form-bg-active": "#FFFFFF",
-    "--color-form-bg-disabled": "#E0E0E0",
     "--color-form-border-disabled": "#B8B8B8",
     "--color-form-placeholder": "#616161",
     "--color-form-disabled-text": "#474747",
@@ -176,13 +164,9 @@ const themeVariables = {
     "--color-translucent": "#ffffff66",
     "--color-disabled-sharp": "#616161",
     "--color-disabled-muted": "#8F8F8F",
-    "--color-disabled-interactive": "#474747",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
     "--color-muted": "#474747",
-    "--color-form-bg": "#FFFFFF",
-    "--color-form-bg-hover": "#FFFFFF",
-    "--color-form-bg-focus": "#FFFFFF",
-    "--color-form-bg-active": "#FFFFFF",
-    "--color-form-bg-disabled": "#E0E0E0",
     "--color-form-border-disabled": "#B8B8B8",
     "--color-form-placeholder": "#616161",
     "--color-form-disabled-text": "#474747",
@@ -227,13 +211,9 @@ const themeVariables = {
     "--color-translucent": "#ffffff66",
     "--color-disabled-sharp": "#616161",
     "--color-disabled-muted": "#8F8F8F",
-    "--color-disabled-interactive": "#474747",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
     "--color-muted": "#474747",
-    "--color-form-bg": "#FFFFFF",
-    "--color-form-bg-hover": "#FFFFFF",
-    "--color-form-bg-focus": "#FFFFFF",
-    "--color-form-bg-active": "#FFFFFF",
-    "--color-form-bg-disabled": "#E0E0E0",
     "--color-form-border-disabled": "#B8B8B8",
     "--color-form-placeholder": "#616161",
     "--color-form-disabled-text": "#474747",
@@ -278,13 +258,9 @@ const themeVariables = {
     "--color-translucent": "#ffffff66",
     "--color-disabled-sharp": "#616161",
     "--color-disabled-muted": "#8F8F8F",
-    "--color-disabled-interactive": "#474747",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
     "--color-muted": "#474747",
-    "--color-form-bg": "#FFFFFF",
-    "--color-form-bg-hover": "#FFFFFF",
-    "--color-form-bg-focus": "#FFFFFF",
-    "--color-form-bg-active": "#FFFFFF",
-    "--color-form-bg-disabled": "#E0E0E0",
     "--color-form-border-disabled": "#B8B8B8",
     "--color-form-placeholder": "#616161",
     "--color-form-disabled-text": "#474747",
@@ -329,13 +305,9 @@ const themeVariables = {
     "--color-translucent": "#ffffff66",
     "--color-disabled-sharp": "#616161",
     "--color-disabled-muted": "#8F8F8F",
-    "--color-disabled-interactive": "#474747",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
     "--color-muted": "#474747",
-    "--color-form-bg": "#FFFFFF",
-    "--color-form-bg-hover": "#FFFFFF",
-    "--color-form-bg-focus": "#FFFFFF",
-    "--color-form-bg-active": "#FFFFFF",
-    "--color-form-bg-disabled": "#E0E0E0",
     "--color-form-border-disabled": "#B8B8B8",
     "--color-form-placeholder": "#616161",
     "--color-form-disabled-text": "#474747",
@@ -380,13 +352,9 @@ const themeVariables = {
     "--color-translucent": "#1f1e1e55",
     "--color-disabled-sharp": "#A8A8A8",
     "--color-disabled-muted": "#A8A8A8",
-    "--color-disabled-interactive": "#C2C2C2",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
     "--color-muted": "#C2C2C2",
-    "--color-form-bg": "#292929",
-    "--color-form-bg-hover": "#292929",
-    "--color-form-bg-focus": "#292929",
-    "--color-form-bg-active": "#292929",
-    "--color-form-bg-disabled": "#333333",
     "--color-form-border-disabled": "#525252",
     "--color-form-placeholder": "#A8A8A8",
     "--color-form-disabled-text": "#C2C2C2",
@@ -431,13 +399,9 @@ const themeVariables = {
     "--color-translucent": "#1f1e1e55",
     "--color-disabled-sharp": "#A8A8A8",
     "--color-disabled-muted": "#A8A8A8",
-    "--color-disabled-interactive": "#C2C2C2",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
     "--color-muted": "#C2C2C2",
-    "--color-form-bg": "#292929",
-    "--color-form-bg-hover": "#292929",
-    "--color-form-bg-focus": "#292929",
-    "--color-form-bg-active": "#292929",
-    "--color-form-bg-disabled": "#333333",
     "--color-form-border-disabled": "#525252",
     "--color-form-placeholder": "#A8A8A8",
     "--color-form-disabled-text": "#C2C2C2",
@@ -482,13 +446,9 @@ const themeVariables = {
     "--color-translucent": "#1f1e1e55",
     "--color-disabled-sharp": "#A8A8A8",
     "--color-disabled-muted": "#A8A8A8",
-    "--color-disabled-interactive": "#C2C2C2",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
     "--color-muted": "#C2C2C2",
-    "--color-form-bg": "#292929",
-    "--color-form-bg-hover": "#292929",
-    "--color-form-bg-focus": "#292929",
-    "--color-form-bg-active": "#292929",
-    "--color-form-bg-disabled": "#333333",
     "--color-form-border-disabled": "#525252",
     "--color-form-placeholder": "#A8A8A8",
     "--color-form-disabled-text": "#C2C2C2",
@@ -533,13 +493,9 @@ const themeVariables = {
     "--color-translucent": "#1f1e1e55",
     "--color-disabled-sharp": "#A8A8A8",
     "--color-disabled-muted": "#A8A8A8",
-    "--color-disabled-interactive": "#C2C2C2",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
     "--color-muted": "#C2C2C2",
-    "--color-form-bg": "#292929",
-    "--color-form-bg-hover": "#292929",
-    "--color-form-bg-focus": "#292929",
-    "--color-form-bg-active": "#292929",
-    "--color-form-bg-disabled": "#333333",
     "--color-form-border-disabled": "#525252",
     "--color-form-placeholder": "#A8A8A8",
     "--color-form-disabled-text": "#C2C2C2",
@@ -584,13 +540,9 @@ const themeVariables = {
     "--color-translucent": "#1f1e1e55",
     "--color-disabled-sharp": "#A8A8A8",
     "--color-disabled-muted": "#A8A8A8",
-    "--color-disabled-interactive": "#C2C2C2",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
     "--color-muted": "#C2C2C2",
-    "--color-form-bg": "#292929",
-    "--color-form-bg-hover": "#292929",
-    "--color-form-bg-focus": "#292929",
-    "--color-form-bg-active": "#292929",
-    "--color-form-bg-disabled": "#333333",
     "--color-form-border-disabled": "#525252",
     "--color-form-placeholder": "#A8A8A8",
     "--color-form-disabled-text": "#C2C2C2",
@@ -801,7 +753,7 @@ const interactiveBoxVariants = tv({
     boxBaseClasses,
     "cursor-pointer",
     "transition-[transform,background-color,border-color] duration-200 ease-in",
-    "disabled:cursor-not-allowed disabled:opacity-70",
+    "disabled:cursor-not-allowed disabled:opacity-70 aria-disabled:cursor-not-allowed aria-disabled:opacity-70",
     "active:scale-[0.975]"
   ].join(" "),
   variants: {
@@ -1389,8 +1341,8 @@ const buttonVariants = tv(
         }
       },
       variant: {
-        contained: { text: "text-on-accent disabled:text-disabled-sharp" },
-        outlined: { text: "text-sharp disabled:text-disabled-muted" }
+        contained: { text: "text-on-accent" },
+        outlined: { text: "text-sharp" }
       },
       disabled: { true: {}, false: {} }
     },
@@ -1404,12 +1356,12 @@ const buttonVariants = tv(
       {
         variant: "contained",
         disabled: true,
-        class: { icon: "text-disabled-sharp" }
+        class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" }
       },
       {
         variant: "outlined",
         disabled: true,
-        class: { icon: "text-disabled-muted" }
+        class: { icon: "text-disabled-muted", text: "text-disabled-muted" }
       }
     ],
     defaultVariants: { size: "md", variant: "contained" }
@@ -1554,17 +1506,17 @@ function IconButton({
 const inputVariants = tv(
   {
     base: [
-      "text-base text-sharp",
+      "bg-highlight text-base text-sharp",
       "border",
       "transition-[border-color,background-color,outline-color] duration-200 ease-in",
       "outline-interactive-outlined-pressable",
       // to have proper outline color transition
-      process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "bg-form-bg border-interactive-outlined-pressable",
-      "hover:bg-form-bg-hover hover:border-interactive-outlined-hover",
-      "focus:bg-form-bg-focus focus:border-interactive-outlined-focus",
+      process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "border-interactive-outlined-pressable",
+      "hover:border-interactive-outlined-hover",
+      "focus:border-interactive-outlined-focus",
       "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
-      "active:bg-form-bg-active active:border-interactive-outlined-active",
-      "disabled:bg-form-bg-disabled disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed"
+      "active:border-interactive-outlined-active",
+      "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed"
     ].join(" "),
     variants: {
       multiline: {
@@ -1572,10 +1524,10 @@ const inputVariants = tv(
         true: "min-h-[80px] resize-y rounded-xs px-xs py-xs"
       },
       forceStyle: {
-        undefined: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg border-interactive-outlined-pressable" : "",
-        hover: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg-hover border-interactive-outlined-hover" : "",
-        focus: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg-focus border-interactive-outlined-focus outline-1 outline-interactive-outlined-focus outline-offset-0" : "",
-        press: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg-active border-interactive-outlined-active" : ""
+        undefined: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "border-interactive-outlined-pressable" : "",
+        hover: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "border-interactive-outlined-hover" : "",
+        focus: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "border-interactive-outlined-focus outline-1 outline-interactive-outlined-focus outline-offset-0" : "",
+        press: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "border-interactive-outlined-active" : ""
       }
     },
     defaultVariants: {
@@ -1624,6 +1576,7 @@ const InputText = forwardRef(
       {
         ref,
         editable: !disabled,
+        disabled,
         "aria-disabled": disabled === true,
         multiline: multiline === true,
         placeholderTextColor: typeof placeholderColor === "string" ? placeholderColor : void 0,
@@ -1646,12 +1599,20 @@ const THUMB_SIZE = TRACK_HEIGHT * 0.8;
 const TRAVEL_X = TRACK_WIDTH - THUMB_SIZE - THUMB_PADDING * 2;
 const trackVariants = tv(
   {
-    base: "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto outline-interactive-outlined-outline-focus bg-lowered disabled:bg-form-bg-disabled",
+    // TODO if we can fix web to use proper button, change aria-disabled to disabled
+    base: [
+      "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
+      "transition-background-color duration-200 ease-in",
+      "outline-interactive-outlined-outline-focus",
+      "aria-disabled:bg-disabled-interactive-muted"
+    ].join(" "),
     variants: {
       checked: {
-        true: "",
-        false: ""
-      }
+        false: "bg-lowered",
+        true: "bg-lowered"
+      },
+      // Storybook-only static stand-in for the :hover/:active states above.
+      forceStyle: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? { hover: "", focus: "", press: "" } : { hover: "", focus: "", press: "" }
     }
   },
   { twMerge: false }
@@ -1659,9 +1620,9 @@ const trackVariants = tv(
 const thumbVariants = tv(
   {
     base: [
-      "absolute rounded-full shadow-s",
+      "absolute rounded-full shadow-s aria-disabled:shadow-none",
       "transition-transform duration-200 ease-in",
-      "bg-highlight disabled:bg-disabled-muted"
+      "bg-surface aria-disabled:bg-disabled-interactive"
     ].join(" ")
   },
   { twMerge: false }
@@ -1685,6 +1646,7 @@ function useControllableChecked(controlled, onValueChange) {
 function SwitchInner({
   checked,
   disabled,
+  forceStyle,
   onValueChange,
   ...props
 }) {
@@ -1697,11 +1659,8 @@ function SwitchInner({
       "aria-checked": value,
       "aria-disabled": disabled === true,
       disabled,
-      className: trackVariants({ checked: value }),
-      style: {
-        width: TRACK_WIDTH,
-        height: TRACK_HEIGHT
-      },
+      className: trackVariants({ checked: value, forceStyle }),
+      style: { width: TRACK_WIDTH, height: TRACK_HEIGHT },
       onPress: () => {
         setValue(!value);
       },
@@ -1723,8 +1682,8 @@ function SwitchInner({
     }
   );
 }
-function Switch(props) {
-  return /* @__PURE__ */ jsx(SwitchInner, { ...props });
+function Switch({ accent, ...rest }) {
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(SwitchInner, { ...rest }) });
 }
 
 const messageFrameVariants = tv(

@@ -9,18 +9,18 @@ import { useThemeToken } from "../../core/useThemeToken";
 const inputVariants = tv(
   {
     base: [
-      "text-base text-sharp",
+      "bg-highlight text-base text-sharp",
       "border",
       "transition-[border-color,background-color,outline-color] duration-200 ease-in",
       "outline-interactive-outlined-pressable", // to have proper outline color transition
       process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
         ? ""
-        : "bg-form-bg border-interactive-outlined-pressable",
-      "hover:bg-form-bg-hover hover:border-interactive-outlined-hover",
-      "focus:bg-form-bg-focus focus:border-interactive-outlined-focus",
+        : "border-interactive-outlined-pressable",
+      "hover:border-interactive-outlined-hover",
+      "focus:border-interactive-outlined-focus",
       "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
-      "active:bg-form-bg-active active:border-interactive-outlined-active",
-      "disabled:bg-form-bg-disabled disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed",
+      "active:border-interactive-outlined-active",
+      "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed",
     ].join(" "),
     variants: {
       multiline: {
@@ -29,16 +29,16 @@ const inputVariants = tv(
       },
       forceStyle: {
         undefined: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-          ? "bg-form-bg border-interactive-outlined-pressable"
+          ? "border-interactive-outlined-pressable"
           : "",
         hover: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-          ? "bg-form-bg-hover border-interactive-outlined-hover"
+          ? "border-interactive-outlined-hover"
           : "",
         focus: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-          ? "bg-form-bg-focus border-interactive-outlined-focus outline-1 outline-interactive-outlined-focus outline-offset-0"
+          ? "border-interactive-outlined-focus outline-1 outline-interactive-outlined-focus outline-offset-0"
           : "",
         press: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-          ? "bg-form-bg-active border-interactive-outlined-active"
+          ? "border-interactive-outlined-active"
           : "",
       },
     },

@@ -116,14 +116,10 @@ function buildThemeVars(
           translucent: mode === "dark" ? TRANSLUCENT_DARK : TRANSLUCENT_LIGHT,
           "disabled-sharp": grayForMode(mode, 8, 8),
           "disabled-muted": grayForMode(mode, 8, 7),
-          "disabled-interactive": grayForMode(mode, 9, 9),
+          "disabled-interactive": grayForMode(mode, 7, 6),
+          "disabled-interactive-muted": grayForMode(mode, 4, 4),
           ["muted"]: grayForMode(mode, 9, 9), // rest dark = 68% light = 30%
 
-          "form-bg": grayForMode(mode, 3, 1),
-          "form-bg-hover": grayForMode(mode, 3, 1),
-          "form-bg-focus": grayForMode(mode, 3, 1),
-          "form-bg-active": grayForMode(mode, 3, 1),
-          "form-bg-disabled": grayForMode(mode, 4, 4),
           "form-border-disabled": grayForMode(mode, 7, 6),
           "form-placeholder": grayForMode(mode, 8, 8),
           "form-disabled-text": grayForMode(mode, 9, 9),

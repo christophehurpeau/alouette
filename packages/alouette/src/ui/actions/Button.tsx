@@ -30,8 +30,8 @@ const buttonVariants = tv(
         },
       },
       variant: {
-        contained: { text: "text-on-accent disabled:text-disabled-sharp" },
-        outlined: { text: "text-sharp disabled:text-disabled-muted" },
+        contained: { text: "text-on-accent" },
+        outlined: { text: "text-sharp" },
       },
       disabled: { true: {}, false: {} },
     },
@@ -45,12 +45,12 @@ const buttonVariants = tv(
       {
         variant: "contained",
         disabled: true,
-        class: { icon: "text-disabled-sharp" },
+        class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
       },
       {
         variant: "outlined",
         disabled: true,
-        class: { icon: "text-disabled-muted" },
+        class: { icon: "text-disabled-muted", text: "text-disabled-muted" },
       },
     ],
     defaultVariants: { size: "md", variant: "contained" },

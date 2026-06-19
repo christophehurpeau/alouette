@@ -108,11 +108,6 @@ function ThemeTokens({ themeMode }: ThemeTokensProps): ReactNode {
           <TokenSwatch token="muted" />
         </TokenGroup>
         <TokenGroup group="Form">
-          <TokenSwatch token="form-bg" />
-          <TokenSwatch token="form-bg-hover" />
-          <TokenSwatch token="form-bg-focus" />
-          <TokenSwatch token="form-bg-active" />
-          <TokenSwatch token="form-bg-disabled" />
           <TokenSwatch token="form-border-disabled" />
           <TokenSwatch token="form-placeholder" />
           <TokenSwatch token="form-disabled-text" />

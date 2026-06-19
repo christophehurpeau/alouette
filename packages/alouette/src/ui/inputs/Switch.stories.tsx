@@ -25,7 +25,7 @@ export const PreviewSwitchStory: ThisStory = {
 
 export const Variants: ThisStory = {
   render: () => (
-    <Story noDarkMode>
+    <Story>
       <Story.Section title="Variants">
         {([undefined, "brand", "danger", "success"] as const).map((accent) => (
           <Story.SubSection

@@ -80,13 +80,9 @@
   --color-translucent: #ffffff66;
   --color-disabled-sharp: #616161;
   --color-disabled-muted: #8F8F8F;
-  --color-disabled-interactive: #474747;
+  --color-disabled-interactive: #B8B8B8;
+  --color-disabled-interactive-muted: #E0E0E0;
   --color-muted: #474747;
-  --color-form-bg: #FFFFFF;
-  --color-form-bg-hover: #FFFFFF;
-  --color-form-bg-focus: #FFFFFF;
-  --color-form-bg-active: #FFFFFF;
-  --color-form-bg-disabled: #E0E0E0;
   --color-form-border-disabled: #B8B8B8;
   --color-form-placeholder: #616161;
   --color-form-disabled-text: #474747;
@@ -171,13 +167,9 @@
     --color-translucent: #ffffff66;
     --color-disabled-sharp: #616161;
     --color-disabled-muted: #8F8F8F;
-    --color-disabled-interactive: #474747;
+    --color-disabled-interactive: #B8B8B8;
+    --color-disabled-interactive-muted: #E0E0E0;
     --color-muted: #474747;
-    --color-form-bg: #FFFFFF;
-    --color-form-bg-hover: #FFFFFF;
-    --color-form-bg-focus: #FFFFFF;
-    --color-form-bg-active: #FFFFFF;
-    --color-form-bg-disabled: #E0E0E0;
     --color-form-border-disabled: #B8B8B8;
     --color-form-placeholder: #616161;
     --color-form-disabled-text: #474747;
@@ -223,13 +215,9 @@
     --color-translucent: #1f1e1e55;
     --color-disabled-sharp: #A8A8A8;
     --color-disabled-muted: #A8A8A8;
-    --color-disabled-interactive: #C2C2C2;
+    --color-disabled-interactive: #525252;
+    --color-disabled-interactive-muted: #333333;
     --color-muted: #C2C2C2;
-    --color-form-bg: #292929;
-    --color-form-bg-hover: #292929;
-    --color-form-bg-focus: #292929;
-    --color-form-bg-active: #292929;
-    --color-form-bg-disabled: #333333;
     --color-form-border-disabled: #525252;
     --color-form-placeholder: #A8A8A8;
     --color-form-disabled-text: #C2C2C2;
@@ -628,17 +616,6 @@
 
   /* let height/width keyframes interpolate to/from auto (collapse-in/out) on web */
   :root { interpolate-size: allow-keywords; }
-
-  /* mimic the native viewport full width/height + flex */
-  /* body,
-  #root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    min-width: calc(100vw - (100vw - 100%));
-    margin: 0;
-  } */
-  /* reserve space for scrollbar */
 }
 
 /* keyframes referenced by the --animate-* theme tokens above. */

@@ -42,7 +42,7 @@ function SwitchInner({
   const [trackBg, thumb, disabledTrackBg, disabledThumb] = useThemeToken([
     "--color-lowered",
     "--color-highlight",
-    "--color-form-bg-disabled",
+    "--color-disabled-interactive-muted",
     "--color-disabled-muted",
   ]);
   const track = disabled ? disabledTrackBg : trackBg;

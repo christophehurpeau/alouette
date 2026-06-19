@@ -38,7 +38,7 @@ export const interactiveBoxVariants = tv({
     boxBaseClasses,
     "cursor-pointer",
     "transition-[transform,background-color,border-color] duration-200 ease-in",
-    "disabled:cursor-not-allowed disabled:opacity-70",
+    "disabled:cursor-not-allowed disabled:opacity-70 aria-disabled:cursor-not-allowed aria-disabled:opacity-70",
     "active:scale-[0.975]",
   ].join(" "),
   variants: {

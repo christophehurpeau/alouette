@@ -1,6 +1,8 @@
 import { type ReactNode, useCallback, useState } from "react";
 import { View } from "react-native";
 import { tv } from "tailwind-variants";
+import type { Accent } from "../../core/AlouetteConfig";
+import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBox } from "../containers/Box";
 
 const TRACK_HEIGHT = 44;
@@ -12,12 +14,21 @@ const TRAVEL_X = TRACK_WIDTH - THUMB_SIZE - THUMB_PADDING * 2;
 const trackVariants = tv(
   {
     // TODO if we can fix web to use proper button, change aria-disabled to disabled
-    base: "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto outline-interactive-outlined-outline-focus bg-lowered aria-disabled:bg-form-bg-disabled",
+    base: [
+      "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
+      "transition-background-color duration-200 ease-in",
+      "outline-interactive-outlined-outline-focus",
+      "aria-disabled:bg-disabled-interactive-muted",
+    ].join(" "),
     variants: {
       checked: {
-        true: "",
-        false: "",
+        false: "bg-lowered",
+        true: "bg-lowered",
       },
+      // Storybook-only static stand-in for the :hover/:active states above.
+      forceStyle: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+        ? { hover: "", focus: "", press: "" }
+        : { hover: "", focus: "", press: "" },
     },
   },
   { twMerge: false },
@@ -26,17 +37,19 @@ const trackVariants = tv(
 const thumbVariants = tv(
   {
     base: [
-      "absolute rounded-full shadow-s",
+      "absolute rounded-full shadow-s aria-disabled:shadow-none",
       "transition-transform duration-200 ease-in",
-      "bg-highlight aria-disabled:bg-disabled-muted",
+      "bg-surface aria-disabled:bg-disabled-interactive",
     ].join(" "),
   },
   { twMerge: false },
 );
 
 export interface SwitchProps {
+  accent?: Accent;
   checked?: boolean;
   disabled?: boolean;
+  forceStyle?: "focus" | "hover" | "press";
   onValueChange?: (value: boolean) => void;
   "aria-labelledby"?: string;
   testID?: string;
@@ -65,9 +78,10 @@ function useControllableChecked(
 function SwitchInner({
   checked,
   disabled,
+  forceStyle,
   onValueChange,
   ...props
-}: SwitchProps): ReactNode {
+}: Omit<SwitchProps, "accent">): ReactNode {
   const [value, setValue] = useControllableChecked(checked, onValueChange);
 
   return (
@@ -77,11 +91,8 @@ function SwitchInner({
       aria-checked={value}
       aria-disabled={disabled === true}
       disabled={disabled}
-      className={trackVariants({ checked: value })}
-      style={{
-        width: TRACK_WIDTH,
-        height: TRACK_HEIGHT,
-      }}
+      className={trackVariants({ checked: value, forceStyle })}
+      style={{ width: TRACK_WIDTH, height: TRACK_HEIGHT }}
       onPress={() => {
         setValue(!value);
       }}
@@ -102,6 +113,10 @@ function SwitchInner({
   );
 }
 
-export function Switch(props: SwitchProps): ReactNode {
-  return <SwitchInner {...props} />;
+export function Switch({ accent, ...rest }: SwitchProps): ReactNode {
+  return (
+    <AccentScope accent={accent}>
+      <SwitchInner {...rest} />
+    </AccentScope>
+  );
 }
