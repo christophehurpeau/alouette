@@ -100,6 +100,7 @@ export const InputText = forwardRef<RNTextInput, InputTextProps>(
       <RNTextInput
         ref={ref}
         editable={!disabled}
+        disabled={disabled}
         aria-disabled={disabled === true}
         multiline={multiline === true}
         placeholderTextColor={
