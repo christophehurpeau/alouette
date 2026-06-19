@@ -55,13 +55,13 @@ export const VariantsSurfaceStory: ThisStory = {
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Surface variant="lowered">
-              <Text>Lowered surface</Text>
+            <Surface variant="highlight">
+              <Text>Highlighted surface</Text>
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Surface variant="translucent">
-              <Text>Translucent surface</Text>
+            <Surface variant="lowered">
+              <Text>Lowered surface</Text>
             </Surface>
           </StoryGrid.Col>
         </StoryGrid.Row>
