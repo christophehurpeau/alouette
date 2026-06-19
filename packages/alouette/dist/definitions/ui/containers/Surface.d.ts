@@ -1,17 +1,72 @@
-import type { GetProps } from "@tamagui/core";
-export declare const Surface: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps | (import("@tamagui/core").RNTamaguiViewNonStyleProps & void), import("@tamagui/web").StackStyleBase, {
-    size?: "lg" | "md" | "sm" | undefined;
-    interactive?: boolean | import("csstype").Property.Cursor | undefined;
-    tint?: "accent" | undefined;
-    center?: boolean | undefined;
-    lowered?: boolean | undefined;
-    absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
-    shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
-    square?: number | undefined;
-    withBorder?: import("@tamagui/web").SizeTokens | undefined;
-    withFocusVisibleOutline?: boolean | undefined;
-    withBackground?: "interactive" | "highlight" | "surface" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
-export type SurfaceProps = GetProps<typeof Surface>;
+import type { View as RNView } from "react-native";
+import { type VariantProps } from "tailwind-variants";
+import type { Accent } from "../../core/AlouetteConfig";
+import { type BoxProps } from "./Box";
+declare const surfaceVariants: import("tailwind-variants").TVReturnType<{
+    size: {
+        sm: string;
+        md: string;
+        lg: string;
+    };
+    variant: {
+        surface: string;
+        highlight: string;
+        "highlight-accent": string;
+        lowered: string;
+        translucent: string;
+    };
+    shadow: {
+        none: string;
+        s: string;
+        m: string;
+        l: string;
+        lowered: string;
+    };
+}, undefined, "overflow-hidden", {
+    size: {
+        sm: string;
+        md: string;
+        lg: string;
+    };
+    variant: {
+        surface: string;
+        highlight: string;
+        "highlight-accent": string;
+        lowered: string;
+        translucent: string;
+    };
+    shadow: {
+        none: string;
+        s: string;
+        m: string;
+        l: string;
+        lowered: string;
+    };
+}, undefined, import("tailwind-variants").TVReturnType<{
+    size: {
+        sm: string;
+        md: string;
+        lg: string;
+    };
+    variant: {
+        surface: string;
+        highlight: string;
+        "highlight-accent": string;
+        lowered: string;
+        translucent: string;
+    };
+    shadow: {
+        none: string;
+        s: string;
+        m: string;
+        l: string;
+        lowered: string;
+    };
+}, undefined, "overflow-hidden", unknown, unknown, undefined>>;
+type SurfaceVariantProps = VariantProps<typeof surfaceVariants>;
+export interface SurfaceProps extends BoxProps, SurfaceVariantProps {
+    accent?: Accent;
+}
+export declare const Surface: import("react").ForwardRefExoticComponent<SurfaceProps & import("react").RefAttributes<RNView>>;
+export {};
 //# sourceMappingURL=Surface.d.ts.map

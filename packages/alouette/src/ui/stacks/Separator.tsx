@@ -1,30 +1,32 @@
-import type { GetProps } from "@tamagui/core";
-import { View, styled } from "@tamagui/core";
+import { forwardRef } from "react";
+import { View as RNView, type ViewProps as RNViewProps } from "react-native";
+import { type VariantProps, tv } from "tailwind-variants";
 
-export const Separator = styled(View, {
-  flexGrow: 1,
-  flexShrink: 0,
-  height: 0,
-  maxHeight: 0,
-  borderColor: "$border-sharp",
-  borderWidth: 0,
-  borderBottomWidth: 1,
-  y: -0.5,
-
+const separatorVariants = tv({
+  base: "border-border-sharp",
   variants: {
     vertical: {
-      true: {
-        height: "auto",
-        maxHeight: "auto",
-        width: 0,
-        maxWidth: 0,
-        borderBottomWidth: 0,
-        borderRightWidth: 1,
-        y: 0,
-        x: -0.5,
-      },
+      true: "self-stretch border-r w-px",
+      false: "self-stretch border-b h-px",
     },
-  } as const,
-} as const);
+  },
+  defaultVariants: {
+    vertical: false,
+  },
+});
 
-export type SeparatorProps = GetProps<typeof Separator>;
+type SeparatorVariantProps = VariantProps<typeof separatorVariants>;
+
+export interface SeparatorProps extends RNViewProps, SeparatorVariantProps {}
+
+export const Separator = forwardRef<RNView, SeparatorProps>(
+  ({ className, vertical, ...props }, ref) => {
+    return (
+      <RNView
+        ref={ref}
+        className={separatorVariants({ vertical, className })}
+        {...props}
+      />
+    );
+  },
+);

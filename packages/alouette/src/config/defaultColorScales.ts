@@ -1,5 +1,7 @@
-import { createColorScale } from "./colorScales";
-import type { AlouetteColorScales } from "./colorScales";
+// eslint-disable-next-line import-x/extensions
+import type { AlouetteColorScales } from "./colorScales.ts";
+// eslint-disable-next-line import-x/extensions
+import { createColorScale } from "./colorScales.ts";
 
 export const defaultColorScales: AlouetteColorScales = {
   "grayscale.light": createColorScale({

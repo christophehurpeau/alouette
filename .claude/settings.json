@@ -1,0 +1,5 @@
+{
+  "permissions": {
+    "allow": ["Bash(yarn tsc)", "Bash(yarn build:css)", "Bash(yarn test *)"]
+  }
+}

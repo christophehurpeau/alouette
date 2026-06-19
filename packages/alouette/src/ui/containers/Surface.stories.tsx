@@ -14,50 +14,40 @@ export default {
       "A surface container has layer, padding and rounded corners.",
     docs: {
       description: {
-        component: `
-### Features
+        component: `### Features
 - Surface backgrounds for elevation and layering
-- Variant: \`layer\` controls the surface tone (default | highlight | lowered)
+- Variant: \`size\` controls padding + radius (sm | md | lg)
+- Variant: \`shadow\` controls elevation (s | m | l)
+- Variant: \`lowered\` pairs layer="lowered" with shadow="lowered"
 
 ### Usage
 ~~~tsx
 <Surface>Primary content</Surface>
-<Surface layer="highlight">Accent surface</Surface>
-<Surface layer="lowered">Lowered surface</Surface>
+<Surface size="lg" shadow="m">Larger surface</Surface>
+<Surface lowered>Sunken surface</Surface>
 ~~~`,
       },
-    },
-  },
-  argTypes: {
-    shadow: {
-      description:
-        'Optional elevation visual (s | m | l). Use "lowered" only with layer="lowered".',
-      control: { type: "select" },
-      options: ["s", "m", "l", "lowered"],
-      table: { defaultValue: { summary: undefined } },
-    },
-    children: {
-      control: "text",
-      description: "Content rendered inside the surface",
     },
   },
 } satisfies Meta<typeof Surface>;
 
 export const PreviewSurfaceStory: ThisStory = {
+  name: "Surface Preview",
   parameters: {
     layout: "padded",
   },
-  args: {
-    children: <Text>Surface content</Text>,
-  },
-  render: (args) => <Surface {...args} />,
+  render: () => (
+    <Surface>
+      <Text>Surface content</Text>
+    </Surface>
+  ),
 };
 
 export const VariantsSurfaceStory: ThisStory = {
   name: "Variants",
   render: () => (
     <Story>
-      <Story.Section title="Depths">
+      <Story.Section title="Variants">
         <StoryGrid.Row flexWrap>
           <StoryGrid.Col>
             <Surface>
@@ -65,12 +55,12 @@ export const VariantsSurfaceStory: ThisStory = {
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Surface layer="highlight">
-              <Text>Highlight surface</Text>
+            <Surface variant="highlight">
+              <Text>Highlighted surface</Text>
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col>
-            <Surface lowered>
+            <Surface variant="lowered">
               <Text>Lowered surface</Text>
             </Surface>
           </StoryGrid.Col>
@@ -80,22 +70,41 @@ export const VariantsSurfaceStory: ThisStory = {
         <StoryGrid.Row flexWrap>
           <StoryGrid.Col title="Small">
             <Surface shadow="s">
-              <Text>shadow="s"</Text>
+              <Text>shadow=&quot;s&quot;</Text>
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col title="Medium">
             <Surface shadow="m">
-              <Text>shadow="m"</Text>
+              <Text>shadow=&quot;m&quot;</Text>
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col title="Large">
             <Surface shadow="l">
-              <Text>shadow="l"</Text>
+              <Text>shadow=&quot;l&quot;</Text>
             </Surface>
           </StoryGrid.Col>
-          <StoryGrid.Col title="Lowered (layer lowered)">
-            <Surface lowered>
+          <StoryGrid.Col title="Lowered">
+            <Surface variant="lowered">
               <Text>lowered</Text>
+            </Surface>
+          </StoryGrid.Col>
+        </StoryGrid.Row>
+      </Story.Section>
+      <Story.Section title="Sizes">
+        <StoryGrid.Row flexWrap>
+          <StoryGrid.Col title="sm">
+            <Surface size="sm">
+              <Text>size=&quot;sm&quot;</Text>
+            </Surface>
+          </StoryGrid.Col>
+          <StoryGrid.Col title="md">
+            <Surface size="md">
+              <Text>size=&quot;md&quot;</Text>
+            </Surface>
+          </StoryGrid.Col>
+          <StoryGrid.Col title="lg">
+            <Surface size="lg">
+              <Text>size=&quot;lg&quot;</Text>
             </Surface>
           </StoryGrid.Col>
         </StoryGrid.Row>

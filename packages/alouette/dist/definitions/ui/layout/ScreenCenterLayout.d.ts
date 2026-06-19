@@ -4,6 +4,6 @@ interface ScreenCenterLayoutProps {
     content: ReactNode;
     footer: ReactNode;
 }
-export declare function ScreenCenterLayout({ header, content, footer, }: ScreenCenterLayoutProps): import("react/jsx-runtime").JSX.Element;
+export declare function ScreenCenterLayout({ header, content, footer, }: ScreenCenterLayoutProps): ReactNode;
 export {};
 //# sourceMappingURL=ScreenCenterLayout.d.ts.map

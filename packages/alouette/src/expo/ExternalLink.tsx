@@ -1,9 +1,9 @@
-import { useTheme } from "@tamagui/core";
 import * as WebBrowser from "expo-web-browser";
 import { WebBrowserPresentationStyle } from "expo-web-browser";
 import type { ComponentProps, FunctionComponent, ReactNode } from "react";
 import { Linking } from "react-native";
 import type { GestureResponderEvent } from "react-native";
+import { useThemeToken } from "../core/useThemeToken";
 
 export interface ExternalLinkRequiredComponentProps {
   onPress?: (event: GestureResponderEvent) => Promise<void> | void;
@@ -14,16 +14,19 @@ export interface ExternalOpenLinkBehavior {
   web: "targetBlank" | "targetSelf";
 }
 const useOpenExternalLink = () => {
-  const theme = useTheme();
+  const [textSharp, bgSurface] = useThemeToken([
+    "--color-sharp",
+    "--color-surface",
+  ]);
   return async (href: string, openLinkBehavior: ExternalOpenLinkBehavior) => {
     switch (openLinkBehavior.native) {
       case "webBrowser": {
         return WebBrowser.openBrowserAsync(href, {
-          controlsColor: theme["$text-sharp"]!.val,
+          controlsColor: textSharp,
           dismissButtonStyle: "close",
           presentationStyle: WebBrowserPresentationStyle.PAGE_SHEET,
-          toolbarColor: theme["$bg-surface"]!.val,
-          secondaryToolbarColor: theme["$bg-surface"]!.val,
+          toolbarColor: bgSurface,
+          secondaryToolbarColor: bgSurface,
           readerMode: false,
           enableBarCollapsing: false,
           showTitle: true,

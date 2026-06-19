@@ -1,1 +1,1 @@
-{"version":3,"file":"View.d.ts","sourceRoot":"","sources":["../../../../src/ui/primitives/View.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,IAAI,EAAE,MAAM,eAAe,CAAC;AAC1C,OAAO,KAAK,EAAE,cAAc,EAAE,MAAM,OAAO,CAAC;AAE5C,OAAO,EAAE,IAAI,EAAE,MAAM,eAAe,CAAC;AACrC,MAAM,MAAM,SAAS,GAAG,cAAc,CAAC,OAAO,IAAI,CAAC,CAAC"}
+{"version":3,"file":"View.d.ts","sourceRoot":"","sources":["../../../../src/ui/primitives/View.tsx"],"names":[],"mappings":"AACA,OAAO,EAAE,IAAI,IAAI,MAAM,EAAE,KAAK,SAAS,IAAI,WAAW,EAAE,MAAM,cAAc,CAAC;AAE7E,MAAM,MAAM,SAAS,GAAG,WAAW,CAAC;AAEpC,eAAO,MAAM,IAAI,gGAEf,CAAC"}

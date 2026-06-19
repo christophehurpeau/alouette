@@ -1,12 +1,31 @@
-import type { GetProps } from "@tamagui/core";
-export declare const StoryTitle: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/core").RNTamaguiTextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    size?: import("@tamagui/web").FontSizeTokens | undefined;
-    tint?: "accent" | "muted" | "onAccent" | "sharp" | undefined;
-    inherit?: boolean | undefined;
-    family?: "$body" | "$heading" | "$body-monospace" | undefined;
-    disabledSharp?: boolean | undefined;
-    weight?: "$regular" | "$bold" | "$extraBold" | undefined;
-    level?: 1 | 2 | 3 | 4 | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
-export type StoryTitleProps = GetProps<typeof StoryTitle>;
+import type { Text as RNText } from "react-native";
+import { type VariantProps } from "tailwind-variants";
+import { type TextProps } from "../primitives/Text";
+declare const storyTitleVariants: import("tailwind-variants").TVReturnType<{
+    level: {
+        1: string;
+        2: string;
+        3: string;
+        4: string;
+    };
+}, undefined, "font-heading-extrabold text-sharp", {
+    level: {
+        1: string;
+        2: string;
+        3: string;
+        4: string;
+    };
+}, undefined, import("tailwind-variants").TVReturnType<{
+    level: {
+        1: string;
+        2: string;
+        3: string;
+        4: string;
+    };
+}, undefined, "font-heading-extrabold text-sharp", unknown, unknown, undefined>>;
+type StoryTitleVariantProps = VariantProps<typeof storyTitleVariants>;
+export interface StoryTitleProps extends TextProps, StoryTitleVariantProps {
+}
+export declare const StoryTitle: import("react").ForwardRefExoticComponent<StoryTitleProps & import("react").RefAttributes<RNText>>;
+export {};
 //# sourceMappingURL=StoryTitle.d.ts.map

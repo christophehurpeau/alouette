@@ -1,0 +1,151 @@
+---
+name: alouette-actions
+description: >
+  Buttons (Button, IconButton, ExternalLinkButton, InternalLinkButton) and
+  pressable surfaces (PressableBox, PressableListItem). variant is
+  contained|outlined, size is sm|md, accent defaults to brand, ghost is a
+  boolean. Button label is the required text prop (not children); IconButton
+  requires aria-label. Interactive hover/focus/active/disabled states are built
+  in. Load when adding buttons or custom pressable elements.
+type: core
+library: alouette
+library_version: "19.0.0-beta.1"
+requires:
+  - alouette-theming
+sources:
+  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Button.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/IconButton.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/PressableBox.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/PressableListItem.tsx"
+---
+
+This skill builds on alouette-theming. Read it first for the accent model.
+
+# alouette — Actions
+
+Buttons and pressables carry interactive token states (hover/focus/active/
+disabled) automatically. `variant` is `"contained" | "outlined"`; `size` is
+`"sm" | "md"`; `accent` defaults to `"brand"`; `ghost` is a boolean.
+
+## Setup
+
+```tsx
+import { Button } from "alouette";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
+
+<Button text="Save" icon={<CheckRegularIcon />} onPress={save} />;
+```
+
+## Core Patterns
+
+### Button variants and accents
+
+```tsx
+<Button text="Save" />                                 {/* contained, brand */}
+<Button variant="outlined" text="Cancel" />
+<Button variant="outlined" ghost text="Dismiss" />
+<Button accent="danger" text="Delete" />
+<Button size="sm" text="Small" />
+```
+
+### Icon-only button
+
+```tsx
+import { IconButton } from "alouette";
+import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
+
+<IconButton icon={<XRegularIcon />} aria-label="Close" onPress={close} />;
+```
+
+`size` is `"sm" | "md"` or a number (custom diameter in px); `iconSize="fill"`
+makes the icon take 80% of the button.
+
+### Pressable surfaces
+
+`PressableBox` is a themed, pressable container (`variant`, `ghost`, `accent`,
+`forceStyle`). `PressableListItem` is a row with a trailing caret.
+
+```tsx
+import { PressableBox, PressableListItem, Text } from "alouette";
+
+<PressableBox onPress={open}>
+  <Text>Custom card</Text>
+</PressableBox>
+
+<PressableListItem onPress={open}>
+  <Text>Row label</Text>
+</PressableListItem>;
+```
+
+### Link buttons
+
+```tsx
+import { ExternalLinkButton, InternalLinkButton } from "alouette";
+
+<ExternalLinkButton href="https://example.com" text="Open" />
+<InternalLinkButton href="/settings" text="Settings" />
+```
+
+For full external-link control (in-app browser vs new tab), see
+alouette-external-links/SKILL.md.
+
+## Common Mistakes
+
+### HIGH Passing the button label as children instead of text
+
+Wrong:
+
+```tsx
+<Button>Save</Button>
+```
+
+Correct:
+
+```tsx
+<Button text="Save" />
+```
+
+`Button` renders its label from the required `text` prop (plus an optional `icon`
+prop); children are ignored, so `<Button>Save</Button>` shows no label.
+
+Source: packages/alouette/src/ui/actions/Button.tsx
+
+### HIGH Using non-existent variant names
+
+Wrong:
+
+```tsx
+<Button variant="ghost-contained" text="Cancel" />
+<Button variant="primary" text="Save" />
+```
+
+Correct:
+
+```tsx
+<Button variant="outlined" ghost text="Cancel" />
+<Button accent="brand" text="Save" />
+```
+
+`variant` is only `"contained" | "outlined"`; `ghost` is a separate boolean and
+the accent is chosen via the `accent` prop.
+
+Source: packages/alouette/src/ui/data/PressableBox.tsx, ui/actions/Button.tsx
+
+### MEDIUM IconButton without aria-label
+
+Wrong:
+
+```tsx
+<IconButton icon={<XRegularIcon />} onPress={close} />
+```
+
+Correct:
+
+```tsx
+<IconButton icon={<XRegularIcon />} aria-label="Close" onPress={close} />
+```
+
+`IconButton` types `aria-label` as required because it has no text label;
+omitting it is an accessibility failure and a type error.
+
+Source: packages/alouette/src/ui/actions/IconButton.tsx

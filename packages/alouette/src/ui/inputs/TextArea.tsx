@@ -1,22 +1,9 @@
-import type { GetProps } from "@tamagui/core";
-import { styled } from "@tamagui/core";
-import type { FunctionComponent } from "react";
-import type { InputTextProps } from "./InputText";
-import { InputText } from "./InputText";
+import { forwardRef } from "react";
+import type { TextInput as RNTextInput } from "react-native";
+import { InputText, type InputTextProps } from "./InputText";
 
-const TextAreaFrame = styled(InputText, {
-  render: "textarea",
-  multiline: true,
+export type TextAreaProps = Omit<InputTextProps, "multiline">;
 
-  height: "auto",
-  minHeight: 80,
-  borderRadius: "$1.0",
-  paddingHorizontal: "$0.75",
+export const TextArea = forwardRef<RNTextInput, TextAreaProps>((props, ref) => {
+  return <InputText ref={ref} multiline {...props} />;
 });
-
-export type TextAreaProps = Pick<
-  GetProps<typeof TextAreaFrame>,
-  keyof InputTextProps
->;
-
-export const TextArea: FunctionComponent<TextAreaProps> = TextAreaFrame;

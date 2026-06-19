@@ -1,16 +1,22 @@
-import type { ThemeProps } from "@tamagui/core";
-import { styled } from "@tamagui/core";
 import type { ReactNode } from "react";
-import { Box } from "../containers/Box";
+import { View } from "react-native";
+import type { Accent } from "../../core/AlouetteConfig";
+import { AccentScope } from "../containers/AccentScope";
 
 export interface GradientBackgroundProps {
-  theme?: ThemeProps["name"];
   children?: ReactNode;
+  accent?: Accent;
 }
 
-export const GradientBackground = styled(Box, {
-  absoluteFill: true,
-  backgroundImage:
-    "linear-gradient(0deg, $bg-screen-gradient-end 5%, $bg-screen-gradient-middle 80%, $bg-screen-gradient-start 98%)",
-  position: "absolute", // needed to override "static" position for backgroundImage tamagui
-});
+export function GradientBackground({
+  accent,
+  children,
+}: GradientBackgroundProps): ReactNode {
+  return (
+    <AccentScope accent={accent}>
+      <View className="absolute inset-0 bg-linear-to-t from-screen-gradient-end from-5% via-screen-gradient-middle via-80% to-screen-gradient-start to-98%">
+        {children}
+      </View>
+    </AccentScope>
+  );
+}

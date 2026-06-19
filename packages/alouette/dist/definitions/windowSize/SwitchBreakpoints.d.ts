@@ -5,15 +5,15 @@ type SwitchBreakpointsProps = SetRequired<Partial<Record<BreakpointNames, ReactN
     children?: never;
 };
 /**
- * Display based on current breakpoint
+ * Display based on current breakpoint via responsive utility classes.
  *
- * This mode is SSR friendly
+ * On web this is SSR-friendly (CSS handles the switching). On native it
+ * still relies on NativeWind's runtime media-query evaluation.
  */
 export declare function SwitchBreakpointsUsingDisplayNone({ ...breakpoints }: SwitchBreakpointsProps): ReactNode;
 /**
- * Display based on current breakpoint
- *
- * This mode is not SSR friendly
+ * Display based on current breakpoint via conditional rendering. Only the
+ * matching slot is in the tree — heavier components stay unmounted.
  */
 export declare function SwitchBreakpointsUsingNull({ children, ...breakpoints }: SwitchBreakpointsProps): ReactNode;
 export {};

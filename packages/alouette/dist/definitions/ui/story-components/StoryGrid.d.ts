@@ -1,10 +1,11 @@
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 export interface StoryGridRowProps {
     children: NonNullable<ReactNode>;
     breakpoint?: "medium" | "small";
     flexWrap?: boolean;
+    loose?: boolean;
 }
-declare function StoryGridRow({ children, breakpoint, flexWrap, }: StoryGridRowProps): ReactNode;
+declare function StoryGridRow({ children, breakpoint, flexWrap, loose, }: StoryGridRowProps): ReactNode;
 export interface StoryGridColProps {
     children: NonNullable<ReactNode>;
     title?: string;

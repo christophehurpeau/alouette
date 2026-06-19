@@ -1,59 +1,38 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Story } from "../story-components/Story";
+import { Story, accents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { TextArea } from "./TextArea";
+
+type ThisStory = StoryObj<typeof TextArea>;
 
 export default {
   title: "alouette/Inputs/TextArea",
   component: TextArea,
   parameters: {
-    componentSubtitle: "A text area field for multi-line input",
+    componentSubtitle: "Multi-line text input.",
   },
   argTypes: {
-    theme: {
-      description: "The semantic theme of the input",
-      control: "select",
-      options: ["brand", "danger", "success"],
-      table: {
-        defaultValue: { summary: "brand" },
-      },
-    },
-    placeholder: {
-      description: "Placeholder text when input is empty",
-      control: "text",
-    },
-    disabled: {
-      description: "Whether the input is disabled",
-      control: "boolean",
-      table: {
-        defaultValue: { summary: "false" },
-      },
-    },
-    value: {
-      description: "The current value of the input",
-      control: "text",
-    },
+    placeholder: { control: "text" },
+    disabled: { control: "boolean" },
+    value: { control: "text" },
   },
 } satisfies Meta<typeof TextArea>;
 
-export const PreviewTextAreaStory: StoryObj<typeof TextArea> = {
-  args: {
-    theme: "brand",
-    placeholder: "Enter text...",
-  },
+export const PreviewTextAreaStory: ThisStory = {
+  args: { placeholder: "Enter text..." },
   render: (args) => <TextArea {...args} />,
 };
 
-export const Variants: StoryObj<typeof TextArea> = {
+export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        {([undefined, "brand", "danger", "success"] as const).map((theme) => (
+        {([undefined, ...accents] as const).map((accent) => (
           <Story.SubSection
-            key={theme}
+            key={accent || "default"}
             withSurface
-            title={theme ?? "Default"}
-            theme={theme}
+            title={accent ?? "Default"}
+            accent={accent}
           >
             <StoryGrid.Row flexWrap>
               {(
@@ -64,7 +43,6 @@ export const Variants: StoryObj<typeof TextArea> = {
                   title={state || "default"}
                 >
                   <TextArea
-                    {...(theme ? { theme } : {})}
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
                   />
@@ -80,7 +58,6 @@ export const Variants: StoryObj<typeof TextArea> = {
                   title={state || "default"}
                 >
                   <TextArea
-                    {...(theme ? { theme } : {})}
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
                     placeholder="Placeholder"
@@ -97,7 +74,6 @@ export const Variants: StoryObj<typeof TextArea> = {
                   title={state || "default"}
                 >
                   <TextArea
-                    {...(theme ? { theme } : {})}
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
                     value="Value"

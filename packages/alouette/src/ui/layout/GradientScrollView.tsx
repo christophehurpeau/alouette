@@ -1,43 +1,64 @@
-import type { GetProps } from "@tamagui/core";
-import { View, styled } from "@tamagui/core";
-import type { ScrollViewProps } from "../primitives/ScrollView";
-import { ScrollView } from "../primitives/ScrollView";
+import { type ReactNode, forwardRef } from "react";
+import {
+  ScrollView as RNScrollView,
+  type ScrollViewProps as RNScrollViewProps,
+  View,
+} from "react-native";
+import type { Accent } from "../../core/AlouetteConfig";
+import { useThemeToken } from "../../core/useThemeToken";
+import { AccentScope } from "../containers/AccentScope";
 import { GradientBackground } from "./GradientBackground";
 
-const TopScrollOffset = styled(View, {
-  backgroundColor: "$bg-screen",
-  position: "absolute",
-  top: -600,
-  left: 0,
-  right: 0,
-  height: 600,
+interface GradientScrollViewInnerProps extends RNScrollViewProps {
+  children?: ReactNode;
+}
+
+const GradientScrollViewInner = forwardRef<
+  RNScrollView,
+  GradientScrollViewInnerProps
+>(({ children, ...scrollViewProps }, ref) => {
+  const [gradientStart, gradientEnd] = useThemeToken([
+    "--color-screen-gradient-start",
+    "--color-screen-gradient-end",
+  ]);
+  return (
+    <RNScrollView ref={ref} {...scrollViewProps}>
+      <View
+        className="absolute left-0 right-0"
+        style={{
+          top: -600,
+          height: 600,
+          backgroundColor: gradientStart,
+        }}
+      />
+      <View
+        className="absolute left-0 right-0"
+        style={{
+          bottom: -600,
+          height: 600,
+          backgroundColor: gradientEnd,
+        }}
+      />
+      <GradientBackground />
+      {children}
+    </RNScrollView>
+  );
 });
 
-// We could have used scrollview's background color if it was the same theme as the gradient, but this allows us to have a different theme for the scrollview and the gradient, but it's not always the case
-const BottomScrollOffset = styled(View, {
-  backgroundColor: "$bg-screen",
-  position: "absolute",
-  bottom: -600,
-  left: 0,
-  right: 0,
-  height: 600,
+export interface GradientScrollViewProps extends RNScrollViewProps {
+  children?: ReactNode;
+  accent: Accent;
+}
+
+export const GradientScrollView = forwardRef<
+  RNScrollView,
+  GradientScrollViewProps
+>(({ accent, children, ...scrollViewProps }, ref) => {
+  return (
+    <AccentScope accent={accent}>
+      <GradientScrollViewInner ref={ref} {...scrollViewProps}>
+        {children}
+      </GradientScrollViewInner>
+    </AccentScope>
+  );
 });
-
-export const GradientScrollView = ScrollView.styleable<{
-  gradientTheme?: ScrollViewProps["theme"];
-}>(({ gradientTheme, children, ...scrollViewProps }) => (
-  <ScrollView {...scrollViewProps}>
-    <TopScrollOffset
-      theme={gradientTheme}
-      backgroundColor="$bg-screen-gradient-start"
-    />
-    <BottomScrollOffset
-      theme={gradientTheme}
-      backgroundColor="$bg-screen-gradient-end"
-    />
-    <GradientBackground theme={gradientTheme} />
-    {children}
-  </ScrollView>
-));
-
-export type GradientScrollViewProps = GetProps<typeof GradientScrollView>;

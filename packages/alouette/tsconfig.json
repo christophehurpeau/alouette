@@ -4,6 +4,7 @@
     "@pob/root/tsconfigs/targets/rollup-es2015-with-dom.json"
   ],
   "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["scripts/**/*"],
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist/definitions",
@@ -14,12 +15,16 @@
     "emitDeclarationOnly": true,
     "incremental": true,
     "composite": true,
+    "module": "esnext",
+    "target": "esnext",
 
     "jsx": "react-jsx" /* 'react-jsx' is used with react/jsx-runtime (react >=17 || >= 16.14.0 | >= 15.7.0) */,
 
     "paths": {
       "alouette-icons": ["../../packages/alouette-icons/lib"],
       "alouette-icons/*": ["../../packages/alouette-icons/lib/*"]
-    }
+    },
+
+    "types": ["react-native-web"]
   }
 }

@@ -1,17 +1,42 @@
-import type { GetProps } from "@tamagui/core";
-export declare const PressableBox: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    disabled?: boolean | undefined;
-    interactive?: boolean | import("csstype").Property.Cursor | undefined;
-    variant?: "outlined" | "contained" | "ghost-outlined" | "ghost-contained" | undefined;
-    tint?: "accent" | undefined;
-    center?: boolean | undefined;
-    absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
-    shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
-    square?: number | undefined;
-    withBorder?: import("@tamagui/web").SizeTokens | undefined;
-    withFocusVisibleOutline?: boolean | undefined;
-    withBackground?: "interactive" | "highlight" | "surface" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
-export type PressableBoxProps = GetProps<typeof PressableBox>;
+import type { PressableProps as RNPressableProps, View as RNView } from "react-native";
+import { type VariantProps } from "tailwind-variants";
+import type { Accent } from "../../core/AlouetteConfig";
+declare const pressableBoxVariants: import("tailwind-variants").TVReturnType<{
+    variant: {
+        contained: string;
+        outlined: string;
+    };
+    ghost: {
+        true: string;
+    };
+    forceStyle: {
+        hover: string;
+        focus: string;
+        press: string;
+    };
+}, undefined, "overflow-hidden", {
+    withFocusVisibleOutline: {
+        true: string;
+    };
+}, undefined, import("tailwind-variants").TVReturnType<{
+    withFocusVisibleOutline: {
+        true: string;
+    };
+}, undefined, string, {
+    withFocusVisibleOutline: {
+        true: string;
+    };
+}, undefined, import("tailwind-variants").TVReturnType<{
+    withFocusVisibleOutline: {
+        true: string;
+    };
+}, undefined, string, unknown, unknown, undefined>>>;
+type PressableBoxVariantProps = VariantProps<typeof pressableBoxVariants>;
+export interface PressableBoxProps extends RNPressableProps, PressableBoxVariantProps {
+    accent?: Accent;
+    className?: string;
+    forceStyle?: "focus" | "hover" | "press";
+}
+export declare const PressableBox: import("react").ForwardRefExoticComponent<PressableBoxProps & import("react").RefAttributes<RNView>>;
+export {};
 //# sourceMappingURL=PressableBox.d.ts.map

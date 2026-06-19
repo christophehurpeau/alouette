@@ -1,22 +1,35 @@
-import type { GetProps } from "@tamagui/core";
-import { styled } from "@tamagui/core";
-import { Text } from "../primitives/Text";
+import { forwardRef } from "react";
+import type { Text as RNText } from "react-native";
+import { type VariantProps, tv } from "tailwind-variants";
+import { Text, type TextProps } from "../primitives/Text";
 
-export const StoryTitle = styled(Text, {
-  family: "$heading",
-  weight: "$extraBold",
+const storyTitleVariants = tv({
+  base: "font-heading-extrabold text-sharp",
   variants: {
     level: {
-      1: { size: "$xl", marginBottom: "$2.0" },
-      2: { size: "$lg", marginBottom: "$2.0" },
-      3: { size: "$md", marginBottom: "$1.0" },
-      4: { size: "$sm", marginBottom: "$1.0" },
+      1: "text-4xl mb-xl",
+      2: "text-3xl mb-xl",
+      3: "text-2xl mb-m",
+      4: "text-xl mb-m",
     },
-  } as const,
-
+  },
   defaultVariants: {
     level: 1,
   },
-} as const);
+});
 
-export type StoryTitleProps = GetProps<typeof StoryTitle>;
+type StoryTitleVariantProps = VariantProps<typeof storyTitleVariants>;
+
+export interface StoryTitleProps extends TextProps, StoryTitleVariantProps {}
+
+export const StoryTitle = forwardRef<RNText, StoryTitleProps>(
+  ({ className, level, ...props }, ref) => {
+    return (
+      <Text
+        ref={ref}
+        className={storyTitleVariants({ level, className })}
+        {...props}
+      />
+    );
+  },
+);

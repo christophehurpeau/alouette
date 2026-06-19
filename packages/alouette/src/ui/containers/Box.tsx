@@ -1,67 +1,84 @@
-import type { GetProps } from "@tamagui/core";
-import { View, styled } from "@tamagui/core";
+import { forwardRef } from "react";
+import {
+  Pressable,
+  type PressableProps,
+  View as RNView,
+  type ViewProps as RNViewProps,
+} from "react-native";
+import type { VariantProps } from "tailwind-variants";
+import { tv } from "tailwind-variants";
+import type { Accent } from "../../core/AlouetteConfig";
 import { useSafeAreaInsets } from "../../core/useSafeAreaInsets";
-import * as variants from "./variants";
+import { AccentScope } from "./AccentScope";
+// Allow Box to shrink when used inside HStack/VStack (matches the original
+// BoxFrame default). overflow is intentionally left off so multi-layer
+// box-shadows are not clipped.
+export const boxBaseClasses = "shrink";
 
-const BoxFrame = styled(View, {
-  // never apply overflow hidden here, as it will break shadows
+export interface BoxProps extends RNViewProps {
+  accent?: Accent;
+}
 
-  flexShrink: 1, // allow to shrink by default, as Box is often used in VSTack and HStack. See button for an example.
+export const Box = forwardRef<RNView, BoxProps>(
+  ({ className, accent, ...props }, ref) => {
+    return (
+      <AccentScope accent={accent}>
+        <RNView
+          ref={ref}
+          className={`${boxBaseClasses} ${className ?? ""}`}
+          {...props}
+        />
+      </AccentScope>
+    );
+  },
+);
 
-  variants,
-});
-
-export type BoxProps = GetProps<typeof BoxFrame>;
-
-export const Box =
-  process.env.NODE_ENV !== "production"
-    ? BoxFrame.styleable((props) => {
-        if (
-          process.env.NODE_ENV !== "production" &&
-          props.shadow === "lowered" &&
-          props.layer !== "lowered"
-        ) {
-          throw new Error(
-            'shadow="lowered" must only be used with layer="lowered"',
-          );
-        }
-
-        return <BoxFrame {...props} />;
-      })
-    : BoxFrame;
-
-export const InteractiveBox = styled(BoxFrame, {
-  interactive: true,
-  tabIndex: 0,
-  transition: "fast",
+export const interactiveBoxVariants = tv({
+  base: [
+    boxBaseClasses,
+    "cursor-pointer",
+    "transition-[transform,background-color,border-color] duration-200 ease-in",
+    "disabled:cursor-not-allowed disabled:opacity-70 aria-disabled:cursor-not-allowed aria-disabled:opacity-70",
+    "active:scale-[0.975]",
+  ].join(" "),
   variants: {
-    disabled: {
-      true: {
-        tabIndex: -1 as const,
-      },
+    withFocusVisibleOutline: {
+      true: "focus-visible:outline-2 focus-visible:outline-offset-2",
     },
-  } as const,
+  },
 });
 
-export type InteractiveBoxProps = GetProps<typeof InteractiveBox>;
+export interface InteractiveBoxProps
+  extends VariantProps<typeof interactiveBoxVariants>, PressableProps {}
 
-export const SafeAreaBox = BoxFrame.styleable<{
-  padding?: never;
-  paddingTop?: never;
-  paddingBottom?: never;
-  paddingLeft?: never;
-  paddingRight?: never;
-}>((props) => {
-  const insets = useSafeAreaInsets();
-  return (
-    <Box
-      {...props}
-      paddingTop={insets.top}
-      paddingBottom={insets.bottom}
-      paddingLeft={insets.left}
-      paddingRight={insets.right}
+export const InteractiveBox = forwardRef<RNView, InteractiveBoxProps>(
+  ({ withFocusVisibleOutline, className, ...rest }, ref) => (
+    <Pressable
+      ref={ref}
+      // override default behavior of Pressable which sets pointerEvents to "none" on disabled state. However this prevents cursor to display as
+      pointerEvents="auto"
+      {...rest}
+      className={interactiveBoxVariants({ withFocusVisibleOutline, className })}
     />
-  );
-});
+  ),
+);
 
-export type SafeAreaBoxProps = GetProps<typeof SafeAreaBox>;
+export type SafeAreaBoxProps = Omit<BoxProps, "style">;
+
+export const SafeAreaBox = forwardRef<RNView, SafeAreaBoxProps>(
+  (props, ref) => {
+    const insets = useSafeAreaInsets();
+    return (
+      <Box
+        ref={ref}
+        style={{
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        }}
+        {...props}
+      />
+    );
+  },
+);

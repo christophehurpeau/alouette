@@ -6,11 +6,6 @@ declare const _default: {
     component: typeof PressableListItem;
     parameters: {
         componentSubtitle: string;
-        docs: {
-            description: {
-                component: string;
-            };
-        };
     };
 };
 export default _default;

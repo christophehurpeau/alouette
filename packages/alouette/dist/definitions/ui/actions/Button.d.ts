@@ -1,38 +1,108 @@
-import type { GetProps } from "@tamagui/core";
 import type { ReactNode } from "react";
-import type { Except } from "type-fest";
-import type { SVGIconElement } from "../primitives/Icon";
+import { type VariantProps } from "tailwind-variants";
+import type { Accent } from "../../core/AlouetteConfig";
+import { type PressableBoxProps } from "../data/PressableBox";
+import { type SVGIconElement } from "../primitives/Icon";
 export declare const buttonHeight: {
-    sm: number;
-    md: number;
+    readonly sm: 38;
+    readonly md: 44;
 };
-declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    disabled?: boolean | undefined;
-    size?: "md" | "sm" | undefined;
-    interactive?: boolean | import("csstype").Property.Cursor | undefined;
-    variant?: "outlined" | "contained" | "ghost-outlined" | "ghost-contained" | undefined;
-    tint?: "accent" | undefined;
-    center?: boolean | undefined;
-    absoluteFill?: boolean | undefined;
-    layer?: "highlight" | "surface" | "lowered" | "highlight-accent" | "translucent" | undefined;
-    shadow?: "none" | "lowered" | "s" | "m" | "l" | undefined;
-    square?: number | undefined;
-    withBorder?: import("@tamagui/web").SizeTokens | undefined;
-    withFocusVisibleOutline?: boolean | undefined;
-    withBackground?: "interactive" | "highlight" | "surface" | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
-type ButtonFrameProps = GetProps<typeof ButtonFrame>;
-export interface ButtonProps extends Except<ButtonFrameProps, "size"> {
-    icon?: NonNullable<SVGIconElement>;
+declare const buttonVariants: import("tailwind-variants").TVReturnType<{
+    size: {
+        sm: {
+            frame: string;
+            text: string;
+        };
+        md: {
+            frame: string;
+            text: string;
+        };
+    };
+    variant: {
+        contained: {
+            text: string;
+        };
+        outlined: {
+            text: string;
+        };
+    };
+    disabled: {
+        true: {};
+        false: {};
+    };
+}, {
+    frame: string;
+    text: string;
+    icon: string;
+}, undefined, {
+    size: {
+        sm: {
+            frame: string;
+            text: string;
+        };
+        md: {
+            frame: string;
+            text: string;
+        };
+    };
+    variant: {
+        contained: {
+            text: string;
+        };
+        outlined: {
+            text: string;
+        };
+    };
+    disabled: {
+        true: {};
+        false: {};
+    };
+}, {
+    frame: string;
+    text: string;
+    icon: string;
+}, import("tailwind-variants").TVReturnType<{
+    size: {
+        sm: {
+            frame: string;
+            text: string;
+        };
+        md: {
+            frame: string;
+            text: string;
+        };
+    };
+    variant: {
+        contained: {
+            text: string;
+        };
+        outlined: {
+            text: string;
+        };
+    };
+    disabled: {
+        true: {};
+        false: {};
+    };
+}, {
+    frame: string;
+    text: string;
+    icon: string;
+}, undefined, unknown, unknown, undefined>>;
+type ButtonSizeProps = Pick<VariantProps<typeof buttonVariants>, "size">;
+export interface ButtonProps extends Omit<PressableBoxProps, "children">, ButtonSizeProps {
+    icon?: SVGIconElement;
+    accent?: Accent;
     text: ReactNode;
-    size?: "md" | "sm";
 }
-export declare function Button({ icon, text, disabled, variant, size, ...pressableProps }: ButtonProps): ReactNode;
-export declare function ExternalLinkButton(props: Except<ButtonProps, "render" | "role"> & {
+export declare function Button({ icon, text, disabled, accent, variant, size, className, ...pressableProps }: ButtonProps): ReactNode;
+export interface ExternalLinkButtonProps extends ButtonProps {
     href: string;
-}): ReactNode;
-export declare function InternalLinkButton(props: Except<ButtonProps, "render" | "role"> & {
+}
+export declare function ExternalLinkButton({ href, onPress, ...buttonProps }: ExternalLinkButtonProps): ReactNode;
+export interface InternalLinkButtonProps extends ButtonProps {
     href: string;
-}): ReactNode;
+}
+export declare function InternalLinkButton({ href: _href, ...buttonProps }: InternalLinkButtonProps): ReactNode;
 export {};
 //# sourceMappingURL=Button.d.ts.map

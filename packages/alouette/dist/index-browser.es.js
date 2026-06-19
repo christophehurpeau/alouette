@@ -1,14 +1,609 @@
-import { jsx, jsxs } from 'react/jsx-runtime';
-import { styled, View, usePropsAndStyle, Text as Text$1, isWeb, useMedia, TamaguiProvider } from '@tamagui/core';
-export { Theme, View, styled, withStaticProperties } from '@tamagui/core';
-import { cloneElement, Fragment, Children, createContext, useState, useEffect } from 'react';
+import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
+import { VariableContextProvider } from 'nativewind';
+import { createContext, useContext, forwardRef, Fragment, Children, cloneElement, useRef, useState, useEffect, isValidElement, useCallback } from 'react';
+import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, Pressable, Platform, TextInput, useWindowDimensions } from 'react-native-web';
+import { extendTailwindMerge, twMerge as twMerge$1 } from 'tailwind-merge';
+import { tv } from 'tailwind-variants';
 import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
 import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
 import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
-import { ScrollView as ScrollView$1, Platform, useColorScheme } from 'react-native-web';
-import '@tamagui/core/reset.css';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
+
+const ThemeContext = createContext("light");
+function useCurrentTheme() {
+  return useContext(ThemeContext);
+}
+function useCurrentMode() {
+  return useContext(ThemeContext).startsWith("dark") ? "dark" : "light";
+}
+
+const themeVariables = {
+  "light": {
+    "--color-translucent": "#ffffff66",
+    "--color-disabled-sharp": "#616161",
+    "--color-disabled-muted": "#8F8F8F",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
+    "--color-muted": "#474747",
+    "--color-form-border-disabled": "#B8B8B8",
+    "--color-form-placeholder": "#616161",
+    "--color-form-disabled-text": "#474747",
+    "--color-interactive-contained-disabled": "#C7C7C7",
+    "--color-interactive-outlined-disabled": "#B8B8B8",
+    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
+    "--color-interactive-accent-outlined-disabled": "#B8B8B8",
+    "--color-screen": "#EBEBEB",
+    "--color-surface": "#F5F5F5",
+    "--color-highlight": "#FFFFFF",
+    "--color-highlight-accent": "#E0E0E0",
+    "--color-lowered": "#E0E0E0",
+    "--color-screen-gradient-start": "#E0E0E0",
+    "--color-screen-gradient-middle": "#C7C7C7",
+    "--color-screen-gradient-end": "#B8B8B8",
+    "--color-border-muted": "#8F8F8F",
+    "--color-border-sharp": "#616161",
+    "--color-interactive-contained-pressable": "#FFFFFF",
+    "--color-interactive-contained-hover": "#E0E0E0",
+    "--color-interactive-contained-focus": "#E0E0E0",
+    "--color-interactive-contained-active": "#C7C7C7",
+    "--color-interactive-outlined-pressable": "#8F8F8F",
+    "--color-interactive-outlined-hover": "#616161",
+    "--color-interactive-outlined-focus": "#616161",
+    "--color-interactive-outlined-active": "#616161",
+    "--color-interactive-outlined-outline-focus": "#8F8F8F",
+    "--color-interactive-active": "#616161",
+    "--color-interactive-pressable": "#474747",
+    "--color-interactive-hover": "#2E2E2E",
+    "--color-sharp": "#141414",
+    "--color-accent": "#141414",
+    "--color-accent-muted": "#616161",
+    "--color-on-accent": "#141414",
+    "--color-on-accent-muted": "#616161",
+    "--color-selection": "#47474740",
+    "--color-interactive-accent-contained-bg": "#EBEBEB",
+    "--color-interactive-accent-contained-bg-hover": "#F5F5F5",
+    "--color-interactive-accent-contained-bg-focus": "#F5F5F5",
+    "--color-interactive-accent-contained-bg-active": "#F5F5F5"
+  },
+  "dark": {
+    "--color-translucent": "#1f1e1e55",
+    "--color-disabled-sharp": "#A8A8A8",
+    "--color-disabled-muted": "#A8A8A8",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
+    "--color-muted": "#C2C2C2",
+    "--color-form-border-disabled": "#525252",
+    "--color-form-placeholder": "#A8A8A8",
+    "--color-form-disabled-text": "#C2C2C2",
+    "--color-interactive-contained-disabled": "#3D3D3D",
+    "--color-interactive-outlined-disabled": "#474747",
+    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
+    "--color-interactive-accent-outlined-disabled": "#474747",
+    "--color-screen": "#1F1F1F",
+    "--color-surface": "#292929",
+    "--color-highlight": "#333333",
+    "--color-highlight-accent": "#333333",
+    "--color-lowered": "#0F0F0F",
+    "--color-screen-gradient-start": "#292929",
+    "--color-screen-gradient-middle": "#1F1F1F",
+    "--color-screen-gradient-end": "#0F0F0F",
+    "--color-border-muted": "#525252",
+    "--color-border-sharp": "#A8A8A8",
+    "--color-interactive-contained-pressable": "#333333",
+    "--color-interactive-contained-hover": "#474747",
+    "--color-interactive-contained-focus": "#474747",
+    "--color-interactive-contained-active": "#474747",
+    "--color-interactive-outlined-pressable": "#525252",
+    "--color-interactive-outlined-hover": "#A8A8A8",
+    "--color-interactive-outlined-focus": "#A8A8A8",
+    "--color-interactive-outlined-active": "#A8A8A8",
+    "--color-interactive-outlined-outline-focus": "#525252",
+    "--color-interactive-active": "#A8A8A8",
+    "--color-interactive-pressable": "#C2C2C2",
+    "--color-interactive-hover": "#DBDBDB",
+    "--color-sharp": "#F5F5F5",
+    "--color-accent": "#F5F5F5",
+    "--color-accent-muted": "#C2C2C2",
+    "--color-on-accent": "#F5F5F5",
+    "--color-on-accent-muted": "#C2C2C2",
+    "--color-selection": "#C2C2C240",
+    "--color-interactive-accent-contained-bg": "#474747",
+    "--color-interactive-accent-contained-bg-hover": "#525252",
+    "--color-interactive-accent-contained-bg-focus": "#525252",
+    "--color-interactive-accent-contained-bg-active": "#525252"
+  },
+  "light_brand": {
+    "--color-translucent": "#ffffff66",
+    "--color-disabled-sharp": "#616161",
+    "--color-disabled-muted": "#8F8F8F",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
+    "--color-muted": "#474747",
+    "--color-form-border-disabled": "#B8B8B8",
+    "--color-form-placeholder": "#616161",
+    "--color-form-disabled-text": "#474747",
+    "--color-interactive-contained-disabled": "#C7C7C7",
+    "--color-interactive-outlined-disabled": "#B8B8B8",
+    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
+    "--color-interactive-accent-outlined-disabled": "#B8B8B8",
+    "--color-screen": "#DFF1F6",
+    "--color-surface": "#EFF8FB",
+    "--color-highlight": "#F7FBFD",
+    "--color-highlight-accent": "#C7EEF9",
+    "--color-lowered": "#C7EEF9",
+    "--color-screen-gradient-start": "#C7EEF9",
+    "--color-screen-gradient-middle": "#99DFF5",
+    "--color-screen-gradient-end": "#7DD7F2",
+    "--color-border-muted": "#23C8FB",
+    "--color-border-sharp": "#0493BE",
+    "--color-interactive-contained-pressable": "#F7FBFD",
+    "--color-interactive-contained-hover": "#C7EEF9",
+    "--color-interactive-contained-focus": "#C7EEF9",
+    "--color-interactive-contained-active": "#99DFF5",
+    "--color-interactive-outlined-pressable": "#23C8FB",
+    "--color-interactive-outlined-hover": "#0493BE",
+    "--color-interactive-outlined-focus": "#0493BE",
+    "--color-interactive-outlined-active": "#0493BE",
+    "--color-interactive-outlined-outline-focus": "#23C8FB",
+    "--color-interactive-active": "#0493BE",
+    "--color-interactive-pressable": "#024D64",
+    "--color-interactive-hover": "#012732",
+    "--color-sharp": "#011F28",
+    "--color-accent": "#024D64",
+    "--color-accent-muted": "#0493BE",
+    "--color-on-accent": "#024D64",
+    "--color-on-accent-muted": "#7DD7F2",
+    "--color-selection": "#024D6440",
+    "--color-interactive-accent-contained-bg": "#DFF1F6",
+    "--color-interactive-accent-contained-bg-hover": "#EFF8FB",
+    "--color-interactive-accent-contained-bg-focus": "#EFF8FB",
+    "--color-interactive-accent-contained-bg-active": "#EFF8FB"
+  },
+  "light_info": {
+    "--color-translucent": "#ffffff66",
+    "--color-disabled-sharp": "#616161",
+    "--color-disabled-muted": "#8F8F8F",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
+    "--color-muted": "#474747",
+    "--color-form-border-disabled": "#B8B8B8",
+    "--color-form-placeholder": "#616161",
+    "--color-form-disabled-text": "#474747",
+    "--color-interactive-contained-disabled": "#C7C7C7",
+    "--color-interactive-outlined-disabled": "#B8B8B8",
+    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
+    "--color-interactive-accent-outlined-disabled": "#B8B8B8",
+    "--color-screen": "#DFF0F6",
+    "--color-surface": "#EFF8FB",
+    "--color-highlight": "#F7FBFD",
+    "--color-highlight-accent": "#C7EDF9",
+    "--color-lowered": "#C7EDF9",
+    "--color-screen-gradient-start": "#C7EDF9",
+    "--color-screen-gradient-middle": "#99DEF5",
+    "--color-screen-gradient-end": "#7DD5F2",
+    "--color-border-muted": "#23C5FB",
+    "--color-border-sharp": "#048FBE",
+    "--color-interactive-contained-pressable": "#F7FBFD",
+    "--color-interactive-contained-hover": "#C7EDF9",
+    "--color-interactive-contained-focus": "#C7EDF9",
+    "--color-interactive-contained-active": "#99DEF5",
+    "--color-interactive-outlined-pressable": "#23C5FB",
+    "--color-interactive-outlined-hover": "#048FBE",
+    "--color-interactive-outlined-focus": "#048FBE",
+    "--color-interactive-outlined-active": "#048FBE",
+    "--color-interactive-outlined-outline-focus": "#23C5FB",
+    "--color-interactive-active": "#048FBE",
+    "--color-interactive-pressable": "#024B64",
+    "--color-interactive-hover": "#012632",
+    "--color-sharp": "#011E28",
+    "--color-accent": "#024B64",
+    "--color-accent-muted": "#048FBE",
+    "--color-on-accent": "#024B64",
+    "--color-on-accent-muted": "#7DD5F2",
+    "--color-selection": "#024B6440",
+    "--color-interactive-accent-contained-bg": "#DFF0F6",
+    "--color-interactive-accent-contained-bg-hover": "#EFF8FB",
+    "--color-interactive-accent-contained-bg-focus": "#EFF8FB",
+    "--color-interactive-accent-contained-bg-active": "#EFF8FB"
+  },
+  "light_success": {
+    "--color-translucent": "#ffffff66",
+    "--color-disabled-sharp": "#616161",
+    "--color-disabled-muted": "#8F8F8F",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
+    "--color-muted": "#474747",
+    "--color-form-border-disabled": "#B8B8B8",
+    "--color-form-placeholder": "#616161",
+    "--color-form-disabled-text": "#474747",
+    "--color-interactive-contained-disabled": "#C7C7C7",
+    "--color-interactive-outlined-disabled": "#B8B8B8",
+    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
+    "--color-interactive-accent-outlined-disabled": "#B8B8B8",
+    "--color-screen": "#DFF6DF",
+    "--color-surface": "#EFFBEF",
+    "--color-highlight": "#F7FDF7",
+    "--color-highlight-accent": "#C7F9C7",
+    "--color-lowered": "#C7F9C7",
+    "--color-screen-gradient-start": "#C7F9C7",
+    "--color-screen-gradient-middle": "#99F599",
+    "--color-screen-gradient-end": "#7DF27D",
+    "--color-border-muted": "#23FB23",
+    "--color-border-sharp": "#04BE04",
+    "--color-interactive-contained-pressable": "#F7FDF7",
+    "--color-interactive-contained-hover": "#C7F9C7",
+    "--color-interactive-contained-focus": "#C7F9C7",
+    "--color-interactive-contained-active": "#99F599",
+    "--color-interactive-outlined-pressable": "#23FB23",
+    "--color-interactive-outlined-hover": "#04BE04",
+    "--color-interactive-outlined-focus": "#04BE04",
+    "--color-interactive-outlined-active": "#04BE04",
+    "--color-interactive-outlined-outline-focus": "#23FB23",
+    "--color-interactive-active": "#04BE04",
+    "--color-interactive-pressable": "#025002",
+    "--color-interactive-hover": "#011E01",
+    "--color-sharp": "#012801",
+    "--color-accent": "#025002",
+    "--color-accent-muted": "#04BE04",
+    "--color-on-accent": "#025002",
+    "--color-on-accent-muted": "#7DF27D",
+    "--color-selection": "#02500240",
+    "--color-interactive-accent-contained-bg": "#DFF6DF",
+    "--color-interactive-accent-contained-bg-hover": "#EFFBEF",
+    "--color-interactive-accent-contained-bg-focus": "#EFFBEF",
+    "--color-interactive-accent-contained-bg-active": "#EFFBEF"
+  },
+  "light_warning": {
+    "--color-translucent": "#ffffff66",
+    "--color-disabled-sharp": "#616161",
+    "--color-disabled-muted": "#8F8F8F",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
+    "--color-muted": "#474747",
+    "--color-form-border-disabled": "#B8B8B8",
+    "--color-form-placeholder": "#616161",
+    "--color-form-disabled-text": "#474747",
+    "--color-interactive-contained-disabled": "#C7C7C7",
+    "--color-interactive-outlined-disabled": "#B8B8B8",
+    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
+    "--color-interactive-accent-outlined-disabled": "#B8B8B8",
+    "--color-screen": "#F6EEDF",
+    "--color-surface": "#FBF7EF",
+    "--color-highlight": "#FDFBF7",
+    "--color-highlight-accent": "#F6E1B6",
+    "--color-lowered": "#F6E1B6",
+    "--color-screen-gradient-start": "#F6E1B6",
+    "--color-screen-gradient-middle": "#F0CE89",
+    "--color-screen-gradient-end": "#EDC36E",
+    "--color-border-muted": "#FAAC0F",
+    "--color-border-sharp": "#AA7203",
+    "--color-interactive-contained-pressable": "#FDFBF7",
+    "--color-interactive-contained-hover": "#F6E1B6",
+    "--color-interactive-contained-focus": "#F6E1B6",
+    "--color-interactive-contained-active": "#F0CE89",
+    "--color-interactive-outlined-pressable": "#FAAC0F",
+    "--color-interactive-outlined-hover": "#AA7203",
+    "--color-interactive-outlined-focus": "#AA7203",
+    "--color-interactive-outlined-active": "#AA7203",
+    "--color-interactive-outlined-outline-focus": "#FAAC0F",
+    "--color-interactive-active": "#AA7203",
+    "--color-interactive-pressable": "#281B01",
+    "--color-interactive-hover": "#F6F900",
+    "--color-sharp": "#281B01",
+    "--color-accent": "#281B01",
+    "--color-accent-muted": "#AA7203",
+    "--color-on-accent": "#281B01",
+    "--color-on-accent-muted": "#EDC36E",
+    "--color-selection": "#281B0140",
+    "--color-interactive-accent-contained-bg": "#F6EEDF",
+    "--color-interactive-accent-contained-bg-hover": "#FBF7EF",
+    "--color-interactive-accent-contained-bg-focus": "#FBF7EF",
+    "--color-interactive-accent-contained-bg-active": "#FBF7EF"
+  },
+  "light_danger": {
+    "--color-translucent": "#ffffff66",
+    "--color-disabled-sharp": "#616161",
+    "--color-disabled-muted": "#8F8F8F",
+    "--color-disabled-interactive": "#B8B8B8",
+    "--color-disabled-interactive-muted": "#E0E0E0",
+    "--color-muted": "#474747",
+    "--color-form-border-disabled": "#B8B8B8",
+    "--color-form-placeholder": "#616161",
+    "--color-form-disabled-text": "#474747",
+    "--color-interactive-contained-disabled": "#C7C7C7",
+    "--color-interactive-outlined-disabled": "#B8B8B8",
+    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
+    "--color-interactive-accent-outlined-disabled": "#B8B8B8",
+    "--color-screen": "#F6E0DF",
+    "--color-surface": "#FBEFEF",
+    "--color-highlight": "#FDF7F7",
+    "--color-highlight-accent": "#FBD2D0",
+    "--color-lowered": "#FBD2D0",
+    "--color-screen-gradient-start": "#FBD2D0",
+    "--color-screen-gradient-middle": "#F7A4A1",
+    "--color-screen-gradient-end": "#F48985",
+    "--color-border-muted": "#FB342D",
+    "--color-border-sharp": "#C80B04",
+    "--color-interactive-contained-pressable": "#FDF7F7",
+    "--color-interactive-contained-hover": "#FBD2D0",
+    "--color-interactive-contained-focus": "#FBD2D0",
+    "--color-interactive-contained-active": "#F7A4A1",
+    "--color-interactive-outlined-pressable": "#FB342D",
+    "--color-interactive-outlined-hover": "#C80B04",
+    "--color-interactive-outlined-focus": "#C80B04",
+    "--color-interactive-outlined-active": "#C80B04",
+    "--color-interactive-outlined-outline-focus": "#FB342D",
+    "--color-interactive-active": "#C80B04",
+    "--color-interactive-pressable": "#6E0602",
+    "--color-interactive-hover": "#3C0301",
+    "--color-sharp": "#280201",
+    "--color-accent": "#6E0602",
+    "--color-accent-muted": "#C80B04",
+    "--color-on-accent": "#6E0602",
+    "--color-on-accent-muted": "#F48985",
+    "--color-selection": "#6E060240",
+    "--color-interactive-accent-contained-bg": "#F6E0DF",
+    "--color-interactive-accent-contained-bg-hover": "#FBEFEF",
+    "--color-interactive-accent-contained-bg-focus": "#FBEFEF",
+    "--color-interactive-accent-contained-bg-active": "#FBEFEF"
+  },
+  "dark_brand": {
+    "--color-translucent": "#1f1e1e55",
+    "--color-disabled-sharp": "#A8A8A8",
+    "--color-disabled-muted": "#A8A8A8",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
+    "--color-muted": "#C2C2C2",
+    "--color-form-border-disabled": "#525252",
+    "--color-form-placeholder": "#A8A8A8",
+    "--color-form-disabled-text": "#C2C2C2",
+    "--color-interactive-contained-disabled": "#3D3D3D",
+    "--color-interactive-outlined-disabled": "#474747",
+    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
+    "--color-interactive-accent-outlined-disabled": "#474747",
+    "--color-screen": "#0D2830",
+    "--color-surface": "#123540",
+    "--color-highlight": "#104E60",
+    "--color-highlight-accent": "#104E60",
+    "--color-lowered": "#071418",
+    "--color-screen-gradient-start": "#123540",
+    "--color-screen-gradient-middle": "#0D2830",
+    "--color-screen-gradient-end": "#071418",
+    "--color-border-muted": "#1E94B8",
+    "--color-border-sharp": "#5CD1F5",
+    "--color-interactive-contained-pressable": "#104E60",
+    "--color-interactive-contained-hover": "#156A84",
+    "--color-interactive-contained-focus": "#156A84",
+    "--color-interactive-contained-active": "#156A84",
+    "--color-interactive-outlined-pressable": "#1E94B8",
+    "--color-interactive-outlined-hover": "#5CD1F5",
+    "--color-interactive-outlined-focus": "#5CD1F5",
+    "--color-interactive-outlined-active": "#5CD1F5",
+    "--color-interactive-outlined-outline-focus": "#1E94B8",
+    "--color-interactive-active": "#5CD1F5",
+    "--color-interactive-pressable": "#8CDFF8",
+    "--color-interactive-hover": "#BCECFB",
+    "--color-sharp": "#D9F4FD",
+    "--color-accent": "#8CDFF8",
+    "--color-accent-muted": "#8CDFF8",
+    "--color-on-accent": "#D9F4FD",
+    "--color-on-accent-muted": "#8CDFF8",
+    "--color-selection": "#8CDFF840",
+    "--color-interactive-accent-contained-bg": "#156A84",
+    "--color-interactive-accent-contained-bg-hover": "#1E94B8",
+    "--color-interactive-accent-contained-bg-focus": "#1E94B8",
+    "--color-interactive-accent-contained-bg-active": "#1E94B8"
+  },
+  "dark_info": {
+    "--color-translucent": "#1f1e1e55",
+    "--color-disabled-sharp": "#A8A8A8",
+    "--color-disabled-muted": "#A8A8A8",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
+    "--color-muted": "#C2C2C2",
+    "--color-form-border-disabled": "#525252",
+    "--color-form-placeholder": "#A8A8A8",
+    "--color-form-disabled-text": "#C2C2C2",
+    "--color-interactive-contained-disabled": "#3D3D3D",
+    "--color-interactive-outlined-disabled": "#474747",
+    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
+    "--color-interactive-accent-outlined-disabled": "#474747",
+    "--color-screen": "#0D2730",
+    "--color-surface": "#123440",
+    "--color-highlight": "#104C60",
+    "--color-highlight-accent": "#104C60",
+    "--color-lowered": "#071418",
+    "--color-screen-gradient-start": "#123440",
+    "--color-screen-gradient-middle": "#0D2730",
+    "--color-screen-gradient-end": "#071418",
+    "--color-border-muted": "#1E92B8",
+    "--color-border-sharp": "#5CCEF5",
+    "--color-interactive-contained-pressable": "#104C60",
+    "--color-interactive-contained-hover": "#156884",
+    "--color-interactive-contained-focus": "#156884",
+    "--color-interactive-contained-active": "#156884",
+    "--color-interactive-outlined-pressable": "#1E92B8",
+    "--color-interactive-outlined-hover": "#5CCEF5",
+    "--color-interactive-outlined-focus": "#5CCEF5",
+    "--color-interactive-outlined-active": "#5CCEF5",
+    "--color-interactive-outlined-outline-focus": "#1E92B8",
+    "--color-interactive-active": "#5CCEF5",
+    "--color-interactive-pressable": "#8CDDF8",
+    "--color-interactive-hover": "#BCEBFB",
+    "--color-sharp": "#D9F4FD",
+    "--color-accent": "#8CDDF8",
+    "--color-accent-muted": "#8CDDF8",
+    "--color-on-accent": "#D9F4FD",
+    "--color-on-accent-muted": "#8CDDF8",
+    "--color-selection": "#8CDDF840",
+    "--color-interactive-accent-contained-bg": "#156884",
+    "--color-interactive-accent-contained-bg-hover": "#1E92B8",
+    "--color-interactive-accent-contained-bg-focus": "#1E92B8",
+    "--color-interactive-accent-contained-bg-active": "#1E92B8"
+  },
+  "dark_success": {
+    "--color-translucent": "#1f1e1e55",
+    "--color-disabled-sharp": "#A8A8A8",
+    "--color-disabled-muted": "#A8A8A8",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
+    "--color-muted": "#C2C2C2",
+    "--color-form-border-disabled": "#525252",
+    "--color-form-placeholder": "#A8A8A8",
+    "--color-form-disabled-text": "#C2C2C2",
+    "--color-interactive-contained-disabled": "#3D3D3D",
+    "--color-interactive-outlined-disabled": "#474747",
+    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
+    "--color-interactive-accent-outlined-disabled": "#474747",
+    "--color-screen": "#0D300D",
+    "--color-surface": "#124012",
+    "--color-highlight": "#106010",
+    "--color-highlight-accent": "#106010",
+    "--color-lowered": "#071807",
+    "--color-screen-gradient-start": "#124012",
+    "--color-screen-gradient-middle": "#0D300D",
+    "--color-screen-gradient-end": "#071807",
+    "--color-border-muted": "#1EB81E",
+    "--color-border-sharp": "#5CF55C",
+    "--color-interactive-contained-pressable": "#106010",
+    "--color-interactive-contained-hover": "#158415",
+    "--color-interactive-contained-focus": "#158415",
+    "--color-interactive-contained-active": "#158415",
+    "--color-interactive-outlined-pressable": "#1EB81E",
+    "--color-interactive-outlined-hover": "#5CF55C",
+    "--color-interactive-outlined-focus": "#5CF55C",
+    "--color-interactive-outlined-active": "#5CF55C",
+    "--color-interactive-outlined-outline-focus": "#1EB81E",
+    "--color-interactive-active": "#5CF55C",
+    "--color-interactive-pressable": "#8CF88C",
+    "--color-interactive-hover": "#BCFBBC",
+    "--color-sharp": "#D9FDD9",
+    "--color-accent": "#8CF88C",
+    "--color-accent-muted": "#8CF88C",
+    "--color-on-accent": "#D9FDD9",
+    "--color-on-accent-muted": "#8CF88C",
+    "--color-selection": "#8CF88C40",
+    "--color-interactive-accent-contained-bg": "#158415",
+    "--color-interactive-accent-contained-bg-hover": "#1EB81E",
+    "--color-interactive-accent-contained-bg-focus": "#1EB81E",
+    "--color-interactive-accent-contained-bg-active": "#1EB81E"
+  },
+  "dark_warning": {
+    "--color-translucent": "#1f1e1e55",
+    "--color-disabled-sharp": "#A8A8A8",
+    "--color-disabled-muted": "#A8A8A8",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
+    "--color-muted": "#C2C2C2",
+    "--color-form-border-disabled": "#525252",
+    "--color-form-placeholder": "#A8A8A8",
+    "--color-form-disabled-text": "#C2C2C2",
+    "--color-interactive-contained-disabled": "#3D3D3D",
+    "--color-interactive-outlined-disabled": "#474747",
+    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
+    "--color-interactive-accent-outlined-disabled": "#474747",
+    "--color-screen": "#30240D",
+    "--color-surface": "#403012",
+    "--color-highlight": "#4F390D",
+    "--color-highlight-accent": "#4F390D",
+    "--color-lowered": "#181207",
+    "--color-screen-gradient-start": "#403012",
+    "--color-screen-gradient-middle": "#30240D",
+    "--color-screen-gradient-end": "#181207",
+    "--color-border-muted": "#A7781B",
+    "--color-border-sharp": "#F3BB49",
+    "--color-interactive-contained-pressable": "#4F390D",
+    "--color-interactive-contained-hover": "#725213",
+    "--color-interactive-contained-focus": "#725213",
+    "--color-interactive-contained-active": "#725213",
+    "--color-interactive-outlined-pressable": "#A7781B",
+    "--color-interactive-outlined-hover": "#F3BB49",
+    "--color-interactive-outlined-focus": "#F3BB49",
+    "--color-interactive-outlined-active": "#F3BB49",
+    "--color-interactive-outlined-outline-focus": "#A7781B",
+    "--color-interactive-active": "#F3BB49",
+    "--color-interactive-pressable": "#F6CD79",
+    "--color-interactive-hover": "#F9DFA9",
+    "--color-sharp": "#FDF1D9",
+    "--color-accent": "#F6CD79",
+    "--color-accent-muted": "#F6CD79",
+    "--color-on-accent": "#FDF1D9",
+    "--color-on-accent-muted": "#F6CD79",
+    "--color-selection": "#F6CD7940",
+    "--color-interactive-accent-contained-bg": "#725213",
+    "--color-interactive-accent-contained-bg-hover": "#A7781B",
+    "--color-interactive-accent-contained-bg-focus": "#A7781B",
+    "--color-interactive-accent-contained-bg-active": "#A7781B"
+  },
+  "dark_danger": {
+    "--color-translucent": "#1f1e1e55",
+    "--color-disabled-sharp": "#A8A8A8",
+    "--color-disabled-muted": "#A8A8A8",
+    "--color-disabled-interactive": "#525252",
+    "--color-disabled-interactive-muted": "#333333",
+    "--color-muted": "#C2C2C2",
+    "--color-form-border-disabled": "#525252",
+    "--color-form-placeholder": "#A8A8A8",
+    "--color-form-disabled-text": "#C2C2C2",
+    "--color-interactive-contained-disabled": "#3D3D3D",
+    "--color-interactive-outlined-disabled": "#474747",
+    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
+    "--color-interactive-accent-outlined-disabled": "#474747",
+    "--color-screen": "#300F0D",
+    "--color-surface": "#401312",
+    "--color-highlight": "#691411",
+    "--color-highlight-accent": "#691411",
+    "--color-lowered": "#180707",
+    "--color-screen-gradient-start": "#401312",
+    "--color-screen-gradient-middle": "#300F0D",
+    "--color-screen-gradient-end": "#180707",
+    "--color-border-muted": "#C1251F",
+    "--color-border-sharp": "#F56A66",
+    "--color-interactive-contained-pressable": "#691411",
+    "--color-interactive-contained-hover": "#8C1B17",
+    "--color-interactive-contained-focus": "#8C1B17",
+    "--color-interactive-contained-active": "#8C1B17",
+    "--color-interactive-outlined-pressable": "#C1251F",
+    "--color-interactive-outlined-hover": "#F56A66",
+    "--color-interactive-outlined-focus": "#F56A66",
+    "--color-interactive-outlined-active": "#F56A66",
+    "--color-interactive-outlined-outline-focus": "#C1251F",
+    "--color-interactive-active": "#F56A66",
+    "--color-interactive-pressable": "#F89996",
+    "--color-interactive-hover": "#FBC7C5",
+    "--color-sharp": "#FDDAD9",
+    "--color-accent": "#F89996",
+    "--color-accent-muted": "#F89996",
+    "--color-on-accent": "#FDDAD9",
+    "--color-on-accent-muted": "#F89996",
+    "--color-selection": "#F8999640",
+    "--color-interactive-accent-contained-bg": "#8C1B17",
+    "--color-interactive-accent-contained-bg-hover": "#C1251F",
+    "--color-interactive-accent-contained-bg-focus": "#C1251F",
+    "--color-interactive-accent-contained-bg-active": "#C1251F"
+  }
+};
+
+function ScopedTheme({ theme, children }) {
+  return /* @__PURE__ */ jsx(ThemeContext.Provider, { value: theme, children: /* @__PURE__ */ jsx(VariableContextProvider, { value: themeVariables[theme], children }) });
+}
+
+function AlouetteProvider({
+  children
+}) {
+  const colorScheme = useColorScheme();
+  return /* @__PURE__ */ jsx(ScopedTheme, { theme: colorScheme === "dark" ? "dark" : "light", children });
+}
+
+function SafeAreaProvider({ children }) {
+  return children;
+}
+
+const AlouetteDecorator = (storyFn, context) => {
+  const theme = context.globals.backgrounds?.value === "#000000" ? "dark" : "light";
+  return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(AlouetteProvider, { children: /* @__PURE__ */ jsx(ScopedTheme, { theme, children: storyFn(context) }) }) });
+};
 
 const useSafeAreaInsets = () => ({
   top: 0,
@@ -17,868 +612,407 @@ const useSafeAreaInsets = () => ({
   right: 0
 });
 
-const absoluteFillStyle = {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0
-};
-
-const getInteractionStyles = (name, {
-  disabled,
-  interactive,
-  variant = name === "borderColor" ? "outlined" : "contained",
-  tint
-}) => {
-  const isGhost = variant?.startsWith("ghost-");
-  const prefix = interactive === "text" ? "interactive.forms" : (
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    `interactive${tint === "accent" ? "-accent" : ""}.${isGhost ? variant.slice(6) : variant}`
-  );
-  if (disabled) {
-    return { [name]: `$${prefix}.${name}:disabled` };
+function useThemeToken(tokenOrTokens) {
+  const theme = useContext(ThemeContext);
+  const vars = themeVariables[theme];
+  if (Array.isArray(tokenOrTokens)) {
+    return tokenOrTokens.map((token) => vars[token]);
   }
-  if (name === "shadowColor") {
-    return { [name]: `$${prefix}.${name}` };
-  }
-  if (name === "outlineColor") {
-    return {
-      focusVisibleStyle: {
-        outlineWidth: interactive === "text" ? 0 : 2,
-        outlineStyle: "solid",
-        outlineOffset: variant === "outlined" || variant === "ghost-outlined" ? 2 : 0,
-        outlineColor: `$${prefix}.${name}:focus`
-      }
-    };
-  }
-  return {
-    [name]: isGhost ? "transparent" : `$${prefix}.${name}`,
-    hoverStyle: { [name]: `$${prefix}.${name}:hover` },
-    focusStyle: { [name]: `$${prefix}.${name}:focus` },
-    pressStyle: { [name]: `$${prefix}.${name}:press` },
-    disabledStyle: { [name]: `$${prefix}.${name}:disabled` }
-  };
-};
-
-const absoluteFill = {
-  true: absoluteFillStyle
-};
-const center = {
-  true: {
-    justifyContent: "center",
-    alignItems: "center"
-  }
-};
-const tint = {
-  accent: {}
-  // used in interactive variant
-};
-function interactive(isInteractiveOrInteractiveCursorType, { props }) {
-  if (!isInteractiveOrInteractiveCursorType) return null;
-  if (isInteractiveOrInteractiveCursorType === true) {
-    return {
-      cursor: "pointer",
-      pressStyle: {
-        transform: [{ scale: 0.975 }]
-      },
-      disabledStyle: {
-        cursor: "not-allowed",
-        opacity: "$opacity.disabled",
-        transform: [{ scale: 1 }]
-      }
-    };
-  }
-  return {
-    cursor: isInteractiveOrInteractiveCursorType,
-    disabledStyle: {
-      cursor: "not-allowed",
-      opacity: "$opacity.disabled"
-    }
-  };
-}
-const layer = {
-  surface: {
-    backgroundColor: "$bg-surface"
-  },
-  highlight: {
-    backgroundColor: "$bg-highlight"
-  },
-  "highlight-accent": {
-    backgroundColor: "$bg-highlight-accent"
-  },
-  lowered: {
-    backgroundColor: "$bg-lowered"
-  },
-  translucent: {
-    backgroundColor: "$bg-translucent"
-  }
-};
-const shadow = {
-  none: {
-    boxShadow: "none",
-    elevationAndroid: 0
-  },
-  s: {
-    boxShadow: "inset 0 1px 2px #ffffff40, 0 1px 2px #00000040, 0 2px 4px #00000025",
-    elevationAndroid: 2
-  },
-  m: {
-    boxShadow: "inset 0 1px 2px #ffffff40, 0 2px 4px #00000040, 0 4px 8px #00000025",
-    elevationAndroid: 4
-  },
-  l: {
-    boxShadow: "inset 0 1px 2px #ffffff40, 0 4px 6px #00000040, 0 6px 10px #00000025",
-    elevationAndroid: 6
-  },
-  lowered: {
-    boxShadow: "inset 0 1px 2px #00000040, inset 0 -2px 2px #ffffff15"
-  }
-};
-const square = (val) => {
-  return { width: val, height: val };
-};
-const withBorder = (val, { props }) => {
-  if (props.shadow && props.shadow !== "lowered") {
-    throw new Error("Cannot use border with shadow variant");
-  }
-  return {
-    borderWidth: val,
-    ...props.interactive ? getInteractionStyles("borderColor", props) : { borderColor: "$border-sharp" }
-  };
-};
-const withFocusVisibleOutline = (val, { props }) => {
-  if (!val) return null;
-  return {
-    ...props.interactive ? getInteractionStyles("outlineColor", props) : { outlineColor: "$outlineColor" },
-    disabledStyle: {
-      outlineWidth: 0
-    }
-  };
-};
-const withBackground = (val, { props }) => {
-  return props.interactive && val === "interactive" ? getInteractionStyles("backgroundColor", props) : {
-    backgroundColor: val === "surface" ? "$bg-surface" : "$bg-highlight"
-  };
-};
-
-const containerVariants = /*#__PURE__*/Object.defineProperty({
-  __proto__: null,
-  absoluteFill,
-  center,
-  interactive,
-  layer,
-  shadow,
-  square,
-  tint,
-  withBackground,
-  withBorder,
-  withFocusVisibleOutline
-}, Symbol.toStringTag, { value: 'Module' });
-
-const BoxFrame = styled(View, {
-  // never apply overflow hidden here, as it will break shadows
-  flexShrink: 1,
-  // allow to shrink by default, as Box is often used in VSTack and HStack. See button for an example.
-  variants: containerVariants
-});
-const Box = process.env.NODE_ENV !== "production" ? BoxFrame.styleable((props) => {
-  if (process.env.NODE_ENV !== "production" && props.shadow === "lowered" && props.layer !== "lowered") {
-    throw new Error(
-      'shadow="lowered" must only be used with layer="lowered"'
-    );
-  }
-  return /* @__PURE__ */ jsx(BoxFrame, { ...props });
-}) : BoxFrame;
-const InteractiveBox = styled(BoxFrame, {
-  interactive: true,
-  tabIndex: 0,
-  transition: "fast",
-  variants: {
-    disabled: {
-      true: {
-        tabIndex: -1
-      }
-    }
-  }
-});
-const SafeAreaBox = BoxFrame.styleable((props) => {
-  const insets = useSafeAreaInsets();
-  return /* @__PURE__ */ jsx(
-    Box,
-    {
-      ...props,
-      paddingTop: insets.top,
-      paddingBottom: insets.bottom,
-      paddingLeft: insets.left,
-      paddingRight: insets.right
-    }
-  );
-});
-
-const PressableBox = styled(InteractiveBox, {
-  role: "button",
-  overflow: "hidden",
-  withFocusVisibleOutline: true,
-  variants: {
-    variant: {
-      contained: {
-        withBackground: "interactive",
-        shadow: "s",
-        borderRadius: "$sm"
-      },
-      outlined: {
-        // withBackground: "highlight",
-        withBorder: 1
-      },
-      "ghost-contained": {
-        withBackground: "interactive",
-        backgroundColor: "transparent"
-      },
-      "ghost-outlined": {
-        // withBackground: "surface",
-        withBorder: 1,
-        backgroundColor: "transparent",
-        borderColor: "transparent"
-      }
-    }
-  },
-  defaultVariants: {
-    variant: "contained"
-  }
-});
-
-const getDefaultColor = (disabled, disabledSharp, tint) => {
-  if (disabled) {
-    return disabledSharp ? "$text-disabled-sharp" : "$text-disabled-muted";
-  }
-  if (tint === "accent") return "$text-accent";
-  if (tint === "accent-muted") return "$text-accent-muted";
-  if (tint === "muted") return "$text-muted";
-  if (tint === "onAccent") return "$text-onAccent";
-  if (tint === "onAccent-muted") return "$text-onAccent-muted";
-  return "$text-sharp";
-};
-function Icon({
-  icon,
-  // TODO should size be normalized ?
-  size = 20,
-  disabled,
-  disabledSharp,
-  tint
-}) {
-  const [props, style] = usePropsAndStyle(
-    {
-      color: getDefaultColor(disabled, disabledSharp, tint),
-      width: size,
-      height: size
-    },
-    { forComponent: Text$1 }
-  );
-  return cloneElement(icon, { style, ...props });
+  return vars[tokenOrTokens];
 }
 
-const Text = styled(Text$1, {
-  variants: {
-    inherit: {
-      false: {
-        size: "$md",
-        weight: "$regular",
-        fontFamily: "$body",
-        tint: "sharp"
-      }
-    },
-    size: {
-      "...fontSize": (size) => ({
-        fontSize: size,
-        lineHeight: size
-      })
-    },
-    weight: {
-      $regular: { fontWeight: "$regular" },
-      $bold: { fontWeight: "$bold" },
-      $extraBold: { fontWeight: "$extraBold" }
-    },
-    family: {
-      $heading: { fontFamily: "$heading" },
-      $body: { fontFamily: "$body" },
-      "$body-monospace": { fontFamily: "$body-monospace" }
-    },
-    tint: {
-      sharp: {
-        color: "$text-sharp",
-        disabledStyle: {
-          color: "$text-disabled-muted"
-        }
-      },
-      muted: {
-        color: "$text-muted",
-        disabledStyle: {
-          color: "$text-disabled-muted"
-        }
-      },
-      accent: {
-        color: "$text-accent"
-      },
-      onAccent: {
-        color: "$text-onAccent"
-      }
-    },
-    disabledSharp: {
-      true: {
-        disabledStyle: {
-          color: "$text-disabled-sharp"
-        }
-      }
-    }
-  },
-  defaultVariants: {
-    inherit: false
-  }
-});
-const Paragraph = styled(Text, {
-  render: "p",
-  userSelect: "auto",
-  inherit: false
+const View = forwardRef((props, ref) => {
+  return /* @__PURE__ */ jsx(View$1, { ref, ...props });
 });
 
-const buttonHeight = {
-  sm: 38,
-  md: 44
-};
-const ButtonFrame = styled(PressableBox, {
-  name: "ButtonFrame",
-  render: "button",
-  // @ts-expect-error missing type definition
-  type: "button",
-  center: true,
-  flexDirection: "row",
-  variants: {
-    size: {
-      sm: {
-        paddingHorizontal: "$0.5",
-        gap: "$0.25",
-        borderRadius: "$sm",
-        minHeight: buttonHeight.sm
-      },
-      md: {
-        paddingHorizontal: "$1.0",
-        gap: "$0.5",
-        borderRadius: "$sm",
-        minHeight: buttonHeight.md
-      }
-    }
-  },
-  defaultVariants: {
-    size: "md"
-  }
-});
-const ButtonText = styled(Text, {
-  textAlign: "center",
-  weight: "$bold",
-  flexShrink: 1,
-  variants: {
-    "button-size": {
-      sm: {
-        paddingVertical: "$0.25",
-        size: "$sm"
-      },
-      md: {
-        paddingVertical: "$0.5",
-        size: "$md"
-      }
-    }
-  }
-});
-function Button({
-  icon,
-  text,
-  disabled,
-  variant = "contained",
-  size = "md",
-  ...pressableProps
+function AccentScope({
+  mode: forcedMode,
+  accent,
+  children
 }) {
-  return /* @__PURE__ */ jsxs(
-    ButtonFrame,
-    {
-      variant,
-      size,
-      disabled,
-      ...pressableProps,
-      children: [
-        icon && /* @__PURE__ */ jsx(
-          Icon,
-          {
-            tint: variant === "contained" ? "onAccent" : void 0,
-            disabled,
-            disabledSharp: variant === "contained",
-            icon,
-            size: size === "sm" ? 16 : 20
-          }
-        ),
-        /* @__PURE__ */ jsx(
-          ButtonText,
-          {
-            tint: variant === "contained" ? "onAccent" : void 0,
-            "button-size": size,
-            disabled,
-            disabledSharp: variant === "contained",
-            textAlign: icon ? "left" : "center",
-            children: text
-          }
-        )
+  const currentMode = useCurrentMode();
+  if (!accent) {
+    return children;
+  }
+  const mode = forcedMode ?? currentMode;
+  return /* @__PURE__ */ jsx(ScopedTheme, { theme: `${mode}_${accent}`, children });
+}
+
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      "font-family": [
+        "font-body",
+        "font-body-bold",
+        "font-body-extrabold",
+        "font-heading",
+        "font-heading-bold",
+        "font-heading-extrabold",
+        "font-mono",
+        "font-mono-bold",
+        "font-mono-extrabold"
       ]
     }
-  );
-}
-function ExternalLinkButton(props) {
-  return /* @__PURE__ */ jsx(
-    Button,
-    {
-      ...props,
-      render: "a",
-      role: "link",
-      target: "_blank",
-      rel: "noopener noreferrer",
-      style: { textDecorationLine: "none" }
-    }
-  );
-}
-function InternalLinkButton(props) {
-  return /* @__PURE__ */ jsx(Button, { ...props, render: "a", role: "link" });
-}
-
-const IconButtonFrame = styled(PressableBox, {
-  name: "IconButtonFrame",
-  role: "button",
-  center: true,
-  borderRadius: 1e4,
-  variants: {
-    size: {
-      ":number": (val) => ({
-        square: val
-      }),
-      sm: { square: buttonHeight.sm },
-      md: { square: buttonHeight.md }
-    }
   }
 });
-function IconButton({
-  icon,
-  disabled,
-  size = "md",
-  iconSize,
-  variant = "contained",
-  ...pressableBoxProps
-}) {
-  const sizeAsValue = typeof size === "number" ? size : buttonHeight[size];
-  return /* @__PURE__ */ jsx(
-    IconButtonFrame,
-    {
-      size,
-      variant,
-      disabled,
-      ...pressableBoxProps,
-      children: /* @__PURE__ */ jsx(
-        Icon,
-        {
-          size: iconSize === "fill" ? sizeAsValue * 0.8 : sizeAsValue * 0.5,
-          disabled,
-          icon
-        }
-      )
-    }
-  );
-}
-
-const Surface = styled(Box, {
-  layer: "surface",
-  shadow: "s",
-  overflow: "hidden",
-  // make sure the boxshadow respects the borderRadius.
-  variants: {
-    size: {
-      sm: {
-        padding: "$1.0",
-        borderRadius: "$sm"
-      },
-      md: {
-        padding: "$2.0",
-        borderRadius: "$md"
-      },
-      lg: {
-        padding: "$3.0",
-        borderRadius: "$lg"
-      }
-    },
-    lowered: {
-      true: {
-        layer: "lowered",
-        shadow: "lowered"
-      }
-    }
-  },
-  defaultVariants: {
-    size: "md"
-  }
-});
-
-const MessageFrame = styled(Surface, {
-  name: "MessageFrame",
-  alignItems: "center",
-  flexDirection: "row",
-  layer: "highlight-accent",
-  variants: {
-    size: {
-      sm: {
-        gap: "$0.5"
-      },
-      md: {
-        gap: "$1.0"
-      },
-      lg: {
-        gap: "$1.5"
-      }
-    }
-  },
-  defaultVariants: {
-    size: "md"
-  }
-});
-const MessageText = styled(Text, {
-  size: "$md",
-  flexGrow: 1,
-  tint: "accent"
-});
-const MessageIconContainer = styled(View, {
-  alignItems: "center"
-});
-const MessageDismissButtonContainer = styled(View, {
-  position: "relative",
-  alignItems: "center",
-  justifyContent: "center",
-  variants: {
-    size: {
-      sm: {
-        height: 24,
-        width: 24
-      },
-      md: {
-        height: 40,
-        width: 40
-      },
-      lg: {
-        height: 40,
-        width: 40
-      }
-    }
-  },
-  defaultVariants: {
-    size: "md"
-  }
-});
-function Message({
-  icon,
-  size = "md",
-  theme,
-  children,
-  onDismiss,
-  dismissIconAriaLabel
-}) {
-  return /* @__PURE__ */ jsxs(MessageFrame, { theme, size, children: [
-    /* @__PURE__ */ jsx(MessageIconContainer, { children: /* @__PURE__ */ jsx(Icon, { size: size === "sm" ? 20 : 24, icon, tint: "accent" }) }),
-    /* @__PURE__ */ jsx(MessageText, { children }),
-    onDismiss ? /* @__PURE__ */ jsx(MessageDismissButtonContainer, { size, children: /* @__PURE__ */ jsx(
-      IconButton,
+const Text = forwardRef(
+  ({ className, accent, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(
+      Text$1,
       {
-        icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
-        iconSize: size === "sm" ? "fill" : void 0,
-        size: size === "sm" ? 24 : 40,
-        variant: "outlined",
-        tint: "accent",
-        "aria-label": dismissIconAriaLabel
+        ref,
+        className: twMerge("font-body text-sharp", className),
+        ...props
       }
-    ) }) : null
-  ] });
-}
-function InfoMessage(props) {
-  return /* @__PURE__ */ jsx(Message, { ...props, theme: "info", icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
-}
-function ConfirmationMessage(props) {
-  return /* @__PURE__ */ jsx(Message, { ...props, theme: "success", icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
-}
-function WarningMessage(props) {
-  return /* @__PURE__ */ jsx(Message, { ...props, theme: "warning", icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
-}
-
-const inputStyle = {
-  fontFamily: "$body",
-  fontSize: "$md",
-  color: "$text-sharp",
-  paddingHorizontal: "$1.0",
-  paddingVertical: "$0.5",
-  borderRadius: "$md"
-};
-
-const PlatformInputTextFrame = styled(
-  View,
-  {
-    ...inputStyle,
-    transition: "formElement",
-    // crash on native ?
-    tabIndex: 0,
-    variants: {
-      disabled: {
-        true: {
-          tabIndex: -1
-        }
-      },
-      multiline: {
-        true: {
-          rows: 3
-        }
-      },
-      mode: {
-        password: {
-          type: "password"
-        },
-        number: {
-          type: "number"
-        },
-        tel: {
-          type: "tel"
-        },
-        email: {
-          type: "email"
-        },
-        search: {
-          type: "search"
-        }
-      }
-    }
-  },
-  {
-    isInput: true,
-    validStyles: Text$1.staticConfig.validStyles
+    ) });
   }
 );
-const PlatformInputText = PlatformInputTextFrame.styleable(({ autoCorrect, onChangeText, onChange, ...rest }) => /* @__PURE__ */ jsx(
-  PlatformInputTextFrame,
-  {
-    ...{
-      autoCorrect: autoCorrect ? "on" : "off"
-    },
-    ...rest,
-    onChange: (e) => {
-      if (onChangeText) {
-        onChangeText(e.target.value);
+const Paragraph = forwardRef(
+  ({ className, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      Text,
+      {
+        ref,
+        role: "paragraph",
+        className: `select-auto ${className ?? ""}`,
+        ...props
       }
-      onChange?.(e);
-    }
+    );
   }
-));
+);
 
-const NativeInputText = styled(PlatformInputText, {
-  render: "input",
-  theme: "brand",
+const ScrollView = forwardRef(
+  (props, ref) => {
+    return /* @__PURE__ */ jsx(ScrollView$1, { ref, ...props });
+  }
+);
+
+const Stack = forwardRef(
+  ({ className, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      View$1,
+      {
+        ref,
+        className: `flex-row flex-wrap ${className ?? ""}`,
+        ...props
+      }
+    );
+  }
+);
+const HStack = forwardRef(
+  ({ className, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(View$1, { ref, className: `flex-row ${className ?? ""}`, ...props });
+  }
+);
+const VStack = forwardRef(
+  ({ className, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(View$1, { ref, className: `flex-col ${className ?? ""}`, ...props });
+  }
+);
+
+const separatorVariants = tv({
+  base: "border-border-sharp",
   variants: {
-    ...containerVariants,
-    disabled: {
-      true: {
-        color: "$text-disabled-muted",
-        cursor: "not-allowed",
-        opacity: "$opacity.disabled"
-      }
+    vertical: {
+      true: "self-stretch border-r w-px",
+      false: "self-stretch border-b h-px"
     }
   },
-  // @ts-expect-error -- variants not working when isInput is true
-  interactive: "text",
-  withBackground: "interactive",
-  withBorder: 1,
-  outlineWidth: 1,
-  outlineOffset: 0,
-  outlineStyle: "solid",
-  outlineColor: "transparent",
-  focusVisibleStyle: {
-    outlineWidth: 1,
-    outlineOffset: 0,
-    outlineStyle: "solid",
-    outlineColor: "$interactive.forms.outlineColor:focus"
-  },
-  focusStyle: {
-    outlineWidth: 1,
-    outlineOffset: 0,
-    outlineStyle: "solid",
-    outlineColor: "$interactive.forms.outlineColor:focus"
+  defaultVariants: {
+    vertical: false
   }
 });
-const InputText = NativeInputText;
-
-const TextAreaFrame = styled(InputText, {
-  render: "textarea",
-  multiline: true,
-  height: "auto",
-  minHeight: 80,
-  borderRadius: "$1.0",
-  paddingHorizontal: "$0.75"
-});
-const TextArea = TextAreaFrame;
-
-const ScrollView = styled(
-  ScrollView$1,
-  {},
-  {
-    accept: {
-      contentContainerStyle: "style"
-    }
+const Separator = forwardRef(
+  ({ className, vertical, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      View$1,
+      {
+        ref,
+        className: separatorVariants({ vertical, className }),
+        ...props
+      }
+    );
   }
 );
 
-const variants = {
-  absoluteFill: {
-    true: absoluteFillStyle
+const boxBaseClasses = "shrink";
+const Box = forwardRef(
+  ({ className, accent, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(
+      View$1,
+      {
+        ref,
+        className: `${boxBaseClasses} ${className ?? ""}`,
+        ...props
+      }
+    ) });
   }
-};
-const Stack = styled(View, {
-  name: "Stack",
-  flexDirection: "row",
-  flexWrap: "wrap",
-  variants
+);
+const interactiveBoxVariants = tv({
+  base: [
+    boxBaseClasses,
+    "cursor-pointer",
+    "transition-[transform,background-color,border-color] duration-200 ease-in",
+    "disabled:cursor-not-allowed disabled:opacity-70 aria-disabled:cursor-not-allowed aria-disabled:opacity-70",
+    "active:scale-[0.975]"
+  ].join(" "),
+  variants: {
+    withFocusVisibleOutline: {
+      true: "focus-visible:outline-2 focus-visible:outline-offset-2"
+    }
+  }
 });
-const HStack = styled(View, {
-  name: "HStack",
-  flexDirection: "row",
-  variants
-});
-const VStack = styled(View, {
-  name: "VStack",
-  flexDirection: "column"
-});
-styled(View, {
-  justifyContent: "center",
-  alignItems: "center",
-  variants
-});
+const InteractiveBox = forwardRef(
+  ({ withFocusVisibleOutline, className, ...rest }, ref) => /* @__PURE__ */ jsx(
+    Pressable,
+    {
+      ref,
+      pointerEvents: "auto",
+      ...rest,
+      className: interactiveBoxVariants({ withFocusVisibleOutline, className })
+    }
+  )
+);
+const SafeAreaBox = forwardRef(
+  (props, ref) => {
+    const insets = useSafeAreaInsets();
+    return /* @__PURE__ */ jsx(
+      Box,
+      {
+        ref,
+        style: {
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right
+        },
+        ...props
+      }
+    );
+  }
+);
 
-const StoryTitle = styled(Text, {
-  family: "$heading",
-  weight: "$extraBold",
+const surfaceVariants = tv(
+  {
+    // overflow-hidden so the multi-layer shadow respects the rounded corners.
+    base: "overflow-hidden",
+    variants: {
+      size: {
+        sm: "p-m rounded-xs",
+        md: "p-xl rounded-sm",
+        lg: "p-xxl rounded-md"
+      },
+      variant: {
+        surface: "bg-surface",
+        highlight: "bg-highlight",
+        "highlight-accent": "bg-highlight-accent",
+        lowered: "bg-lowered",
+        translucent: "bg-translucent"
+      },
+      shadow: {
+        none: "shadow-none",
+        s: "shadow-s",
+        m: "shadow-m",
+        l: "shadow-l",
+        lowered: "shadow-lowered"
+      }
+    },
+    defaultVariants: {
+      size: "md",
+      variant: "surface"
+    }
+  },
+  { twMerge: false }
+);
+const Surface = forwardRef(
+  ({ className, size, variant, shadow, accent, ...props }, ref) => {
+    const resolvedShadow = shadow ?? (variant === "lowered" ? "lowered" : "s");
+    return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(
+      Box,
+      {
+        ref,
+        className: surfaceVariants({
+          size,
+          variant,
+          shadow: resolvedShadow,
+          className
+        }),
+        ...props
+      }
+    ) });
+  }
+);
+
+function styled(Component, defaultClassName) {
+  function StyledComponent({ className, ...props }) {
+    return /* @__PURE__ */ jsx(
+      Component,
+      {
+        className: twMerge$1(defaultClassName, className),
+        ...props
+      }
+    );
+  }
+  StyledComponent.displayName = `Styled(${Component.displayName ?? Component.name ?? "Component"})`;
+  StyledComponent.__isStyledComponent = true;
+  return StyledComponent;
+}
+
+const storyTitleVariants = tv({
+  base: "font-heading-extrabold text-sharp",
   variants: {
     level: {
-      1: { size: "$xl", marginBottom: "$2.0" },
-      2: { size: "$lg", marginBottom: "$2.0" },
-      3: { size: "$md", marginBottom: "$1.0" },
-      4: { size: "$sm", marginBottom: "$1.0" }
+      1: "text-4xl mb-xl",
+      2: "text-3xl mb-xl",
+      3: "text-2xl mb-m",
+      4: "text-xl mb-m"
     }
   },
   defaultVariants: {
     level: 1
   }
 });
+const StoryTitle = forwardRef(
+  ({ className, level, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      Text,
+      {
+        ref,
+        className: storyTitleVariants({ level, className }),
+        ...props
+      }
+    );
+  }
+);
 
-const InternalStorySection = styled(VStack, {
-  marginBottom: "$2.0",
-  marginHorizontal: "$-1.0",
-  paddingHorizontal: "$1.0"
-});
+const InternalStorySection = styled(View, "-mx-l px-l");
 function StorySection({
   title,
   children,
   level = 1,
-  withSurface = false,
-  ...props
+  modeTheme,
+  accent,
+  withSurface = false
 }) {
-  return /* @__PURE__ */ jsxs(InternalStorySection, { ...props, children: [
+  const content = /* @__PURE__ */ jsx(InternalStorySection, { className: "pb-xl bg-screen", children: withSurface ? /* @__PURE__ */ jsxs(Surface, { children: [
     /* @__PURE__ */ jsx(StoryTitle, { level: level + 1, children: title }),
-    withSurface ? /* @__PURE__ */ jsx(Surface, { children }) : /* @__PURE__ */ jsx(VStack, { gap: "$1.0", children })
-  ] });
+    /* @__PURE__ */ jsx(VStack, { className: "gap-m", children })
+  ] }) : /* @__PURE__ */ jsxs(Fragment$1, { children: [
+    /* @__PURE__ */ jsx(StoryTitle, { level: level + 1, children: title }),
+    /* @__PURE__ */ jsx(VStack, { className: "gap-m", children })
+  ] }) });
+  if (modeTheme) {
+    return /* @__PURE__ */ jsx(ScopedTheme, { theme: modeTheme, children: content });
+  }
+  if (accent) {
+    return /* @__PURE__ */ jsx(AccentScope, { accent, children: content });
+  }
+  return content;
 }
-function SubSection({
+function StorySubSection({
   title,
   children,
-  withSurface = false,
-  ...props
+  modeTheme,
+  accent,
+  withSurface = false
 }) {
-  return /* @__PURE__ */ jsxs(InternalStorySection, { marginBottom: "$1.0", ...props, children: [
+  const content = /* @__PURE__ */ jsx(InternalStorySection, { className: "mb-m", children: withSurface ? /* @__PURE__ */ jsxs(Surface, { children: [
     /* @__PURE__ */ jsx(StoryTitle, { level: 3, children: title }),
-    withSurface ? /* @__PURE__ */ jsx(Surface, { children }) : /* @__PURE__ */ jsx(VStack, { gap: "$1.0", children })
-  ] });
+    /* @__PURE__ */ jsx(VStack, { className: "gap-m", children })
+  ] }) : /* @__PURE__ */ jsxs(Fragment$1, { children: [
+    /* @__PURE__ */ jsx(StoryTitle, { level: 3, children: title }),
+    /* @__PURE__ */ jsx(VStack, { className: "gap-m", children })
+  ] }) });
+  if (modeTheme) {
+    return /* @__PURE__ */ jsx(ScopedTheme, { theme: modeTheme, children: content });
+  }
+  if (accent) {
+    return /* @__PURE__ */ jsx(AccentScope, { accent, children: content });
+  }
+  return content;
 }
-const ScrollViewNative = isWeb ? Fragment : ScrollView;
+const ScrollWrapper = Platform.OS === "web" ? Fragment : ScrollView;
 function Story({
   documentation,
   children,
-  noDarkTheme
+  noDarkMode
 }) {
-  return /* @__PURE__ */ jsxs(ScrollViewNative, { children: [
-    documentation && /* @__PURE__ */ jsx(Surface, { layer: "highlight", shadow: "s", theme: "brand", marginBottom: "$3.0", children: documentation }),
-    ["light", ...noDarkTheme ? [] : ["dark"]].map((theme) => /* @__PURE__ */ jsx(
-      Box,
-      {
-        theme,
-        backgroundColor: "$bg-screen",
-        padding: "$2.0",
-        children
-      },
-      theme
-    ))
+  return /* @__PURE__ */ jsxs(ScrollWrapper, { children: [
+    documentation && /* @__PURE__ */ jsx(Surface, { accent: "info", className: "mb-xxl", children: documentation }),
+    ["light", ...noDarkMode ? [] : ["dark"]].map(
+      (mode) => /* @__PURE__ */ jsx(ScopedTheme, { theme: mode, children: /* @__PURE__ */ jsx(View, { className: "bg-screen p-l", children }) }, mode)
+    )
   ] });
 }
 Story.Section = StorySection;
-Story.SubSection = SubSection;
+Story.SubSection = StorySubSection;
 
 function StoryContainer({
   title,
   children
 }) {
-  return /* @__PURE__ */ jsxs(ScrollView, { theme: "light", backgroundColor: "#fff", padding: "$4", children: [
+  return /* @__PURE__ */ jsx(ScopedTheme, { theme: "light", children: /* @__PURE__ */ jsxs(ScrollView, { className: "bg-white p-3xl", children: [
     /* @__PURE__ */ jsx(StoryTitle, { level: 1, children: title }),
     children
-  ] });
+  ] }) });
 }
 
-const StoryDecorator = (storyFn, { name, container }) => {
-  if (container === false) return storyFn();
+const StoryDecorator = (storyFn, { name, parameters }) => {
+  if (parameters?.container === false) return storyFn();
   return /* @__PURE__ */ jsx(StoryContainer, { title: name, children: storyFn() });
 };
 
+const rowVariants = tv(
+  {
+    base: "flex-col",
+    variants: {
+      breakpoint: {
+        small: "sm:flex-row sm:mb-xl",
+        medium: "md:flex-row md:mb-xl"
+      },
+      flexWrap: { true: "" }
+    },
+    compoundVariants: [
+      { breakpoint: "small", flexWrap: true, class: "sm:flex-wrap sm:gap-m" },
+      { breakpoint: "medium", flexWrap: true, class: "md:flex-wrap md:gap-m" }
+    ]
+  },
+  { twMerge: false }
+);
+const itemVariants = tv(
+  {
+    base: "pt-m pb-xl",
+    variants: {
+      breakpoint: {
+        small: "sm:pt-0 sm:pb-0 sm:my-xxs shrink",
+        medium: "md:pt-0 md:pb-0 md:my-xxs shrink"
+      },
+      flexWrap: {
+        true: "",
+        false: ""
+      },
+      loose: {
+        true: "",
+        false: "grow"
+      }
+    },
+    compoundVariants: [
+      { breakpoint: "small", flexWrap: false, class: "sm:basis-0" },
+      { breakpoint: "medium", flexWrap: false, class: "md:basis-0" }
+    ],
+    defaultVariants: {
+      flexWrap: false
+    }
+  },
+  { twMerge: false }
+);
 function StoryGridRow({
   children,
   breakpoint = "small",
-  flexWrap
+  flexWrap,
+  loose
 }) {
-  return /* @__PURE__ */ jsx(
-    View,
-    {
-      flexDirection: "column",
-      ...{
-        [`$${breakpoint}`]: {
-          flexDirection: "row",
-          marginBottom: "$2.0",
-          flexWrap: flexWrap ? "wrap" : void 0,
-          gap: flexWrap ? "$1.0" : void 0
-        }
-      },
-      children: Children.map(children, (child) => /* @__PURE__ */ jsx(
-        View,
-        {
-          paddingTop: "$1.0",
-          paddingBottom: "$2.0",
-          ...{
-            [`$${breakpoint}`]: {
-              flexGrow: 1,
-              flexShrink: 1,
-              flexBasis: flexWrap ? void 0 : 0,
-              paddingTop: 0,
-              paddingBottom: 0,
-              marginVertical: "$0.25"
-            }
-          },
-          children: child
-        }
-      ))
-    }
-  );
+  return /* @__PURE__ */ jsx(View, { className: rowVariants({ breakpoint, flexWrap }), children: Children.map(children, (child) => /* @__PURE__ */ jsx(View, { className: itemVariants({ breakpoint, flexWrap, loose }), children: child })) });
 }
 function StoryGridCol({
   title,
@@ -902,6 +1036,814 @@ const StoryGrid = {
   Col: StoryGridCol
 };
 
+function joinClasses(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+function usePresence(activeKey, exitDurationMs, children) {
+  const [exiting, setExiting] = useState([]);
+  const previousRef = useRef({ key: activeKey, node: children });
+  const childrenRef = useRef(children);
+  childrenRef.current = children;
+  const timersRef = useRef([]);
+  useEffect(
+    () => () => {
+      timersRef.current.forEach(clearTimeout);
+    },
+    []
+  );
+  useEffect(() => {
+    const previous = previousRef.current;
+    if (previous.key === activeKey) {
+      return;
+    }
+    previousRef.current = { key: activeKey, node: childrenRef.current };
+    setExiting((list) => [...list, previous]);
+    const timer = setTimeout(() => {
+      setExiting((list) => list.filter((item) => item !== previous));
+      timersRef.current = timersRef.current.filter((t) => t !== timer);
+    }, exitDurationMs);
+    timersRef.current.push(timer);
+  }, [activeKey, exitDurationMs]);
+  return exiting;
+}
+function toItems(children) {
+  return Children.toArray(children).filter(isValidElement).map((child) => ({ key: child.key, node: child }));
+}
+function mergeKeys(previous, next) {
+  const nextSet = new Set(next);
+  const pendingByNext = /* @__PURE__ */ new Map();
+  let pending = [];
+  for (const key of previous) {
+    if (nextSet.has(key)) {
+      if (pending.length > 0) {
+        pendingByNext.set(key, pending);
+        pending = [];
+      }
+    } else {
+      pending.push(key);
+    }
+  }
+  const result = [];
+  for (const key of next) {
+    const before = pendingByNext.get(key);
+    if (before) {
+      result.push(...before);
+    }
+    result.push(key);
+  }
+  result.push(...pending);
+  return result;
+}
+function usePresenceList(children, exitDurationMs) {
+  const items = toItems(children);
+  const liveKeys = items.map((item) => item.key);
+  const signature = liveKeys.join("\0");
+  const nodesRef = useRef(/* @__PURE__ */ new Map());
+  for (const item of items) {
+    nodesRef.current.set(item.key, item.node);
+  }
+  const liveKeysRef = useRef(liveKeys);
+  liveKeysRef.current = liveKeys;
+  const [order, setOrder] = useState(liveKeys);
+  const orderRef = useRef(order);
+  orderRef.current = order;
+  const timersRef = useRef(/* @__PURE__ */ new Map());
+  useEffect(
+    () => () => {
+      timersRef.current.forEach(clearTimeout);
+    },
+    []
+  );
+  useEffect(() => {
+    const live2 = new Set(liveKeysRef.current);
+    const newOrder = mergeKeys(orderRef.current, liveKeysRef.current);
+    for (const key of liveKeysRef.current) {
+      const timer = timersRef.current.get(key);
+      if (timer) {
+        clearTimeout(timer);
+        timersRef.current.delete(key);
+      }
+    }
+    for (const key of newOrder) {
+      if (!live2.has(key) && !timersRef.current.has(key)) {
+        const timer = setTimeout(() => {
+          timersRef.current.delete(key);
+          nodesRef.current.delete(key);
+          setOrder((current) => current.filter((k) => k !== key));
+        }, exitDurationMs);
+        timersRef.current.set(key, timer);
+      }
+    }
+    setOrder(newOrder);
+  }, [signature, exitDurationMs]);
+  const live = new Set(liveKeys);
+  return order.map((key) => ({
+    key,
+    node: nodesRef.current.get(key),
+    exiting: !live.has(key)
+  }));
+}
+function PresenceList({
+  exitDurationMs,
+  enterClassName,
+  exitClassName,
+  className,
+  children
+}) {
+  const items = usePresenceList(children, exitDurationMs);
+  return /* @__PURE__ */ jsx(Fragment$1, { children: items.map((item) => /* @__PURE__ */ jsx(
+    View,
+    {
+      className: joinClasses(
+        className,
+        item.exiting ? exitClassName : enterClassName
+      ),
+      children: item.node
+    },
+    item.key
+  )) });
+}
+function PresenceOne({
+  activeKey,
+  exitDurationMs,
+  enterClassName,
+  exitClassName,
+  className,
+  children
+}) {
+  const exiting = usePresence(activeKey, exitDurationMs, children);
+  return /* @__PURE__ */ jsxs(Fragment$1, { children: [
+    exiting.map((item) => {
+      const node = item.node;
+      return cloneElement(node, {
+        key: item.key,
+        className: joinClasses(
+          node.props.className,
+          className,
+          exitClassName
+        )
+      });
+    }),
+    cloneElement(children, {
+      key: activeKey,
+      className: joinClasses(
+        children.props.className,
+        className,
+        enterClassName
+      )
+    })
+  ] });
+}
+
+const animationDurationsMs = {
+  "slide": 600,
+  "collapse": 800
+};
+
+function Icon({
+  icon,
+  size = 20,
+  className = "text-sharp"
+}) {
+  return cloneElement(icon, {
+    className,
+    width: size,
+    height: size
+  });
+}
+
+const pressableBoxVariants = tv(
+  {
+    extend: interactiveBoxVariants,
+    base: "overflow-hidden",
+    variants: {
+      variant: {
+        contained: [
+          "rounded-sm",
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "shadow-s bg-interactive-contained-pressable",
+          "hover:bg-interactive-contained-hover",
+          "focus:bg-interactive-contained-focus",
+          "active:bg-interactive-contained-active",
+          "disabled:bg-interactive-contained-disabled disabled:shadow-none",
+          "focus-visible:outline-border-muted"
+        ].join(" "),
+        outlined: [
+          "border",
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "border-interactive-outlined-pressable",
+          "hover:border-interactive-outlined-hover",
+          "focus:border-interactive-outlined-focus",
+          "active:border-interactive-outlined-active",
+          "disabled:border-interactive-outlined-disabled",
+          "focus-visible:outline-interactive-outlined-outline-focus"
+        ].join(" ")
+      },
+      ghost: {
+        true: "bg-transparent border-transparent shadow-none"
+      },
+      forceStyle: {
+        hover: "",
+        focus: "",
+        press: "scale-[0.975]"
+      }
+    },
+    compoundVariants: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? [
+      /* contained */
+      {
+        variant: "contained",
+        forceStyle: void 0,
+        ghost: false,
+        className: "shadow-s bg-interactive-contained-pressable"
+      },
+      {
+        variant: "contained",
+        forceStyle: "hover",
+        className: "shadow-s bg-interactive-contained-hover"
+      },
+      {
+        variant: "contained",
+        forceStyle: "focus",
+        className: "shadow-s bg-interactive-contained-focus"
+      },
+      {
+        variant: "contained",
+        forceStyle: "press",
+        className: "shadow-s bg-interactive-contained-active"
+      },
+      /* outlined */
+      {
+        variant: "outlined",
+        forceStyle: void 0,
+        ghost: false,
+        className: "border-interactive-outlined-pressable"
+      },
+      {
+        variant: "outlined",
+        forceStyle: "hover",
+        className: "border-interactive-outlined-hover"
+      },
+      {
+        variant: "outlined",
+        forceStyle: "focus",
+        className: "border-interactive-outlined-focus"
+      },
+      {
+        variant: "outlined",
+        forceStyle: "press",
+        className: "border-interactive-outlined-active"
+      }
+    ] : void 0,
+    defaultVariants: {
+      variant: "contained"
+    }
+  },
+  { twMerge: false }
+);
+const PressableBox = forwardRef(
+  ({ className, variant, ghost = false, forceStyle, accent, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(
+      InteractiveBox,
+      {
+        ref,
+        withFocusVisibleOutline: true,
+        role: "button",
+        className: pressableBoxVariants({
+          variant,
+          ghost,
+          className,
+          forceStyle
+        }),
+        ...props
+      }
+    ) });
+  }
+);
+
+const buttonHeight = {
+  sm: 38,
+  md: 44
+};
+const buttonVariants = tv(
+  {
+    slots: {
+      frame: "flex-row flex-center",
+      text: "font-body-bold text-center shrink",
+      icon: ""
+    },
+    variants: {
+      size: {
+        sm: {
+          frame: "rounded-sm px-xs gap-xxs min-h-[38px]",
+          text: "text-sm py-xxs"
+        },
+        md: {
+          frame: "rounded-sm px-m gap-xs min-h-[44px]",
+          text: "text-base py-xs"
+        }
+      },
+      variant: {
+        contained: { text: "text-on-accent" },
+        outlined: { text: "text-sharp" }
+      },
+      disabled: { true: {}, false: {} }
+    },
+    compoundVariants: [
+      {
+        variant: "contained",
+        disabled: false,
+        class: { icon: "text-on-accent" }
+      },
+      { variant: "outlined", disabled: false, class: { icon: "text-sharp" } },
+      {
+        variant: "contained",
+        disabled: true,
+        class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" }
+      },
+      {
+        variant: "outlined",
+        disabled: true,
+        class: { icon: "text-disabled-muted", text: "text-disabled-muted" }
+      }
+    ],
+    defaultVariants: { size: "md", variant: "contained" }
+  },
+  { twMerge: false }
+);
+function Button({
+  icon,
+  text,
+  disabled,
+  accent = "brand",
+  variant = "contained",
+  size = "md",
+  className,
+  ...pressableProps
+}) {
+  const styles = buttonVariants({ size, variant, disabled: disabled === true });
+  return /* @__PURE__ */ jsxs(
+    PressableBox,
+    {
+      accent,
+      variant,
+      disabled,
+      className: styles.frame({ className }),
+      ...pressableProps,
+      children: [
+        icon ? /* @__PURE__ */ jsx(
+          Icon,
+          {
+            icon,
+            className: styles.icon(),
+            size: size === "sm" ? 16 : 20
+          }
+        ) : null,
+        /* @__PURE__ */ jsx(Text, { "aria-disabled": disabled === true, className: styles.text(), children: text })
+      ]
+    }
+  );
+}
+function ExternalLinkButton({
+  href,
+  onPress,
+  ...buttonProps
+}) {
+  return /* @__PURE__ */ jsx(
+    Button,
+    {
+      ...buttonProps,
+      role: "link",
+      onPress: (event) => {
+        onPress?.(event);
+        if (event.defaultPrevented) return;
+        if (Platform.OS === "web") {
+          window.open(href, "_blank", "noopener,noreferrer");
+        } else {
+          throw new Error("todo");
+        }
+      }
+    }
+  );
+}
+function InternalLinkButton({
+  href: _href,
+  ...buttonProps
+}) {
+  return /* @__PURE__ */ jsx(Button, { ...buttonProps, role: "link" });
+}
+
+const iconButtonVariants = tv(
+  {
+    slots: {
+      frame: "shrink-0 flex-center rounded-full",
+      icon: ""
+    },
+    variants: {
+      variant: {
+        contained: {},
+        outlined: {}
+      },
+      disabled: {
+        true: {},
+        false: {}
+      }
+    },
+    compoundVariants: [
+      {
+        variant: "contained",
+        disabled: false,
+        class: { icon: "text-on-accent" }
+      },
+      {
+        variant: "outlined",
+        disabled: false,
+        class: { icon: "text-sharp" }
+      },
+      {
+        variant: "contained",
+        disabled: true,
+        class: { icon: "text-disabled-sharp" }
+      },
+      {
+        variant: "outlined",
+        disabled: true,
+        class: { icon: "text-disabled-muted" }
+      }
+    ],
+    defaultVariants: { variant: "contained" }
+  },
+  { twMerge: false }
+);
+function IconButton({
+  icon,
+  disabled,
+  size = "md",
+  iconSize,
+  variant = "contained",
+  className,
+  ...pressableProps
+}) {
+  const diameter = typeof size === "number" ? size : buttonHeight[size];
+  const styles = iconButtonVariants({ variant, disabled: disabled === true });
+  return /* @__PURE__ */ jsx(
+    PressableBox,
+    {
+      variant,
+      disabled,
+      className: styles.frame({ className }),
+      style: { width: diameter, height: diameter },
+      ...pressableProps,
+      children: /* @__PURE__ */ jsx(
+        Icon,
+        {
+          icon,
+          size: diameter * (iconSize === "fill" ? 0.8 : 0.55),
+          className: styles.icon()
+        }
+      )
+    }
+  );
+}
+
+const inputVariants = tv(
+  {
+    base: [
+      "bg-highlight text-base text-sharp",
+      "border",
+      "transition-[border-color,background-color,outline-color] duration-200 ease-in",
+      "outline-interactive-outlined-pressable",
+      // to have proper outline color transition
+      process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "border-interactive-outlined-pressable",
+      "hover:border-interactive-outlined-hover",
+      "focus:border-interactive-outlined-focus",
+      "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
+      "active:border-interactive-outlined-active",
+      "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed"
+    ].join(" "),
+    variants: {
+      multiline: {
+        false: "rounded-md px-m py-xs",
+        true: "min-h-[80px] resize-y rounded-xs px-xs py-xs"
+      },
+      forceStyle: {
+        undefined: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "border-interactive-outlined-pressable" : "",
+        hover: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "border-interactive-outlined-hover" : "",
+        focus: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "border-interactive-outlined-focus outline-1 outline-interactive-outlined-focus outline-offset-0" : "",
+        press: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "border-interactive-outlined-active" : ""
+      }
+    },
+    defaultVariants: {
+      forceStyle: "undefined"
+    }
+  },
+  { twMerge: false }
+);
+const MODE_PROPS = {
+  password: {
+    secureTextEntry: true,
+    autoComplete: "current-password"
+  },
+  number: {
+    inputMode: "numeric",
+    keyboardType: "numeric"
+  },
+  tel: {
+    inputMode: "tel",
+    autoComplete: "tel",
+    keyboardType: "phone-pad"
+  },
+  email: {
+    inputMode: "email",
+    autoComplete: "email",
+    keyboardType: "email-address"
+  },
+  url: {
+    inputMode: "url",
+    keyboardType: "url"
+  },
+  search: {
+    inputMode: "search"
+  },
+  webSearch: {
+    inputMode: "search",
+    keyboardType: "web-search"
+  }
+};
+const InputText = forwardRef(
+  ({ className, disabled, mode, multiline, forceStyle, ...props }, ref) => {
+    const placeholderColor = useThemeToken("--color-form-placeholder");
+    const modeProps = mode ? MODE_PROPS[mode] : void 0;
+    return /* @__PURE__ */ jsx(
+      TextInput,
+      {
+        ref,
+        editable: !disabled,
+        disabled,
+        "aria-disabled": disabled === true,
+        multiline: multiline === true,
+        placeholderTextColor: typeof placeholderColor === "string" ? placeholderColor : void 0,
+        className: inputVariants({ multiline, forceStyle, className }),
+        ...modeProps,
+        ...props
+      }
+    );
+  }
+);
+
+const TextArea = forwardRef((props, ref) => {
+  return /* @__PURE__ */ jsx(InputText, { ref, multiline: true, ...props });
+});
+
+const TRACK_HEIGHT = 44;
+const TRACK_WIDTH = 66;
+const THUMB_PADDING = TRACK_HEIGHT * 0.1;
+const THUMB_SIZE = TRACK_HEIGHT * 0.8;
+const TRAVEL_X = TRACK_WIDTH - THUMB_SIZE - THUMB_PADDING * 2;
+const trackVariants = tv(
+  {
+    // TODO if we can fix web to use proper button, change aria-disabled to disabled
+    base: [
+      "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
+      "transition-background-color duration-200 ease-in",
+      "outline-interactive-outlined-outline-focus",
+      "aria-disabled:bg-disabled-interactive-muted"
+    ].join(" "),
+    variants: {
+      checked: {
+        false: "bg-lowered",
+        true: "bg-lowered"
+      },
+      // Storybook-only static stand-in for the :hover/:active states above.
+      forceStyle: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? { hover: "", focus: "", press: "" } : { hover: "", focus: "", press: "" }
+    }
+  },
+  { twMerge: false }
+);
+const thumbVariants = tv(
+  {
+    base: [
+      "absolute rounded-full shadow-s aria-disabled:shadow-none",
+      "transition-transform duration-200 ease-in",
+      "bg-surface aria-disabled:bg-disabled-interactive"
+    ].join(" ")
+  },
+  { twMerge: false }
+);
+function useControllableChecked(controlled, onValueChange) {
+  const [internal, setInternal] = useState(controlled ?? false);
+  const value = controlled ?? internal;
+  const onChange = useCallback(
+    (next) => {
+      if (controlled === void 0) {
+        setInternal(next);
+      }
+      if (next !== value) {
+        onValueChange?.(next);
+      }
+    },
+    [controlled, onValueChange, value]
+  );
+  return [value, onChange];
+}
+function SwitchInner({
+  checked,
+  disabled,
+  forceStyle,
+  onValueChange,
+  ...props
+}) {
+  const [value, setValue] = useControllableChecked(checked, onValueChange);
+  return /* @__PURE__ */ jsx(
+    InteractiveBox,
+    {
+      withFocusVisibleOutline: true,
+      role: "switch",
+      "aria-checked": value,
+      "aria-disabled": disabled === true,
+      disabled,
+      className: trackVariants({ checked: value, forceStyle }),
+      style: { width: TRACK_WIDTH, height: TRACK_HEIGHT },
+      onPress: () => {
+        setValue(!value);
+      },
+      ...props,
+      children: /* @__PURE__ */ jsx(
+        View$1,
+        {
+          "aria-disabled": disabled === true,
+          className: thumbVariants({}),
+          style: {
+            width: THUMB_SIZE,
+            height: THUMB_SIZE,
+            top: THUMB_PADDING,
+            left: THUMB_PADDING,
+            transform: [{ translateX: value ? TRAVEL_X : 0 }]
+          }
+        }
+      )
+    }
+  );
+}
+function Switch({ accent, ...rest }) {
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(SwitchInner, { ...rest }) });
+}
+
+const messageFrameVariants = tv(
+  {
+    base: "flex-row items-center bg-highlight-accent overflow-hidden",
+    variants: {
+      size: {
+        sm: "gap-xs p-sm rounded-xs",
+        md: "gap-m p-m rounded-sm",
+        lg: "gap-l p-l rounded-md"
+      }
+    },
+    defaultVariants: { size: "md" }
+  },
+  { twMerge: false }
+);
+const ICON_SIZE = { sm: 20, md: 24, lg: 28 };
+const DISMISS_BUTTON_SIZE = {
+  sm: 24,
+  md: 40,
+  lg: 40
+};
+function Message({
+  icon,
+  size = "md",
+  accent,
+  children,
+  onDismiss,
+  dismissIconAriaLabel
+}) {
+  const dismissDiameter = DISMISS_BUTTON_SIZE[size];
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(Box, { className: `shadow-m ${messageFrameVariants({ size })}`, children: [
+    /* @__PURE__ */ jsx(Icon, { icon, size: ICON_SIZE[size], className: "text-accent" }),
+    /* @__PURE__ */ jsx(Text, { className: "text-accent grow", children }),
+    onDismiss ? /* @__PURE__ */ jsx(
+      Box,
+      {
+        style: { width: dismissDiameter, height: dismissDiameter },
+        className: "flex-center",
+        children: /* @__PURE__ */ jsx(
+          IconButton,
+          {
+            ghost: true,
+            icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
+            iconSize: size === "sm" ? "fill" : void 0,
+            size: dismissDiameter,
+            variant: "outlined",
+            "aria-label": dismissIconAriaLabel,
+            onPress: onDismiss
+          }
+        )
+      }
+    ) : null
+  ] }) });
+}
+function InfoMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, accent: "info", icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
+}
+function ConfirmationMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, accent: "success", icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
+}
+function WarningMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, accent: "warning", icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
+}
+
+function PressableListItem({
+  variant = "contained",
+  role = "button",
+  accent,
+  children,
+  onPress
+}) {
+  return /* @__PURE__ */ jsxs(
+    PressableBox,
+    {
+      variant,
+      role,
+      accent,
+      className: "flex-row items-center justify-between mx-xs my-xxs px-m py-m",
+      onPress,
+      children: [
+        /* @__PURE__ */ jsx(View$1, { className: "flex-1", children }),
+        /* @__PURE__ */ jsx(View$1, { className: "justify-center", children: /* @__PURE__ */ jsx(
+          Icon,
+          {
+            className: variant === "contained" ? "text-on-accent-muted" : "text-muted",
+            icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}),
+            size: 18
+          }
+        ) })
+      ]
+    }
+  );
+}
+
+function GradientBackground({
+  accent,
+  children
+}) {
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(View$1, { className: "absolute inset-0 bg-linear-to-t from-screen-gradient-end from-5% via-screen-gradient-middle via-80% to-screen-gradient-start to-98%", children }) });
+}
+
+const GradientScrollViewInner = forwardRef(({ children, ...scrollViewProps }, ref) => {
+  const [gradientStart, gradientEnd] = useThemeToken([
+    "--color-screen-gradient-start",
+    "--color-screen-gradient-end"
+  ]);
+  return /* @__PURE__ */ jsxs(ScrollView$1, { ref, ...scrollViewProps, children: [
+    /* @__PURE__ */ jsx(
+      View$1,
+      {
+        className: "absolute left-0 right-0",
+        style: {
+          top: -600,
+          height: 600,
+          backgroundColor: gradientStart
+        }
+      }
+    ),
+    /* @__PURE__ */ jsx(
+      View$1,
+      {
+        className: "absolute left-0 right-0",
+        style: {
+          bottom: -600,
+          height: 600,
+          backgroundColor: gradientEnd
+        }
+      }
+    ),
+    /* @__PURE__ */ jsx(GradientBackground, {}),
+    children
+  ] });
+});
+const GradientScrollView = forwardRef(({ accent, children, ...scrollViewProps }, ref) => {
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(GradientScrollViewInner, { ref, ...scrollViewProps, children }) });
+});
+
+const Breakpoints = {
+  /**
+   * min-width: 0
+   */
+  BASE: 0,
+  /**
+   * min-width: 480px
+   */
+  SMALL: 480,
+  /**
+   * min-width: 768px
+   */
+  MEDIUM: 768,
+  /**
+   * min-width: 1024px
+   */
+  LARGE: 1024,
+  /**
+   * min-width: 1280px
+   */
+  WIDE: 1280
+};
 var BreakpointNameEnum = /* @__PURE__ */ ((BreakpointNameEnum2) => {
   BreakpointNameEnum2["BASE"] = "base";
   BreakpointNameEnum2["SMALL"] = "small";
@@ -912,45 +1854,55 @@ var BreakpointNameEnum = /* @__PURE__ */ ((BreakpointNameEnum2) => {
 })(BreakpointNameEnum || {});
 
 function useCurrentBreakpointName() {
-  const media = useMedia();
-  if (media.wide) return BreakpointNameEnum.WIDE;
-  if (media.large) return BreakpointNameEnum.LARGE;
-  if (media.medium) return BreakpointNameEnum.MEDIUM;
-  if (media.small) return BreakpointNameEnum.SMALL;
+  const { width } = useWindowDimensions();
+  if (width >= Breakpoints.WIDE) return BreakpointNameEnum.WIDE;
+  if (width >= Breakpoints.LARGE) return BreakpointNameEnum.LARGE;
+  if (width >= Breakpoints.MEDIUM) return BreakpointNameEnum.MEDIUM;
+  if (width >= Breakpoints.SMALL) return BreakpointNameEnum.SMALL;
   return BreakpointNameEnum.BASE;
 }
 function useCurrentBreakpointNameFiltered(names) {
-  const media = useMedia();
-  if (names.includes(BreakpointNameEnum.WIDE) && media.wide) {
-    return BreakpointNameEnum.WIDE;
-  }
-  if (names.includes(BreakpointNameEnum.LARGE) && media.large) {
-    return BreakpointNameEnum.LARGE;
-  }
-  if (names.includes(BreakpointNameEnum.MEDIUM) && media.medium) {
-    return BreakpointNameEnum.MEDIUM;
-  }
-  if (names.includes(BreakpointNameEnum.SMALL) && media.small) {
-    return BreakpointNameEnum.SMALL;
+  const current = useCurrentBreakpointName();
+  const ordered = [
+    BreakpointNameEnum.WIDE,
+    BreakpointNameEnum.LARGE,
+    BreakpointNameEnum.MEDIUM,
+    BreakpointNameEnum.SMALL,
+    BreakpointNameEnum.BASE
+  ];
+  const startIndex = ordered.indexOf(current);
+  for (let i = startIndex; i < ordered.length; i++) {
+    const candidate = ordered[i];
+    if (names.includes(candidate)) return candidate;
   }
   return BreakpointNameEnum.BASE;
 }
 
+const VISIBILITY_CLASS = {
+  "base:end": "flex",
+  "base:small": "flex sm:hidden",
+  "base:medium": "flex md:hidden",
+  "base:large": "flex lg:hidden",
+  "base:wide": "flex xl:hidden",
+  "small:end": "hidden sm:flex",
+  "small:medium": "hidden sm:flex md:hidden",
+  "small:large": "hidden sm:flex lg:hidden",
+  "small:wide": "hidden sm:flex xl:hidden",
+  "medium:end": "hidden md:flex",
+  "medium:large": "hidden md:flex lg:hidden",
+  "medium:wide": "hidden md:flex xl:hidden",
+  "large:end": "hidden lg:flex",
+  "large:wide": "hidden lg:flex xl:hidden",
+  "wide:end": "hidden xl:flex"
+};
 function SwitchBreakpointsUsingDisplayNone({
   ...breakpoints
 }) {
   const entries = Object.entries(breakpoints);
   return entries.map(([name, node], index) => {
-    return /* @__PURE__ */ jsx(
-      View,
-      {
-        display: name === "base" ? "flex" : "none",
-        ...name === "base" ? void 0 : { display: "none", [`$${name}`]: { display: "flex" } },
-        ...index + 1 in entries ? { [`$${entries[index + 1][0]}`]: { display: "none" } } : void 0,
-        children: node
-      },
-      name
-    );
+    const next = entries[index + 1]?.[0] ?? "end";
+    const className = VISIBILITY_CLASS[`${name}:${next}`] ?? "flex";
+    return /* @__PURE__ */ jsx(View$1, { className, children: node }, name);
   });
 }
 function SwitchBreakpointsUsingNull({
@@ -963,274 +1915,23 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-const useDefaultThemeFromColorScheme = () => {
-  const colorScheme = useColorScheme();
-  return colorScheme || "light";
-};
-function AlouetteProvider({
-  children,
-  tamaguiConfig,
-  defaultTheme = "light",
-  disableInjectCSS
+function ExternalLink({
+  as: C,
+  href,
+  openLinkBehavior,
+  onPress,
+  ...props
 }) {
   return /* @__PURE__ */ jsx(
-    TamaguiProvider,
+    C,
     {
-      config: tamaguiConfig,
-      defaultTheme,
-      disableInjectCSS,
-      children
+      ...props,
+      ...href ? { href } : {},
+      ...openLinkBehavior?.web === "targetSelf" ? {} : { hrefAttrs: { target: "_blank", rel: "noopener noreferrer" } },
+      onPress
     }
   );
 }
 
-function SafeAreaProvider({ children }) {
-  return children;
-}
-
-const AlouetteTamaguiConfigContext = createContext(null);
-const AlouetteDecorator = (storyFn, context) => {
-  const systemColorScheme = useColorScheme();
-  const [theme, setTheme] = useState(systemColorScheme || "light");
-  useEffect(() => {
-    const backgroundColor = context.globals.backgrounds?.value;
-    if (backgroundColor === "#000000") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  }, [context.globals.backgrounds?.value]);
-  return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(
-    AlouetteProvider,
-    {
-      tamaguiConfig: context.parameters.tamaguiConfig,
-      defaultTheme: theme,
-      children: /* @__PURE__ */ jsx(
-        AlouetteTamaguiConfigContext.Provider,
-        {
-          value: context.parameters.tamaguiConfig,
-          children: storyFn(context)
-        }
-      )
-    }
-  ) });
-};
-
-const Separator = styled(View, {
-  flexGrow: 1,
-  flexShrink: 0,
-  height: 0,
-  maxHeight: 0,
-  borderColor: "$border-sharp",
-  borderWidth: 0,
-  borderBottomWidth: 1,
-  y: -0.5,
-  variants: {
-    vertical: {
-      true: {
-        height: "auto",
-        maxHeight: "auto",
-        width: 0,
-        maxWidth: 0,
-        borderBottomWidth: 0,
-        borderRightWidth: 1,
-        y: 0,
-        x: -0.5
-      }
-    }
-  }
-});
-
-const PressableListItemFrame = styled(PressableBox, {
-  variant: "contained",
-  marginHorizontal: "$0.5",
-  marginVertical: "$0.25",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  paddingHorizontal: "$1.0",
-  paddingVertical: "$1.0"
-});
-function PressableListItem({
-  theme,
-  role = "button",
-  children,
-  onPress
-}) {
-  return /* @__PURE__ */ jsxs(PressableListItemFrame, { theme, role, onPress, children: [
-    /* @__PURE__ */ jsx(View, { flex: 1, children }),
-    /* @__PURE__ */ jsx(VStack, { justifyContent: "center", children: /* @__PURE__ */ jsx(
-      Icon,
-      {
-        tint: "onAccent-muted",
-        icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}),
-        size: 18
-      }
-    ) })
-  ] });
-}
-
-const GradientBackground = styled(Box, {
-  absoluteFill: true,
-  backgroundImage: "linear-gradient(0deg, $bg-screen-gradient-end 5%, $bg-screen-gradient-middle 80%, $bg-screen-gradient-start 98%)",
-  position: "absolute"
-  // needed to override "static" position for backgroundImage tamagui
-});
-
-const TopScrollOffset = styled(View, {
-  backgroundColor: "$bg-screen",
-  position: "absolute",
-  top: -600,
-  left: 0,
-  right: 0,
-  height: 600
-});
-const BottomScrollOffset = styled(View, {
-  backgroundColor: "$bg-screen",
-  position: "absolute",
-  bottom: -600,
-  left: 0,
-  right: 0,
-  height: 600
-});
-const GradientScrollView = ScrollView.styleable(({ gradientTheme, children, ...scrollViewProps }) => /* @__PURE__ */ jsxs(ScrollView, { ...scrollViewProps, children: [
-  /* @__PURE__ */ jsx(
-    TopScrollOffset,
-    {
-      theme: gradientTheme,
-      backgroundColor: "$bg-screen-gradient-start"
-    }
-  ),
-  /* @__PURE__ */ jsx(
-    BottomScrollOffset,
-    {
-      theme: gradientTheme,
-      backgroundColor: "$bg-screen-gradient-end"
-    }
-  ),
-  /* @__PURE__ */ jsx(GradientBackground, { theme: gradientTheme }),
-  children
-] }));
-
-const useControllableCheckedState = (checked, onChange, onValueChange) => {
-  const [checkedState, setCheckedState] = useState(checked ?? false);
-  return [
-    checked !== void 0 ? checked : checkedState,
-    (newChecked, e) => {
-      setCheckedState((prevValue) => {
-        if (prevValue !== newChecked) {
-          onChange?.(e);
-          onValueChange?.(newChecked);
-        }
-        return newChecked;
-      });
-    }
-  ];
-};
-const SwitchFrame = styled(InteractiveBox, {
-  theme: "brand",
-  render: "button",
-  // @ts-expect-error web only prop missing definition
-  type: "button",
-  role: "switch",
-  layer: "lowered",
-  shadow: "lowered",
-  position: "relative",
-  tabIndex: 0,
-  borderRadius: 1e3,
-  transition: "formElement",
-  disabledStyle: {
-    backgroundColor: "$interactive.forms.backgroundColor:disabled"
-  },
-  // TODO hover/focus
-  focusVisibleStyle: {
-    outlineColor: "$interactive.forms.outlineColor:focus",
-    outlineWidth: 2,
-    outlineStyle: "solid",
-    outlineOffset: 2
-  },
-  variants: {
-    size: {
-      md: {
-        height: 44,
-        width: 66
-      }
-    }
-  },
-  defaultVariants: {
-    size: "md"
-  }
-});
-const thumbSize = 44 * 0.8;
-const SwitchThumb = styled(Box, {
-  withBackground: "highlight",
-  position: "absolute",
-  top: 44 * 0.1,
-  borderRadius: 1e3,
-  center: true,
-  transition: "formElement",
-  shadow: "s",
-  variants: {
-    size: {
-      md: {
-        height: thumbSize,
-        width: thumbSize
-      }
-    },
-    disabled: {
-      true: {
-        backgroundColor: "$text-disabled-muted",
-        shadow: "none"
-      }
-    },
-    checked: {
-      false: {
-        left: 44 * 0.1,
-        hoverStyle: {
-          width: thumbSize + 2
-        },
-        pressStyle: {
-          width: thumbSize + 8
-        }
-      },
-      true: {
-        left: 44 * 0.6,
-        hoverStyle: {
-          left: 44 * 0.6 - 2,
-          width: thumbSize + 2
-        },
-        pressStyle: {
-          left: 44 * 0.6 - 8,
-          width: thumbSize + 8
-        }
-      }
-    }
-  },
-  defaultVariants: {
-    size: "md"
-  }
-});
-const Switch = SwitchFrame.styleable(
-  ({ checked, disabled, onChange, onValueChange, ...rest }) => {
-    const [currentChecked, setCurrentChecked] = useControllableCheckedState(
-      checked,
-      onChange,
-      onValueChange
-    );
-    return /* @__PURE__ */ jsx(
-      SwitchFrame,
-      {
-        "aria-checked": currentChecked,
-        disabled,
-        ...rest,
-        onPress: (e) => {
-          setCurrentChecked(!currentChecked, e);
-        },
-        children: /* @__PURE__ */ jsx(SwitchThumb, { checked: currentChecked, disabled })
-      }
-    );
-  }
-);
-
-export { AlouetteDecorator, AlouetteProvider, Box, Button, ConfirmationMessage, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InternalLinkButton, Message, Paragraph, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, WarningMessage, useCurrentBreakpointName, useDefaultThemeFromColorScheme, useSafeAreaInsets };
+export { AccentScope, AlouetteDecorator, AlouetteProvider, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useThemeToken };
 //# sourceMappingURL=index-browser.es.js.map

@@ -1,55 +1,55 @@
-import type { ColorTokens } from "@tamagui/core";
-import { Text, usePropsAndStyle } from "@tamagui/core";
-import { cloneElement } from "react";
-import type { ReactElement, ReactNode, SVGProps } from "react";
+import {
+  type ReactElement,
+  type ReactNode,
+  type SVGProps,
+  cloneElement,
+} from "react";
+import { useThemeToken } from "../../core/useThemeToken";
 
 export type SVGIconElement = ReactElement<SVGProps<SVGSVGElement>>;
 
 export interface IconProps {
   icon: SVGIconElement;
-  disabled?: boolean;
-  disabledSharp?: boolean;
-  tint?:
-    | "accent-muted"
-    | "accent"
-    | "muted"
-    | "onAccent-muted"
-    | "onAccent"
-    | "sharp";
+  /** Square size in px. Defaults to 20. */
   size?: number;
+  /**
+   * Text-colour className driving the icon tint, e.g. `text-sharp`,
+   * `text-muted`, `text-accent`, `text-on-accent`, `text-disabled-muted`.
+   * Defaults to `text-sharp`.
+   */
+  className?:
+    | string // keeping string to allow tailwind-variants usage
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-accent"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-disabled-muted"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-disabled"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-muted"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-on-accent-muted"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-on-accent"
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    | "text-sharp";
 }
-
-const getDefaultColor = (
-  disabled?: boolean,
-  disabledSharp?: boolean,
-  tint?: IconProps["tint"],
-): ColorTokens => {
-  if (disabled) {
-    return disabledSharp ? "$text-disabled-sharp" : "$text-disabled-muted";
-  }
-  if (tint === "accent") return "$text-accent";
-  if (tint === "accent-muted") return "$text-accent-muted";
-  if (tint === "muted") return "$text-muted";
-  if (tint === "onAccent") return "$text-onAccent";
-  if (tint === "onAccent-muted") return "$text-onAccent-muted";
-  return "$text-sharp";
-};
 
 export function Icon({
   icon,
-  // TODO should size be normalized ?
   size = 20,
-  disabled,
-  disabledSharp,
-  tint,
+  className = "text-sharp",
 }: IconProps): ReactNode {
-  const [props, style] = usePropsAndStyle(
-    {
-      color: getDefaultColor(disabled, disabledSharp, tint),
-      width: size,
-      height: size,
-    },
-    { forComponent: Text },
-  );
-  return cloneElement(icon, { style, ...props } as any);
+  // RN SVG needs a concrete color, not a className. Resolve the text-* color
+  // class to its --color-* token value via the active theme.
+  const token = className
+    .split(/\s+/)
+    .find((part) => part.startsWith("text-"))
+    ?.slice("text-".length);
+  const color = useThemeToken(`--color-${token ?? "sharp"}`);
+  return cloneElement(icon, {
+    color,
+    width: size,
+    height: size,
+  });
 }

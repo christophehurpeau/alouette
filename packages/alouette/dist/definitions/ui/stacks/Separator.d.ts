@@ -1,6 +1,24 @@
-import type { GetProps } from "@tamagui/core";
-export declare const Separator: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-    vertical?: boolean | undefined;
-}, import("@tamagui/web").StaticConfigPublic>;
-export type SeparatorProps = GetProps<typeof Separator>;
+import { View as RNView, type ViewProps as RNViewProps } from "react-native";
+import { type VariantProps } from "tailwind-variants";
+declare const separatorVariants: import("tailwind-variants").TVReturnType<{
+    vertical: {
+        true: string;
+        false: string;
+    };
+}, undefined, "border-border-sharp", {
+    vertical: {
+        true: string;
+        false: string;
+    };
+}, undefined, import("tailwind-variants").TVReturnType<{
+    vertical: {
+        true: string;
+        false: string;
+    };
+}, undefined, "border-border-sharp", unknown, unknown, undefined>>;
+type SeparatorVariantProps = VariantProps<typeof separatorVariants>;
+export interface SeparatorProps extends RNViewProps, SeparatorVariantProps {
+}
+export declare const Separator: import("react").ForwardRefExoticComponent<SeparatorProps & import("react").RefAttributes<RNView>>;
+export {};
 //# sourceMappingURL=Separator.d.ts.map

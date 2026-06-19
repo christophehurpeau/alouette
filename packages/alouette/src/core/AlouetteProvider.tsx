@@ -1,36 +1,20 @@
-import type { TamaguiProviderProps } from "@tamagui/core";
-import { TamaguiProvider } from "@tamagui/core";
 import type { ReactNode } from "react";
 import { useColorScheme } from "react-native";
-import "./reset";
+import { ScopedTheme } from "../ui/containers/ScopedTheme";
 
-export interface AlouetteProviderProps extends Pick<
-  TamaguiProviderProps,
-  "disableInjectCSS"
-> {
+export interface AlouetteProviderProps {
   children: ReactNode;
-  tamaguiConfig: NonNullable<TamaguiProviderProps["config"]>;
-  defaultTheme?: "dark" | "light";
 }
-
-export const useDefaultThemeFromColorScheme = () => {
-  const colorScheme = useColorScheme();
-  return colorScheme || "light";
-};
 
 export function AlouetteProvider({
   children,
-  tamaguiConfig,
-  defaultTheme = "light",
-  disableInjectCSS,
 }: AlouetteProviderProps): ReactNode {
+  // Apply the OS light/dark scheme as the root theme so base tokens resolve
+  // correctly app-wide. Subtrees can override via ScopedTheme / AccentScope.
+  const colorScheme = useColorScheme();
   return (
-    <TamaguiProvider
-      config={tamaguiConfig}
-      defaultTheme={defaultTheme}
-      disableInjectCSS={disableInjectCSS}
-    >
+    <ScopedTheme theme={colorScheme === "dark" ? "dark" : "light"}>
       {children}
-    </TamaguiProvider>
+    </ScopedTheme>
   );
 }

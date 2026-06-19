@@ -1,114 +1,125 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { Variable } from "@tamagui/core";
-import { Box } from "../ui/containers/Box";
+import type { ReactNode } from "react";
+import { tv } from "tailwind-variants";
 import { Text } from "../ui/primitives/Text";
 import { View } from "../ui/primitives/View";
-import { HStack, VStack } from "../ui/stacks/stacks";
+import { VStack } from "../ui/stacks/stacks";
 import { Story } from "../ui/story-components/Story";
-import { WithTamaguiConfig } from "../ui/story-components/WithTamaguiConfig";
-import { groupTokens } from "./utils/groupTokens";
+import { StoryGrid } from "../ui/story-components/StoryGrid";
 
-const meta = {
-  title: "alouette/Config/Tokens",
-  parameters: {
-    componentSubtitle:
-      "Design tokens for consistent styling across the design system",
-    docs: {
-      description: {
-        component: `
-Design tokens in Alouette are powered by Tamagui's token system. They provide type-safe, performant values for colors, spacing, and other visual properties.
+interface SpacingSwatchProps {
+  name: string;
+}
 
-### Color System
-- Theme-based semantic tokens with automatic light/dark mode support
-- Color tokens compile to atomic CSS using Tamagui's compiler
-- Consistent contrast ratios through our color calculation system
-- Tokens for text, borders, and backgrounds using createTokens
+function SpacingSwatch({ name }: SpacingSwatchProps): ReactNode {
+  return (
+    <VStack className="gap-xxs">
+      <View
+        className="h-4 rounded-xs bg-border-muted"
+        style={{ width: `var(--spacing-${name})` as `${number}%` }}
+      />
+      <Text className="text-xs text-muted">{name}</Text>
+    </VStack>
+  );
+}
 
-### Space Tokens
-- Space scale using createTokens ($1-$16)
-- Semantic tokens ($xs, $sm, $md, $lg, $xl) for consistent spacing
-- Consistent spacing through space props (gap, padding, margin)
-- Values compile to optimized CSS variables for better performance
-
-### Radius Tokens
-- Consistent border radius using createTokens
-- $sm (4px) for subtle rounding
-- $md (8px) for standard components
-- Radius values are type-safe and optimized at build time`,
+const radiuses = tv(
+  {
+    base: "w-16 h-16 border-2 border-border-sharp bg-highlight",
+    variants: {
+      name: {
+        xs: "rounded-xs",
+        sm: "rounded-sm",
+        md: "rounded-md",
+        lg: "rounded-lg",
       },
     },
   },
-} satisfies Meta<unknown>;
+  { twMerge: false },
+);
 
-export default meta;
+interface RadiusSwatchProps {
+  name: "lg" | "md" | "sm" | "xs";
+}
 
-export const TokensStory: StoryObj<unknown> = {
-  name: "Tokens",
+function RadiusSwatch({ name }: RadiusSwatchProps): ReactNode {
+  return (
+    <VStack className="gap-xxs items-center w-20">
+      <View className={radiuses({ name })} />
+      <Text className="text-xs text-muted">{name}</Text>
+    </VStack>
+  );
+}
+
+const shadows = tv(
+  {
+    base: "w-16 h-16 rounded-sm bg-highlight",
+    variants: {
+      name: {
+        s: "shadow-s",
+        m: "shadow-m",
+        l: "shadow-l",
+        lowered: "shadow-lowered",
+      },
+    },
+  },
+  { twMerge: false },
+);
+
+interface ShadowSwatchProps {
+  name: "l" | "lowered" | "m" | "s";
+}
+
+function ShadowSwatch({ name }: ShadowSwatchProps): ReactNode {
+  return (
+    <VStack className="gap-xs items-center w-20">
+      <View className={shadows({ name })} />
+      <Text className="font-mono text-base text-muted">{name}</Text>
+    </VStack>
+  );
+}
+
+export default {
+  title: "alouette/Config/Tokens",
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+} satisfies Meta;
+
+export const Tokens: StoryObj = {
   render: () => (
-    <WithTamaguiConfig
-      render={({ tokens }) => {
-        const groupedEntries = groupTokens(tokens.color);
-        return (
-          <Story>
-            <Story.Section title="Colors">
-              <VStack gap="$1.0" flexWrap="wrap">
-                {groupedEntries.map(([groupName, groupValues]) => (
-                  <HStack key={groupName} gap="$1.0">
-                    {groupValues.map(({ key, variable }) => (
-                      <VStack
-                        key={`${groupName}-${key}`}
-                        alignItems="stretch"
-                        gap="$1"
-                        minWidth={60}
-                      >
-                        <Text>{key}</Text>
-                        <View backgroundColor={variable.val} height={10} />
-                      </VStack>
-                    ))}
-                  </HStack>
-                ))}
-              </VStack>
-            </Story.Section>
+    <Story noDarkMode>
+      <Story.Section title="Spacing">
+        <StoryGrid.Row flexWrap>
+          <SpacingSwatch name="xxs" />
+          <SpacingSwatch name="xs" />
+          <SpacingSwatch name="sm" />
+          <SpacingSwatch name="m" />
+          <SpacingSwatch name="l" />
+          <SpacingSwatch name="xl" />
+          <SpacingSwatch name="xxl" />
+          <SpacingSwatch name="3xl" />
+          <SpacingSwatch name="4xl" />
+        </StoryGrid.Row>
+      </Story.Section>
 
-            <Story.Section title="Radius">
-              <HStack gap="$1.0" flexWrap="wrap">
-                {(["$sm", "$md"] as const).map((proportion) => (
-                  <Box
-                    key={proportion}
-                    center
-                    withBackground="highlight"
-                    borderRadius={proportion}
-                    square={50}
-                    theme="brand"
-                  >
-                    <Text>{proportion}</Text>
-                  </Box>
-                ))}
-              </HStack>
-            </Story.Section>
+      <Story.Section title="Radius">
+        <StoryGrid.Row flexWrap>
+          <RadiusSwatch name="xs" />
+          <RadiusSwatch name="sm" />
+          <RadiusSwatch name="md" />
+          <RadiusSwatch name="lg" />
+        </StoryGrid.Row>
+      </Story.Section>
 
-            <Story.Section title="Spacings">
-              <HStack gap="$2.0" flexWrap="wrap" alignItems="flex-start">
-                {Object.entries<Variable>(tokens.space).map(([key, value]) => (
-                  <Box
-                    key={key}
-                    center
-                    theme="brand"
-                    withBackground="highlight"
-                    paddingVertical="$2.0"
-                    width={value.val < 0 ? -value.val : value.val}
-                  >
-                    <VStack gap="$1.0">
-                      <Text size="$xs">${key}</Text>
-                      <Text size="$xs">{value.val}</Text>
-                    </VStack>
-                  </Box>
-                ))}
-              </HStack>
-            </Story.Section>
-          </Story>
-        );
-      }}
-    />
+      <Story.Section title="Shadows">
+        <StoryGrid.Row flexWrap>
+          <ShadowSwatch name="s" />
+          <ShadowSwatch name="m" />
+          <ShadowSwatch name="l" />
+          <ShadowSwatch name="lowered" />
+        </StoryGrid.Row>
+      </Story.Section>
+    </Story>
   ),
 };

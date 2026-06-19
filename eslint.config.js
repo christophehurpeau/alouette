@@ -16,6 +16,7 @@ export default [
       "**/storybook-static/**",
       "**/.rnstorybook/**",
       "**/vite.config.ts",
+      "**/vitest.config.ts",
       "**/tamagui.config.ts",
       "**/alouette-icons/lib/**",
       "**/scripts/**",
@@ -52,6 +53,18 @@ export default [
   {
     files: ["**/*.test.{ts,tsx}"],
     rules: {
+      // Test tooling (vitest, @testing-library) lives in the root devDependencies
+      // and is run from the workspace root, so check the root package.json too.
+      "import-x/no-extraneous-dependencies": [
+        "error",
+        {
+          devDependencies: true,
+          packageDir: [
+            import.meta.dirname,
+            `${import.meta.dirname}/packages/alouette`,
+          ],
+        },
+      ],
       "import-x/extensions": [
         "error",
         "always",

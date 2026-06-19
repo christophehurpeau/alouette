@@ -1,97 +1,130 @@
-import { isWeb, styled } from "@tamagui/core";
-import { Fragment } from "react";
-import type { ReactNode } from "react";
-import type { Except } from "type-fest";
-import { Box } from "../containers/Box";
+import { Fragment, type ReactNode } from "react";
+import { Platform } from "react-native";
+import type { Accent, AlouetteModeTheme } from "../../core/AlouetteConfig";
+import { AccentScope } from "../containers/AccentScope";
+import { ScopedTheme } from "../containers/ScopedTheme";
 import { Surface } from "../containers/Surface";
 import { ScrollView } from "../primitives/ScrollView";
+import { View } from "../primitives/View";
 import { VStack } from "../stacks/stacks";
-import type { VStackProps } from "../stacks/stacks";
+import { styled } from "../styled";
 import { StoryTitle } from "./StoryTitle";
 
-const InternalStorySection = styled(VStack, {
-  marginBottom: "$2.0",
-  marginHorizontal: "$-1.0",
-  paddingHorizontal: "$1.0",
-});
-
-export type StorySectionProps = Except<VStackProps, "marginBottom"> & {
+export interface StorySectionProps {
   title: ReactNode;
   children: ReactNode;
   level?: 1 | 2;
+  modeTheme?: AlouetteModeTheme;
+  accent?: Accent;
   withSurface?: boolean;
-};
+}
+
+const InternalStorySection = styled(View, "-mx-l px-l");
 
 function StorySection({
   title,
   children,
   level = 1,
+  modeTheme,
+  accent,
   withSurface = false,
-  ...props
 }: StorySectionProps): ReactNode {
-  return (
-    <InternalStorySection {...props}>
-      <StoryTitle level={(level + 1) as 2 | 3}>{title}</StoryTitle>
+  const content = (
+    <InternalStorySection className="pb-xl bg-screen">
       {withSurface ? (
-        <Surface>{children}</Surface>
+        <Surface>
+          <StoryTitle level={(level + 1) as 2 | 3}>{title}</StoryTitle>
+          <VStack className="gap-m">{children}</VStack>
+        </Surface>
       ) : (
-        <VStack gap="$1.0">{children}</VStack>
+        <>
+          <StoryTitle level={(level + 1) as 2 | 3}>{title}</StoryTitle>
+          <VStack className="gap-m">{children}</VStack>
+        </>
       )}
     </InternalStorySection>
   );
+
+  if (modeTheme) {
+    return <ScopedTheme theme={modeTheme}>{content}</ScopedTheme>;
+  }
+  if (accent) {
+    return <AccentScope accent={accent}>{content}</AccentScope>;
+  }
+  return content;
 }
 
-function SubSection({
+function StorySubSection({
   title,
   children,
+  modeTheme,
+  accent,
   withSurface = false,
-  ...props
 }: StorySectionProps): ReactNode {
-  return (
-    <InternalStorySection marginBottom="$1.0" {...props}>
-      <StoryTitle level={3}>{title}</StoryTitle>
+  const content = (
+    <InternalStorySection className="mb-m">
       {withSurface ? (
-        <Surface>{children}</Surface>
+        <Surface>
+          <StoryTitle level={3}>{title}</StoryTitle>
+          <VStack className="gap-m">{children}</VStack>
+        </Surface>
       ) : (
-        <VStack gap="$1.0">{children}</VStack>
+        <>
+          <StoryTitle level={3}>{title}</StoryTitle>
+          <VStack className="gap-m">{children}</VStack>
+        </>
       )}
     </InternalStorySection>
   );
+  if (modeTheme) {
+    return <ScopedTheme theme={modeTheme}>{content}</ScopedTheme>;
+  }
+  if (accent) {
+    return <AccentScope accent={accent}>{content}</AccentScope>;
+  }
+  return content;
 }
 
-const ScrollViewNative = isWeb ? Fragment : ScrollView;
+// const SimpleWebScrollView = styled(View, "h-full overflow-auto");
+
+const ScrollWrapper = Platform.OS === "web" ? Fragment : ScrollView;
 
 export interface StoryProps {
   documentation?: NonNullable<ReactNode>;
   children?: NonNullable<ReactNode>;
-  noDarkTheme?: boolean;
+  noDarkMode?: boolean;
 }
 
 export function Story({
   documentation,
   children,
-  noDarkTheme,
+  noDarkMode,
 }: StoryProps): ReactNode {
   return (
-    <ScrollViewNative>
+    <ScrollWrapper>
       {documentation && (
-        <Surface layer="highlight" shadow="s" theme="brand" marginBottom="$3.0">
+        <Surface accent="info" className="mb-xxl">
           {documentation}
         </Surface>
       )}
-      {["light", ...(noDarkTheme ? [] : ["dark"])].map((theme) => (
-        <Box
-          key={theme}
-          theme={theme}
-          backgroundColor="$bg-screen"
-          padding="$2.0"
-        >
-          {children}
-        </Box>
-      ))}
-    </ScrollViewNative>
+      {(["light", ...(noDarkMode ? [] : ["dark"])] as ("dark" | "light")[]).map(
+        (mode) => (
+          <ScopedTheme key={mode} theme={mode}>
+            <View className="bg-screen p-l">{children}</View>
+          </ScopedTheme>
+        ),
+      )}
+    </ScrollWrapper>
   );
 }
 
 Story.Section = StorySection;
-Story.SubSection = SubSection;
+Story.SubSection = StorySubSection;
+
+export const accents: Accent[] = [
+  "brand",
+  "danger",
+  "info",
+  "success",
+  "warning",
+];

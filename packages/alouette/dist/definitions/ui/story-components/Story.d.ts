@@ -1,22 +1,25 @@
-import type { ReactNode } from "react";
-import type { Except } from "type-fest";
-import type { VStackProps } from "../stacks/stacks";
-export type StorySectionProps = Except<VStackProps, "marginBottom"> & {
+import { type ReactNode } from "react";
+import type { Accent, AlouetteModeTheme } from "../../core/AlouetteConfig";
+export interface StorySectionProps {
     title: ReactNode;
     children: ReactNode;
     level?: 1 | 2;
+    modeTheme?: AlouetteModeTheme;
+    accent?: Accent;
     withSurface?: boolean;
-};
-declare function StorySection({ title, children, level, withSurface, ...props }: StorySectionProps): ReactNode;
+}
+declare function StorySection({ title, children, level, modeTheme, accent, withSurface, }: StorySectionProps): ReactNode;
+declare function StorySubSection({ title, children, modeTheme, accent, withSurface, }: StorySectionProps): ReactNode;
 export interface StoryProps {
     documentation?: NonNullable<ReactNode>;
     children?: NonNullable<ReactNode>;
-    noDarkTheme?: boolean;
+    noDarkMode?: boolean;
 }
-export declare function Story({ documentation, children, noDarkTheme, }: StoryProps): ReactNode;
+export declare function Story({ documentation, children, noDarkMode, }: StoryProps): ReactNode;
 export declare namespace Story {
     var Section: typeof StorySection;
-    var SubSection: ({ title, children, withSurface, ...props }: StorySectionProps) => ReactNode;
+    var SubSection: typeof StorySubSection;
 }
+export declare const accents: Accent[];
 export {};
 //# sourceMappingURL=Story.d.ts.map

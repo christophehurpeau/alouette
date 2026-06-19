@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Theme } from "@tamagui/core";
+import { AccentScope } from "../..";
 import { Button } from "../actions/Button";
 import { Box } from "../containers/Box";
 import { Surface } from "../containers/Surface";
@@ -9,33 +9,33 @@ import { GradientBackground } from "./GradientBackground";
 import { GradientScrollView } from "./GradientScrollView";
 
 export default {
-  title: "alouette/layout/GradientBackground",
+  title: "alouette/Layout/GradientBackground",
   component: GradientBackground,
 } satisfies Meta<typeof GradientBackground>;
 
 function Content() {
   return (
-    <Box absoluteFill center>
-      <VStack gap="$2.0" minWidth="80%">
+    <Box className="absolute inset-0 flex-center">
+      <VStack className="gap-xl min-w-[80%]">
         <Text>Text</Text>
-        <Surface layer="translucent">
-          <VStack gap="$1.0">
+        <Surface variant="translucent">
+          <VStack className="gap-m">
             <Text>Surface translucent</Text>
             <Button text="Button" />
           </VStack>
         </Surface>
         <Surface>
-          <VStack gap="$1.0">
+          <VStack className="gap-m">
             <Text>Surface</Text>
             <Button text="Button" />
           </VStack>
         </Surface>
-        <Surface layer="highlight">
-          <VStack gap="$1.0">
-            <Text>Surface highlight</Text>
+        <Box className="bg-highlight shadow-s p-xl rounded-sm">
+          <VStack className="gap-m">
+            <Text>Highlight</Text>
             <Button variant="outlined" text="Button" />
           </VStack>
-        </Surface>
+        </Box>
       </VStack>
     </Box>
   );
@@ -43,55 +43,41 @@ function Content() {
 
 export const PreviewGradientBackgroundStoryLightBrand: StoryObj = {
   render: () => (
-    <GradientBackground theme="brand">
-      <Content />
-    </GradientBackground>
-  ),
-};
-
-export const PreviewGradientBackgroundStoryLightBrandLight: StoryObj = {
-  render: () => (
-    <>
-      <GradientBackground theme="brand" />
-      <Content />
-    </>
+    <AccentScope mode="light" accent="brand">
+      <GradientBackground>
+        <Content />
+      </GradientBackground>
+    </AccentScope>
   ),
 };
 
 export const PreviewGradientBackgroundStoryDarkBrand: StoryObj = {
   render: () => (
-    <GradientBackground theme="dark_brand">
-      <Content />
-    </GradientBackground>
+    <AccentScope mode="dark" accent="brand">
+      <GradientBackground>
+        <Content />
+      </GradientBackground>
+    </AccentScope>
   ),
 };
 
-export const PreviewGradientBackgroundStoryDarkBrandLight: StoryObj = {
-  render: () => (
-    <Theme name="dark">
-      <GradientBackground theme="dark_brand" />
-      <Content />
-    </Theme>
-  ),
-};
 export const PreviewGradientWithScroll: StoryObj = {
   render: () => (
     <GradientScrollView
-      gradientTheme="brand"
-      theme="dark"
+      accent="brand"
       contentContainerStyle={{
-        paddingVertical: "$3.0",
-        paddingHorizontal: "$2.0",
+        paddingVertical: 48,
+        paddingHorizontal: 32,
       }}
     >
-      <VStack gap="$2.0" minWidth="80%">
+      <VStack className="gap-xl min-w-[80%]">
         {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-          <Surface key={i} layer="highlight">
-            <VStack gap="$1.0">
-              <Text>Surface {i}</Text>
+          <Box key={i} className="bg-highlight shadow-s p-xl rounded-sm">
+            <VStack className="gap-m">
+              <Text>Highlight {i}</Text>
               <Button text="Button" />
             </VStack>
-          </Surface>
+          </Box>
         ))}
       </VStack>
     </GradientScrollView>

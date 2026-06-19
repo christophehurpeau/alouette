@@ -6,17 +6,12 @@ declare const _default: {
     component: typeof Message;
     parameters: {
         componentSubtitle: string;
-        docs: {
-            description: {
-                component: string;
-            };
-        };
     };
     argTypes: {
-        theme: {
+        accent: {
             description: string;
             control: "select";
-            options: string[];
+            options: import("../..").Accent[];
             table: {
                 defaultValue: {
                     summary: string;

@@ -1,80 +1,145 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { Entries } from "type-fest";
+import type { ReactNode } from "react";
+import type { Accent } from "../core/AlouetteConfig";
+import { useThemeToken } from "../core/useThemeToken";
 import { Text } from "../ui/primitives/Text";
 import { View } from "../ui/primitives/View";
 import { VStack } from "../ui/stacks/stacks";
-import { Story } from "../ui/story-components/Story";
+import { Story, accents } from "../ui/story-components/Story";
 import { StoryGrid } from "../ui/story-components/StoryGrid";
-import { WithTamaguiConfig } from "../ui/story-components/WithTamaguiConfig";
-import { groupTokens } from "./utils/groupTokens";
 
-const meta = {
+interface TokenSwatchProps {
+  token: string;
+}
+
+function TokenSwatch({ token }: TokenSwatchProps): ReactNode {
+  const color = useThemeToken(`--color-${token}`);
+  return (
+    <VStack className="min-w-20 gap-0.5">
+      <Text className="text-xs text-muted leading-tight">{token}</Text>
+      <View className="h-3" style={{ backgroundColor: color }} />
+    </VStack>
+  );
+}
+
+interface TokenGroupProps {
+  group: string;
+  children: NonNullable<ReactNode>;
+}
+
+function TokenGroup({ group, children }: TokenGroupProps): ReactNode {
+  return (
+    <VStack className="gap-xxs">
+      <Text className="font-body-bold text-xs text-muted">{group}</Text>
+      <StoryGrid.Row flexWrap loose>
+        {children}
+      </StoryGrid.Row>
+    </VStack>
+  );
+}
+
+interface AccentTokensProps {
+  accent?: Accent;
+}
+
+function AccentTokens({ accent }: AccentTokensProps): ReactNode {
+  return (
+    <Story.SubSection
+      withSurface
+      title={accent ? `Accent: ${accent}` : "Default"}
+      accent={accent}
+    >
+      <TokenGroup group="Backgrounds">
+        <TokenSwatch token="screen" />
+        <TokenSwatch token="surface" />
+        <TokenSwatch token="highlight" />
+        <TokenSwatch token="highlight-accent" />
+        <TokenSwatch token="lowered" />
+        <TokenSwatch token="screen-gradient-start" />
+        <TokenSwatch token="screen-gradient-middle" />
+        <TokenSwatch token="screen-gradient-end" />
+      </TokenGroup>
+      <TokenGroup group="Texts">
+        <TokenSwatch token="sharp" />
+        <TokenSwatch token="accent" />
+        <TokenSwatch token="accent-muted" />
+        <TokenSwatch token="on-accent" />
+        <TokenSwatch token="on-accent-muted" />
+      </TokenGroup>
+      <TokenGroup group="Borders">
+        <TokenSwatch token="border-sharp" />
+        <TokenSwatch token="border-muted" />
+      </TokenGroup>
+      <TokenGroup group="Specials">
+        <TokenSwatch token="selection" />
+      </TokenGroup>
+      <TokenGroup group="Interactive">
+        <TokenSwatch token="interactive-contained-pressable" />
+        <TokenSwatch token="interactive-contained-hover" />
+        <TokenSwatch token="interactive-contained-focus" />
+        <TokenSwatch token="interactive-contained-active" />
+        <TokenSwatch token="interactive-outlined-pressable" />
+        <TokenSwatch token="interactive-outlined-hover" />
+        <TokenSwatch token="interactive-outlined-focus" />
+        <TokenSwatch token="interactive-outlined-active" />
+        <TokenSwatch token="interactive-outlined-outline-focus" />
+        <TokenSwatch token="interactive-active" />
+        <TokenSwatch token="interactive-pressable" />
+        <TokenSwatch token="interactive-hover" />
+      </TokenGroup>
+    </Story.SubSection>
+  );
+}
+
+interface ThemeTokensProps {
+  themeMode: "dark" | "light";
+}
+
+function ThemeTokens({ themeMode }: ThemeTokensProps): ReactNode {
+  return (
+    <Story.Section title={themeMode} modeTheme={themeMode}>
+      <Story.SubSection withSurface title="Shared tokens">
+        <TokenGroup group="Backgrounds">
+          <TokenSwatch token="translucent" />
+        </TokenGroup>
+        <TokenGroup group="Texts">
+          <TokenSwatch token="disabled-sharp" />
+          <TokenSwatch token="disabled-muted" />
+          <TokenSwatch token="muted" />
+        </TokenGroup>
+        <TokenGroup group="Form">
+          <TokenSwatch token="form-border-disabled" />
+          <TokenSwatch token="form-placeholder" />
+          <TokenSwatch token="form-disabled-text" />
+        </TokenGroup>
+        <TokenGroup group="Interactive">
+          <TokenSwatch token="interactive-link-disabled" />
+          <TokenSwatch token="interactive-contained-disabled" />
+          <TokenSwatch token="interactive-accent-contained-bg-disabled" />
+          <TokenSwatch token="interactive-outlined-disabled" />
+          <TokenSwatch token="interactive-accent-outlined-border-disabled" />
+        </TokenGroup>
+      </Story.SubSection>
+      <AccentTokens />
+      {accents.map((accent) => (
+        <AccentTokens key={accent} accent={accent} />
+      ))}
+    </Story.Section>
+  );
+}
+
+export default {
   title: "alouette/Config/Themes",
   parameters: {
-    componentSubtitle: "Theme system based on Tamagui with semantic tokens",
-    docs: {
-      description: {
-        component: `
-Alouette uses Tamagui's powerful theme system as its foundation. Themes are created using createTheme() and follow Tamagui's token-based approach, while adding our own semantic layer for consistent design patterns.
-
-### Theme Structure
-- Built on createTheme() with type-safe tokens
-- Themes compile to optimized CSS custom properties for better performance
-- Supports sub-themes and theme switching
-- Extends Tamagui's base light/dark themes with our own semantic tokens
-
-### Theme Values
-- Uses Tamagui token references ($color.1, $size.2, etc)
-- Semantic themes (primary, info, etc) map to token values for consistent design
-- Color values automatically adapt to color scheme
-- Theme colors are carefully chosen to meet WCAG accessibility standards
-
-### Implementation
-- Use the \`theme\` prop available on most Alouette components for theme switching
-- Themes cascade through component hierarchy following React's composition model`,
-      },
-    },
+    chromatic: { disableSnapshot: true },
   },
-} satisfies Meta<unknown>;
+} satisfies Meta;
 
-export default meta;
-
-export const TokensStory: StoryObj<unknown> = {
-  name: "Themes",
-  parameters: {
-    chromatic: { disableSnapshot: true }, // this story exceeds maximum height
-  },
+export const Themes: StoryObj = {
   render: () => (
-    <WithTamaguiConfig
-      render={({ themes }) => {
-        return (
-          <Story noDarkTheme>
-            {(Object.entries(themes) as Entries<typeof themes>).map(
-              ([themeName, theme]) => (
-                <Story.Section key={themeName} title={themeName}>
-                  {groupTokens(theme).map(([groupName, tokens]) => (
-                    <StoryGrid.Row key={groupName} flexWrap>
-                      {tokens.map(({ key, variable }) => (
-                        <StoryGrid.Col key={`${groupName}-${key}`}>
-                          <VStack
-                            key={`${groupName}-${key}`}
-                            alignItems="stretch"
-                            minWidth={60}
-                            flexGrow={1}
-                          >
-                            <Text size="$xs">{key}</Text>
-                            <View backgroundColor={variable.val} height={10} />
-                          </VStack>
-                        </StoryGrid.Col>
-                      ))}
-                    </StoryGrid.Row>
-                  ))}
-                </Story.Section>
-              ),
-            )}
-          </Story>
-        );
-      }}
-    />
+    <Story noDarkMode>
+      <ThemeTokens themeMode="light" />
+      <ThemeTokens themeMode="dark" />
+    </Story>
   ),
 };

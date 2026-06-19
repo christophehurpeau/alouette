@@ -1,100 +1,98 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ArrowUpLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowUpLeftRegularIcon";
-import { Box } from "../containers/Box";
-import { Story } from "../story-components/Story";
+import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
+import type { ReactNode } from "react";
+import type { Accent } from "../../core/AlouetteConfig";
+import { AccentScope } from "../containers/AccentScope";
+import { HStack, VStack } from "../stacks/stacks";
+import { Story, accents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Icon } from "./Icon";
+import { Text } from "./Text";
+
+type ThisStory = StoryObj<typeof Icon>;
 
 export default {
   title: "alouette/Primitives/Icon",
   component: Icon,
   parameters: {
     componentSubtitle:
-      "A wrapper component for icons from alouette-icons, providing consistent sizing and theming",
+      "Renders an SVG icon, tinted via a text-colour className and sized in px",
     docs: {
       description: {
-        component: `
-### Features
-- Consistent sizing across the application
-- Theme support for color inheritance
-- Compatible with all icons from alouette-icons
-- Proper accessibility attributes
+        component: `### Usage
+- **icon**: an SVG element, e.g. \`<StarRegularIcon />\` from \`alouette-icons/phosphor-icons/*\`
+- **size**: square size in px (defaults to 20)
+- **className**: text-colour token driving the tint (defaults to \`text-sharp\`)
 
-### Variants
-- \`size\`: Icon dimensions in pixels
-- \`accent\`: Accent version
-- \`icon\`: Icon component from alouette-icons
-
-### Guidelines
-- Use icons from alouette-icons package
-- Ensure icons have proper aria-label when meaning isn't obvious
-- Keep icons at consistent sizes within similar contexts
-- Consider using IconButton for clickable icons
-- Avoid using icons without labels in navigation
-
-### Usage
 ~~~tsx
-<Icon
-  icon={<ArrowUpLeftRegularIcon />}
-  size={24}
-  aria-label="Go back"
-/>
+<Icon icon={<StarRegularIcon />} className="text-accent" size={24} />
 ~~~`,
-      },
-    },
-  },
-  argTypes: {
-    icon: {
-      description: "The icon component from alouette-icons",
-      control: "object",
-    },
-    size: {
-      description: "Size of the icon in pixels",
-      control: "number",
-      table: {
-        defaultValue: { summary: "24" },
       },
     },
   },
 } satisfies Meta<typeof Icon>;
 
-export const PreviewIconStory: StoryObj<typeof Icon> = {
+export const PreviewStory: ThisStory = {
+  name: "Icon Preview",
   args: {
-    icon: <ArrowUpLeftRegularIcon />,
-    size: 24,
+    icon: <StarRegularIcon />,
   },
-  render: (args) => <Icon {...args} />,
 };
 
-export const VariantsIconStory: StoryObj<typeof Icon> = {
-  name: "Variants",
+interface TintRowProps {
+  className: string;
+}
+
+function TintRow({ className }: TintRowProps): ReactNode {
+  return (
+    <HStack className="gap-sm items-center">
+      <Icon icon={<StarRegularIcon />} className={className} size={24} />
+      <Text className={`font-mono text-xs ${className}`}>{className}</Text>
+    </HStack>
+  );
+}
+
+function AccentColumn({ accent }: { accent?: Accent }): ReactNode {
+  return (
+    <StoryGrid.Col title={accent ?? "default"}>
+      <AccentScope accent={accent}>
+        <VStack className="gap-xs rounded-sm bg-surface p-xs">
+          <TintRow className="text-sharp" />
+          <TintRow className="text-muted" />
+          <TintRow className="text-accent" />
+          <TintRow className="text-disabled-sharp" />
+          <TintRow className="text-disabled-muted" />
+        </VStack>
+        <VStack className="gap-xs rounded-sm bg-highlight-accent p-xs mt-xs">
+          <TintRow className="text-on-accent" />
+          <TintRow className="text-on-accent-muted" />
+        </VStack>
+      </AccentScope>
+    </StoryGrid.Col>
+  );
+}
+
+export const VariantsStory: ThisStory = {
+  name: "Icon Variants",
   render: () => (
     <Story>
-      <Story.Section title="Size">
-        <StoryGrid.Row>
-          <StoryGrid.Col title="24">
-            <Icon icon={<ArrowUpLeftRegularIcon />} size={24} />
-          </StoryGrid.Col>
-          <StoryGrid.Col title="40">
-            <Icon icon={<ArrowUpLeftRegularIcon />} size={40} />
-          </StoryGrid.Col>
+      <Story.Section title="Tints across accents">
+        <StoryGrid.Row flexWrap>
+          {[undefined, ...accents].map((accent) => (
+            <AccentColumn key={accent ?? "default"} accent={accent} />
+          ))}
         </StoryGrid.Row>
       </Story.Section>
 
-      <Story.Section title="Color">
-        <StoryGrid.Row>
-          <StoryGrid.Col title="Default">
-            <Icon icon={<ArrowUpLeftRegularIcon />} size={24} />
-          </StoryGrid.Col>
-          <StoryGrid.Col title="Disabled">
-            <Icon disabled icon={<ArrowUpLeftRegularIcon />} size={24} />
-          </StoryGrid.Col>
-          <StoryGrid.Col title="Brand">
-            <Box theme="brand">
-              <Icon tint="accent" icon={<ArrowUpLeftRegularIcon />} size={24} />
-            </Box>
-          </StoryGrid.Col>
-        </StoryGrid.Row>
+      <Story.Section title="Sizes">
+        <HStack className="gap-m items-end">
+          {([16, 20, 24, 32, 48] as const).map((size) => (
+            <VStack key={size} className="gap-xs items-center">
+              <Icon icon={<StarRegularIcon />} size={size} />
+              <Text className="font-mono text-xs text-muted">{size}</Text>
+            </VStack>
+          ))}
+        </HStack>
       </Story.Section>
     </Story>
   ),

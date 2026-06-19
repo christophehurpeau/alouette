@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
-import { Box } from "../containers/Box";
 import { VStack } from "../stacks/stacks";
-import { Story } from "../story-components/Story";
+import { Story, accents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Button, ExternalLinkButton } from "./Button";
 
@@ -16,102 +15,19 @@ export default {
       "A versatile button component that combines text and optional icons into a unified interactive element",
     docs: {
       description: {
-        component: `
-### Features
-- Variants affect elevation, borders, and background fills
-- Sizes: sm (32px height), md (40px height)
-- Automatic spacing between icon and text
-- Responsive padding based on content and size
-- Accessible focus and hover states
-- Support for loading and disabled states
-
-### Variants
-- \`variant\`: Visual style
-  - \`contained\`: Solid background with high contrast
-  - \`outlined\`: Border with transparent background
-  - \`ghost-contained\`: Transparent with hover effect
-  - \`ghost-outlined\`: Transparent with border on hover
-- \`size\`: Button dimensions (sm | md)
-- \`theme\`: Color theme (brand | info | success | warning | danger)
-- \`disabled\`: Disables button interaction
-- \`loading\`: Shows loading state
+        component: `### Variants
+- \`variant\`: contained | outlined | ghost-contained | ghost-outlined
+- \`size\`: sm (38px) | md (44px)
+- Wrap in \`<AccentTheme accent="brand"/>\` (or any accent: brand|info|success|warning|danger) to switch the interactive token set; it composes with the current light/dark mode automatically.
 
 ### Usage
 ~~~tsx
-// Basic button with icon
-<Button
-  theme="brand"
-  icon={<ArrowLeftRegularIcon />}
-  text="Back"
-/>
+<Button text="Save" icon={<CheckIcon />} />
 
-// Outlined button with custom size
-<Button
-  variant="outlined"
-  size="sm"
-  theme="info"
-  text="Small Action"
-/>
-
-// Ghost button in a themed container
-<Box theme="brand" withBackground>
-  <Button
-    variant="ghost-contained"
-    icon={<ArrowLeftRegularIcon />}
-    text="Ghost Action"
-  />
-</Box>
-
-// Disabled state
-<Button
-  variant="contained"
-  theme="danger"
-  disabled
-  text="Cannot Click"
-/>
+<AccentTheme accent="brand">
+  <Button variant="outlined" text="Cancel" />
+</AccentTheme>
 ~~~`,
-      },
-    },
-  },
-  argTypes: {
-    text: {
-      description: "The text content of the button",
-      control: "text",
-    },
-    icon: {
-      description:
-        "Optional icon from alouette-icons to display before the text",
-      control: { type: "boolean" },
-    },
-    size: {
-      description: "Controls the size of the button",
-      control: "select",
-      options: ["sm", "md"],
-      table: {
-        defaultValue: { summary: "md" },
-      },
-    },
-    variant: {
-      description: "Visual style variant of the button",
-      control: "select",
-      options: ["contained", "outlined", "ghost-contained", "ghost-outlined"],
-      table: {
-        defaultValue: { summary: "contained" },
-      },
-    },
-    theme: {
-      description: "Theme color for the button",
-      control: "select",
-      options: ["brand", "info", "success", "warning", "danger"],
-      table: {
-        defaultValue: { summary: "brand" },
-      },
-    },
-    disabled: {
-      description: "Whether the button is disabled",
-      control: "boolean",
-      table: {
-        defaultValue: { summary: "false" },
       },
     },
   },
@@ -119,20 +35,18 @@ export default {
 
 export const PreviewButtonStory: ThisStory = {
   args: {
-    theme: "brand",
     text: "Example",
   },
   render: (args) => <Button {...args} icon={<ArrowLeftRegularIcon />} />,
 };
 
-export const VariantsStory: ThisStory = {
-  name: "Variants",
+export const Variants: ThisStory = {
   render: () => (
     <Story>
-      <Story.Section title="Sizes">
+      <Story.Section withSurface title="Sizes">
         <StoryGrid.Row flexWrap>
           {(["sm", "md"] as const).map((size) => (
-            <StoryGrid.Col key={size}>
+            <StoryGrid.Col key={size} title={size}>
               <Button
                 variant="contained"
                 size={size}
@@ -143,52 +57,48 @@ export const VariantsStory: ThisStory = {
           ))}
         </StoryGrid.Row>
       </Story.Section>
-      <Story.Section title="Variants">
-        {(["brand", "info", "success", "warning", "danger"] as const).map(
-          (theme) => (
-            <Story.SubSection
-              key={theme}
-              withSurface
-              title={theme}
-              theme={theme}
-            >
-              <StoryGrid.Row flexWrap>
-                {(
-                  [undefined, "hover", "focus", "press", "disabled"] as const
-                ).map((state) => (
-                  <StoryGrid.Col
-                    key={state || "default"}
-                    title={state || "default"}
-                  >
-                    <VStack gap="$1.0" padding="$0.5">
-                      {(
-                        [
-                          "contained",
-                          "outlined",
-                          "ghost-contained",
-                          "ghost-outlined",
-                        ] as const
-                      ).map((variant) => (
-                        <Box key={variant} theme={theme}>
-                          <Button
-                            size="sm"
-                            disabled={state === "disabled"}
-                            variant={variant}
-                            forceStyle={
-                              state === "disabled" ? undefined : state
-                            }
-                            icon={<ArrowLeftRegularIcon />}
-                            text={variant}
-                          />
-                        </Box>
-                      ))}
-                    </VStack>
-                  </StoryGrid.Col>
-                ))}
-              </StoryGrid.Row>
-            </Story.SubSection>
-          ),
-        )}
+
+      <Story.Section withSurface title="Variants">
+        {accents.map((accent) => (
+          <Story.SubSection key={accent} title={accent}>
+            <StoryGrid.Row flexWrap>
+              {(
+                [
+                  undefined,
+                  "ghost",
+                  "hover",
+                  "focus",
+                  "press",
+                  "disabled",
+                ] as const
+              ).map((state) => (
+                <StoryGrid.Col
+                  key={state ?? "default"}
+                  title={state ?? "Default"}
+                >
+                  <VStack className="gap-xs p-xxs">
+                    {(["contained", "outlined"] as const).map((variant) => (
+                      <Button
+                        key={variant}
+                        accent={accent}
+                        disabled={state === "disabled"}
+                        ghost={state === "ghost"}
+                        variant={variant}
+                        forceStyle={
+                          state === "disabled" || state === "ghost"
+                            ? undefined
+                            : state
+                        }
+                        icon={<ArrowLeftRegularIcon />}
+                        text={variant}
+                      />
+                    ))}
+                  </VStack>
+                </StoryGrid.Col>
+              ))}
+            </StoryGrid.Row>
+          </Story.SubSection>
+        ))}
       </Story.Section>
 
       <Story.Section title="External Link Button">
@@ -203,16 +113,20 @@ export const VariantsStory: ThisStory = {
           <Button text="Example" />
         </Story.SubSection>
 
-        <Story.SubSection title="Very Long texts">
+        <Story.SubSection title="Very long text">
           <StoryGrid.Row flexWrap>
             {(["sm", "md"] as const).map((size) => (
-              <StoryGrid.Col key={size}>
-                <VStack gap="$1.0">
+              <StoryGrid.Col key={size} title={size}>
+                <VStack className="gap-xs">
                   <Button
+                    size={size}
                     icon={<ArrowLeftRegularIcon />}
-                    text="Very very very very very very very very very very very very very very very very very very very very very very very very very very very long text with icon"
+                    text="Very very very very very very very very very very very very very very very very very very long text with icon"
                   />
-                  <Button text="Very very very very very very very very very very very very very very very very very very very very very very very very very very very long text without icon" />
+                  <Button
+                    size={size}
+                    text="Very very very very very very very very very very very very very very very very very very long text without icon"
+                  />
                 </VStack>
               </StoryGrid.Col>
             ))}
