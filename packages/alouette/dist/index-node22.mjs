@@ -1564,7 +1564,7 @@ const inputVariants = tv(
     variants: {
       multiline: {
         false: "rounded-md px-m py-xs",
-        true: "min-h-[80px] rounded-xs px-xs py-xs"
+        true: "min-h-[80px] resize-y rounded-xs px-xs py-xs"
       },
       forceStyle: {
         undefined: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "bg-form-bg border-interactive-outlined-pressable" : "",
