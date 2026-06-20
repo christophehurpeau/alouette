@@ -4842,9 +4842,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/intent@npm:0.0.41":
-  version: 0.0.41
-  resolution: "@tanstack/intent@npm:0.0.41"
+"@tanstack/intent@npm:0.1.1":
+  version: 0.1.1
+  resolution: "@tanstack/intent@npm:0.1.1"
   dependencies:
     cac: "npm:^6.7.14"
     jsonc-parser: "npm:^3.3.1"
@@ -4852,8 +4852,7 @@ __metadata:
     yaml: "npm:2.8.3"
   bin:
     intent: dist/cli.mjs
-    intent-library: dist/intent-library.mjs
-  checksum: 10c0/06b3e5bc22ce6be59f36e11e86984e7f1d639d11716ba28f4a4baa47ad5a2d321702e432b39c9426d08704a3f16d07b4c899bf220720e97111ce4cfa5ea7b85c
+  checksum: 10c0/a8b1037deab79740f941abdce318041d0b1398b819ee7c75ac4077725d6eec9901bad8e99b8e1a0443e256ed83f45e6566ee58a846870ba889336e83c3d906ec
   languageName: node
   linkType: hard
 
@@ -5859,7 +5858,7 @@ __metadata:
   dependencies:
     "@pob/rollup-esbuild": "npm:8.3.0"
     "@rollup/plugin-replace": "npm:6.0.3"
-    "@tanstack/intent": "npm:0.0.41"
+    "@tanstack/intent": "npm:0.1.1"
     "@types/node": "npm:24.10.1"
     "@types/react": "npm:19.1.13"
     "@types/react-native-web": "npm:0.19.2"
