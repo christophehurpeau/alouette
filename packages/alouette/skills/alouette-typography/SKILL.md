@@ -8,12 +8,13 @@ description: >
   when rendering any text; avoids font-bold and raw color classes.
 type: core
 library: alouette
-library_version: "19.0.0-beta.1"
+library_version: "19.0.0-beta.4"
 requires:
   - alouette-theming
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/Text.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/Text.stories.tsx"
+  - "christophehurpeau/alouette:CLAUDE.md"
 ---
 
 This skill builds on alouette-theming. Read it first for the color token model.

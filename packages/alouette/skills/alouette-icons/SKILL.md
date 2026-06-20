@@ -8,12 +8,13 @@ description: >
   when adding icons to alouette UI.
 type: composition
 library: alouette
-library_version: "19.0.0-beta.1"
+library_version: "19.0.0-beta.4"
 requires:
   - alouette-theming
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/Icon.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Button.stories.tsx"
+  - "christophehurpeau/alouette:CLAUDE.md"
 ---
 
 This skill builds on alouette-theming. Read it first for color tokens.

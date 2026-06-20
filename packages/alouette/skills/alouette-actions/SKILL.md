@@ -9,7 +9,7 @@ description: >
   in. Load when adding buttons or custom pressable elements.
 type: core
 library: alouette
-library_version: "19.0.0-beta.1"
+library_version: "19.0.0-beta.4"
 requires:
   - alouette-theming
 sources:

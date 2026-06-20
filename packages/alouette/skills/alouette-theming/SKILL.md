@@ -9,12 +9,13 @@ description: >
   reading a theme color for a non-className prop.
 type: core
 library: alouette
-library_version: "19.0.0-beta.1"
+library_version: "19.0.0-beta.4"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/ScopedTheme.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteConfig.ts"
   - "christophehurpeau/alouette:packages/alouette/src/core/useThemeToken.ts"
+  - "christophehurpeau/alouette:CLAUDE.md"
 ---
 
 # alouette — Theming with modes and accents

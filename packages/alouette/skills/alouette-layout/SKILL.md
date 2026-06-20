@@ -9,7 +9,7 @@ description: >
   cards, spacing, or backgrounds.
 type: core
 library: alouette
-library_version: "19.0.0-beta.1"
+library_version: "19.0.0-beta.4"
 requires:
   - alouette-theming
 sources:
@@ -19,6 +19,7 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/Separator.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientBackground.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientScrollView.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/config/tokens.stories.tsx"
 ---
 
 This skill builds on alouette-theming. Read it first for the token model.

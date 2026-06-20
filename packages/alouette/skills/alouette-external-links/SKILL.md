@@ -7,7 +7,7 @@ description: >
   external URLs from alouette UI.
 type: composition
 library: alouette
-library_version: "19.0.0-beta.1"
+library_version: "19.0.0-beta.4"
 requires:
   - alouette-actions
 sources:

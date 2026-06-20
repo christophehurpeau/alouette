@@ -8,9 +8,10 @@ description: >
   fonts/bold weights look wrong. Covers ios, android and web.
 type: lifecycle
 library: alouette
-library_version: "19.0.0-beta.1"
+library_version: "19.0.0-beta.4"
 sources:
   - "christophehurpeau/alouette:packages/storybook-native-app/metro.config.cjs"
+  - "christophehurpeau/alouette:packages/storybook-native-app/postcss.config.mjs"
   - "christophehurpeau/alouette:packages/storybook-native-app/src/global.css"
   - "christophehurpeau/alouette:packages/storybook-native-app/src/App.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
@@ -19,10 +20,10 @@ sources:
 
 # alouette — Setup
 
-alouette is styled with NativeWind v5 / Tailwind CSS v4. An app needs four
-things wired before any component renders correctly: the metro plugin, the CSS
-entry with source globs, the provider, and the fonts. Everything targets
-ios/android/web from the same code.
+alouette is styled with NativeWind v5 / Tailwind CSS v4. An app needs five
+things wired before any component renders correctly: the metro plugin, the
+PostCSS config, the CSS entry with source globs, the provider, and the fonts.
+Everything targets ios/android/web from the same code.
 
 ## Setup
 
@@ -37,13 +38,38 @@ const config = getDefaultConfig(__dirname);
 module.exports = withAlouetteConfig(config);
 ```
 
-`src/global.css` (imported once, at the app entry):
+`postcss.config.mjs` at the **app package root** — this is what actually runs
+Tailwind. `@tailwindcss/postcss` ships as a dependency of `alouette`, so apps do
+not install it; they only add this config file:
+
+```js
+export default { plugins: { "@tailwindcss/postcss": {} } };
+```
+
+Use the `.mjs` extension so it loads as ESM regardless of the package's `"type"`
+field.
+
+`src/global.css` (imported once, at the app entry). Add an `@source` for
+**alouette's source** and one for **your own app source** — both are scanned
+independently of the JS bundle, and anything not covered is purged:
 
 ```css
 @import "alouette/global.css";
 
-@source "../node_modules/alouette/src";
+@source "./**/*.{ts,tsx}"; /* the app's own className / tv() literals */
+@source "../node_modules/alouette/src/**/*.{ts,tsx,js}"; /* alouette source */
 ```
+
+In a monorepo where alouette is hoisted to the **repo root** `node_modules`
+(Yarn `node-modules` linker, pnpm hoisted, etc.), the path resolves from the
+repo root, not the app — adjust the depth accordingly:
+
+```css
+@source "../../../node_modules/alouette/src/**/*.{ts,tsx,js}";
+```
+
+A wrong glob matches zero files and fails **silently** (no error) — utilities
+are simply purged and components render unstyled.
 
 App entry — load fonts (native), then wrap the tree in `AlouetteProvider`:
 
@@ -136,9 +162,31 @@ Append `&family=Chivo+Mono:wght@400;700;800` to the URL if you use `font-mono`.
 
 ## Common Mistakes
 
-### CRITICAL global.css missing @source for alouette source
+### CRITICAL Missing postcss.config — Tailwind never runs
 
-Wrong:
+Symptom: components render unstyled (only alouette's hotpink `body` fallback
+shows), and the build logs spam `Warning: Unknown at rule: @utility` /
+`@source` / `@theme`. Those warnings are the diagnostic signature — Tailwind
+directives are reaching lightningcss un-expanded because Tailwind never ran.
+
+Mechanism: `withAlouetteConfig` → `withNativewind` delegates CSS compilation to
+Expo's Metro transform worker, which runs Tailwind **only if it finds a
+`postcss.config` file at the project root**. Absent → CSS passes straight to
+lightningcss verbatim and zero utilities are emitted.
+
+Fix — add `postcss.config.mjs` at the app package root:
+
+```js
+export default { plugins: { "@tailwindcss/postcss": {} } };
+```
+
+`@tailwindcss/postcss` is a dependency of `alouette`, so no install is needed.
+
+Source: packages/storybook-native-app/postcss.config.mjs
+
+### CRITICAL global.css missing @source, or wrong path in a monorepo
+
+Wrong (no `@source`, or a path that resolves to nothing):
 
 ```css
 @import "alouette/global.css";
@@ -149,12 +197,25 @@ Correct:
 ```css
 @import "alouette/global.css";
 
-@source "../node_modules/alouette/src";
+@source "./**/*.{ts,tsx}"; /* the app's own classes */
+@source "../node_modules/alouette/src/**/*.{ts,tsx,js}"; /* alouette source */
 ```
 
-Tailwind v4 only emits classes it finds in scanned files. Without an `@source`
-covering alouette's source, every alouette utility class is purged and
-components render unstyled.
+Tailwind v4 only emits classes it finds in scanned files. Two failure modes,
+both producing the same silent unstyled result with **no error**:
+
+1. No `@source` for alouette's source → every alouette utility is purged.
+2. No `@source` for the app's own source → the app's own classes (e.g.
+   arbitrary values like `from-[#f39c12]`, `bg-linear-to-t`) are purged while
+   alouette's still work — easy to misdiagnose.
+3. In a monorepo where alouette is hoisted to the **repo root**
+   `node_modules`, `../node_modules/alouette/src` resolves to nothing. Use the
+   correct depth, e.g. `@source "../../../node_modules/alouette/src/**/*.{ts,tsx,js}"`.
+
+Note: `@source` is a text-scan of alouette's shipped `src/*.tsx` (the verbatim
+`className` / `tv()` string literals) — independent of the JS bundle, which
+Metro resolves to the compiled `dist`. The two pipelines are decoupled, which is
+why the scan targets `src` and not the build output.
 
 Source: packages/storybook-native-app/src/global.css
 

@@ -20,7 +20,7 @@ alouette is a multi-platform (web + React Native iOS/Android) React design syste
 
 | Skill                    | Type        | Domain     | What it covers                                                                 | Failure modes |
 | ------------------------ | ----------- | ---------- | ----------------------------------------------------------------------------- | ------------- |
-| alouette-setup           | lifecycle   | setup      | withAlouetteConfig, global.css + @source, AlouetteProvider, fonts, safe area  | 4             |
+| alouette-setup           | lifecycle   | setup      | withAlouetteConfig, postcss.config, global.css + @source, AlouetteProvider, fonts, safe area | 5             |
 | alouette-theming         | core        | theming    | accent, AccentScope/ScopedTheme, base tokens, useThemeToken           | 5             |
 | alouette-typography      | core        | typography | Text/Paragraph, font-{family}-{weight}, text-* sizes, color tokens            | 4             |
 | alouette-layout          | core        | layout     | Box/Surface/stacks/Separator, gradients, spacing/radius/shadow scale          | 4             |
@@ -34,14 +34,15 @@ alouette is a multi-platform (web + React Native iOS/Android) React design syste
 
 ## Failure Mode Inventory
 
-### alouette-setup (4)
+### alouette-setup (5)
 
 | #   | Mistake                                | Priority | Source                                  | Cross-skill? |
 | --- | -------------------------------------- | -------- | --------------------------------------- | ------------ |
-| 1   | global.css missing @source for alouette| CRITICAL | storybook-native-app/src/global.css     | —            |
-| 2   | Metro omits withAlouetteConfig         | CRITICAL | storybook-native-app/metro.config.cjs   | —            |
-| 3   | App not wrapped in AlouetteProvider    | CRITICAL | core/AlouetteProvider.tsx               | —            |
-| 4   | Bold/extrabold fonts not loaded        | HIGH     | storybook-native-app/src/App.tsx        | —            |
+| 1   | Missing postcss.config (Tailwind never runs) | CRITICAL | storybook-native-app/postcss.config.mjs | —            |
+| 2   | global.css missing @source / wrong monorepo path | CRITICAL | storybook-native-app/src/global.css     | —            |
+| 3   | Metro omits withAlouetteConfig         | CRITICAL | storybook-native-app/metro.config.cjs   | —            |
+| 4   | App not wrapped in AlouetteProvider    | CRITICAL | core/AlouetteProvider.tsx               | —            |
+| 5   | Bold/extrabold fonts not loaded        | HIGH     | storybook-native-app/src/App.tsx        | —            |
 
 ### alouette-theming (5)
 
