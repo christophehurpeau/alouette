@@ -1,10 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { ReactNode } from "react";
 import { Box } from "../containers/Box";
 import { Text } from "../primitives/Text";
 import { Story } from "../story-components/Story";
 import { HStack, Stack, VStack } from "./stacks";
 
-function Item({ children }: { children: React.ReactNode }) {
+interface ItemProps {
+  children: ReactNode;
+}
+
+function Item({ children }: ItemProps) {
   return (
     <Box className="flex-center bg-highlight grow p-xs rounded-sm">
       <Text>{children}</Text>
