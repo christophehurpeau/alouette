@@ -359,6 +359,12 @@ ${(["light", "dark"] as const)
 
   /* let height/width keyframes interpolate to/from auto (collapse-in/out) on web */
   :root { interpolate-size: allow-keywords; }
+
+  body, #root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 }
 
 /* keyframes referenced by the --animate-* theme tokens above. */
