@@ -689,11 +689,10 @@ const Paragraph = react.forwardRef(
   }
 );
 
-const ScrollView = react.forwardRef(
-  (props, ref) => {
-    return /* @__PURE__ */ jsxRuntime.jsx(reactNative.ScrollView, { ref, ...props });
-  }
-);
+const ScrollView = nativewind.styled(reactNative.ScrollView, {
+  className: "style",
+  contentContainerClassName: "contentContainerStyle"
+});
 
 const FlatList = nativewind.styled(reactNative.FlatList, {
   className: "style",

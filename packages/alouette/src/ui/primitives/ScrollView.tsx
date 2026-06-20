@@ -1,4 +1,5 @@
-import { forwardRef } from "react";
+import { styled } from "nativewind";
+import type { ComponentType } from "react";
 import {
   ScrollView as RNScrollView,
   type ScrollViewProps as RNScrollViewProps,
@@ -6,8 +7,7 @@ import {
 
 export type ScrollViewProps = RNScrollViewProps;
 
-export const ScrollView = forwardRef<RNScrollView, ScrollViewProps>(
-  (props, ref) => {
-    return <RNScrollView ref={ref} {...props} />;
-  },
-);
+export const ScrollView = styled(RNScrollView, {
+  className: "style",
+  contentContainerClassName: "contentContainerStyle",
+}) as ComponentType<ScrollViewProps>;

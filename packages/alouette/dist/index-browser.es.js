@@ -681,11 +681,10 @@ const Paragraph = forwardRef(
   }
 );
 
-const ScrollView = forwardRef(
-  (props, ref) => {
-    return /* @__PURE__ */ jsx(ScrollView$1, { ref, ...props });
-  }
-);
+const ScrollView = styled$1(ScrollView$1, {
+  className: "style",
+  contentContainerClassName: "contentContainerStyle"
+});
 
 const FlatList = styled$1(FlatList$1, {
   className: "style",
