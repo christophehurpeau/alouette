@@ -1,7 +1,7 @@
 import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
-import { VariableContextProvider } from 'nativewind';
+import { VariableContextProvider, styled as styled$1 } from 'nativewind';
 import { createContext, useContext, forwardRef, Fragment, Children, cloneElement, useRef, useState, useEffect, isValidElement, useCallback } from 'react';
-import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, Pressable, Platform, TextInput, Switch as Switch$1, useWindowDimensions, Linking } from 'react-native';
+import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, TextInput, Switch as Switch$1, useWindowDimensions, Linking } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { extendTailwindMerge, twMerge as twMerge$1 } from 'tailwind-merge';
@@ -679,6 +679,17 @@ const ScrollView = forwardRef(
     return /* @__PURE__ */ jsx(ScrollView$1, { ref, ...props });
   }
 );
+
+const FlatList = styled$1(FlatList$1, {
+  className: "style",
+  contentContainerClassName: "contentContainerStyle",
+  columnWrapperClassName: "columnWrapperStyle"
+});
+
+const SectionList = styled$1(SectionList$1, {
+  className: "style",
+  contentContainerClassName: "contentContainerStyle"
+});
 
 const Stack = forwardRef(
   ({ className, ...props }, ref) => {
@@ -1914,5 +1925,5 @@ function ExternalLink({
   return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
 }
 
-export { AccentScope, AlouetteDecorator, AlouetteProvider, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, ScopedTheme, ScrollView, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
+export { AccentScope, AlouetteDecorator, AlouetteProvider, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
 //# sourceMappingURL=index-node22.mjs.map

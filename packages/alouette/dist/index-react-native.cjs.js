@@ -695,6 +695,17 @@ const ScrollView = react.forwardRef(
   }
 );
 
+const FlatList = nativewind.styled(reactNative.FlatList, {
+  className: "style",
+  contentContainerClassName: "contentContainerStyle",
+  columnWrapperClassName: "columnWrapperStyle"
+});
+
+const SectionList = nativewind.styled(reactNative.SectionList, {
+  className: "style",
+  contentContainerClassName: "contentContainerStyle"
+});
+
 const Stack = react.forwardRef(
   ({ className, ...props }, ref) => {
     return /* @__PURE__ */ jsxRuntime.jsx(
@@ -1941,6 +1952,7 @@ exports.Button = Button;
 exports.ConfirmationMessage = ConfirmationMessage;
 exports.ExternalLink = ExternalLink;
 exports.ExternalLinkButton = ExternalLinkButton;
+exports.FlatList = FlatList;
 exports.GradientBackground = GradientBackground;
 exports.GradientScrollView = GradientScrollView;
 exports.HStack = HStack;
@@ -1959,6 +1971,7 @@ exports.PressableListItem = PressableListItem;
 exports.SafeAreaBox = SafeAreaBox;
 exports.ScopedTheme = ScopedTheme;
 exports.ScrollView = ScrollView;
+exports.SectionList = SectionList;
 exports.Separator = Separator;
 exports.Stack = Stack;
 exports.Story = Story;
