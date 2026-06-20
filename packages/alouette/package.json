@@ -1,7 +1,7 @@
 {
   "name": "alouette",
-  "version": "19.0.0-beta.1",
-  "description": "A modern, customizable design system built on top of Tamagui with configurable defaults",
+  "version": "19.0.0-beta.4",
+  "description": "A modern, customizable design system built on top of NativeWind v5 with configurable defaults",
   "keywords": [
     "tanstack-intent"
   ],
@@ -50,7 +50,8 @@
   "files": [
     "src",
     "dist",
-    "skills"
+    "skills",
+    "metro.cjs"
   ],
   "scripts": {
     "build": "yarn run build:css && yarn clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
@@ -122,6 +123,7 @@
     }
   },
   "dependencies": {
+    "@tailwindcss/postcss": "4.3.1",
     "alouette-icons": "8.0.7",
     "expo-web-browser": "~15.0.10",
     "react-native-safe-area-context": "5.6.2",

@@ -5858,6 +5858,7 @@ __metadata:
   dependencies:
     "@pob/rollup-esbuild": "npm:8.3.0"
     "@rollup/plugin-replace": "npm:6.0.3"
+    "@tailwindcss/postcss": "npm:4.3.1"
     "@tanstack/intent": "npm:0.1.1"
     "@types/node": "npm:24.10.1"
     "@types/react": "npm:19.1.13"
