@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [19.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@19.0.0...alouette@19.1.0) (2026-06-21)
+
+### Features
+
+* improve colors, ghost variant and contained button
+* **ScrollView:** replace forwardRef with styled component for improved styling
+
+### Bug Fixes
+
+* update dark mode enabled value for better accessibility
+
 ## [19.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.8.0...alouette@19.0.0) (2026-06-21)
 
 ### ⚠ BREAKING CHANGES
