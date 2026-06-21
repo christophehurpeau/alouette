@@ -138,7 +138,7 @@ function buildThemeVars(
     [name("screen")]: bgScreen,
     [name("surface")]: bgSurface,
     [name("highlight")]: bgHighlight,
-    [name("enabled")]: scale(5),
+    [name("enabled")]: scale(7, 5),
     [name("highlight-accent")]: scale(4),
     [name("lowered")]: scale(1, 4), // deep, combine with deep shadow dark = 0% light = 82%
     [name("screen-gradient-start")]: scale(3, 4),
