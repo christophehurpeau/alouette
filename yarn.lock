@@ -5811,7 +5811,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alouette-icons@npm:8.0.7, alouette-icons@workspace:*, alouette-icons@workspace:packages/alouette-icons":
+"alouette-icons@npm:9.0.0, alouette-icons@workspace:*, alouette-icons@workspace:packages/alouette-icons":
   version: 0.0.0-use.local
   resolution: "alouette-icons@workspace:packages/alouette-icons"
   dependencies:
@@ -5864,7 +5864,7 @@ __metadata:
     "@types/react": "npm:19.1.13"
     "@types/react-native-web": "npm:0.19.2"
     "@types/react-test-renderer": "npm:19.1.0"
-    alouette-icons: "npm:8.0.7"
+    alouette-icons: "npm:9.0.0"
     expo-web-browser: "npm:~15.0.10"
     nativewind: "npm:5.0.0-preview.4"
     react: "npm:19.1.0"

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [19.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.8.0...alouette@19.0.0) (2026-06-21)
+
+### ⚠ BREAKING CHANGES
+
+* complete rewrite using nativewind (#327)
+
+### Features
+
+* add and export FlatList and SectionList components
+* complete rewrite using nativewind ([#327](https://github.com/christophehurpeau/alouette/issues/327))
+* update global CSS to ensure body and root elements use flex layout
+* update package version and description, add metro.cjs to files, and include @tailwindcss/postcss dependency
+
+Version bump for dependency: alouette-icons
+
+
 ## [18.8.0](https://github.com/christophehurpeau/alouette/compare/alouette@18.7.0...alouette@18.8.0) (2026-05-01)
 
 ### Features

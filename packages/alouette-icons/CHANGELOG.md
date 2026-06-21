@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@8.0.7...alouette-icons@9.0.0) (2026-06-21)
+
+### ⚠ BREAKING CHANGES
+
+* complete rewrite using nativewind (#327)
+
+### Features
+
+* complete rewrite using nativewind ([#327](https://github.com/christophehurpeau/alouette/issues/327))
+
 ## [8.0.7](https://github.com/christophehurpeau/alouette/compare/alouette-icons@8.0.6...alouette-icons@8.0.7) (2026-05-01)
 
 Note: no notable changes
