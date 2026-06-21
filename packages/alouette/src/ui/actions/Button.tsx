@@ -32,6 +32,7 @@ const buttonVariants = tv(
       variant: {
         contained: { text: "text-on-accent" },
         outlined: { text: "text-sharp" },
+        ghost: { text: "text-sharp" },
       },
       disabled: { true: {}, false: {} },
     },
@@ -39,7 +40,17 @@ const buttonVariants = tv(
       {
         variant: "contained",
         disabled: false,
+        ghost: false,
         class: { icon: "text-on-accent" },
+      },
+      {
+        variant: "contained",
+        disabled: false,
+        ghost: true,
+        class: {
+          text: "text-sharp hover:text-on-accent",
+          icon: "text-sharp hover:text-on-accent",
+        },
       },
       { variant: "outlined", disabled: false, class: { icon: "text-sharp" } },
       {
@@ -77,7 +88,11 @@ export function Button({
   className,
   ...pressableProps
 }: ButtonProps): ReactNode {
-  const styles = buttonVariants({ size, variant, disabled: disabled === true });
+  const styles = buttonVariants({
+    size,
+    variant,
+    disabled: disabled === true,
+  });
   return (
     <PressableBox
       accent={accent}

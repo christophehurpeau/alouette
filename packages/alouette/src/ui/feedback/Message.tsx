@@ -74,11 +74,10 @@ export function Message({
             className="flex-center"
           >
             <IconButton
-              ghost
               icon={<XRegularIcon />}
               iconSize={size === "sm" ? "fill" : undefined}
               size={dismissDiameter}
-              variant="outlined"
+              variant="ghost"
               aria-label={dismissIconAriaLabel}
               onPress={onDismiss}
             />

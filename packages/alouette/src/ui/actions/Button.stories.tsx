@@ -63,36 +63,26 @@ export const Variants: ThisStory = {
           <Story.SubSection key={accent} title={accent}>
             <StoryGrid.Row flexWrap>
               {(
-                [
-                  undefined,
-                  "ghost",
-                  "hover",
-                  "focus",
-                  "press",
-                  "disabled",
-                ] as const
+                [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
                 <StoryGrid.Col
                   key={state ?? "default"}
                   title={state ?? "Default"}
                 >
                   <VStack className="gap-xs p-xxs">
-                    {(["contained", "outlined"] as const).map((variant) => (
-                      <Button
-                        key={variant}
-                        accent={accent}
-                        disabled={state === "disabled"}
-                        ghost={state === "ghost"}
-                        variant={variant}
-                        forceStyle={
-                          state === "disabled" || state === "ghost"
-                            ? undefined
-                            : state
-                        }
-                        icon={<ArrowLeftRegularIcon />}
-                        text={variant}
-                      />
-                    ))}
+                    {(["contained", "outlined", "ghost"] as const).map(
+                      (variant) => (
+                        <Button
+                          key={variant}
+                          accent={accent}
+                          disabled={state === "disabled"}
+                          variant={variant}
+                          forceStyle={state === "disabled" ? undefined : state}
+                          icon={<ArrowLeftRegularIcon />}
+                          text={variant}
+                        />
+                      ),
+                    )}
                   </VStack>
                 </StoryGrid.Col>
               ))}

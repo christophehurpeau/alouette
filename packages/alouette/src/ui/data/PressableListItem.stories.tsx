@@ -134,7 +134,7 @@ export const Variants: ThisStory = {
                 console.log("Logout");
               }}
             >
-              <Text className="text-accent">Logout</Text>
+              <Text className="text-on-accent">Logout</Text>
             </PressableListItem>
           </VStack>
         </Box>

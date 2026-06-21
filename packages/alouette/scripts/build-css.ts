@@ -102,6 +102,9 @@ function buildThemeVars(
 ): Record<string, string> {
   const scale = (scaleDark: ScaleNum, scaleLight: ScaleNum = scaleDark) =>
     color(mode, accentName, scaleDark, scaleLight);
+
+  const grayScale = (scaleDark: ScaleNum, scaleLight: ScaleNum = scaleDark) =>
+    grayForMode(mode, scaleDark, scaleLight);
   const name = (name: string) => name; // if we later need to suffix for accents, we can do it here
 
   const isGrayscale = accentName === "grayscale";
@@ -114,20 +117,20 @@ function buildThemeVars(
     ...(isGrayscale
       ? {
           translucent: mode === "dark" ? TRANSLUCENT_DARK : TRANSLUCENT_LIGHT,
-          "disabled-sharp": grayForMode(mode, 8, 8),
-          "disabled-muted": grayForMode(mode, 8, 7),
-          "disabled-interactive": grayForMode(mode, 7, 6),
-          "disabled-interactive-muted": grayForMode(mode, 4, 4),
-          ["muted"]: grayForMode(mode, 9, 9), // rest dark = 68% light = 30%
+          "disabled-sharp": grayScale(9, 9),
+          "disabled-muted": grayScale(9, 7),
+          "disabled-interactive": grayScale(7, 6),
+          "disabled-interactive-muted": grayScale(4, 4),
+          ["muted"]: grayScale(10, 10), // rest dark = 68% light = 30%
 
-          "form-border-disabled": grayForMode(mode, 7, 6),
-          "form-placeholder": grayForMode(mode, 8, 8),
-          "form-disabled-text": grayForMode(mode, 9, 9),
+          "form-border-disabled": grayScale(7, 6),
+          "form-placeholder": grayScale(9, 9),
+          "form-disabled-text": grayScale(10, 10),
 
-          "interactive-contained-disabled": grayForMode(mode, 5, 5),
-          "interactive-outlined-disabled": grayForMode(mode, 6, 6),
-          "interactive-accent-contained-bg-disabled": grayForMode(mode, 5, 3),
-          "interactive-accent-outlined-disabled": grayForMode(mode, 6, 6),
+          "interactive-contained-disabled": grayScale(5, 5),
+          "interactive-outlined-disabled": grayScale(6, 6),
+          "interactive-accent-contained-bg-disabled": grayScale(5, 3),
+          "interactive-accent-outlined-disabled": grayScale(6, 6),
         }
       : {}),
 
@@ -135,6 +138,7 @@ function buildThemeVars(
     [name("screen")]: bgScreen,
     [name("surface")]: bgSurface,
     [name("highlight")]: bgHighlight,
+    [name("enabled")]: scale(5),
     [name("highlight-accent")]: scale(4),
     [name("lowered")]: scale(1, 4), // deep, combine with deep shadow dark = 0% light = 82%
     [name("screen-gradient-start")]: scale(3, 4),
@@ -144,34 +148,34 @@ function buildThemeVars(
     /* borders */
 
     [name("border-muted")]: scale(7),
-    [name("border-sharp")]: scale(8),
+    [name("border-sharp")]: scale(9),
 
     /* interactive */
 
-    [name("interactive-contained-pressable")]: scale(4, 1),
-    [name("interactive-contained-hover")]: scale(6, 4),
-    [name("interactive-contained-focus")]: scale(6, 4),
-    [name("interactive-contained-active")]: scale(6, 5),
+    [name("interactive-contained-pressable")]: scale(6, isGrayscale ? 1 : 9),
+    [name("interactive-contained-hover")]: scale(7, isGrayscale ? 2 : 8),
+    [name("interactive-contained-focus")]: scale(7, isGrayscale ? 2 : 8),
+    [name("interactive-contained-active")]: scale(7, isGrayscale ? 3 : 7),
 
-    [name("interactive-outlined-pressable")]: scale(7),
-    [name("interactive-outlined-hover")]: scale(8),
-    [name("interactive-outlined-focus")]: scale(8),
-    [name("interactive-outlined-active")]: scale(8),
+    [name("interactive-outlined-pressable")]: scale(7, 9),
+    [name("interactive-outlined-hover")]: scale(9, 7),
+    [name("interactive-outlined-focus")]: scale(9, 7),
+    [name("interactive-outlined-active")]: scale(9, 7),
     [name("interactive-outlined-outline-focus")]: scale(7),
 
-    [name("interactive-active")]: scale(8),
-    [name("interactive-pressable")]: scale(9),
-    [name("interactive-hover")]: scale(10),
+    [name("interactive-active")]: scale(9),
+    [name("interactive-pressable")]: scale(10),
+    [name("interactive-hover")]: scale(11),
 
     /* texts */
     [name("sharp")]: scale(11), // headings, buttons, and important text dark = 96% light = 5%
-    [name("accent")]: isGrayscale ? scale(11) : scale(9), // same as sharp in default theme, same as muted in colored themes
-    [name("accent-muted")]: scale(9, 8),
-    [name("on-accent")]: isGrayscale ? scale(11) : scale(11, 9),
-    [name("on-accent-muted")]: isGrayscale ? scale(9, 8) : scale(9, 6),
+    [name("accent")]: isGrayscale ? scale(11) : scale(10), // same as sharp in default theme, same as muted in colored themes
+    [name("accent-muted")]: scale(10, 9),
+    [name("on-accent")]: isGrayscale ? scale(11) : grayScale(11, 1),
+    [name("on-accent-muted")]: isGrayscale ? scale(10, 9) : scale(10, 4),
 
     /* specials */
-    [name("selection")]: scale(9) + "40",
+    [name("selection")]: scale(10) + "40",
 
     /* LEGACY TO REMOVE */
 

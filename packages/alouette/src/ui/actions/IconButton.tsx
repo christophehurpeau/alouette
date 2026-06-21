@@ -14,6 +14,7 @@ const iconButtonVariants = tv(
       variant: {
         contained: {},
         outlined: {},
+        ghost: {},
       },
       disabled: {
         true: {},
@@ -32,12 +33,22 @@ const iconButtonVariants = tv(
         class: { icon: "text-sharp" },
       },
       {
+        variant: "ghost",
+        disabled: false,
+        class: { icon: "text-sharp" },
+      },
+      {
         variant: "contained",
         disabled: true,
         class: { icon: "text-disabled-sharp" },
       },
       {
         variant: "outlined",
+        disabled: true,
+        class: { icon: "text-disabled-muted" },
+      },
+      {
+        variant: "ghost",
         disabled: true,
         class: { icon: "text-disabled-muted" },
       },

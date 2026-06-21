@@ -21,3 +21,7 @@ size="$lg" → "text-3xl"
 size="$xl" → "text-4xl"
 size="$xxl" → "text-5xl"
 size="$xxxl" → "text-6xl"
+
+## Weight
+
+weight="$extraBold" → font-body-extrabold or font-heading-extrabold

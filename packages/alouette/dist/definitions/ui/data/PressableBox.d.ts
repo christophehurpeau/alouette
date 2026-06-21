@@ -5,9 +5,7 @@ declare const pressableBoxVariants: import("tailwind-variants").TVReturnType<{
     variant: {
         contained: string;
         outlined: string;
-    };
-    ghost: {
-        true: string;
+        ghost: string;
     };
     forceStyle: {
         hover: string;

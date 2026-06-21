@@ -23,7 +23,7 @@ const trackVariants = tv(
     variants: {
       checked: {
         false: "bg-lowered",
-        true: "bg-lowered",
+        true: "bg-enabled",
       },
       // Storybook-only static stand-in for the :hover/:active states above.
       forceStyle: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED

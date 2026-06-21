@@ -26,7 +26,7 @@ const pressableBoxVariants = tv(
           "focus-visible:outline-border-muted",
         ].join(" "),
         outlined: [
-          "border",
+          "border bg-highlight",
           process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
             ? ""
             : "border-interactive-outlined-pressable",
@@ -36,9 +36,14 @@ const pressableBoxVariants = tv(
           "disabled:border-interactive-outlined-disabled",
           "focus-visible:outline-interactive-outlined-outline-focus",
         ].join(" "),
-      },
-      ghost: {
-        true: "bg-transparent border-transparent shadow-none",
+        ghost: [
+          "border border-transparent",
+          "hover:border hover:border-interactive-outlined-hover",
+          "focus:border focus:border-interactive-outlined-focus",
+          "active:border active:border-interactive-outlined-active",
+          "disabled:border-interactive-outlined-disabled",
+          "focus-visible:outline-interactive-outlined-outline-focus",
+        ].join(" "),
       },
       forceStyle: {
         hover: "",
@@ -92,6 +97,27 @@ const pressableBoxVariants = tv(
             forceStyle: "press",
             className: "border-interactive-outlined-active",
           },
+          /* ghost */
+          {
+            variant: "ghost",
+            forceStyle: undefined,
+            className: "border-transparent",
+          },
+          {
+            variant: "ghost",
+            forceStyle: "hover",
+            className: "border-interactive-outlined-hover",
+          },
+          {
+            variant: "ghost",
+            forceStyle: "focus",
+            className: "border-interactive-outlined-focus",
+          },
+          {
+            variant: "ghost",
+            forceStyle: "press",
+            className: "border-interactive-outlined-active",
+          },
         ]
       : undefined,
     defaultVariants: {
@@ -112,10 +138,7 @@ export interface PressableBoxProps
 
 // TODO what is the diff between <Box interactive> and PressableBox ?
 export const PressableBox = forwardRef<RNView, PressableBoxProps>(
-  (
-    { className, variant, ghost = false, forceStyle, accent, ...props },
-    ref,
-  ) => {
+  ({ className, variant, forceStyle, accent, ...props }, ref) => {
     return (
       <AccentScope accent={accent}>
         <InteractiveBox
@@ -124,7 +147,7 @@ export const PressableBox = forwardRef<RNView, PressableBoxProps>(
           role="button"
           className={pressableBoxVariants({
             variant,
-            ghost,
+
             className,
             forceStyle,
           })}

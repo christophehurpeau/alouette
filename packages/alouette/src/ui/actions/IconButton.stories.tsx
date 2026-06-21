@@ -74,25 +74,26 @@ export const Variants: ThisStory = {
                   title={state || "default"}
                 >
                   <VStack className="gap-xs">
-                    {(["contained", "outlined"] as const).map((variant) => (
-                      <HStack key={variant} className="gap-xs items-center">
-                        <IconButton
-                          ghost={state === "ghost"}
-                          variant={variant}
-                          disabled={state === "disabled"}
-                          forceStyle={
-                            state === "disabled" || state === "ghost"
-                              ? undefined
-                              : state
-                          }
-                          icon={<ArrowLeftRegularIcon />}
-                          aria-label="Go back"
-                        />
-                        <Text className="text-xs">
-                          {variant} {state === "ghost" ? "ghost" : ""}
-                        </Text>
-                      </HStack>
-                    ))}
+                    {(["contained", "outlined", "ghost"] as const).map(
+                      (variant) => (
+                        <HStack key={variant} className="gap-xs items-center">
+                          <IconButton
+                            variant={variant}
+                            disabled={state === "disabled"}
+                            forceStyle={
+                              state === "disabled" || state === "ghost"
+                                ? undefined
+                                : state
+                            }
+                            icon={<ArrowLeftRegularIcon />}
+                            aria-label="Go back"
+                          />
+                          <Text className="text-xs">
+                            {variant} {state === "ghost" ? "ghost" : ""}
+                          </Text>
+                        </HStack>
+                      ),
+                    )}
                   </VStack>
                 </StoryGrid.Col>
               ))}

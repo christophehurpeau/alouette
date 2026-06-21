@@ -7,7 +7,7 @@ const createColorScale = (
   baseColor: string,
   hue: number,
   kind: "dark" | "light",
-  { boostTextContrast = 0, boostLight = 0 } = {},
+  { boostTextContrast = 0, boostLight = 0, boostDark = 0 } = {},
 ): ColorScale => {
   const hsl = convert.hex.hsl(baseColor);
   if (hsl[0] !== hue) {
@@ -21,7 +21,7 @@ const createColorScale = (
           light: { standard: 0, medium: 0, moreSaturation: 0 },
         }
       : {
-          dark: { standard: 56, medium: 72, moreSaturation: 88 },
+          dark: { standard: 56, medium: 72 + boostDark, moreSaturation: 88 },
           light: { standard: 56, medium: 82 + boostLight, moreSaturation: 96 },
         };
 
@@ -35,9 +35,9 @@ const createColorScale = (
           78,
           72,
           56,
+          48,
           38,
           28,
-          18,
           8,
         ]
       : [
@@ -48,9 +48,9 @@ const createColorScale = (
           hue === 0 ? 24 : 26,
           hue === 0 ? 28 : 30,
           hue === 0 ? 32 : 42,
+          52,
           66,
           76,
-          86,
           hue === 0 ? 96 : 92,
         ];
 
@@ -62,7 +62,7 @@ const createColorScale = (
     5: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[4]])}`,
     6: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[5]])}`,
     7: `#${convert.hsl.hex([hue, kind === "dark" ? saturations[kind].medium : saturations[kind].moreSaturation, boostLight + lightnessSteps[6]])}`,
-    8: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[7]])}`,
+    8: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[7] + boostTextContrast])}`,
     9: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[8] + boostTextContrast])}`,
     10: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[9] + boostTextContrast])}`,
     11: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, lightnessSteps[10]])}`,
@@ -75,15 +75,17 @@ const createColorPalettes = (
   name: string,
   color: string,
   hue: number,
-  { boostLightTextContrast = 0, boostLight = 0 } = {},
+  { boostLightTextContrast = 0, boost = 0, boostLight = boost } = {},
 ) => {
   return {
     ['"' + name + '.light"']: createColorScale(color, hue, "light", {
       boostTextContrast: boostLightTextContrast * -1, // we want less light to have more contrast
       boostLight: boostLight,
+      boostDark: boost,
     }),
     ['"' + name + '.dark"']: createColorScale(color, hue, "dark", {
       boostLight: boostLight,
+      boostDark: boost,
     }),
   };
 };
@@ -103,10 +105,11 @@ const generatePalettes = () => {
     }),
     ...createColorPalettes("success", "#2ac82a", 120, {
       boostLightTextContrast: 12,
+      boost: -2,
     }),
     ...createColorPalettes("warning", "#ffb72a", 40, {
-      boostLightTextContrast: 16,
-      boostLight: -4,
+      boostLightTextContrast: 8,
+      boostLight: -2,
     }),
   };
 
@@ -116,9 +119,9 @@ const generatePalettes = () => {
 const palettes = generatePalettes();
 
 if (process.argv[2] === "generate") {
-  let content = "";
-  content += "import { createColorScale } from './colorScales';\n";
-  content += "import type { AlouetteColorScales } from './colorScales';\n\n";
+  let content = "/* eslint-disable import-x/extensions */\n";
+  content += "import { createColorScale } from './colorScales.ts';\n";
+  content += "import type { AlouetteColorScales } from './colorScales.ts';\n\n";
   content += "export const defaultColorScales: AlouetteColorScales = {\n";
 
   Object.entries(palettes).forEach(([name, palette]) => {

@@ -25,6 +25,9 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
         outlined: {
             text: string;
         };
+        ghost: {
+            text: string;
+        };
     };
     disabled: {
         true: {};
@@ -52,6 +55,9 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
         outlined: {
             text: string;
         };
+        ghost: {
+            text: string;
+        };
     };
     disabled: {
         true: {};
@@ -77,6 +83,9 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
             text: string;
         };
         outlined: {
+            text: string;
+        };
+        ghost: {
             text: string;
         };
     };
