@@ -1763,6 +1763,7 @@ function SwitchInner({
       children: /* @__PURE__ */ jsx(
         View$1,
         {
+          "aria-disabled": disabled === true,
           className: trackVariants({ checked: value, forceStyle }),
           style: { width: TRACK_WIDTH, height: TRACK_HEIGHT },
           children: /* @__PURE__ */ jsx(

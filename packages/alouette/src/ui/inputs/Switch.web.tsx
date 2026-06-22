@@ -100,6 +100,7 @@ function SwitchInner({
       {...props}
     >
       <View
+        aria-disabled={disabled === true}
         className={trackVariants({ checked: value, forceStyle })}
         style={{ width: TRACK_WIDTH, height: TRACK_HEIGHT }}
       >
