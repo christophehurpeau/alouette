@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [19.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@19.1.0...alouette@19.2.0) (2026-06-22)
+
+### Features
+
+* add Badge component with variants and sizes
+* add InteractiveBoxHitSlop component and change Switch to have smaller size
+
+### Bug Fixes
+
+* add aria-disabled attribute to Switch component for better accessibility
+
 ## [19.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@19.0.0...alouette@19.1.0) (2026-06-21)
 
 ### Features
