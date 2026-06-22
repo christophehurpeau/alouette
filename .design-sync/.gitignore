@@ -1,0 +1,9 @@
+# design-sync transient/verification state (not committed).
+# Durable set (committed): config.json, NOTES.md, conventions.md, previews/,
+# overrides/, and the repo-owned helpers (process-shim.mjs, tsconfig.bundle.json,
+# icons-barrel.mjs).
+sb-reference/
+learnings/
+.cache/
+node_modules
+*.log

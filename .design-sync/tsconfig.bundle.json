@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": "..",
+    "paths": {
+      "react-native-web": ["node_modules/react-native-css/dist/commonjs/components/index.cjs"],
+      "react-native": ["node_modules/react-native-web/dist/index.js"],
+      "alouette-icons": [".design-sync/icons-barrel.mjs"]
+    }
+  }
+}

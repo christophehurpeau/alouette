@@ -1,0 +1,53 @@
+{
+  "projectId": "72695c8d-3f52-47cd-9c22-ff11d73adb70",
+  "pkg": "alouette",
+  "globalName": "Alouette",
+  "shape": "storybook",
+  "storybookStatic": ".design-sync/sb-reference",
+  "storybookConfigDir": "packages/storybook-native-app/.storybook",
+  "buildCmd": "yarn workspace alouette build",
+  "tsconfig": "../../.design-sync/tsconfig.bundle.json",
+  "readmeHeader": ".design-sync/conventions.md",
+  "extraEntries": ["../../.design-sync/process-shim.mjs"],
+  "storyImports": {
+    "bundle": ["story-components"]
+  },
+  "provider": {
+    "component": "SafeAreaProvider",
+    "inner": {
+      "component": "AlouetteProvider",
+      "inner": {
+        "component": "ScopedTheme",
+        "props": { "theme": "light" }
+      }
+    }
+  },
+  "titleMap": {
+    "Button": null,
+    "IconButton": null,
+    "Box": null,
+    "Surface": null,
+    "PressableBox": null,
+    "PressableListItem": null,
+    "Message": null,
+    "GradientBackground": null,
+    "Separator": null,
+    "Icon": null,
+    "Text": null,
+    "View": null
+  },
+  "overrides": {
+    "Switch": {
+      "primaryStory": "PreviewSwitchStory",
+      "skip": ["alouette-inputs-switch--tests", "alouette-inputs-switch--documentation"]
+    },
+    "InputText": {
+      "primaryStory": "PreviewInputTextStory",
+      "skip": ["alouette-inputs-inputtext--tests", "alouette-inputs-inputtext--documentation"]
+    },
+    "TextArea": {
+      "primaryStory": "PreviewTextAreaStory",
+      "skip": ["alouette-inputs-textarea--documentation"]
+    }
+  }
+}
