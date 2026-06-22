@@ -1723,6 +1723,55 @@ function Switch({ accent, ...rest }) {
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(SwitchInner, { ...rest }) });
 }
 
+const badgeVariants = tailwindVariants.tv(
+  {
+    slots: {
+      frame: "flex-row items-center self-start rounded-full",
+      text: "font-body-bold",
+      icon: ""
+    },
+    variants: {
+      size: {
+        sm: { frame: "gap-xxs px-xs py-xxs", text: "text-xs", icon: "" },
+        md: { frame: "gap-xs px-sm py-xxs", text: "text-sm", icon: "" }
+      },
+      variant: {
+        solid: {
+          frame: "bg-highlight-accent",
+          text: "text-sharp",
+          icon: "text-sharp"
+        },
+        "solid.enabled": {
+          frame: "bg-enabled",
+          text: "text-sharp",
+          icon: "text-sharp"
+        },
+        outlined: {
+          frame: "border border-accent",
+          text: "text-accent",
+          icon: "text-accent"
+        }
+      }
+    },
+    defaultVariants: { size: "md", variant: "solid" }
+  },
+  { twMerge: false }
+);
+const ICON_SIZE$1 = { sm: 12, md: 16 };
+function Badge({
+  accent = "brand",
+  size = "md",
+  variant = "solid",
+  icon,
+  children
+}) {
+  const styles = badgeVariants({ size, variant });
+  return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsxs(Box, { className: styles.frame(), children: [
+    icon ? /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size: ICON_SIZE$1[size], className: styles.icon() }) : null,
+    /* @__PURE__ */ jsxRuntime.jsx(Text, { className: styles.text(), children })
+  ] }) });
+}
+
 const messageFrameVariants = tailwindVariants.tv(
   {
     base: "flex-row items-center bg-highlight-accent overflow-hidden",
@@ -2006,6 +2055,7 @@ exports.useSafeAreaInsets = reactNativeSafeAreaContext.useSafeAreaInsets;
 exports.AccentScope = AccentScope;
 exports.AlouetteDecorator = AlouetteDecorator;
 exports.AlouetteProvider = AlouetteProvider;
+exports.Badge = Badge;
 exports.Box = Box;
 exports.BreakpointNameEnum = BreakpointNameEnum;
 exports.Breakpoints = Breakpoints;

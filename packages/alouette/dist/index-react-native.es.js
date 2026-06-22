@@ -1708,6 +1708,55 @@ function Switch({ accent, ...rest }) {
   return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(SwitchInner, { ...rest }) });
 }
 
+const badgeVariants = tv(
+  {
+    slots: {
+      frame: "flex-row items-center self-start rounded-full",
+      text: "font-body-bold",
+      icon: ""
+    },
+    variants: {
+      size: {
+        sm: { frame: "gap-xxs px-xs py-xxs", text: "text-xs", icon: "" },
+        md: { frame: "gap-xs px-sm py-xxs", text: "text-sm", icon: "" }
+      },
+      variant: {
+        solid: {
+          frame: "bg-highlight-accent",
+          text: "text-sharp",
+          icon: "text-sharp"
+        },
+        "solid.enabled": {
+          frame: "bg-enabled",
+          text: "text-sharp",
+          icon: "text-sharp"
+        },
+        outlined: {
+          frame: "border border-accent",
+          text: "text-accent",
+          icon: "text-accent"
+        }
+      }
+    },
+    defaultVariants: { size: "md", variant: "solid" }
+  },
+  { twMerge: false }
+);
+const ICON_SIZE$1 = { sm: 12, md: 16 };
+function Badge({
+  accent = "brand",
+  size = "md",
+  variant = "solid",
+  icon,
+  children
+}) {
+  const styles = badgeVariants({ size, variant });
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(Box, { className: styles.frame(), children: [
+    icon ? /* @__PURE__ */ jsx(Icon, { icon, size: ICON_SIZE$1[size], className: styles.icon() }) : null,
+    /* @__PURE__ */ jsx(Text, { className: styles.text(), children })
+  ] }) });
+}
+
 const messageFrameVariants = tv(
   {
     base: "flex-row items-center bg-highlight-accent overflow-hidden",
@@ -1986,5 +2035,5 @@ function ExternalLink({
   return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
 }
 
-export { AccentScope, AlouetteDecorator, AlouetteProvider, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
+export { AccentScope, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
 //# sourceMappingURL=index-react-native.es.js.map

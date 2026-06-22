@@ -54,6 +54,8 @@ export type { TextAreaProps } from "./ui/inputs/TextArea";
 export { TextArea } from "./ui/inputs/TextArea";
 export type { SwitchProps } from "./ui/inputs/Switch";
 export { Switch } from "./ui/inputs/Switch";
+export type { BadgeProps } from "./ui/feedback/Badge";
+export { Badge } from "./ui/feedback/Badge";
 export type { MessageProps } from "./ui/feedback/Message";
 export { ConfirmationMessage, InfoMessage, Message, WarningMessage, } from "./ui/feedback/Message";
 export type { PressableListItemProps } from "./ui/data/PressableListItem";
