@@ -3,10 +3,11 @@ import { View } from "react-native";
 import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
-import { InteractiveBox } from "../containers/Box";
+import { InteractiveBoxHitSlop } from "../containers/Box";
 
-const TRACK_HEIGHT = 44;
-const TRACK_WIDTH = 66;
+const PRESSABLE_HEIGHT = 44;
+const TRACK_HEIGHT = 36;
+const TRACK_WIDTH = 58;
 const THUMB_PADDING = TRACK_HEIGHT * 0.1;
 const THUMB_SIZE = TRACK_HEIGHT * 0.8;
 const TRAVEL_X = TRACK_WIDTH - THUMB_SIZE - THUMB_PADDING * 2;
@@ -15,6 +16,7 @@ const trackVariants = tv(
   {
     // TODO if we can fix web to use proper button, change aria-disabled to disabled
     base: [
+      "height-[36px] w-[58px]", // Must be identical to TRACK_HEIGHT and TRACK_WIDTH constants above
       "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
       "transition-background-color duration-200 ease-in",
       "outline-interactive-outlined-outline-focus",
@@ -85,31 +87,35 @@ function SwitchInner({
   const [value, setValue] = useControllableChecked(checked, onValueChange);
 
   return (
-    <InteractiveBox
+    <InteractiveBoxHitSlop
       withFocusVisibleOutline
       role="switch"
       aria-checked={value}
       aria-disabled={disabled === true}
       disabled={disabled}
-      className={trackVariants({ checked: value, forceStyle })}
-      style={{ width: TRACK_WIDTH, height: TRACK_HEIGHT }}
+      style={{ height: PRESSABLE_HEIGHT, width: TRACK_WIDTH }}
       onPress={() => {
         setValue(!value);
       }}
       {...props}
     >
       <View
-        aria-disabled={disabled === true}
-        className={thumbVariants({})}
-        style={{
-          width: THUMB_SIZE,
-          height: THUMB_SIZE,
-          top: THUMB_PADDING,
-          left: THUMB_PADDING,
-          transform: [{ translateX: value ? TRAVEL_X : 0 }],
-        }}
-      />
-    </InteractiveBox>
+        className={trackVariants({ checked: value, forceStyle })}
+        style={{ width: TRACK_WIDTH, height: TRACK_HEIGHT }}
+      >
+        <View
+          aria-disabled={disabled === true}
+          className={thumbVariants({})}
+          style={{
+            width: THUMB_SIZE,
+            height: THUMB_SIZE,
+            top: THUMB_PADDING,
+            left: THUMB_PADDING,
+            transform: [{ translateX: value ? TRAVEL_X : 0 }],
+          }}
+        />
+      </View>
+    </InteractiveBoxHitSlop>
   );
 }
 

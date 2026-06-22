@@ -1,4 +1,5 @@
-import { forwardRef } from "react";
+import type { ReactElement } from "react";
+import { Children, cloneElement, forwardRef } from "react";
 import {
   Pressable,
   type PressableProps,
@@ -61,6 +62,28 @@ export const InteractiveBox = forwardRef<RNView, InteractiveBoxProps>(
       className={interactiveBoxVariants({ withFocusVisibleOutline, className })}
     />
   ),
+);
+
+export const InteractiveBoxHitSlop = forwardRef<RNView, InteractiveBoxProps>(
+  ({ withFocusVisibleOutline, children, className, ...rest }, ref) => {
+    const child = Children.only(children) as ReactElement<RNViewProps>;
+    return (
+      <Pressable
+        ref={ref}
+        // override default behavior of Pressable which sets pointerEvents to "none" on disabled state. However this prevents cursor to display as
+        pointerEvents="auto"
+        className={`flex-center ${className ?? ""}`}
+        {...rest}
+      >
+        {cloneElement(child, {
+          className: interactiveBoxVariants({
+            withFocusVisibleOutline,
+            className: child.props.className,
+          }),
+        })}
+      </Pressable>
+    );
+  },
 );
 
 export type SafeAreaBoxProps = Omit<BoxProps, "style">;

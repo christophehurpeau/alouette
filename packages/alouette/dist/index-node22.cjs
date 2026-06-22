@@ -803,6 +803,26 @@ const InteractiveBox = react.forwardRef(
     }
   )
 );
+react.forwardRef(
+  ({ withFocusVisibleOutline, children, className, ...rest }, ref) => {
+    const child = react.Children.only(children);
+    return /* @__PURE__ */ jsxRuntime.jsx(
+      reactNative.Pressable,
+      {
+        ref,
+        pointerEvents: "auto",
+        className: `flex-center ${className ?? ""}`,
+        ...rest,
+        children: react.cloneElement(child, {
+          className: interactiveBoxVariants({
+            withFocusVisibleOutline,
+            className: child.props.className
+          })
+        })
+      }
+    );
+  }
+);
 const SafeAreaBox = react.forwardRef(
   (props, ref) => {
     const insets = reactNativeSafeAreaContext.useSafeAreaInsets();

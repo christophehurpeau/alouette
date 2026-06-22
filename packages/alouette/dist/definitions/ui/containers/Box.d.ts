@@ -22,6 +22,7 @@ export declare const interactiveBoxVariants: import("tailwind-variants").TVRetur
 export interface InteractiveBoxProps extends VariantProps<typeof interactiveBoxVariants>, PressableProps {
 }
 export declare const InteractiveBox: import("react").ForwardRefExoticComponent<InteractiveBoxProps & import("react").RefAttributes<RNView>>;
+export declare const InteractiveBoxHitSlop: import("react").ForwardRefExoticComponent<InteractiveBoxProps & import("react").RefAttributes<RNView>>;
 export type SafeAreaBoxProps = Omit<BoxProps, "style">;
 export declare const SafeAreaBox: import("react").ForwardRefExoticComponent<SafeAreaBoxProps & import("react").RefAttributes<RNView>>;
 //# sourceMappingURL=Box.d.ts.map

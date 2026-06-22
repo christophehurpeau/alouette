@@ -1,6 +1,6 @@
 import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
 import { VariableContextProvider, styled as styled$1 } from 'nativewind';
-import { createContext, useContext, forwardRef, Fragment, Children, cloneElement, useRef, useState, useEffect, isValidElement, useCallback } from 'react';
+import { createContext, useContext, forwardRef, Children, cloneElement, Fragment, useRef, useState, useEffect, isValidElement, useCallback } from 'react';
 import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, TextInput, Switch as Switch$1, useWindowDimensions, Linking } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -787,6 +787,26 @@ const InteractiveBox = forwardRef(
       className: interactiveBoxVariants({ withFocusVisibleOutline, className })
     }
   )
+);
+forwardRef(
+  ({ withFocusVisibleOutline, children, className, ...rest }, ref) => {
+    const child = Children.only(children);
+    return /* @__PURE__ */ jsx(
+      Pressable,
+      {
+        ref,
+        pointerEvents: "auto",
+        className: `flex-center ${className ?? ""}`,
+        ...rest,
+        children: cloneElement(child, {
+          className: interactiveBoxVariants({
+            withFocusVisibleOutline,
+            className: child.props.className
+          })
+        })
+      }
+    );
+  }
 );
 const SafeAreaBox = forwardRef(
   (props, ref) => {
