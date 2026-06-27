@@ -29,7 +29,7 @@
 
   // format config
   "eslint.format.enable": false,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
 
   // tailwind config
   "tailwindCSS.classFunctions": ["tv"]

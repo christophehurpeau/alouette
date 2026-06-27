@@ -13,6 +13,8 @@
   <a href="https://npmjs.org/package/alouette"><img src="https://img.shields.io/npm/types/alouette.svg?style=flat-square" alt="types"></a>
 </p>
 
+ ## Introduction
+
 Alouette provides a comprehensive set of universal components that render on both
 web and React Native, styled entirely through Tailwind `className` via
 [NativeWind v5](https://www.nativewind.dev/). Themes, accents, and design tokens

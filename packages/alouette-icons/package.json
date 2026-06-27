@@ -3,18 +3,21 @@
   "version": "9.0.0",
   "description": "icons for alouette",
   "keywords": [],
-  "author": "Christophe Hurpeau <302891+christophehurpeau@users.noreply.github.com> (https://christophe.hurpeau.com)",
+  "homepage": "https://github.com/christophehurpeau/alouette",
+  "bugs": {
+    "url": "https://github.com/christophehurpeau/alouette/issues"
+  },
   "license": "UNLICENSED",
+  "author": "Christophe Hurpeau <302891+christophehurpeau@users.noreply.github.com> (https://christophe.hurpeau.com)",
   "repository": {
     "type": "git",
     "url": "https://github.com/christophehurpeau/alouette.git",
     "directory": "packages/alouette-icons"
   },
-  "homepage": "https://github.com/christophehurpeau/alouette",
+  "files": [
+    "lib"
+  ],
   "type": "module",
-  "engines": {
-    "node": ">=22.18.0"
-  },
   "sideEffects": false,
   "exports": {
     "./package.json": "./package.json",
@@ -37,33 +40,33 @@
       "import": "./lib/phosphor-icons/*.web.mjs"
     }
   },
-  "files": [
-    "lib"
-  ],
   "scripts": {
     "build": "yarn run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
     "lint": "yarn run lint:eslint",
     "lint:eslint": "yarn '../..' run eslint --quiet 'packages/alouette-icons'",
-    "test": "yarn '../..' run test -- packages/alouette-icons"
-  },
-  "pob": {
-    "entries": [
-      "phosphor-icons"
-    ],
-    "typescript": "check-only"
-  },
-  "prettier": "@pob/root/prettier-config",
-  "peerDependencies": {
-    "react": "^19.2.3",
-    "react-native": "*",
-    "react-native-svg": "*"
+    "test": "yarn '../..' run test -- packages/alouette-icons",
+    "tsc": "tsc"
   },
   "devDependencies": {
     "@babel/core": "7.29.7",
     "@babel/preset-react": "7.29.7",
     "@phosphor-icons/core": "2.1.1",
     "react-native": "0.85.3",
-    "typescript": "5.9.3"
+    "typescript": "6.0.3"
+  },
+  "peerDependencies": {
+    "react": "^19.2.3",
+    "react-native": "*",
+    "react-native-svg": "*"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "pob": {
+    "entries": [
+      "phosphor-icons"
+    ],
+    "typescript": "check-only"
   }
 }

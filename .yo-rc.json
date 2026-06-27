@@ -10,7 +10,11 @@
       "documentation": false,
       "typescript": true,
       "eslint": true,
-      "packageNames": ["alouette-icons", "alouette", "storybook-native-app"]
+      "packageNames": [
+        "alouette-icons",
+        "alouette",
+        "storybook-native-app"
+      ]
     },
     "project": {
       "type": "lib",

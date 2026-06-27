@@ -12,7 +12,7 @@ jobs:
         node-version: [22.x, 24.x]
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Enable Corepack
         run: corepack enable
@@ -34,8 +34,8 @@ jobs:
         run: yarn run build
         if: startsWith(matrix.node-version, '24.')
 
-      - name: Prettier
-        run: yarn run lint:prettier
+      - name: Format
+        run: yarn run format:check
         if: startsWith(matrix.node-version, '24.')
 
       - name: Typescript
@@ -48,7 +48,7 @@ jobs:
 
       - name: Check nothing was forgotten before commit
         if: startsWith(matrix.node-version, '24.')
-        run: yarn run repository-check-dirty
+        run: yarn repository-check-dirty
 
       - name: Test
         run: yarn run test
