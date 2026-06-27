@@ -64,7 +64,7 @@
   "engines": {
     "node": ">=22.18.0"
   },
-  "packageManager": "yarn@4.15.0",
+  "packageManager": "yarn@4.17.0",
   "resolutionsExplained": {
     "lightningcss": "react-native-css 3.0.7 breaks at runtime with lightningcss >=1.31 (visitor AST 'failed to deserialize Specifier'); pin its copy to 1.30.x while vite requires ^1.32.0"
   }
