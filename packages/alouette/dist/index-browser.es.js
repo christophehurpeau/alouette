@@ -4,6 +4,7 @@ import { createContext, useContext, forwardRef, Children, cloneElement, Fragment
 import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, TextInput, useWindowDimensions } from 'react-native-web';
 import { extendTailwindMerge, twMerge as twMerge$1 } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
+import { CaretDownRegularIcon } from 'alouette-icons/phosphor-icons/CaretDownRegularIcon';
 import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
 import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
 import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
@@ -1789,6 +1790,190 @@ function Switch({ accent, ...rest }) {
   return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(SwitchInner, { ...rest }) });
 }
 
+function useControllableValue(controlled, defaultValue, onValueChange) {
+  const [internal, setInternal] = useState(defaultValue);
+  const value = controlled ?? internal;
+  const setValue = useCallback(
+    (next) => {
+      if (controlled === void 0) {
+        setInternal(next);
+      }
+      if (next !== value) {
+        onValueChange?.(next);
+      }
+    },
+    [controlled, onValueChange, value]
+  );
+  return [value, setValue];
+}
+const triggerLabelVariants = tv({
+  base: "flex-1 text-base",
+  variants: {
+    // Mirrors InputText: sharp value, form-placeholder, form-disabled-text.
+    state: {
+      value: "text-sharp",
+      placeholder: "text-form-placeholder",
+      disabled: "text-form-disabled-text"
+    }
+  },
+  defaultVariants: { state: "value" }
+});
+function SelectTriggerContent({
+  label,
+  placeholder,
+  disabled
+}) {
+  const state = (() => {
+    if (label === void 0) return "placeholder";
+    if (disabled) return "disabled";
+    return "value";
+  })();
+  return /* @__PURE__ */ jsxs(Fragment$1, { children: [
+    /* @__PURE__ */ jsx(Text, { numberOfLines: 1, className: triggerLabelVariants({ state }), children: label ?? placeholder ?? "" }),
+    /* @__PURE__ */ jsx(
+      Icon,
+      {
+        icon: /* @__PURE__ */ jsx(CaretDownRegularIcon, {}),
+        size: 18,
+        className: disabled ? "text-form-disabled-text" : "text-muted"
+      }
+    )
+  ] });
+}
+
+const wrapperVariants = tv(
+  {
+    base: [
+      "flex-row flex-1 rounded-md border min-h-11",
+      "transition-[border-color,outline-color] duration-200 ease-in",
+      "outline-interactive-outlined-pressable"
+      // for a proper outline color transition
+    ].join(" "),
+    variants: {
+      // bg lives in each branch (not base) so the disabled bg never competes
+      // with bg-highlight: two same-specificity background utilities would let
+      // stylesheet order, not className order, decide the winner.
+      disabled: {
+        true: "bg-disabled-interactive-muted border-interactive-outlined-disabled cursor-not-allowed",
+        false: [
+          "bg-highlight",
+          "border-interactive-outlined-pressable",
+          "hover:border-interactive-outlined-hover",
+          "focus-within:border-interactive-outlined-focus",
+          "focus-within:outline-1 focus-within:outline-interactive-outlined-focus focus-within:outline-offset-0",
+          "active:border-interactive-outlined-active"
+        ].join(" ")
+      }
+    },
+    defaultVariants: { disabled: false }
+  },
+  { twMerge: false }
+);
+const paddingX = 16;
+const caretReserve = 26;
+const selectStyle = (disabled) => ({
+  appearance: "none",
+  WebkitAppearance: "none",
+  boxSizing: "border-box",
+  minHeight: 44,
+  width: "auto",
+  margin: 0,
+  border: 0,
+  background: "transparent",
+  color: "transparent",
+  font: "inherit",
+  paddingTop: 0,
+  paddingBottom: 0,
+  paddingLeft: paddingX,
+  paddingRight: paddingX + caretReserve,
+  outline: "none",
+  cursor: disabled ? "not-allowed" : "pointer"
+});
+function Select({
+  options,
+  value,
+  defaultValue,
+  onValueChange,
+  placeholder,
+  disabled,
+  accent,
+  testID,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby
+}) {
+  const [current, setValue] = useControllableValue(
+    value,
+    defaultValue,
+    onValueChange
+  );
+  const selected = options.find((option) => option.value === current);
+  const [sharpColor, disabledTextColor, placeholderColor, highlightColor] = useThemeToken([
+    "--color-sharp",
+    "--color-form-disabled-text",
+    "--color-form-placeholder",
+    "--color-highlight"
+  ]);
+  const optionStyle = (optionDisabled) => ({
+    color: optionDisabled ? disabledTextColor : sharpColor,
+    backgroundColor: highlightColor
+  });
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(View$1, { className: wrapperVariants({ disabled }), children: [
+    /* @__PURE__ */ jsxs(
+      "select",
+      {
+        value: current ?? "",
+        disabled,
+        "aria-label": ariaLabel,
+        "aria-labelledby": ariaLabelledby,
+        "data-testid": testID,
+        style: selectStyle(disabled),
+        onChange: (event) => {
+          setValue(event.target.value);
+        },
+        children: [
+          placeholder === void 0 ? null : /* @__PURE__ */ jsx(
+            "option",
+            {
+              disabled: true,
+              value: "",
+              style: {
+                color: placeholderColor,
+                backgroundColor: highlightColor
+              },
+              children: placeholder
+            }
+          ),
+          options.map((option) => /* @__PURE__ */ jsx(
+            "option",
+            {
+              value: option.value,
+              disabled: option.disabled,
+              style: optionStyle(option.disabled),
+              children: option.label
+            },
+            option.value
+          ))
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsx(
+      View$1,
+      {
+        pointerEvents: "none",
+        className: "absolute inset-0 flex-row items-center justify-between gap-xs px-m",
+        children: /* @__PURE__ */ jsx(
+          SelectTriggerContent,
+          {
+            label: selected?.label,
+            placeholder,
+            disabled
+          }
+        )
+      }
+    )
+  ] }) });
+}
+
 const badgeVariants = tv(
   {
     slots: {
@@ -2084,5 +2269,5 @@ function ExternalLink({
   );
 }
 
-export { AccentScope, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useThemeToken };
+export { AccentScope, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useThemeToken };
 //# sourceMappingURL=index-browser.es.js.map

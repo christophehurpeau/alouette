@@ -10,6 +10,7 @@ const reactNativeSafeAreaContext = require('react-native-safe-area-context');
 const tailwindMerge = require('tailwind-merge');
 const tailwindVariants = require('tailwind-variants');
 const CheckRegularIcon = require('alouette-icons/phosphor-icons/CheckRegularIcon');
+const CaretDownRegularIcon = require('alouette-icons/phosphor-icons/CaretDownRegularIcon');
 const InfoRegularIcon = require('alouette-icons/phosphor-icons/InfoRegularIcon');
 const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegularIcon');
 const XRegularIcon = require('alouette-icons/phosphor-icons/XRegularIcon');
@@ -1743,6 +1744,224 @@ function Switch({ accent, ...rest }) {
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(SwitchInner, { ...rest }) });
 }
 
+function useControllableValue(controlled, defaultValue, onValueChange) {
+  const [internal, setInternal] = react.useState(defaultValue);
+  const value = controlled ?? internal;
+  const setValue = react.useCallback(
+    (next) => {
+      if (controlled === void 0) {
+        setInternal(next);
+      }
+      if (next !== value) {
+        onValueChange?.(next);
+      }
+    },
+    [controlled, onValueChange, value]
+  );
+  return [value, setValue];
+}
+const selectTriggerBaseClassName = [
+  "flex-row items-center justify-between gap-xs",
+  "rounded-md border px-m py-xs min-h-[44px]",
+  "transition-[border-color,outline-color,background-color] duration-200 ease-in"
+].join(" ");
+const triggerLabelVariants = tailwindVariants.tv({
+  base: "flex-1 text-base",
+  variants: {
+    // Mirrors InputText: sharp value, form-placeholder, form-disabled-text.
+    state: {
+      value: "text-sharp",
+      placeholder: "text-form-placeholder",
+      disabled: "text-form-disabled-text"
+    }
+  },
+  defaultVariants: { state: "value" }
+});
+function SelectTriggerContent({
+  label,
+  placeholder,
+  disabled
+}) {
+  const state = (() => {
+    if (label === void 0) return "placeholder";
+    if (disabled) return "disabled";
+    return "value";
+  })();
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(Text, { numberOfLines: 1, className: triggerLabelVariants({ state }), children: label ?? placeholder ?? "" }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      Icon,
+      {
+        icon: /* @__PURE__ */ jsxRuntime.jsx(CaretDownRegularIcon.CaretDownRegularIcon, {}),
+        size: 18,
+        className: disabled ? "text-form-disabled-text" : "text-muted"
+      }
+    )
+  ] });
+}
+
+const triggerVariants = tailwindVariants.tv(
+  {
+    base: selectTriggerBaseClassName,
+    variants: {
+      // bg lives in each branch (not the shared base) so the disabled bg never
+      // competes with bg-highlight at equal specificity.
+      disabled: {
+        true: "bg-disabled-interactive-muted border-interactive-outlined-disabled",
+        false: [
+          "bg-highlight",
+          "border-interactive-outlined-pressable",
+          "hover:border-interactive-outlined-hover",
+          "focus:border-interactive-outlined-focus",
+          "active:border-interactive-outlined-active"
+        ].join(" ")
+      }
+    },
+    defaultVariants: { disabled: false }
+  },
+  { twMerge: false }
+);
+const optionVariants = tailwindVariants.tv(
+  {
+    base: [
+      "flex-row items-center justify-between gap-xxs rounded-xs px-m py-m my-xxs",
+      "hover:bg-interactive-contained-hover focus:bg-interactive-contained-focus active:bg-interactive-contained-active"
+    ].join(" "),
+    variants: {
+      selected: {
+        true: "bg-interactive-contained-active",
+        false: "bg-interactive-contained-pressable"
+      },
+      disabled: {
+        true: "opacity-50",
+        false: ""
+      }
+    },
+    defaultVariants: { selected: false, disabled: false }
+  },
+  { twMerge: false }
+);
+function SelectOptionRow({
+  option,
+  selected,
+  onSelect
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    reactNative.Pressable,
+    {
+      role: "option",
+      "aria-selected": selected,
+      "aria-disabled": option.disabled === true,
+      disabled: option.disabled,
+      className: optionVariants({ selected, disabled: option.disabled }),
+      onPress: () => {
+        onSelect(option.value);
+      },
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx(Text, { numberOfLines: 1, className: "flex-1 text-base text-on-accent", children: option.label }),
+        selected ? /* @__PURE__ */ jsxRuntime.jsx(
+          Icon,
+          {
+            icon: /* @__PURE__ */ jsxRuntime.jsx(CheckRegularIcon.CheckRegularIcon, {}),
+            size: 18,
+            className: "text-on-accent"
+          }
+        ) : null
+      ]
+    }
+  );
+}
+function SelectInner({
+  options,
+  value,
+  defaultValue,
+  onValueChange,
+  placeholder,
+  disabled,
+  testID,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby
+}) {
+  const [current, setValue] = useControllableValue(
+    value,
+    defaultValue,
+    onValueChange
+  );
+  const [open, setOpen] = react.useState(false);
+  const { height: windowHeight } = reactNative.useWindowDimensions();
+  const selected = options.find((option) => option.value === current);
+  const onSelect = (next) => {
+    setValue(next);
+    setOpen(false);
+  };
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(
+      InteractiveBox,
+      {
+        withFocusVisibleOutline: true,
+        role: "combobox",
+        "aria-expanded": open,
+        "aria-disabled": disabled === true,
+        disabled,
+        testID,
+        "aria-label": ariaLabel,
+        "aria-labelledby": ariaLabelledby,
+        className: triggerVariants({ disabled }),
+        onPress: () => {
+          setOpen(true);
+        },
+        children: /* @__PURE__ */ jsxRuntime.jsx(
+          SelectTriggerContent,
+          {
+            label: selected?.label,
+            placeholder,
+            disabled
+          }
+        )
+      }
+    ),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      reactNative.Modal,
+      {
+        transparent: true,
+        visible: open,
+        animationType: "fade",
+        onRequestClose: () => {
+          setOpen(false);
+        },
+        children: /* @__PURE__ */ jsxRuntime.jsx(
+          reactNative.Pressable,
+          {
+            className: "flex-1 justify-center bg-translucent px-xl",
+            onPress: () => {
+              setOpen(false);
+            },
+            children: /* @__PURE__ */ jsxRuntime.jsx(reactNative.Pressable, { className: "w-full", "aria-label": ariaLabel, children: /* @__PURE__ */ jsxRuntime.jsx(Surface, { variant: "highlight", shadow: "l", size: "sm", className: "py-xs", children: /* @__PURE__ */ jsxRuntime.jsx(
+              ScrollView,
+              {
+                style: { maxHeight: windowHeight * 0.7 },
+                showsVerticalScrollIndicator: false,
+                children: options.map((option) => /* @__PURE__ */ jsxRuntime.jsx(
+                  SelectOptionRow,
+                  {
+                    option,
+                    selected: option.value === current,
+                    onSelect
+                  },
+                  option.value
+                ))
+              }
+            ) }) })
+          }
+        )
+      }
+    )
+  ] });
+}
+function Select({ accent, ...rest }) {
+  return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(SelectInner, { ...rest }) });
+}
+
 const badgeVariants = tailwindVariants.tv(
   {
     slots: {
@@ -2103,6 +2322,7 @@ exports.SafeAreaBox = SafeAreaBox;
 exports.ScopedTheme = ScopedTheme;
 exports.ScrollView = ScrollView;
 exports.SectionList = SectionList;
+exports.Select = Select;
 exports.Separator = Separator;
 exports.Stack = Stack;
 exports.Story = Story;

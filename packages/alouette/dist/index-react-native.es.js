@@ -1,12 +1,13 @@
 import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
 import { VariableContextProvider, styled as styled$1 } from 'nativewind';
 import { createContext, useContext, forwardRef, Children, cloneElement, Fragment, useRef, useState, useEffect, isValidElement, useCallback } from 'react';
-import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, TextInput, Switch as Switch$1, useWindowDimensions, Linking } from 'react-native';
+import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, TextInput, Switch as Switch$1, useWindowDimensions, Modal, Linking } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { extendTailwindMerge, twMerge as twMerge$1 } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
+import { CaretDownRegularIcon } from 'alouette-icons/phosphor-icons/CaretDownRegularIcon';
 import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
 import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
@@ -1728,6 +1729,224 @@ function Switch({ accent, ...rest }) {
   return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(SwitchInner, { ...rest }) });
 }
 
+function useControllableValue(controlled, defaultValue, onValueChange) {
+  const [internal, setInternal] = useState(defaultValue);
+  const value = controlled ?? internal;
+  const setValue = useCallback(
+    (next) => {
+      if (controlled === void 0) {
+        setInternal(next);
+      }
+      if (next !== value) {
+        onValueChange?.(next);
+      }
+    },
+    [controlled, onValueChange, value]
+  );
+  return [value, setValue];
+}
+const selectTriggerBaseClassName = [
+  "flex-row items-center justify-between gap-xs",
+  "rounded-md border px-m py-xs min-h-[44px]",
+  "transition-[border-color,outline-color,background-color] duration-200 ease-in"
+].join(" ");
+const triggerLabelVariants = tv({
+  base: "flex-1 text-base",
+  variants: {
+    // Mirrors InputText: sharp value, form-placeholder, form-disabled-text.
+    state: {
+      value: "text-sharp",
+      placeholder: "text-form-placeholder",
+      disabled: "text-form-disabled-text"
+    }
+  },
+  defaultVariants: { state: "value" }
+});
+function SelectTriggerContent({
+  label,
+  placeholder,
+  disabled
+}) {
+  const state = (() => {
+    if (label === void 0) return "placeholder";
+    if (disabled) return "disabled";
+    return "value";
+  })();
+  return /* @__PURE__ */ jsxs(Fragment$1, { children: [
+    /* @__PURE__ */ jsx(Text, { numberOfLines: 1, className: triggerLabelVariants({ state }), children: label ?? placeholder ?? "" }),
+    /* @__PURE__ */ jsx(
+      Icon,
+      {
+        icon: /* @__PURE__ */ jsx(CaretDownRegularIcon, {}),
+        size: 18,
+        className: disabled ? "text-form-disabled-text" : "text-muted"
+      }
+    )
+  ] });
+}
+
+const triggerVariants = tv(
+  {
+    base: selectTriggerBaseClassName,
+    variants: {
+      // bg lives in each branch (not the shared base) so the disabled bg never
+      // competes with bg-highlight at equal specificity.
+      disabled: {
+        true: "bg-disabled-interactive-muted border-interactive-outlined-disabled",
+        false: [
+          "bg-highlight",
+          "border-interactive-outlined-pressable",
+          "hover:border-interactive-outlined-hover",
+          "focus:border-interactive-outlined-focus",
+          "active:border-interactive-outlined-active"
+        ].join(" ")
+      }
+    },
+    defaultVariants: { disabled: false }
+  },
+  { twMerge: false }
+);
+const optionVariants = tv(
+  {
+    base: [
+      "flex-row items-center justify-between gap-xxs rounded-xs px-m py-m my-xxs",
+      "hover:bg-interactive-contained-hover focus:bg-interactive-contained-focus active:bg-interactive-contained-active"
+    ].join(" "),
+    variants: {
+      selected: {
+        true: "bg-interactive-contained-active",
+        false: "bg-interactive-contained-pressable"
+      },
+      disabled: {
+        true: "opacity-50",
+        false: ""
+      }
+    },
+    defaultVariants: { selected: false, disabled: false }
+  },
+  { twMerge: false }
+);
+function SelectOptionRow({
+  option,
+  selected,
+  onSelect
+}) {
+  return /* @__PURE__ */ jsxs(
+    Pressable,
+    {
+      role: "option",
+      "aria-selected": selected,
+      "aria-disabled": option.disabled === true,
+      disabled: option.disabled,
+      className: optionVariants({ selected, disabled: option.disabled }),
+      onPress: () => {
+        onSelect(option.value);
+      },
+      children: [
+        /* @__PURE__ */ jsx(Text, { numberOfLines: 1, className: "flex-1 text-base text-on-accent", children: option.label }),
+        selected ? /* @__PURE__ */ jsx(
+          Icon,
+          {
+            icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}),
+            size: 18,
+            className: "text-on-accent"
+          }
+        ) : null
+      ]
+    }
+  );
+}
+function SelectInner({
+  options,
+  value,
+  defaultValue,
+  onValueChange,
+  placeholder,
+  disabled,
+  testID,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby
+}) {
+  const [current, setValue] = useControllableValue(
+    value,
+    defaultValue,
+    onValueChange
+  );
+  const [open, setOpen] = useState(false);
+  const { height: windowHeight } = useWindowDimensions();
+  const selected = options.find((option) => option.value === current);
+  const onSelect = (next) => {
+    setValue(next);
+    setOpen(false);
+  };
+  return /* @__PURE__ */ jsxs(Fragment$1, { children: [
+    /* @__PURE__ */ jsx(
+      InteractiveBox,
+      {
+        withFocusVisibleOutline: true,
+        role: "combobox",
+        "aria-expanded": open,
+        "aria-disabled": disabled === true,
+        disabled,
+        testID,
+        "aria-label": ariaLabel,
+        "aria-labelledby": ariaLabelledby,
+        className: triggerVariants({ disabled }),
+        onPress: () => {
+          setOpen(true);
+        },
+        children: /* @__PURE__ */ jsx(
+          SelectTriggerContent,
+          {
+            label: selected?.label,
+            placeholder,
+            disabled
+          }
+        )
+      }
+    ),
+    /* @__PURE__ */ jsx(
+      Modal,
+      {
+        transparent: true,
+        visible: open,
+        animationType: "fade",
+        onRequestClose: () => {
+          setOpen(false);
+        },
+        children: /* @__PURE__ */ jsx(
+          Pressable,
+          {
+            className: "flex-1 justify-center bg-translucent px-xl",
+            onPress: () => {
+              setOpen(false);
+            },
+            children: /* @__PURE__ */ jsx(Pressable, { className: "w-full", "aria-label": ariaLabel, children: /* @__PURE__ */ jsx(Surface, { variant: "highlight", shadow: "l", size: "sm", className: "py-xs", children: /* @__PURE__ */ jsx(
+              ScrollView,
+              {
+                style: { maxHeight: windowHeight * 0.7 },
+                showsVerticalScrollIndicator: false,
+                children: options.map((option) => /* @__PURE__ */ jsx(
+                  SelectOptionRow,
+                  {
+                    option,
+                    selected: option.value === current,
+                    onSelect
+                  },
+                  option.value
+                ))
+              }
+            ) }) })
+          }
+        )
+      }
+    )
+  ] });
+}
+function Select({ accent, ...rest }) {
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(SelectInner, { ...rest }) });
+}
+
 const badgeVariants = tv(
   {
     slots: {
@@ -2055,5 +2274,5 @@ function ExternalLink({
   return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
 }
 
-export { AccentScope, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
+export { AccentScope, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
 //# sourceMappingURL=index-react-native.es.js.map
