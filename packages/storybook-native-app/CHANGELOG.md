@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.0.0](///compare/storybook-native-app@9.3.0...storybook-native-app@10.0.0) (2026-06-28)
+
+### ⚠ BREAKING CHANGES
+
+* update to expo 56
+
+### Features
+
+* update to expo 56
+
+### Bug Fixes
+
+* fix export metro.cjs and add expo check workflow with fixes
+* fix FlatList, ScrollView, and SectionList components tsc issues
+
+Version bump for dependency: alouette
+Version bump for dependency: alouette-icons
+
+
 ## [9.3.0](///compare/storybook-native-app@9.2.0...storybook-native-app@9.3.0) (2026-06-27)
 
 ### Features

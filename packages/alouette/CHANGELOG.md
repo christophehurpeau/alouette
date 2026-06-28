@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [20.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@19.3.0...alouette@20.0.0) (2026-06-28)
+
+### ⚠ BREAKING CHANGES
+
+* update to expo 56
+
+### Features
+
+* update to expo 56
+
+### Bug Fixes
+
+* fix export metro.cjs and add expo check workflow with fixes
+* fix FlatList, ScrollView, and SectionList components tsc issues
+* update expo-web-browser
+
+Version bump for dependency: alouette-icons
+
+
 ## [19.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@19.2.0...alouette@19.3.0) (2026-06-27)
 
 ### Features
