@@ -7,7 +7,7 @@ description: >
   showing inline status, alerts, or dismissible notices.
 type: core
 library: alouette
-library_version: "19.3.0"
+library_version: "20.0.0"
 requires:
   - alouette-theming
 sources:

@@ -9,7 +9,7 @@ description: >
   different component tree per size, or unmounting a heavy off-screen variant.
 type: core
 library: alouette
-library_version: "19.3.0"
+library_version: "20.0.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/windowSize/SwitchBreakpoints.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/windowSize/useCurrentBreakpointName.ts"
