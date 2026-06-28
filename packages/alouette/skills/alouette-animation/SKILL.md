@@ -9,7 +9,7 @@ description: >
   react-native-reanimated. Load when adding transitions or enter/exit animations.
 type: core
 library: alouette
-library_version: "19.0.0-beta.4"
+library_version: "19.3.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/animationDurationsMs.ts"

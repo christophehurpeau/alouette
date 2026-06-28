@@ -9,7 +9,7 @@ description: >
   cards, spacing, or backgrounds.
 type: core
 library: alouette
-library_version: "19.0.0-beta.4"
+library_version: "19.3.0"
 requires:
   - alouette-theming
 sources:

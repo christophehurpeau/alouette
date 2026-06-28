@@ -19,7 +19,8 @@
   "files": [
     "src",
     "dist",
-    "metro.cjs"
+    "metro.cjs",
+    "skills"
   ],
   "type": "module",
   "sideEffects": false,

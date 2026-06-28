@@ -3,13 +3,13 @@ name: alouette-actions
 description: >
   Buttons (Button, IconButton, ExternalLinkButton, InternalLinkButton) and
   pressable surfaces (PressableBox, PressableListItem). variant is
-  contained|outlined, size is sm|md, accent defaults to brand, ghost is a
-  boolean. Button label is the required text prop (not children); IconButton
+  contained|outlined|ghost, size is sm|md, accent defaults to brand. Button
+  label is the required text prop (not children); IconButton
   requires aria-label. Interactive hover/focus/active/disabled states are built
   in. Load when adding buttons or custom pressable elements.
 type: core
 library: alouette
-library_version: "19.0.0-beta.4"
+library_version: "19.3.0"
 requires:
   - alouette-theming
 sources:
@@ -24,8 +24,8 @@ This skill builds on alouette-theming. Read it first for the accent model.
 # alouette — Actions
 
 Buttons and pressables carry interactive token states (hover/focus/active/
-disabled) automatically. `variant` is `"contained" | "outlined"`; `size` is
-`"sm" | "md"`; `accent` defaults to `"brand"`; `ghost` is a boolean.
+disabled) automatically. `variant` is `"contained" | "outlined" | "ghost"`;
+`size` is `"sm" | "md"`; `accent` defaults to `"brand"`.
 
 ## Setup
 
@@ -43,7 +43,7 @@ import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon
 ```tsx
 <Button text="Save" />                                 {/* contained, brand */}
 <Button variant="outlined" text="Cancel" />
-<Button variant="outlined" ghost text="Dismiss" />
+<Button variant="ghost" text="Dismiss" />
 <Button accent="danger" text="Delete" />
 <Button size="sm" text="Small" />
 ```
@@ -62,7 +62,7 @@ makes the icon take 80% of the button.
 
 ### Pressable surfaces
 
-`PressableBox` is a themed, pressable container (`variant`, `ghost`, `accent`,
+`PressableBox` is a themed, pressable container (`variant`, `accent`,
 `forceStyle`). `PressableListItem` is a row with a trailing caret.
 
 ```tsx
@@ -122,12 +122,12 @@ Wrong:
 Correct:
 
 ```tsx
-<Button variant="outlined" ghost text="Cancel" />
+<Button variant="ghost" text="Cancel" />
 <Button accent="brand" text="Save" />
 ```
 
-`variant` is only `"contained" | "outlined"`; `ghost` is a separate boolean and
-the accent is chosen via the `accent` prop.
+`variant` is only `"contained" | "outlined" | "ghost"`; the accent is chosen via
+the `accent` prop. (`ghost` is a variant value, not a separate boolean prop.)
 
 Source: packages/alouette/src/ui/data/PressableBox.tsx, ui/actions/Button.tsx
 
