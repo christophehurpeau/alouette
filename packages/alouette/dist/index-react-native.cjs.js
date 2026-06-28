@@ -702,21 +702,30 @@ const Paragraph = react.forwardRef(
   }
 );
 
-const ScrollView = nativewind.styled(reactNative.ScrollView, {
-  className: "style",
-  contentContainerClassName: "contentContainerStyle"
-});
+const ScrollView = nativewind.styled(
+  reactNative.ScrollView,
+  {
+    className: "style",
+    contentContainerClassName: "contentContainerStyle"
+  }
+);
 
-const FlatList = nativewind.styled(reactNative.FlatList, {
-  className: "style",
-  contentContainerClassName: "contentContainerStyle",
-  columnWrapperClassName: "columnWrapperStyle"
-});
+const FlatList = nativewind.styled(
+  reactNative.FlatList,
+  {
+    className: "style",
+    contentContainerClassName: "contentContainerStyle",
+    columnWrapperClassName: "columnWrapperStyle"
+  }
+);
 
-const SectionList = nativewind.styled(reactNative.SectionList, {
-  className: "style",
-  contentContainerClassName: "contentContainerStyle"
-});
+const SectionList = nativewind.styled(
+  reactNative.SectionList,
+  {
+    className: "style",
+    contentContainerClassName: "contentContainerStyle"
+  }
+);
 
 const Stack = react.forwardRef(
   ({ className, ...props }, ref) => {

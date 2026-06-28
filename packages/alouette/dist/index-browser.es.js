@@ -694,21 +694,30 @@ const Paragraph = forwardRef(
   }
 );
 
-const ScrollView = styled$1(ScrollView$1, {
-  className: "style",
-  contentContainerClassName: "contentContainerStyle"
-});
+const ScrollView = styled$1(
+  ScrollView$1,
+  {
+    className: "style",
+    contentContainerClassName: "contentContainerStyle"
+  }
+);
 
-const FlatList = styled$1(FlatList$1, {
-  className: "style",
-  contentContainerClassName: "contentContainerStyle",
-  columnWrapperClassName: "columnWrapperStyle"
-});
+const FlatList = styled$1(
+  FlatList$1,
+  {
+    className: "style",
+    contentContainerClassName: "contentContainerStyle",
+    columnWrapperClassName: "columnWrapperStyle"
+  }
+);
 
-const SectionList = styled$1(SectionList$1, {
-  className: "style",
-  contentContainerClassName: "contentContainerStyle"
-});
+const SectionList = styled$1(
+  SectionList$1,
+  {
+    className: "style",
+    contentContainerClassName: "contentContainerStyle"
+  }
+);
 
 const Stack = forwardRef(
   ({ className, ...props }, ref) => {
