@@ -30,16 +30,12 @@ jobs:
       - name: Install Dependencies
         # no immutable here
         run: pnpm install
-        env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
       - name: Run pob-root-postinstall
         run: pnpm exec pob-root-postinstall
 
       - name: Run pob update
         run: npx pob update --force
-        env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
       - name: Check for added or modified files
         id: git-check-modified
@@ -53,5 +49,3 @@ jobs:
             -c user.email="christophehurpeau@users.noreply.github.com" \
             commit -m "chore: update pob root" --author="github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           git push --no-verify
-        env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: false
