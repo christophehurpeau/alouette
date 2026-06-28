@@ -3,8 +3,6 @@
   "printWidth": 80,
   "sortPackageJson": { "sortScripts": true },
   "ignorePatterns": [
-    "/.yarnrc.yml",
-    "/.yarn/**/*",
     "/packages/*/.tamagui",
     "/packages/*/dist",
     "CHANGELOG.md",

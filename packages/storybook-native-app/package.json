@@ -1,7 +1,7 @@
 {
   "name": "storybook-native-app",
-  "private": true,
   "version": "9.3.0",
+  "private": true,
   "license": "MIT",
   "type": "module",
   "main": "src/AppEntry",
@@ -66,7 +66,7 @@
     "chromatic": "17.4.0",
     "expo-svg-transformer": "3.2.0",
     "storybook": "10.4.6",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "vite": "8.0.16",
     "vite-plugin-rnw": "0.0.11",
     "vite-plugin-svgr": "4.5.0",
