@@ -3,8 +3,7 @@
 const {
   withStorybook,
 } = require("@storybook/react-native/metro/withStorybook");
-// eslint-disable-next-line import-x/no-unresolved
-const { withAlouetteConfig } = require("alouette/metro");
+const { withAlouetteConfig } = require("alouette/metro.cjs");
 const { getDefaultConfig } = require("expo/metro-config.js");
 const { withExpoSvgTransformer } = require("expo-svg-transformer");
 

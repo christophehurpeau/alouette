@@ -1,0 +1,28 @@
+name: Expo Check
+permissions:
+  contents: read
+on: [push]
+
+jobs:
+  expo-doctor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+
+      - name: Use Node.js 24.x
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Expo Doctor
+        working-directory: packages/storybook-native-app
+        run: pnpm dlx expo-doctor

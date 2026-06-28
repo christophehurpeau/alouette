@@ -30,7 +30,7 @@ Everything targets ios/android/web from the same code.
 `metro.config.cjs`:
 
 ```js
-const { withAlouetteConfig } = require("alouette/metro");
+const { withAlouetteConfig } = require("alouette/metro.cjs");
 const { getDefaultConfig } = require("expo/metro-config.js");
 
 const config = getDefaultConfig(__dirname);
@@ -231,7 +231,7 @@ module.exports = getDefaultConfig(__dirname);
 Correct:
 
 ```js
-const { withAlouetteConfig } = require("alouette/metro");
+const { withAlouetteConfig } = require("alouette/metro.cjs");
 const { getDefaultConfig } = require("expo/metro-config.js");
 module.exports = withAlouetteConfig(getDefaultConfig(__dirname));
 ```

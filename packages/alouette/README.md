@@ -59,7 +59,7 @@ themes and utilities from the imported `global.css` and scans your sources via
 
 ```js
 // metro.config.cjs
-const { withAlouetteConfig } = require("alouette/metro");
+const { withAlouetteConfig } = require("alouette/metro.cjs");
 const { getDefaultConfig } = require("expo/metro-config.js");
 
 module.exports = withAlouetteConfig(getDefaultConfig(__dirname));

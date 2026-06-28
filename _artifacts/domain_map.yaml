@@ -56,7 +56,7 @@ skills:
     covers:
       - 'AlouetteProvider'
       - 'SafeAreaProvider'
-      - 'withAlouetteConfig (alouette/metro)'
+      - 'withAlouetteConfig (alouette/metro.cjs)'
       - 'postcss.config.mjs (Tailwind via PostCSS)'
       - 'alouette/global.css + @source'
       - 'NativeWind v5 / Tailwind v4 setup'
@@ -97,7 +97,7 @@ skills:
           const { getDefaultConfig } = require("expo/metro-config.js");
           module.exports = getDefaultConfig(__dirname);
         correct_pattern: |
-          const { withAlouetteConfig } = require("alouette/metro");
+          const { withAlouetteConfig } = require("alouette/metro.cjs");
           const { getDefaultConfig } = require("expo/metro-config.js");
           module.exports = withAlouetteConfig(getDefaultConfig(__dirname));
         source: 'packages/storybook-native-app/metro.config.cjs, packages/alouette/metro.cjs'

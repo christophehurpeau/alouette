@@ -18,7 +18,8 @@
   },
   "files": [
     "src",
-    "dist"
+    "dist",
+    "metro.cjs"
   ],
   "type": "module",
   "sideEffects": false,
@@ -45,15 +46,16 @@
       "browser": {
         "import": "./dist/index-browser.es.js"
       }
-    }
+    },
+    "./metro.cjs": "./metro.cjs"
   },
   "scripts": {
-    "build": "yarn run clean:build && rollup --config rollup.config.mjs && yarn run build:definitions",
+    "build": "pnpm run clean:build && rollup --config rollup.config.mjs && pnpm run build:definitions",
     "build:css": "node --experimental-strip-types scripts/build-css.ts",
     "build:definitions": "tsc -p tsconfig.json",
     "clean:build": "pob-esbuild-clean-out dist",
-    "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn '../..' run eslint --quiet 'packages/alouette'",
+    "lint": "pnpm run lint:eslint",
+    "lint:eslint": "pnpm run --dir '../..' eslint --quiet 'packages/alouette'",
     "test": "yarn '../..' run test -- packages/alouette",
     "tsc": "tsc"
   },
@@ -71,7 +73,7 @@
     "@rollup/plugin-replace": "6.0.3",
     "@tanstack/intent": "0.1.1",
     "@types/node": "24.10.1",
-    "@types/react": "19.1.13",
+    "@types/react": "19.2.17",
     "@types/react-native-web": "0.19.2",
     "nativewind": "5.0.0-preview.4",
     "react": "19.2.3",
@@ -141,6 +143,9 @@
       {
         "target": "browser"
       }
+    ],
+    "extraEntries": [
+      "metro.cjs"
     ],
     "jsx": true,
     "typescript": true
