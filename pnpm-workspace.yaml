@@ -2,6 +2,7 @@ allowBuilds:
   esbuild: true
   unrs-resolver: true
 dedupePeerDependents: true
+nodeLinker: hoisted
 minimumReleaseAge: 4320
 minimumReleaseAgeExclude:
   - "@pob/*"
