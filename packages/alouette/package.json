@@ -48,6 +48,10 @@
         "import": "./dist/index-browser.es.js"
       }
     },
+    "./global.css": {
+      "style": "./src/global.css",
+      "default": "./src/global.css"
+    },
     "./metro.cjs": "./metro.cjs"
   },
   "scripts": {
@@ -146,7 +150,8 @@
       }
     ],
     "extraEntries": [
-      "metro.cjs"
+      "metro.cjs",
+      "global.css"
     ],
     "jsx": true,
     "typescript": true
