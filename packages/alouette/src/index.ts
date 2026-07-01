@@ -76,6 +76,11 @@ export type { SelectOption, SelectProps } from "./ui/inputs/Select.shared";
 export { Select } from "./ui/inputs/Select";
 export type { BadgeProps } from "./ui/feedback/Badge";
 export { Badge } from "./ui/feedback/Badge";
+export type {
+  ConnectionStateProps,
+  ConnectionStateStatus,
+} from "./ui/feedback/ConnectionState";
+export { ConnectionState } from "./ui/feedback/ConnectionState";
 export type { MessageProps } from "./ui/feedback/Message";
 export {
   ConfirmationMessage,

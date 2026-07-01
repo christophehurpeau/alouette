@@ -2005,6 +2005,38 @@ function Badge({
   ] }) });
 }
 
+const connectedHoldMs = 1200;
+function ConnectionState({
+  state,
+  forceHidden,
+  forceVisible,
+  children
+}) {
+  const connected = state === "connected";
+  const [hideAfterHold, setHideAfterHold] = useState(false);
+  useEffect(() => {
+    if (!connected || forceVisible) {
+      setHideAfterHold(false);
+      return void 0;
+    }
+    const timer = setTimeout(() => {
+      setHideAfterHold(true);
+    }, connectedHoldMs);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [connected, forceVisible]);
+  const hidden = forceHidden || !forceVisible && (!state || connected && hideAfterHold);
+  const accent = connected ? "success" : "danger";
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(
+    View,
+    {
+      className: `absolute inset-x-0 top-0 z-9 h-0.5 bg-interactive-contained-pressable shadow-m transition-transform duration-700 ease-in-out ${hidden ? "-translate-y-6" : "translate-y-0"}`,
+      children: state ? /* @__PURE__ */ jsx(Text, { className: "absolute left-1/2 top-0.5 h-5.5 w-50 -translate-x-1/2 rounded-b-sm bg-interactive-contained-pressable text-center leading-5.5 text-on-accent transition-colors duration-200", children }) : null
+    }
+  ) });
+}
+
 const messageFrameVariants = tv(
   {
     base: "flex-row items-center bg-highlight-accent overflow-hidden",
@@ -2283,5 +2315,5 @@ function ExternalLink({
   return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
 }
 
-export { AccentScope, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
+export { AccentScope, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ConnectionState, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
 //# sourceMappingURL=index-node22.mjs.map
