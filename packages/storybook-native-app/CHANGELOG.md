@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.0](///compare/storybook-native-app@10.0.1...storybook-native-app@10.1.0) (2026-07-02)
+
+### Features
+
+* add ConnectionState component and related stories for network status indication
+
+Version bump for dependency: alouette
+
+
 ## [10.0.1](///compare/storybook-native-app@10.0.0...storybook-native-app@10.0.1) (2026-06-30)
 
 Version bump for dependency: alouette
