@@ -58,7 +58,7 @@ They are thin `View` wrappers — add `gap-*` for spacing.
 ### Surface (elevated container)
 
 `variant`: `surface` (default) · `lowered` · `translucent` · `highlight` ·
-`highlight-accent`. `size`: `sm` · `md` (default) · `lg` (padding + radius).
+`highlight-accent`. `size`: `xs` · `sm` · `md` (default) · `lg` (padding + radius).
 `shadow`: `s` (default) · `m` · `l` · `lowered`; defaults to `lowered` when
 `variant="lowered"`.
 

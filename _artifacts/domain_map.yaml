@@ -7,7 +7,7 @@
 
 library:
   name: 'alouette'
-  version: '20.0.0'
+  version: '20.1.0'
   repository: 'https://github.com/christophehurpeau/alouette'
   description: 'Multi-platform (web + React Native iOS/Android) React design system built on NativeWind v5 and Tailwind CSS v4, styled entirely via className with semantic theme tokens and CSS-driven animations.'
   primary_framework: 'React / React Native'
@@ -37,7 +37,7 @@ domains:
     description: 'Text inputs, text areas, and switches with controlled/uncontrolled and disabled handling.'
   - name: 'Feedback messages'
     slug: 'feedback'
-    description: 'Semantic message banners with optional dismiss.'
+    description: 'Semantic message banners with optional dismiss, plus a top-pinned network connection status banner.'
   - name: 'Animating presence'
     slug: 'animation'
     description: 'CSS-keyframe enter/exit animations run on native via Reanimated, orchestrated with PresenceOne/PresenceList.'
@@ -422,16 +422,18 @@ skills:
   - name: 'Show feedback messages'
     slug: 'alouette-feedback'
     domain: 'feedback'
-    description: 'Semantic banners: Message (requires accent + icon) and the preset InfoMessage/ConfirmationMessage/WarningMessage. Optional dismiss requires both onDismiss and dismissIconAriaLabel. size is sm/md/lg.'
+    description: 'Semantic banners: Message (requires accent + icon) and the preset InfoMessage/ConfirmationMessage/WarningMessage. Optional dismiss requires both onDismiss and dismissIconAriaLabel. size is sm/md/lg. Also ConnectionState, a top-pinned network-status banner driven by a state prop.'
     type: 'core'
     packages: ['alouette']
     covers:
       - 'Message'
       - 'InfoMessage / ConfirmationMessage / WarningMessage'
       - 'onDismiss + dismissIconAriaLabel'
+      - 'ConnectionState (state + forceVisible/forceHidden)'
     tasks:
       - 'Show an info/success/warning banner'
       - 'Make a dismissible message'
+      - 'Surface network connection status'
     failure_modes:
       - mistake: 'onDismiss without dismissIconAriaLabel'
         mechanism: 'Message types onDismiss and dismissIconAriaLabel as a required pair; providing one without the other is a type error and an a11y gap on the dismiss button.'
@@ -463,6 +465,24 @@ skills:
         priority: 'MEDIUM'
         status: 'active'
         skills: ['alouette-feedback', 'alouette-theming']
+      - mistake: 'ConnectionState in a non-positioned, non-clipping parent'
+        mechanism: 'The banner is absolute inset-x-0 top-0 and slides in from off-screen; without a relative ancestor it anchors to the wrong element, and without overflow-hidden the pre-slide pill leaks above the container.'
+        wrong_pattern: |
+          <Box><ConnectionState state={status}>Reconnecting…</ConnectionState></Box>
+        correct_pattern: |
+          <Box className="relative overflow-hidden"><ConnectionState state={status}>Reconnecting…</ConnectionState></Box>
+        source: 'packages/alouette/src/ui/feedback/ConnectionState.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Passing accent to ConnectionState'
+        mechanism: 'ConnectionState derives its accent from state (success when connected, danger otherwise); there is no accent prop, so theme it by changing state.'
+        wrong_pattern: |
+          <ConnectionState accent="danger" state="disconnected">Offline</ConnectionState>
+        correct_pattern: |
+          <ConnectionState state="disconnected">Offline</ConnectionState>
+        source: 'packages/alouette/src/ui/feedback/ConnectionState.tsx'
+        priority: 'LOW'
+        status: 'active'
   # ---------------------------------------------------------------------------
   - name: 'Animate enter/exit presence'
     slug: 'alouette-animation'
