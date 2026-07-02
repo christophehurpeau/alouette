@@ -8,7 +8,7 @@ description: >
   fonts/bold weights look wrong. Covers ios, android and web.
 type: lifecycle
 library: alouette
-library_version: "20.0.0"
+library_version: "20.1.0"
 sources:
   - "christophehurpeau/alouette:packages/storybook-native-app/metro.config.cjs"
   - "christophehurpeau/alouette:packages/storybook-native-app/postcss.config.mjs"

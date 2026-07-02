@@ -16,7 +16,7 @@ export default {
       description: {
         component: `### Features
 - Surface backgrounds for elevation and layering
-- Variant: \`size\` controls padding + radius (sm | md | lg)
+- Variant: \`size\` controls padding + radius (xs | sm | md | lg)
 - Variant: \`shadow\` controls elevation (s | m | l)
 - Variant: \`lowered\` pairs layer="lowered" with shadow="lowered"
 
@@ -70,17 +70,17 @@ export const VariantsSurfaceStory: ThisStory = {
         <StoryGrid.Row flexWrap>
           <StoryGrid.Col title="Small">
             <Surface shadow="s">
-              <Text>shadow=&quot;s&quot;</Text>
+              <Text>shadow="s"</Text>
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col title="Medium">
             <Surface shadow="m">
-              <Text>shadow=&quot;m&quot;</Text>
+              <Text>shadow="m"</Text>
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col title="Large">
             <Surface shadow="l">
-              <Text>shadow=&quot;l&quot;</Text>
+              <Text>shadow="l"</Text>
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col title="Lowered">
@@ -92,19 +92,24 @@ export const VariantsSurfaceStory: ThisStory = {
       </Story.Section>
       <Story.Section title="Sizes">
         <StoryGrid.Row flexWrap>
+          <StoryGrid.Col title="xs">
+            <Surface size="xs">
+              <Text>size="xs"</Text>
+            </Surface>
+          </StoryGrid.Col>
           <StoryGrid.Col title="sm">
             <Surface size="sm">
-              <Text>size=&quot;sm&quot;</Text>
+              <Text>size="sm"</Text>
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col title="md">
             <Surface size="md">
-              <Text>size=&quot;md&quot;</Text>
+              <Text>size="md"</Text>
             </Surface>
           </StoryGrid.Col>
           <StoryGrid.Col title="lg">
             <Surface size="lg">
-              <Text>size=&quot;lg&quot;</Text>
+              <Text>size="lg"</Text>
             </Surface>
           </StoryGrid.Col>
         </StoryGrid.Row>
