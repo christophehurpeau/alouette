@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [20.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.1.0...alouette@20.2.0) (2026-07-02)
+
+### Features
+
+* update library version to 20.1.0 and enhance documentation for ConnectionState component
+* update Surface component to include 'xs' size variant and adjust related stories
+
 ## [20.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.0.1...alouette@20.1.0) (2026-07-02)
 
 ### Features
