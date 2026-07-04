@@ -9,11 +9,12 @@ const reactNative = require('react-native');
 const reactNativeSafeAreaContext = require('react-native-safe-area-context');
 const tailwindMerge = require('tailwind-merge');
 const tailwindVariants = require('tailwind-variants');
-const CheckRegularIcon = require('alouette-icons/phosphor-icons/CheckRegularIcon');
-const CaretDownRegularIcon = require('alouette-icons/phosphor-icons/CaretDownRegularIcon');
-const InfoRegularIcon = require('alouette-icons/phosphor-icons/InfoRegularIcon');
-const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegularIcon');
 const XRegularIcon = require('alouette-icons/phosphor-icons/XRegularIcon');
+const CheckRegularIcon = require('alouette-icons/phosphor-icons/CheckRegularIcon');
+const InfoRegularIcon = require('alouette-icons/phosphor-icons/InfoRegularIcon');
+const QuestionRegularIcon = require('alouette-icons/phosphor-icons/QuestionRegularIcon');
+const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegularIcon');
+const CaretDownRegularIcon = require('alouette-icons/phosphor-icons/CaretDownRegularIcon');
 const CaretRightRegularIcon = require('alouette-icons/phosphor-icons/CaretRightRegularIcon');
 const WebBrowser = require('expo-web-browser');
 
@@ -1261,20 +1262,6 @@ const animationDurationsMs = {
   "collapse": 800
 };
 
-function Icon({
-  icon,
-  size = 20,
-  className = "text-sharp"
-}) {
-  const token = className.split(/\s+/).find((part) => part.startsWith("text-"))?.slice("text-".length);
-  const color = useThemeToken(`--color-${token ?? "sharp"}`);
-  return react.cloneElement(icon, {
-    color,
-    width: size,
-    height: size
-  });
-}
-
 const pressableBoxVariants = tailwindVariants.tv(
   {
     extend: interactiveBoxVariants,
@@ -1405,6 +1392,20 @@ const PressableBox = react.forwardRef(
     ) });
   }
 );
+
+function Icon({
+  icon,
+  size = 20,
+  className = "text-sharp"
+}) {
+  const token = className.split(/\s+/).find((part) => part.startsWith("text-"))?.slice("text-".length);
+  const color = useThemeToken(`--color-${token ?? "sharp"}`);
+  return react.cloneElement(icon, {
+    color,
+    width: size,
+    height: size
+  });
+}
 
 const buttonHeight = {
   sm: 38,
@@ -1615,6 +1616,225 @@ function IconButton({
       )
     }
   );
+}
+
+const panelVariants = tailwindVariants.tv(
+  {
+    // w-full so the panel shrinks on small screens (the backdrop padding keeps a
+    // margin); max-w caps it on wide viewports.
+    base: "w-full",
+    variants: {
+      size: {
+        sm: "max-w-[360px]",
+        md: "max-w-[520px]",
+        lg: "max-w-[720px]"
+      }
+    },
+    defaultVariants: { size: "md" }
+  },
+  { twMerge: false }
+);
+const titleReserveVariants = tailwindVariants.tv(
+  {
+    variants: {
+      size: {
+        sm: "pr-xxl",
+        md: "pr-xl",
+        lg: "pr-xl"
+      }
+    },
+    defaultVariants: { size: "md" }
+  },
+  { twMerge: false }
+);
+function Modal({
+  visible,
+  onClose,
+  children,
+  icon,
+  footer,
+  accent,
+  size = "md",
+  title,
+  hideCloseButton = false,
+  closeButtonAriaLabel = "Close",
+  role = "dialog",
+  "aria-describedby": ariaDescribedby,
+  testID,
+  "aria-label": ariaLabel
+}) {
+  const { height: windowHeight } = reactNative.useWindowDimensions();
+  const titleId = react.useId();
+  return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(
+    reactNative.Modal,
+    {
+      transparent: true,
+      visible,
+      animationType: "fade",
+      onRequestClose: onClose,
+      children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: "flex-1 flex-center p-l", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          reactNative.Pressable,
+          {
+            "aria-hidden": true,
+            focusable: false,
+            className: "absolute inset-0 bg-translucent",
+            onPress: onClose
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          View,
+          {
+            "aria-modal": true,
+            role,
+            "aria-label": title === void 0 ? ariaLabel : void 0,
+            "aria-labelledby": title === void 0 ? void 0 : titleId,
+            "aria-describedby": ariaDescribedby,
+            testID,
+            className: `relative ${panelVariants({ size })}`,
+            children: /* @__PURE__ */ jsxRuntime.jsxs(
+              Surface,
+              {
+                variant: "highlight",
+                size,
+                shadow: "l",
+                className: "relative gap-m",
+                children: [
+                  title === void 0 && icon === void 0 ? null : /* @__PURE__ */ jsxRuntime.jsxs(
+                    HStack,
+                    {
+                      className: `items-center gap-xs ${hideCloseButton ? "" : titleReserveVariants({ size })}`,
+                      children: [
+                        icon === void 0 ? null : /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size: 24, className: "text-accent" }),
+                        title === void 0 ? null : /* @__PURE__ */ jsxRuntime.jsx(
+                          Text,
+                          {
+                            nativeID: titleId,
+                            className: "shrink font-heading-bold text-xl leading-tight text-sharp",
+                            children: title
+                          }
+                        )
+                      ]
+                    }
+                  ),
+                  hideCloseButton ? null : /* @__PURE__ */ jsxRuntime.jsx(
+                    IconButton,
+                    {
+                      icon: /* @__PURE__ */ jsxRuntime.jsx(XRegularIcon.XRegularIcon, {}),
+                      variant: "ghost",
+                      size: size === "lg" ? "md" : size,
+                      "aria-label": closeButtonAriaLabel,
+                      className: "absolute right-sm top-sm",
+                      onPress: onClose
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntime.jsx(ScrollView, { style: { maxHeight: windowHeight * 0.7 }, children: /* @__PURE__ */ jsxRuntime.jsx(VStack, { className: "gap-m", children }) }),
+                  footer === void 0 ? null : /* @__PURE__ */ jsxRuntime.jsx(HStack, { className: "items-center justify-end gap-m", children: footer })
+                ]
+              }
+            )
+          }
+        )
+      ] })
+    }
+  ) });
+}
+
+function resolveVariant(props, accent) {
+  switch (props.variant) {
+    case "alert": {
+      const { onClose, closeText } = props;
+      return {
+        onDismiss: onClose,
+        footer: /* @__PURE__ */ jsxRuntime.jsx(Button, { accent, text: closeText ?? "OK", onPress: onClose })
+      };
+    }
+    case "required": {
+      const { onConfirm, confirmText, confirmDisabled } = props;
+      return {
+        // Non-dismissible: only the explicit action closes it.
+        onDismiss: () => void 0,
+        footer: /* @__PURE__ */ jsxRuntime.jsx(
+          Button,
+          {
+            accent,
+            text: confirmText ?? "OK",
+            disabled: confirmDisabled,
+            onPress: onConfirm
+          }
+        )
+      };
+    }
+    case "confirm":
+    case void 0:
+    default: {
+      const { onConfirm, onCancel, confirmText, cancelText, confirmDisabled } = props;
+      return {
+        onDismiss: onCancel,
+        footer: /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+          /* @__PURE__ */ jsxRuntime.jsx(
+            Button,
+            {
+              variant: "outlined",
+              text: cancelText ?? "Cancel",
+              onPress: onCancel
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            Button,
+            {
+              accent,
+              text: confirmText ?? "Confirm",
+              disabled: confirmDisabled,
+              onPress: onConfirm
+            }
+          )
+        ] })
+      };
+    }
+  }
+}
+function AlertDialog(props) {
+  const {
+    visible,
+    title,
+    children,
+    accent = "danger",
+    icon,
+    size = "md",
+    testID
+  } = props;
+  const descriptionId = react.useId();
+  const { footer, onDismiss } = resolveVariant(props, accent);
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    Modal,
+    {
+      hideCloseButton: true,
+      visible,
+      role: "alertdialog",
+      accent,
+      size,
+      title,
+      icon,
+      "aria-describedby": children === void 0 ? void 0 : descriptionId,
+      testID,
+      footer,
+      onClose: onDismiss,
+      children: children === void 0 ? null : /* @__PURE__ */ jsxRuntime.jsx(Text, { nativeID: descriptionId, className: "text-base text-muted", children })
+    }
+  );
+}
+function QuestionAlertDialog(props) {
+  return /* @__PURE__ */ jsxRuntime.jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsxRuntime.jsx(QuestionRegularIcon.QuestionRegularIcon, {}) });
+}
+function WarningAlertDialog(props) {
+  return /* @__PURE__ */ jsxRuntime.jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsxRuntime.jsx(WarningRegularIcon.WarningRegularIcon, {}) });
+}
+function InfoAlertDialog(props) {
+  return /* @__PURE__ */ jsxRuntime.jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsxRuntime.jsx(InfoRegularIcon.InfoRegularIcon, {}) });
+}
+function SuccessAlertDialog(props) {
+  return /* @__PURE__ */ jsxRuntime.jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsxRuntime.jsx(CheckRegularIcon.CheckRegularIcon, {}) });
 }
 
 const inputVariants = tailwindVariants.tv(
@@ -2334,6 +2554,7 @@ function ExternalLink({
 exports.SafeAreaProvider = reactNativeSafeAreaContext.SafeAreaProvider;
 exports.useSafeAreaInsets = reactNativeSafeAreaContext.useSafeAreaInsets;
 exports.AccentScope = AccentScope;
+exports.AlertDialog = AlertDialog;
 exports.AlouetteDecorator = AlouetteDecorator;
 exports.AlouetteProvider = AlouetteProvider;
 exports.Badge = Badge;
@@ -2351,16 +2572,19 @@ exports.GradientScrollView = GradientScrollView;
 exports.HStack = HStack;
 exports.Icon = Icon;
 exports.IconButton = IconButton;
+exports.InfoAlertDialog = InfoAlertDialog;
 exports.InfoMessage = InfoMessage;
 exports.InputText = InputText;
 exports.InteractiveBox = InteractiveBox;
 exports.InternalLinkButton = InternalLinkButton;
 exports.Message = Message;
+exports.Modal = Modal;
 exports.Paragraph = Paragraph;
 exports.PresenceList = PresenceList;
 exports.PresenceOne = PresenceOne;
 exports.PressableBox = PressableBox;
 exports.PressableListItem = PressableListItem;
+exports.QuestionAlertDialog = QuestionAlertDialog;
 exports.SafeAreaBox = SafeAreaBox;
 exports.ScopedTheme = ScopedTheme;
 exports.ScrollView = ScrollView;
@@ -2373,6 +2597,7 @@ exports.StoryContainer = StoryContainer;
 exports.StoryDecorator = StoryDecorator;
 exports.StoryGrid = StoryGrid;
 exports.StoryTitle = StoryTitle;
+exports.SuccessAlertDialog = SuccessAlertDialog;
 exports.Surface = Surface;
 exports.Switch = Switch;
 exports.SwitchBreakpointsUsingDisplayNone = SwitchBreakpointsUsingDisplayNone;
@@ -2381,6 +2606,7 @@ exports.Text = Text;
 exports.TextArea = TextArea;
 exports.VStack = VStack;
 exports.View = View;
+exports.WarningAlertDialog = WarningAlertDialog;
 exports.WarningMessage = WarningMessage;
 exports.animationDurationsMs = animationDurationsMs;
 exports.styled = styled;

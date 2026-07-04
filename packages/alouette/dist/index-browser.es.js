@@ -1,14 +1,15 @@
 import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
 import { VariableContextProvider, styled as styled$1 } from 'nativewind';
-import { createContext, useContext, forwardRef, Children, cloneElement, Fragment, useRef, useState, useEffect, isValidElement, useCallback } from 'react';
-import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, TextInput, useWindowDimensions } from 'react-native-web';
+import { createContext, useContext, forwardRef, Children, cloneElement, Fragment, useRef, useState, useEffect, isValidElement, useId, useCallback } from 'react';
+import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, useWindowDimensions, Modal as Modal$1, TextInput } from 'react-native-web';
 import { extendTailwindMerge, twMerge as twMerge$1 } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
-import { CaretDownRegularIcon } from 'alouette-icons/phosphor-icons/CaretDownRegularIcon';
+import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
 import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
 import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
+import { QuestionRegularIcon } from 'alouette-icons/phosphor-icons/QuestionRegularIcon';
 import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
-import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
+import { CaretDownRegularIcon } from 'alouette-icons/phosphor-icons/CaretDownRegularIcon';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
 
 const ThemeContext = createContext("light");
@@ -1253,18 +1254,6 @@ const animationDurationsMs = {
   "collapse": 800
 };
 
-function Icon({
-  icon,
-  size = 20,
-  className = "text-sharp"
-}) {
-  return cloneElement(icon, {
-    className,
-    width: size,
-    height: size
-  });
-}
-
 const pressableBoxVariants = tv(
   {
     extend: interactiveBoxVariants,
@@ -1395,6 +1384,18 @@ const PressableBox = forwardRef(
     ) });
   }
 );
+
+function Icon({
+  icon,
+  size = 20,
+  className = "text-sharp"
+}) {
+  return cloneElement(icon, {
+    className,
+    width: size,
+    height: size
+  });
+}
 
 const buttonHeight = {
   sm: 38,
@@ -1605,6 +1606,225 @@ function IconButton({
       )
     }
   );
+}
+
+const panelVariants = tv(
+  {
+    // w-full so the panel shrinks on small screens (the backdrop padding keeps a
+    // margin); max-w caps it on wide viewports.
+    base: "w-full",
+    variants: {
+      size: {
+        sm: "max-w-[360px]",
+        md: "max-w-[520px]",
+        lg: "max-w-[720px]"
+      }
+    },
+    defaultVariants: { size: "md" }
+  },
+  { twMerge: false }
+);
+const titleReserveVariants = tv(
+  {
+    variants: {
+      size: {
+        sm: "pr-xxl",
+        md: "pr-xl",
+        lg: "pr-xl"
+      }
+    },
+    defaultVariants: { size: "md" }
+  },
+  { twMerge: false }
+);
+function Modal({
+  visible,
+  onClose,
+  children,
+  icon,
+  footer,
+  accent,
+  size = "md",
+  title,
+  hideCloseButton = false,
+  closeButtonAriaLabel = "Close",
+  role = "dialog",
+  "aria-describedby": ariaDescribedby,
+  testID,
+  "aria-label": ariaLabel
+}) {
+  const { height: windowHeight } = useWindowDimensions();
+  const titleId = useId();
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(
+    Modal$1,
+    {
+      transparent: true,
+      visible,
+      animationType: "fade",
+      onRequestClose: onClose,
+      children: /* @__PURE__ */ jsxs(View, { className: "flex-1 flex-center p-l", children: [
+        /* @__PURE__ */ jsx(
+          Pressable,
+          {
+            "aria-hidden": true,
+            focusable: false,
+            className: "absolute inset-0 bg-translucent",
+            onPress: onClose
+          }
+        ),
+        /* @__PURE__ */ jsx(
+          View,
+          {
+            "aria-modal": true,
+            role,
+            "aria-label": title === void 0 ? ariaLabel : void 0,
+            "aria-labelledby": title === void 0 ? void 0 : titleId,
+            "aria-describedby": ariaDescribedby,
+            testID,
+            className: `relative ${panelVariants({ size })}`,
+            children: /* @__PURE__ */ jsxs(
+              Surface,
+              {
+                variant: "highlight",
+                size,
+                shadow: "l",
+                className: "relative gap-m",
+                children: [
+                  title === void 0 && icon === void 0 ? null : /* @__PURE__ */ jsxs(
+                    HStack,
+                    {
+                      className: `items-center gap-xs ${hideCloseButton ? "" : titleReserveVariants({ size })}`,
+                      children: [
+                        icon === void 0 ? null : /* @__PURE__ */ jsx(Icon, { icon, size: 24, className: "text-accent" }),
+                        title === void 0 ? null : /* @__PURE__ */ jsx(
+                          Text,
+                          {
+                            nativeID: titleId,
+                            className: "shrink font-heading-bold text-xl leading-tight text-sharp",
+                            children: title
+                          }
+                        )
+                      ]
+                    }
+                  ),
+                  hideCloseButton ? null : /* @__PURE__ */ jsx(
+                    IconButton,
+                    {
+                      icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
+                      variant: "ghost",
+                      size: size === "lg" ? "md" : size,
+                      "aria-label": closeButtonAriaLabel,
+                      className: "absolute right-sm top-sm",
+                      onPress: onClose
+                    }
+                  ),
+                  /* @__PURE__ */ jsx(ScrollView, { style: { maxHeight: windowHeight * 0.7 }, children: /* @__PURE__ */ jsx(VStack, { className: "gap-m", children }) }),
+                  footer === void 0 ? null : /* @__PURE__ */ jsx(HStack, { className: "items-center justify-end gap-m", children: footer })
+                ]
+              }
+            )
+          }
+        )
+      ] })
+    }
+  ) });
+}
+
+function resolveVariant(props, accent) {
+  switch (props.variant) {
+    case "alert": {
+      const { onClose, closeText } = props;
+      return {
+        onDismiss: onClose,
+        footer: /* @__PURE__ */ jsx(Button, { accent, text: closeText ?? "OK", onPress: onClose })
+      };
+    }
+    case "required": {
+      const { onConfirm, confirmText, confirmDisabled } = props;
+      return {
+        // Non-dismissible: only the explicit action closes it.
+        onDismiss: () => void 0,
+        footer: /* @__PURE__ */ jsx(
+          Button,
+          {
+            accent,
+            text: confirmText ?? "OK",
+            disabled: confirmDisabled,
+            onPress: onConfirm
+          }
+        )
+      };
+    }
+    case "confirm":
+    case void 0:
+    default: {
+      const { onConfirm, onCancel, confirmText, cancelText, confirmDisabled } = props;
+      return {
+        onDismiss: onCancel,
+        footer: /* @__PURE__ */ jsxs(Fragment$1, { children: [
+          /* @__PURE__ */ jsx(
+            Button,
+            {
+              variant: "outlined",
+              text: cancelText ?? "Cancel",
+              onPress: onCancel
+            }
+          ),
+          /* @__PURE__ */ jsx(
+            Button,
+            {
+              accent,
+              text: confirmText ?? "Confirm",
+              disabled: confirmDisabled,
+              onPress: onConfirm
+            }
+          )
+        ] })
+      };
+    }
+  }
+}
+function AlertDialog(props) {
+  const {
+    visible,
+    title,
+    children,
+    accent = "danger",
+    icon,
+    size = "md",
+    testID
+  } = props;
+  const descriptionId = useId();
+  const { footer, onDismiss } = resolveVariant(props, accent);
+  return /* @__PURE__ */ jsx(
+    Modal,
+    {
+      hideCloseButton: true,
+      visible,
+      role: "alertdialog",
+      accent,
+      size,
+      title,
+      icon,
+      "aria-describedby": children === void 0 ? void 0 : descriptionId,
+      testID,
+      footer,
+      onClose: onDismiss,
+      children: children === void 0 ? null : /* @__PURE__ */ jsx(Text, { nativeID: descriptionId, className: "text-base text-muted", children })
+    }
+  );
+}
+function QuestionAlertDialog(props) {
+  return /* @__PURE__ */ jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsx(QuestionRegularIcon, {}) });
+}
+function WarningAlertDialog(props) {
+  return /* @__PURE__ */ jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
+}
+function InfoAlertDialog(props) {
+  return /* @__PURE__ */ jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
+}
+function SuccessAlertDialog(props) {
+  return /* @__PURE__ */ jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
 }
 
 const inputVariants = tv(
@@ -2311,5 +2531,5 @@ function ExternalLink({
   );
 }
 
-export { AccentScope, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ConnectionState, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useThemeToken };
+export { AccentScope, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ConnectionState, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useThemeToken };
 //# sourceMappingURL=index-browser.es.js.map
