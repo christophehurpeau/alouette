@@ -5,12 +5,13 @@
   "shape": "storybook",
   "storybookStatic": ".design-sync/sb-reference",
   "storybookConfigDir": "packages/storybook-native-app/.storybook",
-  "buildCmd": "yarn workspace alouette build",
+  "buildCmd": "pnpm --filter alouette build",
   "tsconfig": "../../.design-sync/tsconfig.bundle.json",
   "readmeHeader": ".design-sync/conventions.md",
   "extraEntries": ["../../.design-sync/process-shim.mjs"],
   "storyImports": {
-    "bundle": ["story-components"]
+    "bundle": ["story-components"],
+    "shim": ["ui/stacks/stacks"]
   },
   "provider": {
     "component": "SafeAreaProvider",
@@ -23,18 +24,11 @@
     }
   },
   "titleMap": {
-    "Button": null,
-    "IconButton": null,
-    "Box": null,
-    "Surface": null,
-    "PressableBox": null,
-    "PressableListItem": null,
-    "Message": null,
-    "GradientBackground": null,
-    "Separator": null,
-    "Icon": null,
-    "Text": null,
-    "View": null
+    "Themes": null,
+    "Tokens": null,
+    "SwitchBreakpoints": null,
+    "Presence": "PresenceOne",
+    "Stacks": "HStack"
   },
   "overrides": {
     "Switch": {
@@ -48,6 +42,12 @@
     "TextArea": {
       "primaryStory": "PreviewTextAreaStory",
       "skip": ["alouette-inputs-textarea--documentation"]
-    }
+    },
+    "PresenceOne": { "cardMode": "column" },
+    "Select": { "cardMode": "column", "skip": ["alouette-inputs-select--tests"] },
+    "GradientBackground": { "cardMode": "column" },
+    "AlertDialog": { "skip": ["alouette-containers-alertdialog--tests"] },
+    "Modal": { "skip": ["alouette-containers-modal--tests"] },
+    "Text": { "skip": ["alouette-primitives-text--tests"] }
   }
 }

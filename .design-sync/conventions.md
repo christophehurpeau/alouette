@@ -49,10 +49,20 @@ import { Text } from "alouette";
 <Text className="text-base">Body</Text>           {/* font-body is default */}
 ```
 
-## Form controls (this kit's synced surface)
+## Component library (this kit's synced surface)
+
+The full storied roster is synced, grouped as in the source repo:
+
+- **actions** — `Button`, `IconButton`, `PressableBox`
+- **containers** — `Box`, `Surface`, `AlertDialog`, `Modal`, `PresenceOne`
+- **data** — `PressableListItem`, `FlatList`, `SectionList`
+- **feedback** — `Badge`, `ConnectionState`, `Message`
+- **inputs** — `Switch`, `InputText`, `TextArea`, `Select`
+- **layout** — `GradientBackground`, `GradientScrollView`, `Separator`
+- **primitives** — `View`, `Text`, `Icon`, `ScrollView`, `Stack`/`HStack`/`VStack`
 
 ```tsx
-import { InputText, TextArea, Switch } from "alouette";
+import { InputText, TextArea, Switch, Select } from "alouette";
 
 <InputText placeholder="Email" mode="email" />
 <InputText placeholder="Password" mode="password" />
@@ -65,6 +75,33 @@ import { InputText, TextArea, Switch } from "alouette";
 `autoCorrect`, `autoCapitalize`. `TextArea` is the multiline variant.
 `Switch` props: `checked`, `onValueChange(value)`, `disabled`, `aria-labelledby`.
 These are uncontrolled-capable (omit `value`/`checked` to let them self-manage).
+
+```tsx
+import { HStack, VStack, Separator, Surface, Button, Badge } from "alouette";
+
+<Surface className="p-m">
+  <VStack className="gap-s">
+    <HStack className="items-center justify-between">
+      <Badge accent="brand">New</Badge>
+      <Button>Action</Button>
+    </HStack>
+    <Separator />
+  </VStack>
+</Surface>
+```
+
+`HStack`/`VStack` are `Stack` with `direction="row"`/`"column"`; row layouts
+depend on `flex-row`/`gap-*`/`items-*` utilities from the synced `styles.css`,
+same as any other Tailwind-driven layout here — no separate layout API.
+
+Components that introduce an accent (`Button`, `Message`, `Badge`,
+`ConnectionState`, `Surface` with `accent` set, `GradientBackground`) take an
+`accent?: "brand" | "info" | "danger" | "success"` prop; omit it to inherit
+the surrounding `ScopedTheme`.
+
+`AlertDialog`/`Modal` are trigger + content compositions (see their
+`.prompt.md` for the exact children API) — don't hand-roll overlay/backdrop
+markup with `Box`/`View`.
 
 ## Where the truth lives
 
