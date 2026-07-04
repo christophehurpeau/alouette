@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [20.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.2.0...alouette@20.3.0) (2026-07-04)
+
+### Features
+
+* add modal and alertdialog components
+
+### Bug Fixes
+
+* clearer default surface color in light mode
+
 ## [20.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.1.0...alouette@20.2.0) (2026-07-02)
 
 ### Features
