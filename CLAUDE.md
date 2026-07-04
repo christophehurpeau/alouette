@@ -5,12 +5,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-yarn storybook          # Start Storybook dev server (main development workflow)
-yarn build              # Build all packages (rollup + type definitions)
-yarn watch              # Rebuild on changes
-yarn lint               # Prettier + ESLint
-yarn test               # Run tests (Node.js native runner with --experimental-strip-types)
-yarn tsc                # TypeScript check
+pnpm storybook          # Start Storybook dev server (main development workflow)
+pnpm build              # Build all packages (rollup + type definitions)
+pnpm watch              # Rebuild on changes
+pnpm lint               # Prettier + ESLint
+pnpm test               # Run tests (Node.js native runner with --experimental-strip-types)
+pnpm tsc                # TypeScript check
 ```
 
 Run a single test file:
@@ -21,7 +21,7 @@ node --experimental-strip-types --test packages/alouette/src/config/utils/colorC
 
 ## Architecture
 
-Yarn workspaces monorepo with 3 packages:
+pnpm workspaces monorepo with 3 packages:
 
 - `packages/alouette` — Core design system library
 - `packages/alouette-icons` — Auto-generated Phosphor icons integration
@@ -29,7 +29,7 @@ Yarn workspaces monorepo with 3 packages:
 
 ### Styling stack
 
-This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define tokens/keyframes in `packages/alouette/scripts/build-css.ts`, then regenerate with `yarn workspace alouette build:css` — never edit `global.css` directly.
+This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define tokens/keyframes in `packages/alouette/scripts/build-css.ts`, then regenerate with `pnpm --filter alouette build:css` — never edit `global.css` directly.
 
 ### Component organization
 
@@ -74,7 +74,7 @@ Import icons from `alouette-icons/phosphor-icons/IconName`. The package is auto-
 <Text className="font-mono text-xs text-muted">Code</Text>
 ```
 
-Color tokens: edit `packages/alouette/scripts/build-css.ts`, then run `yarn workspace alouette build:css`. Do not edit `global.css` directly.
+Color tokens: edit `packages/alouette/scripts/build-css.ts`, then run `pnpm --filter alouette build:css`. Do not edit `global.css` directly.
 
 # Theming and accents
 
@@ -109,7 +109,7 @@ On native, NativeWind resolves CSS variables at render time from a lookup table 
 
 ## CSS token changes
 
-Edit `packages/alouette/scripts/build-css.ts`, then run `yarn workspace alouette build:css`. Never edit `global.css` directly.
+Edit `packages/alouette/scripts/build-css.ts`, then run `pnpm --filter alouette build:css`. Never edit `global.css` directly.
 
 # React
 

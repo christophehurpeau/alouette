@@ -4,7 +4,7 @@
 
 <h3>📦 Packages</h3>
 
-This repository is a monorepo that we manage using [Yarn Workspaces](https://yarnpkg.com/features/workspaces).
+This repository is a monorepo that we manage using [pnpm Workspaces](https://pnpm.io/workspaces).
 
 | Package                                               | Version                                                                                                                              | Description                                                                                   |
 | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
@@ -43,29 +43,29 @@ corepack enable
 ```bash
 git clone https://github.com/christophehurpeau/alouette.git
 cd alouette
-yarn install
+pnpm install
 ```
 
 3. Start Storybook:
 
 ```bash
-yarn storybook
+pnpm storybook
 ```
 
 ### Development Workflow
 
 1. Create a feature branch: `git checkout -b feature/amazing-feature`
 2. Make your changes
-3. Run tests: `yarn test`
-4. Run linting: `yarn lint`
+3. Run tests: `pnpm test`
+4. Run linting: `pnpm lint`
 5. Submit a PR
 
 ### Build Commands
 
-- `yarn build`: Build all packages
-- `yarn test`: Run tests
-- `yarn lint`: Run linting
-- `yarn storybook`: Start Storybook development server
+- `pnpm build`: Build all packages
+- `pnpm test`: Run tests
+- `pnpm lint`: Run linting
+- `pnpm storybook`: Start Storybook development server
 
 ## 📄 License
 

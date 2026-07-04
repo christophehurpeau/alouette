@@ -113,8 +113,8 @@ Alouette maintains reference documentation in `packages/alouette/docs/` for cons
 
 ## Build System
 
-- **Build**: `yarn build` (uses Rollup with @pob/rollup-esbuild)
-- **Development**: `yarn storybook` (storybook-native-app)
+- **Build**: `pnpm build` (uses Rollup with @pob/rollup-esbuild)
+- **Development**: `pnpm storybook` (storybook-native-app)
 - **Icons**: Auto-generated via `packages/alouette-icons/scripts/generate-phosphor-icons.mjs`
 - **Platforms**: Dual build for web and React Native with conditional exports
 
