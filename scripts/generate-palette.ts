@@ -29,7 +29,7 @@ const createColorScale = (
     kind === "light"
       ? [
           hue === 0 ? 100 : 98,
-          96, // hue === 0 ? 96 : 92,
+          hue === 0 ? 98 : 96, // hue === 0 ? 96 : 92,
           92, // hue === 0 ? 92 : 86,
           88, // hue === 0 ? 86 : 82,
           78,
@@ -118,7 +118,11 @@ const generatePalettes = () => {
 
 const palettes = generatePalettes();
 
-if (process.argv[2] === "generate") {
+if (
+  process.argv[2] === "generate" ||
+  process.argv[2] === "write" ||
+  process.argv[2] === "--write"
+) {
   let content = "/* eslint-disable import-x/extensions */\n";
   content += "import { createColorScale } from './colorScales.ts';\n";
   content += "import type { AlouetteColorScales } from './colorScales.ts';\n\n";

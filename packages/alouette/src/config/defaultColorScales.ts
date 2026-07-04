@@ -5,7 +5,7 @@ import type { AlouetteColorScales } from "./colorScales.ts";
 export const defaultColorScales: AlouetteColorScales = {
   "grayscale.light": createColorScale({
     1: "#FFFFFF",
-    2: "#F5F5F5",
+    2: "#FAFAFA",
     3: "#EBEBEB",
     4: "#E0E0E0",
     5: "#C7C7C7",
