@@ -4,7 +4,15 @@
 //
 // Usage: npx alouette-install-skills
 
-import { existsSync, lstatSync, mkdirSync, readdirSync, readlinkSync, rmSync, symlinkSync } from "node:fs";
+import {
+  existsSync,
+  lstatSync,
+  mkdirSync,
+  readdirSync,
+  readlinkSync,
+  rmSync,
+  symlinkSync,
+} from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -39,7 +47,9 @@ for (const name of readdirSync(sourceSkillsDir)) {
       continue;
     }
     if (!stat.isSymbolicLink()) {
-      console.warn(`skipping ${name}: ${target} already exists and is not a symlink`);
+      console.warn(
+        `skipping ${name}: ${target} already exists and is not a symlink`,
+      );
       continue;
     }
     rmSync(target);
