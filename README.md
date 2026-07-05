@@ -14,13 +14,14 @@ This repository is a monorepo that we manage using [pnpm Workspaces](https://pnp
 
 ## 🤖 Using an AI agent?
 
-alouette ships [skills](https://www.npmjs.com/package/@tanstack/intent) that
-teach AI coding agents how to use the design system correctly. If you use an AI
-agent, run:
+alouette ships skills that teach AI coding agents how to use the design
+system correctly. If you use an AI agent, run:
 
 ```bash
-npx @tanstack/intent@latest install
+npx alouette-install-skills
 ```
+
+This symlinks the skills into `.claude/skills/` in your project.
 
 ## 🤝 Contributing
 

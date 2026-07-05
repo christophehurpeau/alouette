@@ -16,11 +16,15 @@
     "url": "https://github.com/christophehurpeau/alouette.git",
     "directory": "packages/alouette"
   },
+  "bin": {
+    "alouette-install-skills": "./bin/install-skills.mjs"
+  },
   "files": [
     "src",
     "dist",
     "metro.cjs",
-    "skills"
+    "skills",
+    "bin"
   ],
   "type": "module",
   "sideEffects": false,
