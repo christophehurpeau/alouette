@@ -15,6 +15,7 @@ const InfoRegularIcon = require('alouette-icons/phosphor-icons/InfoRegularIcon')
 const QuestionRegularIcon = require('alouette-icons/phosphor-icons/QuestionRegularIcon');
 const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegularIcon');
 const CaretDownRegularIcon = require('alouette-icons/phosphor-icons/CaretDownRegularIcon');
+const reactNativeSvg = require('react-native-svg');
 const CaretRightRegularIcon = require('alouette-icons/phosphor-icons/CaretRightRegularIcon');
 const WebBrowser = require('expo-web-browser');
 
@@ -1393,13 +1394,17 @@ const PressableBox = react.forwardRef(
   }
 );
 
+function useColorToken(className) {
+  const token = className.split(/\s+/).find((part) => part.startsWith("text-"))?.slice("text-".length);
+  return useThemeToken(`--color-${token ?? "sharp"}`);
+}
+
 function Icon({
   icon,
   size = 20,
   className = "text-sharp"
 }) {
-  const token = className.split(/\s+/).find((part) => part.startsWith("text-"))?.slice("text-".length);
-  const color = useThemeToken(`--color-${token ?? "sharp"}`);
+  const color = useColorToken(className);
   return react.cloneElement(icon, {
     color,
     width: size,
@@ -2273,6 +2278,130 @@ function ConnectionState({
   ) });
 }
 
+const track = tailwindVariants.tv({
+  base: "absolute inset-x-0 top-0 z-10 overflow-hidden transition-opacity duration-300",
+  variants: {
+    size: {
+      xs: "h-0.5",
+      sm: "h-1",
+      md: "h-1.5",
+      lg: "h-2"
+    },
+    hidden: {
+      true: "opacity-0",
+      false: "opacity-100"
+    }
+  },
+  defaultVariants: { size: "md", hidden: false }
+});
+function LinearProgress({
+  progress,
+  hidden = false,
+  accent = "brand",
+  size = "md"
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(View, { pointerEvents: "none", className: track({ size, hidden }), children: /* @__PURE__ */ jsxRuntime.jsx(
+    View,
+    {
+      className: "h-full bg-accent transition-[width] duration-300 ease-out",
+      style: { width: `${progress}%` }
+    }
+  ) }) });
+}
+
+function RingCircle({
+  center,
+  radius,
+  strokeWidth,
+  strokeDasharray,
+  strokeDashoffset,
+  color,
+  width,
+  height
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(reactNativeSvg.Svg, { color, width, height, children: /* @__PURE__ */ jsxRuntime.jsx(
+    reactNativeSvg.Circle,
+    {
+      cx: center,
+      cy: center,
+      r: radius,
+      stroke: "currentColor",
+      strokeWidth,
+      strokeDasharray,
+      strokeDashoffset,
+      strokeLinecap: strokeDasharray == null ? void 0 : "round",
+      transform: strokeDasharray == null ? void 0 : `rotate(-90 ${center} ${center})`,
+      fill: "none"
+    }
+  ) });
+}
+
+const diameterBySize = {
+  xs: 16,
+  sm: 32,
+  md: 64,
+  lg: 128
+};
+const strokeWidthBySize = {
+  xs: 2,
+  sm: 4,
+  md: 8,
+  lg: 16
+};
+const ring = tailwindVariants.tv({
+  base: "relative transition-opacity duration-300",
+  variants: {
+    hidden: {
+      true: "opacity-0",
+      false: "opacity-100"
+    }
+  },
+  defaultVariants: { hidden: false }
+});
+function CircularProgress({
+  progress,
+  hidden = false,
+  accent = "brand",
+  size = "md"
+}) {
+  const diameter = diameterBySize[size];
+  const strokeWidth = strokeWidthBySize[size];
+  const radius = (diameter - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const clampedProgress = Math.min(Math.max(progress, 0), 100);
+  const dashOffset = circumference * (1 - clampedProgress / 100);
+  const center = diameter / 2;
+  const trackRing = /* @__PURE__ */ jsxRuntime.jsx(RingCircle, { center, radius, strokeWidth });
+  const fillRing = /* @__PURE__ */ jsxRuntime.jsx(
+    RingCircle,
+    {
+      center,
+      radius,
+      strokeWidth,
+      strokeDasharray: circumference,
+      strokeDashoffset: dashOffset
+    }
+  );
+  return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsxs(
+    View,
+    {
+      className: ring({ hidden }),
+      style: { width: diameter, height: diameter },
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx(View, { className: "absolute inset-0", children: /* @__PURE__ */ jsxRuntime.jsx(
+          Icon,
+          {
+            icon: trackRing,
+            size: diameter,
+            className: "text-highlight-accent"
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntime.jsx(View, { className: "absolute inset-0", children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: fillRing, size: diameter, className: "text-accent" }) })
+      ]
+    }
+  ) });
+}
+
 const messageFrameVariants = tailwindVariants.tv(
   {
     base: "flex-row items-center bg-highlight-accent overflow-hidden",
@@ -2562,6 +2691,7 @@ exports.Box = Box;
 exports.BreakpointNameEnum = BreakpointNameEnum;
 exports.Breakpoints = Breakpoints;
 exports.Button = Button;
+exports.CircularProgress = CircularProgress;
 exports.ConfirmationMessage = ConfirmationMessage;
 exports.ConnectionState = ConnectionState;
 exports.ExternalLink = ExternalLink;
@@ -2577,6 +2707,7 @@ exports.InfoMessage = InfoMessage;
 exports.InputText = InputText;
 exports.InteractiveBox = InteractiveBox;
 exports.InternalLinkButton = InternalLinkButton;
+exports.LinearProgress = LinearProgress;
 exports.Message = Message;
 exports.Modal = Modal;
 exports.Paragraph = Paragraph;

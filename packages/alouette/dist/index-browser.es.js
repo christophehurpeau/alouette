@@ -2285,6 +2285,131 @@ function ConnectionState({
   ) });
 }
 
+const track = tv({
+  base: "absolute inset-x-0 top-0 z-10 overflow-hidden transition-opacity duration-300",
+  variants: {
+    size: {
+      xs: "h-0.5",
+      sm: "h-1",
+      md: "h-1.5",
+      lg: "h-2"
+    },
+    hidden: {
+      true: "opacity-0",
+      false: "opacity-100"
+    }
+  },
+  defaultVariants: { size: "md", hidden: false }
+});
+function LinearProgress({
+  progress,
+  hidden = false,
+  accent = "brand",
+  size = "md"
+}) {
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(View, { pointerEvents: "none", className: track({ size, hidden }), children: /* @__PURE__ */ jsx(
+    View,
+    {
+      className: "h-full bg-accent transition-[width] duration-300 ease-out",
+      style: { width: `${progress}%` }
+    }
+  ) }) });
+}
+
+function RingCircle({
+  center,
+  radius,
+  strokeWidth,
+  strokeDasharray,
+  strokeDashoffset,
+  className,
+  width,
+  height
+}) {
+  return /* @__PURE__ */ jsx("svg", { className, width, height, children: /* @__PURE__ */ jsx(
+    "circle",
+    {
+      cx: center,
+      cy: center,
+      r: radius,
+      stroke: "currentColor",
+      strokeWidth,
+      strokeDasharray,
+      strokeDashoffset,
+      strokeLinecap: strokeDasharray == null ? void 0 : "round",
+      transform: strokeDasharray == null ? void 0 : `rotate(-90 ${center} ${center})`,
+      className: strokeDasharray == null ? void 0 : "transition-[stroke-dashoffset] duration-600 ease-out",
+      fill: "none"
+    }
+  ) });
+}
+
+const diameterBySize = {
+  xs: 16,
+  sm: 32,
+  md: 64,
+  lg: 128
+};
+const strokeWidthBySize = {
+  xs: 2,
+  sm: 4,
+  md: 8,
+  lg: 16
+};
+const ring = tv({
+  base: "relative transition-opacity duration-300",
+  variants: {
+    hidden: {
+      true: "opacity-0",
+      false: "opacity-100"
+    }
+  },
+  defaultVariants: { hidden: false }
+});
+function CircularProgress({
+  progress,
+  hidden = false,
+  accent = "brand",
+  size = "md"
+}) {
+  const diameter = diameterBySize[size];
+  const strokeWidth = strokeWidthBySize[size];
+  const radius = (diameter - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const clampedProgress = Math.min(Math.max(progress, 0), 100);
+  const dashOffset = circumference * (1 - clampedProgress / 100);
+  const center = diameter / 2;
+  const trackRing = /* @__PURE__ */ jsx(RingCircle, { center, radius, strokeWidth });
+  const fillRing = /* @__PURE__ */ jsx(
+    RingCircle,
+    {
+      center,
+      radius,
+      strokeWidth,
+      strokeDasharray: circumference,
+      strokeDashoffset: dashOffset
+    }
+  );
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(
+    View,
+    {
+      className: ring({ hidden }),
+      style: { width: diameter, height: diameter },
+      children: [
+        /* @__PURE__ */ jsx(View, { className: "absolute inset-0", children: /* @__PURE__ */ jsx(
+          Icon,
+          {
+            icon: trackRing,
+            size: diameter,
+            className: "text-highlight-accent"
+          }
+        ) }),
+        /* @__PURE__ */ jsx(View, { className: "absolute inset-0", children: /* @__PURE__ */ jsx(Icon, { icon: fillRing, size: diameter, className: "text-accent" }) })
+      ]
+    }
+  ) });
+}
+
 const messageFrameVariants = tv(
   {
     base: "flex-row items-center bg-highlight-accent overflow-hidden",
@@ -2531,5 +2656,5 @@ function ExternalLink({
   );
 }
 
-export { AccentScope, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, ConfirmationMessage, ConnectionState, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useThemeToken };
+export { AccentScope, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useThemeToken };
 //# sourceMappingURL=index-browser.es.js.map

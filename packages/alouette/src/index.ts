@@ -94,6 +94,18 @@ export type {
   ConnectionStateStatus,
 } from "./ui/feedback/ConnectionState";
 export { ConnectionState } from "./ui/feedback/ConnectionState";
+export type {
+  IndeterminateLinearProgressProps,
+  LinearProgressProps,
+  LinearProgressSize,
+} from "./ui/feedback/LinearProgress";
+export { LinearProgress } from "./ui/feedback/LinearProgress";
+export type {
+  CircularProgressProps,
+  CircularProgressSize,
+  IndeterminateCircularProgressProps,
+} from "./ui/feedback/CircularProgress";
+export { CircularProgress } from "./ui/feedback/CircularProgress";
 export type { MessageProps } from "./ui/feedback/Message";
 export {
   ConfirmationMessage,
