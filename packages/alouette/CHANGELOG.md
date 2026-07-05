@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [20.4.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.3.0...alouette@20.4.0) (2026-07-05)
+
+### Features
+
+* add alouette-install-skills command for symlinking skills
+* add CircularProgress and LinearProgress
+* update animation durations and transition utilities
+
+### Bug Fixes
+
+* prevent process-shim style relocation from silently dropping RNW rules
+
 ## [20.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.2.0...alouette@20.3.0) (2026-07-04)
 
 ### Features
