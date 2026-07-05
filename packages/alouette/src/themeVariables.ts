@@ -24,7 +24,7 @@ export const themeVariables: Record<
     "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
     "--color-interactive-accent-outlined-disabled": "#B8B8B8",
     "--color-screen": "#EBEBEB",
-    "--color-surface": "#F5F5F5",
+    "--color-surface": "#FAFAFA",
     "--color-highlight": "#FFFFFF",
     "--color-enabled": "#C7C7C7",
     "--color-highlight-accent": "#E0E0E0",
@@ -35,8 +35,8 @@ export const themeVariables: Record<
     "--color-border-muted": "#8F8F8F",
     "--color-border-sharp": "#616161",
     "--color-interactive-contained-pressable": "#FFFFFF",
-    "--color-interactive-contained-hover": "#F5F5F5",
-    "--color-interactive-contained-focus": "#F5F5F5",
+    "--color-interactive-contained-hover": "#FAFAFA",
+    "--color-interactive-contained-focus": "#FAFAFA",
     "--color-interactive-contained-active": "#EBEBEB",
     "--color-interactive-outlined-pressable": "#616161",
     "--color-interactive-outlined-hover": "#8F8F8F",
@@ -53,9 +53,9 @@ export const themeVariables: Record<
     "--color-on-accent-muted": "#616161",
     "--color-selection": "#47474740",
     "--color-interactive-accent-contained-bg": "#EBEBEB",
-    "--color-interactive-accent-contained-bg-hover": "#F5F5F5",
-    "--color-interactive-accent-contained-bg-focus": "#F5F5F5",
-    "--color-interactive-accent-contained-bg-active": "#F5F5F5"
+    "--color-interactive-accent-contained-bg-hover": "#FAFAFA",
+    "--color-interactive-accent-contained-bg-focus": "#FAFAFA",
+    "--color-interactive-accent-contained-bg-active": "#FAFAFA"
   },
   "dark": {
     "--color-translucent": "#1f1e1e55",

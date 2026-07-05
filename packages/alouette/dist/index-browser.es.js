@@ -36,7 +36,7 @@ const themeVariables = {
     "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
     "--color-interactive-accent-outlined-disabled": "#B8B8B8",
     "--color-screen": "#EBEBEB",
-    "--color-surface": "#F5F5F5",
+    "--color-surface": "#FAFAFA",
     "--color-highlight": "#FFFFFF",
     "--color-enabled": "#C7C7C7",
     "--color-highlight-accent": "#E0E0E0",
@@ -47,8 +47,8 @@ const themeVariables = {
     "--color-border-muted": "#8F8F8F",
     "--color-border-sharp": "#616161",
     "--color-interactive-contained-pressable": "#FFFFFF",
-    "--color-interactive-contained-hover": "#F5F5F5",
-    "--color-interactive-contained-focus": "#F5F5F5",
+    "--color-interactive-contained-hover": "#FAFAFA",
+    "--color-interactive-contained-focus": "#FAFAFA",
     "--color-interactive-contained-active": "#EBEBEB",
     "--color-interactive-outlined-pressable": "#616161",
     "--color-interactive-outlined-hover": "#8F8F8F",
@@ -65,9 +65,9 @@ const themeVariables = {
     "--color-on-accent-muted": "#616161",
     "--color-selection": "#47474740",
     "--color-interactive-accent-contained-bg": "#EBEBEB",
-    "--color-interactive-accent-contained-bg-hover": "#F5F5F5",
-    "--color-interactive-accent-contained-bg-focus": "#F5F5F5",
-    "--color-interactive-accent-contained-bg-active": "#F5F5F5"
+    "--color-interactive-accent-contained-bg-hover": "#FAFAFA",
+    "--color-interactive-accent-contained-bg-focus": "#FAFAFA",
+    "--color-interactive-accent-contained-bg-active": "#FAFAFA"
   },
   "dark": {
     "--color-translucent": "#1f1e1e55",
@@ -785,7 +785,7 @@ const interactiveBoxVariants = tv({
   base: [
     boxBaseClasses,
     "cursor-pointer",
-    "transition-[transform,background-color,border-color] duration-200 ease-in",
+    "transition-[transform,background-color,border-color] duration-fast ease-in",
     "disabled:cursor-not-allowed disabled:opacity-70 aria-disabled:cursor-not-allowed aria-disabled:opacity-70",
     "active:scale-[0.975]"
   ].join(" "),
@@ -1251,7 +1251,10 @@ function PresenceOne({
 
 const animationDurationsMs = {
   "slide": 600,
-  "collapse": 800
+  "collapse": 800,
+  "progress": 300,
+  "fade": 300,
+  "fast": 200
 };
 
 const pressableBoxVariants = tv(
@@ -1832,7 +1835,7 @@ const inputVariants = tv(
     base: [
       "bg-highlight text-base text-sharp",
       "border",
-      "transition-[border-color,background-color,outline-color] duration-200 ease-in",
+      "transition-[border-color,background-color,outline-color] duration-fast ease-in",
       "outline-interactive-outlined-pressable",
       // to have proper outline color transition
       process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "border-interactive-outlined-pressable",
@@ -1929,7 +1932,7 @@ const trackVariants = tv(
       "height-[36px] w-[58px]",
       // Must be identical to TRACK_HEIGHT and TRACK_WIDTH constants above
       "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
-      "transition-background-color duration-200 ease-in",
+      "transition-background-color duration-fast ease-in",
       "outline-interactive-outlined-outline-focus",
       "aria-disabled:bg-disabled-interactive-muted"
     ].join(" "),
@@ -1948,7 +1951,7 @@ const thumbVariants = tv(
   {
     base: [
       "absolute rounded-full shadow-s aria-disabled:shadow-none",
-      "transition-transform duration-200 ease-in",
+      "transition-transform duration-fast ease-in",
       "bg-surface aria-disabled:bg-disabled-interactive"
     ].join(" ")
   },
@@ -2075,7 +2078,7 @@ const wrapperVariants = tv(
   {
     base: [
       "relative flex-row flex-1 rounded-md border min-h-11",
-      "transition-[border-color,outline-color] duration-200 ease-in",
+      "transition-[border-color,outline-color] duration-fast ease-in",
       "outline-interactive-outlined-pressable"
       // for a proper outline color transition
     ].join(" "),
@@ -2279,14 +2282,14 @@ function ConnectionState({
   return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(
     View,
     {
-      className: `absolute inset-x-0 top-0 z-9 h-0.5 bg-interactive-contained-pressable shadow-m transition-transform duration-700 ease-in-out ${hidden ? "-translate-y-6" : "translate-y-0"}`,
-      children: state ? /* @__PURE__ */ jsx(Text, { className: "absolute left-1/2 top-0.5 h-5.5 w-50 -translate-x-1/2 rounded-b-sm bg-interactive-contained-pressable text-center leading-5.5 text-on-accent transition-colors duration-200", children }) : null
+      className: `absolute inset-x-0 top-0 z-9 h-0.5 bg-interactive-contained-pressable shadow-m transition-transform duration-slide ease-in-out ${hidden ? "-translate-y-6" : "translate-y-0"}`,
+      children: state ? /* @__PURE__ */ jsx(Text, { className: "absolute left-1/2 top-0.5 h-5.5 w-50 -translate-x-1/2 rounded-b-sm bg-interactive-contained-pressable text-center leading-5.5 text-on-accent transition-colors duration-fast", children }) : null
     }
   ) });
 }
 
 const track = tv({
-  base: "absolute inset-x-0 top-0 z-10 overflow-hidden transition-opacity duration-300",
+  base: "absolute inset-x-0 top-0 z-10 overflow-hidden transition-opacity duration-fade",
   variants: {
     size: {
       xs: "h-0.5",
@@ -2310,7 +2313,7 @@ function LinearProgress({
   return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(View, { pointerEvents: "none", className: track({ size, hidden }), children: /* @__PURE__ */ jsx(
     View,
     {
-      className: "h-full bg-accent transition-[width] duration-300 ease-out",
+      className: "h-full bg-accent transition-[width] duration-progress ease-out",
       style: { width: `${progress}%` }
     }
   ) }) });
@@ -2338,7 +2341,7 @@ function RingCircle({
       strokeDashoffset,
       strokeLinecap: strokeDasharray == null ? void 0 : "round",
       transform: strokeDasharray == null ? void 0 : `rotate(-90 ${center} ${center})`,
-      className: strokeDasharray == null ? void 0 : "transition-[stroke-dashoffset] duration-600 ease-out",
+      className: strokeDasharray == null ? void 0 : "transition-[stroke-dashoffset] duration-progress ease-out",
       fill: "none"
     }
   ) });
@@ -2357,7 +2360,7 @@ const strokeWidthBySize = {
   lg: 16
 };
 const ring = tv({
-  base: "relative transition-opacity duration-300",
+  base: "relative transition-opacity duration-fade",
   variants: {
     hidden: {
       true: "opacity-0",

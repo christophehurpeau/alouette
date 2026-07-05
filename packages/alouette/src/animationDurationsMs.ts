@@ -7,5 +7,8 @@
  */
 export const animationDurationsMs = {
   "slide": 600,
-  "collapse": 800
+  "collapse": 800,
+  "progress": 300,
+  "fade": 300,
+  "fast": 200
 } as const;

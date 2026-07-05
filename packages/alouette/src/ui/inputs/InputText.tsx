@@ -11,7 +11,7 @@ const inputVariants = tv(
     base: [
       "bg-highlight text-base text-sharp",
       "border",
-      "transition-[border-color,background-color,outline-color] duration-200 ease-in",
+      "transition-[border-color,background-color,outline-color] duration-fast ease-in",
       "outline-interactive-outlined-pressable", // to have proper outline color transition
       process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
         ? ""

@@ -209,6 +209,9 @@ const [, lightVars] = allThemes.find(([name]) => name === "light")!;
 const animationDurationsMs = {
   slide: 600,
   collapse: 800,
+  progress: 600,
+  fade: 300,
+  fast: 200,
 } as const;
 
 // NB: no @custom-variant for dark/themes. Theming is applied via ScopedTheme
@@ -416,6 +419,15 @@ ${(["light", "dark"] as const)
   }
 }
 
+
+/* named transition durations — one per animationDurationsMs entry so transition
+   classNames reference the same source of truth as the JS export (native drives
+   the same motion via Reanimated withTiming(animationDurationsMs.*)). */
+${Object.entries(animationDurationsMs)
+  .map(
+    ([name, ms]) => `@utility duration-${name} { transition-duration: ${ms}ms; }`,
+  )
+  .join("\n")}
 
 /* font-family + weight utilities — family×weight combinations; use with standard text-* size utilities.
    font-synthesis: none — on Expo web the weight-specific family ('SoraBold') is a single registered

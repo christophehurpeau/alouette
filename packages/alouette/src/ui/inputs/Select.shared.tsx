@@ -54,7 +54,7 @@ export function useControllableValue(
 export const selectTriggerBaseClassName = [
   "flex-row items-center justify-between gap-xs",
   "rounded-md border px-m py-xs min-h-[44px]",
-  "transition-[border-color,outline-color,background-color] duration-200 ease-in",
+  "transition-[border-color,outline-color,background-color] duration-fast ease-in",
 ].join(" ");
 
 const triggerLabelVariants = tv({

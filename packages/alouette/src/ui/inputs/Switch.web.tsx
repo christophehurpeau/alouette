@@ -18,7 +18,7 @@ const trackVariants = tv(
     base: [
       "height-[36px] w-[58px]", // Must be identical to TRACK_HEIGHT and TRACK_WIDTH constants above
       "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
-      "transition-background-color duration-200 ease-in",
+      "transition-background-color duration-fast ease-in",
       "outline-interactive-outlined-outline-focus",
       "aria-disabled:bg-disabled-interactive-muted",
     ].join(" "),
@@ -40,7 +40,7 @@ const thumbVariants = tv(
   {
     base: [
       "absolute rounded-full shadow-s aria-disabled:shadow-none",
-      "transition-transform duration-200 ease-in",
+      "transition-transform duration-fast ease-in",
       "bg-surface aria-disabled:bg-disabled-interactive",
     ].join(" "),
   },

@@ -57,10 +57,10 @@ export function ConnectionState({
   return (
     <AccentScope accent={accent}>
       <View
-        className={`absolute inset-x-0 top-0 z-9 h-0.5 bg-interactive-contained-pressable shadow-m transition-transform duration-700 ease-in-out ${hidden ? "-translate-y-6" : "translate-y-0"}`}
+        className={`absolute inset-x-0 top-0 z-9 h-0.5 bg-interactive-contained-pressable shadow-m transition-transform duration-slide ease-in-out ${hidden ? "-translate-y-6" : "translate-y-0"}`}
       >
         {state ? (
-          <Text className="absolute left-1/2 top-0.5 h-5.5 w-50 -translate-x-1/2 rounded-b-sm bg-interactive-contained-pressable text-center leading-5.5 text-on-accent transition-colors duration-200">
+          <Text className="absolute left-1/2 top-0.5 h-5.5 w-50 -translate-x-1/2 rounded-b-sm bg-interactive-contained-pressable text-center leading-5.5 text-on-accent transition-colors duration-fast">
             {children}
           </Text>
         ) : null}

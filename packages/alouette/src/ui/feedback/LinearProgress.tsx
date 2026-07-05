@@ -8,7 +8,7 @@ import { useSimulatedProgress } from "./useSimulatedProgress";
 export type LinearProgressSize = "lg" | "md" | "sm" | "xs";
 
 const track = tv({
-  base: "absolute inset-x-0 top-0 z-10 overflow-hidden transition-opacity duration-300",
+  base: "absolute inset-x-0 top-0 z-10 overflow-hidden transition-opacity duration-fade",
   variants: {
     size: {
       xs: "h-0.5",
@@ -43,7 +43,7 @@ export function LinearProgress({
     <AccentScope accent={accent}>
       <View pointerEvents="none" className={track({ size, hidden })}>
         <View
-          className="h-full bg-accent transition-[width] duration-300 ease-out"
+          className="h-full bg-accent transition-[width] duration-progress ease-out"
           style={{ width: `${progress}%` }}
         />
       </View>

@@ -22,7 +22,7 @@ const wrapperVariants = tv(
   {
     base: [
       "relative flex-row flex-1 rounded-md border min-h-11",
-      "transition-[border-color,outline-color] duration-200 ease-in",
+      "transition-[border-color,outline-color] duration-fast ease-in",
       "outline-interactive-outlined-pressable", // for a proper outline color transition
     ].join(" "),
     variants: {

@@ -15,6 +15,7 @@ const InfoRegularIcon = require('alouette-icons/phosphor-icons/InfoRegularIcon')
 const QuestionRegularIcon = require('alouette-icons/phosphor-icons/QuestionRegularIcon');
 const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegularIcon');
 const CaretDownRegularIcon = require('alouette-icons/phosphor-icons/CaretDownRegularIcon');
+const Animated = require('react-native-reanimated');
 const reactNativeSvg = require('react-native-svg');
 const CaretRightRegularIcon = require('alouette-icons/phosphor-icons/CaretRightRegularIcon');
 const WebBrowser = require('expo-web-browser');
@@ -56,7 +57,7 @@ const themeVariables = {
     "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
     "--color-interactive-accent-outlined-disabled": "#B8B8B8",
     "--color-screen": "#EBEBEB",
-    "--color-surface": "#F5F5F5",
+    "--color-surface": "#FAFAFA",
     "--color-highlight": "#FFFFFF",
     "--color-enabled": "#C7C7C7",
     "--color-highlight-accent": "#E0E0E0",
@@ -67,8 +68,8 @@ const themeVariables = {
     "--color-border-muted": "#8F8F8F",
     "--color-border-sharp": "#616161",
     "--color-interactive-contained-pressable": "#FFFFFF",
-    "--color-interactive-contained-hover": "#F5F5F5",
-    "--color-interactive-contained-focus": "#F5F5F5",
+    "--color-interactive-contained-hover": "#FAFAFA",
+    "--color-interactive-contained-focus": "#FAFAFA",
     "--color-interactive-contained-active": "#EBEBEB",
     "--color-interactive-outlined-pressable": "#616161",
     "--color-interactive-outlined-hover": "#8F8F8F",
@@ -85,9 +86,9 @@ const themeVariables = {
     "--color-on-accent-muted": "#616161",
     "--color-selection": "#47474740",
     "--color-interactive-accent-contained-bg": "#EBEBEB",
-    "--color-interactive-accent-contained-bg-hover": "#F5F5F5",
-    "--color-interactive-accent-contained-bg-focus": "#F5F5F5",
-    "--color-interactive-accent-contained-bg-active": "#F5F5F5"
+    "--color-interactive-accent-contained-bg-hover": "#FAFAFA",
+    "--color-interactive-accent-contained-bg-focus": "#FAFAFA",
+    "--color-interactive-accent-contained-bg-active": "#FAFAFA"
   },
   "dark": {
     "--color-translucent": "#1f1e1e55",
@@ -794,7 +795,7 @@ const interactiveBoxVariants = tailwindVariants.tv({
   base: [
     boxBaseClasses,
     "cursor-pointer",
-    "transition-[transform,background-color,border-color] duration-200 ease-in",
+    "transition-[transform,background-color,border-color] duration-fast ease-in",
     "disabled:cursor-not-allowed disabled:opacity-70 aria-disabled:cursor-not-allowed aria-disabled:opacity-70",
     "active:scale-[0.975]"
   ].join(" "),
@@ -1260,7 +1261,10 @@ function PresenceOne({
 
 const animationDurationsMs = {
   "slide": 600,
-  "collapse": 800
+  "collapse": 800,
+  "progress": 300,
+  "fade": 300,
+  "fast": 200
 };
 
 const pressableBoxVariants = tailwindVariants.tv(
@@ -1847,7 +1851,7 @@ const inputVariants = tailwindVariants.tv(
     base: [
       "bg-highlight text-base text-sharp",
       "border",
-      "transition-[border-color,background-color,outline-color] duration-200 ease-in",
+      "transition-[border-color,background-color,outline-color] duration-fast ease-in",
       "outline-interactive-outlined-pressable",
       // to have proper outline color transition
       process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "border-interactive-outlined-pressable",
@@ -1998,7 +2002,7 @@ function useControllableValue(controlled, defaultValue, onValueChange) {
 const selectTriggerBaseClassName = [
   "flex-row items-center justify-between gap-xs",
   "rounded-md border px-m py-xs min-h-[44px]",
-  "transition-[border-color,outline-color,background-color] duration-200 ease-in"
+  "transition-[border-color,outline-color,background-color] duration-fast ease-in"
 ].join(" ");
 const triggerLabelVariants = tailwindVariants.tv({
   base: "flex-1 text-base",
@@ -2272,14 +2276,14 @@ function ConnectionState({
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(
     View,
     {
-      className: `absolute inset-x-0 top-0 z-9 h-0.5 bg-interactive-contained-pressable shadow-m transition-transform duration-700 ease-in-out ${hidden ? "-translate-y-6" : "translate-y-0"}`,
-      children: state ? /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "absolute left-1/2 top-0.5 h-5.5 w-50 -translate-x-1/2 rounded-b-sm bg-interactive-contained-pressable text-center leading-5.5 text-on-accent transition-colors duration-200", children }) : null
+      className: `absolute inset-x-0 top-0 z-9 h-0.5 bg-interactive-contained-pressable shadow-m transition-transform duration-slide ease-in-out ${hidden ? "-translate-y-6" : "translate-y-0"}`,
+      children: state ? /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "absolute left-1/2 top-0.5 h-5.5 w-50 -translate-x-1/2 rounded-b-sm bg-interactive-contained-pressable text-center leading-5.5 text-on-accent transition-colors duration-fast", children }) : null
     }
   ) });
 }
 
 const track = tailwindVariants.tv({
-  base: "absolute inset-x-0 top-0 z-10 overflow-hidden transition-opacity duration-300",
+  base: "absolute inset-x-0 top-0 z-10 overflow-hidden transition-opacity duration-fade",
   variants: {
     size: {
       xs: "h-0.5",
@@ -2303,12 +2307,14 @@ function LinearProgress({
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(View, { pointerEvents: "none", className: track({ size, hidden }), children: /* @__PURE__ */ jsxRuntime.jsx(
     View,
     {
-      className: "h-full bg-accent transition-[width] duration-300 ease-out",
+      className: "h-full bg-accent transition-[width] duration-progress ease-out",
       style: { width: `${progress}%` }
     }
   ) }) });
 }
 
+const AnimatedCircle = Animated.createAnimatedComponent(reactNativeSvg.Circle);
+const easeOut = Animated.Easing.bezier(0, 0, 0.58, 1);
 function RingCircle({
   center,
   radius,
@@ -2319,7 +2325,17 @@ function RingCircle({
   width,
   height
 }) {
-  return /* @__PURE__ */ jsxRuntime.jsx(reactNativeSvg.Svg, { color, width, height, children: /* @__PURE__ */ jsxRuntime.jsx(
+  const animatedOffset = Animated.useSharedValue(strokeDashoffset ?? 0);
+  react.useEffect(() => {
+    animatedOffset.value = Animated.withTiming(strokeDashoffset ?? 0, {
+      duration: animationDurationsMs.progress,
+      easing: easeOut
+    });
+  }, [animatedOffset, strokeDashoffset]);
+  const animatedProps = Animated.useAnimatedProps(() => ({
+    strokeDashoffset: animatedOffset.value
+  }));
+  return /* @__PURE__ */ jsxRuntime.jsx(reactNativeSvg.Svg, { color, width, height, children: strokeDasharray == null ? /* @__PURE__ */ jsxRuntime.jsx(
     reactNativeSvg.Circle,
     {
       cx: center,
@@ -2327,10 +2343,20 @@ function RingCircle({
       r: radius,
       stroke: "currentColor",
       strokeWidth,
+      fill: "none"
+    }
+  ) : /* @__PURE__ */ jsxRuntime.jsx(
+    AnimatedCircle,
+    {
+      animatedProps,
+      cx: center,
+      cy: center,
+      r: radius,
+      stroke: "currentColor",
+      strokeWidth,
       strokeDasharray,
-      strokeDashoffset,
-      strokeLinecap: strokeDasharray == null ? void 0 : "round",
-      transform: strokeDasharray == null ? void 0 : `rotate(-90 ${center} ${center})`,
+      strokeLinecap: "round",
+      transform: `rotate(-90 ${center} ${center})`,
       fill: "none"
     }
   ) });
@@ -2349,7 +2375,7 @@ const strokeWidthBySize = {
   lg: 16
 };
 const ring = tailwindVariants.tv({
-  base: "relative transition-opacity duration-300",
+  base: "relative transition-opacity duration-fade",
   variants: {
     hidden: {
       true: "opacity-0",

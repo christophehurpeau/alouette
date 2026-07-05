@@ -24,7 +24,7 @@ const strokeWidthBySize: Record<CircularProgressSize, number> = {
 };
 
 const ring = tv({
-  base: "relative transition-opacity duration-300",
+  base: "relative transition-opacity duration-fade",
   variants: {
     hidden: {
       true: "opacity-0",

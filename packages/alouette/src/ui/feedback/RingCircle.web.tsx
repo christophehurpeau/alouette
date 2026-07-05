@@ -30,7 +30,7 @@ export function RingCircle({
         className={
           strokeDasharray == null
             ? undefined
-            : "transition-[stroke-dashoffset] duration-600 ease-out"
+            : "transition-[stroke-dashoffset] duration-progress ease-out"
         }
         fill="none"
       />
