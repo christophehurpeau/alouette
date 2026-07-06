@@ -425,7 +425,8 @@ ${(["light", "dark"] as const)
    the same motion via Reanimated withTiming(animationDurationsMs.*)). */
 ${Object.entries(animationDurationsMs)
   .map(
-    ([name, ms]) => `@utility duration-${name} { transition-duration: ${ms}ms; }`,
+    ([name, ms]) =>
+      `@utility duration-${name} { transition-duration: ${ms}ms; }`,
   )
   .join("\n")}
 
