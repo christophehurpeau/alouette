@@ -38,43 +38,54 @@ export function RingCircle({
   width,
   height,
 }: RingCircleProps): ReactNode {
+  // Same viewBox as Phosphor icons (e.g. CheckCircleRegularIcon, viewBox
+  // "0 0 256 256"), whose glyph is a 208-diameter circle inset within it.
+  // Rendering into the same viewBox at the same glyph diameter gives the ring
+  // the same padding, so it keeps a consistent visual weight when swapped for
+  // a Phosphor icon in the same slot (Button's overlay spinner → success check).
+  const scale = 208 / (center * 2);
+  const scaledRadius = radius * scale;
+  const scaledStrokeWidth = strokeWidth * scale;
+  const scaledDashoffset =
+    strokeDashoffset == null ? undefined : strokeDashoffset * scale;
+
   // strokeDashoffset is an SVG prop, not a view style, so NativeWind
   // transitions can't animate it — drive it with Reanimated instead.
-  const animatedOffset = useSharedValue(strokeDashoffset ?? 0);
+  const animatedOffset = useSharedValue(scaledDashoffset ?? 0);
 
   useEffect(() => {
-    animatedOffset.value = withTiming(strokeDashoffset ?? 0, {
+    animatedOffset.value = withTiming(scaledDashoffset ?? 0, {
       duration: animationDurationsMs.progress,
       easing: easeOut,
     });
-  }, [animatedOffset, strokeDashoffset]);
+  }, [animatedOffset, scaledDashoffset]);
 
   const animatedProps = useAnimatedProps(() => ({
     strokeDashoffset: animatedOffset.value,
   }));
 
   return (
-    <Svg color={color} width={width} height={height}>
+    <Svg color={color} width={width} height={height} viewBox="0 0 256 256">
       {strokeDasharray == null ? (
         <Circle
-          cx={center}
-          cy={center}
-          r={radius}
+          cx={128}
+          cy={128}
+          r={scaledRadius}
           stroke="currentColor"
-          strokeWidth={strokeWidth}
+          strokeWidth={scaledStrokeWidth}
           fill="none"
         />
       ) : (
         <AnimatedCircle
           animatedProps={animatedProps}
-          cx={center}
-          cy={center}
-          r={radius}
+          cx={128}
+          cy={128}
+          r={scaledRadius}
           stroke="currentColor"
-          strokeWidth={strokeWidth}
-          strokeDasharray={strokeDasharray}
+          strokeWidth={scaledStrokeWidth}
+          strokeDasharray={strokeDasharray * scale}
           strokeLinecap="round"
-          transform={`rotate(-90 ${center} ${center})`}
+          transform="rotate(-90 128 128)"
           fill="none"
         />
       )}

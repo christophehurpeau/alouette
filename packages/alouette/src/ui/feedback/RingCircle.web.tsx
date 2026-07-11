@@ -11,22 +11,34 @@ export function RingCircle({
   width,
   height,
 }: RingCircleProps): ReactNode {
+  // Same viewBox as Phosphor icons (e.g. CheckCircleRegularIcon, viewBox
+  // "0 0 256 256"), whose glyph is a 208-diameter circle inset within it.
+  // Rendering into the same viewBox at the same glyph diameter gives the ring
+  // the same padding, so it keeps a consistent visual weight when swapped for
+  // a Phosphor icon in the same slot (Button's overlay spinner → success check).
+  const scale = 208 / (center * 2);
+
   return (
-    <svg className={className} width={width} height={height}>
+    <svg
+      className={className}
+      width={width}
+      height={height}
+      viewBox="0 0 256 256"
+    >
       <circle
-        cx={center}
-        cy={center}
-        r={radius}
+        cx={128}
+        cy={128}
+        r={radius * scale}
         stroke="currentColor"
-        strokeWidth={strokeWidth}
-        strokeDasharray={strokeDasharray}
-        strokeDashoffset={strokeDashoffset}
-        strokeLinecap={strokeDasharray == null ? undefined : "round"}
-        transform={
-          strokeDasharray == null
-            ? undefined
-            : `rotate(-90 ${center} ${center})`
+        strokeWidth={strokeWidth * scale}
+        strokeDasharray={
+          strokeDasharray == null ? undefined : strokeDasharray * scale
         }
+        strokeDashoffset={
+          strokeDashoffset == null ? undefined : strokeDashoffset * scale
+        }
+        strokeLinecap={strokeDasharray == null ? undefined : "round"}
+        transform={strokeDasharray == null ? undefined : "rotate(-90 128 128)"}
         className={
           strokeDasharray == null
             ? undefined

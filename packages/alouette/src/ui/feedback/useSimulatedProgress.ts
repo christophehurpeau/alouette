@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
+import { animationDurationsMs } from "../../animationDurationsMs";
 
 const startDelayMs = 100;
 const stepIntervalMs = 500;
 const completeDelayMs = 500;
 const resetDelayMs = 1000;
+
+/**
+ * Time from `loading` going false until the ring has finished completing to
+ * 100% and faded out — how long a consumer must keep the component mounted
+ * to see the finish animation instead of cutting it off.
+ */
+export const indeterminateExitDurationMs =
+  resetDelayMs + animationDurationsMs.fade;
 
 const random = (): number => Math.ceil(Math.random() * 100) / 100;
 

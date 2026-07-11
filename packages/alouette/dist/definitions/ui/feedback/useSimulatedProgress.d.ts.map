@@ -1,1 +1,1 @@
-{"version":3,"file":"useSimulatedProgress.d.ts","sourceRoot":"","sources":["../../../../src/ui/feedback/useSimulatedProgress.ts"],"names":[],"mappings":"AAuBA,wBAAgB,oBAAoB,CAAC,OAAO,EAAE,OAAO,GAAG;IACtD,QAAQ,EAAE,MAAM,CAAC;IACjB,MAAM,EAAE,OAAO,CAAC;CACjB,CAuCA"}
+{"version":3,"file":"useSimulatedProgress.d.ts","sourceRoot":"","sources":["../../../../src/ui/feedback/useSimulatedProgress.ts"],"names":[],"mappings":"AAQA;;;;GAIG;AACH,eAAO,MAAM,2BAA2B,QACE,CAAC;AAkB3C,wBAAgB,oBAAoB,CAAC,OAAO,EAAE,OAAO,GAAG;IACtD,QAAQ,EAAE,MAAM,CAAC;IACjB,MAAM,EAAE,OAAO,CAAC;CACjB,CAuCA"}

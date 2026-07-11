@@ -6,7 +6,7 @@
 export declare const animationDurationsMs: {
     readonly slide: 600;
     readonly collapse: 800;
-    readonly progress: 300;
+    readonly progress: 600;
     readonly fade: 300;
     readonly fast: 200;
 };

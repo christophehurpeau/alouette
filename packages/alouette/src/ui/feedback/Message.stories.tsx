@@ -5,6 +5,7 @@ import { VStack } from "../stacks/stacks";
 import { Story, accents } from "../story-components/Story";
 import {
   ConfirmationMessage,
+  ErrorMessage,
   InfoMessage,
   Message,
   WarningMessage,
@@ -95,6 +96,7 @@ export const Variants: ThisStory = {
         <InfoMessage>Info Message</InfoMessage>
         <ConfirmationMessage>Success Message</ConfirmationMessage>
         <WarningMessage>Warning Message</WarningMessage>
+        <ErrorMessage>Error Message</ErrorMessage>
       </Story.Section>
 
       <Story.Section withSurface title="Edge Cases">

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { type VariantProps } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { type PressableBoxProps } from "../data/PressableBox";
@@ -33,10 +33,19 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
         true: {};
         false: {};
     };
+    dimmed: {
+        true: {
+            text: string;
+            icon: string;
+        };
+        false: {};
+    };
 }, {
     frame: string;
     text: string;
     icon: string;
+    terminalIcon: string;
+    overlayIconContainer: string;
 }, undefined, {
     size: {
         sm: {
@@ -63,10 +72,19 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
         true: {};
         false: {};
     };
+    dimmed: {
+        true: {
+            text: string;
+            icon: string;
+        };
+        false: {};
+    };
 }, {
     frame: string;
     text: string;
     icon: string;
+    terminalIcon: string;
+    overlayIconContainer: string;
 }, import("tailwind-variants").TVReturnType<{
     size: {
         sm: {
@@ -93,18 +111,29 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
         true: {};
         false: {};
     };
+    dimmed: {
+        true: {
+            text: string;
+            icon: string;
+        };
+        false: {};
+    };
 }, {
     frame: string;
     text: string;
     icon: string;
+    terminalIcon: string;
+    overlayIconContainer: string;
 }, undefined, unknown, unknown, undefined>>;
 type ButtonSizeProps = Pick<VariantProps<typeof buttonVariants>, "size">;
+export type ButtonState = "failed" | "loading" | "success";
 export interface ButtonProps extends Omit<PressableBoxProps, "children">, ButtonSizeProps {
     icon?: SVGIconElement;
     accent?: Accent;
     text: ReactNode;
+    state?: ButtonState;
 }
-export declare function Button({ icon, text, disabled, accent, variant, size, className, ...pressableProps }: ButtonProps): ReactNode;
+export declare function Button({ icon, text, disabled, state, accent, variant, size, className, ...pressableProps }: ButtonProps): ReactNode;
 export interface ExternalLinkButtonProps extends ButtonProps {
     href: string;
 }

@@ -98,7 +98,49 @@ export const Variants: ThisStory = {
         />
       </Story.Section>
 
-      <Story.Section title="Edge Cases">
+      <Story.Section title="States">
+        <Story.SubSection title="Loading">
+          <StoryGrid.Row flexWrap>
+            {(["contained", "outlined", "ghost"] as const).map((variant) => (
+              <Button
+                key={variant}
+                state="loading"
+                variant={variant}
+                icon={<ArrowLeftRegularIcon />}
+                text={variant}
+              />
+            ))}
+          </StoryGrid.Row>
+        </Story.SubSection>
+
+        <Story.SubSection title="Failed">
+          <StoryGrid.Row flexWrap>
+            {(["contained", "outlined", "ghost"] as const).map((variant) => (
+              <Button
+                key={variant}
+                state="failed"
+                variant={variant}
+                icon={<ArrowLeftRegularIcon />}
+                text={variant}
+              />
+            ))}
+          </StoryGrid.Row>
+        </Story.SubSection>
+
+        <Story.SubSection title="Success">
+          <StoryGrid.Row flexWrap>
+            {(["contained", "outlined", "ghost"] as const).map((variant) => (
+              <Button
+                key={variant}
+                state="success"
+                variant={variant}
+                icon={<ArrowLeftRegularIcon />}
+                text={variant}
+              />
+            ))}
+          </StoryGrid.Row>
+        </Story.SubSection>
+
         <Story.SubSection title="No Icon">
           <Button text="Example" />
         </Story.SubSection>

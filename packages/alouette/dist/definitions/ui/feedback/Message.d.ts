@@ -44,5 +44,6 @@ type AccentMessageProps = Except<MessageProps, "accent" | "icon">;
 export declare function InfoMessage(props: AccentMessageProps): ReactNode;
 export declare function ConfirmationMessage(props: AccentMessageProps): ReactNode;
 export declare function WarningMessage(props: AccentMessageProps): ReactNode;
+export declare function ErrorMessage(props: AccentMessageProps): ReactNode;
 export {};
 //# sourceMappingURL=Message.d.ts.map

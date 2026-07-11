@@ -69,6 +69,7 @@ export type { PressableBoxProps } from "./ui/data/PressableBox";
 export { PressableBox } from "./ui/data/PressableBox";
 export type {
   ButtonProps,
+  ButtonState,
   ExternalLinkButtonProps,
   InternalLinkButtonProps,
 } from "./ui/actions/Button";
@@ -77,6 +78,8 @@ export {
   ExternalLinkButton,
   InternalLinkButton,
 } from "./ui/actions/Button";
+export type { ActionButtonProps } from "./ui/actions/ActionButton";
+export { ActionButton } from "./ui/actions/ActionButton";
 export type { IconButtonProps } from "./ui/actions/IconButton";
 export { IconButton } from "./ui/actions/IconButton";
 export type { InputTextMode, InputTextProps } from "./ui/inputs/InputText";

@@ -1,5 +1,6 @@
 import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
 import { InfoRegularIcon } from "alouette-icons/phosphor-icons/InfoRegularIcon";
+import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/WarningDuotoneIcon";
 import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
 import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
 import type { ReactNode } from "react";
@@ -100,4 +101,8 @@ export function ConfirmationMessage(props: AccentMessageProps): ReactNode {
 
 export function WarningMessage(props: AccentMessageProps): ReactNode {
   return <Message {...props} accent="warning" icon={<WarningRegularIcon />} />;
+}
+
+export function ErrorMessage(props: AccentMessageProps): ReactNode {
+  return <Message {...props} accent="danger" icon={<WarningDuotoneIcon />} />;
 }
