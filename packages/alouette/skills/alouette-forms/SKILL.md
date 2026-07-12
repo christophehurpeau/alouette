@@ -8,7 +8,7 @@ description: >
   fields, text areas, or toggles.
 type: core
 library: alouette
-library_version: "20.1.0"
+library_version: "20.4.0"
 requires:
   - alouette-theming
 sources:

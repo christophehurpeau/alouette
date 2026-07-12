@@ -6,14 +6,18 @@ description: >
   contained|outlined|ghost, size is sm|md, accent defaults to brand. Button
   label is the required text prop (not children); IconButton
   requires aria-label. Interactive hover/focus/active/disabled states are built
-  in. Load when adding buttons or custom pressable elements.
+  in. For async onPress use ActionButton (runs the promise, shows spinner +
+  inline error); Button state ('loading'|'success'|'failed') is the manual
+  escape hatch that overlays a spinner/terminal icon and disables the button.
+  Load when adding buttons or custom pressable elements.
 type: core
 library: alouette
-library_version: "20.1.0"
+library_version: "20.4.0"
 requires:
   - alouette-theming
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Button.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/ActionButton.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/IconButton.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/PressableBox.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/PressableListItem.tsx"
@@ -47,6 +51,46 @@ import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon
 <Button accent="danger" text="Delete" />
 <Button size="sm" text="Small" />
 ```
+
+### Async action — prefer ActionButton
+
+For a direct action whose `onPress` is async (delete, retry, publish — not a
+form submit, which uses `FormSubmitButton`), use `ActionButton`. It runs the
+promise, derives the button `state` for you (spinner while pending, terminal
+icon on settle), and renders an inline `ErrorMessage` on rejection. Map the
+error to a string via the required `errorToMessage`.
+
+```tsx
+import { ActionButton } from "alouette";
+
+<ActionButton
+  accent="danger"
+  text="Delete"
+  onPress={async () => deleteItem(id)}
+  errorToMessage={(error) => (error instanceof Error ? error.message : "Failed")}
+/>;
+```
+
+`ActionButton` omits `onPress`/`state` from `ButtonProps` and manages them
+itself — don't pass `state` to it.
+
+### Manual loading state
+
+Reach for `Button`'s `state` prop directly only when `ActionButton` doesn't fit
+(state driven externally, e.g. by a form or store). `state` drives a transient
+overlay and disables the button: `"loading"` shows an indeterminate spinner,
+`"success"` a check, `"failed"` a warning icon (the spinner plays its finish
+animation before the terminal icon). Any non-`undefined` `state` disables presses.
+
+```tsx
+import { Button, type ButtonState } from "alouette";
+
+<Button text="Save" state={submitState} onPress={save} />
+// submitState: ButtonState | undefined = "loading" | "success" | "failed"
+```
+
+Don't drive loading UI yourself (spinner + manual `disabled`) — use
+`ActionButton`, or set `state`.
 
 ### Icon-only button
 

@@ -9,7 +9,7 @@ description: >
   react-native-reanimated. Load when adding transitions or enter/exit animations.
 type: core
 library: alouette
-library_version: "20.1.0"
+library_version: "20.4.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/animationDurationsMs.ts"
@@ -45,10 +45,12 @@ import { InteractiveBox, Text } from "alouette";
 ```
 
 For a custom transition, add `transition-*` utilities on an alouette component
-that forwards `className` so it composes with the built-in ones:
+that forwards `className` so it composes with the built-in ones. Prefer the
+named `duration-*` tokens over raw numbers — they mirror `animationDurationsMs`
+(`fast` 200, `fade` 300, `slide`/`progress` 600, `collapse` 800):
 
 ```tsx
-<InteractiveBox className="transition-[background-color] duration-200 ease-in hover:bg-lowered" />
+<InteractiveBox className="transition-[background-color] duration-fast ease-in hover:bg-lowered" />
 ```
 
 ## Presence: swap a single child

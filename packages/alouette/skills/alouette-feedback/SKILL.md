@@ -2,14 +2,15 @@
 name: alouette-feedback
 description: >
   Semantic message banners: Message (requires accent + icon) and the presets
-  InfoMessage, ConfirmationMessage, WarningMessage. Optional dismiss requires
+  InfoMessage, ConfirmationMessage, WarningMessage, ErrorMessage. Optional dismiss requires
   onDismiss and dismissIconAriaLabel together; size is sm/md/lg. Also
-  ConnectionState, a top-pinned network-status banner driven by a state prop.
-  Load when showing inline status, alerts, dismissible notices, or connection
-  status.
+  ConnectionState, a top-pinned network-status banner driven by a state prop,
+  and LinearProgress / CircularProgress determinate progress indicators
+  (progress 0-100, accent, size xs/sm/md/lg). Load when showing inline status,
+  alerts, dismissible notices, connection status, or progress.
 type: core
 library: alouette
-library_version: "20.1.0"
+library_version: "20.4.0"
 requires:
   - alouette-theming
 sources:
@@ -17,6 +18,8 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/Message.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/ConnectionState.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/ConnectionState.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/LinearProgress.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/CircularProgress.tsx"
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -24,8 +27,8 @@ This skill builds on alouette-theming. Read it first for the accent model.
 # alouette — Feedback messages
 
 `Message` is an accent-themed banner with an icon and optional dismiss button.
-Prefer the presets `InfoMessage` / `ConfirmationMessage` / `WarningMessage`,
-which set the accent and icon for you.
+Prefer the presets `InfoMessage` / `ConfirmationMessage` / `WarningMessage` /
+`ErrorMessage`, which set the accent and icon for you.
 
 ## Setup
 
@@ -40,11 +43,12 @@ import { InfoMessage } from "alouette";
 ### Presets
 
 ```tsx
-import { InfoMessage, ConfirmationMessage, WarningMessage } from "alouette";
+import { InfoMessage, ConfirmationMessage, WarningMessage, ErrorMessage } from "alouette";
 
 <InfoMessage>Heads up.</InfoMessage>           {/* accent="info"    */}
 <ConfirmationMessage>Saved.</ConfirmationMessage> {/* accent="success" */}
 <WarningMessage>Careful.</WarningMessage>       {/* accent="warning" */}
+<ErrorMessage>Payment failed.</ErrorMessage>   {/* accent="danger"  */}
 ```
 
 ### Dismissible message
@@ -59,15 +63,16 @@ import { InfoMessage, ConfirmationMessage, WarningMessage } from "alouette";
 
 ### Custom Message (other accents / icons)
 
-For accents without a preset (e.g. `danger`), use the base `Message` with an
-explicit `accent` and `icon`. `size` is `"sm" | "md" | "lg"`.
+The four presets cover `info` / `success` / `warning` / `danger`. For a
+different accent or a custom icon, use the base `Message` with an explicit
+`accent` and `icon`. `size` is `"sm" | "md" | "lg"`.
 
 ```tsx
 import { Message } from "alouette";
 import { XCircleRegularIcon } from "alouette-icons/phosphor-icons/XCircleRegularIcon";
 
-<Message accent="danger" icon={<XCircleRegularIcon />} size="lg">
-  Payment failed.
+<Message accent="brand" icon={<XCircleRegularIcon />} size="lg">
+  Custom banner.
 </Message>;
 ```
 
@@ -93,6 +98,28 @@ when connected (demos); `forceHidden` forces it off-screen regardless of state.
 
 The banner is absolutely positioned, so its parent must establish a positioning
 context and clip the off-screen pill — wrap it in `relative overflow-hidden`.
+
+## Progress indicators
+
+`LinearProgress` (a thin bar pinned to the top of its positioned ancestor) and
+`CircularProgress` (a ring) show a **known** completion percentage. Both take
+`progress` (0-100), `accent` (defaults `brand`), `size` (`"xs" | "sm" | "md" |
+"lg"`), and `hidden` (fades out without unmounting). The fill animates on
+`progress` change.
+
+```tsx
+import { LinearProgress, CircularProgress } from "alouette";
+
+<CircularProgress progress={uploaded} accent="brand" size="md" />
+
+<Box className="relative overflow-hidden">
+  <LinearProgress progress={uploaded} hidden={uploaded >= 100} />
+</Box>
+```
+
+For an **unknown**-duration wait (spinner), don't hand-roll one — a `Button`
+with `state="loading"` already renders the indeterminate spinner (see
+alouette-actions). There is no exported standalone indeterminate component.
 
 ## Common Mistakes
 
@@ -186,6 +213,26 @@ Source: packages/alouette/src/ui/feedback/ConnectionState.tsx
 `danger` otherwise) — there is no `accent` prop. To theme it, change `state`.
 
 Source: packages/alouette/src/ui/feedback/ConnectionState.tsx
+
+### MEDIUM Using LinearProgress/CircularProgress for an unknown-duration wait
+
+Wrong:
+
+```tsx
+<CircularProgress progress={0} /> {/* as a spinner */}
+```
+
+Correct:
+
+```tsx
+<Button text="Save" state="loading" onPress={save} />
+```
+
+`LinearProgress` / `CircularProgress` are determinate — they render the `progress`
+value you pass. There is no exported indeterminate variant; a pending, no-percentage
+wait is a `Button` `state="loading"` spinner (or `ActionButton`).
+
+Source: packages/alouette/src/ui/feedback/CircularProgress.tsx; ui/actions/Button.tsx
 
 See also: alouette-animation/SKILL.md — render messages in PresenceList for
 animated add/remove.
