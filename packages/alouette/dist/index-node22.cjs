@@ -19,6 +19,8 @@ const InfoRegularIcon = require('alouette-icons/phosphor-icons/InfoRegularIcon')
 const QuestionRegularIcon = require('alouette-icons/phosphor-icons/QuestionRegularIcon');
 const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegularIcon');
 const CaretDownRegularIcon = require('alouette-icons/phosphor-icons/CaretDownRegularIcon');
+const AsteriskSimpleRegularIcon = require('alouette-icons/phosphor-icons/AsteriskSimpleRegularIcon');
+const reactHookForm = require('react-hook-form');
 const CaretRightRegularIcon = require('alouette-icons/phosphor-icons/CaretRightRegularIcon');
 const WebBrowser = require('expo-web-browser');
 
@@ -2575,6 +2577,167 @@ function Select({ accent, ...rest }) {
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(SelectInner, { ...rest }) });
 }
 
+function FormItem({
+  label,
+  error,
+  isRequiredError,
+  required,
+  onLabelPress,
+  render
+}) {
+  const labelId = react.useId();
+  const hasError = Boolean(error);
+  const showWarningIcon = hasError && !isRequiredError;
+  const marker = (() => {
+    if (required === true) {
+      return /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "gap-xxs items-center", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          Icon,
+          {
+            icon: /* @__PURE__ */ jsxRuntime.jsx(AsteriskSimpleRegularIcon.AsteriskSimpleRegularIcon, {}),
+            size: 12,
+            className: "text-accent"
+          }
+        ),
+        showWarningIcon ? /* @__PURE__ */ jsxRuntime.jsx(
+          Icon,
+          {
+            icon: /* @__PURE__ */ jsxRuntime.jsx(WarningRegularIcon.WarningRegularIcon, {}),
+            size: 16,
+            className: "text-accent"
+          }
+        ) : null
+      ] });
+    }
+    if (required) {
+      return required;
+    }
+    if (showWarningIcon) {
+      return /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: /* @__PURE__ */ jsxRuntime.jsx(WarningRegularIcon.WarningRegularIcon, {}), size: 16, className: "text-accent" });
+    }
+    return null;
+  })();
+  return /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: "gap-xxs", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(reactNative.Pressable, { onPress: onLabelPress, children: /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "gap-xxs items-center", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        Text,
+        {
+          nativeID: labelId,
+          accent: hasError ? "danger" : void 0,
+          className: `font-body-bold text-sm ${hasError ? "text-accent" : ""}`,
+          children: label
+        }
+      ),
+      marker ? /* @__PURE__ */ jsxRuntime.jsx(View, { "aria-hidden": true, children: hasError ? /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent: "danger", children: marker }) : marker }) : null
+    ] }) }),
+    render(labelId),
+    error ? /* @__PURE__ */ jsxRuntime.jsx(View, { className: "px-m", children: /* @__PURE__ */ jsxRuntime.jsx(Text, { role: "alert", accent: "danger", className: "text-accent text-sm", children: error }) }) : null
+  ] });
+}
+
+class FormValidationError extends Error {
+  constructor() {
+    super("Form validation failed.");
+    this.name = "FormValidationError";
+  }
+}
+function Form({
+  defaultValues,
+  mode = "onTouched",
+  onSubmit,
+  onSubmitError,
+  render
+}) {
+  const form = reactHookForm.useForm({ mode, defaultValues });
+  function submit() {
+    let valid = true;
+    const result = form.handleSubmit(onSubmit, () => {
+      valid = false;
+    })().then(() => {
+      if (!valid) throw new FormValidationError();
+    });
+    if (onSubmitError) result.catch(onSubmitError);
+    return result;
+  }
+  return /* @__PURE__ */ jsxRuntime.jsx(reactHookForm.FormProvider, { ...form, children: render({ submit }) });
+}
+
+function FormField({
+  name,
+  label,
+  required,
+  validate,
+  renderError,
+  render
+}) {
+  const { control, setFocus } = reactHookForm.useFormContext();
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    reactHookForm.Controller,
+    {
+      control,
+      name,
+      rules: { required: Boolean(required), validate },
+      render: ({ field, fieldState }) => {
+        const requiredError = fieldState.error?.type === "required" && required !== true ? required : void 0;
+        return /* @__PURE__ */ jsxRuntime.jsx(
+          FormItem,
+          {
+            label,
+            required: Boolean(required),
+            isRequiredError: fieldState.error?.type === "required",
+            error: renderError ? renderError(fieldState.error) : requiredError ?? fieldState.error?.message,
+            render: (labelId) => render({ field, labelId }),
+            onLabelPress: () => {
+              setFocus(name);
+            }
+          }
+        );
+      }
+    }
+  );
+}
+
+function FormSubmitButton({
+  label,
+  onPress,
+  errorToMessage
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    ActionButton,
+    {
+      text: label,
+      errorToMessage,
+      onPress
+    }
+  );
+}
+
+function SimpleVForm({
+  submitLabel,
+  submitErrorToMessage,
+  className,
+  render,
+  ...formProps
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    Form,
+    {
+      ...formProps,
+      render: ({ submit }) => /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: className ?? "gap-l", children: [
+        render({ submit }),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          FormSubmitButton,
+          {
+            label: submitLabel,
+            errorToMessage: submitErrorToMessage,
+            onPress: submit
+          }
+        )
+      ] })
+    }
+  );
+}
+
 const badgeVariants = tailwindVariants.tv(
   {
     slots: {
@@ -2921,6 +3084,11 @@ exports.ConnectionState = ConnectionState;
 exports.ExternalLink = ExternalLink;
 exports.ExternalLinkButton = ExternalLinkButton;
 exports.FlatList = FlatList;
+exports.Form = Form;
+exports.FormField = FormField;
+exports.FormItem = FormItem;
+exports.FormSubmitButton = FormSubmitButton;
+exports.FormValidationError = FormValidationError;
 exports.GradientBackground = GradientBackground;
 exports.GradientScrollView = GradientScrollView;
 exports.HStack = HStack;
@@ -2946,6 +3114,7 @@ exports.ScrollView = ScrollView;
 exports.SectionList = SectionList;
 exports.Select = Select;
 exports.Separator = Separator;
+exports.SimpleVForm = SimpleVForm;
 exports.Stack = Stack;
 exports.Story = Story;
 exports.StoryContainer = StoryContainer;

@@ -13,6 +13,8 @@ pnpm test               # Run tests (Node.js native runner with --experimental-s
 pnpm tsc                # TypeScript check
 ```
 
+**Never start Storybook itself** (`pnpm storybook`, `storybook dev`, `expo start`, etc.) or any other long-running dev server — verifying stories/UI in the running app is the user's job. Running the Storybook **test suite** (`pnpm test`, `vitest --project=storybook`, which executes story `play` functions headlessly) is fine and encouraged to verify story changes.
+
 Run a single test file:
 
 ```bash
@@ -181,4 +183,92 @@ function FolderCard({ index }: { index: number }): ReactNode {
 <PresenceOne exitDurationMs={600} … />
 const CARD_ANIMATION_MS = 600;
 const FOLDERS = [{ title: "Inbox", count: 3 }, …];
+```
+
+## Name function props `render`, not `children`
+
+A function-as-prop is not readable as JSX children — name it `render` so the call site reads as a function, not markup.
+
+```tsx
+// Preferred
+interface FormFieldProps {
+  render: (params: { field: ControllerRenderProps }) => ReactNode;
+}
+<FormField name="email" render={({ field }) => <InputText {...field} />} />;
+
+// Avoid
+interface FormFieldProps {
+  children: (params: { field: ControllerRenderProps }) => ReactNode;
+}
+<FormField name="email">{({ field }) => <InputText {...field} />}</FormField>;
+```
+
+## Never silently swallow unexpected errors
+
+Don't catch-and-log (`console.error`) an error the caller didn't ask to handle — that hides real bugs. Expose an explicit opt-in handler prop; when it's not provided, let the error propagate (e.g. as an unhandled rejection) instead of swallowing it.
+
+```tsx
+// Preferred
+function submit(): void {
+  const result = form.handleSubmit(onSubmit)();
+  if (onSubmitError) result.catch(onSubmitError);
+}
+
+// Avoid
+function submit(): void {
+  form
+    .handleSubmit(onSubmit)()
+    .catch((error) => console.error(error));
+}
+```
+
+## Flatten a wrapped library's options into direct props
+
+When wrapping a third-party API, don't mirror its nested options shape in your own component's public props — expose the individual options directly at the top level.
+
+```tsx
+// Preferred
+interface FormFieldProps {
+  required?: boolean | string;
+  validate?: RegisterOptions["validate"];
+}
+<Controller rules={{ required, validate }} … />
+
+// Avoid — leaks react-hook-form's internal `rules` shape into our API
+interface FormFieldProps {
+  rules?: { required?: boolean | string; validate?: RegisterOptions["validate"] };
+}
+```
+
+## Reuse existing components' accessibility/state handling
+
+Don't reimplement disabled/loading/focus handling that another component in the library already gets right — compose that component instead of duplicating its logic.
+
+```tsx
+// Preferred — Button already handles disabled/loading accessibly
+function FormSubmitButton({ label, onPress }: FormSubmitButtonProps) {
+  const { isSubmitting } = useFormState();
+  return (
+    <Button
+      text={label}
+      disabled={isSubmitting}
+      state={isSubmitting ? "loading" : undefined}
+      onPress={onPress}
+    />
+  );
+}
+
+// Avoid — reimplementing disabled/aria state on a raw Pressable
+```
+
+## Test via accessibility queries, not `testID`
+
+Stories' `play` functions should query by label/role (`getByLabelText`, `getByRole`) rather than `testID`/`getByTestId`. This exercises the same accessible names real assistive tech relies on, instead of a test-only hook.
+
+```tsx
+// Preferred
+const nameInput = canvas.getByLabelText("Name");
+
+// Avoid
+const nameInput = canvas.getByTestId("name-input");
 ```

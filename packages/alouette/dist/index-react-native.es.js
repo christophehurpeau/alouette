@@ -16,6 +16,8 @@ import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
 import { QuestionRegularIcon } from 'alouette-icons/phosphor-icons/QuestionRegularIcon';
 import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { CaretDownRegularIcon } from 'alouette-icons/phosphor-icons/CaretDownRegularIcon';
+import { AsteriskSimpleRegularIcon } from 'alouette-icons/phosphor-icons/AsteriskSimpleRegularIcon';
+import { useForm, FormProvider, useFormContext, Controller } from 'react-hook-form';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
 import * as WebBrowser from 'expo-web-browser';
 import { WebBrowserPresentationStyle } from 'expo-web-browser';
@@ -2560,6 +2562,167 @@ function Select({ accent, ...rest }) {
   return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(SelectInner, { ...rest }) });
 }
 
+function FormItem({
+  label,
+  error,
+  isRequiredError,
+  required,
+  onLabelPress,
+  render
+}) {
+  const labelId = useId();
+  const hasError = Boolean(error);
+  const showWarningIcon = hasError && !isRequiredError;
+  const marker = (() => {
+    if (required === true) {
+      return /* @__PURE__ */ jsxs(HStack, { className: "gap-xxs items-center", children: [
+        /* @__PURE__ */ jsx(
+          Icon,
+          {
+            icon: /* @__PURE__ */ jsx(AsteriskSimpleRegularIcon, {}),
+            size: 12,
+            className: "text-accent"
+          }
+        ),
+        showWarningIcon ? /* @__PURE__ */ jsx(
+          Icon,
+          {
+            icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}),
+            size: 16,
+            className: "text-accent"
+          }
+        ) : null
+      ] });
+    }
+    if (required) {
+      return required;
+    }
+    if (showWarningIcon) {
+      return /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}), size: 16, className: "text-accent" });
+    }
+    return null;
+  })();
+  return /* @__PURE__ */ jsxs(VStack, { className: "gap-xxs", children: [
+    /* @__PURE__ */ jsx(Pressable, { onPress: onLabelPress, children: /* @__PURE__ */ jsxs(HStack, { className: "gap-xxs items-center", children: [
+      /* @__PURE__ */ jsx(
+        Text,
+        {
+          nativeID: labelId,
+          accent: hasError ? "danger" : void 0,
+          className: `font-body-bold text-sm ${hasError ? "text-accent" : ""}`,
+          children: label
+        }
+      ),
+      marker ? /* @__PURE__ */ jsx(View, { "aria-hidden": true, children: hasError ? /* @__PURE__ */ jsx(AccentScope, { accent: "danger", children: marker }) : marker }) : null
+    ] }) }),
+    render(labelId),
+    error ? /* @__PURE__ */ jsx(View, { className: "px-m", children: /* @__PURE__ */ jsx(Text, { role: "alert", accent: "danger", className: "text-accent text-sm", children: error }) }) : null
+  ] });
+}
+
+class FormValidationError extends Error {
+  constructor() {
+    super("Form validation failed.");
+    this.name = "FormValidationError";
+  }
+}
+function Form({
+  defaultValues,
+  mode = "onTouched",
+  onSubmit,
+  onSubmitError,
+  render
+}) {
+  const form = useForm({ mode, defaultValues });
+  function submit() {
+    let valid = true;
+    const result = form.handleSubmit(onSubmit, () => {
+      valid = false;
+    })().then(() => {
+      if (!valid) throw new FormValidationError();
+    });
+    if (onSubmitError) result.catch(onSubmitError);
+    return result;
+  }
+  return /* @__PURE__ */ jsx(FormProvider, { ...form, children: render({ submit }) });
+}
+
+function FormField({
+  name,
+  label,
+  required,
+  validate,
+  renderError,
+  render
+}) {
+  const { control, setFocus } = useFormContext();
+  return /* @__PURE__ */ jsx(
+    Controller,
+    {
+      control,
+      name,
+      rules: { required: Boolean(required), validate },
+      render: ({ field, fieldState }) => {
+        const requiredError = fieldState.error?.type === "required" && required !== true ? required : void 0;
+        return /* @__PURE__ */ jsx(
+          FormItem,
+          {
+            label,
+            required: Boolean(required),
+            isRequiredError: fieldState.error?.type === "required",
+            error: renderError ? renderError(fieldState.error) : requiredError ?? fieldState.error?.message,
+            render: (labelId) => render({ field, labelId }),
+            onLabelPress: () => {
+              setFocus(name);
+            }
+          }
+        );
+      }
+    }
+  );
+}
+
+function FormSubmitButton({
+  label,
+  onPress,
+  errorToMessage
+}) {
+  return /* @__PURE__ */ jsx(
+    ActionButton,
+    {
+      text: label,
+      errorToMessage,
+      onPress
+    }
+  );
+}
+
+function SimpleVForm({
+  submitLabel,
+  submitErrorToMessage,
+  className,
+  render,
+  ...formProps
+}) {
+  return /* @__PURE__ */ jsx(
+    Form,
+    {
+      ...formProps,
+      render: ({ submit }) => /* @__PURE__ */ jsxs(VStack, { className: className ?? "gap-l", children: [
+        render({ submit }),
+        /* @__PURE__ */ jsx(
+          FormSubmitButton,
+          {
+            label: submitLabel,
+            errorToMessage: submitErrorToMessage,
+            onPress: submit
+          }
+        )
+      ] })
+    }
+  );
+}
+
 const badgeVariants = tv(
   {
     slots: {
@@ -2888,5 +3051,5 @@ function ExternalLink({
   return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ExternalLink, ExternalLinkButton, FlatList, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ExternalLink, ExternalLinkButton, FlatList, Form, FormField, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
 //# sourceMappingURL=index-react-native.es.js.map
