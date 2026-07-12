@@ -50,6 +50,9 @@ export const ActionButtonPreviewStory: ThisStory = {
     <ActionButton
       {...args}
       icon={<CheckRegularIcon />}
+      errorToMessage={(error) =>
+        error instanceof Error ? error.message : "Unknown error"
+      }
       onPress={() => delay(1500)}
     />
   ),
