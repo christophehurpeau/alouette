@@ -4,7 +4,7 @@
 
 <h3>📦 Packages</h3>
 
-This repository is a monorepo that we manage using [pnpm Workspaces](https://pnpm.io/workspaces).
+This repository is a monorepo using workspaces.
 
 | Package                                               | Version                                                                                                                              | Description                                                                                   |
 | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |

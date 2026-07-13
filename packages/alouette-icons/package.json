@@ -41,10 +41,10 @@
     }
   },
   "scripts": {
-    "build": "yarn run build:definitions",
+    "build": "pnpm run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
-    "lint": "yarn run lint:eslint",
-    "lint:eslint": "yarn '../..' run eslint --quiet 'packages/alouette-icons'",
+    "lint": "pnpm run lint:eslint",
+    "lint:eslint": "pnpm run --dir '../..' eslint --quiet 'packages/alouette-icons'",
     "test": "yarn '../..' run test -- packages/alouette-icons",
     "tsc": "tsc"
   },

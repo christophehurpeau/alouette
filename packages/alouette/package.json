@@ -22,9 +22,8 @@
   "files": [
     "src",
     "dist",
-    "metro.cjs",
-    "skills",
-    "bin"
+    "bin",
+    "metro.cjs"
   ],
   "type": "module",
   "sideEffects": false,
@@ -52,11 +51,11 @@
         "import": "./dist/index-browser.es.js"
       }
     },
-    "./global.css": {
+    "./metro.cjs": "./metro.cjs",
+    "./src/global.css": {
       "style": "./src/global.css",
       "default": "./src/global.css"
-    },
-    "./metro.cjs": "./metro.cjs"
+    }
   },
   "scripts": {
     "build": "pnpm run clean:build && rollup --config rollup.config.mjs && pnpm run build:definitions",
@@ -79,7 +78,7 @@
     "type-fest": "5.4.4"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "9.1.1",
+    "@pob/rollup-esbuild": "9.1.2",
     "@rollup/plugin-replace": "6.0.3",
     "@tanstack/intent": "0.1.1",
     "@types/node": "24.10.1",
@@ -156,7 +155,7 @@
     ],
     "extraEntries": [
       "metro.cjs",
-      "global.css"
+      "src/global.css"
     ],
     "jsx": true,
     "typescript": true
