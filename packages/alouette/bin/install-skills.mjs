@@ -20,7 +20,7 @@ import { fileURLToPath } from "node:url";
 // `alouette-install-skills` removes their leftover symlinks from projects
 // that installed an earlier version. Add a name the same release its
 // skills/<name> directory is deleted.
-const REMOVED_SKILLS = [];
+const REMOVED_SKILLS = ["alouette-forms-composition"];
 
 const packageRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const sourceSkillsDir = join(packageRoot, "skills");

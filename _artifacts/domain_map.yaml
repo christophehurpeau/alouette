@@ -393,20 +393,28 @@ skills:
         priority: 'MEDIUM'
         status: 'active'
   # ---------------------------------------------------------------------------
-  - name: 'Build form inputs'
+  - name: 'Build forms and inputs'
     slug: 'alouette-forms'
     domain: 'forms'
-    description: 'Text inputs (InputText with mode: password/email/number/tel/url/search), TextArea (multiline InputText), and Switch (controlled or uncontrolled). Use the disabled prop (not editable). Switch takes checked + onValueChange.'
+    description: 'Inputs — InputText (mode: password/email/number/tel/url/search), TextArea (multiline InputText), Switch (controlled or uncontrolled); use the disabled prop (not editable); Switch takes checked + onValueChange. Validation/composition on react-hook-form — Form owns the instance and exposes submit() via a render prop (no control passing); FormField binds a Controller to FormItem label/error/required and renders any input via render; FormFieldArray wraps useFieldArray for repeatable lists; FormSubmitButton (ActionButton) drives loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage is required; FormValidationError distinguishes invalid fields from an onSubmit failure.'
     type: 'core'
     packages: ['alouette']
     covers:
       - 'InputText (mode, disabled, multiline)'
       - 'TextArea'
       - 'Switch (checked, onValueChange, accent)'
+      - 'Form (defaultValues, onSubmit, submit render prop, onSubmitError)'
+      - 'FormField (name, label, required, validate, render, renderError)'
+      - 'FormFieldArray (name, emptyValue, minSize, add/remove)'
+      - 'FormSubmitButton (errorToMessage, ActionButton lifecycle)'
+      - 'SimpleVForm (submitLabel, submitErrorToMessage)'
+      - 'FormValidationError'
     tasks:
       - 'Add an email/password field'
       - 'Add a multiline note field'
       - 'Add a toggle'
+      - 'Build a validated vertical form with a submit button'
+      - 'Add a repeatable list of fields'
     failure_modes:
       - mistake: 'Disabling input with editable={false}'
         mechanism: 'InputText exposes a disabled prop that sets editable, aria-disabled and disabled styling; passing editable directly bypasses the disabled visual state and a11y.'
@@ -433,6 +441,64 @@ skills:
         correct_pattern: |
           <Switch checked={on} onValueChange={setOn} />
         source: 'packages/alouette/src/ui/inputs/Switch.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Passing control/register to FormField'
+        mechanism: 'Form provides the react-hook-form instance through context; FormField reads control and setFocus itself via useFormContext. There is no control prop — just render FormField inside Form.'
+        wrong_pattern: |
+          <FormField control={control} name="name" ... />
+        correct_pattern: |
+          <Form render={() => <FormField name="name" ... />} />
+        source: 'packages/alouette/src/ui/forms/FormField.tsx; ui/forms/Form.tsx'
+        priority: 'HIGH'
+        status: 'active'
+      - mistake: 'Naming FormField input function children instead of render'
+        mechanism: 'The input is supplied through the render prop, not children — a function child is ignored.'
+        wrong_pattern: |
+          <FormField name="name" label="Name">{({ field }) => <InputText ... />}</FormField>
+        correct_pattern: |
+          <FormField name="name" label="Name" render={({ field, labelId }) => <InputText ... />} />
+        source: 'packages/alouette/src/ui/forms/FormField.tsx'
+        priority: 'HIGH'
+        status: 'active'
+      - mistake: 'Forgetting field.ref / aria-labelledby on the input'
+        mechanism: 'Without field.ref, pressing the label cannot focus the input and react-hook-form setFocus no-ops; without aria-labelledby={labelId} the input has no accessible name.'
+        wrong_pattern: |
+          render={({ field }) => <InputText value={field.value} onChangeText={field.onChange} />}
+        correct_pattern: |
+          render={({ field, labelId }) => (
+            <InputText ref={field.ref} value={field.value} aria-labelledby={labelId}
+              onChangeText={field.onChange} onBlur={field.onBlur} />
+          )}
+        source: 'packages/alouette/src/ui/forms/FormField.tsx; ui/forms/FormItem.tsx'
+        priority: 'HIGH'
+        status: 'active'
+      - mistake: 'Omitting errorToMessage or hardcoding an English default'
+        mechanism: 'errorToMessage is required (not defaulted) because a library default could only be a hardcoded, untranslatable string. Handle FormValidationError inside it to distinguish invalid fields from a genuine submit failure.'
+        wrong_pattern: |
+          <FormSubmitButton label="Save" onPress={submit} />
+        correct_pattern: |
+          <FormSubmitButton label="Save" onPress={submit} errorToMessage={submitErrorToMessage} />
+        source: 'packages/alouette/src/ui/forms/FormSubmitButton.tsx; ui/forms/Form.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Reimplementing the submit button loading state'
+        mechanism: 'FormSubmitButton (or SimpleVForm, which adds it) derives loading/success/failed from the submit promise like any ActionButton; a raw Button with manual isSubmitting/disabled duplicates that.'
+        wrong_pattern: |
+          <Button text="Save" disabled={isSubmitting} onPress={submit} />
+        correct_pattern: |
+          <FormSubmitButton label="Save" onPress={submit} errorToMessage={submitErrorToMessage} />
+        source: 'packages/alouette/src/ui/forms/FormSubmitButton.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Mapping a data array of fields instead of FormFieldArray'
+        mechanism: 'Hand-rolled array state drifts from react-hook-form field arrays (stale indices on remove, no stable key, no built-in add/remove affordances). FormFieldArray wraps useFieldArray and supplies the label, indentation, and add/remove buttons.'
+        wrong_pattern: |
+          {fields.map((f, i) => <FormField key={i} name={`guests.${i}.value`} ... />)}
+        correct_pattern: |
+          <FormFieldArray name="guests" label="Guests" emptyValue={{ value: "" }}
+            render={({ name, label }) => <FormField name={`${name}.value`} label={label} ... />} />
+        source: 'packages/alouette/src/ui/forms/FormFieldArray.tsx'
         priority: 'MEDIUM'
         status: 'active'
   # ---------------------------------------------------------------------------

@@ -16,7 +16,7 @@ coverage:
     - name: 'alouette-icons'
       reason: 'Auto-generated Phosphor icons; consumer usage is covered by the alouette-icons skill shipped in the alouette package.'
 
-# Structure: FLAT. 13 task-focused skills mapping ~1:1 to developer intents,
+# Structure: FLAT. 12 task-focused skills mapping ~1:1 to developer intents,
 # all shipped in the single client-facing package (packages/alouette/skills/).
 # No router skill (set is < 15 and discoverable via `npx @tanstack/intent list`).
 # No core overview skill — each skill stands alone. `requires` expresses load
@@ -114,26 +114,14 @@ skills:
     domain: 'forms'
     path: 'packages/alouette/skills/alouette-forms/SKILL.md'
     package: 'packages/alouette'
-    description: 'Form inputs: InputText (mode: password/email/number/tel/url/search), TextArea (multiline InputText), and Switch (controlled via checked + onValueChange, or uncontrolled). Use the disabled prop, not editable. Load when building forms or toggles.'
+    description: 'Forms end to end. Inputs: InputText (mode: password/email/number/tel/url/search), TextArea (multiline InputText), Switch (controlled via checked + onValueChange, or uncontrolled) — use the disabled prop, not editable. Validation on react-hook-form: Form owns the instance and exposes submit() via render prop (no control passing); FormField wires a Controller to FormItem label/error/required layout and renders any input via render; FormFieldArray wraps useFieldArray for repeatable item lists with add/remove buttons; FormSubmitButton (ActionButton) drives loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage is required; FormValidationError distinguishes invalid fields from an onSubmit failure. Load when building text fields, toggles, or a validated form.'
     requires:
       - 'alouette-theming'
+      - 'alouette-actions'
     sources:
       - 'christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputText.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/inputs/TextArea.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/inputs/Switch.tsx'
-
-  - name: 'alouette-forms-composition'
-    slug: 'alouette-forms-composition'
-    type: 'core'
-    domain: 'forms'
-    path: 'packages/alouette/skills/alouette-forms-composition/SKILL.md'
-    package: 'packages/alouette'
-    description: 'Build validated forms on react-hook-form: Form owns the instance and exposes submit() via render prop (no control passing); FormField wires a Controller to FormItem label/error/required layout and renders any input via render; FormFieldArray wraps useFieldArray for repeatable item lists with add/remove buttons; FormSubmitButton (ActionButton) drives loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage is required; FormValidationError distinguishes invalid fields from an onSubmit failure. Load when building a validated form.'
-    requires:
-      - 'alouette-forms'
-      - 'alouette-actions'
-      - 'alouette-theming'
-    sources:
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/Form.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/FormItem.tsx'
