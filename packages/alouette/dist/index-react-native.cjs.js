@@ -21,6 +21,8 @@ const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegular
 const CaretDownRegularIcon = require('alouette-icons/phosphor-icons/CaretDownRegularIcon');
 const AsteriskSimpleRegularIcon = require('alouette-icons/phosphor-icons/AsteriskSimpleRegularIcon');
 const reactHookForm = require('react-hook-form');
+const PlusRegularIcon = require('alouette-icons/phosphor-icons/PlusRegularIcon');
+const TrashRegularIcon = require('alouette-icons/phosphor-icons/TrashRegularIcon');
 const CaretRightRegularIcon = require('alouette-icons/phosphor-icons/CaretRightRegularIcon');
 const WebBrowser = require('expo-web-browser');
 
@@ -862,7 +864,7 @@ const SafeAreaBox = react.forwardRef(
 const surfaceVariants = tailwindVariants.tv(
   {
     // overflow-hidden so the multi-layer shadow respects the rounded corners.
-    base: "overflow-hidden",
+    base: "overflow-hidden transition-background duration-fast",
     variants: {
       size: {
         xs: "p-sm rounded-xs",
@@ -1103,6 +1105,22 @@ const StoryGrid = {
   Row: StoryGridRow,
   Col: StoryGridCol
 };
+
+function StableAccentScope({
+  mode: forcedMode,
+  accent,
+  children
+}) {
+  const currentTheme = useCurrentTheme();
+  const currentMode = useCurrentMode();
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    ScopedTheme,
+    {
+      theme: accent ? `${forcedMode ?? currentMode}_${accent}` : currentTheme,
+      children
+    }
+  );
+}
 
 function joinClasses(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -2579,9 +2597,11 @@ function Select({ accent, ...rest }) {
 
 function FormItem({
   label,
+  details,
   error,
   isRequiredError,
   required,
+  indented,
   onLabelPress,
   render
 }) {
@@ -2618,19 +2638,22 @@ function FormItem({
     return null;
   })();
   return /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: "gap-xxs", children: [
-    /* @__PURE__ */ jsxRuntime.jsx(reactNative.Pressable, { onPress: onLabelPress, children: /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "gap-xxs items-center", children: [
-      /* @__PURE__ */ jsxRuntime.jsx(
-        Text,
-        {
-          nativeID: labelId,
-          accent: hasError ? "danger" : void 0,
-          className: `font-body-bold text-sm ${hasError ? "text-accent" : ""}`,
-          children: label
-        }
-      ),
-      marker ? /* @__PURE__ */ jsxRuntime.jsx(View, { "aria-hidden": true, children: hasError ? /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent: "danger", children: marker }) : marker }) : null
+    /* @__PURE__ */ jsxRuntime.jsx(reactNative.Pressable, { onPress: onLabelPress, children: /* @__PURE__ */ jsxRuntime.jsxs(VStack, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "gap-xxs items-center", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          Text,
+          {
+            nativeID: labelId,
+            accent: hasError ? "danger" : void 0,
+            className: `font-body-bold text-md ${hasError ? "text-accent" : ""}`,
+            children: label
+          }
+        ),
+        marker ? /* @__PURE__ */ jsxRuntime.jsx(View, { "aria-hidden": true, children: hasError ? /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent: "danger", children: marker }) : marker }) : null
+      ] }),
+      details ? /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "text-muted text-sm", children: details }) : null
     ] }) }),
-    render(labelId),
+    indented ? /* @__PURE__ */ jsxRuntime.jsx(View, { className: "border-l border-border-muted pl-m", children: render(labelId) }) : render(labelId),
     error ? /* @__PURE__ */ jsxRuntime.jsx(View, { className: "px-m", children: /* @__PURE__ */ jsxRuntime.jsx(Text, { role: "alert", accent: "danger", className: "text-accent text-sm", children: error }) }) : null
   ] });
 }
@@ -2693,6 +2716,103 @@ function FormField({
           }
         );
       }
+    }
+  );
+}
+
+function FormFieldArrayItem({
+  name,
+  itemLabel,
+  removeLabel,
+  index,
+  removable,
+  onRemove,
+  render
+}) {
+  const [pendingRemoval, setPendingRemoval] = react.useState(false);
+  return /* @__PURE__ */ jsxRuntime.jsx(StableAccentScope, { accent: pendingRemoval ? "danger" : void 0, children: /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "gap-sm items-center p-xxs", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(View, { className: "grow shrink basis-0", children: render({ name, index, label: itemLabel }) }),
+    removable ? /* @__PURE__ */ jsxRuntime.jsx(
+      IconButton,
+      {
+        variant: "ghost",
+        icon: /* @__PURE__ */ jsxRuntime.jsx(TrashRegularIcon.TrashRegularIcon, {}),
+        "aria-label": removeLabel,
+        onHoverIn: () => {
+          setPendingRemoval(true);
+        },
+        onHoverOut: () => {
+          setPendingRemoval(false);
+        },
+        onPress: onRemove
+      }
+    ) : null
+  ] }) });
+}
+function FormFieldArray({
+  name,
+  label,
+  details,
+  emptyValue,
+  minSize = 0,
+  addLabel = "Add item",
+  disableAdd,
+  removeLabel = (itemLabel) => `Remove ${itemLabel}`,
+  render
+}) {
+  const { control } = reactHookForm.useFormContext();
+  const { fields, append, remove } = reactHookForm.useFieldArray({
+    control,
+    name
+  });
+  const paddedRef = react.useRef(false);
+  react.useEffect(() => {
+    if (paddedRef.current) return;
+    paddedRef.current = true;
+    const shortfall = minSize - fields.length;
+    if (shortfall > 0) {
+      append(
+        Array.from({ length: shortfall }, () => emptyValue),
+        { shouldFocus: false }
+      );
+    }
+  }, [append, emptyValue, fields.length, minSize]);
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    FormItem,
+    {
+      label,
+      details,
+      render: () => /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: "gap-xs", children: [
+        fields.map((field, index) => /* @__PURE__ */ jsxRuntime.jsx(
+          FormFieldArrayItem,
+          {
+            name: `${name}.${index}`,
+            itemLabel: `${label} ${index + 1}`,
+            removeLabel: removeLabel(`${label} ${index + 1}`),
+            index,
+            removable: index >= minSize,
+            render,
+            onRemove: () => {
+              remove(index);
+            }
+          },
+          field.id
+        )),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          Button,
+          {
+            size: "sm",
+            variant: "outlined",
+            icon: /* @__PURE__ */ jsxRuntime.jsx(PlusRegularIcon.PlusRegularIcon, {}),
+            text: addLabel,
+            className: "self-start",
+            disabled: disableAdd,
+            onPress: () => {
+              append(emptyValue);
+            }
+          }
+        )
+      ] })
     }
   );
 }
@@ -3086,6 +3206,7 @@ exports.ExternalLinkButton = ExternalLinkButton;
 exports.FlatList = FlatList;
 exports.Form = Form;
 exports.FormField = FormField;
+exports.FormFieldArray = FormFieldArray;
 exports.FormItem = FormItem;
 exports.FormSubmitButton = FormSubmitButton;
 exports.FormValidationError = FormValidationError;
@@ -3115,6 +3236,7 @@ exports.SectionList = SectionList;
 exports.Select = Select;
 exports.Separator = Separator;
 exports.SimpleVForm = SimpleVForm;
+exports.StableAccentScope = StableAccentScope;
 exports.Stack = Stack;
 exports.Story = Story;
 exports.StoryContainer = StoryContainer;

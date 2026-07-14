@@ -10,6 +10,8 @@ import { HStack, VStack } from "../stacks/stacks";
 
 export interface FormItemProps {
   label: string;
+  /** Muted helper text shown between the label and the input. */
+  details?: ReactNode;
   error?: ReactNode;
   /**
    * True when `error` is caused by the field being left empty, as opposed
@@ -19,6 +21,11 @@ export interface FormItemProps {
   isRequiredError?: boolean;
   /** true shows the default marker; any other ReactNode replaces it. */
   required?: ReactNode;
+  /**
+   * Wraps the rendered content in a left border + padding to visually nest it
+   * inside a group. The label stays at full width above the rail.
+   */
+  indented?: boolean;
   /** Called when the label is pressed, so it can focus the input. */
   onLabelPress?: () => void;
   render: (labelId: string) => ReactNode;
@@ -32,9 +39,11 @@ export interface FormItemProps {
  */
 export function FormItem({
   label,
+  details,
   error,
   isRequiredError,
   required,
+  indented,
   onLabelPress,
   render,
 }: FormItemProps): ReactNode {
@@ -79,26 +88,37 @@ export function FormItem({
   return (
     <VStack className="gap-xxs">
       <Pressable onPress={onLabelPress}>
-        <HStack className="gap-xxs items-center">
-          <Text
-            nativeID={labelId}
-            accent={hasError ? "danger" : undefined}
-            className={`font-body-bold text-sm ${hasError ? "text-accent" : ""}`}
-          >
-            {label}
-          </Text>
-          {marker ? (
-            <View aria-hidden>
-              {hasError ? (
-                <AccentScope accent="danger">{marker}</AccentScope>
-              ) : (
-                marker
-              )}
-            </View>
+        <VStack>
+          <HStack className="gap-xxs items-center">
+            <Text
+              nativeID={labelId}
+              accent={hasError ? "danger" : undefined}
+              className={`font-body-bold text-md ${hasError ? "text-accent" : ""}`}
+            >
+              {label}
+            </Text>
+            {marker ? (
+              <View aria-hidden>
+                {hasError ? (
+                  <AccentScope accent="danger">{marker}</AccentScope>
+                ) : (
+                  marker
+                )}
+              </View>
+            ) : null}
+          </HStack>
+          {details ? (
+            <Text className="text-muted text-sm">{details}</Text>
           ) : null}
-        </HStack>
+        </VStack>
       </Pressable>
-      {render(labelId)}
+      {indented ? (
+        <View className="border-l border-border-muted pl-m">
+          {render(labelId)}
+        </View>
+      ) : (
+        render(labelId)
+      )}
       {error ? (
         <View className="px-m">
           <Text role="alert" accent="danger" className="text-accent text-sm">

@@ -8,7 +8,7 @@ import { Box, type BoxProps } from "./Box";
 const surfaceVariants = tv(
   {
     // overflow-hidden so the multi-layer shadow respects the rounded corners.
-    base: "overflow-hidden",
+    base: "overflow-hidden transition-background duration-fast",
     variants: {
       size: {
         xs: "p-sm rounded-xs",

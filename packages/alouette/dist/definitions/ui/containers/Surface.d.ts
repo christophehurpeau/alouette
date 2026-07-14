@@ -23,7 +23,7 @@ declare const surfaceVariants: import("tailwind-variants").TVReturnType<{
         l: string;
         lowered: string;
     };
-}, undefined, "overflow-hidden", {
+}, undefined, "overflow-hidden transition-background duration-fast", {
     size: {
         xs: string;
         sm: string;
@@ -65,7 +65,7 @@ declare const surfaceVariants: import("tailwind-variants").TVReturnType<{
         l: string;
         lowered: string;
     };
-}, undefined, "overflow-hidden", unknown, unknown, undefined>>;
+}, undefined, "overflow-hidden transition-background duration-fast", unknown, unknown, undefined>>;
 type SurfaceVariantProps = VariantProps<typeof surfaceVariants>;
 export interface SurfaceProps extends BoxProps, SurfaceVariantProps {
     accent?: Accent;

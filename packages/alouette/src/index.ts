@@ -42,6 +42,8 @@ export type {
 export { Box, InteractiveBox, SafeAreaBox } from "./ui/containers/Box";
 export type { AccentScopeProps } from "./ui/containers/AccentScope";
 export { AccentScope } from "./ui/containers/AccentScope";
+export type { StableAccentScopeProps } from "./ui/containers/StableAccentScope";
+export { StableAccentScope } from "./ui/containers/StableAccentScope";
 export type {
   PresenceListProps,
   PresenceOneProps,
@@ -96,6 +98,8 @@ export type { FormProps } from "./ui/forms/Form";
 export { Form, FormValidationError } from "./ui/forms/Form";
 export type { FormFieldProps } from "./ui/forms/FormField";
 export { FormField } from "./ui/forms/FormField";
+export type { FormFieldArrayProps } from "./ui/forms/FormFieldArray";
+export { FormFieldArray } from "./ui/forms/FormFieldArray";
 export type { FormSubmitButtonProps } from "./ui/forms/FormSubmitButton";
 export { FormSubmitButton } from "./ui/forms/FormSubmitButton";
 export type { SimpleVFormProps } from "./ui/forms/SimpleVForm";

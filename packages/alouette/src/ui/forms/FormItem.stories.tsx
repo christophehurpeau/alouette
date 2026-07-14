@@ -6,11 +6,12 @@ import { InputText } from "../inputs/InputText";
 import { Story } from "../story-components/Story";
 import { FormItem } from "./FormItem";
 
-function NameField(): ReactNode {
+function NameField({ details }: { details?: string }): ReactNode {
   const ref = useRef<RNTextInput>(null);
   return (
     <FormItem
       label="Name"
+      details={details}
       render={(labelId) => (
         <InputText
           ref={ref}
@@ -85,6 +86,21 @@ function RequiredOtherErrorField(): ReactNode {
   );
 }
 
+function IndentedFormItem(): ReactNode {
+  const ref = useRef<RNTextInput>(null);
+  return (
+    <FormItem
+      indented
+      label="Nickname"
+      details="Indented content sits under a left border rail."
+      render={(labelId) => (
+        <InputText ref={ref} aria-labelledby={labelId} placeholder="Ada" />
+      )}
+      onLabelPress={() => ref.current?.focus()}
+    />
+  );
+}
+
 type ThisStory = StoryObj<typeof FormItem>;
 
 export default {
@@ -103,6 +119,10 @@ export const Variants: ThisStory = {
         <NameField />
       </Story.Section>
 
+      <Story.Section title="Details">
+        <NameField details="Enter your full name." />
+      </Story.Section>
+
       <Story.Section title="Required">
         <RequiredField />
       </Story.Section>
@@ -117,6 +137,10 @@ export const Variants: ThisStory = {
 
       <Story.Section title="Required, other validation error — star plus warning icon">
         <RequiredOtherErrorField />
+      </Story.Section>
+
+      <Story.Section title="Indented — content nested under a left border rail">
+        <IndentedFormItem />
       </Story.Section>
     </Story>
   ),

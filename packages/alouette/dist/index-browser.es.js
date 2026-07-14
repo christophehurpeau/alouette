@@ -13,7 +13,9 @@ import { QuestionRegularIcon } from 'alouette-icons/phosphor-icons/QuestionRegul
 import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { CaretDownRegularIcon } from 'alouette-icons/phosphor-icons/CaretDownRegularIcon';
 import { AsteriskSimpleRegularIcon } from 'alouette-icons/phosphor-icons/AsteriskSimpleRegularIcon';
-import { useForm, FormProvider, useFormContext, Controller } from 'react-hook-form';
+import { useForm, FormProvider, useFormContext, Controller, useFieldArray } from 'react-hook-form';
+import { PlusRegularIcon } from 'alouette-icons/phosphor-icons/PlusRegularIcon';
+import { TrashRegularIcon } from 'alouette-icons/phosphor-icons/TrashRegularIcon';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
 
 const ThemeContext = createContext("light");
@@ -852,7 +854,7 @@ const SafeAreaBox = forwardRef(
 const surfaceVariants = tv(
   {
     // overflow-hidden so the multi-layer shadow respects the rounded corners.
-    base: "overflow-hidden",
+    base: "overflow-hidden transition-background duration-fast",
     variants: {
       size: {
         xs: "p-sm rounded-xs",
@@ -1093,6 +1095,22 @@ const StoryGrid = {
   Row: StoryGridRow,
   Col: StoryGridCol
 };
+
+function StableAccentScope({
+  mode: forcedMode,
+  accent,
+  children
+}) {
+  const currentTheme = useCurrentTheme();
+  const currentMode = useCurrentMode();
+  return /* @__PURE__ */ jsx(
+    ScopedTheme,
+    {
+      theme: accent ? `${forcedMode ?? currentMode}_${accent}` : currentTheme,
+      children
+    }
+  );
+}
 
 function joinClasses(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -2570,9 +2588,11 @@ function Select({
 
 function FormItem({
   label,
+  details,
   error,
   isRequiredError,
   required,
+  indented,
   onLabelPress,
   render
 }) {
@@ -2609,19 +2629,22 @@ function FormItem({
     return null;
   })();
   return /* @__PURE__ */ jsxs(VStack, { className: "gap-xxs", children: [
-    /* @__PURE__ */ jsx(Pressable, { onPress: onLabelPress, children: /* @__PURE__ */ jsxs(HStack, { className: "gap-xxs items-center", children: [
-      /* @__PURE__ */ jsx(
-        Text,
-        {
-          nativeID: labelId,
-          accent: hasError ? "danger" : void 0,
-          className: `font-body-bold text-sm ${hasError ? "text-accent" : ""}`,
-          children: label
-        }
-      ),
-      marker ? /* @__PURE__ */ jsx(View, { "aria-hidden": true, children: hasError ? /* @__PURE__ */ jsx(AccentScope, { accent: "danger", children: marker }) : marker }) : null
+    /* @__PURE__ */ jsx(Pressable, { onPress: onLabelPress, children: /* @__PURE__ */ jsxs(VStack, { children: [
+      /* @__PURE__ */ jsxs(HStack, { className: "gap-xxs items-center", children: [
+        /* @__PURE__ */ jsx(
+          Text,
+          {
+            nativeID: labelId,
+            accent: hasError ? "danger" : void 0,
+            className: `font-body-bold text-md ${hasError ? "text-accent" : ""}`,
+            children: label
+          }
+        ),
+        marker ? /* @__PURE__ */ jsx(View, { "aria-hidden": true, children: hasError ? /* @__PURE__ */ jsx(AccentScope, { accent: "danger", children: marker }) : marker }) : null
+      ] }),
+      details ? /* @__PURE__ */ jsx(Text, { className: "text-muted text-sm", children: details }) : null
     ] }) }),
-    render(labelId),
+    indented ? /* @__PURE__ */ jsx(View, { className: "border-l border-border-muted pl-m", children: render(labelId) }) : render(labelId),
     error ? /* @__PURE__ */ jsx(View, { className: "px-m", children: /* @__PURE__ */ jsx(Text, { role: "alert", accent: "danger", className: "text-accent text-sm", children: error }) }) : null
   ] });
 }
@@ -2684,6 +2707,103 @@ function FormField({
           }
         );
       }
+    }
+  );
+}
+
+function FormFieldArrayItem({
+  name,
+  itemLabel,
+  removeLabel,
+  index,
+  removable,
+  onRemove,
+  render
+}) {
+  const [pendingRemoval, setPendingRemoval] = useState(false);
+  return /* @__PURE__ */ jsx(StableAccentScope, { accent: pendingRemoval ? "danger" : void 0, children: /* @__PURE__ */ jsxs(HStack, { className: "gap-sm items-center p-xxs", children: [
+    /* @__PURE__ */ jsx(View, { className: "grow shrink basis-0", children: render({ name, index, label: itemLabel }) }),
+    removable ? /* @__PURE__ */ jsx(
+      IconButton,
+      {
+        variant: "ghost",
+        icon: /* @__PURE__ */ jsx(TrashRegularIcon, {}),
+        "aria-label": removeLabel,
+        onHoverIn: () => {
+          setPendingRemoval(true);
+        },
+        onHoverOut: () => {
+          setPendingRemoval(false);
+        },
+        onPress: onRemove
+      }
+    ) : null
+  ] }) });
+}
+function FormFieldArray({
+  name,
+  label,
+  details,
+  emptyValue,
+  minSize = 0,
+  addLabel = "Add item",
+  disableAdd,
+  removeLabel = (itemLabel) => `Remove ${itemLabel}`,
+  render
+}) {
+  const { control } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name
+  });
+  const paddedRef = useRef(false);
+  useEffect(() => {
+    if (paddedRef.current) return;
+    paddedRef.current = true;
+    const shortfall = minSize - fields.length;
+    if (shortfall > 0) {
+      append(
+        Array.from({ length: shortfall }, () => emptyValue),
+        { shouldFocus: false }
+      );
+    }
+  }, [append, emptyValue, fields.length, minSize]);
+  return /* @__PURE__ */ jsx(
+    FormItem,
+    {
+      label,
+      details,
+      render: () => /* @__PURE__ */ jsxs(VStack, { className: "gap-xs", children: [
+        fields.map((field, index) => /* @__PURE__ */ jsx(
+          FormFieldArrayItem,
+          {
+            name: `${name}.${index}`,
+            itemLabel: `${label} ${index + 1}`,
+            removeLabel: removeLabel(`${label} ${index + 1}`),
+            index,
+            removable: index >= minSize,
+            render,
+            onRemove: () => {
+              remove(index);
+            }
+          },
+          field.id
+        )),
+        /* @__PURE__ */ jsx(
+          Button,
+          {
+            size: "sm",
+            variant: "outlined",
+            icon: /* @__PURE__ */ jsx(PlusRegularIcon, {}),
+            text: addLabel,
+            className: "self-start",
+            disabled: disableAdd,
+            onPress: () => {
+              append(emptyValue);
+            }
+          }
+        )
+      ] })
     }
   );
 }
@@ -3025,5 +3145,5 @@ function ExternalLink({
   );
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ExternalLink, ExternalLinkButton, FlatList, Form, FormField, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useThemeToken };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ExternalLink, ExternalLinkButton, FlatList, Form, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useThemeToken };
 //# sourceMappingURL=index-browser.es.js.map

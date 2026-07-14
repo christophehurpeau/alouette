@@ -52,8 +52,9 @@
       }
     },
     "./metro.cjs": "./metro.cjs",
-    "./src/global.css": {
+    "./global.css": {
       "style": "./src/global.css",
+      "import": "./src/global.css",
       "default": "./src/global.css"
     }
   },
