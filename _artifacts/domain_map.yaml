@@ -144,11 +144,12 @@ skills:
   - name: 'Theme with modes and accents'
     slug: 'alouette-theming'
     domain: 'theming'
-    description: 'Re-theme a subtree with accents (brand/danger/info/success/warning) and light/dark modes. Use the accent prop or AccentScope/ScopedTheme; children always consume base tokens (bg-surface, text-accent, border-muted). Read tokens in JS with useThemeToken; read mode with useCurrentMode.'
+    description: 'Re-theme a subtree with accents (brand/danger/info/success/warning) and light/dark modes. Use the accent prop or AccentScope/ScopedTheme; children always consume base tokens (bg-surface, text-accent, border-muted). For an accent that toggles at runtime without remounting the subtree, use StableAccentScope. Read tokens in JS with useThemeToken; read mode with useCurrentMode.'
     type: 'core'
     packages: ['alouette']
     covers:
       - 'AccentScope'
+      - 'StableAccentScope'
       - 'ScopedTheme'
       - 'accent prop'
       - 'base tokens vs role tokens'
@@ -196,6 +197,19 @@ skills:
         correct_pattern: |
           <Text accent="brand" className="text-accent">Title</Text>
         source: 'packages/alouette/src/ui/primitives/Text.tsx, ui/containers/AccentScope.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Using AccentScope for an accent that toggles at runtime'
+        mechanism: 'AccentScope only renders its ScopedTheme wrapper when accent is set, returning children unwrapped otherwise, so toggling accent mounts or unmounts that wrapper in either direction and remounts the subtree, dropping focus from any input inside. StableAccentScope always keeps ScopedTheme mounted and falls back to the inherited theme when accent is unset, so toggling only changes the theme prop.'
+        wrong_pattern: |
+          <AccentScope accent={hovered ? "danger" : undefined}>
+            <RowContent />
+          </AccentScope>
+        correct_pattern: |
+          <StableAccentScope accent={hovered ? "danger" : undefined}>
+            <RowContent />
+          </StableAccentScope>
+        source: 'packages/alouette/src/ui/containers/StableAccentScope.tsx'
         priority: 'MEDIUM'
         status: 'active'
       - mistake: 'Using nativewind useUnstableNativeVariable for token values'

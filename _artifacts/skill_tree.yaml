@@ -46,10 +46,11 @@ skills:
     domain: 'theming'
     path: 'packages/alouette/skills/alouette-theming/SKILL.md'
     package: 'packages/alouette'
-    description: 'Re-theme a subtree with accents (brand/danger/info/success/warning) and light/dark modes via the accent prop, AccentScope, or ScopedTheme; children consume base tokens (bg-surface, text-accent, border-muted). Read tokens in JS with useThemeToken, mode with useCurrentMode. Load when applying colors, accents, or dark mode.'
+    description: 'Re-theme a subtree with accents (brand/danger/info/success/warning) and light/dark modes via the accent prop, AccentScope, or ScopedTheme; children consume base tokens (bg-surface, text-accent, border-muted). For an accent that toggles at runtime without remounting the subtree, use StableAccentScope. Read tokens in JS with useThemeToken, mode with useCurrentMode. Load when applying colors, accents, or dark mode.'
     requires: []
     sources:
       - 'christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/containers/ScopedTheme.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/core/AlouetteConfig.ts'
       - 'christophehurpeau/alouette:packages/alouette/src/core/useThemeToken.ts'
@@ -127,18 +128,21 @@ skills:
     domain: 'forms'
     path: 'packages/alouette/skills/alouette-forms-composition/SKILL.md'
     package: 'packages/alouette'
-    description: 'Build validated forms on react-hook-form: Form owns the instance and exposes submit() via render prop (no control passing); FormField wires a Controller to FormItem label/error/required layout and renders any input via render; FormSubmitButton (ActionButton) drives loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage is required; FormValidationError distinguishes invalid fields from an onSubmit failure. Load when building a validated form.'
+    description: 'Build validated forms on react-hook-form: Form owns the instance and exposes submit() via render prop (no control passing); FormField wires a Controller to FormItem label/error/required layout and renders any input via render; FormFieldArray wraps useFieldArray for repeatable item lists with add/remove buttons; FormSubmitButton (ActionButton) drives loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage is required; FormValidationError distinguishes invalid fields from an onSubmit failure. Load when building a validated form.'
     requires:
       - 'alouette-forms'
       - 'alouette-actions'
+      - 'alouette-theming'
     sources:
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/Form.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/FormItem.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/FormFieldArray.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/FormSubmitButton.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.stories.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.stories.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/FormFieldArray.stories.tsx'
 
   - name: 'alouette-feedback'
     slug: 'alouette-feedback'

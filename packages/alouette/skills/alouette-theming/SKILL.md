@@ -5,13 +5,16 @@ description: >
   light/dark modes. Use the accent prop, AccentScope, or ScopedTheme; children
   always consume base tokens (bg-surface, text-accent, text-sharp, text-muted,
   border-muted). Read token values in JS with useThemeToken; read the current
-  mode with useCurrentMode. Load when applying colors, accents, dark mode, or
-  reading a theme color for a non-className prop.
+  mode with useCurrentMode. For an accent that toggles at runtime (e.g. on
+  hover) without remounting the subtree, use StableAccentScope instead of
+  AccentScope. Load when applying colors, accents, dark mode, or reading a
+  theme color for a non-className prop.
 type: core
 library: alouette
 library_version: "20.4.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/ScopedTheme.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteConfig.ts"
   - "christophehurpeau/alouette:packages/alouette/src/core/useThemeToken.ts"
@@ -87,6 +90,22 @@ import { useCurrentMode, useCurrentTheme } from "alouette";
 
 const mode = useCurrentMode();   // "light" | "dark"
 const theme = useCurrentTheme(); // e.g. "dark_brand"
+```
+
+### Toggle an accent without remounting the subtree
+
+```tsx
+import { StableAccentScope } from "alouette";
+
+const [pendingRemoval, setPendingRemoval] = useState(false);
+
+<StableAccentScope accent={pendingRemoval ? "danger" : undefined}>
+  <IconButton
+    onHoverIn={() => setPendingRemoval(true)}
+    onHoverOut={() => setPendingRemoval(false)}
+    onPress={onRemove}
+  />
+</StableAccentScope>;
 ```
 
 ## Common Mistakes
@@ -200,6 +219,34 @@ follow a `var()` that points at another `var()`. alouette sub-themes use
 concrete hex values per mode+accent for this reason.
 
 Source: CLAUDE.md (Native constraint: no CSS variable chains)
+
+### MEDIUM Using AccentScope for an accent that toggles at runtime
+
+Wrong:
+
+```tsx
+<AccentScope accent={hovered ? "danger" : undefined}>
+  <RowContent />
+</AccentScope>
+```
+
+Correct:
+
+```tsx
+<StableAccentScope accent={hovered ? "danger" : undefined}>
+  <RowContent />
+</StableAccentScope>
+```
+
+`AccentScope` only renders its `ScopedTheme` wrapper when `accent` is set —
+it returns `children` unwrapped otherwise. Toggling `accent` therefore mounts
+or unmounts that wrapper in either direction, remounting the subtree and
+dropping focus from any input inside. `StableAccentScope` always keeps
+`ScopedTheme` mounted, falling back to the inherited theme when `accent` is
+unset, so toggling only changes the theme prop. Prefer `AccentScope`
+when the accent is fixed; reach for `StableAccentScope` only when it toggles.
+
+Source: packages/alouette/src/ui/containers/StableAccentScope.tsx
 
 ## References
 
