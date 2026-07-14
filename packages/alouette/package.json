@@ -23,6 +23,7 @@
     "src",
     "dist",
     "bin",
+    "skills",
     "metro.cjs"
   ],
   "type": "module",
