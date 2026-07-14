@@ -3,6 +3,7 @@ import { type ReactNode, useId } from "react";
 import { Pressable, Modal as RNModal, useWindowDimensions } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { useCurrentMode } from "../../core/ThemeContext";
 import { IconButton } from "../actions/IconButton";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { ScrollView } from "../primitives/ScrollView";
@@ -111,15 +112,16 @@ export function Modal({
 }: ModalProps): ReactNode {
   const { height: windowHeight } = useWindowDimensions();
   const titleId = useId();
+  const currentMode = useCurrentMode(); // because of the portal we need to reapply the mode
 
   return (
-    <AccentScope accent={accent}>
-      <RNModal
-        transparent
-        visible={visible}
-        animationType="fade"
-        onRequestClose={onClose}
-      >
+    <RNModal
+      transparent
+      visible={visible}
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <AccentScope accent={accent} mode={currentMode}>
         <View className="flex-1 flex-center p-l">
           {/* Backdrop is an absolutely-filled sibling behind the panel, so it
               catches outside clicks without wrapping the panel — clicks inside
@@ -191,7 +193,7 @@ export function Modal({
             </Surface>
           </View>
         </View>
-      </RNModal>
-    </AccentScope>
+      </AccentScope>
+    </RNModal>
   );
 }

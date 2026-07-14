@@ -1934,14 +1934,15 @@ function Modal({
 }) {
   const { height: windowHeight } = reactNative.useWindowDimensions();
   const titleId = react.useId();
-  return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(
+  const currentMode = useCurrentMode();
+  return /* @__PURE__ */ jsxRuntime.jsx(
     reactNative.Modal,
     {
       transparent: true,
       visible,
       animationType: "fade",
       onRequestClose: onClose,
-      children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: "flex-1 flex-center p-l", children: [
+      children: /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, mode: currentMode, children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: "flex-1 flex-center p-l", children: [
         /* @__PURE__ */ jsxRuntime.jsx(
           reactNative.Pressable,
           {
@@ -2004,9 +2005,9 @@ function Modal({
             )
           }
         )
-      ] })
+      ] }) })
     }
-  ) });
+  );
 }
 
 function resolveVariant(props, accent) {

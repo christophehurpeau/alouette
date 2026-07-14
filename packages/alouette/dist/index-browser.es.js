@@ -1903,14 +1903,15 @@ function Modal({
 }) {
   const { height: windowHeight } = useWindowDimensions();
   const titleId = useId();
-  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(
+  const currentMode = useCurrentMode();
+  return /* @__PURE__ */ jsx(
     Modal$1,
     {
       transparent: true,
       visible,
       animationType: "fade",
       onRequestClose: onClose,
-      children: /* @__PURE__ */ jsxs(View, { className: "flex-1 flex-center p-l", children: [
+      children: /* @__PURE__ */ jsx(AccentScope, { accent, mode: currentMode, children: /* @__PURE__ */ jsxs(View, { className: "flex-1 flex-center p-l", children: [
         /* @__PURE__ */ jsx(
           Pressable,
           {
@@ -1973,9 +1974,9 @@ function Modal({
             )
           }
         )
-      ] })
+      ] }) })
     }
-  ) });
+  );
 }
 
 function resolveVariant(props, accent) {
