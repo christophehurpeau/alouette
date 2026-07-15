@@ -71,7 +71,7 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "4.3.1",
-    "alouette-icons": "10.0.1",
+    "alouette-icons": "workspace:*",
     "expo-web-browser": "~56.0.5",
     "react-hook-form": "7.81.0",
     "react-native-safe-area-context": "5.7.0",
@@ -97,7 +97,7 @@
     "typescript": "6.0.3"
   },
   "peerDependencies": {
-    "alouette-icons": "*",
+    "alouette-icons": "workspace:*",
     "expo-web-browser": "*",
     "nativewind": "5.0.0-preview.4",
     "react": "^19.2.3",

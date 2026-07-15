@@ -4,6 +4,7 @@ import pobTypescriptReactConfig, {
   applyTs,
 } from "@pob/eslint-config-typescript-react";
 // import checkPackageDependenciesEslintPlugin from "check-package-dependencies/eslint-plugin";
+import checkPackageDependenciesEslintPlugin from "check-package-dependencies/eslint-plugin";
 import storybook from "eslint-plugin-storybook";
 
 const { configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig();
@@ -28,7 +29,6 @@ export default [
   ...pobTypescriptReactConfigs.node,
   ...pobTypescriptReactConfigs.allowUnsafe,
   ...pobTypescriptReactConfigs.allowImplicitReturnType,
-  // checkPackageDependenciesEslintPlugin.configs["recommended-library"],
   ...applyTs({
     mode: "directory",
     files: ["packages/storybook-app/"],
@@ -86,4 +86,27 @@ export default [
     },
   },
   ...storybook.configs["flat/recommended"],
+  checkPackageDependenciesEslintPlugin.configs["recommended-library"],
+  {
+    files: ["**/storybook-native-app/package.json"],
+    rules: {
+      "check-package-dependencies/direct-duplicate-dependencies": [
+        "error",
+        {
+          onlyWarnsFor: {
+            vite: ["lightningcss"],
+            "vite-plugin-rnw": ["@vitejs/plugin-react"],
+          },
+        },
+      ],
+      "check-package-dependencies/direct-peer-dependencies": [
+        "error",
+        {
+          onlyWarnsFor: {
+            "vite-plugin-rnw": ["typescript"],
+          },
+        },
+      ],
+    },
+  },
 ];
