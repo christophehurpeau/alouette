@@ -10,7 +10,7 @@ import { ScrollView } from "../primitives/ScrollView";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { HStack, VStack } from "../stacks/stacks";
-import { AccentScope } from "./AccentScope";
+import { StableAccentScope } from "./StableAccentScope";
 import { Surface } from "./Surface";
 
 const panelVariants = tv(
@@ -121,7 +121,7 @@ export function Modal({
       animationType="fade"
       onRequestClose={onClose}
     >
-      <AccentScope accent={accent} mode={currentMode}>
+      <StableAccentScope accent={accent} mode={currentMode}>
         <View className="flex-1 flex-center p-l">
           {/* Backdrop is an absolutely-filled sibling behind the panel, so it
               catches outside clicks without wrapping the panel — clicks inside
@@ -193,7 +193,7 @@ export function Modal({
             </Surface>
           </View>
         </View>
-      </AccentScope>
+      </StableAccentScope>
     </RNModal>
   );
 }

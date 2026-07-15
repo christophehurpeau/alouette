@@ -1911,7 +1911,7 @@ function Modal({
       visible,
       animationType: "fade",
       onRequestClose: onClose,
-      children: /* @__PURE__ */ jsx(AccentScope, { accent, mode: currentMode, children: /* @__PURE__ */ jsxs(View, { className: "flex-1 flex-center p-l", children: [
+      children: /* @__PURE__ */ jsx(StableAccentScope, { accent, mode: currentMode, children: /* @__PURE__ */ jsxs(View, { className: "flex-1 flex-center p-l", children: [
         /* @__PURE__ */ jsx(
           Pressable,
           {

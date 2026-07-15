@@ -1942,7 +1942,7 @@ function Modal({
       visible,
       animationType: "fade",
       onRequestClose: onClose,
-      children: /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, mode: currentMode, children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: "flex-1 flex-center p-l", children: [
+      children: /* @__PURE__ */ jsxRuntime.jsx(StableAccentScope, { accent, mode: currentMode, children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: "flex-1 flex-center p-l", children: [
         /* @__PURE__ */ jsxRuntime.jsx(
           reactNative.Pressable,
           {
