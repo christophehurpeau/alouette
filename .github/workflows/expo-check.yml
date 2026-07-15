@@ -25,4 +25,4 @@ jobs:
 
       - name: Expo Doctor
         working-directory: packages/storybook-native-app
-        run: pnpm dlx expo-doctor
+        run: pnpm expo install --check
