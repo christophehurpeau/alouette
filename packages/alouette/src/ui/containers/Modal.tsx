@@ -17,7 +17,7 @@ const panelVariants = tv(
   {
     // w-full so the panel shrinks on small screens (the backdrop padding keeps a
     // margin); max-w caps it on wide viewports.
-    base: "w-full",
+    base: "w-full max-h-full",
     variants: {
       size: {
         sm: "max-w-[360px]",

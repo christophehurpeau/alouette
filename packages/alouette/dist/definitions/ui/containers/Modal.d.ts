@@ -8,7 +8,7 @@ declare const panelVariants: import("tailwind-variants").TVReturnType<{
         md: string;
         lg: string;
     };
-}, undefined, "w-full", {
+}, undefined, "w-full max-h-full", {
     size: {
         sm: string;
         md: string;
@@ -20,7 +20,7 @@ declare const panelVariants: import("tailwind-variants").TVReturnType<{
         md: string;
         lg: string;
     };
-}, undefined, "w-full", unknown, unknown, undefined>>;
+}, undefined, "w-full max-h-full", unknown, unknown, undefined>>;
 type PanelVariantProps = VariantProps<typeof panelVariants>;
 interface ModalBaseProps {
     /** Whether the modal is shown. */
