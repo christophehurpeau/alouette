@@ -146,50 +146,53 @@ export function Modal({
               variant="highlight"
               size={size}
               shadow="l"
-              className="relative gap-m"
+              className="relative"
             >
-              {title === undefined && icon === undefined ? null : (
-                <HStack
-                  className={`items-center gap-xs ${
-                    hideCloseButton ? "" : titleReserveVariants({ size })
-                  }`}
-                >
-                  {icon === undefined ? null : (
-                    <Icon icon={icon} size={24} className="text-accent" />
-                  )}
-                  {title === undefined ? null : (
-                    <Text
-                      nativeID={titleId}
-                      className="shrink font-heading-bold text-xl leading-tight text-sharp"
-                    >
-                      {title}
-                    </Text>
-                  )}
-                </HStack>
-              )}
-
               {hideCloseButton ? null : (
                 <IconButton
                   icon={<XRegularIcon />}
                   variant="ghost"
                   size={size === "lg" ? "md" : size}
                   aria-label={closeButtonAriaLabel}
-                  className="absolute right-sm top-sm"
+                  className="absolute right-sm top-sm z-10"
                   onPress={onClose}
                 />
               )}
 
               {/* Pixel maxHeight (not a %) so the ScrollView sizes to its
-                  content and only scrolls once it exceeds ~70% of the screen. */}
+                  content and only scrolls once it exceeds ~70% of the screen.
+                  Header and footer live inside so the whole panel scrolls. */}
               <ScrollView style={{ maxHeight: windowHeight * 0.7 }}>
-                <VStack className="gap-m">{children}</VStack>
-              </ScrollView>
+                <VStack className="gap-m">
+                  {title === undefined && icon === undefined ? null : (
+                    <HStack
+                      className={`items-center gap-xs ${
+                        hideCloseButton ? "" : titleReserveVariants({ size })
+                      }`}
+                    >
+                      {icon === undefined ? null : (
+                        <Icon icon={icon} size={24} className="text-accent" />
+                      )}
+                      {title === undefined ? null : (
+                        <Text
+                          nativeID={titleId}
+                          className="shrink font-heading-bold text-xl leading-tight text-sharp"
+                        >
+                          {title}
+                        </Text>
+                      )}
+                    </HStack>
+                  )}
 
-              {footer === undefined ? null : (
-                <HStack className="items-center justify-end gap-m">
-                  {footer}
-                </HStack>
-              )}
+                  {children}
+
+                  {footer === undefined ? null : (
+                    <HStack className="items-center justify-end gap-m">
+                      {footer}
+                    </HStack>
+                  )}
+                </VStack>
+              </ScrollView>
             </Surface>
           </View>
         </View>

@@ -143,17 +143,6 @@ export const Variants: ThisStory = {
               </Paragraph>
             </ModalDemo>
           </StoryGrid.Col>
-
-          <StoryGrid.Col title="Scrolling body">
-            <ModalDemo title="Terms" triggerLabel="Long content">
-              {Array.from({ length: 12 }, (_, index) => (
-                <Paragraph key={index}>
-                  Paragraph {index + 1}. The body scrolls once it exceeds ~70%
-                  of the viewport height, keeping the header and footer visible.
-                </Paragraph>
-              ))}
-            </ModalDemo>
-          </StoryGrid.Col>
         </StoryGrid.Row>
       </Story.Section>
 
@@ -187,6 +176,55 @@ export const Variants: ThisStory = {
       </Story.Section>
     </Story>
   ),
+};
+
+export const ScrollingBodyStory: ThisStory = {
+  name: "Scrolling body",
+  render: () => (
+    <ModalDemo title="Terms" triggerLabel="Long content">
+      {Array.from({ length: 12 }, (_, index) => (
+        <Paragraph key={index}>
+          Paragraph {index + 1}. The whole panel scrolls once it exceeds ~70% of
+          the viewport height — title, body, and footer are all part of the
+          scroll region.
+        </Paragraph>
+      ))}
+    </ModalDemo>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Long content" }));
+    await screen.findByRole("dialog");
+  },
+};
+
+export const ScrollingBodyWithFooterStory: ThisStory = {
+  name: "Scrolling body with footer",
+  render: () => (
+    <ModalDemo
+      title="Terms of service"
+      triggerLabel="Long content"
+      footer={
+        <>
+          <Button variant="outlined" text="Decline" onPress={fn()} />
+          <Button text="Accept" onPress={fn()} />
+        </>
+      }
+    >
+      {Array.from({ length: 12 }, (_, index) => (
+        <Paragraph key={index}>
+          Paragraph {index + 1}. The whole panel scrolls once it exceeds ~70% of
+          the viewport height — title, body, and footer are all part of the
+          scroll region.
+        </Paragraph>
+      ))}
+    </ModalDemo>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Long content" }));
+    await screen.findByRole("dialog");
+  },
 };
 
 export const Tests: StoryObj<typeof Modal> = {

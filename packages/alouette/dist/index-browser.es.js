@@ -1937,25 +1937,8 @@ function Modal({
                 variant: "highlight",
                 size,
                 shadow: "l",
-                className: "relative gap-m",
+                className: "relative",
                 children: [
-                  title === void 0 && icon === void 0 ? null : /* @__PURE__ */ jsxs(
-                    HStack,
-                    {
-                      className: `items-center gap-xs ${hideCloseButton ? "" : titleReserveVariants({ size })}`,
-                      children: [
-                        icon === void 0 ? null : /* @__PURE__ */ jsx(Icon, { icon, size: 24, className: "text-accent" }),
-                        title === void 0 ? null : /* @__PURE__ */ jsx(
-                          Text,
-                          {
-                            nativeID: titleId,
-                            className: "shrink font-heading-bold text-xl leading-tight text-sharp",
-                            children: title
-                          }
-                        )
-                      ]
-                    }
-                  ),
                   hideCloseButton ? null : /* @__PURE__ */ jsx(
                     IconButton,
                     {
@@ -1963,12 +1946,31 @@ function Modal({
                       variant: "ghost",
                       size: size === "lg" ? "md" : size,
                       "aria-label": closeButtonAriaLabel,
-                      className: "absolute right-sm top-sm",
+                      className: "absolute right-sm top-sm z-10",
                       onPress: onClose
                     }
                   ),
-                  /* @__PURE__ */ jsx(ScrollView, { style: { maxHeight: windowHeight * 0.7 }, children: /* @__PURE__ */ jsx(VStack, { className: "gap-m", children }) }),
-                  footer === void 0 ? null : /* @__PURE__ */ jsx(HStack, { className: "items-center justify-end gap-m", children: footer })
+                  /* @__PURE__ */ jsx(ScrollView, { style: { maxHeight: windowHeight * 0.7 }, children: /* @__PURE__ */ jsxs(VStack, { className: "gap-m", children: [
+                    title === void 0 && icon === void 0 ? null : /* @__PURE__ */ jsxs(
+                      HStack,
+                      {
+                        className: `items-center gap-xs ${hideCloseButton ? "" : titleReserveVariants({ size })}`,
+                        children: [
+                          icon === void 0 ? null : /* @__PURE__ */ jsx(Icon, { icon, size: 24, className: "text-accent" }),
+                          title === void 0 ? null : /* @__PURE__ */ jsx(
+                            Text,
+                            {
+                              nativeID: titleId,
+                              className: "shrink font-heading-bold text-xl leading-tight text-sharp",
+                              children: title
+                            }
+                          )
+                        ]
+                      }
+                    ),
+                    children,
+                    footer === void 0 ? null : /* @__PURE__ */ jsx(HStack, { className: "items-center justify-end gap-m", children: footer })
+                  ] }) })
                 ]
               }
             )

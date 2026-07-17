@@ -27,5 +27,7 @@ declare const _default: {
 export default _default;
 export declare const PreviewModalStory: ThisStory;
 export declare const Variants: ThisStory;
+export declare const ScrollingBodyStory: ThisStory;
+export declare const ScrollingBodyWithFooterStory: ThisStory;
 export declare const Tests: StoryObj<typeof Modal>;
 //# sourceMappingURL=Modal.stories.d.ts.map
