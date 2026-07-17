@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [20.6.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.5.1...alouette@20.6.0) (2026-07-17)
+
+### Features
+
+* expose ErrorMessage
+* **Modal:** enhance scrolling behavior and improve layout structure
+
+### Bug Fixes
+
+* **Modal:** update base class to include max height for better responsiveness
+* replace AccentScope with StableAccentScope in Modal component for improved stability
+
 ## [20.5.1](https://github.com/christophehurpeau/alouette/compare/alouette@20.5.0...alouette@20.5.1) (2026-07-15)
 
 ### Bug Fixes
