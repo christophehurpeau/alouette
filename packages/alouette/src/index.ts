@@ -125,6 +125,7 @@ export type {
 export { CircularProgress } from "./ui/feedback/CircularProgress";
 export type { MessageProps } from "./ui/feedback/Message";
 export {
+  ErrorMessage,
   ConfirmationMessage,
   InfoMessage,
   Message,

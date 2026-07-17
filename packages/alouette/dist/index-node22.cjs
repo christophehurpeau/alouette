@@ -3204,6 +3204,7 @@ exports.Button = Button;
 exports.CircularProgress = CircularProgress;
 exports.ConfirmationMessage = ConfirmationMessage;
 exports.ConnectionState = ConnectionState;
+exports.ErrorMessage = ErrorMessage;
 exports.ExternalLink = ExternalLink;
 exports.ExternalLinkButton = ExternalLinkButton;
 exports.FlatList = FlatList;

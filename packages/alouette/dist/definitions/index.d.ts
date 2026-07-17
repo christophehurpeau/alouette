@@ -85,7 +85,7 @@ export { LinearProgress } from "./ui/feedback/LinearProgress";
 export type { CircularProgressProps, CircularProgressSize, IndeterminateCircularProgressProps, } from "./ui/feedback/CircularProgress";
 export { CircularProgress } from "./ui/feedback/CircularProgress";
 export type { MessageProps } from "./ui/feedback/Message";
-export { ConfirmationMessage, InfoMessage, Message, WarningMessage, } from "./ui/feedback/Message";
+export { ErrorMessage, ConfirmationMessage, InfoMessage, Message, WarningMessage, } from "./ui/feedback/Message";
 export type { PressableListItemProps } from "./ui/data/PressableListItem";
 export { PressableListItem } from "./ui/data/PressableListItem";
 export type { GradientBackgroundProps } from "./ui/layout/GradientBackground";
