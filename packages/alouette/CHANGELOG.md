@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [20.7.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.6.0...alouette@20.7.0) (2026-07-19)
+
+### Features
+
+* **Radio:** add Radio, RadioButton, and RadioGroup components with context support
+* refactor color token management and remove deprecated interactive accent tokens
+* **Surface:** add 'xxs' size variant for improved layout options
+
+### Bug Fixes
+
+* update color values for interactive elements and grayscale scales
+
 ## [20.6.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.5.1...alouette@20.6.0) (2026-07-17)
 
 ### Features
