@@ -34,7 +34,10 @@ const step = (
   alpha?: string,
 ): TokenResolver => {
   return ({ mode }) => {
-    const resolved: TokenStep = { source, step: mode === "dark" ? dark : light };
+    const resolved: TokenStep = {
+      source,
+      step: mode === "dark" ? dark : light,
+    };
     if (alpha) resolved.alpha = alpha;
     return resolved;
   };
@@ -119,7 +122,10 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
 
   /* texts */
   sharp: self(11),
-  accent: ({ isGrayscale }) => ({ source: "self", step: isGrayscale ? 11 : 10 }),
+  accent: ({ isGrayscale }) => ({
+    source: "self",
+    step: isGrayscale ? 11 : 10,
+  }),
   "accent-muted": self(10, 9),
   "on-accent": ({ mode, isGrayscale }) =>
     isGrayscale
@@ -150,5 +156,8 @@ export const resolveTokenEffective = (
   token: string,
   ctx: TokenContext,
 ): ResolvedToken => {
-  return resolveToken(token, ctx) ?? resolveToken(token, { ...ctx, isGrayscale: true })!;
+  return (
+    resolveToken(token, ctx) ??
+    resolveToken(token, { ...ctx, isGrayscale: true })!
+  );
 };

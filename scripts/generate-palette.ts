@@ -253,9 +253,21 @@ if (
     palette[step as keyof ColorScale];
 
   const tokenPairs: { label: string; fg: string; bg: string }[] = [
-    { label: "Badge solid          (sharp / highlight-accent)", fg: "sharp", bg: "highlight-accent" },
-    { label: "Badge solid.enabled  (sharp / enabled)", fg: "sharp", bg: "enabled" },
-    { label: "Badge outlined       (accent / surface)", fg: "accent", bg: "surface" },
+    {
+      label: "Badge solid          (sharp / highlight-accent)",
+      fg: "sharp",
+      bg: "highlight-accent",
+    },
+    {
+      label: "Badge solid.enabled  (sharp / enabled)",
+      fg: "sharp",
+      bg: "enabled",
+    },
+    {
+      label: "Badge outlined       (accent / surface)",
+      fg: "accent",
+      bg: "surface",
+    },
     { label: "text-sharp on surface", fg: "sharp", bg: "surface" },
     { label: "text-sharp on screen", fg: "sharp", bg: "screen" },
     { label: "text-sharp on highlight", fg: "sharp", bg: "highlight" },
@@ -265,12 +277,22 @@ if (
     { label: "muted on highlight", fg: "muted", bg: "highlight" },
     { label: "accent on screen", fg: "accent", bg: "screen" },
     { label: "accent on highlight", fg: "accent", bg: "highlight" },
-    { label: "on-accent on contained fill (rest)", fg: "on-accent", bg: "interactive-contained-pressable" },
-    { label: "on-accent on contained fill (active)", fg: "on-accent", bg: "interactive-contained-active" },
+    {
+      label: "on-accent on contained fill (rest)",
+      fg: "on-accent",
+      bg: "interactive-contained-pressable",
+    },
+    {
+      label: "on-accent on contained fill (active)",
+      fg: "on-accent",
+      bg: "interactive-contained-active",
+    },
   ];
 
-  const grouped: Record<string, Partial<Record<"light" | "dark", ColorScale>>> =
-    {};
+  const grouped: Record<
+    string,
+    Partial<Record<"light" | "dark", ColorScale>>
+  > = {};
   Object.entries(palettes).forEach(([rawName, palette]) => {
     const [accent, mode] = rawName.replace(/"/g, "").split(".") as [
       string,
@@ -295,17 +317,35 @@ if (
       ? "lit"
       : `${resolved.source === "grayscale" ? "g" : ""}${resolved.step}`;
 
+  // Only failing pairs (< AA 4.5) are shown by default; pass --all to list every
+  // pair including the passing ones.
+  const showAllPairs = process.argv.includes("--all");
+
   const displayTokenPairs = (accent: string, mode: "light" | "dark") => {
     const isGrayscale = accent === "grayscale";
+    const rows = tokenPairs
+      .map(({ label, fg, bg }) => {
+        const fgResolved = resolveTokenEffective(fg, { mode, isGrayscale });
+        const bgResolved = resolveTokenEffective(bg, { mode, isGrayscale });
+        const fgHex = tokenColor(fgResolved, accent, mode);
+        const bgHex = tokenColor(bgResolved, accent, mode);
+        return {
+          label,
+          fgResolved,
+          bgResolved,
+          fgHex,
+          bgHex,
+          ratio: getContrastRatio(fgHex, bgHex),
+        };
+      })
+      .filter((row) => showAllPairs || row.ratio < WCAG_AA_NORMAL);
+
+    if (rows.length === 0) return;
+
     console.log(
       `\n${ansiColors.bright}${accent}.${mode} — token pairs:${ansiColors.reset}`,
     );
-    tokenPairs.forEach(({ label, fg, bg }) => {
-      const fgResolved = resolveTokenEffective(fg, { mode, isGrayscale });
-      const bgResolved = resolveTokenEffective(bg, { mode, isGrayscale });
-      const fgHex = tokenColor(fgResolved, accent, mode);
-      const bgHex = tokenColor(bgResolved, accent, mode);
-      const ratio = getContrastRatio(fgHex, bgHex);
+    rows.forEach(({ label, fgResolved, bgResolved, fgHex, bgHex, ratio }) => {
       console.log(
         [
           ` ${getContrastGrade(ratio)}`,
@@ -320,7 +360,9 @@ if (
   };
 
   console.log(
-    `\n${ansiColors.bright}=== Composed token pairs (normal text: AA 4.5, AAA 7) ===${ansiColors.reset}`,
+    `\n${ansiColors.bright}=== Composed token pairs (normal text: AA 4.5, AAA 7)${
+      showAllPairs ? "" : " — failures only, --all for every pair"
+    } ===${ansiColors.reset}`,
   );
   Object.entries(grouped).forEach(([accent, modes]) => {
     if (modes.light) displayTokenPairs(accent, "light");
