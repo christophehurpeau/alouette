@@ -16,7 +16,7 @@ export default {
       description: {
         component: `### Features
 - Surface backgrounds for elevation and layering
-- Variant: \`size\` controls padding + radius (xs | sm | md | lg)
+- Variant: \`size\` controls padding + radius (xxs | xs | sm | md | lg)
 - Variant: \`shadow\` controls elevation (s | m | l)
 - Variant: \`lowered\` pairs layer="lowered" with shadow="lowered"
 
@@ -92,6 +92,11 @@ export const VariantsSurfaceStory: ThisStory = {
       </Story.Section>
       <Story.Section title="Sizes">
         <StoryGrid.Row flexWrap>
+          <StoryGrid.Col title="xxs">
+            <Surface size="xxs">
+              <Text>size="xxs"</Text>
+            </Surface>
+          </StoryGrid.Col>
           <StoryGrid.Col title="xs">
             <Surface size="xs">
               <Text>size="xs"</Text>

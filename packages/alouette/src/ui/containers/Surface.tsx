@@ -11,6 +11,7 @@ const surfaceVariants = tv(
     base: "overflow-hidden transition-background duration-fast",
     variants: {
       size: {
+        xxs: "p-xs rounded-xs",
         xs: "p-sm rounded-xs",
         sm: "p-m rounded-sm",
         md: "p-xl rounded-sm",
