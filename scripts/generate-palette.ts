@@ -1,5 +1,7 @@
 import convert from "color-convert";
 import fs from "node:fs";
+import type { ResolvedToken } from "../packages/alouette/scripts/tokenScaleMap.ts";
+import { resolveTokenEffective } from "../packages/alouette/scripts/tokenScaleMap.ts";
 
 type ColorScale = Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11, string>;
 
@@ -240,5 +242,88 @@ if (
 
   Object.entries(palettes).forEach(([name, palette]) => {
     displayPalette(name, palette);
+  });
+
+  // Real composed token pairs, not step-vs-proxy checks: each pair names an
+  // actual fg-on-bg combination the design system renders. The scale steps and
+  // source palette come from the shared tokenScaleMap (same table build-css.ts
+  // emits from), so these can never drift from the tokens. Badge/body text is
+  // normal text, so AA needs 4.5:1.
+  const at = (palette: ColorScale, step: number) =>
+    palette[step as keyof ColorScale];
+
+  const tokenPairs: { label: string; fg: string; bg: string }[] = [
+    { label: "Badge solid          (sharp / highlight-accent)", fg: "sharp", bg: "highlight-accent" },
+    { label: "Badge solid.enabled  (sharp / enabled)", fg: "sharp", bg: "enabled" },
+    { label: "Badge outlined       (accent / surface)", fg: "accent", bg: "surface" },
+    { label: "text-sharp on surface", fg: "sharp", bg: "surface" },
+    { label: "text-sharp on screen", fg: "sharp", bg: "screen" },
+    { label: "text-sharp on highlight", fg: "sharp", bg: "highlight" },
+    { label: "accent-muted on surface", fg: "accent-muted", bg: "surface" },
+    { label: "muted on surface", fg: "muted", bg: "surface" },
+    { label: "muted on screen", fg: "muted", bg: "screen" },
+    { label: "muted on highlight", fg: "muted", bg: "highlight" },
+    { label: "accent on screen", fg: "accent", bg: "screen" },
+    { label: "accent on highlight", fg: "accent", bg: "highlight" },
+    { label: "on-accent on contained fill (rest)", fg: "on-accent", bg: "interactive-contained-pressable" },
+    { label: "on-accent on contained fill (active)", fg: "on-accent", bg: "interactive-contained-active" },
+  ];
+
+  const grouped: Record<string, Partial<Record<"light" | "dark", ColorScale>>> =
+    {};
+  Object.entries(palettes).forEach(([rawName, palette]) => {
+    const [accent, mode] = rawName.replace(/"/g, "").split(".") as [
+      string,
+      "light" | "dark",
+    ];
+    (grouped[accent] ??= {})[mode] = palette;
+  });
+
+  const tokenColor = (
+    resolved: ResolvedToken,
+    accent: string,
+    mode: "light" | "dark",
+  ) => {
+    if ("literal" in resolved) return resolved.literal;
+    const source = resolved.source === "grayscale" ? "grayscale" : accent;
+    const hex = at(grouped[source]![mode]!, resolved.step);
+    return resolved.alpha ? hex + resolved.alpha : hex;
+  };
+
+  const stepDesc = (resolved: ResolvedToken) =>
+    "literal" in resolved
+      ? "lit"
+      : `${resolved.source === "grayscale" ? "g" : ""}${resolved.step}`;
+
+  const displayTokenPairs = (accent: string, mode: "light" | "dark") => {
+    const isGrayscale = accent === "grayscale";
+    console.log(
+      `\n${ansiColors.bright}${accent}.${mode} — token pairs:${ansiColors.reset}`,
+    );
+    tokenPairs.forEach(({ label, fg, bg }) => {
+      const fgResolved = resolveTokenEffective(fg, { mode, isGrayscale });
+      const bgResolved = resolveTokenEffective(bg, { mode, isGrayscale });
+      const fgHex = tokenColor(fgResolved, accent, mode);
+      const bgHex = tokenColor(bgResolved, accent, mode);
+      const ratio = getContrastRatio(fgHex, bgHex);
+      console.log(
+        [
+          ` ${getContrastGrade(ratio)}`,
+          ratio.toFixed(2).padStart(6),
+          displayColorSwatch(fgHex, "██"),
+          "on",
+          displayColorSwatch(bgHex, "██"),
+          `${label} (${stepDesc(fgResolved)}/${stepDesc(bgResolved)})`,
+        ].join(" "),
+      );
+    });
+  };
+
+  console.log(
+    `\n${ansiColors.bright}=== Composed token pairs (normal text: AA 4.5, AAA 7) ===${ansiColors.reset}`,
+  );
+  Object.entries(grouped).forEach(([accent, modes]) => {
+    if (modes.light) displayTokenPairs(accent, "light");
+    if (modes.dark) displayTokenPairs(accent, "dark");
   });
 }

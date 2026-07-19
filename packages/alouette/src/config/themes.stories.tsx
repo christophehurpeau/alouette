@@ -115,7 +115,6 @@ function ThemeTokens({ themeMode }: ThemeTokensProps): ReactNode {
         <TokenGroup group="Interactive">
           <TokenSwatch token="interactive-link-disabled" />
           <TokenSwatch token="interactive-contained-disabled" />
-          <TokenSwatch token="interactive-accent-contained-bg-disabled" />
           <TokenSwatch token="interactive-outlined-disabled" />
           <TokenSwatch token="interactive-accent-outlined-border-disabled" />
         </TokenGroup>

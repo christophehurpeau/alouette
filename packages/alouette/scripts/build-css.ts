@@ -14,8 +14,9 @@ import { writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defaultColorScales } from "../src/config/defaultColorScales.ts";
+import type { Mode, ScaleNum } from "./tokenScaleMap.ts";
+import { tokenScaleMap } from "./tokenScaleMap.ts";
 
-type Mode = "dark" | "light";
 type AccentName =
   | "brand"
   | "danger"
@@ -23,7 +24,6 @@ type AccentName =
   | "info"
   | "success"
   | "warning";
-type ScaleNum = 1 | 10 | 11 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 const accentNames: AccentName[] = [
   "grayscale", //equivalent to default
@@ -66,15 +66,7 @@ const accentTokenSuffixes = [
   "on-accent",
   "on-accent-muted",
   "selection",
-  // legacy tokens (kept until components are updated)
-  "interactive-accent-contained-bg",
-  "interactive-accent-contained-bg-hover",
-  "interactive-accent-contained-bg-focus",
-  "interactive-accent-contained-bg-active",
 ] as const;
-
-const TRANSLUCENT_DARK = "#1f1e1e55";
-const TRANSLUCENT_LIGHT = "#ffffff66";
 
 // Dark and light scales are inverted, so many tokens need different scale numbers per mode.
 function color(
@@ -88,104 +80,30 @@ function color(
   ];
 }
 
-function grayForMode(
-  mode: Mode,
-  scaleDark: ScaleNum,
-  scaleLight: ScaleNum,
-): string {
-  return color(mode, "grayscale", scaleDark, scaleLight);
-}
-
+// Token scale steps live in tokenScaleMap (shared with the contrast audit); here
+// we resolve each token's step to a concrete color for this mode/accent.
 function buildThemeVars(
   mode: Mode,
   accentName: AccentName,
 ): Record<string, string> {
-  const scale = (scaleDark: ScaleNum, scaleLight: ScaleNum = scaleDark) =>
-    color(mode, accentName, scaleDark, scaleLight);
-
-  const grayScale = (scaleDark: ScaleNum, scaleLight: ScaleNum = scaleDark) =>
-    grayForMode(mode, scaleDark, scaleLight);
-  const name = (name: string) => name; // if we later need to suffix for accents, we can do it here
-
   const isGrayscale = accentName === "grayscale";
+  const vars: Record<string, string> = {};
 
-  const bgScreen = scale(2, 3); // bottom dark = 6% light = 92/86%
-  const bgSurface = scale(3, 2); // middle dark = 12% light = 96/92%
-  const bgHighlight = scale(4, 1); // top or raised dark = 16% light = 100/96%
+  for (const [token, resolver] of Object.entries(tokenScaleMap)) {
+    const resolved = resolver({ mode, isGrayscale });
+    if (!resolved) continue;
 
-  return {
-    ...(isGrayscale
-      ? {
-          translucent: mode === "dark" ? TRANSLUCENT_DARK : TRANSLUCENT_LIGHT,
-          "disabled-sharp": grayScale(9, 9),
-          "disabled-muted": grayScale(9, 7),
-          "disabled-interactive": grayScale(7, 6),
-          "disabled-interactive-muted": grayScale(4, 4),
-          ["muted"]: grayScale(10, 10), // rest dark = 68% light = 30%
+    vars[token] =
+      "literal" in resolved
+        ? resolved.literal
+        : color(
+            mode,
+            resolved.source === "grayscale" ? "grayscale" : accentName,
+            resolved.step,
+          ) + (resolved.alpha ?? "");
+  }
 
-          "form-border-disabled": grayScale(7, 6),
-          "form-placeholder": grayScale(9, 9),
-          "form-disabled-text": grayScale(10, 10),
-
-          "interactive-contained-disabled": grayScale(5, 5),
-          "interactive-outlined-disabled": grayScale(6, 6),
-          "interactive-accent-contained-bg-disabled": grayScale(5, 3),
-          "interactive-accent-outlined-disabled": grayScale(6, 6),
-        }
-      : {}),
-
-    /* backgrounds */
-    [name("screen")]: bgScreen,
-    [name("surface")]: bgSurface,
-    [name("highlight")]: bgHighlight,
-    [name("enabled")]: scale(7, 5),
-    [name("highlight-accent")]: scale(4),
-    [name("lowered")]: scale(1, 4), // deep, combine with deep shadow dark = 0% light = 82%
-    [name("screen-gradient-start")]: scale(3, 4),
-    [name("screen-gradient-middle")]: scale(2, 5),
-    [name("screen-gradient-end")]: scale(1, 6),
-
-    /* borders */
-
-    [name("border-muted")]: scale(7),
-    [name("border-sharp")]: scale(9),
-
-    /* interactive */
-
-    [name("interactive-contained-pressable")]: scale(6, isGrayscale ? 1 : 9),
-    [name("interactive-contained-hover")]: scale(7, isGrayscale ? 2 : 8),
-    [name("interactive-contained-focus")]: scale(7, isGrayscale ? 2 : 8),
-    [name("interactive-contained-active")]: scale(7, isGrayscale ? 3 : 7),
-
-    [name("interactive-outlined-pressable")]: scale(7, 9),
-    [name("interactive-outlined-hover")]: scale(9, 7),
-    [name("interactive-outlined-focus")]: scale(9, 7),
-    [name("interactive-outlined-active")]: scale(9, 7),
-    [name("interactive-outlined-outline-focus")]: scale(7),
-
-    [name("interactive-active")]: scale(9),
-    [name("interactive-pressable")]: scale(10),
-    [name("interactive-hover")]: scale(11),
-
-    /* texts */
-    [name("sharp")]: scale(11), // headings, buttons, and important text dark = 96% light = 5%
-    [name("accent")]: isGrayscale ? scale(11) : scale(10), // same as sharp in default theme, same as muted in colored themes
-    [name("accent-muted")]: scale(10, 9),
-    [name("on-accent")]: isGrayscale ? scale(11) : grayScale(11, 1),
-    [name("on-accent-muted")]: isGrayscale ? scale(10, 9) : scale(10, 4),
-
-    /* specials */
-    [name("selection")]: scale(10) + "40",
-
-    /* LEGACY TO REMOVE */
-
-    /* interactive */
-
-    [name("interactive-accent-contained-bg")]: scale(6, 3),
-    [name("interactive-accent-contained-bg-hover")]: scale(7, 2),
-    [name("interactive-accent-contained-bg-focus")]: scale(7, 2),
-    [name("interactive-accent-contained-bg-active")]: scale(7, 2),
-  };
+  return vars;
 }
 
 function emit(vars: Record<string, string>, indent: string): string {
