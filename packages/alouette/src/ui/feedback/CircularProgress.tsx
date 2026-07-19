@@ -81,7 +81,7 @@ export function CircularProgress({
           <Icon
             icon={trackRing}
             size={diameter}
-            className="text-highlight-accent"
+            className="text-border-muted"
           />
         </View>
         <View className="absolute inset-0">

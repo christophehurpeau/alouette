@@ -26,8 +26,8 @@ const badgeVariants = tv(
         },
         "solid.enabled": {
           frame: "bg-enabled",
-          text: "text-sharp",
-          icon: "text-sharp",
+          text: "text-on-accent",
+          icon: "text-on-accent",
         },
         outlined: {
           frame: "border border-accent",

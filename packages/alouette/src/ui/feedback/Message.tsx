@@ -68,7 +68,7 @@ export function Message({
     <AccentScope accent={accent}>
       <Box className={`shadow-m ${messageFrameVariants({ size })}`}>
         <Icon icon={icon} size={ICON_SIZE[size]} className="text-accent" />
-        <Text className="text-accent grow">{children}</Text>
+        <Text className="text-sharp grow">{children}</Text>
         {onDismiss ? (
           <Box
             style={{ width: dismissDiameter, height: dismissDiameter }}

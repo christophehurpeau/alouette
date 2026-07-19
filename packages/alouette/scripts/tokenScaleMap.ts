@@ -6,6 +6,10 @@
 // step for this mode), a `{ literal }` (a fixed value), or `null` when the
 // token is not emitted for the given accent.
 
+import type { AccentName } from "./paletteSpecs.ts";
+
+export type { AccentName } from "./paletteSpecs.ts";
+
 export type Mode = "dark" | "light";
 export type ScaleNum = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
@@ -22,7 +26,9 @@ export type ResolvedToken = TokenStep | TokenLiteral;
 export interface TokenContext {
   mode: Mode;
   isGrayscale: boolean;
+  accent: AccentName;
 }
+
 export type TokenResolver = (ctx: TokenContext) => ResolvedToken | null;
 
 // `self` reads the accent's own palette; `gray` always reads grayscale (base
@@ -47,6 +53,21 @@ const self = (dark: ScaleNum, light: ScaleNum = dark, alpha?: string) =>
   step("self", dark, light, alpha);
 const gray = (dark: ScaleNum, light: ScaleNum = dark) =>
   step("grayscale", dark, light);
+// Branches on both grayscale/colored and dark/light mode.
+const selfAdaptive =
+  (
+    grayscaleDark: ScaleNum,
+    coloredDark: ScaleNum,
+    grayscaleLight: ScaleNum = grayscaleDark,
+    coloredLight: ScaleNum = coloredDark,
+  ): TokenResolver =>
+  ({ isGrayscale, mode }) => ({
+    source: "self",
+    step: (() => {
+      if (mode === "dark") return isGrayscale ? grayscaleDark : coloredDark;
+      return isGrayscale ? grayscaleLight : coloredLight;
+    })(),
+  });
 
 // Emitted only in the grayscale theme; colored sub-themes inherit the value
 // through the CSS cascade (they never override it).
@@ -65,23 +86,30 @@ const translucent: Record<Mode, string> = {
 export const tokenScaleMap: Record<string, TokenResolver> = {
   /* grayscale-only base tokens */
   translucent: grayscaleOnly(({ mode }) => ({ literal: translucent[mode] })),
+
+  /* grayscale-only backgrounds */
+  screen: grayscaleOnly(self(2, 3)),
+  highlight: grayscaleOnly(self(4, 1)),
+
+  /* grayscale-only texts */
   "disabled-sharp": grayscaleOnly(gray(9, 9)),
   "disabled-muted": grayscaleOnly(gray(9, 7)),
   "disabled-interactive": grayscaleOnly(gray(7, 6)),
   "disabled-interactive-muted": grayscaleOnly(gray(4, 4)),
-  muted: grayscaleOnly(gray(10, 10)),
+  sharp: grayscaleOnly(gray(10, 11)),
+  muted: grayscaleOnly(gray(9, 10)),
+
+  /* grayscale-only unsorted */
   "form-border-disabled": grayscaleOnly(gray(7, 6)),
-  "form-placeholder": grayscaleOnly(gray(9, 9)),
-  "form-disabled-text": grayscaleOnly(gray(10, 10)),
+  "form-placeholder": grayscaleOnly(gray(8, 9)),
+  "form-disabled-text": grayscaleOnly(gray(9, 10)),
   "interactive-contained-disabled": grayscaleOnly(gray(5, 5)),
   "interactive-outlined-disabled": grayscaleOnly(gray(6, 6)),
   "interactive-accent-outlined-disabled": grayscaleOnly(gray(6, 6)),
 
   /* backgrounds */
-  screen: self(2, 3),
   surface: self(3, 2),
-  highlight: self(4, 1),
-  enabled: self(7, 5),
+  enabled: self(7, 9),
   "highlight-accent": self(4),
   lowered: self(1, 4),
   "screen-gradient-start": self(3, 4),
@@ -89,52 +117,32 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
   "screen-gradient-end": self(1, 6),
 
   /* borders */
-  "border-muted": self(7),
-  "border-sharp": self(9),
+  "border-muted": self(7, 5),
+  "border-sharp": self(8, 9),
 
   /* interactive */
-  "interactive-contained-pressable": ({ mode, isGrayscale }) => ({
-    source: "self",
-    step: mode === "dark" ? 6 : isGrayscale ? 1 : 9,
-  }),
-  "interactive-contained-hover": ({ mode, isGrayscale }) => ({
-    source: "self",
-    step: mode === "dark" ? 7 : isGrayscale ? 2 : 8,
-  }),
-  "interactive-contained-focus": ({ mode, isGrayscale }) => ({
-    source: "self",
-    step: mode === "dark" ? 7 : isGrayscale ? 2 : 8,
-  }),
-  "interactive-contained-active": ({ mode, isGrayscale }) => ({
-    source: "self",
-    step: mode === "dark" ? 7 : isGrayscale ? 3 : 7,
-  }),
+  "interactive-contained-pressable": selfAdaptive(6, 6, 1, 9),
+  "interactive-contained-hover": selfAdaptive(7, 7, 2, 8),
+  "interactive-contained-focus": selfAdaptive(7, 7, 2, 8),
+  "interactive-contained-active": selfAdaptive(7, 7, 3, 7),
 
   "interactive-outlined-pressable": self(7, 9),
-  "interactive-outlined-hover": self(9, 7),
-  "interactive-outlined-focus": self(9, 7),
-  "interactive-outlined-active": self(9, 7),
-  "interactive-outlined-outline-focus": self(7),
+  "interactive-outlined-hover": self(8, 7),
+  "interactive-outlined-focus": self(8, 7),
+  "interactive-outlined-active": self(8, 7),
+  "interactive-outlined-outline-focus": self(8, 7),
 
   "interactive-active": self(9),
   "interactive-pressable": self(10),
   "interactive-hover": self(11),
 
   /* texts */
-  sharp: self(11),
-  accent: ({ isGrayscale }) => ({
-    source: "self",
-    step: isGrayscale ? 11 : 10,
+  accent: selfAdaptive(11, 10),
+  "on-accent": ({ isGrayscale, mode }) => ({
+    source: "grayscale",
+    step: mode === "dark" ? 11 : isGrayscale ? 11 : 1,
   }),
-  "accent-muted": self(10, 9),
-  "on-accent": ({ mode, isGrayscale }) =>
-    isGrayscale
-      ? { source: "self", step: 11 }
-      : { source: "grayscale", step: mode === "dark" ? 11 : 1 },
-  "on-accent-muted": ({ mode, isGrayscale }) => ({
-    source: "self",
-    step: mode === "dark" ? 10 : isGrayscale ? 9 : 4,
-  }),
+  "on-accent-muted": selfAdaptive(10, 10, 9, 4),
 
   /* specials */
   selection: self(10, 10, "40"),
@@ -158,6 +166,10 @@ export const resolveTokenEffective = (
 ): ResolvedToken => {
   return (
     resolveToken(token, ctx) ??
-    resolveToken(token, { ...ctx, isGrayscale: true })!
+    resolveToken(token, {
+      mode: ctx.mode,
+      isGrayscale: true,
+      accent: "grayscale",
+    })!
   );
 };

@@ -1,120 +1,114 @@
 import convert from "color-convert";
+import Color from "colorjs.io";
 import fs from "node:fs";
-import type { ResolvedToken } from "../packages/alouette/scripts/tokenScaleMap.ts";
+import type { PaletteSpec } from "../packages/alouette/scripts/paletteSpecs.ts";
+import { paletteSpecs } from "../packages/alouette/scripts/paletteSpecs.ts";
+import type {
+  AccentName,
+  ResolvedToken,
+} from "../packages/alouette/scripts/tokenScaleMap.ts";
 import { resolveTokenEffective } from "../packages/alouette/scripts/tokenScaleMap.ts";
 
 type ColorScale = Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11, string>;
 
-const createColorScale = (
-  baseColor: string,
-  hue: number,
-  kind: "dark" | "light",
-  { boostTextContrast = 0, boostLight = 0, boostDark = 0 } = {},
-): ColorScale => {
-  const hsl = convert.hex.hsl(baseColor);
-  if (hsl[0] !== hue) {
-    console.warn(`Hue mismatch: ${hsl[0]} !== ${hue}`);
-  }
+// Palettes are generated in OKLCH so a single lightness ramp is perceptually
+// uniform across every hue (HSL lightness is not — yellow at HSL L=56 reads far
+// brighter than blue at the same L, which is why the old per-hue lightness
+// tables existed). Chroma is specified *relative to the sRGB gamut*: each step
+// requests a fraction of the maximum chroma sRGB can render at that step's
+// lightness and hue. The fraction curve is shared by every palette and tiered
+// by usage (muted surface tints, medium highlight mids, near-vivid interactive
+// and text steps), so all hues are equally saturated relative to what's
+// possible — yellow is naturally vivid where its gamut is wide (high
+// lightness) and amber in shadow, with no per-palette chroma table.
 
-  const saturations =
-    hue === 0
-      ? {
-          dark: { standard: 0, medium: 0, moreSaturation: 0 },
-          light: { standard: 0, medium: 0, moreSaturation: 0 },
-        }
-      : {
-          dark: { standard: 56, medium: 72 + boostDark, moreSaturation: 88 },
-          light: { standard: 56, medium: 82 + boostLight, moreSaturation: 96 },
-        };
-
-  const lightnessSteps =
-    kind === "light"
-      ? [
-          hue === 0 ? 100 : 98,
-          hue === 0 ? 98 : 96, // hue === 0 ? 96 : 92,
-          92, // hue === 0 ? 92 : 86,
-          88, // hue === 0 ? 86 : 82,
-          78,
-          72,
-          56,
-          48,
-          38,
-          28,
-          8,
-        ]
-      : [
-          6,
-          12,
-          16,
-          hue === 0 ? 20 : 22,
-          hue === 0 ? 24 : 26,
-          hue === 0 ? 28 : 30,
-          hue === 0 ? 32 : 42,
-          52,
-          66,
-          76,
-          hue === 0 ? 96 : 92,
-        ];
-
-  const scale: ColorScale = {
-    1: `#${convert.hsl.hex([hue, saturations[kind].standard, lightnessSteps[0]])}`,
-    2: `#${convert.hsl.hex([hue, saturations[kind].standard, lightnessSteps[1]])}`,
-    3: `#${convert.hsl.hex([hue, saturations[kind].standard, lightnessSteps[2]])}`,
-    4: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[3]])}`,
-    5: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[4]])}`,
-    6: `#${convert.hsl.hex([hue, saturations[kind].medium, boostLight + lightnessSteps[5]])}`,
-    7: `#${convert.hsl.hex([hue, kind === "dark" ? saturations[kind].medium : saturations[kind].moreSaturation, boostLight + lightnessSteps[6]])}`,
-    8: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[7] + boostTextContrast])}`,
-    9: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[8] + boostTextContrast])}`,
-    10: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, boostLight + lightnessSteps[9] + boostTextContrast])}`,
-    11: `#${convert.hsl.hex([hue, saturations[kind].moreSaturation, lightnessSteps[10]])}`,
-  };
-
-  return scale;
+// step:                     1     2     3     4     5     6     7     8     9    10    11
+const lightnessRamps = {
+  grayscale: {
+    // only diff is on values 4-7 and 9-11
+    dark: [0.18, 0.22, 0.26, 0.28, 0.32, 0.38, 0.45, 0.795, 0.865, 0.96, 1],
+    // only diff is on the first 2 values
+    light: [1, 0.98, 0.948, 0.89, 0.85, 0.79, 0.61, 0.54, 0.48, 0.42, 0.27],
+  },
+  accent: {
+    dark: [0.18, 0.22, 0.26, 0.3, 0.34, 0.4, 0.5, 0.7, 0.82, 0.865, 0.955],
+    light: [
+      0.988, 0.968, 0.948, 0.89, 0.85, 0.79, 0.62, 0.54, 0.48, 0.42, 0.27,
+    ],
+  },
+  brightAccent: {
+    dark: [0.28, 0.32, 0.4, 0.45, 0.5, 0.53, 0.56, 0.8, 0.86, 0.9, 0.955],
+    light: [0.988, 0.968, 0.948, 0.928, 0.89, 0.82, 0.8, 0.6, 0.56, 0.44, 0.27],
+  },
+} as const;
+// Fraction of the max in-gamut chroma requested at each step. Usage tiers
+// mirror the old HSL generator's 56/82/96 saturation bands: steps 1-3 pale
+// surfaces, 4-6 highlight/message tints, 7-11 interactive fills and text.
+const relativeChromaCurve: Record<"dark" | "light", number[]> = {
+  dark: [0.6, 0.68, 0.72, 0.76, 0.78, 0.84, 0.88, 0.88, 0.85, 0.82, 0.86],
+  light: [0.5, 0.52, 0.55, 0.6, 0.75, 0.78, 0.92, 0.97, 0.97, 0.97, 0.95],
 };
 
-const createColorPalettes = (
-  name: string,
-  color: string,
-  hue: number,
-  { boostLightTextContrast = 0, boost = 0, boostLight = boost } = {},
-) => {
+// Largest OKLCH chroma still inside the sRGB gamut at this lightness/hue.
+const maxSrgbChroma = (lightness: number, hue: number): number => {
+  let low = 0;
+  let high = 0.5;
+  for (let i = 0; i < 20; i++) {
+    const mid = (low + high) / 2;
+    if (new Color("oklch", [lightness, mid, hue]).to("srgb").inGamut()) {
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+  return low;
+};
+
+const toHex = (lightness: number, chroma: number, hue: number): string => {
+  const color = new Color("oklch", [lightness, chroma, hue]).to("srgb");
+  const hex = color.toGamut({ method: "css" }).toString({ format: "hex" });
+  // colorjs collapses to 3-digit shorthand (#050); expand so appended alpha
+  // suffixes (e.g. selection = step + "40") stay valid 8-digit hex.
+  const full =
+    hex.length === 4
+      ? `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`
+      : hex;
+  return full.toUpperCase();
+};
+
+const createColorScale = (
+  spec: PaletteSpec,
+  kind: "dark" | "light",
+): ColorScale => {
+  const hueHi = spec.hueHi ?? spec.hue;
+  const hueLo = spec.hueLo ?? spec.hue;
+  const intensity = spec.intensity ?? 1;
+  const ramp = lightnessRamps[spec.type][kind];
+  const steps = ramp.map((lightness, index) => {
+    const hue = hueLo + (hueHi - hueLo) * lightness;
+    const chroma =
+      relativeChromaCurve[kind][index] *
+      intensity *
+      maxSrgbChroma(lightness, hue);
+    return toHex(lightness, chroma, hue);
+  });
+  return Object.fromEntries(
+    steps.map((hex, index) => [index + 1, hex]),
+  ) as unknown as ColorScale;
+};
+
+const createColorPalettes = (name: string, spec: PaletteSpec) => {
   return {
-    ['"' + name + '.light"']: createColorScale(color, hue, "light", {
-      boostTextContrast: boostLightTextContrast * -1, // we want less light to have more contrast
-      boostLight: boostLight,
-      boostDark: boost,
-    }),
-    ['"' + name + '.dark"']: createColorScale(color, hue, "dark", {
-      boostLight: boostLight,
-      boostDark: boost,
-    }),
+    ['"' + name + '.light"']: createColorScale(spec, "light"),
+    ['"' + name + '.dark"']: createColorScale(spec, "dark"),
   };
 };
 
 const generatePalettes = () => {
-  const palettes = {
-    ...createColorPalettes("grayscale", "#8e8e8e", 0),
-    ...createColorPalettes("brand", "#31a1c4", 194, {
-      boostLightTextContrast: 8,
-    }),
-    ...createColorPalettes("danger", "#b52a26", 2, {
-      boostLightTextContrast: 8,
-      boostLight: 2,
-    }),
-    ...createColorPalettes("info", "#2ac8ff", 195, {
-      boostLightTextContrast: 8,
-    }),
-    ...createColorPalettes("success", "#2ac82a", 120, {
-      boostLightTextContrast: 12,
-      boost: -2,
-    }),
-    ...createColorPalettes("warning", "#ffb72a", 40, {
-      boostLightTextContrast: 8,
-      boostLight: -2,
-    }),
-  };
-
+  const palettes: Record<string, ColorScale> = {};
+  for (const [name, spec] of Object.entries(paletteSpecs)) {
+    Object.assign(palettes, createColorPalettes(name, spec));
+  }
   return palettes;
 };
 
@@ -126,8 +120,8 @@ if (
   process.argv[2] === "--write"
 ) {
   let content = "/* eslint-disable import-x/extensions */\n";
-  content += "import { createColorScale } from './colorScales.ts';\n";
-  content += "import type { AlouetteColorScales } from './colorScales.ts';\n\n";
+  content += 'import { createColorScale } from "./colorScales.ts";\n';
+  content += 'import type { AlouetteColorScales } from "./colorScales.ts";\n\n';
   content += "export const defaultColorScales: AlouetteColorScales = {\n";
 
   Object.entries(palettes).forEach(([name, palette]) => {
@@ -194,48 +188,33 @@ if (
     return "❌ FAIL";
   };
 
-  const displayPalette = (name: string, palette: ColorScale) => {
-    const palettePageBackground = name.includes(".light")
-      ? "#ffffff"
-      : "#1f1e1e";
-    const paletteColorText = name.includes(".light") ? "#000000" : "#fdfdfd";
+  // Measured OKLCH lightness and relative chroma (fraction of the max
+  // in-gamut chroma at that lightness/hue) — the tuning axes of the generator.
+  const oklchDescription = (hex: string): string => {
+    const [rawLightness, rawChroma, rawHue] = new Color(hex).to("oklch").coords;
+    const lightness = rawLightness ?? 0;
+    const chroma = rawChroma ?? 0;
+    const hue = rawHue == null || Number.isNaN(rawHue) ? 0 : rawHue;
+    const max = maxSrgbChroma(lightness, hue);
+    const relative = max === 0 ? 0 : chroma / max;
+    return `L=${lightness.toFixed(2)} relC=${relative.toFixed(2)}`;
+  };
 
+  // Per-step readout is a tuning aid only (swatch + hex + the OKLCH axes the
+  // generator controls). Contrast is NOT graded per step: a single step serves
+  // several roles at once (step 9 light is a button fill, a border, and text),
+  // so no step-number threshold can pick "the" thing it contrasts against.
+  // Contrast is audited below on real composed token pairs instead.
+  const displayPalette = (name: string, palette: ColorScale) => {
     console.log(`\n${ansiColors.bright}${name}:${ansiColors.reset}`);
     Object.entries(palette).forEach(([step, color]) => {
-      const swatch = displayColorSwatch(color, "██");
-      const colorToCompareForStepBefore7 = paletteColorText;
-
-      const colorToCompareForStepAfter7 = palettePageBackground;
-
-      const highContrastColor = name.includes(".light") ? "#000000" : "#ffffff";
-
       console.log(
         [
           `  ${step.padStart(2, " ")}:`,
-          swatch,
+          displayColorSwatch(color, "██"),
           color,
-          ...[
-            getContrastGrade(
-              getContrastRatio(
-                color,
-                Number(step) < 7
-                  ? colorToCompareForStepBefore7
-                  : colorToCompareForStepAfter7,
-              ),
-            ),
-            ["3", "4", "5", "6", "7"].includes(step)
-              ? "/ vs high contrast: " +
-                getContrastGrade(getContrastRatio(color, highContrastColor))
-              : null,
-
-            ["8", "9", "10"].includes(step)
-              ? "/ vs .1: " +
-                getContrastGrade(getContrastRatio(color, palette["1"]))
-              : null,
-          ],
-        ]
-          .filter(Boolean)
-          .join(" "),
+          oklchDescription(color),
+        ].join(" "),
       );
     });
   };
@@ -254,13 +233,13 @@ if (
 
   const tokenPairs: { label: string; fg: string; bg: string }[] = [
     {
-      label: "Badge solid          (sharp / highlight-accent)",
+      label: "sharp on highlight-accent",
       fg: "sharp",
       bg: "highlight-accent",
     },
     {
-      label: "Badge solid.enabled  (sharp / enabled)",
-      fg: "sharp",
+      label: "on-accent on enabled",
+      fg: "on-accent",
       bg: "enabled",
     },
     {
@@ -268,25 +247,31 @@ if (
       fg: "accent",
       bg: "surface",
     },
-    { label: "text-sharp on surface", fg: "sharp", bg: "surface" },
-    { label: "text-sharp on screen", fg: "sharp", bg: "screen" },
-    { label: "text-sharp on highlight", fg: "sharp", bg: "highlight" },
-    { label: "accent-muted on surface", fg: "accent-muted", bg: "surface" },
+    { label: "sharp on surface", fg: "sharp", bg: "surface" },
+    { label: "sharp on screen", fg: "sharp", bg: "screen" },
+    { label: "sharp on highlight", fg: "sharp", bg: "highlight" },
     { label: "muted on surface", fg: "muted", bg: "surface" },
     { label: "muted on screen", fg: "muted", bg: "screen" },
     { label: "muted on highlight", fg: "muted", bg: "highlight" },
     { label: "accent on screen", fg: "accent", bg: "screen" },
+    { label: "accent on surface", fg: "accent", bg: "surface" },
     { label: "accent on highlight", fg: "accent", bg: "highlight" },
     {
-      label: "on-accent on contained fill (rest)",
+      label: "on-accent on contained",
       fg: "on-accent",
       bg: "interactive-contained-pressable",
     },
     {
-      label: "on-accent on contained fill (active)",
+      label: "on-accent on contained:hover",
       fg: "on-accent",
-      bg: "interactive-contained-active",
+      bg: "interactive-contained-hover",
     },
+    // ok if this fails.
+    // {
+    //   label: "on-accent on contained:active",
+    //   fg: "on-accent",
+    //   bg: "interactive-contained-active",
+    // },
   ];
 
   const grouped: Record<
@@ -321,12 +306,13 @@ if (
   // pair including the passing ones.
   const showAllPairs = process.argv.includes("--all");
 
-  const displayTokenPairs = (accent: string, mode: "light" | "dark") => {
+  const displayTokenPairs = (accent: AccentName, mode: "light" | "dark") => {
     const isGrayscale = accent === "grayscale";
+    const ctx = { mode, isGrayscale, accent };
     const rows = tokenPairs
       .map(({ label, fg, bg }) => {
-        const fgResolved = resolveTokenEffective(fg, { mode, isGrayscale });
-        const bgResolved = resolveTokenEffective(bg, { mode, isGrayscale });
+        const fgResolved = resolveTokenEffective(fg, ctx);
+        const bgResolved = resolveTokenEffective(bg, ctx);
         const fgHex = tokenColor(fgResolved, accent, mode);
         const bgHex = tokenColor(bgResolved, accent, mode);
         return {
@@ -353,7 +339,7 @@ if (
           displayColorSwatch(fgHex, "██"),
           "on",
           displayColorSwatch(bgHex, "██"),
-          `${label} (${stepDesc(fgResolved)}/${stepDesc(bgResolved)})`,
+          `: ${label} (${stepDesc(fgResolved)}/${stepDesc(bgResolved)})`,
         ].join(" "),
       );
     });
@@ -365,7 +351,7 @@ if (
     } ===${ansiColors.reset}`,
   );
   Object.entries(grouped).forEach(([accent, modes]) => {
-    if (modes.light) displayTokenPairs(accent, "light");
-    if (modes.dark) displayTokenPairs(accent, "dark");
+    if (modes.light) displayTokenPairs(accent as AccentName, "light");
+    if (modes.dark) displayTokenPairs(accent as AccentName, "dark");
   });
 }

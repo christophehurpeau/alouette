@@ -62,7 +62,6 @@ function AccentTokens({ accent }: AccentTokensProps): ReactNode {
       <TokenGroup group="Texts">
         <TokenSwatch token="sharp" />
         <TokenSwatch token="accent" />
-        <TokenSwatch token="accent-muted" />
         <TokenSwatch token="on-accent" />
         <TokenSwatch token="on-accent-muted" />
       </TokenGroup>

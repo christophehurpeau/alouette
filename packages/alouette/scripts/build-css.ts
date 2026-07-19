@@ -14,16 +14,8 @@ import { writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defaultColorScales } from "../src/config/defaultColorScales.ts";
-import type { Mode, ScaleNum } from "./tokenScaleMap.ts";
+import type { AccentName, Mode, ScaleNum } from "./tokenScaleMap.ts";
 import { tokenScaleMap } from "./tokenScaleMap.ts";
-
-type AccentName =
-  | "brand"
-  | "danger"
-  | "grayscale"
-  | "info"
-  | "success"
-  | "warning";
 
 const accentNames: AccentName[] = [
   "grayscale", //equivalent to default
@@ -33,40 +25,6 @@ const accentNames: AccentName[] = [
   "warning",
   "danger",
 ];
-
-// Suffixes shared by every accent (grayscale = the unprefixed base tokens).
-// Used to build light_{accent}/dark_{accent} sub-theme classes that remap base tokens
-// to hardcoded accent+mode values — no var() indirection, safe for native.
-const accentTokenSuffixes = [
-  "screen",
-  "surface",
-  "highlight",
-  "highlight-accent",
-  "lowered",
-  "screen-gradient-start",
-  "screen-gradient-middle",
-  "screen-gradient-end",
-  "border-muted",
-  "border-sharp",
-  "interactive-contained-pressable",
-  "interactive-contained-hover",
-  "interactive-contained-focus",
-  "interactive-contained-active",
-  "interactive-outlined-pressable",
-  "interactive-outlined-hover",
-  "interactive-outlined-focus",
-  "interactive-outlined-active",
-  "interactive-outlined-outline-focus",
-  "interactive-active",
-  "interactive-pressable",
-  "interactive-hover",
-  "sharp",
-  "accent",
-  "accent-muted",
-  "on-accent",
-  "on-accent-muted",
-  "selection",
-] as const;
 
 // Dark and light scales are inverted, so many tokens need different scale numbers per mode.
 function color(
@@ -90,7 +48,7 @@ function buildThemeVars(
   const vars: Record<string, string> = {};
 
   for (const [token, resolver] of Object.entries(tokenScaleMap)) {
-    const resolved = resolver({ mode, isGrayscale });
+    const resolved = resolver({ mode, isGrayscale, accent: accentName });
     if (!resolved) continue;
 
     vars[token] =
