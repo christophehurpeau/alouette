@@ -39,7 +39,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#474747",
     "--color-interactive-contained-disabled": "#C7C7C7",
     "--color-interactive-outlined-disabled": "#B8B8B8",
-    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
     "--color-interactive-accent-outlined-disabled": "#B8B8B8",
     "--color-screen": "#EBEBEB",
     "--color-surface": "#FAFAFA",
@@ -69,11 +68,7 @@ const themeVariables = {
     "--color-accent-muted": "#616161",
     "--color-on-accent": "#141414",
     "--color-on-accent-muted": "#616161",
-    "--color-selection": "#47474740",
-    "--color-interactive-accent-contained-bg": "#EBEBEB",
-    "--color-interactive-accent-contained-bg-hover": "#FAFAFA",
-    "--color-interactive-accent-contained-bg-focus": "#FAFAFA",
-    "--color-interactive-accent-contained-bg-active": "#FAFAFA"
+    "--color-selection": "#47474740"
   },
   "dark": {
     "--color-translucent": "#1f1e1e55",
@@ -87,7 +82,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#C2C2C2",
     "--color-interactive-contained-disabled": "#3D3D3D",
     "--color-interactive-outlined-disabled": "#474747",
-    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
     "--color-interactive-accent-outlined-disabled": "#474747",
     "--color-screen": "#1F1F1F",
     "--color-surface": "#292929",
@@ -117,11 +111,7 @@ const themeVariables = {
     "--color-accent-muted": "#C2C2C2",
     "--color-on-accent": "#F5F5F5",
     "--color-on-accent-muted": "#C2C2C2",
-    "--color-selection": "#C2C2C240",
-    "--color-interactive-accent-contained-bg": "#474747",
-    "--color-interactive-accent-contained-bg-hover": "#525252",
-    "--color-interactive-accent-contained-bg-focus": "#525252",
-    "--color-interactive-accent-contained-bg-active": "#525252"
+    "--color-selection": "#C2C2C240"
   },
   "light_brand": {
     "--color-translucent": "#ffffff66",
@@ -135,7 +125,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#474747",
     "--color-interactive-contained-disabled": "#C7C7C7",
     "--color-interactive-outlined-disabled": "#B8B8B8",
-    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
     "--color-interactive-accent-outlined-disabled": "#B8B8B8",
     "--color-screen": "#DFF1F6",
     "--color-surface": "#EFF8FB",
@@ -165,11 +154,7 @@ const themeVariables = {
     "--color-accent-muted": "#037496",
     "--color-on-accent": "#FFFFFF",
     "--color-on-accent-muted": "#C7EEF9",
-    "--color-selection": "#024D6440",
-    "--color-interactive-accent-contained-bg": "#DFF1F6",
-    "--color-interactive-accent-contained-bg-hover": "#EFF8FB",
-    "--color-interactive-accent-contained-bg-focus": "#EFF8FB",
-    "--color-interactive-accent-contained-bg-active": "#EFF8FB"
+    "--color-selection": "#024D6440"
   },
   "light_info": {
     "--color-translucent": "#ffffff66",
@@ -183,7 +168,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#474747",
     "--color-interactive-contained-disabled": "#C7C7C7",
     "--color-interactive-outlined-disabled": "#B8B8B8",
-    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
     "--color-interactive-accent-outlined-disabled": "#B8B8B8",
     "--color-screen": "#DFF0F6",
     "--color-surface": "#EFF8FB",
@@ -213,11 +197,7 @@ const themeVariables = {
     "--color-accent-muted": "#037196",
     "--color-on-accent": "#FFFFFF",
     "--color-on-accent-muted": "#C7EDF9",
-    "--color-selection": "#024B6440",
-    "--color-interactive-accent-contained-bg": "#DFF0F6",
-    "--color-interactive-accent-contained-bg-hover": "#EFF8FB",
-    "--color-interactive-accent-contained-bg-focus": "#EFF8FB",
-    "--color-interactive-accent-contained-bg-active": "#EFF8FB"
+    "--color-selection": "#024B6440"
   },
   "light_success": {
     "--color-translucent": "#ffffff66",
@@ -231,7 +211,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#474747",
     "--color-interactive-contained-disabled": "#C7C7C7",
     "--color-interactive-outlined-disabled": "#B8B8B8",
-    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
     "--color-interactive-accent-outlined-disabled": "#B8B8B8",
     "--color-screen": "#DFF6DF",
     "--color-surface": "#EFFBEF",
@@ -261,11 +240,7 @@ const themeVariables = {
     "--color-accent-muted": "#027802",
     "--color-on-accent": "#FFFFFF",
     "--color-on-accent-muted": "#BFF8BF",
-    "--color-selection": "#01460140",
-    "--color-interactive-accent-contained-bg": "#DFF6DF",
-    "--color-interactive-accent-contained-bg-hover": "#EFFBEF",
-    "--color-interactive-accent-contained-bg-focus": "#EFFBEF",
-    "--color-interactive-accent-contained-bg-active": "#EFFBEF"
+    "--color-selection": "#01460140"
   },
   "light_warning": {
     "--color-translucent": "#ffffff66",
@@ -279,7 +254,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#474747",
     "--color-interactive-contained-disabled": "#C7C7C7",
     "--color-interactive-outlined-disabled": "#B8B8B8",
-    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
     "--color-interactive-accent-outlined-disabled": "#B8B8B8",
     "--color-screen": "#F6EEDF",
     "--color-surface": "#FBF7EF",
@@ -309,11 +283,7 @@ const themeVariables = {
     "--color-accent-muted": "#8C5E03",
     "--color-on-accent": "#FFFFFF",
     "--color-on-accent-muted": "#F8E5BF",
-    "--color-selection": "#5A3D0240",
-    "--color-interactive-accent-contained-bg": "#F6EEDF",
-    "--color-interactive-accent-contained-bg-hover": "#FBF7EF",
-    "--color-interactive-accent-contained-bg-focus": "#FBF7EF",
-    "--color-interactive-accent-contained-bg-active": "#FBF7EF"
+    "--color-selection": "#5A3D0240"
   },
   "light_danger": {
     "--color-translucent": "#ffffff66",
@@ -327,7 +297,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#474747",
     "--color-interactive-contained-disabled": "#C7C7C7",
     "--color-interactive-outlined-disabled": "#B8B8B8",
-    "--color-interactive-accent-contained-bg-disabled": "#EBEBEB",
     "--color-interactive-accent-outlined-disabled": "#B8B8B8",
     "--color-screen": "#F6E0DF",
     "--color-surface": "#FBEFEF",
@@ -357,11 +326,7 @@ const themeVariables = {
     "--color-accent-muted": "#A00803",
     "--color-on-accent": "#FFFFFF",
     "--color-on-accent-muted": "#FBD2D0",
-    "--color-selection": "#6E060240",
-    "--color-interactive-accent-contained-bg": "#F6E0DF",
-    "--color-interactive-accent-contained-bg-hover": "#FBEFEF",
-    "--color-interactive-accent-contained-bg-focus": "#FBEFEF",
-    "--color-interactive-accent-contained-bg-active": "#FBEFEF"
+    "--color-selection": "#6E060240"
   },
   "dark_brand": {
     "--color-translucent": "#1f1e1e55",
@@ -375,7 +340,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#C2C2C2",
     "--color-interactive-contained-disabled": "#3D3D3D",
     "--color-interactive-outlined-disabled": "#474747",
-    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
     "--color-interactive-accent-outlined-disabled": "#474747",
     "--color-screen": "#0D2830",
     "--color-surface": "#123540",
@@ -405,11 +369,7 @@ const themeVariables = {
     "--color-accent-muted": "#8CDFF8",
     "--color-on-accent": "#F5F5F5",
     "--color-on-accent-muted": "#8CDFF8",
-    "--color-selection": "#8CDFF840",
-    "--color-interactive-accent-contained-bg": "#156A84",
-    "--color-interactive-accent-contained-bg-hover": "#1E94B8",
-    "--color-interactive-accent-contained-bg-focus": "#1E94B8",
-    "--color-interactive-accent-contained-bg-active": "#1E94B8"
+    "--color-selection": "#8CDFF840"
   },
   "dark_info": {
     "--color-translucent": "#1f1e1e55",
@@ -423,7 +383,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#C2C2C2",
     "--color-interactive-contained-disabled": "#3D3D3D",
     "--color-interactive-outlined-disabled": "#474747",
-    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
     "--color-interactive-accent-outlined-disabled": "#474747",
     "--color-screen": "#0D2730",
     "--color-surface": "#123440",
@@ -453,11 +412,7 @@ const themeVariables = {
     "--color-accent-muted": "#8CDDF8",
     "--color-on-accent": "#F5F5F5",
     "--color-on-accent-muted": "#8CDDF8",
-    "--color-selection": "#8CDDF840",
-    "--color-interactive-accent-contained-bg": "#156884",
-    "--color-interactive-accent-contained-bg-hover": "#1E92B8",
-    "--color-interactive-accent-contained-bg-focus": "#1E92B8",
-    "--color-interactive-accent-contained-bg-active": "#1E92B8"
+    "--color-selection": "#8CDDF840"
   },
   "dark_success": {
     "--color-translucent": "#1f1e1e55",
@@ -471,7 +426,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#C2C2C2",
     "--color-interactive-contained-disabled": "#3D3D3D",
     "--color-interactive-outlined-disabled": "#474747",
-    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
     "--color-interactive-accent-outlined-disabled": "#474747",
     "--color-screen": "#0D300D",
     "--color-surface": "#124012",
@@ -501,11 +455,7 @@ const themeVariables = {
     "--color-accent-muted": "#82F782",
     "--color-on-accent": "#F5F5F5",
     "--color-on-accent-muted": "#82F782",
-    "--color-selection": "#82F78240",
-    "--color-interactive-accent-contained-bg": "#157915",
-    "--color-interactive-accent-contained-bg-hover": "#1FAD1F",
-    "--color-interactive-accent-contained-bg-focus": "#1FAD1F",
-    "--color-interactive-accent-contained-bg-active": "#1FAD1F"
+    "--color-selection": "#82F78240"
   },
   "dark_warning": {
     "--color-translucent": "#1f1e1e55",
@@ -519,7 +469,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#C2C2C2",
     "--color-interactive-contained-disabled": "#3D3D3D",
     "--color-interactive-outlined-disabled": "#474747",
-    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
     "--color-interactive-accent-outlined-disabled": "#474747",
     "--color-screen": "#30240D",
     "--color-surface": "#403012",
@@ -549,11 +498,7 @@ const themeVariables = {
     "--color-accent-muted": "#F7D082",
     "--color-on-accent": "#F5F5F5",
     "--color-on-accent-muted": "#F7D082",
-    "--color-selection": "#F7D08240",
-    "--color-interactive-accent-contained-bg": "#7B5914",
-    "--color-interactive-accent-contained-bg-hover": "#AF7E1D",
-    "--color-interactive-accent-contained-bg-focus": "#AF7E1D",
-    "--color-interactive-accent-contained-bg-active": "#AF7E1D"
+    "--color-selection": "#F7D08240"
   },
   "dark_danger": {
     "--color-translucent": "#1f1e1e55",
@@ -567,7 +512,6 @@ const themeVariables = {
     "--color-form-disabled-text": "#C2C2C2",
     "--color-interactive-contained-disabled": "#3D3D3D",
     "--color-interactive-outlined-disabled": "#474747",
-    "--color-interactive-accent-contained-bg-disabled": "#3D3D3D",
     "--color-interactive-accent-outlined-disabled": "#474747",
     "--color-screen": "#300F0D",
     "--color-surface": "#401312",
@@ -597,11 +541,7 @@ const themeVariables = {
     "--color-accent-muted": "#F89996",
     "--color-on-accent": "#F5F5F5",
     "--color-on-accent-muted": "#F89996",
-    "--color-selection": "#F8999640",
-    "--color-interactive-accent-contained-bg": "#8C1B17",
-    "--color-interactive-accent-contained-bg-hover": "#C1251F",
-    "--color-interactive-accent-contained-bg-focus": "#C1251F",
-    "--color-interactive-accent-contained-bg-active": "#C1251F"
+    "--color-selection": "#F8999640"
   }
 };
 
