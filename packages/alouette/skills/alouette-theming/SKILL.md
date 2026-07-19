@@ -11,7 +11,7 @@ description: >
   theme color for a non-className prop.
 type: core
 library: alouette
-library_version: "20.4.0"
+library_version: "20.6.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx"

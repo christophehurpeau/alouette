@@ -8,7 +8,7 @@ description: >
   when rendering any text; avoids font-bold and raw color classes.
 type: core
 library: alouette
-library_version: "20.4.0"
+library_version: "20.6.0"
 requires:
   - alouette-theming
 sources:

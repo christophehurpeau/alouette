@@ -7,7 +7,7 @@
 
 library:
   name: 'alouette'
-  version: '20.4.0'
+  version: '20.6.0'
   repository: 'https://github.com/christophehurpeau/alouette'
   description: 'Multi-platform (web + React Native iOS/Android) React design system built on NativeWind v5 and Tailwind CSS v4, styled entirely via className with semantic theme tokens and CSS-driven animations.'
   primary_framework: 'React / React Native'
@@ -34,7 +34,7 @@ domains:
     description: 'Buttons, icon buttons, link buttons, and pressable surfaces with interactive token states.'
   - name: 'Form inputs'
     slug: 'forms'
-    description: 'Text inputs, text areas, and switches with controlled/uncontrolled and disabled handling, plus react-hook-form composition (Form/FormField/FormSubmitButton/SimpleVForm) for validated forms.'
+    description: 'Text inputs, text areas, switches, radio groups (RadioGroup/Radio circle-dot list, RadioButtonGroup/RadioButton segmented pill bar) with controlled/uncontrolled and disabled handling, plus react-hook-form composition (Form/FormField/FormSubmitButton/SimpleVForm) for validated forms.'
   - name: 'Feedback messages'
     slug: 'feedback'
     description: 'Semantic message banners with optional dismiss, a top-pinned network connection status banner, and determinate progress indicators.'
@@ -396,13 +396,15 @@ skills:
   - name: 'Build forms and inputs'
     slug: 'alouette-forms'
     domain: 'forms'
-    description: 'Inputs — InputText (mode: password/email/number/tel/url/search), TextArea (multiline InputText), Switch (controlled or uncontrolled); use the disabled prop (not editable); Switch takes checked + onValueChange. Validation/composition on react-hook-form — Form owns the instance and exposes submit() via a render prop (no control passing); FormField binds a Controller to FormItem label/error/required and renders any input via render; FormFieldArray wraps useFieldArray for repeatable lists; FormSubmitButton (ActionButton) drives loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage is required; FormValidationError distinguishes invalid fields from an onSubmit failure.'
+    description: 'Inputs — InputText (mode: password/email/number/tel/url/search), TextArea (multiline InputText), Switch (controlled or uncontrolled); use the disabled prop (not editable); Switch takes checked + onValueChange. Single-select: RadioGroup + Radio (circle-dot vertical list) and RadioButtonGroup + RadioButton (segmented pill bar); both are controlled/uncontrolled via value/defaultValue/onValueChange + accent/disabled. Validation/composition on react-hook-form — Form owns the instance and exposes submit() via a render prop (no control passing); FormField binds a Controller to FormItem label/error/required and renders any input via render; FormFieldArray wraps useFieldArray for repeatable lists; FormSubmitButton (ActionButton) drives loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage is required; FormValidationError distinguishes invalid fields from an onSubmit failure.'
     type: 'core'
     packages: ['alouette']
     covers:
       - 'InputText (mode, disabled, multiline)'
       - 'TextArea'
       - 'Switch (checked, onValueChange, accent)'
+      - 'RadioGroup + Radio (circle-dot single-select list)'
+      - 'RadioButtonGroup + RadioButton (segmented pill bar single-select)'
       - 'Form (defaultValues, onSubmit, submit render prop, onSubmitError)'
       - 'FormField (name, label, required, validate, render, renderError)'
       - 'FormFieldArray (name, emptyValue, minSize, add/remove)'

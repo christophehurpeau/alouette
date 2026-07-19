@@ -2,20 +2,18 @@
 name: alouette-forms
 description: >
   Forms end to end. Inputs: InputText (mode: password/email/number/tel/url/search),
-  TextArea (multiline InputText), Switch (controlled via checked + onValueChange,
-  or uncontrolled) — use the disabled prop (not editable); mode bundles
-  keyboardType/inputMode/autoComplete/secureTextEntry. Validation/composition on
-  react-hook-form: Form owns the form instance and exposes submit() via a render
-  prop (no control passing); FormField wires a Controller to FormItem's
-  label/error/required layout and renders any input via render; FormFieldArray
-  wraps useFieldArray for repeatable item lists with add/remove buttons;
-  FormSubmitButton (built on ActionButton) drives loading/success/failed from the
-  submit promise; SimpleVForm is the vertical-stack shortcut. errorToMessage is
-  required (i18n); FormValidationError distinguishes invalid fields from an
-  onSubmit failure. Load when building text fields, toggles, or a validated form.
+  TextArea, Switch (checked + onValueChange; use disabled not editable). Single-select:
+  RadioGroup + Radio (circle-dot list) and RadioButtonGroup + RadioButton (segmented
+  pill bar); controlled/uncontrolled via value/defaultValue/onValueChange + accent/disabled.
+  Validation on react-hook-form: Form owns the instance and exposes submit() via render
+  prop (no control passing); FormField wires Controller to FormItem label/error/required;
+  FormFieldArray wraps useFieldArray with add/remove; FormSubmitButton drives
+  loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage
+  required (i18n); FormValidationError distinguishes invalid fields from onSubmit failures.
+  Load when building text fields, toggles, radio groups, or a validated form.
 type: core
 library: alouette
-library_version: "20.4.0"
+library_version: "20.6.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -23,6 +21,10 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputText.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/TextArea.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Switch.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioGroup.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Radio.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioButtonGroup.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioButton.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/Form.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormItem.tsx"
@@ -96,6 +98,65 @@ import { Switch } from "alouette";
 ```tsx
 <InputText disabled value={value} />
 <Switch disabled checked={on} />
+```
+
+### RadioGroup — circle-dot single-select list
+
+`RadioGroup` owns the selected value; `Radio` children read it via context.
+Controlled/uncontrolled via `value` / `defaultValue` + `onValueChange`. `accent`
+and `disabled` propagate to all options; `disabled` on an individual `Radio`
+disables only that option. Label the group via `aria-labelledby`.
+
+```tsx
+import { RadioGroup, Radio } from "alouette";
+
+<RadioGroup
+  defaultValue="week"
+  onValueChange={setRange}
+  aria-labelledby={labelId}
+>
+  <Radio value="day" label="Day" />
+  <Radio value="week" label="Week" />
+  <Radio value="month" label="Month" disabled />
+</RadioGroup>
+```
+
+### RadioButtonGroup — segmented pill bar
+
+Same API as `RadioGroup` / `Radio`, but rendered as a pill-style segmented
+control. The track is a `Surface variant="lowered"` with no vertical padding
+(44 px); each `RadioButton` pressable fills the full 44 px tap target while
+centering a shorter visible chip.
+
+```tsx
+import { RadioButtonGroup, RadioButton } from "alouette";
+
+<RadioButtonGroup defaultValue="week" accent="brand">
+  <RadioButton value="day" label="Day" />
+  <RadioButton value="week" label="Week" />
+  <RadioButton value="month" label="Month" />
+</RadioButtonGroup>
+```
+
+Use `RadioButtonGroup` inside a `FormField` `render` prop to get label/error
+wiring:
+
+```tsx
+<FormField<Values>
+  name="range"
+  label="Date range"
+  required
+  render={({ field, labelId }) => (
+    <RadioButtonGroup
+      value={field.value}
+      onValueChange={field.onChange}
+      aria-labelledby={labelId}
+    >
+      <RadioButton value="day" label="Day" />
+      <RadioButton value="week" label="Week" />
+    </RadioButtonGroup>
+  )}
+/>
 ```
 
 ## Validated forms
@@ -413,3 +474,12 @@ indices on remove, no stable `key`, no built-in add/remove affordances).
 and add/remove buttons; `render` only supplies each item's own fields.
 
 Source: packages/alouette/src/ui/forms/FormFieldArray.tsx
+
+### MEDIUM Confusing RadioGroup with RadioButtonGroup
+
+`RadioGroup` + `Radio`: vertical circle-dot list (longer option lists, labeled
+form fields). `RadioButtonGroup` + `RadioButton`: horizontal segmented pill bar
+(2–4 compact, equal-weight choices like view mode or time range). Neither
+replaces `Select` — use `Select` for large option lists.
+
+Source: packages/alouette/src/ui/inputs/RadioGroup.tsx; ui/inputs/RadioButtonGroup.tsx

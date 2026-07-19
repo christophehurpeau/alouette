@@ -9,7 +9,7 @@ description: >
   cards, spacing, or backgrounds.
 type: core
 library: alouette
-library_version: "20.4.0"
+library_version: "20.6.0"
 requires:
   - alouette-theming
 sources:
@@ -58,7 +58,7 @@ They are thin `View` wrappers — add `gap-*` for spacing.
 ### Surface (elevated container)
 
 `variant`: `surface` (default) · `lowered` · `translucent` · `highlight` ·
-`highlight-accent`. `size`: `xs` · `sm` · `md` (default) · `lg` (padding + radius).
+`highlight-accent`. `size`: `xxs` · `xs` · `sm` · `md` (default) · `lg` (padding + radius).
 `shadow`: `s` (default) · `m` · `l` · `lowered`; defaults to `lowered` when
 `variant="lowered"`.
 
