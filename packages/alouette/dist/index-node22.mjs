@@ -1,6 +1,6 @@
 import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
 import { VariableContextProvider, styled as styled$1 } from 'nativewind';
-import { createContext, useContext, forwardRef, Children, cloneElement, Fragment, useRef, useState, useEffect, isValidElement, useId, useReducer, useCallback } from 'react';
+import { createContext, useContext, forwardRef, Children, cloneElement, Fragment, useRef, useState, useEffect, isValidElement, useId, useReducer, useCallback, useMemo } from 'react';
 import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, useWindowDimensions, Modal as Modal$1, TextInput, Switch as Switch$1, Linking } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -852,6 +852,7 @@ const surfaceVariants = tv(
     base: "overflow-hidden transition-background duration-fast",
     variants: {
       size: {
+        xxs: "p-xs rounded-xs",
         xs: "p-sm rounded-xs",
         sm: "p-m rounded-sm",
         md: "p-xl rounded-sm",
@@ -2583,6 +2584,225 @@ function Select({ accent, ...rest }) {
   return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(SelectInner, { ...rest }) });
 }
 
+const RadioContext = createContext(void 0);
+const RadioContextProvider = RadioContext.Provider;
+function useRadioContext() {
+  const context = useContext(RadioContext);
+  if (!context) {
+    throw new Error(
+      "Radio and RadioButton must be rendered inside a RadioGroup or RadioButtonGroup."
+    );
+  }
+  return context;
+}
+
+function RadioGroup({
+  value: controlledValue,
+  defaultValue,
+  onValueChange,
+  accent,
+  disabled,
+  children,
+  ...props
+}) {
+  const [value, onSelect] = useControllableValue(
+    controlledValue,
+    defaultValue,
+    onValueChange
+  );
+  const context = useMemo(
+    () => ({ value, onSelect, disabled }),
+    [value, onSelect, disabled]
+  );
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsx(View, { role: "radiogroup", ...props, children }) }) });
+}
+
+const indicatorVariants = tv({
+  base: "size-[22px] rounded-full border-2 items-center justify-center transition-[border-color] duration-fast ease-in",
+  variants: {
+    selected: {
+      true: "border-accent",
+      false: "border-interactive-outlined-pressable group-hover:border-interactive-outlined-hover group-active:border-interactive-outlined-active"
+    },
+    disabled: {
+      true: "border-interactive-outlined-disabled",
+      false: ""
+    }
+  }
+});
+const dotVariants = tv({
+  base: "size-[10px] rounded-full bg-accent transition-transform duration-fast ease-in",
+  variants: {
+    selected: {
+      true: "scale-100",
+      false: "scale-0"
+    }
+  }
+});
+const labelVariants$1 = tv({
+  base: "text-base",
+  variants: {
+    disabled: {
+      true: "text-disabled-sharp",
+      false: "text-sharp"
+    }
+  }
+});
+function Radio({ value, label, disabled }) {
+  const {
+    value: selectedValue,
+    onSelect,
+    disabled: groupDisabled
+  } = useRadioContext();
+  const selected = selectedValue === value;
+  const isDisabled = disabled === true || groupDisabled === true;
+  const currentTheme = useCurrentTheme();
+  const currentMode = useCurrentMode();
+  return /* @__PURE__ */ jsxs(
+    InteractiveBox,
+    {
+      withFocusVisibleOutline: true,
+      role: "radio",
+      "aria-checked": selected,
+      "aria-disabled": isDisabled,
+      "aria-label": label,
+      disabled: isDisabled,
+      className: "group flex-row items-center gap-xs self-start rounded-xs px-xs min-h-11 focus-visible:outline-interactive-outlined-outline-focus",
+      onPress: () => {
+        onSelect(value);
+      },
+      children: [
+        /* @__PURE__ */ jsx(
+          ScopedTheme,
+          {
+            theme: currentTheme === currentMode ? `${currentTheme}_brand` : currentTheme,
+            children: /* @__PURE__ */ jsx(View, { className: indicatorVariants({ selected, disabled: isDisabled }), children: /* @__PURE__ */ jsx(View, { className: dotVariants({ selected }) }) })
+          }
+        ),
+        /* @__PURE__ */ jsx(Text, { className: labelVariants$1({ disabled: isDisabled }), children: label })
+      ]
+    }
+  );
+}
+
+function RadioButtonGroup({
+  value: controlledValue,
+  defaultValue,
+  onValueChange,
+  accent,
+  disabled,
+  children,
+  ...props
+}) {
+  const [value, onSelect] = useControllableValue(
+    controlledValue,
+    defaultValue,
+    onValueChange
+  );
+  const context = useMemo(
+    () => ({ value, onSelect, disabled }),
+    [value, onSelect, disabled]
+  );
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsx(
+    Surface,
+    {
+      variant: "lowered",
+      role: "radiogroup",
+      size: "sm",
+      className: "flex-row items-stretch self-start gap-xxs px-xs py-0 min-h-[44px]",
+      ...props,
+      children
+    }
+  ) }) });
+}
+
+const chipVariants = tv({
+  base: "absolute inset-0 rounded-xs transition-opacity duration-fast ease-in",
+  variants: {
+    selected: {
+      true: "opacity-100",
+      false: "opacity-0"
+    },
+    disabled: {
+      true: "bg-interactive-contained-disabled",
+      false: "bg-interactive-contained-pressable shadow-s"
+    }
+  }
+});
+const segmentVariants = tv({
+  base: "relative flex-center min-h-[32px] rounded-xs border border-transparent px-m transition-[border-color] duration-fast ease-in",
+  variants: {
+    selected: { true: "", false: "" },
+    disabled: { true: "", false: "" }
+  },
+  compoundVariants: [
+    {
+      selected: false,
+      disabled: false,
+      class: "group-hover:border-interactive-outlined-hover group-active:border-interactive-outlined-active"
+    }
+  ]
+});
+const labelVariants = tv({
+  base: "z-1 select-none font-body-bold text-base text-center transition-[color] duration-fast ease-in",
+  variants: {
+    selected: {
+      true: "text-on-accent",
+      false: "text-muted group-hover:text-sharp"
+    },
+    disabled: {
+      true: "text-disabled-muted group-hover:text-disabled-muted",
+      false: ""
+    }
+  },
+  compoundVariants: [
+    {
+      selected: true,
+      disabled: true,
+      class: "text-disabled-sharp group-hover:text-disabled-sharp"
+    }
+  ]
+});
+function RadioButton({
+  value,
+  label,
+  disabled
+}) {
+  const {
+    value: selectedValue,
+    onSelect,
+    disabled: groupDisabled
+  } = useRadioContext();
+  const selected = selectedValue === value;
+  const isDisabled = disabled === true || groupDisabled === true;
+  return /* @__PURE__ */ jsx(
+    InteractiveBox,
+    {
+      withFocusVisibleOutline: true,
+      role: "radio",
+      "aria-checked": selected,
+      "aria-disabled": isDisabled,
+      "aria-label": label,
+      disabled: isDisabled,
+      className: "group flex-center min-h-[44px] rounded-xs focus-visible:outline-interactive-outlined-outline-focus",
+      onPress: () => {
+        onSelect(value);
+      },
+      children: /* @__PURE__ */ jsxs(View, { className: segmentVariants({ selected, disabled: isDisabled }), children: [
+        /* @__PURE__ */ jsx(View, { className: chipVariants({ selected, disabled: isDisabled }) }),
+        /* @__PURE__ */ jsx(
+          Text,
+          {
+            numberOfLines: 1,
+            className: labelVariants({ selected, disabled: isDisabled }),
+            children: label
+          }
+        )
+      ] })
+    }
+  );
+}
+
 function FormItem({
   label,
   details,
@@ -3174,5 +3394,5 @@ function ExternalLink({
   return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioGroup, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, themeVariables, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken };
 //# sourceMappingURL=index-node22.mjs.map

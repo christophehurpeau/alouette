@@ -1,0 +1,1 @@
+{"version":3,"file":"RadioButton.d.ts","sourceRoot":"","sources":["../../../../src/ui/inputs/RadioButton.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,SAAS,EAAE,MAAM,OAAO,CAAC;AAkEvC,MAAM,WAAW,gBAAgB;IAC/B,KAAK,EAAE,MAAM,CAAC;IACd,KAAK,EAAE,MAAM,CAAC;IACd,QAAQ,CAAC,EAAE,OAAO,CAAC;CACpB;AAED,wBAAgB,WAAW,CAAC,EAC1B,KAAK,EACL,KAAK,EACL,QAAQ,GACT,EAAE,gBAAgB,GAAG,SAAS,CAiC9B"}

@@ -4,6 +4,7 @@ import type { Accent } from "../../core/AlouetteConfig";
 import { type BoxProps } from "./Box";
 declare const surfaceVariants: import("tailwind-variants").TVReturnType<{
     size: {
+        xxs: string;
         xs: string;
         sm: string;
         md: string;
@@ -25,6 +26,7 @@ declare const surfaceVariants: import("tailwind-variants").TVReturnType<{
     };
 }, undefined, "overflow-hidden transition-background duration-fast", {
     size: {
+        xxs: string;
         xs: string;
         sm: string;
         md: string;
@@ -46,6 +48,7 @@ declare const surfaceVariants: import("tailwind-variants").TVReturnType<{
     };
 }, undefined, import("tailwind-variants").TVReturnType<{
     size: {
+        xxs: string;
         xs: string;
         sm: string;
         md: string;

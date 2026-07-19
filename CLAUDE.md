@@ -13,7 +13,18 @@ pnpm test               # Run tests (Node.js native runner with --experimental-s
 pnpm tsc                # TypeScript check
 ```
 
-**Never start Storybook itself** (`pnpm storybook`, `storybook dev`, `expo start`, etc.) or any other long-running dev server — verifying stories/UI in the running app is the user's job. Running the Storybook **test suite** (`pnpm test`, `vitest --project=storybook`, which executes story `play` functions headlessly) is fine and encouraged to verify story changes.
+**Never start Storybook itself** (`pnpm storybook`, `storybook dev`, `expo start`, etc.) or any other long-running dev server — verifying stories/UI in the running app is the user's job. Running the Storybook **test suite** (which executes story `play` functions headlessly) is fine and encouraged to verify story changes.
+
+The play-function suite lives in the Storybook app, not the root `pnpm test` (root runs the Node/vitest unit tests under `packages/alouette`). Run it from that package in browser mode:
+
+```bash
+cd packages/storybook-native-app && npx vitest run --project=storybook   # all stories
+cd packages/storybook-native-app && npx vitest run --project=storybook Radio   # filter by file
+```
+
+You can't visually validate rendering — only behavior via `play`. Styling/material looks are the user's to confirm.
+
+Verify with one deliberate pass: `pnpm tsc`, then `eslint` scoped to the files you changed, then the single relevant test. Don't re-run a check to re-confirm a pass or to isolate output you could have parsed the first time.
 
 Run a single test file:
 
@@ -112,6 +123,68 @@ On native, NativeWind resolves CSS variables at render time from a lookup table 
 ## CSS token changes
 
 Edit `packages/alouette/scripts/build-css.ts`, then run `pnpm --filter alouette build:css`. Never edit `global.css` directly.
+
+# Interactive controls and depth
+
+## Draw pressable states from the `interactive-*` tokens — prefer composing `PressableBox`
+
+A pressable/interactive surface must source its rest/hover/focus/press/disabled
+appearance from the `interactive-*` token families, never from static tokens like
+`bg-surface` / `border-muted` (those give no affordance). Prefer composing
+`PressableBox` (`src/ui/data/PressableBox.tsx`) — it wires the full state set plus
+a colored `focus-visible` outline and `AccentScope`. This is how `Button` and
+`IconButton` are built, so use its `variant`:
+
+- `contained` → `bg-interactive-contained-{pressable,hover,focus,active,disabled}` + `shadow-s`, text `text-on-accent`.
+- `outlined` / `ghost` → `border-interactive-outlined-{pressable,hover,focus,active,disabled}`, text `text-sharp`.
+
+Pass `role`/`aria-*` through `PressableBox` (they override its default
+`role="button"`). When a child indicator must react to the row's state and can't
+be a `PressableBox` (e.g. the ring inside a labeled radio row), apply the same
+`border-interactive-outlined-*` classes to the child and drive them with a `group`
+on the pressable (`group-hover:` / `group-active:` on the child).
+
+The neutral `interactive-{hover,active,pressable,muted}` tokens are **foreground**
+(icon/text) colors, not backgrounds; the accent `interactive-contained-*` tokens
+are the fills.
+
+## Depth: inset track + raised element
+
+Build depth by pairing a lowered container with a raised child, as `Switch` does:
+track = `bg-lowered` + `shadow-lowered`; raised element (thumb / selected segment)
+= `bg-surface` or `contained` + `shadow-s`. Reach for this material for segmented
+controls, toggles and selection surfaces instead of a bordered box with a flat
+fill.
+
+## Touch targets: 44px accessible height, not the named spacing scale
+
+An interactive control's minimum height is an accessibility constant (44px), not a
+padding choice — write it explicitly as `min-h-[44px]` (matches `Button`) so the
+value reads as the accessibility minimum it is. Do **not** reach for the named
+`--spacing-*` tokens (`min-h-9`, `p-xs`, …) for a touch-target height: those are
+the layout spacing scale and `min-h-9` is only 36px, below the minimum. (ESLint
+will suggest collapsing `min-h-[44px]` to `min-h-11`; ignore that here — the
+explicit px keeps the intent legible.)
+
+### Compact visual chip, full-height tap target
+
+When a control's segment should _look_ shorter than 44px, keep the full 44px on
+the tap target and shrink only the visible chip inside it — don't shrink the
+pressable. `RadioButtonGroup` does this with the design-system `Surface` as the
+in-flow flex container: the lowered `Surface` is a real 44px bar with **zero
+vertical padding** (`py-0` overriding the `size` padding, `min-h-[44px]`), so
+each `RadioButton` pressable (`min-h-[44px]`) fills the full height as the tap
+target, and centers a shorter visible chip (`h-[32px]`) — leaving ~6px of the
+lowered Surface showing above/below each chip as the inset frame. No absolute
+track, no z-order tricks, no inline `style`. A `play` test measures both the
+`radiogroup` (== 44) and each `radio` (>= 44) so the geometry can't regress.
+
+## Radius scale is large — `rounded-md` is a stadium
+
+`rounded-xs` 8px · `rounded-sm` 16px · `rounded-md` 32px · `rounded-lg` 48px
+(`--radius-*` in `build-css.ts`). At control heights (~44px) `rounded-md`/`-lg`
+render as a full pill. Use `rounded-sm` for control containers and `rounded-xs`
+for nested segments (matches `Button`).
 
 # React
 
@@ -260,6 +333,17 @@ function FormSubmitButton({ label, onPress }: FormSubmitButtonProps) {
 
 // Avoid — reimplementing disabled/aria state on a raw Pressable
 ```
+
+## Single-select input groups: controllable value + context
+
+For a group of options with one selected value (radios, segmented buttons), the
+group owns state and children read it via a small React context — compose children
+(`<Radio value label />`), don't take an options array. Reuse `useControllableValue`
+(exported from `src/ui/inputs/Select.shared.tsx`) for the controlled/uncontrolled
+`value` + `defaultValue` + `onValueChange` logic, share `{ value, onSelect, disabled }`
+through the context, and wrap the group in `AccentScope`. Container gets
+`role="radiogroup"`; each option gets `role="radio"` + `aria-checked`. (Pattern:
+`RadioGroup`/`Radio` and `RadioButtonGroup`/`RadioButton` in `src/ui/inputs/`.)
 
 ## Test via accessibility queries, not `testID`
 
