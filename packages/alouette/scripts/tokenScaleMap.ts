@@ -103,7 +103,7 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
   "form-border-disabled": grayscaleOnly(gray(7, 6)),
   "form-placeholder": grayscaleOnly(gray(8, 9)),
   "form-disabled-text": grayscaleOnly(gray(9, 10)),
-  "interactive-contained-disabled": grayscaleOnly(gray(5, 5)),
+  "interactive-contained-disabled": grayscaleOnly(gray(5, 6)),
   "interactive-outlined-disabled": grayscaleOnly(gray(6, 6)),
   "interactive-accent-outlined-disabled": grayscaleOnly(gray(6, 6)),
 

@@ -25,8 +25,7 @@ type ColorScale = Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11, string>;
 // step:                     1     2     3     4     5     6     7     8     9    10    11
 const lightnessRamps = {
   grayscale: {
-    // only diff is on values 4-7 and 9-11
-    dark: [0.18, 0.22, 0.26, 0.28, 0.32, 0.38, 0.45, 0.795, 0.865, 0.96, 1],
+    dark: [0.18, 0.24, 0.28, 0.32, 0.36, 0.4, 0.45, 0.795, 0.865, 0.96, 1],
     // only diff is on the first 2 values
     light: [1, 0.98, 0.948, 0.89, 0.85, 0.79, 0.61, 0.54, 0.48, 0.42, 0.27],
   },
