@@ -75,7 +75,7 @@
     "expo-web-browser": "~56.0.5",
     "react-hook-form": "7.81.0",
     "react-native-safe-area-context": "5.7.0",
-    "tailwind-merge": "3.5.0",
+    "tailwind-merge": "3.6.0",
     "tailwind-variants": "3.2.2",
     "type-fest": "5.4.4"
   },
