@@ -70,7 +70,7 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "4.3.1",
+    "@tailwindcss/postcss": "4.3.3",
     "alouette-icons": "workspace:*",
     "expo-web-browser": "~56.0.5",
     "react-hook-form": "7.81.0",
@@ -93,7 +93,7 @@
     "react-native-reanimated": "4.3.1",
     "react-native-svg": "15.15.4",
     "react-test-renderer": "19.2.3",
-    "tailwindcss": "4.3.1",
+    "tailwindcss": "4.3.3",
     "typescript": "6.0.3"
   },
   "peerDependencies": {
@@ -105,7 +105,7 @@
     "react-native": "*",
     "react-native-reanimated": "*",
     "react-native-svg": "*",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4.3.3"
   },
   "peerDependenciesMeta": {
     "expo-web-browser": {
