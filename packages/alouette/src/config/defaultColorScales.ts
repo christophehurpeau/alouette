@@ -1,6 +1,9 @@
 /* eslint-disable import-x/extensions */
 import { createColorScale } from "./colorScales.ts";
-import type { AlouetteColorScales } from "./colorScales.ts";
+import type {
+  AlouetteColorScales,
+  AlouetteDecorativeColors,
+} from "./colorScales.ts";
 
 export const defaultColorScales: AlouetteColorScales = {
   "grayscale.light": createColorScale({
@@ -159,4 +162,19 @@ export const defaultColorScales: AlouetteColorScales = {
     10: "#F9DC7E",
     11: "#FDF0C4",
   }),
+} as const;
+
+export const defaultDecorativeColors: AlouetteDecorativeColors = {
+  "yellow.light": { tint: "#F0DA90", fill: "#705C08", text: "#5D4B05" },
+  "yellow.dark": { tint: "#362D10", fill: "#75621B", text: "#F3D054" },
+  "orange.light": { tint: "#F1D5BE", fill: "#874D08", text: "#703F05" },
+  "orange.dark": { tint: "#40270F", fill: "#8C541B", text: "#F7C8A0" },
+  "mint.light": { tint: "#A0F2AB", fill: "#0A712D", text: "#075D24" },
+  "mint.dark": { tint: "#12371A", fill: "#207636", text: "#5DF680" },
+  "sky.light": { tint: "#BBE2F1", fill: "#0A6880", text: "#07566A" },
+  "sky.dark": { tint: "#12333D", fill: "#1F6D84", text: "#99DFF7" },
+  "indigo.light": { tint: "#D0DBF1", fill: "#023BF2", text: "#0230CA" },
+  "indigo.dark": { tint: "#09246F", fill: "#124BED", text: "#C1D3F7" },
+  "violet.light": { tint: "#E1D5F1", fill: "#7F0EC7", text: "#690AA6" },
+  "violet.dark": { tint: "#3C165C", fill: "#8327C8", text: "#DDC8F7" },
 } as const;

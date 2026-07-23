@@ -1,10 +1,17 @@
 import convert from "color-convert";
 import Color from "colorjs.io";
 import fs from "node:fs";
-import type { PaletteSpec } from "../packages/alouette/scripts/paletteSpecs.ts";
-import { paletteSpecs } from "../packages/alouette/scripts/paletteSpecs.ts";
+import type {
+  DecorativeName,
+  PaletteSpec,
+} from "../packages/alouette/scripts/paletteSpecs.ts";
+import {
+  decorativeSpecs,
+  paletteSpecs,
+} from "../packages/alouette/scripts/paletteSpecs.ts";
 import type {
   AccentName,
+  Mode,
   ResolvedToken,
 } from "../packages/alouette/scripts/tokenScaleMap.ts";
 import { resolveTokenEffective } from "../packages/alouette/scripts/tokenScaleMap.ts";
@@ -113,6 +120,60 @@ const generatePalettes = () => {
 
 const palettes = generatePalettes();
 
+// A decorative color is not a theme: it keeps only the three values a Badge
+// needs, read from the steps the matching accent tokens resolve to, so a
+// decorative badge is composed exactly like an accent one and can never drift
+// from it.
+const decorativeTokens = {
+  tint: "highlight-accent",
+  fill: "enabled",
+  text: "accent",
+} as const;
+
+type DecorativeRole = keyof typeof decorativeTokens;
+type DecorativeColor = Record<DecorativeRole, string>;
+
+const decorativeStep = (
+  role: DecorativeRole,
+  name: DecorativeName,
+  mode: Mode,
+) => {
+  const resolved = resolveTokenEffective(decorativeTokens[role], {
+    mode,
+    isGrayscale: false,
+    accent: name,
+  });
+  if ("literal" in resolved) {
+    throw new Error(`${decorativeTokens[role]} must resolve to a scale step`);
+  }
+  return resolved.step;
+};
+
+const createDecorativeColor = (
+  name: DecorativeName,
+  spec: PaletteSpec,
+  mode: Mode,
+): DecorativeColor => {
+  const scale = createColorScale(spec, mode);
+  const roles = Object.keys(decorativeTokens) as DecorativeRole[];
+  return Object.fromEntries(
+    roles.map((role) => [role, scale[decorativeStep(role, name, mode)]]),
+  ) as DecorativeColor;
+};
+
+const generateDecorativeColors = () => {
+  const colors: Record<string, DecorativeColor> = {};
+  for (const [rawName, spec] of Object.entries(decorativeSpecs)) {
+    const name = rawName as DecorativeName;
+    for (const mode of ["light", "dark"] as const) {
+      colors[`${name}.${mode}`] = createDecorativeColor(name, spec, mode);
+    }
+  }
+  return colors;
+};
+
+const decorativeColors = generateDecorativeColors();
+
 if (
   process.argv[2] === "generate" ||
   process.argv[2] === "write" ||
@@ -120,7 +181,8 @@ if (
 ) {
   let content = "/* eslint-disable import-x/extensions */\n";
   content += 'import { createColorScale } from "./colorScales.ts";\n';
-  content += 'import type { AlouetteColorScales } from "./colorScales.ts";\n\n';
+  content +=
+    'import type {\n  AlouetteColorScales,\n  AlouetteDecorativeColors,\n} from "./colorScales.ts";\n\n';
   content += "export const defaultColorScales: AlouetteColorScales = {\n";
 
   Object.entries(palettes).forEach(([name, palette]) => {
@@ -129,6 +191,17 @@ if (
       content += `    ${step}: "${color}",\n`;
     });
     content += "  }),\n";
+  });
+
+  content += "} as const;\n\n";
+  content +=
+    "export const defaultDecorativeColors: AlouetteDecorativeColors = {\n";
+
+  Object.entries(decorativeColors).forEach(([name, color]) => {
+    const entries = Object.entries(color)
+      .map(([role, hex]) => `${role}: "${hex}"`)
+      .join(", ");
+    content += `  "${name}": { ${entries} },\n`;
   });
 
   content += "} as const;\n";
@@ -353,4 +426,56 @@ if (
     if (modes.light) displayTokenPairs(accent as AccentName, "light");
     if (modes.dark) displayTokenPairs(accent as AccentName, "dark");
   });
+
+  // Decorative colors are audited against the neutrals they are actually
+  // rendered with — a decorative badge sits on the ambient grayscale surface
+  // and never introduces a theme of its own.
+  const neutralColor = (token: string, name: DecorativeName, mode: Mode) =>
+    tokenColor(
+      resolveTokenEffective(token, { mode, isGrayscale: false, accent: name }),
+      "grayscale",
+      mode,
+    );
+
+  const badgePairs: { label: string; fg: string; role: DecorativeRole }[] = [
+    { label: "Badge solid         (sharp / tint)", fg: "sharp", role: "tint" },
+    {
+      label: "Badge solid.enabled (on-accent / fill)",
+      fg: "on-accent",
+      role: "fill",
+    },
+    {
+      label: "Badge outlined      (text / surface)",
+      fg: "surface",
+      role: "text",
+    },
+  ];
+
+  console.log(
+    `\n${ansiColors.bright}=== Decorative colors (badge triplets) ===${ansiColors.reset}`,
+  );
+  Object.entries(decorativeColors).forEach(([name, color]) => {
+    const [rawName, mode] = name.split(".") as [
+      DecorativeName,
+      "light" | "dark",
+    ];
+    const swatches = (Object.keys(decorativeTokens) as DecorativeRole[])
+      .map(
+        (role) =>
+          `${role} ${displayColorSwatch(color[role], "██")} ${color[role]}`,
+      )
+      .join("  ");
+    const contrasts = badgePairs
+      .map(({ fg, role }) => {
+        // `Badge outlined` is text on a surface, the other two are text on the
+        // decorative value — either way one side is neutral, one decorative.
+        const neutral = neutralColor(fg, rawName, mode);
+        const ratio = getContrastRatio(neutral, color[role]);
+        return `${getContrastGrade(ratio)} ${ratio.toFixed(1)}`;
+      })
+      .join(" | ");
+    console.log(`  ${name.padEnd(14)} ${swatches}   ${contrasts}`);
+  });
+
+  console.log(`\n  ${badgePairs.map(({ label }) => label).join("\n  ")}`);
 }

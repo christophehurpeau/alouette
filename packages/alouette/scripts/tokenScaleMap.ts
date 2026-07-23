@@ -6,9 +6,9 @@
 // step for this mode), a `{ literal }` (a fixed value), or `null` when the
 // token is not emitted for the given accent.
 
-import type { AccentName } from "./paletteSpecs.ts";
+import type { AccentName, DecorativeName } from "./paletteSpecs.ts";
 
-export type { AccentName } from "./paletteSpecs.ts";
+export type { AccentName, DecorativeName } from "./paletteSpecs.ts";
 
 export type Mode = "dark" | "light";
 export type ScaleNum = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
@@ -26,7 +26,9 @@ export type ResolvedToken = TokenStep | TokenLiteral;
 export interface TokenContext {
   mode: Mode;
   isGrayscale: boolean;
-  accent: AccentName;
+  // Decorative palettes reuse the accent token steps, so they resolve through
+  // the same map; no resolver branches on the name itself.
+  accent: AccentName | DecorativeName;
 }
 
 export type TokenResolver = (ctx: TokenContext) => ResolvedToken | null;
