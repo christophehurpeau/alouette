@@ -57,7 +57,7 @@ export const CircularProgressPreviewStory: ThisStory = {
     const [trackSvg, fillSvg] = canvasElement.querySelectorAll("svg");
     if (!trackSvg || !fillSvg) throw new Error("Expected track and fill svgs");
     await expect(getComputedStyle(trackSvg).color).toBe(
-      lightBrandRgb("--color-highlight-accent"),
+      lightBrandRgb("--color-border-muted"),
     );
     await expect(getComputedStyle(fillSvg).color).toBe(
       lightBrandRgb("--color-accent"),

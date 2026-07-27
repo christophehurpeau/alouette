@@ -52,7 +52,7 @@
     "@babel/core": "7.29.7",
     "@babel/preset-react": "7.29.7",
     "@phosphor-icons/core": "2.1.1",
-    "react-native": "0.85.3"
+    "react-native": "0.86.0"
   },
   "peerDependencies": {
     "react": "^19.2.3",
