@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [20.8.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.7.0...alouette@20.8.0) (2026-07-27)
+
+### Features
+
+* **deps:** update dependency tailwind-merge to v3.6.0 ([#342](https://github.com/christophehurpeau/alouette/issues/342))
+* **deps:** update dependency type-fest to v5.8.0 ([#343](https://github.com/christophehurpeau/alouette/issues/343))
+
+### Bug Fixes
+
+* **deps:** move expo-web-browser dependency to devDependencies
+
 ## [20.7.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.6.0...alouette@20.7.0) (2026-07-19)
 
 ### Features
