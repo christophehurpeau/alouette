@@ -1,5 +1,18 @@
 {
   "permissions": {
     "allow": ["Bash(yarn tsc)", "Bash(yarn build:css)", "Bash(yarn test *)"]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./node_modules/.bin/pob-claude-run-lint-staged"
+          }
+        ]
+      }
+    ]
   }
 }

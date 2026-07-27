@@ -3,8 +3,6 @@
 import pobTypescriptReactConfig, {
   applyTs,
 } from "@pob/eslint-config-typescript-react";
-// import checkPackageDependenciesEslintPlugin from "check-package-dependencies/eslint-plugin";
-import checkPackageDependenciesEslintPlugin from "check-package-dependencies/eslint-plugin";
 import storybook from "eslint-plugin-storybook";
 
 const { configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig();
@@ -86,11 +84,15 @@ export default [
     },
   },
   ...storybook.configs["flat/recommended"],
-  checkPackageDependenciesEslintPlugin.configs["recommended-library"],
+  ...pobTypescriptReactConfigs.checkPackages,
+  // react-native-css (NativeWind v5's native engine) breaks at runtime with
+  // lightningcss >=1.31 ("failed to deserialize Specifier"), so the app pins
+  // lightningcss to 1.30.x. Vite wants ^1.32.0 and nests its own copy. This
+  // intentional split would otherwise be a hard duplicate-dependency error.
   {
     files: ["**/storybook-native-app/package.json"],
     rules: {
-      "check-package-dependencies/direct-duplicate-dependencies": [
+      "check-package-dependencies/no-direct-duplicate-dependencies": [
         "error",
         {
           onlyWarnsFor: {
@@ -99,7 +101,7 @@ export default [
           },
         },
       ],
-      "check-package-dependencies/direct-peer-dependencies": [
+      "check-package-dependencies/require-direct-peer-dependencies": [
         "error",
         {
           onlyWarnsFor: {

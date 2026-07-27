@@ -17,8 +17,8 @@ export interface StoryProps {
 }
 export declare function Story({ documentation, children, noDarkMode, }: StoryProps): ReactNode;
 export declare namespace Story {
-    var Section: typeof StorySection;
-    var SubSection: typeof StorySubSection;
+    export { StorySection as Section };
+    export { StorySubSection as SubSection };
 }
 export declare const accents: Accent[];
 export {};

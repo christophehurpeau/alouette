@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
+    { "path": "tsconfig.root-configs.json" },
     { "path": "packages/alouette-icons/tsconfig.json" },
     { "path": "packages/alouette/tsconfig.json" },
     { "path": "packages/storybook-native-app/tsconfig.json" }
