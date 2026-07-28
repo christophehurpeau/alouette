@@ -193,3 +193,31 @@ Correct:
 omitting it is an accessibility failure and a type error.
 
 Source: packages/alouette/src/ui/actions/IconButton.tsx
+
+### HIGH IconButton triggering an async action instead of ActionButton
+
+Wrong:
+
+```tsx
+<IconButton icon={<TrashRegularIcon />} aria-label="Delete" onPress={async () => deleteItem(id)} />
+```
+
+Correct:
+
+```tsx
+<ActionButton
+  accent="danger"
+  text="Delete"
+  icon={<TrashRegularIcon />}
+  onPress={async () => deleteItem(id)}
+  errorToMessage={(error) => (error instanceof Error ? error.message : "Failed")}
+/>
+```
+
+An icon alone doesn't communicate intent reliably — a visible text label is
+required for any action with consequences. An `IconButton` also has no async
+affordance: it won't show a spinner while the promise is pending or surface a
+rejection. Use `ActionButton` (text + optional `icon`) so the intent is explicit
+and the pending/error states are handled.
+
+Source: packages/alouette/src/ui/actions/ActionButton.tsx, ui/actions/IconButton.tsx
