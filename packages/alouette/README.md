@@ -213,31 +213,39 @@ import { AccentScope, Surface } from "alouette";
 An app can generate its own coherent palette for the existing accents (`brand`,
 `danger`, `info`, `success`, `warning`, plus `grayscale`) while staying on
 alouette's OKLCH ramp — and ship **only** that palette, no default CSS.
-`generateTheme` (from `alouette/theme-generator`) turns per-accent hue params
-into the two coupled outputs a theme needs: the palette **CSS** and the runtime
+A theme has two coupled outputs: the palette **CSS** and the runtime
 **`themeVariables`** map (JS token reads for gradients, native Switch,
-placeholder / SVG tint).
+placeholder / SVG tint). `alouette/theme-generator` produces both from per-accent
+hue params — the same module alouette's own `scripts/build-css.ts` uses for the
+default palette.
 
-Run it in a build script, overriding only the accents you want to re-color (the
-rest inherit alouette's defaults; omit the argument entirely to reproduce the
+The app generates its palette the same way: a build script calls `writeTheme`,
+which writes both files to disk. Override only the accents you want to re-color
+(the rest inherit alouette's defaults; omit `overrides` entirely to reproduce the
 default palette):
 
 ```ts
 // scripts/build-theme.ts
-import { writeFileSync } from "node:fs";
-import { generateTheme } from "alouette/theme-generator";
+import { writeTheme } from "alouette/theme-generator";
 
-const { css, themeVariables } = generateTheme({
-  brand: { type: "accent", hue: 300 },
+writeTheme({
+  outDir: "src",
+  overrides: { brand: { type: "accent", hue: 300 } },
 });
-
-writeFileSync("src/palette.css", css);
-writeFileSync(
-  "src/themeVariables.ts",
-  `import type { ThemeVariablesMap } from "alouette";\n\n` +
-    `export const themeVariables: ThemeVariablesMap = ${JSON.stringify(themeVariables, null, 2)};\n`,
-);
 ```
+
+```json
+// package.json
+"scripts": {
+  "build:theme": "node --experimental-strip-types scripts/build-theme.ts"
+}
+```
+
+That writes `src/palette.css` and `src/themeVariables.ts` (names configurable via
+`cssFileName` / `themeVariablesFileName`), both marked `DO NOT EDIT` and already
+formatter-stable. Re-run it whenever the palette params change, and commit the
+output. `generateTheme` returns the same pair in memory (`{ css, themeVariables }`)
+if the app would rather write the files itself.
 
 Import `alouette/core.css` + your generated palette (instead of
 `alouette/global.css`), and pass the generated map to `AlouetteProvider` so JS

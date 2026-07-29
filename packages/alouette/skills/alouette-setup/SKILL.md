@@ -2,19 +2,22 @@
 name: alouette-setup
 description: >
   Wire alouette into an Expo / React Native app: withAlouetteConfig metro
-  plugin, import alouette/global.css with @source globs, AlouetteProvider,
-  SafeAreaProvider, and loading Sora / Chivo Mono font weights. Load when
-  bootstrapping a project, when alouette classes render unstyled, or when
-  fonts/bold weights look wrong. Covers ios, android and web.
+  plugin, import alouette/global.css with @source globs, AlouetteProvider
+  (themeVariables is a required prop — pass the map from
+  alouette/defaultThemeVariables), SafeAreaProvider, and loading Sora / Chivo
+  Mono font weights. Load when bootstrapping a project, when alouette classes
+  render unstyled, or when fonts/bold weights look wrong. Covers ios, android
+  and web.
 type: lifecycle
 library: alouette
-library_version: "20.6.0"
+library_version: "20.8.0"
 sources:
   - "christophehurpeau/alouette:packages/storybook-native-app/metro.config.cjs"
   - "christophehurpeau/alouette:packages/storybook-native-app/postcss.config.mjs"
   - "christophehurpeau/alouette:packages/storybook-native-app/src/global.css"
   - "christophehurpeau/alouette:packages/storybook-native-app/src/App.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/core/ThemeVariablesContext.ts"
   - "christophehurpeau/alouette:packages/alouette/metro.cjs"
 ---
 
@@ -88,6 +91,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/sora";
 import { AlouetteProvider } from "alouette";
+import { themeVariables } from "alouette/defaultThemeVariables";
 
 export function App() {
   // Native font loading. On web, load the same fonts via a Google Fonts
@@ -96,7 +100,7 @@ export function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <AlouetteProvider>
+    <AlouetteProvider themeVariables={themeVariables}>
       <Screen />
     </AlouetteProvider>
   );
@@ -105,6 +109,51 @@ export function App() {
 
 `AlouetteProvider` reads the OS color scheme (`useColorScheme`) and applies
 `light` or `dark` as the root theme, so base tokens resolve app-wide.
+
+`themeVariables` is **required** — it is the JS mirror of the palette CSS
+(gradient stops, `placeholderTextColor`, native `Switch` colors, SVG tint), and
+the two halves must come from the same palette. Which map you pass follows which
+palette CSS the app imports:
+
+| Palette       | CSS                                             | `themeVariables`                                       |
+| ------------- | ----------------------------------------------- | ------------------------------------------------------ |
+| default       | `alouette/global.css`                           | `themeVariables` from `alouette/defaultThemeVariables` |
+| the app's own | `alouette/core.css` + its generated palette CSS | its generated `themeVariables` module                  |
+
+The default map lives at the `alouette/defaultThemeVariables` subpath — it is not
+re-exported from the `alouette` root entry.
+
+An app that ships its own palette does not generate it at runtime: a build script
+calls `writeTheme` from `alouette/theme-generator`, which writes **both** halves
+to disk — the palette CSS and a `themeVariables` module — the way alouette's own
+`scripts/build-css.ts` writes the default palette. The app imports those two
+generated files:
+
+```ts
+// scripts/build-theme.ts
+import { writeTheme } from "alouette/theme-generator";
+
+writeTheme({ outDir: "src", overrides: { brand: { type: "accent", hue: 300 } } });
+```
+
+```css
+/* src/global.css — core.css + the generated palette, not alouette/global.css */
+@import "alouette/core.css";
+@import "./palette.css"; /* generateTheme output */
+```
+
+```tsx
+import { AlouetteProvider } from "alouette";
+import { themeVariables } from "./themeVariables"; // writeTheme output
+
+<AlouetteProvider themeVariables={themeVariables}>
+  <Screen />
+</AlouetteProvider>;
+```
+
+Those two imports are the only wiring difference — everything else on this page
+(metro, postcss, `@source` globs, fonts) is identical. See
+alouette-theming/SKILL.md for the palette params `writeTheme` takes.
 
 Sora (body + heading) is the only required font. Add Chivo Mono **only if** the
 app uses `font-mono` utilities:
@@ -131,7 +180,7 @@ already provide one. Add it only if a component throws a safe-area context error
 import { SafeAreaProvider } from "alouette";
 
 <SafeAreaProvider>
-  <AlouetteProvider>
+  <AlouetteProvider themeVariables={themeVariables}>
     <Screen />
   </AlouetteProvider>
 </SafeAreaProvider>;
@@ -261,9 +310,11 @@ Correct:
 
 ```tsx
 import { AlouetteProvider } from "alouette";
+import { themeVariables } from "alouette/defaultThemeVariables";
+
 export function App() {
   return (
-    <AlouetteProvider>
+    <AlouetteProvider themeVariables={themeVariables}>
       <Screen />
     </AlouetteProvider>
   );
@@ -275,6 +326,38 @@ Without it, base tokens (`bg-surface`, `text-sharp`, `text-accent`) have no
 resolved values and components render with missing colors.
 
 Source: packages/alouette/src/core/AlouetteProvider.tsx
+
+### CRITICAL AlouetteProvider without themeVariables
+
+Wrong:
+
+```tsx
+<AlouetteProvider>
+  <Screen />
+</AlouetteProvider>
+```
+
+Correct:
+
+```tsx
+import { themeVariables } from "alouette/defaultThemeVariables";
+
+<AlouetteProvider themeVariables={themeVariables}>
+  <Screen />
+</AlouetteProvider>;
+```
+
+`themeVariables` has no default: the provider feeds it straight into
+`ThemeVariablesContext`, whose context default is unset. Omitting it is a type
+error, and at runtime `ScopedTheme` and `useThemeToken` index into an undefined
+map and throw. Pass the map matching the palette CSS the app imports — the
+default palette's map from `alouette/defaultThemeVariables` (not exported from
+the `alouette` root entry), or, for a custom palette, the `themeVariables` module
+`writeTheme` generated alongside the palette CSS. Don't call into
+`alouette/theme-generator` here: it is a node-only build-time API, not a runtime
+call.
+
+Source: packages/alouette/src/core/AlouetteProvider.tsx, src/core/ThemeVariablesContext.ts
 
 ### HIGH Bold / extrabold fonts not loaded
 

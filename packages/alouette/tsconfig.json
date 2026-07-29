@@ -25,6 +25,6 @@
       "alouette-icons/*": ["../../packages/alouette-icons/lib/*"]
     },
 
-    "types": ["react-native-web"]
+    "types": ["node", "react-native-web"]
   }
 }
