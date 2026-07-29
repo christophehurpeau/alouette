@@ -42,7 +42,9 @@ pnpm workspaces monorepo with 3 packages:
 
 ### Styling stack
 
-This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define tokens/keyframes in `packages/alouette/scripts/build-css.ts`, then regenerate with `pnpm --filter alouette build:css` — never edit `global.css` directly.
+This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define **structural** tokens/keyframes (type/radius/shadow/spacing/animation, fonts, utilities) in `packages/alouette/scripts/build-css.ts`; define **color** palettes in `packages/alouette/src/theme-generator/paletteSpecs.ts`. Regenerate with `pnpm --filter alouette build:css` — never edit the generated CSS (`global.css`, `core.css`, `default-palette.css`) directly.
+
+`build:css` writes a split output: `core.css` (structural, color-free), `default-palette.css` (the default palette — `@theme` color defaults + the twelve `:where(.<theme>)` blocks), `global.css` (aggregator `@import`ing both), plus `themeVariables.ts` and `animationDurationsMs.ts`. Color generation lives in the shipped, exported `src/theme-generator/` module (`generateTheme`, `createColorScale`, `tokenScaleMap`, `paletteSpecs`); `build-css.ts` is a thin driver that calls `generateTheme()` for the default palette. Apps can import `alouette/theme-generator` to generate their own palette for the existing accents (`generateTheme(overrides)` → `{ css, themeVariables }`), import `alouette/core.css` + their own palette CSS, and pass the generated map to `<AlouetteProvider themeVariables={...}>`.
 
 ### Component organization
 
@@ -87,11 +89,11 @@ Import icons from `alouette-icons/phosphor-icons/IconName`. The package is auto-
 <Text className="font-mono text-xs text-muted">Code</Text>
 ```
 
-Color tokens: edit `packages/alouette/scripts/build-css.ts`, then run `pnpm --filter alouette build:css`. Do not edit `global.css` directly.
+Color tokens: the token→scale-step mapping is `src/theme-generator/tokenScaleMap.ts` and the accent hue params are `src/theme-generator/paletteSpecs.ts`; then run `pnpm --filter alouette build:css`. Do not edit the generated CSS directly.
 
 # Theming and accents
 
-Themes are sets of CSS variables (for the `light`, `dark`, `light_brand`, `dark_info`, etc. theme names) applied by Alouette's `ScopedTheme` (`src/ui/containers/ScopedTheme.tsx`), which pushes the theme's resolved variables through NativeWind's `VariableContextProvider`. CSS custom properties cascade through the tree — child components always use **base tokens** (`bg-surface`, `text-accent`, `border-muted`, etc.) and inherit the correct values from the nearest `ScopedTheme`. The variable maps live in the generated `src/themeVariables.ts` (single source of truth shared with `global.css`).
+Themes are sets of CSS variables (for the `light`, `dark`, `light_brand`, `dark_info`, etc. theme names) applied by Alouette's `ScopedTheme` (`src/ui/containers/ScopedTheme.tsx`), which pushes the theme's resolved variables through NativeWind's `VariableContextProvider`. CSS custom properties cascade through the tree — child components always use **base tokens** (`bg-surface`, `text-accent`, `border-muted`, etc.) and inherit the correct values from the nearest `ScopedTheme`. The variable maps live in the generated `src/themeVariables.ts` (single source of truth shared with the palette CSS), and are injectable at runtime via `ThemeVariablesContext` / the `<AlouetteProvider themeVariables={...}>` prop so a BYO-palette app can swap them; both `themeVariables.ts` and the palette CSS come from `generateTheme()`.
 
 ## Sub-theme roots
 
@@ -122,7 +124,7 @@ On native, NativeWind resolves CSS variables at render time from a lookup table 
 
 ## CSS token changes
 
-Edit `packages/alouette/scripts/build-css.ts`, then run `pnpm --filter alouette build:css`. Never edit `global.css` directly.
+Edit `packages/alouette/scripts/build-css.ts` (structural tokens) or `src/theme-generator/paletteSpecs.ts` / `tokenScaleMap.ts` (colors), then run `pnpm --filter alouette build:css`. Never edit the generated CSS (`global.css`, `core.css`, `default-palette.css`) directly.
 
 # Interactive controls and depth
 

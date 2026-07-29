@@ -1,11 +1,20 @@
 export { AlouetteDecorator } from "./core/AlouetteDecorator";
+export type { AlouetteProviderProps } from "./core/AlouetteProvider";
 export { AlouetteProvider } from "./core/AlouetteProvider";
 export { SafeAreaProvider } from "./core/SafeAreaProvider";
 export { useSafeAreaInsets } from "./core/useSafeAreaInsets";
-export type { AlouetteModeTheme, Accent } from "./core/AlouetteConfig";
+export type {
+  AlouetteModeTheme,
+  AlouetteTheme,
+  Accent,
+} from "./core/AlouetteConfig";
 export { useCurrentMode, useCurrentTheme } from "./core/ThemeContext";
+export type { ThemeVariablesMap } from "./core/ThemeVariablesContext";
+export {
+  ThemeVariablesContext,
+  useThemeVariables,
+} from "./core/ThemeVariablesContext";
 export { useThemeToken } from "./core/useThemeToken";
-export { themeVariables } from "./themeVariables";
 export type { ScopedThemeProps } from "./ui/containers/ScopedTheme";
 export { ScopedTheme } from "./ui/containers/ScopedTheme";
 export type { ViewProps } from "./ui/primitives/View";

@@ -71,6 +71,9 @@ importers:
       alouette-icons:
         specifier: workspace:*
         version: link:../alouette-icons
+      colorjs.io:
+        specifier: 0.7.1
+        version: 0.7.1
       react-hook-form:
         specifier: 7.81.0
         version: 7.81.0(react@19.2.3)
@@ -3694,6 +3697,9 @@ packages:
 
   colorjs.io@0.6.0-alpha.1:
     resolution: {integrity: sha512-c/h/8uAmPydQcriRdX8UTAFHj6SpSHFHBA8LvMikvYWAVApPTwg/pyOXNsGmaCBd6L/EeDlRHSNhTtnIFp/qsg==}
+
+  colorjs.io@0.7.1:
+    resolution: {integrity: sha512-LY7OHnJZxHwT5UlzNa9bbhHHDbzB6yE5+3MIPwJEQKRvSCt/T4G7epsj+9j2BExUIIfXFIJGsIXUKdfrK9Q5tA==}
 
   commander@12.1.0:
     resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
@@ -10283,6 +10289,8 @@ snapshots:
   color-name@2.1.0: {}
 
   colorjs.io@0.6.0-alpha.1: {}
+
+  colorjs.io@0.7.1: {}
 
   commander@12.1.0: {}
 

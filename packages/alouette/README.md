@@ -83,6 +83,12 @@ repo root `node_modules`, adjust the depth (e.g.
 `@source '../../../node_modules/alouette/src'`); a path that resolves to nothing
 fails silently with no error.
 
+`alouette/global.css` is a convenience aggregator of `alouette/core.css`
+(structural, color-free) + `alouette/default-palette.css` (the default palette).
+To ship your own palette instead of the default, import `core.css` + your own
+generated palette CSS — see [Custom palette](#custom-palette-bring-your-own). The
+`@source` lines stay the same in every case.
+
 Import it once at your app's entry point:
 
 ```ts
@@ -201,6 +207,68 @@ import { AccentScope, Surface } from "alouette";
   <Surface>{/* children use base tokens */}</Surface>
 </AccentScope>;
 ```
+
+### Custom palette (bring your own)
+
+An app can generate its own coherent palette for the existing accents (`brand`,
+`danger`, `info`, `success`, `warning`, plus `grayscale`) while staying on
+alouette's OKLCH ramp — and ship **only** that palette, no default CSS.
+`generateTheme` (from `alouette/theme-generator`) turns per-accent hue params
+into the two coupled outputs a theme needs: the palette **CSS** and the runtime
+**`themeVariables`** map (JS token reads for gradients, native Switch,
+placeholder / SVG tint).
+
+Run it in a build script, overriding only the accents you want to re-color (the
+rest inherit alouette's defaults; omit the argument entirely to reproduce the
+default palette):
+
+```ts
+// scripts/build-theme.ts
+import { writeFileSync } from "node:fs";
+import { generateTheme } from "alouette/theme-generator";
+
+const { css, themeVariables } = generateTheme({
+  brand: { type: "accent", hue: 300 },
+});
+
+writeFileSync("src/palette.css", css);
+writeFileSync(
+  "src/themeVariables.ts",
+  `import type { ThemeVariablesMap } from "alouette";\n\n` +
+    `export const themeVariables: ThemeVariablesMap = ${JSON.stringify(themeVariables, null, 2)};\n`,
+);
+```
+
+Import `alouette/core.css` + your generated palette (instead of
+`alouette/global.css`), and pass the generated map to `AlouetteProvider` so JS
+token reads match your palette CSS:
+
+```css
+/* global.css */
+@import "alouette/core.css";
+@import "./palette.css";
+
+@source './src';
+@source '../node_modules/alouette/src';
+```
+
+```tsx
+import { AlouetteProvider } from "alouette";
+import { themeVariables } from "./themeVariables";
+
+export function App() {
+  return (
+    <AlouetteProvider themeVariables={themeVariables}>
+      {/* your app */}
+    </AlouetteProvider>
+  );
+}
+```
+
+`PaletteSpec` params per accent: `type` (`"accent"` | `"brightAccent"` |
+`"grayscale"`), `hue` (0–360), optional `hueHi` / `hueLo` (hue ramp across the
+lightness range) and `intensity` (chroma multiplier). The accent set is fixed —
+`generateTheme` re-colors the existing accents, it does not add new ones.
 
 ### Icons
 

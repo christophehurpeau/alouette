@@ -4,4 +4,4 @@ import type { AlouetteTheme } from "./core/AlouetteConfig";
  * `ScopedTheme` (NativeWind's `VariableContextProvider`) and `useThemeToken`.
  */
 export declare const themeVariables: Record<AlouetteTheme, Record<`--${string}`, string>>;
-//# sourceMappingURL=themeVariables.d.ts.map
+//# sourceMappingURL=defaultThemeVariables.d.ts.map

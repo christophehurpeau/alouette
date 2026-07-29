@@ -60,6 +60,12 @@ independently of the JS bundle, and anything not covered is purged:
 @source "../node_modules/alouette/src/**/*.{ts,tsx,js}"; /* alouette source */
 ```
 
+`alouette/global.css` is an aggregator of `alouette/core.css` (structural,
+color-free) + `alouette/default-palette.css` (the default palette). To ship a
+custom palette instead of the default, import `core.css` + your own generated
+palette CSS and pass the generated `themeVariables` to `AlouetteProvider` — see
+alouette-theming/SKILL.md. The `@source` lines are unchanged.
+
 In a monorepo where alouette is hoisted to the **repo root** `node_modules`
 (Yarn `node-modules` linker, pnpm hoisted, etc.), the path resolves from the
 repo root, not the app — adjust the depth accordingly:

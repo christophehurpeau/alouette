@@ -1,5 +1,6 @@
+/* eslint-disable import-x/extensions */
 // Single source of truth mapping each semantic token to a color-scale step,
-// per mode and accent. Shared by `build-css.ts` (emits the CSS variables /
+// per mode and accent. Shared by `buildTheme.ts` (emits the CSS variables /
 // themeVariables) and the repo-root `scripts/generate-palette.ts` contrast
 // audit (resolves the steps a token pair actually uses), so the two can never
 // drift. A token resolves to a `{ source, step }` (which palette + which scale
@@ -14,14 +15,14 @@ export type Mode = "dark" | "light";
 export type ScaleNum = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 export interface TokenStep {
-  source: "self" | "grayscale";
+  source: "grayscale" | "self";
   step: ScaleNum;
   alpha?: string;
 }
 export interface TokenLiteral {
   literal: string;
 }
-export type ResolvedToken = TokenStep | TokenLiteral;
+export type ResolvedToken = TokenLiteral | TokenStep;
 
 export interface TokenContext {
   mode: Mode;
@@ -34,7 +35,7 @@ export type TokenResolver = (ctx: TokenContext) => ResolvedToken | null;
 // `self` reads the accent's own palette; `gray` always reads grayscale (base
 // tokens whose value is fixed regardless of accent, e.g. text-muted/on-accent).
 const step = (
-  source: "self" | "grayscale",
+  source: "grayscale" | "self",
   dark: ScaleNum,
   light: ScaleNum,
   alpha?: string,
@@ -82,7 +83,7 @@ const translucent: Record<Mode, string> = {
 };
 
 // Insertion order is significant: it is the order tokens are emitted into
-// global.css / themeVariables, with the grayscale-only block first.
+// the palette CSS / themeVariables, with the grayscale-only block first.
 export const tokenScaleMap: Record<string, TokenResolver> = {
   /* grayscale-only base tokens */
   translucent: grayscaleOnly(({ mode }) => ({ literal: translucent[mode] })),
@@ -140,7 +141,10 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
   accent: selfAdaptive(11, 10),
   "on-accent": ({ isGrayscale, mode }) => ({
     source: "grayscale",
-    step: mode === "dark" ? 11 : isGrayscale ? 11 : 1,
+    step: ((): ScaleNum => {
+      if (mode === "dark") return 11;
+      return isGrayscale ? 11 : 1;
+    })(),
   }),
   "on-accent-muted": selfAdaptive(10, 10, 9, 4),
 

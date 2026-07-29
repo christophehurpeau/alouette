@@ -1,6 +1,6 @@
 import { expect } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { themeVariables } from "../../themeVariables";
+import { themeVariables } from "../../defaultThemeVariables";
 import { HStack } from "../stacks/stacks";
 import { IndeterminateToggleDemo } from "../story-components/IndeterminateToggleDemo";
 import { Story } from "../story-components/Story";

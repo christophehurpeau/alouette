@@ -1,8 +1,9 @@
 import { VariableContextProvider } from "nativewind";
 import type { ReactNode } from "react";
+import { useContext } from "react";
 import type { AlouetteTheme } from "../../core/AlouetteConfig";
 import { ThemeContext } from "../../core/ThemeContext";
-import { themeVariables } from "../../themeVariables";
+import { ThemeVariablesContext } from "../../core/ThemeVariablesContext";
 
 export interface ScopedThemeProps {
   /** Full theme name, e.g. "light", "dark", "light_brand", "dark_danger". */
@@ -19,6 +20,7 @@ export interface ScopedThemeProps {
  * Replaces Uniwind's `ScopedTheme`.
  */
 export function ScopedTheme({ theme, children }: ScopedThemeProps): ReactNode {
+  const themeVariables = useContext(ThemeVariablesContext);
   return (
     <ThemeContext.Provider value={theme}>
       <VariableContextProvider value={themeVariables[theme]}>

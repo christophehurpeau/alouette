@@ -2,8 +2,9 @@ type TokenName = `--${string}`;
 /**
  * Reads theme token values in JS for the few props that can't take a className
  * (gradient stops, `placeholderTextColor`, native Switch track/thumb, the Expo
- * browser chrome, SVG icon tint). Values come from the generated `themeVariables`
- * map keyed by the active `ThemeContext`, so they stay in sync with `global.css`.
+ * browser chrome, SVG icon tint). Values come from the active `themeVariables`
+ * map (`ThemeVariablesContext`) keyed by the active `ThemeContext`, so they stay
+ * in sync with the palette CSS (default or the app's own).
  *
  * Replaces Uniwind's `useCSSVariable`. Unlike NativeWind's
  * `useUnstableNativeVariable` this works on web and native alike and is stable.

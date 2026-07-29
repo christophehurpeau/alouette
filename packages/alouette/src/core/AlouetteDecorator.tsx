@@ -9,9 +9,17 @@ export const AlouetteDecorator: Decorator = (storyFn, context) => {
   const theme: "dark" | "light" =
     context.globals.backgrounds?.value === "#000000" ? "dark" : "light";
 
+  const themeVariables = context.parameters.alouette?.themeVariables;
+
+  if (!themeVariables) {
+    throw new Error(
+      "AlouetteDecorator: missing themeVariables in parameters.alouette",
+    );
+  }
+
   return (
     <SafeAreaProvider>
-      <AlouetteProvider>
+      <AlouetteProvider themeVariables={themeVariables}>
         <ScopedTheme theme={theme}>{storyFn(context)}</ScopedTheme>
       </AlouetteProvider>
     </SafeAreaProvider>

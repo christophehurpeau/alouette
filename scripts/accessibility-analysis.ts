@@ -1,5 +1,7 @@
+/* eslint-disable import-x/extensions */
 import convert from "color-convert";
-import { defaultColorScales } from "../packages/alouette/src/config/defaultColorScales";
+import { createColorScale } from "../packages/alouette/src/theme-generator/createColorScale.ts";
+import { defaultPaletteSpecs } from "../packages/alouette/src/theme-generator/paletteSpecs.ts";
 
 // WCAG contrast ratio requirements
 const WCAG_AA_NORMAL = 4.5; // Normal text
@@ -229,7 +231,11 @@ const analyzeBackgroundTextCombinations = (name: string, scale: ColorScale) => {
 console.log("🎨 ALOUETTE COLOR ACCESSIBILITY ANALYSIS");
 console.log("=".repeat(60));
 
-const palettes = defaultColorScales;
+const palettes: Record<string, ColorScale> = {};
+for (const [name, spec] of Object.entries(defaultPaletteSpecs)) {
+  palettes[`${name}.light`] = createColorScale(spec, "light") as ColorScale;
+  palettes[`${name}.dark`] = createColorScale(spec, "dark") as ColorScale;
+}
 Object.entries(palettes).forEach(([name, scale]) => {
   analyzeColorScale(name, scale);
   analyzeBackgroundTextCombinations(name, scale);

@@ -6,7 +6,7 @@
     {
       "label": "build",
       "type": "shell",
-      "command": "yarn build",
+      "command": "pnpm build",
       "options": {
         "cwd": "${workspaceFolder}/packages/alouette"
       },
@@ -18,7 +18,7 @@
     {
       "label": "build:css",
       "type": "shell",
-      "command": "yarn build:css",
+      "command": "pnpm build:css",
       "options": {
         "cwd": "${workspaceFolder}/packages/alouette"
       },
@@ -30,7 +30,7 @@
     {
       "label": "tsc",
       "type": "shell",
-      "command": "yarn tsc",
+      "command": "pnpm tsc",
       "group": {
         "kind": "test"
       },
@@ -47,7 +47,7 @@
     {
       "label": "storybook-native-app:web",
       "type": "shell",
-      "command": "yarn start:web",
+      "command": "pnpm start:web",
       "options": {
         "cwd": "${workspaceFolder}/packages/storybook-native-app"
       },
@@ -60,7 +60,7 @@
     {
       "label": "storybook-native-app:native",
       "type": "shell",
-      "command": "yarn start",
+      "command": "pnpm start",
       "options": {
         "cwd": "${workspaceFolder}/packages/storybook-native-app"
       },

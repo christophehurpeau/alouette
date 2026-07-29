@@ -34,7 +34,9 @@
   "types": "./dist/definitions/index.d.ts",
   "react-native": {
     ".": "./src/index.ts",
-    "./global.css": "./src/global.css"
+    "./global.css": "./src/global.css",
+    "./core.css": "./src/core.css",
+    "./default-palette.css": "./src/default-palette.css"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -52,11 +54,49 @@
         "import": "./dist/index-browser.es.js"
       }
     },
+    "./defaultThemeVariables": {
+      "types": "./dist/definitions/defaultThemeVariables.d.ts",
+      "node": {
+        "import": "./dist/defaultThemeVariables-node22.mjs",
+        "require": "./dist/defaultThemeVariables-node22.cjs"
+      },
+      "react-native": {
+        "import": "./dist/defaultThemeVariables-react-native.es.js",
+        "require": "./dist/defaultThemeVariables-react-native.cjs.js"
+      },
+      "browser": {
+        "import": "./dist/defaultThemeVariables-browser.es.js"
+      }
+    },
+    "./theme-generator": {
+      "types": "./dist/definitions/theme-generator.d.ts",
+      "node": {
+        "import": "./dist/theme-generator-node22.mjs",
+        "require": "./dist/theme-generator-node22.cjs"
+      },
+      "react-native": {
+        "import": "./dist/theme-generator-react-native.es.js",
+        "require": "./dist/theme-generator-react-native.cjs.js"
+      },
+      "browser": {
+        "import": "./dist/theme-generator-browser.es.js"
+      }
+    },
     "./metro.cjs": "./metro.cjs",
     "./global.css": {
       "style": "./src/global.css",
       "import": "./src/global.css",
       "default": "./src/global.css"
+    },
+    "./core.css": {
+      "style": "./src/core.css",
+      "import": "./src/core.css",
+      "default": "./src/core.css"
+    },
+    "./default-palette.css": {
+      "style": "./src/default-palette.css",
+      "import": "./src/default-palette.css",
+      "default": "./src/default-palette.css"
     }
   },
   "scripts": {
@@ -72,6 +112,7 @@
   "dependencies": {
     "@tailwindcss/postcss": "4.3.1",
     "alouette-icons": "workspace:*",
+    "colorjs.io": "0.7.1",
     "react-hook-form": "7.81.0",
     "react-native-safe-area-context": "5.7.0",
     "tailwind-merge": "3.6.0",
@@ -134,7 +175,21 @@
   "pob": {
     "bundler": "rollup-esbuild",
     "entries": [
-      "index"
+      "index",
+      "defaultThemeVariables",
+      {
+        "name": "theme-generator",
+        "envs": [
+          {
+            "target": "node",
+            "version": "22",
+            "formats": [
+              "cjs",
+              "es"
+            ]
+          }
+        ]
+      }
     ],
     "envs": [
       {
@@ -158,7 +213,9 @@
     ],
     "extraEntries": [
       "metro.cjs",
-      "src/global.css"
+      "src/global.css",
+      "src/core.css",
+      "src/default-palette.css"
     ],
     "jsx": true,
     "typescript": true
