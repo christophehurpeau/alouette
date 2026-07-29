@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [21.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.8.0...alouette@21.0.0) (2026-07-29)
+
+### ⚠ BREAKING CHANGES
+
+* allow apps to have their own palette
+
+### Features
+
+* add writeTheme and update skills
+* allow apps to have their own palette
+* **deps:** update tailwindcss monorepo to v4.3.3 ([#339](https://github.com/christophehurpeau/alouette/issues/339))
+
+Version bump for dependency: alouette-icons
+Version bump for dependency: alouette-icons
+
+
 ## [20.8.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.7.0...alouette@20.8.0) (2026-07-27)
 
 ### Features

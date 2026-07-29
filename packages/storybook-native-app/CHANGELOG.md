@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.0](///compare/storybook-native-app@10.8.0...storybook-native-app@11.0.0) (2026-07-29)
+
+### ⚠ BREAKING CHANGES
+
+* allow apps to have their own palette
+
+### Features
+
+* allow apps to have their own palette
+* **deps:** update tailwindcss monorepo to v4.3.3 ([#339](undefined/undefined/undefined/issues/339))
+
+Version bump for dependency: alouette
+Version bump for dependency: alouette-icons
+
+
 ## [10.8.0](///compare/storybook-native-app@10.7.0...storybook-native-app@10.8.0) (2026-07-27)
 
 Version bump for dependency: alouette
