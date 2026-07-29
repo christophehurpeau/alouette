@@ -164,8 +164,10 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
   // },
 ];
 
-const grouped: Record<string, Partial<Record<"light" | "dark", ColorScale>>> =
-  {};
+const grouped: Record<
+  string,
+  Partial<Record<"light" | "dark", ColorScale>>
+> = {};
 Object.entries(palettes).forEach(([rawName, palette]) => {
   const [accent, mode] = rawName.split(".") as [string, "light" | "dark"];
   (grouped[accent] ??= {})[mode] = palette;
