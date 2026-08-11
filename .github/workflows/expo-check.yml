@@ -68,7 +68,7 @@ jobs:
         if: steps.check.outcome == 'failure'
         run: |
           pnpm install --no-frozen-lockfile
-          pnpm dedupe --no-frozen-lockfile
+          pnpm dedupe
           pnpm lint:eslint --fix '**/package.json'
 
       - name: Check for added or modified files
