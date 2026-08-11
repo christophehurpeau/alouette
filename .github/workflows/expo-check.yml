@@ -69,6 +69,7 @@ jobs:
         run: |
           pnpm install --no-frozen-lockfile
           pnpm dedupe --no-frozen-lockfile
+          pnpm lint:eslint --fix '**/package.json'
 
       - name: Check for added or modified files
         id: git-check-modified
