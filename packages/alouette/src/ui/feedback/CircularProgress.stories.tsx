@@ -1,8 +1,5 @@
 import { expect } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-// The srgb map explicitly: this play function parses hex, and it is the map the
-// storybook decorator uses by default (the OKLCH toolbar global is opt-in).
-import { themeVariables } from "../../defaultThemeVariablesSrgb";
 import { HStack } from "../stacks/stacks";
 import { IndeterminateToggleDemo } from "../story-components/IndeterminateToggleDemo";
 import { Story } from "../story-components/Story";
@@ -47,23 +44,13 @@ export const CircularProgressPreviewStory: ThisStory = {
   args: { progress: 60 },
   render: (args) => <CircularProgress {...args} />,
   play: async ({ canvasElement }) => {
-    const lightBrandRgb = (token: `--color-${string}`): string => {
-      const hex = themeVariables.light_brand[token];
-      if (!hex) throw new Error(`Missing light_brand token ${token}`);
-      return `rgb(${[1, 3, 5]
-        .map((i) => Number.parseInt(hex.slice(i, i + 2), 16))
-        .join(", ")})`;
-    };
     // Rings must resolve their text-* class through the brand accent scope,
-    // not inherit body's hotpink lint marker.
+    // not inherit body's hotpink lint marker. The expected values are
+    // light_brand's --color-border-muted (#98D9F3) and --color-accent (#07556D).
     const [trackSvg, fillSvg] = canvasElement.querySelectorAll("svg");
     if (!trackSvg || !fillSvg) throw new Error("Expected track and fill svgs");
-    await expect(getComputedStyle(trackSvg).color).toBe(
-      lightBrandRgb("--color-border-muted"),
-    );
-    await expect(getComputedStyle(fillSvg).color).toBe(
-      lightBrandRgb("--color-accent"),
-    );
+    await expect(getComputedStyle(trackSvg).color).toBe("rgb(152, 217, 243)");
+    await expect(getComputedStyle(fillSvg).color).toBe("rgb(7, 85, 109)");
   },
 };
 
