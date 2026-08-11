@@ -11,6 +11,16 @@ minimumReleaseAgeExclude:
   - alouette-icons
   - nightingale
   - nightingale-logger
+  - "@expo/cli"
+  - "@expo/fingerprint"
+  - "@expo/inline-modules"
+  - "@expo/local-build-cache-provider"
+  - "@expo/metro-config"
+  - "@expo/prebuild-config"
+  - expo-asset
+  - expo-constants
+  - expo-server
+  - expo
 nodeLinker: hoisted
 packages:
   - packages/*

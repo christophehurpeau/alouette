@@ -7,7 +7,7 @@ import { defaultPaletteSpecs } from "../packages/alouette/src/theme-generator/pa
 const WCAG_AA_NORMAL = 4.5; // Normal text
 const WCAG_AA_LARGE = 3.0; // Large text (18pt+ or 14pt+ bold)
 const WCAG_AAA_NORMAL = 7.0; // Enhanced contrast
-const WCAG_AAA_LARGE = 4.5; // Enhanced contrast large text
+// const WCAG_AAA_LARGE = 4.5; // Enhanced contrast large text
 
 type ColorScale = Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10, string>;
 
@@ -24,7 +24,7 @@ const darkModeScaleNumbers: Record<number, number> = {
   9: 2,
   10: 1,
 };
-const hexToRgb = (hex: string) => {
+const hexToRgb = (hex: string): [number, number, number] => {
   const [r, g, b] = convert.hex.rgb(hex);
   return [r / 255, g / 255, b / 255];
 };
@@ -33,7 +33,7 @@ const getLuminance = (hex: string) => {
   const [r, g, b] = hexToRgb(hex);
   const [rs, gs, bs] = [r, g, b].map((c) =>
     c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4),
-  );
+  ) as [number, number, number];
   return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
 };
 
@@ -103,7 +103,7 @@ const analyzeColorScale = (name: string, scale: ColorScale) => {
 
   Object.entries(scale).forEach(([step, color]) => {
     const stepNum = parseInt(step);
-    const darkStep = darkModeScaleNumbers[stepNum];
+    const darkStep = darkModeScaleNumbers[stepNum]!;
     const darkUsage = getUsageDescription(darkStep);
 
     let testDesc = "";

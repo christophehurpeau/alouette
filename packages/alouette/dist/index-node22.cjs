@@ -39,6 +39,10 @@ function _interopNamespaceDefault(e) {
 
 const WebBrowser__namespace = /*#__PURE__*/_interopNamespaceDefault(WebBrowser);
 
+const NativeThemeVariablesContext = react.createContext(
+  null
+);
+
 const ThemeContext = react.createContext("light");
 function useCurrentTheme() {
   return react.useContext(ThemeContext);
@@ -47,15 +51,8 @@ function useCurrentMode() {
   return react.useContext(ThemeContext).startsWith("dark") ? "dark" : "light";
 }
 
-const ThemeVariablesContext = react.createContext(
-  null
-);
-function useThemeVariables() {
-  return react.useContext(ThemeVariablesContext);
-}
-
 function ScopedTheme({ theme, children }) {
-  const themeVariables = react.useContext(ThemeVariablesContext);
+  const themeVariables = react.useContext(NativeThemeVariablesContext);
   return /* @__PURE__ */ jsxRuntime.jsx(ThemeContext.Provider, { value: theme, children: /* @__PURE__ */ jsxRuntime.jsx(nativewind.VariableContextProvider, { value: themeVariables[theme], children }) });
 }
 
@@ -64,7 +61,7 @@ function AlouetteProvider({
   themeVariables
 }) {
   const colorScheme = reactNative.useColorScheme();
-  return /* @__PURE__ */ jsxRuntime.jsx(ThemeVariablesContext.Provider, { value: themeVariables, children: /* @__PURE__ */ jsxRuntime.jsx(ScopedTheme, { theme: colorScheme === "dark" ? "dark" : "light", children }) });
+  return /* @__PURE__ */ jsxRuntime.jsx(NativeThemeVariablesContext.Provider, { value: themeVariables, children: /* @__PURE__ */ jsxRuntime.jsx(ScopedTheme, { theme: colorScheme === "dark" ? "dark" : "light", children }) });
 }
 
 const AlouetteDecorator = (storyFn, context) => {
@@ -72,21 +69,11 @@ const AlouetteDecorator = (storyFn, context) => {
   const themeVariables = context.parameters.alouette?.themeVariables;
   if (!themeVariables) {
     throw new Error(
-      "AlouetteDecorator: missing themeVariables in parameters.alouette"
+      'AlouetteDecorator: missing "themeVariables" in parameters.alouette'
     );
   }
   return /* @__PURE__ */ jsxRuntime.jsx(reactNativeSafeAreaContext.SafeAreaProvider, { children: /* @__PURE__ */ jsxRuntime.jsx(AlouetteProvider, { themeVariables, children: /* @__PURE__ */ jsxRuntime.jsx(ScopedTheme, { theme, children: storyFn(context) }) }) });
 };
-
-function useThemeToken(tokenOrTokens) {
-  const theme = react.useContext(ThemeContext);
-  const themeVariables = react.useContext(ThemeVariablesContext);
-  const vars = themeVariables[theme];
-  if (Array.isArray(tokenOrTokens)) {
-    return tokenOrTokens.map((token) => vars[token]);
-  }
-  return vars[tokenOrTokens];
-}
 
 const View = react.forwardRef((props, ref) => {
   return /* @__PURE__ */ jsxRuntime.jsx(reactNative.View, { ref, ...props });
@@ -858,9 +845,10 @@ const PressableBox = react.forwardRef(
   }
 );
 
+const useColorVariable = nativewind.useUnstableNativeVariable;
 function useColorToken(className) {
   const token = className.split(/\s+/).find((part) => part.startsWith("text-"))?.slice("text-".length);
-  return useThemeToken(`--color-${token ?? "sharp"}`);
+  return useColorVariable(`--color-${token ?? "sharp"}`);
 }
 
 function Icon({
@@ -1630,7 +1618,7 @@ function pressAsyncReducer(previousState, action) {
 }
 function usePressAsync(onPress) {
   const [pressAsyncState, dispatch] = react.useReducer(pressAsyncReducer, idleState);
-  const settledTimerRef = react.useRef(null);
+  const settledTimerRef = react.useRef(void 0);
   react.useEffect(() => {
     return () => {
       clearTimeout(settledTimerRef.current);
@@ -1694,7 +1682,8 @@ const inputVariants = tailwindVariants.tv(
       "focus:border-interactive-outlined-focus",
       "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
       "active:border-interactive-outlined-active",
-      "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed"
+      "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed",
+      "placeholder:text-form-placeholder"
     ].join(" "),
     variants: {
       multiline: {
@@ -1747,7 +1736,10 @@ const MODE_PROPS = {
 };
 const InputText = react.forwardRef(
   ({ className, disabled, mode, multiline, forceStyle, ...props }, ref) => {
-    const placeholderColor = useThemeToken("--color-form-placeholder");
+    const placeholderColor = reactNative.Platform.OS === "web" ? void 0 : (
+      // eslint-disable-next-line react-hooks/rules-of-hooks -- native only, web is set via css.
+      useColorVariable("--color-form-placeholder")
+    );
     const modeProps = mode ? MODE_PROPS[mode] : void 0;
     return /* @__PURE__ */ jsxRuntime.jsx(
       reactNative.TextInput,
@@ -1757,7 +1749,7 @@ const InputText = react.forwardRef(
         disabled,
         "aria-disabled": disabled === true,
         multiline: multiline === true,
-        placeholderTextColor: typeof placeholderColor === "string" ? placeholderColor : void 0,
+        placeholderTextColor: placeholderColor,
         className: inputVariants({ multiline, forceStyle, className }),
         ...modeProps,
         ...props
@@ -1793,12 +1785,12 @@ function SwitchInner({
   ...props
 }) {
   const [value, setValue] = useControllableChecked(checked, onValueChange);
-  const [trackBg, thumb, disabledTrackBg, disabledThumb] = useThemeToken([
-    "--color-lowered",
-    "--color-highlight",
-    "--color-disabled-interactive-muted",
-    "--color-disabled-muted"
-  ]);
+  const trackBg = useColorVariable("--color-lowered");
+  const thumb = useColorVariable("--color-highlight");
+  const disabledTrackBg = useColorVariable(
+    "--color-disabled-interactive-muted"
+  );
+  const disabledThumb = useColorVariable("--color-disabled-muted");
   const track = disabled ? disabledTrackBg : trackBg;
   const thumbColor = disabled ? disabledThumb : thumb;
   return /* @__PURE__ */ jsxRuntime.jsx(
@@ -2668,33 +2660,9 @@ function GradientBackground({
 }
 
 const GradientScrollViewInner = react.forwardRef(({ children, ...scrollViewProps }, ref) => {
-  const [gradientStart, gradientEnd] = useThemeToken([
-    "--color-screen-gradient-start",
-    "--color-screen-gradient-end"
-  ]);
   return /* @__PURE__ */ jsxRuntime.jsxs(reactNative.ScrollView, { ref, ...scrollViewProps, children: [
-    /* @__PURE__ */ jsxRuntime.jsx(
-      reactNative.View,
-      {
-        className: "absolute left-0 right-0",
-        style: {
-          top: -600,
-          height: 600,
-          backgroundColor: gradientStart
-        }
-      }
-    ),
-    /* @__PURE__ */ jsxRuntime.jsx(
-      reactNative.View,
-      {
-        className: "absolute left-0 right-0",
-        style: {
-          bottom: -600,
-          height: 600,
-          backgroundColor: gradientEnd
-        }
-      }
-    ),
+    /* @__PURE__ */ jsxRuntime.jsx(reactNative.View, { className: "absolute left-0 right-0 top-[-600] height-[600] background-(--color-screen-gradient-start)" }),
+    /* @__PURE__ */ jsxRuntime.jsx(reactNative.View, { className: "absolute left-0 right-0 bottom-[-600] height-[600] background-(--color-screen-gradient-end)" }),
     /* @__PURE__ */ jsxRuntime.jsx(GradientBackground, {}),
     children
   ] });
@@ -2797,10 +2765,8 @@ function SwitchBreakpointsUsingNull({
 }
 
 const useOpenExternalLink = () => {
-  const [textSharp, bgSurface] = useThemeToken([
-    "--color-sharp",
-    "--color-surface"
-  ]);
+  const textSharp = useColorVariable("text-sharp");
+  const bgSurface = useColorVariable("bg-surface");
   return async (href, openLinkBehavior) => {
     switch (openLinkBehavior.native) {
       case "webBrowser": {
@@ -2915,7 +2881,6 @@ exports.SwitchBreakpointsUsingDisplayNone = SwitchBreakpointsUsingDisplayNone;
 exports.SwitchBreakpointsUsingNull = SwitchBreakpointsUsingNull;
 exports.Text = Text;
 exports.TextArea = TextArea;
-exports.ThemeVariablesContext = ThemeVariablesContext;
 exports.VStack = VStack;
 exports.View = View;
 exports.WarningAlertDialog = WarningAlertDialog;
@@ -2926,6 +2891,4 @@ exports.useCurrentBreakpointName = useCurrentBreakpointName;
 exports.useCurrentBreakpointNameFiltered = useCurrentBreakpointNameFiltered;
 exports.useCurrentMode = useCurrentMode;
 exports.useCurrentTheme = useCurrentTheme;
-exports.useThemeToken = useThemeToken;
-exports.useThemeVariables = useThemeVariables;
 //# sourceMappingURL=index-node22.cjs.map

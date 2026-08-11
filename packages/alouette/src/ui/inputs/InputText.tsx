@@ -1,10 +1,11 @@
 import { forwardRef } from "react";
 import {
+  Platform,
   TextInput as RNTextInput,
   type TextInputProps as RNTextInputProps,
 } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
-import { useThemeToken } from "../../core/useThemeToken";
+import { useColorVariable } from "../../core/useColorToken";
 
 const inputVariants = tv(
   {
@@ -21,6 +22,7 @@ const inputVariants = tv(
       "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
       "active:border-interactive-outlined-active",
       "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed",
+      "placeholder:text-form-placeholder",
     ].join(" "),
     variants: {
       multiline: {
@@ -94,7 +96,11 @@ export interface InputTextProps
 
 export const InputText = forwardRef<RNTextInput, InputTextProps>(
   ({ className, disabled, mode, multiline, forceStyle, ...props }, ref) => {
-    const placeholderColor = useThemeToken("--color-form-placeholder");
+    const placeholderColor =
+      Platform.OS === "web"
+        ? undefined
+        : // eslint-disable-next-line react-hooks/rules-of-hooks -- native only, web is set via css.
+          useColorVariable("--color-form-placeholder");
     const modeProps = mode ? MODE_PROPS[mode] : undefined;
     return (
       <RNTextInput
@@ -103,9 +109,7 @@ export const InputText = forwardRef<RNTextInput, InputTextProps>(
         disabled={disabled}
         aria-disabled={disabled === true}
         multiline={multiline === true}
-        placeholderTextColor={
-          typeof placeholderColor === "string" ? placeholderColor : undefined
-        }
+        placeholderTextColor={placeholderColor}
         className={inputVariants({ multiline, forceStyle, className })}
         {...modeProps}
         {...props}

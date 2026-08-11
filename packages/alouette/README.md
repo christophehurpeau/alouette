@@ -65,6 +65,10 @@ const { getDefaultConfig } = require("expo/metro-config.js");
 module.exports = withAlouetteConfig(getDefaultConfig(__dirname));
 ```
 
+`withAlouetteConfig` currently wraps `withNativewind` and forwards your options
+unchanged; use it anyway, so alouette can add required metro wiring later without
+a breaking change on your side.
+
 2. **CSS entry** — create a `global.css` that re-exports Alouette's tokens and
    points `@source` at the directories NativeWind should scan for class names:
 
@@ -84,7 +88,16 @@ repo root `node_modules`, adjust the depth (e.g.
 fails silently with no error.
 
 `alouette/global.css` is a convenience aggregator of `alouette/core.css`
-(structural, color-free) + `alouette/default-palette.css` (the default palette).
+(structural, color-free) + `alouette/default-palette.css` (the default palette in
+sRGB hex). Wide-gamut color is opt-in — add
+`alouette/default-palette-oklch.css` after it to give web the display-p3 ramp
+(see [Color format](#color-format-hex-everywhere-oklch-as-a-web-opt-in)):
+
+```css
+@import "alouette/global.css";
+@import "alouette/default-palette-oklch.css"; /* optional */
+```
+
 To ship your own palette instead of the default, import `core.css` + your own
 generated palette CSS — see [Custom palette](#custom-palette-bring-your-own). The
 `@source` lines stay the same in every case.
@@ -208,16 +221,27 @@ import { AccentScope, Surface } from "alouette";
 </AccentScope>;
 ```
 
+The two platforms resolve a theme differently, and only one of them uses CSS:
+web renders the theme name as a className the palette CSS resolves, while native
+pushes the theme's variables through NativeWind's `VariableContextProvider`, from
+the `themeVariables` map you give `AlouetteProvider`. The `.<theme>` blocks are
+therefore emitted inside `@supports (display: contents)`, which the native
+compiler drops — native compiles the `@theme` defaults and nothing else, and gets
+every themed value from the map.
+
+That also means colors are the one part of alouette you cannot read from JS:
+there is no exported token hook, so style every color with a token className.
+
 ### Custom palette (bring your own)
 
 An app can generate its own coherent palette for the existing accents (`brand`,
 `danger`, `info`, `success`, `warning`, plus `grayscale`) while staying on
 alouette's OKLCH ramp — and ship **only** that palette, no default CSS.
-A theme has two coupled outputs: the palette **CSS** and the runtime
-**`themeVariables`** map (JS token reads for gradients, native Switch,
-placeholder / SVG tint). `alouette/theme-generator` produces both from per-accent
-hue params — the same module alouette's own `scripts/build-css.ts` uses for the
-default palette.
+A theme has two coupled outputs: the palette **CSS** (what web resolves, and the
+source of every `className` token) and the runtime **`themeVariables`** map (what
+native resolves through `VariableContextProvider`).
+`alouette/theme-generator` produces both from per-accent hue params — the same
+module alouette's own `scripts/build-css.ts` uses for the default palette.
 
 The app generates its palette the same way: a build script calls `writeTheme`,
 which writes both files to disk. Override only the accents you want to re-color
@@ -241,15 +265,24 @@ writeTheme({
 }
 ```
 
-That writes `src/palette.css` and `src/themeVariables.ts` (names configurable via
-`cssFileName` / `themeVariablesFileName`), both marked `DO NOT EDIT` and already
-formatter-stable. Re-run it whenever the palette params change, and commit the
-output. `generateTheme` returns the same pair in memory (`{ css, themeVariables }`)
-if the app would rather write the files itself.
+That writes three files, all marked `DO NOT EDIT` and already formatter-stable:
+`src/palette.css` + `src/themeVariables.ts` in sRGB hex (complete on their own),
+and `src/palette-oklch.css`, the OKLCH / display-p3 overlay. Re-run it whenever
+the palette params change, and commit the output. Pass `srgbOnly: true` to skip
+the OKLCH file entirely. `generateTheme` returns the same content in memory
+(`{ css, oklchCss, themeVariables, oklchThemeVariables }`) if the app would
+rather write the files itself.
+
+The OKLCH file is how the palette gets wide-gamut colors on web while staying
+renderable on native (see [Color format](#color-format-hex-everywhere-oklch-as-a-web-opt-in)).
+Opting in is a CSS import: add `./palette-oklch.css` after `./palette.css`.
+There is no OKLCH counterpart to `themeVariables.ts` — the web build of
+`AlouetteProvider` ignores `themeVariables` entirely, so the hex map native
+consumes is the only one.
 
 Import `alouette/core.css` + your generated palette (instead of
-`alouette/global.css`), and pass the generated map to `AlouetteProvider` so JS
-token reads match your palette CSS:
+`alouette/global.css`), and pass the generated map to `AlouetteProvider` so
+native token reads match your palette CSS:
 
 ```css
 /* global.css */
@@ -277,6 +310,33 @@ export function App() {
 `"grayscale"`), `hue` (0–360), optional `hueHi` / `hueLo` (hue ramp across the
 lightness range) and `intensity` (chroma multiplier). The accent set is fixed —
 `generateTheme` re-colors the existing accents, it does not add new ones.
+
+### Color format: hex everywhere, OKLCH as a web opt-in
+
+Every palette is computed in OKLCH and emitted twice:
+
+- **sRGB hex** — the baseline, on every platform. React Native's color parser
+  accepts hex / rgb / hsl / hwb only, so `oklch()` must never reach it.
+- **OKLCH with display-p3 chroma headroom** — web only. Same lightness and hue
+  ramp, more chroma, so accents are visibly more vivid on wide-gamut screens.
+
+A theme has two halves — the palette CSS and the `themeVariables` map — but only
+the CSS half has an OKLCH variant in play. Opting in is one extra import, not a
+platform check:
+
+|                | palette CSS                               | `themeVariables` map                         |
+| -------------- | ----------------------------------------- | -------------------------------------------- |
+| hex (default)  | `alouette/default-palette.css`            | `alouette/defaultThemeVariables` (= `…Srgb`) |
+| + OKLCH on web | also `alouette/default-palette-oklch.css` | unchanged — the overlay is CSS-only          |
+
+The OKLCH CSS re-declares the same variables inside `@supports (color: oklch(0 0 0))`,
+so it is additive: browsers apply the override, and the native compiler drops the
+feature query and keeps the hex even if the file ends up in a shared CSS entry.
+The map stays on hex in every case — it is read only on native, where `oklch()`
+cannot be parsed at all.
+
+Because the map is unambiguously hex, code that _parses_ a token value (a test
+reading hex channels, say) can read `alouette/defaultThemeVariables` directly.
 
 ### Icons
 

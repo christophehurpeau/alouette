@@ -1,4 +1,6 @@
-const themeVariables = {
+import { Platform } from 'react-native';
+
+const themeVariables = Platform.OS === "web" ? {} : {
   light: {
     "--color-translucent": "#ffffff66",
     "--color-screen": "#EEEEEE",

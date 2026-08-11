@@ -1,4 +1,7 @@
-@import "alouette/global.css";
+@import "alouette/core.css";
+/* The wide-gamut overlay is not imported here: the web preview toggles it from
+   the `colorFormat` toolbar global (see .storybook/preview.tsx). */
+@import "alouette/default-palette.css";
 
 @source '../../alouette/src';
 @source '../src';

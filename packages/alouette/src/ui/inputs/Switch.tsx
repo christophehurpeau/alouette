@@ -1,6 +1,6 @@
 import { type ReactNode, useCallback, useState } from "react";
 import { Switch as RNSwitch } from "react-native";
-import { useThemeToken } from "../../core/useThemeToken";
+import { useColorVariable } from "../../core/useColorToken";
 import { AccentScope, type AccentScopeProps } from "../containers/AccentScope";
 
 export interface SwitchProps {
@@ -39,12 +39,12 @@ function SwitchInner({
   ...props
 }: SwitchProps): ReactNode {
   const [value, setValue] = useControllableChecked(checked, onValueChange);
-  const [trackBg, thumb, disabledTrackBg, disabledThumb] = useThemeToken([
-    "--color-lowered",
-    "--color-highlight",
+  const trackBg = useColorVariable("--color-lowered");
+  const thumb = useColorVariable("--color-highlight");
+  const disabledTrackBg = useColorVariable(
     "--color-disabled-interactive-muted",
-    "--color-disabled-muted",
-  ]);
+  );
+  const disabledThumb = useColorVariable("--color-disabled-muted");
   const track = disabled ? disabledTrackBg : trackBg;
   const thumbColor = disabled ? disabledThumb : thumb;
   return (

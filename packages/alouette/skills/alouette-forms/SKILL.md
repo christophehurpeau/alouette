@@ -13,7 +13,7 @@ description: >
   Load when building text fields, toggles, radio groups, or a validated form.
 type: core
 library: alouette
-library_version: "20.8.0"
+library_version: "21.0.0"
 requires:
   - alouette-theming
   - alouette-actions

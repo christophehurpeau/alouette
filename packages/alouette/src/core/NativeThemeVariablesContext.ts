@@ -3,9 +3,7 @@ import type { AlouetteTheme } from "./AlouetteConfig";
 
 /**
  * Resolved CSS-variable map for every theme — the JS mirror of the palette CSS,
- * consumed by `ScopedTheme` (feeds NativeWind's `VariableContextProvider`) and
- * `useThemeToken` (JS token reads: gradient stops, native Switch, placeholder /
- * SVG tint). This is the shape of `generateTheme(...).themeVariables`.
+ * consumed by `ScopedTheme` (feeds NativeWind's `VariableContextProvider`). This is the shape of `generateTheme(...).themeVariables`.
  */
 export type ThemeVariablesMap = Record<
   AlouetteTheme,
@@ -19,10 +17,10 @@ export type ThemeVariablesMap = Record<
  * with its own `generateTheme(...).themeVariables`, keeping JS token reads in
  * sync with its palette CSS.
  */
-export const ThemeVariablesContext = createContext<ThemeVariablesMap>(
+export const NativeThemeVariablesContext = createContext<ThemeVariablesMap>(
   null as unknown as ThemeVariablesMap,
 );
 
-export function useThemeVariables(): ThemeVariablesMap {
-  return useContext(ThemeVariablesContext);
+export function useNativeThemeVariables(): ThemeVariablesMap {
+  return useContext(NativeThemeVariablesContext);
 }

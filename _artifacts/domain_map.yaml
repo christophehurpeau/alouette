@@ -7,7 +7,7 @@
 
 library:
   name: 'alouette'
-  version: '20.8.0'
+  version: '21.0.0'
   repository: 'https://github.com/christophehurpeau/alouette'
   description: 'Multi-platform (web + React Native iOS/Android) React design system built on NativeWind v5 and Tailwind CSS v4, styled entirely via className with semantic theme tokens and CSS-driven animations.'
   primary_framework: 'React / React Native'
@@ -144,7 +144,7 @@ skills:
   - name: 'Theme with modes and accents'
     slug: 'alouette-theming'
     domain: 'theming'
-    description: 'Re-theme a subtree with accents (brand/danger/info/success/warning) and light/dark modes. Use the accent prop or AccentScope/ScopedTheme; children always consume base tokens (bg-surface, text-accent, border-muted). For an accent that toggles at runtime without remounting the subtree, use StableAccentScope. Read tokens in JS with useThemeToken; read mode with useCurrentMode.'
+    description: 'Re-theme a subtree with accents (brand/danger/info/success/warning) and light/dark modes. Use the accent prop or AccentScope/ScopedTheme; children always consume base tokens (bg-surface, text-accent, border-muted). For an accent that toggles at runtime without remounting the subtree, use StableAccentScope. Tokens are className-only (no JS token-read hook); read mode with useCurrentMode.'
     type: 'core'
     packages: ['alouette']
     covers:
@@ -153,7 +153,7 @@ skills:
       - 'ScopedTheme'
       - 'accent prop'
       - 'base tokens vs role tokens'
-      - 'useThemeToken'
+      - 'className-only token access'
       - 'useCurrentMode / useCurrentTheme'
       - 'AlouetteModeTheme / Accent types'
     tasks:
@@ -212,16 +212,16 @@ skills:
         source: 'packages/alouette/src/ui/containers/StableAccentScope.tsx'
         priority: 'MEDIUM'
         status: 'active'
-      - mistake: 'Using nativewind useUnstableNativeVariable for token values'
-        mechanism: "useThemeToken reads alouette's generated themeVariables map keyed by the active ThemeContext; it works on web and native and is stable, unlike nativewind's useUnstableNativeVariable."
+      - mistake: 'Reading a token value in JS instead of applying a className'
+        mechanism: "alouette exports no token-read hook (useThemeToken was removed in 21.0.0). NativeWind's variable context is a native-only path: on web the theme is a className resolved by the palette CSS and nothing populates that context, so the read comes back undefined."
         wrong_pattern: |
           import { useUnstableNativeVariable } from "nativewind";
           const color = useUnstableNativeVariable("--color-accent");
+          <Text style={{ color }}>Hi</Text>;
         correct_pattern: |
-          import { useThemeToken } from "alouette";
-          const color = useThemeToken("--color-accent");
-        source: 'packages/alouette/src/core/useThemeToken.ts'
-        priority: 'MEDIUM'
+          <Text className="text-accent">Hi</Text>
+        source: 'packages/alouette/src/ui/containers/ScopedTheme.web.tsx'
+        priority: 'HIGH'
         status: 'active'
       - mistake: 'Expecting var() chains to resolve on native'
         mechanism: 'On native, NativeWind resolves CSS variables from a lookup table and cannot follow a var() that points at another var(); alouette sub-themes use hardcoded hex (light_info/dark_info) for this reason.'

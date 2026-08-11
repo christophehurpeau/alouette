@@ -5,15 +5,19 @@
 // `alouette/theme-generator` module (createColorScale) so the audit can never
 // drift from what apps and build-css.ts actually emit.
 //
-//   node --experimental-strip-types scripts/generate-palette.ts         # failures only
-//   node --experimental-strip-types scripts/generate-palette.ts --all   # every pair
+//   node --experimental-strip-types scripts/generate-palette.ts             # failures only
+//   node --experimental-strip-types scripts/generate-palette.ts --all       # every pair
+//   node --experimental-strip-types scripts/generate-palette.ts --gamut=p3  # the web palette
 
-import convert from "color-convert";
 import Color from "colorjs.io";
-import type { ColorScale } from "../packages/alouette/src/theme-generator/createColorScale.ts";
+import type {
+  ColorScale,
+  Gamut,
+} from "../packages/alouette/src/theme-generator/createColorScale.ts";
 import {
-  createColorScale,
-  maxSrgbChroma,
+  createOklchScale,
+  maxChroma,
+  toHex,
 } from "../packages/alouette/src/theme-generator/createColorScale.ts";
 import { defaultPaletteSpecs } from "../packages/alouette/src/theme-generator/paletteSpecs.ts";
 import type {
@@ -22,10 +26,27 @@ import type {
 } from "../packages/alouette/src/theme-generator/tokenScaleMap.ts";
 import { resolveTokenEffective } from "../packages/alouette/src/theme-generator/tokenScaleMap.ts";
 
+// sRGB hex is what native renders; --gamut=p3 audits the wide-gamut palette web
+// gets, whose steps hold the same lightness with more chroma.
+const gamut: Gamut = process.argv.includes("--gamut=p3") ? "p3" : "srgb";
+
+const formatColor = (color: {
+  lightness: number;
+  chroma: number;
+  hue: number;
+}): string =>
+  gamut === "p3"
+    ? `oklch(${color.lightness} ${color.chroma} ${color.hue})`
+    : toHex(color);
+
 const palettes: Record<string, ColorScale> = {};
 for (const [name, spec] of Object.entries(defaultPaletteSpecs)) {
-  palettes[`${name}.light`] = createColorScale(spec, "light");
-  palettes[`${name}.dark`] = createColorScale(spec, "dark");
+  for (const mode of ["light", "dark"] as const) {
+    const scale = createOklchScale(spec, mode, gamut);
+    palettes[`${name}.${mode}`] = Object.fromEntries(
+      Object.entries(scale).map(([step, color]) => [step, formatColor(color)]),
+    ) as unknown as ColorScale;
+  }
 }
 
 // ANSI color codes for terminal display
@@ -35,8 +56,11 @@ const ansiColors = {
   dim: "\x1b[2m",
 };
 
-const getAnsiColor = (hex: string) => {
-  const [r, g, b] = convert.hex.rgb(hex.slice(1));
+const getAnsiColor = (color: string) => {
+  const [r, g, b] = new Color(color)
+    .to("srgb")
+    .toGamut({ method: "css" })
+    .coords.map((channel) => Math.round(channel! * 255));
   return `\x1b[38;2;${r};${g};${b}m`;
 };
 
@@ -45,18 +69,10 @@ const displayColorSwatch = (color: string, text: string) => {
   return `${ansiColor}${text}${ansiColors.reset}`;
 };
 
-const hexToRgb = (hex: string) => {
-  const [r, g, b] = convert.hex.rgb(hex);
-  return [r / 255, g / 255, b / 255];
-};
-
-const getLuminance = (hex: string) => {
-  const [r, g, b] = hexToRgb(hex);
-  const [rs, gs, bs] = [r, g, b].map((c) =>
-    c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4),
-  );
-  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
-};
+// WCAG relative luminance is the Y of XYZ-D65, which colorjs computes for any
+// color space — so a p3 color is graded as it actually displays, not as its
+// sRGB fallback.
+const getLuminance = (color: string) => new Color(color).luminance;
 
 const getContrastRatio = (color1: string, color2: string) => {
   const lum1 = getLuminance(color1);
@@ -80,12 +96,12 @@ const getContrastGrade = (ratio: number) => {
 
 // Measured OKLCH lightness and relative chroma (fraction of the max
 // in-gamut chroma at that lightness/hue) — the tuning axes of the generator.
-const oklchDescription = (hex: string): string => {
-  const [rawLightness, rawChroma, rawHue] = new Color(hex).to("oklch").coords;
+const oklchDescription = (color: string): string => {
+  const [rawLightness, rawChroma, rawHue] = new Color(color).to("oklch").coords;
   const lightness = rawLightness ?? 0;
   const chroma = rawChroma ?? 0;
   const hue = rawHue == null || Number.isNaN(rawHue) ? 0 : rawHue;
-  const max = maxSrgbChroma(lightness, hue);
+  const max = maxChroma({ lightness, hue, gamut });
   const relative = max === 0 ? 0 : chroma / max;
   return `L=${lightness.toFixed(2)} relC=${relative.toFixed(2)}`;
 };

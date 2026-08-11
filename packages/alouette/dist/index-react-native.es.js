@@ -1,5 +1,5 @@
 import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
-import { VariableContextProvider, styled as styled$1 } from 'nativewind';
+import { VariableContextProvider, styled as styled$1, useUnstableNativeVariable } from 'nativewind';
 import { createContext, useContext, forwardRef, Children, cloneElement, Fragment, useRef, useState, useEffect, isValidElement, useId, useReducer, useCallback, useMemo } from 'react';
 import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, useWindowDimensions, Modal as Modal$1, TextInput, Switch as Switch$1, Linking } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -24,6 +24,10 @@ import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightR
 import * as WebBrowser from 'expo-web-browser';
 import { WebBrowserPresentationStyle } from 'expo-web-browser';
 
+const NativeThemeVariablesContext = createContext(
+  null
+);
+
 const ThemeContext = createContext("light");
 function useCurrentTheme() {
   return useContext(ThemeContext);
@@ -32,15 +36,8 @@ function useCurrentMode() {
   return useContext(ThemeContext).startsWith("dark") ? "dark" : "light";
 }
 
-const ThemeVariablesContext = createContext(
-  null
-);
-function useThemeVariables() {
-  return useContext(ThemeVariablesContext);
-}
-
 function ScopedTheme({ theme, children }) {
-  const themeVariables = useContext(ThemeVariablesContext);
+  const themeVariables = useContext(NativeThemeVariablesContext);
   return /* @__PURE__ */ jsx(ThemeContext.Provider, { value: theme, children: /* @__PURE__ */ jsx(VariableContextProvider, { value: themeVariables[theme], children }) });
 }
 
@@ -49,7 +46,7 @@ function AlouetteProvider({
   themeVariables
 }) {
   const colorScheme = useColorScheme();
-  return /* @__PURE__ */ jsx(ThemeVariablesContext.Provider, { value: themeVariables, children: /* @__PURE__ */ jsx(ScopedTheme, { theme: colorScheme === "dark" ? "dark" : "light", children }) });
+  return /* @__PURE__ */ jsx(NativeThemeVariablesContext.Provider, { value: themeVariables, children: /* @__PURE__ */ jsx(ScopedTheme, { theme: colorScheme === "dark" ? "dark" : "light", children }) });
 }
 
 const AlouetteDecorator = (storyFn, context) => {
@@ -57,21 +54,11 @@ const AlouetteDecorator = (storyFn, context) => {
   const themeVariables = context.parameters.alouette?.themeVariables;
   if (!themeVariables) {
     throw new Error(
-      "AlouetteDecorator: missing themeVariables in parameters.alouette"
+      'AlouetteDecorator: missing "themeVariables" in parameters.alouette'
     );
   }
   return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(AlouetteProvider, { themeVariables, children: /* @__PURE__ */ jsx(ScopedTheme, { theme, children: storyFn(context) }) }) });
 };
-
-function useThemeToken(tokenOrTokens) {
-  const theme = useContext(ThemeContext);
-  const themeVariables = useContext(ThemeVariablesContext);
-  const vars = themeVariables[theme];
-  if (Array.isArray(tokenOrTokens)) {
-    return tokenOrTokens.map((token) => vars[token]);
-  }
-  return vars[tokenOrTokens];
-}
 
 const View = forwardRef((props, ref) => {
   return /* @__PURE__ */ jsx(View$1, { ref, ...props });
@@ -843,9 +830,10 @@ const PressableBox = forwardRef(
   }
 );
 
+const useColorVariable = useUnstableNativeVariable;
 function useColorToken(className) {
   const token = className.split(/\s+/).find((part) => part.startsWith("text-"))?.slice("text-".length);
-  return useThemeToken(`--color-${token ?? "sharp"}`);
+  return useColorVariable(`--color-${token ?? "sharp"}`);
 }
 
 function Icon({
@@ -1615,7 +1603,7 @@ function pressAsyncReducer(previousState, action) {
 }
 function usePressAsync(onPress) {
   const [pressAsyncState, dispatch] = useReducer(pressAsyncReducer, idleState);
-  const settledTimerRef = useRef(null);
+  const settledTimerRef = useRef(void 0);
   useEffect(() => {
     return () => {
       clearTimeout(settledTimerRef.current);
@@ -1679,7 +1667,8 @@ const inputVariants = tv(
       "focus:border-interactive-outlined-focus",
       "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
       "active:border-interactive-outlined-active",
-      "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed"
+      "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed",
+      "placeholder:text-form-placeholder"
     ].join(" "),
     variants: {
       multiline: {
@@ -1732,7 +1721,10 @@ const MODE_PROPS = {
 };
 const InputText = forwardRef(
   ({ className, disabled, mode, multiline, forceStyle, ...props }, ref) => {
-    const placeholderColor = useThemeToken("--color-form-placeholder");
+    const placeholderColor = Platform.OS === "web" ? void 0 : (
+      // eslint-disable-next-line react-hooks/rules-of-hooks -- native only, web is set via css.
+      useColorVariable("--color-form-placeholder")
+    );
     const modeProps = mode ? MODE_PROPS[mode] : void 0;
     return /* @__PURE__ */ jsx(
       TextInput,
@@ -1742,7 +1734,7 @@ const InputText = forwardRef(
         disabled,
         "aria-disabled": disabled === true,
         multiline: multiline === true,
-        placeholderTextColor: typeof placeholderColor === "string" ? placeholderColor : void 0,
+        placeholderTextColor: placeholderColor,
         className: inputVariants({ multiline, forceStyle, className }),
         ...modeProps,
         ...props
@@ -1778,12 +1770,12 @@ function SwitchInner({
   ...props
 }) {
   const [value, setValue] = useControllableChecked(checked, onValueChange);
-  const [trackBg, thumb, disabledTrackBg, disabledThumb] = useThemeToken([
-    "--color-lowered",
-    "--color-highlight",
-    "--color-disabled-interactive-muted",
-    "--color-disabled-muted"
-  ]);
+  const trackBg = useColorVariable("--color-lowered");
+  const thumb = useColorVariable("--color-highlight");
+  const disabledTrackBg = useColorVariable(
+    "--color-disabled-interactive-muted"
+  );
+  const disabledThumb = useColorVariable("--color-disabled-muted");
   const track = disabled ? disabledTrackBg : trackBg;
   const thumbColor = disabled ? disabledThumb : thumb;
   return /* @__PURE__ */ jsx(
@@ -2653,33 +2645,9 @@ function GradientBackground({
 }
 
 const GradientScrollViewInner = forwardRef(({ children, ...scrollViewProps }, ref) => {
-  const [gradientStart, gradientEnd] = useThemeToken([
-    "--color-screen-gradient-start",
-    "--color-screen-gradient-end"
-  ]);
   return /* @__PURE__ */ jsxs(ScrollView$1, { ref, ...scrollViewProps, children: [
-    /* @__PURE__ */ jsx(
-      View$1,
-      {
-        className: "absolute left-0 right-0",
-        style: {
-          top: -600,
-          height: 600,
-          backgroundColor: gradientStart
-        }
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      View$1,
-      {
-        className: "absolute left-0 right-0",
-        style: {
-          bottom: -600,
-          height: 600,
-          backgroundColor: gradientEnd
-        }
-      }
-    ),
+    /* @__PURE__ */ jsx(View$1, { className: "absolute left-0 right-0 top-[-600] height-[600] background-(--color-screen-gradient-start)" }),
+    /* @__PURE__ */ jsx(View$1, { className: "absolute left-0 right-0 bottom-[-600] height-[600] background-(--color-screen-gradient-end)" }),
     /* @__PURE__ */ jsx(GradientBackground, {}),
     children
   ] });
@@ -2782,10 +2750,8 @@ function SwitchBreakpointsUsingNull({
 }
 
 const useOpenExternalLink = () => {
-  const [textSharp, bgSurface] = useThemeToken([
-    "--color-sharp",
-    "--color-surface"
-  ]);
+  const textSharp = useColorVariable("text-sharp");
+  const bgSurface = useColorVariable("bg-surface");
   return async (href, openLinkBehavior) => {
     switch (openLinkBehavior.native) {
       case "webBrowser": {
@@ -2831,5 +2797,5 @@ function ExternalLink({
   return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioGroup, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, ThemeVariablesContext, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useThemeToken, useThemeVariables };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioGroup, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme };
 //# sourceMappingURL=index-react-native.es.js.map

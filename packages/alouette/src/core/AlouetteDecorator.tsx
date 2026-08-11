@@ -9,11 +9,13 @@ export const AlouetteDecorator: Decorator = (storyFn, context) => {
   const theme: "dark" | "light" =
     context.globals.backgrounds?.value === "#000000" ? "dark" : "light";
 
+  // The `colorFormat` toolbar global (web storybook only) previews the wide-gamut
+  // palette. It defaults to sRGB so what is reviewed matches what native renders.
   const themeVariables = context.parameters.alouette?.themeVariables;
 
   if (!themeVariables) {
     throw new Error(
-      "AlouetteDecorator: missing themeVariables in parameters.alouette",
+      'AlouetteDecorator: missing "themeVariables" in parameters.alouette',
     );
   }
 

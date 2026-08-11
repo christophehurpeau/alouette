@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { useColorScheme } from "react-native";
 import { ScopedTheme } from "../ui/containers/ScopedTheme";
-import type { ThemeVariablesMap } from "./ThemeVariablesContext";
-import { ThemeVariablesContext } from "./ThemeVariablesContext";
+import type { ThemeVariablesMap } from "./NativeThemeVariablesContext";
+import { NativeThemeVariablesContext } from "./NativeThemeVariablesContext";
 
 export interface AlouetteProviderProps {
   children: ReactNode;
@@ -23,10 +23,10 @@ export function AlouetteProvider({
   // correctly app-wide. Subtrees can override via ScopedTheme / AccentScope.
   const colorScheme = useColorScheme();
   return (
-    <ThemeVariablesContext.Provider value={themeVariables}>
+    <NativeThemeVariablesContext.Provider value={themeVariables}>
       <ScopedTheme theme={colorScheme === "dark" ? "dark" : "light"}>
         {children}
       </ScopedTheme>
-    </ThemeVariablesContext.Provider>
+    </NativeThemeVariablesContext.Provider>
   );
 }

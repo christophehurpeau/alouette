@@ -36,7 +36,8 @@
     ".": "./src/index.ts",
     "./global.css": "./src/global.css",
     "./core.css": "./src/core.css",
-    "./default-palette.css": "./src/default-palette.css"
+    "./default-palette.css": "./src/default-palette.css",
+    "./default-palette-oklch.css": "./src/default-palette-oklch.css"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -97,6 +98,11 @@
       "style": "./src/default-palette.css",
       "import": "./src/default-palette.css",
       "default": "./src/default-palette.css"
+    },
+    "./default-palette-oklch.css": {
+      "style": "./src/default-palette-oklch.css",
+      "import": "./src/default-palette-oklch.css",
+      "default": "./src/default-palette-oklch.css"
     }
   },
   "scripts": {
@@ -112,7 +118,7 @@
   "dependencies": {
     "@tailwindcss/postcss": "4.3.3",
     "alouette-icons": "workspace:*",
-    "colorjs.io": "0.7.1",
+    "colorjs.io": "0.6.0-alpha.1",
     "react-hook-form": "7.81.0",
     "react-native-safe-area-context": "5.7.0",
     "tailwind-merge": "3.6.0",
@@ -131,8 +137,8 @@
     "nativewind": "5.0.0-preview.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-native": "0.86.0",
-    "react-native-reanimated": "4.5.0",
+    "react-native": "0.86.2",
+    "react-native-reanimated": "4.5.1",
     "react-native-svg": "15.15.4",
     "react-test-renderer": "19.2.3",
     "tailwindcss": "4.3.3",
@@ -215,7 +221,8 @@
       "metro.cjs",
       "src/global.css",
       "src/core.css",
-      "src/default-palette.css"
+      "src/default-palette.css",
+      "src/default-palette-oklch.css"
     ],
     "jsx": true,
     "typescript": true

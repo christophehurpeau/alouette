@@ -1,4 +1,8 @@
-import { useThemeToken } from "./useThemeToken";
+import { useUnstableNativeVariable as useNativeVariable } from "nativewind";
+
+export const useColorVariable = useNativeVariable as (
+  variableName: string,
+) => string | undefined;
 
 export type ColorClassName =
   | string // keeping string to allow tailwind-variants usage
@@ -27,5 +31,5 @@ export function useColorToken(className: ColorClassName): string | undefined {
     .split(/\s+/)
     .find((part) => part.startsWith("text-"))
     ?.slice("text-".length);
-  return useThemeToken(`--color-${token ?? "sharp"}`);
+  return useColorVariable(`--color-${token ?? "sharp"}`);
 }

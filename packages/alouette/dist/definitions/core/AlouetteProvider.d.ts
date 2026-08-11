@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { ThemeVariablesMap } from "./ThemeVariablesContext";
+import type { ThemeVariablesMap } from "./NativeThemeVariablesContext";
 export interface AlouetteProviderProps {
     children: ReactNode;
     /**

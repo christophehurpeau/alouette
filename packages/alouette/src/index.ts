@@ -9,12 +9,6 @@ export type {
   Accent,
 } from "./core/AlouetteConfig";
 export { useCurrentMode, useCurrentTheme } from "./core/ThemeContext";
-export type { ThemeVariablesMap } from "./core/ThemeVariablesContext";
-export {
-  ThemeVariablesContext,
-  useThemeVariables,
-} from "./core/ThemeVariablesContext";
-export { useThemeToken } from "./core/useThemeToken";
 export type { ScopedThemeProps } from "./ui/containers/ScopedTheme";
 export { ScopedTheme } from "./ui/containers/ScopedTheme";
 export type { ViewProps } from "./ui/primitives/View";

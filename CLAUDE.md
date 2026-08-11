@@ -9,13 +9,13 @@ pnpm storybook          # Start Storybook dev server (main development workflow)
 pnpm build              # Build all packages (rollup + type definitions)
 pnpm watch              # Rebuild on changes
 pnpm lint               # Prettier + ESLint
-pnpm test               # Run tests (Node.js native runner with --experimental-strip-types)
+pnpm test               # Run unit tests (vitest, from the repo root)
 pnpm tsc                # TypeScript check
 ```
 
 **Never start Storybook itself** (`pnpm storybook`, `storybook dev`, `expo start`, etc.) or any other long-running dev server — verifying stories/UI in the running app is the user's job. Running the Storybook **test suite** (which executes story `play` functions headlessly) is fine and encouraged to verify story changes.
 
-The play-function suite lives in the Storybook app, not the root `pnpm test` (root runs the Node/vitest unit tests under `packages/alouette`). Run it from that package in browser mode:
+The play-function suite lives in the Storybook app, not the root `pnpm test` (root runs the vitest unit tests under `packages/alouette`). Run it from that package in browser mode:
 
 ```bash
 cd packages/storybook-native-app && npx vitest run --project=storybook   # all stories
@@ -29,7 +29,7 @@ Verify with one deliberate pass: `pnpm tsc`, then `eslint` scoped to the files y
 Run a single test file:
 
 ```bash
-node --experimental-strip-types --test packages/alouette/src/config/utils/colorContrast.test.ts
+TZ=UTC npx vitest run packages/alouette/src/config/utils/colorContrast.test.ts
 ```
 
 ## Architecture
@@ -40,11 +40,44 @@ pnpm workspaces monorepo with 3 packages:
 - `packages/alouette-icons` — Auto-generated Phosphor icons integration
 - `packages/storybook-native-app` — Development playground / documentation
 
+### Two Storybooks, one story set
+
+`storybook-native-app` runs **two** Storybooks over the same
+`packages/alouette/src/**/*.stories.tsx`, from separate config directories:
+
+|            | `.storybook/` (Vite)                            | `.rnstorybook/` (React Native)                                     |
+| ---------- | ----------------------------------------------- | ------------------------------------------------------------------ |
+| framework  | `@storybook/react-vite`                         | `@storybook/react-native` (on-device UI, via `src/App.tsx` → Expo) |
+| run        | `storybook dev` / `pnpm storybook`              | `expo start` — iOS, Android **and Expo web**                       |
+| play tests | `vitest --project=storybook` (headless browser) | none                                                               |
+| addons     | `addon-docs`, autodocs, `DocTemplate`           | the `ondevice-*` addons                                            |
+
+The React Native one is not native-only — Expo web runs it through
+react-native-web — so **the two previews must stay in sync**. Both declare the
+same `colorFormat` global and pass the same `parameters.alouette.themeVariables`
+(the default sRGB map); `AlouetteDecorator` **requires** that parameter and
+throws without it. `colorFormat` starts at `srgb` in both, which is what an
+actual device can render — React Native's color parser has no `oklch()`. Only
+the Vite preview acts on the global (it toggles the overlay stylesheet); the RN
+preview declares it for parity and always renders the hex palette.
+
+**When editing `.storybook/preview.tsx`, make the same change in
+`.rnstorybook/preview.tsx`** (decorators, parameters, globals). Only the
+framework-level config legitimately differs: Vite/docs setup, the `ondevice-*`
+addons, and the OKLCH overlay toggle (Vite `?inline`, see below) — so Expo web
+always renders sRGB.
+
 ### Styling stack
 
-This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define **structural** tokens/keyframes (type/radius/shadow/spacing/animation, fonts, utilities) in `packages/alouette/scripts/build-css.ts`; define **color** palettes in `packages/alouette/src/theme-generator/paletteSpecs.ts`. Regenerate with `pnpm --filter alouette build:css` — never edit the generated CSS (`global.css`, `core.css`, `default-palette.css`) directly.
+This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define **structural** tokens/keyframes (type/radius/shadow/spacing/animation, fonts, utilities) in `packages/alouette/scripts/build-css.ts`; define **color** palettes in `packages/alouette/src/theme-generator/paletteSpecs.ts`. Regenerate with `pnpm --filter alouette build:css` — never edit the generated CSS (`global.css`, `core.css`, `default-palette.css`, `default-palette-oklch.css`) directly.
 
-`build:css` writes a split output: `core.css` (structural, color-free), `default-palette.css` (the default palette — `@theme` color defaults + the twelve `:where(.<theme>)` blocks), `global.css` (aggregator `@import`ing both), plus `themeVariables.ts` and `animationDurationsMs.ts`. Color generation lives in the shipped, exported `src/theme-generator/` module (`generateTheme`, `writeTheme`, `createColorScale`, `tokenScaleMap`, `paletteSpecs`); `build-css.ts` is a thin driver that calls `generateTheme()` for the default palette. An app generates its own palette the same way, from its own build script: `writeTheme({ outDir, overrides })` (node-only, from `alouette/theme-generator`) writes `palette.css` + `themeVariables.ts`; the app then imports `alouette/core.css` + its palette CSS and passes the generated map to `<AlouetteProvider themeVariables={...}>`. `generateTheme(overrides)` → `{ css, themeVariables }` is the in-memory form for an app that writes the files itself.
+`build:css` writes a split output: `core.css` (structural, color-free), `default-palette.css` (the default palette in sRGB hex — `@theme` color defaults + the twelve `.<theme>` blocks, the latter behind a web-only `@supports` so native never compiles them), `default-palette-oklch.css` (the optional wide-gamut overlay: the same tokens as `oklch()` behind `@supports`), `global.css` (aggregator `@import`ing core + the sRGB palette, **not** the oklch overlay — that stays an explicit extra import), plus `defaultThemeVariablesSrgb.ts`, `animationDurationsMs.ts`. Color generation lives in the shipped, exported `src/theme-generator/` module (`generateTheme`, `writeTheme`, `createColorScale`, `tokenScaleMap`, `paletteSpecs`); `build-css.ts` is a thin driver that calls `generateTheme()` for the default palette. An app generates its own palette the same way, from its own build script: `writeTheme({ outDir, overrides })` (node-only, from `alouette/theme-generator`) writes `palette.css` + `themeVariables.ts` (hex) and `palette-oklch.css` (the opt-in wide-gamut overlay, skipped by `srgbOnly`; CSS only — the map has no oklch counterpart since web never reads it); the app then imports `alouette/core.css` + its palette CSS and passes the generated map to `<AlouetteProvider themeVariables={...}>`. `generateTheme(overrides)` → `{ css, oklchCss, themeVariables, oklchThemeVariables }` is the in-memory form for an app that writes the files itself.
+
+### Color format: OKLCH on web, hex on native
+
+Every palette is computed in OKLCH and serialized twice: **sRGB hex** (what native renders — React Native's color parser takes hex/rgb/hsl/hwb only, never `oklch()`) and **OKLCH with display-p3 chroma headroom** (what web renders — same lightness/hue ramp, more vivid accents on wide-gamut screens). The two live in separate CSS files so oklch stays opt-in: the palette CSS holds the hex declarations, and the `-oklch.css` overlay re-declares the same variables in OKLCH inside an `@supports (color: oklch(0 0 0))` block — additive, and the react-native-css compiler drops the feature query and keeps the hex.
+
+The web Storybook has a `colorFormat` toolbar global (sRGB / OKLCH, default sRGB so what is reviewed matches native). It is a **CSS-only** switch, because web resolves tokens from the palette CSS and never from the `themeVariables` map: `src/global.css` imports only `default-palette.css`, and `.storybook/preview.tsx` keeps the overlay in a **disabled `<style>`** (imported with Vite's `?inline`, appended to `<head>` after `global.css` so it lands last in `@layer theme`) that a decorator enables when the global is `oklch` — a `<style>`, not a `<link>`, because a link's `disabled` is unreliable until its sheet loads. There is no native counterpart: `oklch()` is unrenderable on device, so `AlouetteDecorator` always passes the hex map through. The `ColorFormatSrgb` / `ColorFormatOklch` stories in `themes.stories.tsx` assert the computed accent is `rgb(...)` vs `oklch(...)`.
 
 ### Component organization
 
@@ -93,7 +126,16 @@ Color tokens: the token→scale-step mapping is `src/theme-generator/tokenScaleM
 
 # Theming and accents
 
-Themes are sets of CSS variables (for the `light`, `dark`, `light_brand`, `dark_info`, etc. theme names) applied by Alouette's `ScopedTheme` (`src/ui/containers/ScopedTheme.tsx`), which pushes the theme's resolved variables through NativeWind's `VariableContextProvider`. CSS custom properties cascade through the tree — child components always use **base tokens** (`bg-surface`, `text-accent`, `border-muted`, etc.) and inherit the correct values from the nearest `ScopedTheme`. The variable maps live in the generated `src/themeVariables.ts` (single source of truth shared with the palette CSS), and are injectable at runtime via `ThemeVariablesContext` / the `<AlouetteProvider themeVariables={...}>` prop so a BYO-palette app can swap them; both `themeVariables.ts` and the palette CSS come from `generateTheme()`.
+Themes are sets of CSS variables (for the `light`, `dark`, `light_brand`, `dark_info`, etc. theme names) applied by Alouette's `ScopedTheme`. Child components always use **base tokens** (`bg-surface`, `text-accent`, `border-muted`, etc.) and inherit the correct values from the nearest `ScopedTheme`. The two platforms get there differently:
+
+- **web** (`ScopedTheme.web.tsx`) — renders a `display: contents` element carrying the theme name as a **className**, and the generated palette CSS resolves it. The `.<theme>` blocks declare their variables on the themed element only, so proximity comes from custom-property inheritance: an element's own declaration always beats an inherited value, so **the closest theme class wins** for its subtree, regardless of block order in the file. Never re-add a descendant selector (`.light *`) to those blocks — every themed ancestor would then match a nested element at equal specificity and the _last block in the file_ would win instead of the nearest theme (`generateTheme.test.ts` guards this).
+- **native** (`ScopedTheme.tsx`) — pushes the theme's resolved variables through NativeWind's `VariableContextProvider`, from the `themeVariables` map. JS token reads (`useColorVariable` / `useColorToken`, for SVG tint, native `Switch`, `placeholderTextColor`) go through NativeWind's variable context and are therefore **native-only paths** — internal ones: neither hook is exported from `alouette`, and every web equivalent styles through CSS. `AlouetteProvider.web.tsx` accordingly ignores `themeVariables` altogether.
+
+Because native never uses the class mechanism, the `.<theme>` blocks are emitted inside `@supports (display: contents)` — a query the react-native-css compiler cannot evaluate, so it drops the whole block and only the `@theme` defaults reach the native bundle (the same trick as the oklch overlay). `theme-generator/nativeCompile.test-skip.ts` compiles the real palette through react-native-css and asserts this, but is **currently disabled** (the `-skip` suffix keeps it out of the run).
+
+Both maps and CSS come from `generateTheme()`; the map is injectable at runtime via `<AlouetteProvider themeVariables={...}>` (`NativeThemeVariablesContext`) so a BYO-palette app can swap it.
+
+Accent blocks in the CSS are partial (only the tokens the accent redefines) and inherit the rest from the nearest ancestor theme class, while the `themeVariables` map is fully merged per theme. `AccentScope` derives the accent theme from the current mode, so the two agree — except for a forced-mode scope (`<AccentScope mode="light">` under a `dark` ancestor), where web keeps the dark base tokens and native does not.
 
 ## Sub-theme roots
 
@@ -120,7 +162,7 @@ Existing roots: `Button`, `Message`, `Surface` (when `accent` prop is set), `Gra
 
 ## Native constraint: no CSS variable chains
 
-On native, NativeWind resolves CSS variables at render time from a lookup table — it cannot follow `var(--color-x)` references inside another variable's value. Sub-theme classes therefore use **hardcoded hex values** (not `var()` references). This is why sub-themes are `light_info`/`dark_info` (two separate entries per mode) rather than a single `accent-info` theme with `var()` indirections. The `build-css.ts` script enforces this.
+On native, NativeWind resolves CSS variables at render time from a lookup table — it cannot follow `var(--color-x)` references inside another variable's value. Sub-theme classes therefore use **hardcoded hex values** (not `var()` references). This is why sub-themes are `light_info`/`dark_info` (two separate entries per mode) rather than a single `accent-info` theme with `var()` indirections. `theme-generator/buildTheme.ts` enforces this — it resolves every token to a concrete color before emitting.
 
 ## CSS token changes
 

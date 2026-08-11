@@ -2,17 +2,26 @@
 // OKLCH color-scale generator. Palettes are generated in OKLCH so a single
 // lightness ramp is perceptually uniform across every hue (HSL lightness is not
 // — yellow at HSL L=56 reads far brighter than blue at the same L). Chroma is
-// specified *relative to the sRGB gamut*: each step requests a fraction of the
-// maximum chroma sRGB can render at that step's lightness and hue. The fraction
-// curve is shared by every palette and tiered by usage (muted surface tints,
-// medium highlight mids, near-vivid interactive and text steps), so all hues are
-// equally saturated relative to what's possible — no per-palette chroma table.
+// specified *relative to the target gamut*: each step requests a fraction of the
+// maximum chroma that gamut can render at that step's lightness and hue. The
+// fraction curve is shared by every palette and tiered by usage (muted surface
+// tints, medium highlight mids, near-vivid interactive and text steps), so all
+// hues are equally saturated relative to what's possible — no per-palette chroma
+// table. The same ramp generated against display-p3 instead of sRGB is what the
+// `oklch()` palette ships to web.
 
 import Color from "colorjs.io";
 import type { PaletteSpec } from "./paletteSpecs.ts";
 import type { Mode, ScaleNum } from "./tokenScaleMap.ts";
 
+export interface OklchColor {
+  lightness: number;
+  chroma: number;
+  hue: number;
+}
+
 export type ColorScale = Record<ScaleNum, string>;
+export type OklchScale = Record<ScaleNum, OklchColor>;
 
 // step:                     1     2     3     4     5     6     7     8     9    10    11
 const lightnessRamps = {
@@ -41,13 +50,32 @@ const relativeChromaCurve: Record<Mode, number[]> = {
   light: [0.5, 0.52, 0.55, 0.6, 0.75, 0.78, 0.92, 0.97, 0.97, 0.97, 0.95],
 };
 
-// Largest OKLCH chroma still inside the sRGB gamut at this lightness/hue.
-export const maxSrgbChroma = (lightness: number, hue: number): number => {
+/**
+ * Which gamut the chroma budget is measured against. `srgb` is what every
+ * platform can render (and what the hex output is mapped into); `p3` gives the
+ * same lightness ramp more chroma headroom, used by the `oklch()` output that
+ * only web consumes.
+ */
+export type Gamut = "p3" | "srgb";
+
+interface MaxChromaParams {
+  lightness: number;
+  hue: number;
+  gamut: Gamut;
+}
+
+// Largest OKLCH chroma still inside the given gamut at this lightness/hue.
+export const maxChroma = ({
+  lightness,
+  hue,
+  gamut,
+}: MaxChromaParams): number => {
+  const space = gamut === "p3" ? "p3" : "srgb";
   let low = 0;
   let high = 0.5;
   for (let i = 0; i < 20; i++) {
     const mid = (low + high) / 2;
-    if (new Color("oklch", [lightness, mid, hue]).to("srgb").inGamut()) {
+    if (new Color("oklch", [lightness, mid, hue]).to(space).inGamut()) {
       low = mid;
     } else {
       high = mid;
@@ -56,7 +84,10 @@ export const maxSrgbChroma = (lightness: number, hue: number): number => {
   return low;
 };
 
-const toHex = (lightness: number, chroma: number, hue: number): string => {
+export const maxSrgbChroma = (lightness: number, hue: number): number =>
+  maxChroma({ lightness, hue, gamut: "srgb" });
+
+export const toHex = ({ lightness, chroma, hue }: OklchColor): string => {
   const color = new Color("oklch", [lightness, chroma, hue]).to("srgb");
   const hex = color.toGamut({ method: "css" }).toString({ format: "hex" });
   // colorjs collapses to 3-digit shorthand (#050); expand so appended alpha
@@ -66,20 +97,31 @@ const toHex = (lightness: number, chroma: number, hue: number): string => {
   return full.toUpperCase();
 };
 
-export const createColorScale = (spec: PaletteSpec, mode: Mode): ColorScale => {
+export const createOklchScale = (
+  spec: PaletteSpec,
+  mode: Mode,
+  gamut: Gamut,
+): OklchScale => {
   const hueHi = spec.hueHi ?? spec.hue;
   const hueLo = spec.hueLo ?? spec.hue;
   const intensity = spec.intensity ?? 1;
   const ramp = lightnessRamps[spec.type][mode];
-  const steps = ramp.map((lightness, index) => {
+  const steps = ramp.map((lightness, index): OklchColor => {
     const hue = hueLo + (hueHi - hueLo) * lightness;
     const chroma =
       relativeChromaCurve[mode][index]! *
       intensity *
-      maxSrgbChroma(lightness, hue);
-    return toHex(lightness, chroma, hue);
+      maxChroma({ lightness, hue, gamut });
+    return { lightness, chroma, hue };
   });
   return Object.fromEntries(
-    steps.map((hex, index) => [index + 1, hex]),
+    steps.map((color, index) => [index + 1, color]),
+  ) as unknown as OklchScale;
+};
+
+export const createColorScale = (spec: PaletteSpec, mode: Mode): ColorScale => {
+  const scale = createOklchScale(spec, mode, "srgb");
+  return Object.fromEntries(
+    Object.entries(scale).map(([step, color]) => [step, toHex(color)]),
   ) as unknown as ColorScale;
 };

@@ -4,20 +4,22 @@ description: >
   Re-theme a subtree with accents (brand, danger, info, success, warning) and
   light/dark modes. Use the accent prop, AccentScope, or ScopedTheme; children
   always consume base tokens (bg-surface, text-accent, text-sharp, text-muted,
-  border-muted). Read token values in JS with useThemeToken; read the current
-  mode with useCurrentMode. For an accent that toggles at runtime (e.g. on
-  hover) without remounting the subtree, use StableAccentScope instead of
-  AccentScope. Load when applying colors, accents, dark mode, or reading a
-  theme color for a non-className prop.
+  border-muted). Tokens are className-only: alouette exports no JS token-read
+  hook. Read the current mode with useCurrentMode. For an accent that toggles at
+  runtime (e.g. on hover) without remounting the subtree, use StableAccentScope
+  instead of AccentScope. Load when applying colors, accents or dark mode, or
+  when shipping a custom palette.
 type: core
 library: alouette
-library_version: "20.8.0"
+library_version: "21.0.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/ScopedTheme.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/ScopedTheme.web.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteConfig.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/core/useThemeToken.ts"
+  - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/core/NativeThemeVariablesContext.ts"
   - "christophehurpeau/alouette:packages/alouette/src/theme-generator/generateTheme.ts"
   - "christophehurpeau/alouette:packages/alouette/src/theme-generator/writeTheme.ts"
   - "christophehurpeau/alouette:CLAUDE.md"
@@ -62,18 +64,23 @@ import { AccentScope } from "alouette";
 
 ## Core Patterns
 
-### Read a token value in JS for a non-className prop
+### Tokens are className-only
 
-```tsx
-import { useThemeToken } from "alouette";
+alouette exports **no** hook to read a token value in JS. Apply every color
+through a className (`bg-surface`, `text-accent`, `border-muted`) — that is the
+only path that works on both platforms, because the two resolve a theme
+differently:
 
-const accentColor = useThemeToken("--color-accent");
-const [surface, sharp] = useThemeToken(["--color-surface", "--color-sharp"]);
-```
+- **web** — `ScopedTheme` renders a `display: contents` element carrying the
+  theme name as a className; the palette CSS resolves the variables. The
+  `themeVariables` map is not consulted at all.
+- **native** — `ScopedTheme` pushes the theme's variables through NativeWind's
+  `VariableContextProvider`, from the `themeVariables` map given to
+  `AlouetteProvider`.
 
-Use this only for props that cannot take a className (gradient stops,
-`placeholderTextColor`, native `Switch` colors, SVG tint). Everything else uses
-a className token.
+The handful of props that cannot take a className (native `Switch` colors,
+`placeholderTextColor`, SVG tint, the Expo browser chrome) are handled inside
+alouette itself, on native only; web styles them with CSS.
 
 ### Force a mode on a subtree
 
@@ -131,21 +138,31 @@ writeTheme({
 });
 ```
 
-That writes `src/palette.css` + `src/themeVariables.ts` (names configurable via
-`cssFileName` / `themeVariablesFileName`), headed `DO NOT EDIT` and already
-formatter-stable — commit them and re-run the script when the params change.
-`generateTheme(overrides)` returns the same `{ css, themeVariables }` in memory
-for an app that writes the files itself. Both are node-only build-time APIs:
-never import `alouette/theme-generator` from app code.
+That writes `src/palette.css` + `src/themeVariables.ts` (sRGB hex, complete on
+their own) and `src/palette-oklch.css` (the OKLCH / display-p3 overlay) — names
+configurable via `cssFileName` / `themeVariablesFileName`, headed `DO NOT EDIT`
+and already formatter-stable. Commit them and re-run the script when the params
+change. `srgbOnly: true` skips the OKLCH file. `generateTheme(overrides)` returns
+the same content in memory
+(`{ css, oklchCss, themeVariables, oklchThemeVariables }`) for an app that writes
+the files itself. Both are node-only build-time APIs: never import
+`alouette/theme-generator` from app code.
+
+The OKLCH half is opt-in, web-only and CSS-only: `@import "./palette-oklch.css"`
+after `./palette.css` enables it. The `themeVariables` map has no OKLCH
+counterpart — web resolves every token from the CSS, and only native reads the
+map. See "Color format" below.
 
 Then import `alouette/core.css` + the generated palette (instead of
-`alouette/global.css`) and pass the map to `AlouetteProvider` so JS token reads
-(`useThemeToken`, gradients, native `Switch`) match the palette CSS:
+`alouette/global.css`) and pass the map to `AlouetteProvider` so native token
+reads (gradients, `Switch`, `placeholderTextColor`, SVG tint) match the palette
+CSS:
 
 ```css
 /* global.css */
 @import "alouette/core.css";
 @import "./palette.css";
+@import "./palette-oklch.css"; /* optional wide-gamut half */
 ```
 
 ```tsx
@@ -160,8 +177,35 @@ import { themeVariables } from "./themeVariables";
 `intensity` (chroma multiplier). The accent set is fixed — this re-colors the
 existing accents, it does not add new ones. The palette CSS and the map are two
 halves of one theme: `themeVariables` is a required `AlouetteProvider` prop, so
-shipping custom CSS while still passing `alouette/defaultThemeVariables` type-
-checks but leaves every JS token read on the default colors.
+shipping custom CSS while still passing `alouette/defaultThemeVariables`
+type-checks but leaves every **native** token read on the default colors (web is
+unaffected — it never reads the map).
+
+### Color format: OKLCH on web, hex on native
+
+Every palette is computed in OKLCH and emitted twice — sRGB hex (what native
+renders; React Native's color parser takes hex/rgb/hsl/hwb only) and OKLCH with
+display-p3 chroma headroom (what web renders: same lightness and hue ramp, more
+vivid accents on wide-gamut screens). Hex is the baseline; OKLCH is a separate
+opt-in stylesheet, imported after the hex palette:
+
+| | palette CSS | `themeVariables` map |
+| --- | --- | --- |
+| web | `palette-oklch.css` / `alouette/default-palette-oklch.css`, if imported | not read — web theming is CSS only |
+| native | `palette.css` (plain hex) | `themeVariables.ts` (hex) |
+
+The OKLCH CSS is additive — it re-declares the same variables behind
+`@supports (color: oklch(0 0 0))`, and the native compiler drops the feature query
+and keeps the hex. The palette CSS uses the same trick for the twelve `.<theme>`
+blocks, which are a web-only mechanism (native themes through
+`VariableContextProvider`, not classNames): they sit behind
+`@supports (display: contents)` and never reach the native bundle — which is why
+native needs the `themeVariables` map at all.
+
+The map has no OKLCH variant: the web build of `AlouetteProvider` ignores
+`themeVariables` entirely, so `writeTheme` emits the hex map only — the one
+native consumes. The default is `alouette/defaultThemeVariables` (hex, every
+platform).
 
 ## Common Mistakes
 
@@ -234,26 +278,29 @@ that don't take the prop.
 
 Source: packages/alouette/src/ui/primitives/Text.tsx, ui/containers/AccentScope.tsx
 
-### MEDIUM Using nativewind useUnstableNativeVariable for token values
+### HIGH Reading a token value in JS instead of applying a className
 
 Wrong:
 
 ```tsx
 import { useUnstableNativeVariable } from "nativewind";
 const color = useUnstableNativeVariable("--color-accent");
+<Text style={{ color }}>Hi</Text>;
 ```
 
 Correct:
 
 ```tsx
-import { useThemeToken } from "alouette";
-const color = useThemeToken("--color-accent");
+<Text className="text-accent">Hi</Text>
 ```
 
-`useThemeToken` reads alouette's generated theme map keyed by the active theme;
-it works on web and native and is stable, unlike nativewind's unstable hook.
+alouette exports no token-read hook (`useThemeToken` was removed in 21.0.0).
+Reaching into NativeWind's variable context directly is a native-only path: on
+web the theme is a className resolved by the palette CSS and nothing populates
+that context, so the read comes back `undefined` and the text falls back to an
+unthemed color. Style with the token className on both platforms.
 
-Source: packages/alouette/src/core/useThemeToken.ts
+Source: packages/alouette/src/ui/containers/ScopedTheme.web.tsx, core/AlouetteProvider.web.tsx
 
 ### MEDIUM Custom palette CSS paired with the default themeVariables
 
@@ -273,15 +320,16 @@ import { themeVariables } from "./themeVariables"; // writeTheme output
 <AlouetteProvider themeVariables={themeVariables}>{/* app */}</AlouetteProvider>;
 ```
 
-A theme has two coupled outputs: the palette CSS (className tokens) and the
-`themeVariables` map (JS token reads — gradients, native `Switch`,
-`placeholderTextColor`, SVG tint). The prop is required, so this fails silently
-rather than loudly: the default map type-checks fine, and every JS read resolves
-to the default colors while classNames use the custom palette — gradients and
-native controls mismatch the rest of the UI. Both must come from the same
-`writeTheme` call — that is why it writes the pair.
+A theme has two coupled outputs: the palette CSS (className tokens, the only
+thing web uses) and the `themeVariables` map (native token reads — gradients,
+`Switch`, `placeholderTextColor`, SVG tint). The prop is required, so this fails
+silently rather than loudly, and **only on device**: the default map type-checks
+fine, classNames use the custom palette, and the few native reads resolve to the
+default colors — so native gradients and controls mismatch the rest of the UI
+while web looks correct. Both must come from the same `writeTheme` call — that is
+why it writes the pair.
 
-Source: packages/alouette/src/core/ThemeVariablesContext.ts, theme-generator/writeTheme.ts
+Source: packages/alouette/src/core/NativeThemeVariablesContext.ts, theme-generator/writeTheme.ts
 
 ### MEDIUM Expecting var() chains to resolve on native
 

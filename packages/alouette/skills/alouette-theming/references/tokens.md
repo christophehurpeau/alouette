@@ -1,13 +1,13 @@
 # alouette — Token Catalog
 
-Base tokens cascade from the nearest theme scope (mode + optional accent). Use
-the className form (`bg-surface`, `text-accent`) in markup; use `useThemeToken`
-with the `--color-*` name only for props that can't take a className.
+Base tokens cascade from the nearest theme scope (mode + optional accent).
+Always reference them by className (`bg-surface`, `text-accent`) — that is the
+only public form; alouette exports no hook to read a token value in JS.
 
 ## Color tokens
 
-Reference as `bg-*`, `text-*`, `border-*`, `outline-*` (className) or
-`--color-*` (useThemeToken).
+Reference as `bg-*`, `text-*`, `border-*`, `outline-*`. The `--color-*` names
+below are the underlying CSS variables, used inside the generated palette CSS.
 
 ### Surfaces & backgrounds
 

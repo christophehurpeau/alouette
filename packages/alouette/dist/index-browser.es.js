@@ -1,8 +1,8 @@
 import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
-import { VariableContextProvider, styled as styled$1 } from 'nativewind';
 import { createContext, useContext, forwardRef, Children, cloneElement, Fragment, useRef, useState, useEffect, isValidElement, useId, useReducer, useCallback, useMemo } from 'react';
 import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, useWindowDimensions, Modal as Modal$1, TextInput } from 'react-native-web';
 import { extendTailwindMerge, twMerge as twMerge$1 } from 'tailwind-merge';
+import { styled as styled$1, useUnstableNativeVariable } from 'nativewind';
 import { tv } from 'tailwind-variants';
 import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
 import { CheckCircleRegularIcon } from 'alouette-icons/phosphor-icons/CheckCircleRegularIcon';
@@ -26,24 +26,15 @@ function useCurrentMode() {
   return useContext(ThemeContext).startsWith("dark") ? "dark" : "light";
 }
 
-const ThemeVariablesContext = createContext(
-  null
-);
-function useThemeVariables() {
-  return useContext(ThemeVariablesContext);
-}
-
 function ScopedTheme({ theme, children }) {
-  const themeVariables = useContext(ThemeVariablesContext);
-  return /* @__PURE__ */ jsx(ThemeContext.Provider, { value: theme, children: /* @__PURE__ */ jsx(VariableContextProvider, { value: themeVariables[theme], children }) });
+  return /* @__PURE__ */ jsx(ThemeContext.Provider, { value: theme, children: /* @__PURE__ */ jsx("div", { "data-theme": theme, className: theme, style: { display: "contents" }, children }) });
 }
 
 function AlouetteProvider({
-  children,
-  themeVariables
+  children
 }) {
   const colorScheme = useColorScheme();
-  return /* @__PURE__ */ jsx(ThemeVariablesContext.Provider, { value: themeVariables, children: /* @__PURE__ */ jsx(ScopedTheme, { theme: colorScheme === "dark" ? "dark" : "light", children }) });
+  return /* @__PURE__ */ jsx(ScopedTheme, { theme: colorScheme === "dark" ? "dark" : "light", children });
 }
 
 function SafeAreaProvider({ children }) {
@@ -55,7 +46,7 @@ const AlouetteDecorator = (storyFn, context) => {
   const themeVariables = context.parameters.alouette?.themeVariables;
   if (!themeVariables) {
     throw new Error(
-      "AlouetteDecorator: missing themeVariables in parameters.alouette"
+      'AlouetteDecorator: missing "themeVariables" in parameters.alouette'
     );
   }
   return /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(AlouetteProvider, { themeVariables, children: /* @__PURE__ */ jsx(ScopedTheme, { theme, children: storyFn(context) }) }) });
@@ -67,16 +58,6 @@ const useSafeAreaInsets = () => ({
   left: 0,
   right: 0
 });
-
-function useThemeToken(tokenOrTokens) {
-  const theme = useContext(ThemeContext);
-  const themeVariables = useContext(ThemeVariablesContext);
-  const vars = themeVariables[theme];
-  if (Array.isArray(tokenOrTokens)) {
-    return tokenOrTokens.map((token) => vars[token]);
-  }
-  return vars[tokenOrTokens];
-}
 
 const View = forwardRef((props, ref) => {
   return /* @__PURE__ */ jsx(View$1, { ref, ...props });
@@ -1599,7 +1580,7 @@ function pressAsyncReducer(previousState, action) {
 }
 function usePressAsync(onPress) {
   const [pressAsyncState, dispatch] = useReducer(pressAsyncReducer, idleState);
-  const settledTimerRef = useRef(null);
+  const settledTimerRef = useRef(void 0);
   useEffect(() => {
     return () => {
       clearTimeout(settledTimerRef.current);
@@ -1650,6 +1631,8 @@ function ActionButton({
   ] });
 }
 
+const useColorVariable = useUnstableNativeVariable;
+
 const inputVariants = tv(
   {
     base: [
@@ -1663,7 +1646,8 @@ const inputVariants = tv(
       "focus:border-interactive-outlined-focus",
       "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
       "active:border-interactive-outlined-active",
-      "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed"
+      "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed",
+      "placeholder:text-form-placeholder"
     ].join(" "),
     variants: {
       multiline: {
@@ -1716,7 +1700,10 @@ const MODE_PROPS = {
 };
 const InputText = forwardRef(
   ({ className, disabled, mode, multiline, forceStyle, ...props }, ref) => {
-    const placeholderColor = useThemeToken("--color-form-placeholder");
+    const placeholderColor = Platform.OS === "web" ? void 0 : (
+      // eslint-disable-next-line react-hooks/rules-of-hooks -- native only, web is set via css.
+      useColorVariable("--color-form-placeholder")
+    );
     const modeProps = mode ? MODE_PROPS[mode] : void 0;
     return /* @__PURE__ */ jsx(
       TextInput,
@@ -1726,7 +1713,7 @@ const InputText = forwardRef(
         disabled,
         "aria-disabled": disabled === true,
         multiline: multiline === true,
-        placeholderTextColor: typeof placeholderColor === "string" ? placeholderColor : void 0,
+        placeholderTextColor: placeholderColor,
         className: inputVariants({ multiline, forceStyle, className }),
         ...modeProps,
         ...props
@@ -1894,28 +1881,38 @@ function SelectTriggerContent({
   ] });
 }
 
-const wrapperVariants = tv(
+const selectVariants = tv(
   {
-    base: [
-      "relative flex-row flex-1 rounded-md border min-h-11",
-      "transition-[border-color,outline-color] duration-fast ease-in",
-      "outline-interactive-outlined-pressable"
-      // for a proper outline color transition
-    ].join(" "),
+    slots: {
+      wrapper: [
+        "relative flex-row flex-1 rounded-md border min-h-11",
+        "transition-[border-color,outline-color] duration-fast ease-in",
+        "outline-interactive-outlined-pressable"
+        // for a proper outline color transition
+      ].join(" "),
+      placeholder: "color-(--color-form-placeholder) bg-highlight",
+      select: "appearance-none min-h-[44px] w-auto m-0 border-0 bg-transparent text-transparent font-[inherit] py-0 outline-none grow",
+      option: "bg-highlight"
+    },
     variants: {
-      // bg lives in each branch (not base) so the disabled bg never competes
-      // with bg-highlight: two same-specificity background utilities would let
-      // stylesheet order, not className order, decide the winner.
       disabled: {
-        true: "bg-disabled-interactive-muted border-interactive-outlined-disabled cursor-not-allowed",
-        false: [
-          "bg-highlight",
-          "border-interactive-outlined-pressable",
-          "hover:border-interactive-outlined-hover",
-          "focus-within:border-interactive-outlined-focus",
-          "focus-within:outline-1 focus-within:outline-interactive-outlined-focus focus-within:outline-offset-0",
-          "active:border-interactive-outlined-active"
-        ].join(" ")
+        true: {
+          wrapper: "bg-disabled-interactive-muted border-interactive-outlined-disabled cursor-not-allowed",
+          select: "cursor-not-allowed",
+          option: "color-(--color-form-disabled-text)"
+        },
+        false: {
+          wrapper: [
+            "bg-highlight",
+            "border-interactive-outlined-pressable",
+            "hover:border-interactive-outlined-hover",
+            "focus-within:border-interactive-outlined-focus",
+            "focus-within:outline-1 focus-within:outline-interactive-outlined-focus focus-within:outline-offset-0",
+            "active:border-interactive-outlined-active"
+          ].join(" "),
+          select: "cursor-pointer",
+          option: "text-sharp"
+        }
       }
     },
     defaultVariants: { disabled: false }
@@ -1924,24 +1921,6 @@ const wrapperVariants = tv(
 );
 const paddingX = 16;
 const caretReserve = 26;
-const selectStyle = (disabled) => ({
-  appearance: "none",
-  WebkitAppearance: "none",
-  boxSizing: "border-box",
-  minHeight: 44,
-  width: "auto",
-  margin: 0,
-  border: 0,
-  background: "transparent",
-  color: "transparent",
-  font: "inherit",
-  paddingTop: 0,
-  paddingBottom: 0,
-  paddingLeft: paddingX,
-  paddingRight: paddingX + caretReserve,
-  outline: "none",
-  cursor: disabled ? "not-allowed" : "pointer"
-});
 function Select({
   options,
   value,
@@ -1960,17 +1939,8 @@ function Select({
     onValueChange
   );
   const selected = options.find((option) => option.value === current);
-  const [sharpColor, disabledTextColor, placeholderColor, highlightColor] = useThemeToken([
-    "--color-sharp",
-    "--color-form-disabled-text",
-    "--color-form-placeholder",
-    "--color-highlight"
-  ]);
-  const optionStyle = (optionDisabled) => ({
-    color: optionDisabled ? disabledTextColor : sharpColor,
-    backgroundColor: highlightColor
-  });
-  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(View$1, { className: wrapperVariants({ disabled }), children: [
+  const styles = selectVariants({ disabled });
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(View$1, { className: styles.wrapper(), children: [
     /* @__PURE__ */ jsxs(
       "select",
       {
@@ -1979,29 +1949,22 @@ function Select({
         "aria-label": ariaLabel,
         "aria-labelledby": ariaLabelledby,
         "data-testid": testID,
-        style: selectStyle(disabled),
+        className: styles.select(),
+        style: {
+          paddingLeft: paddingX,
+          paddingRight: paddingX + caretReserve
+        },
         onChange: (event) => {
           setValue(event.target.value);
         },
         children: [
-          placeholder === void 0 ? null : /* @__PURE__ */ jsx(
-            "option",
-            {
-              disabled: true,
-              value: "",
-              style: {
-                color: placeholderColor,
-                backgroundColor: highlightColor
-              },
-              children: placeholder
-            }
-          ),
+          placeholder === void 0 ? null : /* @__PURE__ */ jsx("option", { disabled: true, value: "", className: styles.placeholder(), children: placeholder }),
           options.map((option) => /* @__PURE__ */ jsx(
             "option",
             {
               value: option.value,
               disabled: option.disabled,
-              style: optionStyle(option.disabled),
+              className: styles.option(),
               children: option.label
             },
             option.value
@@ -2659,33 +2622,9 @@ function GradientBackground({
 }
 
 const GradientScrollViewInner = forwardRef(({ children, ...scrollViewProps }, ref) => {
-  const [gradientStart, gradientEnd] = useThemeToken([
-    "--color-screen-gradient-start",
-    "--color-screen-gradient-end"
-  ]);
   return /* @__PURE__ */ jsxs(ScrollView$1, { ref, ...scrollViewProps, children: [
-    /* @__PURE__ */ jsx(
-      View$1,
-      {
-        className: "absolute left-0 right-0",
-        style: {
-          top: -600,
-          height: 600,
-          backgroundColor: gradientStart
-        }
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      View$1,
-      {
-        className: "absolute left-0 right-0",
-        style: {
-          bottom: -600,
-          height: 600,
-          backgroundColor: gradientEnd
-        }
-      }
-    ),
+    /* @__PURE__ */ jsx(View$1, { className: "absolute left-0 right-0 top-[-600] height-[600] background-(--color-screen-gradient-start)" }),
+    /* @__PURE__ */ jsx(View$1, { className: "absolute left-0 right-0 bottom-[-600] height-[600] background-(--color-screen-gradient-end)" }),
     /* @__PURE__ */ jsx(GradientBackground, {}),
     children
   ] });
@@ -2805,5 +2744,5 @@ function ExternalLink({
   );
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioGroup, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, ThemeVariablesContext, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useThemeToken, useThemeVariables };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioGroup, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets };
 //# sourceMappingURL=index-browser.es.js.map

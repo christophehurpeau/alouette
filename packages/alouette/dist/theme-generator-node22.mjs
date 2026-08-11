@@ -45,12 +45,17 @@ const relativeChromaCurve = {
   dark: [0.6, 0.68, 0.72, 0.76, 0.78, 0.84, 0.88, 0.88, 0.85, 0.82, 0.86],
   light: [0.5, 0.52, 0.55, 0.6, 0.75, 0.78, 0.92, 0.97, 0.97, 0.97, 0.95]
 };
-const maxSrgbChroma = (lightness, hue) => {
+const maxChroma = ({
+  lightness,
+  hue,
+  gamut
+}) => {
+  const space = gamut === "p3" ? "p3" : "srgb";
   let low = 0;
   let high = 0.5;
   for (let i = 0; i < 20; i++) {
     const mid = (low + high) / 2;
-    if (new Color("oklch", [lightness, mid, hue]).to("srgb").inGamut()) {
+    if (new Color("oklch", [lightness, mid, hue]).to(space).inGamut()) {
       low = mid;
     } else {
       high = mid;
@@ -58,24 +63,30 @@ const maxSrgbChroma = (lightness, hue) => {
   }
   return low;
 };
-const toHex = (lightness, chroma, hue) => {
+const toHex = ({ lightness, chroma, hue }) => {
   const color = new Color("oklch", [lightness, chroma, hue]).to("srgb");
   const hex = color.toGamut({ method: "css" }).toString({ format: "hex" });
   const full = hex.length === 4 ? hex.replace(/^#(.)(.)(.)$/, "#$1$1$2$2$3$3") : hex;
   return full.toUpperCase();
 };
-const createColorScale = (spec, mode) => {
+const createOklchScale = (spec, mode, gamut) => {
   const hueHi = spec.hueHi ?? spec.hue;
   const hueLo = spec.hueLo ?? spec.hue;
   const intensity = spec.intensity ?? 1;
   const ramp = lightnessRamps[spec.type][mode];
   const steps = ramp.map((lightness, index) => {
     const hue = hueLo + (hueHi - hueLo) * lightness;
-    const chroma = relativeChromaCurve[mode][index] * intensity * maxSrgbChroma(lightness, hue);
-    return toHex(lightness, chroma, hue);
+    const chroma = relativeChromaCurve[mode][index] * intensity * maxChroma({ lightness, hue, gamut });
+    return { lightness, chroma, hue };
   });
   return Object.fromEntries(
-    steps.map((hex, index) => [index + 1, hex])
+    steps.map((color, index) => [index + 1, color])
+  );
+};
+const createColorScale = (spec, mode) => {
+  const scale = createOklchScale(spec, mode, "srgb");
+  return Object.fromEntries(
+    Object.entries(scale).map(([step, color]) => [step, toHex(color)])
   );
 };
 
@@ -169,19 +180,63 @@ const accentEmitOrder = [
   "warning",
   "danger"
 ];
-const colorAt = (scales, mode, accentName, step) => scales[`${accentName}.${mode}`][step];
-const buildThemeVars = (scales, mode, accentName) => {
+const round = (value, digits) => Number(value.toFixed(digits));
+const formatOklch = ({ lightness, chroma, hue }) => `oklch(${round(lightness, 4)} ${round(chroma, 4)} ${round(hue, 2)})`;
+const hexAlphaToFraction = (alpha) => round(Number.parseInt(alpha, 16) / 255, 3);
+const withOklchAlpha = (serialized, alpha) => alpha === 1 ? serialized : `${serialized.slice(0, -1)} / ${alpha})`;
+const colorFormats = {
+  srgb: {
+    serialize: toHex,
+    withAlpha: (serialized, alpha) => serialized + alpha,
+    literal: (hex) => hex
+  },
+  oklch: {
+    serialize: formatOklch,
+    withAlpha: (serialized, alpha) => withOklchAlpha(serialized, hexAlphaToFraction(alpha)),
+    literal: (hex) => {
+      const { coords, alpha } = new Color(hex).to("oklch");
+      const [lightness, chroma, hue] = coords;
+      return withOklchAlpha(
+        formatOklch({
+          lightness: lightness ?? 0,
+          chroma: chroma ?? 0,
+          hue: hue || 0
+        }),
+        round(alpha, 3)
+      );
+    }
+  }
+};
+const colorAt = ({
+  scales,
+  mode,
+  accentName,
+  step
+}) => scales[`${accentName}.${mode}`][step];
+const buildThemeVars = ({
+  scales,
+  mode,
+  accentName,
+  format
+}) => {
   const isGrayscale = accentName === "grayscale";
   const vars = {};
   for (const [token, resolver] of Object.entries(tokenScaleMap)) {
     const resolved = resolver({ mode, isGrayscale, accent: accentName });
     if (!resolved) continue;
-    vars[token] = "literal" in resolved ? resolved.literal : colorAt(
-      scales,
-      mode,
-      resolved.source === "grayscale" ? "grayscale" : accentName,
-      resolved.step
-    ) + (resolved.alpha ?? "");
+    if ("literal" in resolved) {
+      vars[token] = format.literal(resolved.literal);
+      continue;
+    }
+    const serialized = format.serialize(
+      colorAt({
+        scales,
+        mode,
+        accentName: resolved.source === "grayscale" ? "grayscale" : accentName,
+        step: resolved.step
+      })
+    );
+    vars[token] = resolved.alpha ? format.withAlpha(serialized, resolved.alpha) : serialized;
   }
   return vars;
 };
@@ -190,54 +245,108 @@ const prefixVars = (vars) => Object.fromEntries(
   Object.entries(vars).map(([key, value]) => [`--color-${key}`, value])
 );
 const accents = accentEmitOrder.filter((name) => name !== "grayscale");
-const buildPaletteCss = (scales) => {
-  const lightVars = buildThemeVars(scales, "light", "grayscale");
-  const darkVars = buildThemeVars(scales, "dark", "grayscale");
-  const baseBlocks = [
-    ["light", lightVars],
-    ["dark", darkVars]
-  ].map(
-    ([name, vars]) => `  :where(.${name}, .${name} *) {
-${emit(vars, "    ")}
-  }`
-  ).join("\n\n");
-  const accentBlocks = ["light", "dark"].flatMap(
-    (mode) => accents.map((accentName) => {
-      const vars = buildThemeVars(scales, mode, accentName);
-      return `  :where(.${mode}_${accentName}, .${mode}_${accentName} *) {
-${emit(vars, "    ")}
-  }`;
+const themeTargets = [
+  ...["light", "dark"].map(
+    (mode) => ({
+      theme: mode,
+      mode,
+      accentName: "grayscale"
     })
-  ).join("\n\n");
+  ),
+  ...["light", "dark"].flatMap(
+    (mode) => accents.map(
+      (accentName) => ({
+        theme: `${mode}_${accentName}`,
+        mode,
+        accentName
+      })
+    )
+  )
+];
+const emitThemeBlocks = ({
+  scales,
+  format,
+  indent
+}) => themeTargets.map(({ theme, mode, accentName }) => {
+  const vars = buildThemeVars({ scales, mode, accentName, format });
+  return `${indent}.${theme} {
+${emit(vars, `${indent}  `)}
+${indent}}`;
+}).join("\n\n");
+const webOnly = (rules) => `  @supports (display: contents) {
+${rules}
+  }`;
+const buildPaletteCss = (srgbScales) => {
+  const srgb = colorFormats.srgb;
+  const lightVars = buildThemeVars({
+    scales: srgbScales,
+    mode: "light",
+    accentName: "grayscale",
+    format: srgb
+  });
   return `@theme {
   /* color tokens \u2014 light theme as defaults, enabling bg-*, text-*, border-*
-     color utilities. Other themes override via the :where(.<theme>) blocks below,
-     applied at runtime through ScopedTheme (NativeWind's VariableContextProvider). */
+     color utilities. This block is the whole palette on native, where ScopedTheme
+     overrides it at runtime with the themeVariables map fed to NativeWind's
+     VariableContextProvider. Web instead resolves the .<theme> blocks below,
+     applied as a className (the closest theme class wins, through inheritance). */
 ${emit(lightVars, "  ")}
 }
 
 @layer theme {
-${baseBlocks}
-
-${accentBlocks}
+${webOnly(emitThemeBlocks({ scales: srgbScales, format: srgb, indent: "    " }))}
 }
 `;
 };
-const buildThemeVariables = (scales) => {
-  const resolved = {
-    light: prefixVars(buildThemeVars(scales, "light", "grayscale")),
-    dark: prefixVars(buildThemeVars(scales, "dark", "grayscale"))
-  };
-  for (const mode of ["light", "dark"]) {
-    const base = buildThemeVars(scales, mode, "grayscale");
-    for (const accent of accents) {
-      resolved[`${mode}_${accent}`] = prefixVars({
-        ...base,
-        ...buildThemeVars(scales, mode, accent)
-      });
+const buildOklchPaletteCss = (p3Scales) => {
+  const oklch = colorFormats.oklch;
+  const lightOklchVars = buildThemeVars({
+    scales: p3Scales,
+    mode: "light",
+    accentName: "grayscale",
+    format: oklch
+  });
+  return `/* Wide-gamut palette: the same ramp with display-p3 chroma headroom. Web only \u2014
+   the native compiler drops this feature query and keeps the base palette hex. */
+@supports (color: oklch(0 0 0)) {
+  @layer theme {
+    /* overrides the @theme defaults, which cannot host a feature query */
+    :root, :host {
+${emit(lightOklchVars, "      ")}
     }
+
+${emitThemeBlocks({ scales: p3Scales, format: oklch, indent: "    " })}
   }
-  return resolved;
+}
+`;
+};
+const buildThemeVariables = (scales, formatName = "srgb") => {
+  const format = colorFormats[formatName];
+  const baseVars = {
+    light: buildThemeVars({
+      scales,
+      mode: "light",
+      accentName: "grayscale",
+      format
+    }),
+    dark: buildThemeVars({
+      scales,
+      mode: "dark",
+      accentName: "grayscale",
+      format
+    })
+  };
+  return Object.fromEntries(
+    themeTargets.map(({ theme, mode, accentName }) => [
+      theme,
+      prefixVars(
+        accentName === "grayscale" ? baseVars[mode] : {
+          ...baseVars[mode],
+          ...buildThemeVars({ scales, mode, accentName, format })
+        }
+      )
+    ])
+  );
 };
 
 const generateTheme = (overrides) => {
@@ -245,15 +354,19 @@ const generateTheme = (overrides) => {
     ...defaultPaletteSpecs,
     ...overrides
   };
-  const scales = Object.fromEntries(
+  const scalesForGamut = (gamut) => Object.fromEntries(
     Object.keys(specs).flatMap((name) => [
-      [`${name}.light`, createColorScale(specs[name], "light")],
-      [`${name}.dark`, createColorScale(specs[name], "dark")]
+      [`${name}.light`, createOklchScale(specs[name], "light", gamut)],
+      [`${name}.dark`, createOklchScale(specs[name], "dark", gamut)]
     ])
   );
+  const srgbScales = scalesForGamut("srgb");
+  const p3Scales = scalesForGamut("p3");
   return {
-    css: buildPaletteCss(scales),
-    themeVariables: buildThemeVariables(scales)
+    css: buildPaletteCss(srgbScales),
+    oklchCss: buildOklchPaletteCss(p3Scales),
+    themeVariables: buildThemeVariables(srgbScales, "srgb"),
+    oklchThemeVariables: buildThemeVariables(p3Scales, "oklch")
   };
 };
 
@@ -266,13 +379,24 @@ ${entries}
   },`;
 }).join("\n")}
 }`;
+const themeVariablesModule = (themeVariables) => `${generatedHeader}
+/* eslint-disable camelcase */
+import type { ThemeVariablesMap } from "alouette";
+
+/**
+ * Resolved CSS-variable maps for every theme, paired with the generated palette
+ * CSS. Pass to \`<AlouetteProvider themeVariables={...}>\`.
+ */
+export const themeVariables: ThemeVariablesMap = ${serializeThemeVariables(themeVariables)};
+`;
 const writeTheme = ({
   outDir,
   overrides,
+  srgbOnly = false,
   cssFileName = "palette.css",
   themeVariablesFileName = "themeVariables.ts"
 }) => {
-  const { css, themeVariables } = generateTheme(overrides);
+  const { css, oklchCss, themeVariables } = generateTheme(overrides);
   mkdirSync(outDir, { recursive: true });
   const cssPath = join(outDir, cssFileName);
   writeFileSync(
@@ -283,21 +407,20 @@ const writeTheme = ({
 ${css}`
   );
   const themeVariablesPath = join(outDir, themeVariablesFileName);
+  writeFileSync(themeVariablesPath, themeVariablesModule(themeVariables));
+  if (srgbOnly) {
+    return { cssPath, oklchCssPath: void 0, themeVariablesPath };
+  }
+  const oklchCssPath = join(outDir, cssFileName.replace(/\.css$/, "-oklch$&"));
   writeFileSync(
-    themeVariablesPath,
+    oklchCssPath,
     `${generatedHeader}
-/* eslint-disable camelcase */
-import type { ThemeVariablesMap } from "alouette";
-
-/**
- * Resolved CSS-variable maps for every theme, paired with the generated palette
- * CSS. Pass to \`<AlouetteProvider themeVariables={...}>\`.
- */
-export const themeVariables: ThemeVariablesMap = ${serializeThemeVariables(themeVariables)};
-`
+/* Wide-gamut half of the app palette. Optional \u2014 import after "${cssFileName}"
+   to opt web into the display-p3 ramp. */
+${oklchCss}`
   );
-  return { cssPath, themeVariablesPath };
+  return { cssPath, oklchCssPath, themeVariablesPath };
 };
 
-export { buildPaletteCss, buildThemeVariables, createColorScale, defaultPaletteSpecs, generateTheme, writeTheme };
+export { buildOklchPaletteCss, buildPaletteCss, buildThemeVariables, createColorScale, createOklchScale, defaultPaletteSpecs, generateTheme, maxChroma, writeTheme };
 //# sourceMappingURL=theme-generator-node22.mjs.map

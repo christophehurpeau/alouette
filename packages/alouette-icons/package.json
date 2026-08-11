@@ -52,7 +52,9 @@
     "@babel/core": "7.29.7",
     "@babel/preset-react": "7.29.7",
     "@phosphor-icons/core": "2.1.1",
-    "react-native": "0.86.0"
+    "@typescript/native": "npm:typescript@7.0.2",
+    "react-native": "0.86.2",
+    "typescript": "npm:@typescript/typescript6@6.0.2"
   },
   "peerDependencies": {
     "react": "^19.2.3",

@@ -2,8 +2,8 @@ import { VariableContextProvider } from "nativewind";
 import type { ReactNode } from "react";
 import { useContext } from "react";
 import type { AlouetteTheme } from "../../core/AlouetteConfig";
+import { NativeThemeVariablesContext } from "../../core/NativeThemeVariablesContext";
 import { ThemeContext } from "../../core/ThemeContext";
-import { ThemeVariablesContext } from "../../core/ThemeVariablesContext";
 
 export interface ScopedThemeProps {
   /** Full theme name, e.g. "light", "dark", "light_brand", "dark_danger". */
@@ -13,14 +13,13 @@ export interface ScopedThemeProps {
 
 /**
  * Applies a theme to its subtree by pushing the theme's resolved CSS variables
- * through NativeWind's `VariableContextProvider` (layout-neutral on both web —
- * `display: contents` — and native — context only). It also records the active
- * theme name in `ThemeContext` so `useThemeToken` and `AccentScope` can read it.
- *
- * Replaces Uniwind's `ScopedTheme`.
+ * through NativeWind's `VariableContextProvider` (context only, layout-neutral).
+ * The web build applies the theme as a className instead — see
+ * `ScopedTheme.web.tsx`. It also records the active theme name in `ThemeContext`
+ * so `AccentScope` can read it.
  */
 export function ScopedTheme({ theme, children }: ScopedThemeProps): ReactNode {
-  const themeVariables = useContext(ThemeVariablesContext);
+  const themeVariables = useContext(NativeThemeVariablesContext);
   return (
     <ThemeContext.Provider value={theme}>
       <VariableContextProvider value={themeVariables[theme]}>

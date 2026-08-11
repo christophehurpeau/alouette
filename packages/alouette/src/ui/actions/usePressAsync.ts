@@ -43,7 +43,7 @@ export function usePressAsync(
   onPress: (event: GestureResponderEvent) => unknown,
 ): UsePressAsyncResult {
   const [pressAsyncState, dispatch] = useReducer(pressAsyncReducer, idleState);
-  const settledTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const settledTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     return () => {

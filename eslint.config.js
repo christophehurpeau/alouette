@@ -5,7 +5,7 @@ import pobTypescriptReactConfig, {
 } from "@pob/eslint-config-typescript-react";
 import storybook from "eslint-plugin-storybook";
 
-const { configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig();
+const { configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig;
 
 export default [
   {
@@ -84,7 +84,6 @@ export default [
     },
   },
   ...storybook.configs["flat/recommended"],
-  ...pobTypescriptReactConfigs.checkPackages,
   // react-native-css (NativeWind v5's native engine) breaks at runtime with
   // lightningcss >=1.31 ("failed to deserialize Specifier"), so the app pins
   // lightningcss to 1.30.x. Vite wants ^1.32.0 and nests its own copy. This

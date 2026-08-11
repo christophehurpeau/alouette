@@ -2,7 +2,9 @@
 
 Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 
-const themeVariables = {
+const reactNative = require('react-native');
+
+const themeVariables = reactNative.Platform.OS === "web" ? {} : {
   light: {
     "--color-translucent": "#ffffff66",
     "--color-screen": "#EEEEEE",
