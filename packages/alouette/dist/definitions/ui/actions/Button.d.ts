@@ -1,8 +1,8 @@
 import { type ReactNode } from "react";
 import { type VariantProps } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
-import { type PressableBoxProps } from "../data/PressableBox";
 import { type SVGIconElement } from "../primitives/Icon";
+import { type PressableBoxProps } from "./PressableBox";
 export declare const buttonHeight: {
     readonly sm: 38;
     readonly md: 44;

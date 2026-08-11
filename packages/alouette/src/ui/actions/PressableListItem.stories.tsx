@@ -8,7 +8,7 @@ import { PressableListItem } from "./PressableListItem";
 type ThisStory = StoryObj<typeof PressableListItem>;
 
 export default {
-  title: "alouette/Data/PressableListItem",
+  title: "alouette/Actions/PressableListItem",
   component: PressableListItem,
   parameters: {
     componentSubtitle:

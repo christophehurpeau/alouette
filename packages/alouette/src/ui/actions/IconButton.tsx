@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
-import { PressableBox, type PressableBoxProps } from "../data/PressableBox";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { buttonHeight } from "./Button";
+import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
 const iconButtonVariants = tv(
   {

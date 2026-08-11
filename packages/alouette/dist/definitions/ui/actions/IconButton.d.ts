@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { type PressableBoxProps } from "../data/PressableBox";
+import { type PressableBoxProps } from "../actions/PressableBox";
 import { type SVGIconElement } from "../primitives/Icon";
 export interface IconButtonProps extends Omit<PressableBoxProps, "children"> {
     icon: SVGIconElement;

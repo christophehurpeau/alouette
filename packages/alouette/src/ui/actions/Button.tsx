@@ -5,12 +5,12 @@ import { Platform } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
-import { PressableBox, type PressableBoxProps } from "../data/PressableBox";
 import { IndeterminateCircularProgress } from "../feedback/CircularProgress";
 import { indeterminateExitDurationMs } from "../feedback/useSimulatedProgress";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
+import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
 export const buttonHeight = {
   sm: 38,

@@ -9,7 +9,7 @@ type ThisStory = StoryObj<typeof PressableBox>;
 const VARIANTS = ["contained", "outlined"] as const;
 
 export default {
-  title: "alouette/Data/PressableBox",
+  title: "alouette/Actions/PressableBox",
   component: PressableBox,
   parameters: {
     componentSubtitle:

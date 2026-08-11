@@ -70,8 +70,8 @@ export {
 } from "./ui/containers/AlertDialog";
 export type { IconProps, SVGIconElement } from "./ui/primitives/Icon";
 export { Icon } from "./ui/primitives/Icon";
-export type { PressableBoxProps } from "./ui/data/PressableBox";
-export { PressableBox } from "./ui/data/PressableBox";
+export type { PressableBoxProps } from "./ui/actions/PressableBox";
+export { PressableBox } from "./ui/actions/PressableBox";
 export type {
   ButtonProps,
   ButtonState,
@@ -142,8 +142,8 @@ export {
   Message,
   WarningMessage,
 } from "./ui/feedback/Message";
-export type { PressableListItemProps } from "./ui/data/PressableListItem";
-export { PressableListItem } from "./ui/data/PressableListItem";
+export type { PressableListItemProps } from "./ui/actions/PressableListItem";
+export { PressableListItem } from "./ui/actions/PressableListItem";
 export type { GradientBackgroundProps } from "./ui/layout/GradientBackground";
 export { GradientBackground } from "./ui/layout/GradientBackground";
 export type { GradientScrollViewProps } from "./ui/layout/GradientScrollView";
