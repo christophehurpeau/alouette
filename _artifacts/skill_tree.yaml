@@ -16,7 +16,7 @@ coverage:
     - name: 'alouette-icons'
       reason: 'Auto-generated Phosphor icons; consumer usage is covered by the alouette-icons skill shipped in the alouette package.'
 
-# Structure: FLAT. 12 task-focused skills mapping ~1:1 to developer intents,
+# Structure: FLAT. 13 task-focused skills mapping ~1:1 to developer intents,
 # all shipped in the single client-facing package (packages/alouette/skills/).
 # No router skill (set is < 15 and discoverable via `npx @tanstack/intent list`).
 # No core overview skill — each skill stands alone. `requires` expresses load
@@ -141,6 +141,19 @@ skills:
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.stories.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.stories.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/forms/FormFieldArray.stories.tsx'
+
+  - name: 'alouette-data'
+    slug: 'alouette-data'
+    type: 'core'
+    domain: 'data'
+    path: 'packages/alouette/skills/alouette-data/SKILL.md'
+    package: 'packages/alouette'
+    description: 'Data-display components. Badge: a small pill label for status, counts or categories. accent defaults to brand, size is sm/md, variant is solid (tinted) / solid.enabled (filled) / outlined; optional icon takes a rendered icon element and is auto-sized. Badge has no className prop and is not pressable. Load when labelling an item with a status, count, tag or category chip.'
+    requires:
+      - 'alouette-theming'
+    sources:
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.stories.tsx'
 
   - name: 'alouette-feedback'
     slug: 'alouette-feedback'

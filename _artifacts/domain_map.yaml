@@ -35,6 +35,9 @@ domains:
   - name: 'Form inputs'
     slug: 'forms'
     description: 'Text inputs, text areas, switches, radio groups (RadioGroup/Radio circle-dot list, RadioButtonGroup/RadioButton segmented pill bar) with controlled/uncontrolled and disabled handling, plus react-hook-form composition (Form/FormField/FormSubmitButton/SimpleVForm) for validated forms.'
+  - name: 'Displaying data'
+    slug: 'data'
+    description: 'Display-only components that annotate content: Badge status/count/category pills.'
   - name: 'Feedback messages'
     slug: 'feedback'
     description: 'Semantic message banners with optional dismiss, a top-pinned network connection status banner, and determinate progress indicators.'
@@ -502,6 +505,64 @@ skills:
             render={({ name, label }) => <FormField name={`${name}.value`} label={label} ... />} />
         source: 'packages/alouette/src/ui/forms/FormFieldArray.tsx'
         priority: 'MEDIUM'
+        status: 'active'
+  # ---------------------------------------------------------------------------
+  - name: 'Display data annotations'
+    slug: 'alouette-data'
+    domain: 'data'
+    description: 'Badge, a small display-only pill for status, counts or categories. accent defaults to "brand"; size is "sm"|"md"; variant is "solid"|"solid.enabled"|"outlined". An optional icon prop takes a rendered icon element and is sized from size. No className and no press handling.'
+    type: 'core'
+    packages: ['alouette']
+    covers:
+      - 'Badge (accent, size, variant, icon, children)'
+    tasks:
+      - 'Label a row with a status pill'
+      - 'Show a count or category chip next to a title'
+    failure_modes:
+      - mistake: 'Passing the icon as a component instead of an element'
+        mechanism: 'icon is typed SVGIconElement (a rendered element), like Button and Message; a component reference is a type error and renders nothing.'
+        wrong_pattern: |
+          <Badge icon={StarRegularIcon}>Featured</Badge>
+        correct_pattern: |
+          <Badge icon={<StarRegularIcon />}>Featured</Badge>
+        source: 'packages/alouette/src/ui/data/Badge.tsx; ui/primitives/Icon.tsx'
+        priority: 'HIGH'
+        status: 'active'
+      - mistake: 'Passing className to Badge'
+        mechanism: 'BadgeProps is accent | size | variant | icon | children — there is no className or style prop. Appearance comes from accent + variant; spacing and placement come from a wrapping Box.'
+        wrong_pattern: |
+          <Badge className="ml-xs bg-blue-500">New</Badge>
+        correct_pattern: |
+          <Box className="ml-xs"><Badge accent="info">New</Badge></Box>
+        source: 'packages/alouette/src/ui/data/Badge.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Inventing variant or size values'
+        mechanism: 'variant is exactly "solid" | "solid.enabled" | "outlined" (dotted name) and size is only "sm" | "md" — unlike Message there is no lg.'
+        wrong_pattern: |
+          <Badge variant="filled" size="lg">Active</Badge>
+        correct_pattern: |
+          <Badge variant="solid.enabled" size="md">Active</Badge>
+        source: 'packages/alouette/src/ui/data/Badge.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Hand-rolling a pill with Box + Text'
+        mechanism: 'A manual pill uses raw Tailwind colors instead of accent tokens, so it ignores light/dark mode and the AccentScope, and its padding/radius drift from the scale.'
+        wrong_pattern: |
+          <Box className="rounded-full bg-green-100 px-xs py-xxs"><Text className="text-xs">Paid</Text></Box>
+        correct_pattern: |
+          <Badge accent="success" size="sm">Paid</Badge>
+        source: 'packages/alouette/src/ui/data/Badge.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Expecting Badge to be pressable'
+        mechanism: 'Badge renders a plain Box — no onPress, no role, no interactive token states. A tappable chip is PressableBox (alouette-actions).'
+        wrong_pattern: |
+          <Badge onPress={select}>Filter</Badge>
+        correct_pattern: |
+          <PressableBox onPress={select}><Badge>Filter</Badge></PressableBox>
+        source: 'packages/alouette/src/ui/data/Badge.tsx; ui/data/PressableBox.tsx'
+        priority: 'LOW'
         status: 'active'
   # ---------------------------------------------------------------------------
   - name: 'Show feedback messages'

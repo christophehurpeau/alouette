@@ -235,4 +235,5 @@ wait is a `Button` `state="loading"` spinner (or `ActionButton`).
 Source: packages/alouette/src/ui/feedback/CircularProgress.tsx; ui/actions/Button.tsx
 
 See also: alouette-animation/SKILL.md — render messages in PresenceList for
-animated add/remove.
+animated add/remove; alouette-data/SKILL.md — Badge, for an inline status pill
+rather than a banner.
