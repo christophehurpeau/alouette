@@ -10,7 +10,7 @@ const VARIANTS = ["solid", "solid.enabled", "outlined"] as const;
 const SIZES = ["sm", "md"] as const;
 
 export default {
-  title: "alouette/Feedback/Badge",
+  title: "alouette/Data/Badge",
   component: Badge,
   parameters: {
     componentSubtitle: "A small label for status, counts, or categories",

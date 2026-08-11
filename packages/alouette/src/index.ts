@@ -115,8 +115,8 @@ export type { FormSubmitButtonProps } from "./ui/forms/FormSubmitButton";
 export { FormSubmitButton } from "./ui/forms/FormSubmitButton";
 export type { SimpleVFormProps } from "./ui/forms/SimpleVForm";
 export { SimpleVForm } from "./ui/forms/SimpleVForm";
-export type { BadgeProps } from "./ui/feedback/Badge";
-export { Badge } from "./ui/feedback/Badge";
+export type { BadgeProps } from "./ui/data/Badge";
+export { Badge } from "./ui/data/Badge";
 export type {
   ConnectionStateProps,
   ConnectionStateStatus,
