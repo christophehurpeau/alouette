@@ -45,7 +45,7 @@
     "happy-dom": "20.11.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "storybook": "10.4.6",
+    "storybook": "10.5.7",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "vite": "8.1.5",
     "vitest": "4.1.10"
