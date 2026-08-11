@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [11.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@10.0.2...alouette-icons@11.0.0) (2026-08-11)
+
+### ⚠ BREAKING CHANGES
+
+* oklch and web improvements
+
+### Features
+
+* oklch and web improvements
+
 ## [10.0.2](https://github.com/christophehurpeau/alouette/compare/alouette-icons@10.0.1...alouette-icons@10.0.2) (2026-07-29)
 
 Note: no notable changes

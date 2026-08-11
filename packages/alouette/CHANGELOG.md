@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@21.0.0...alouette@22.0.0) (2026-08-11)
+
+### ⚠ BREAKING CHANGES
+
+* oklch and web improvements
+
+### Features
+
+* oklch and web improvements
+
+Version bump for dependency: alouette-icons
+Version bump for dependency: alouette-icons
+
+
 ## [21.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@20.8.0...alouette@21.0.0) (2026-07-29)
 
 ### ⚠ BREAKING CHANGES

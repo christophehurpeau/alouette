@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.0](///compare/storybook-native-app@11.0.0...storybook-native-app@12.0.0) (2026-08-11)
+
+### ⚠ BREAKING CHANGES
+
+* oklch and web improvements
+
+### Features
+
+* oklch and web improvements
+
+Version bump for dependency: alouette
+Version bump for dependency: alouette-icons
+
+
 ## [11.0.0](///compare/storybook-native-app@10.8.0...storybook-native-app@11.0.0) (2026-07-29)
 
 ### ⚠ BREAKING CHANGES
