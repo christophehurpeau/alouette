@@ -64,10 +64,13 @@ jobs:
         working-directory: packages/storybook-native-app
         run: pnpm expo install --fix
 
+      - name: Lint package.json files
+        if: steps.check.outcome == 'failure'
+        run: pnpm lint:eslint --fix '**/package.json'
+
       - name: Update lockfile
         if: steps.check.outcome == 'failure'
         run: |
-          pnpm lint:eslint --fix '**/package.json'
           pnpm install --no-frozen-lockfile
           pnpm dedupe
 
