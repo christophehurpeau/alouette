@@ -38,6 +38,9 @@ domains:
   - name: 'Displaying data'
     slug: 'data'
     description: 'Display-only components that annotate content: Badge status/count/category pills.'
+  - name: 'Navigation'
+    slug: 'navigation'
+    description: 'Segmented groups that move between destinations (NavBar/NavBarItem) or switch views on one screen (Tabs/Tab), sharing the RadioButtonGroup material.'
   - name: 'Feedback messages'
     slug: 'feedback'
     description: 'Semantic message banners with optional dismiss, a top-pinned network connection status banner, and determinate progress indicators.'
@@ -562,6 +565,74 @@ skills:
         correct_pattern: |
           <PressableBox onPress={select}><Badge>Filter</Badge></PressableBox>
         source: 'packages/alouette/src/ui/data/Badge.tsx; ui/data/PressableBox.tsx'
+        priority: 'LOW'
+        status: 'active'
+  # ---------------------------------------------------------------------------
+  - name: 'Navigate between destinations and views'
+    slug: 'alouette-navigation'
+    domain: 'navigation'
+    description: 'NavBar + NavBarItem (role="navigation" / role="link" / aria-current="page") and Tabs + Tab (role="tablist" / role="tab" / aria-selected). Compose-children groups over the shared segmented base (SegmentedBar/SegmentedItem, SelectionContext): lowered 44px bar, raised chip, optional leading icon, accent + disabled, value/defaultValue/onValueChange, and a per-item href + onPress (an anchor on web, and what expo Router <Link asChild> injects) that replaces the group callback.'
+    type: 'core'
+    packages: ['alouette']
+    covers:
+      - 'NavBar (value, defaultValue, onValueChange, accent, disabled) / NavBarItem (href, label, icon, disabled, onPress)'
+      - 'Tabs / Tab (same, plus id + aria-controls for panel wiring)'
+    tasks:
+      - 'Add a top-level navigation bar between routes'
+      - 'Switch between views on one screen with a tab bar'
+    failure_modes:
+      - mistake: 'Passing an options array instead of children'
+        mechanism: 'NavBar and Tabs are compose-children groups like RadioButtonGroup; there is no options prop — each child reads the selected value from the group context.'
+        wrong_pattern: |
+          <Tabs options={[{ value: "day", label: "Day" }]} />
+        correct_pattern: |
+          <Tabs aria-label="Period" defaultValue="day"><Tab value="day" label="Day" /></Tabs>
+        source: 'packages/alouette/src/ui/navigation/Tabs.tsx'
+        priority: 'HIGH'
+        status: 'active'
+      - mistake: 'Using Tabs for route navigation (or NavBar for in-page views)'
+        mechanism: 'Both render the same material but expose different semantics: role="tab" promises a panel on the same screen, role="link" + aria-current="page" promises a destination. Assistive tech announces them differently.'
+        wrong_pattern: |
+          <Tabs value={pathname} onValueChange={router.push}>…</Tabs>
+        correct_pattern: |
+          <NavBar aria-label="Main" value={pathname} onValueChange={router.push}>…</NavBar>
+        source: 'packages/alouette/src/ui/navigation/NavBar.tsx; ui/navigation/Tabs.tsx'
+        priority: 'HIGH'
+        status: 'active'
+      - mistake: 'Item onPress on an uncontrolled group'
+        mechanism: "An item's onPress replaces the group's selection callback, so an uncontrolled group's internal value never moves and the chip stays where it was."
+        wrong_pattern: |
+          <NavBar defaultValue="/home"><NavBarItem href="/settings" label="Settings" onPress={go} /></NavBar>
+        correct_pattern: |
+          <NavBar value={pathname}><NavBarItem href="/settings" label="Settings" onPress={go} /></NavBar>
+        source: 'packages/alouette/src/ui/navigation/NavBarItem.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Navigating from an item onPress without preventDefault'
+        mechanism: 'An item with an href renders a real anchor on web, so a handler that routes in JS must cancel the browser default or the page reloads on top of the JS navigation. The built-in handler does it; a custom one must too (expo Router <Link asChild> already does).'
+        wrong_pattern: |
+          <NavBarItem href="/settings" label="Settings" onPress={() => router.push("/settings")} />
+        correct_pattern: |
+          <Link href="/settings" asChild><NavBarItem label="Settings" /></Link>
+        source: 'packages/alouette/src/ui/navigation/NavBarItem.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Hand-rolling the bar with Surface + PressableBox'
+        mechanism: 'SegmentedBar/SegmentedItem already give a 44px tap target inside a 44px lowered bar, the chip opacity cross-fade, the focus-visible outline and the hover/active border; a hand-rolled bar drifts from all four.'
+        wrong_pattern: |
+          <Surface variant="lowered" className="flex-row"><PressableBox variant="ghost">…</PressableBox></Surface>
+        correct_pattern: |
+          <Tabs aria-label="Period" defaultValue="week"><Tab value="week" label="Week" /></Tabs>
+        source: 'packages/alouette/src/ui/selection/SegmentedBar.tsx; ui/selection/SegmentedItem.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Omitting aria-label on the group'
+        mechanism: 'NavBar renders a navigation landmark and Tabs a tab list; unnamed, they are indistinguishable when a screen has more than one.'
+        wrong_pattern: |
+          <NavBar value={pathname}>…</NavBar>
+        correct_pattern: |
+          <NavBar aria-label="Main" value={pathname}>…</NavBar>
+        source: 'packages/alouette/src/ui/navigation/NavBar.tsx'
         priority: 'LOW'
         status: 'active'
   # ---------------------------------------------------------------------------

@@ -128,6 +128,10 @@ control. The track is a `Surface variant="lowered"` with no vertical padding
 (44 px); each `RadioButton` pressable fills the full 44 px tap target while
 centering a shorter visible chip.
 
+It is a form input: it answers a question and submits a value. For the same
+material used to move between destinations or switch views, use `NavBar` or
+`Tabs` — see alouette-navigation/SKILL.md.
+
 ```tsx
 import { RadioButtonGroup, RadioButton } from "alouette";
 

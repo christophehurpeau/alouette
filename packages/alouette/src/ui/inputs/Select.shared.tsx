@@ -1,5 +1,5 @@
 import { CaretDownRegularIcon } from "alouette-icons/phosphor-icons/CaretDownRegularIcon";
-import { type ReactNode, useCallback, useState } from "react";
+import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Icon } from "../primitives/Icon";
@@ -24,27 +24,6 @@ export interface SelectProps {
   "aria-label"?: string;
   "aria-labelledby"?: string;
   testID?: string;
-}
-
-export function useControllableValue(
-  controlled: string | undefined,
-  defaultValue: string | undefined,
-  onValueChange?: (value: string) => void,
-): readonly [string | undefined, (next: string) => void] {
-  const [internal, setInternal] = useState(defaultValue);
-  const value = controlled ?? internal;
-  const setValue = useCallback(
-    (next: string) => {
-      if (controlled === undefined) {
-        setInternal(next);
-      }
-      if (next !== value) {
-        onValueChange?.(next);
-      }
-    },
-    [controlled, onValueChange, value],
-  );
-  return [value, setValue] as const;
 }
 
 // Shared outlined-input look for the trigger, matching InputText. Focus styling

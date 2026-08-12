@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 export interface SelectOption {
     label: string;
@@ -19,7 +19,6 @@ export interface SelectProps {
     "aria-labelledby"?: string;
     testID?: string;
 }
-export declare function useControllableValue(controlled: string | undefined, defaultValue: string | undefined, onValueChange?: (value: string) => void): readonly [string | undefined, (next: string) => void];
 export declare const selectTriggerBaseClassName: string;
 export interface SelectTriggerContentProps {
     label?: string;

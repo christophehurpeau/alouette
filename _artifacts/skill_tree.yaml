@@ -16,7 +16,7 @@ coverage:
     - name: 'alouette-icons'
       reason: 'Auto-generated Phosphor icons; consumer usage is covered by the alouette-icons skill shipped in the alouette package.'
 
-# Structure: FLAT. 13 task-focused skills mapping ~1:1 to developer intents,
+# Structure: FLAT. 14 task-focused skills mapping ~1:1 to developer intents,
 # all shipped in the single client-facing package (packages/alouette/skills/).
 # No router skill (set is < 15 and discoverable via `npx @tanstack/intent list`).
 # No core overview skill — each skill stands alone. `requires` expresses load
@@ -154,6 +154,27 @@ skills:
     sources:
       - 'christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.stories.tsx'
+
+  - name: 'alouette-navigation'
+    slug: 'alouette-navigation'
+    type: 'core'
+    domain: 'navigation'
+    path: 'packages/alouette/skills/alouette-navigation/SKILL.md'
+    package: 'packages/alouette'
+    description: 'Segmented navigation. NavBar + NavBarItem move between destinations (role="navigation" + role="link" + aria-current="page"); Tabs + Tab switch views on one screen (role="tablist" + role="tab" + aria-selected). Both are compose-children groups sharing the RadioButtonGroup material: lowered 44px bar with a raised chip, optional leading icon, accent + disabled, controlled value or defaultValue + onValueChange, and an optional per-item onPress that wins over the group callback. Load when building a tab bar, a section switcher, or navigation between routes.'
+    requires:
+      - 'alouette-theming'
+      - 'alouette-actions'
+    sources:
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBarItem.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tabs.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tab.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/selection/SelectionContext.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedBar.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.stories.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tabs.stories.tsx'
 
   - name: 'alouette-feedback'
     slug: 'alouette-feedback'

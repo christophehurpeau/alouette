@@ -2,6 +2,7 @@ import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon
 import { type ReactNode, useState } from "react";
 import { Modal, Pressable, useWindowDimensions } from "react-native";
 import { tv } from "tailwind-variants";
+import { useControllableValue } from "../../core/useControllableValue";
 import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBox } from "../containers/Box";
 import { Surface } from "../containers/Surface";
@@ -13,7 +14,6 @@ import {
   type SelectProps,
   SelectTriggerContent,
   selectTriggerBaseClassName,
-  useControllableValue,
 } from "./Select.shared";
 
 const triggerVariants = tv(
@@ -106,11 +106,11 @@ function SelectInner({
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledby,
 }: Omit<SelectProps, "accent">): ReactNode {
-  const [current, setValue] = useControllableValue(
+  const [current, setValue] = useControllableValue({
     value,
     defaultValue,
     onValueChange,
-  );
+  });
   const [open, setOpen] = useState(false);
   const { height: windowHeight } = useWindowDimensions();
   const selected = options.find((option) => option.value === current);

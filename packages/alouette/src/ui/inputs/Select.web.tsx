@@ -1,12 +1,9 @@
 import type { ReactNode } from "react";
 import { View } from "react-native";
 import { tv } from "tailwind-variants";
+import { useControllableValue } from "../../core/useControllableValue";
 import { AccentScope } from "../containers/AccentScope";
-import {
-  type SelectProps,
-  SelectTriggerContent,
-  useControllableValue,
-} from "./Select.shared";
+import { type SelectProps, SelectTriggerContent } from "./Select.shared";
 
 const selectVariants = tv(
   {
@@ -63,11 +60,11 @@ export function Select({
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledby,
 }: SelectProps): ReactNode {
-  const [current, setValue] = useControllableValue(
+  const [current, setValue] = useControllableValue({
     value,
     defaultValue,
     onValueChange,
-  );
+  });
   const selected = options.find((option) => option.value === current);
 
   const styles = selectVariants({ disabled });

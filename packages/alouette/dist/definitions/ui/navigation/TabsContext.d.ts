@@ -1,0 +1,2 @@
+export declare const TabsContextProvider: import("react").Provider<import("../selection/SelectionContext").SelectionContextValue | undefined>, useTabsContext: () => import("../selection/SelectionContext").SelectionContextValue;
+//# sourceMappingURL=TabsContext.d.ts.map

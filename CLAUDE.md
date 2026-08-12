@@ -214,14 +214,15 @@ explicit px keeps the intent legible.)
 
 When a control's segment should _look_ shorter than 44px, keep the full 44px on
 the tap target and shrink only the visible chip inside it — don't shrink the
-pressable. `RadioButtonGroup` does this with the design-system `Surface` as the
-in-flow flex container: the lowered `Surface` is a real 44px bar with **zero
-vertical padding** (`py-0` overriding the `size` padding, `min-h-[44px]`), so
-each `RadioButton` pressable (`min-h-[44px]`) fills the full height as the tap
-target, and centers a shorter visible chip (`h-[32px]`) — leaving ~6px of the
-lowered Surface showing above/below each chip as the inset frame. No absolute
-track, no z-order tricks, no inline `style`. A `play` test measures both the
-`radiogroup` (== 44) and each `radio` (>= 44) so the geometry can't regress.
+pressable. `SegmentedBar` / `SegmentedItem` (`src/ui/selection/`) implement this
+with the design-system `Surface` as the in-flow flex container: the lowered
+`Surface` is a real 44px bar with **zero vertical padding** (`py-0` overriding the
+`size` padding, `min-h-[44px]`), so each item pressable (`min-h-[44px]`) fills the
+full height as the tap target, and centers a shorter visible chip (`min-h-[32px]`)
+— leaving ~6px of the lowered Surface showing above/below each chip as the inset
+frame. No absolute track, no z-order tricks, no inline `style`. `RadioButtonGroup`,
+`NavBar` and `Tabs` all build on it, and each one's `play` test measures both the
+container (== 44) and each item (>= 44) so the geometry can't regress.
 
 ## Radius scale is large — `rounded-md` is a stadium
 
@@ -378,16 +379,35 @@ function FormSubmitButton({ label, onPress }: FormSubmitButtonProps) {
 // Avoid — reimplementing disabled/aria state on a raw Pressable
 ```
 
-## Single-select input groups: controllable value + context
+## Single-select groups: controllable value + context
 
-For a group of options with one selected value (radios, segmented buttons), the
-group owns state and children read it via a small React context — compose children
-(`<Radio value label />`), don't take an options array. Reuse `useControllableValue`
-(exported from `src/ui/inputs/Select.shared.tsx`) for the controlled/uncontrolled
-`value` + `defaultValue` + `onValueChange` logic, share `{ value, onSelect, disabled }`
-through the context, and wrap the group in `AccentScope`. Container gets
-`role="radiogroup"`; each option gets `role="radio"` + `aria-checked`. (Pattern:
-`RadioGroup`/`Radio` and `RadioButtonGroup`/`RadioButton` in `src/ui/inputs/`.)
+For a group of options with one selected value (radios, segmented buttons, tabs,
+nav destinations), the group owns state and children read it via a small React
+context — compose children (`<Radio value label />`), don't take an options array.
+The shared base is `src/ui/selection/`:
+
+- `SelectionContext.tsx` — `createSelectionContext(message)` mints one context per
+  family (precise "must be rendered inside X" error), `useSelectionValue()` builds
+  the `{ value, onSelect, disabled }` context value on top of `useControllableValue`
+  (`src/core/useControllableValue.ts`), and `SelectionGroupProps` is the shared
+  `value` / `defaultValue` / `onValueChange` / `accent` / `disabled` prop set every
+  group extends.
+- `SegmentedBar.tsx` / `SegmentedItem.tsx` — the lowered 44px track and its
+  pressable chip (optional leading icon), shared by every segmented group.
+
+Each family only adds its roles: `radiogroup` + `radio`/`aria-checked`
+(`RadioButtonGroup`/`RadioButton`, `RadioGroup`/`Radio` in `src/ui/inputs/`),
+`tablist` + `tab`/`aria-selected` (`Tabs`/`Tab`), `navigation` + `link` +
+`aria-current="page"` (`NavBar`/`NavBarItem`, both in `src/ui/navigation/`). A nav
+or tab item may carry its own `onPress` (it then wins over the group's
+`onValueChange`, and the group must be controlled).
+
+`NavBarItem` is the exception to `value`: its identity is `href`, which
+react-native-web turns into a real `<a>` (native ignores it) — so expo Router's
+`<Link asChild>`, which injects `href` + an `onPress`, composes with it directly.
+The item's own handler calls `event.preventDefault()`, because routing belongs to
+the app, and a disabled item drops its `href` (a disabled `Pressable` never sees
+the press that would cancel the navigation).
 
 ## Test via accessibility queries, not `testID`
 

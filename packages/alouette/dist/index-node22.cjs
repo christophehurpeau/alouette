@@ -714,137 +714,6 @@ const animationDurationsMs = {
   "fast": 200
 };
 
-const pressableBoxVariants = tailwindVariants.tv(
-  {
-    extend: interactiveBoxVariants,
-    base: "overflow-hidden",
-    variants: {
-      variant: {
-        contained: [
-          "rounded-sm",
-          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "shadow-s bg-interactive-contained-pressable",
-          "hover:bg-interactive-contained-hover",
-          "focus:bg-interactive-contained-focus",
-          "active:bg-interactive-contained-active",
-          "disabled:bg-interactive-contained-disabled disabled:shadow-none",
-          "focus-visible:outline-border-muted"
-        ].join(" "),
-        outlined: [
-          "border bg-highlight",
-          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "border-interactive-outlined-pressable",
-          "hover:border-interactive-outlined-hover",
-          "focus:border-interactive-outlined-focus",
-          "active:border-interactive-outlined-active",
-          "disabled:border-interactive-outlined-disabled",
-          "focus-visible:outline-interactive-outlined-outline-focus"
-        ].join(" "),
-        ghost: [
-          "border border-transparent",
-          "hover:border hover:border-interactive-outlined-hover",
-          "focus:border focus:border-interactive-outlined-focus",
-          "active:border active:border-interactive-outlined-active",
-          "disabled:border-interactive-outlined-disabled",
-          "focus-visible:outline-interactive-outlined-outline-focus"
-        ].join(" ")
-      },
-      forceStyle: {
-        hover: "",
-        focus: "",
-        press: "scale-[0.975]"
-      }
-    },
-    compoundVariants: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? [
-      /* contained */
-      {
-        variant: "contained",
-        forceStyle: void 0,
-        ghost: false,
-        className: "shadow-s bg-interactive-contained-pressable"
-      },
-      {
-        variant: "contained",
-        forceStyle: "hover",
-        className: "shadow-s bg-interactive-contained-hover"
-      },
-      {
-        variant: "contained",
-        forceStyle: "focus",
-        className: "shadow-s bg-interactive-contained-focus"
-      },
-      {
-        variant: "contained",
-        forceStyle: "press",
-        className: "shadow-s bg-interactive-contained-active"
-      },
-      /* outlined */
-      {
-        variant: "outlined",
-        forceStyle: void 0,
-        ghost: false,
-        className: "border-interactive-outlined-pressable"
-      },
-      {
-        variant: "outlined",
-        forceStyle: "hover",
-        className: "border-interactive-outlined-hover"
-      },
-      {
-        variant: "outlined",
-        forceStyle: "focus",
-        className: "border-interactive-outlined-focus"
-      },
-      {
-        variant: "outlined",
-        forceStyle: "press",
-        className: "border-interactive-outlined-active"
-      },
-      /* ghost */
-      {
-        variant: "ghost",
-        forceStyle: void 0,
-        className: "border-transparent"
-      },
-      {
-        variant: "ghost",
-        forceStyle: "hover",
-        className: "border-interactive-outlined-hover"
-      },
-      {
-        variant: "ghost",
-        forceStyle: "focus",
-        className: "border-interactive-outlined-focus"
-      },
-      {
-        variant: "ghost",
-        forceStyle: "press",
-        className: "border-interactive-outlined-active"
-      }
-    ] : void 0,
-    defaultVariants: {
-      variant: "contained"
-    }
-  },
-  { twMerge: false }
-);
-const PressableBox = react.forwardRef(
-  ({ className, variant, forceStyle, accent, ...props }, ref) => {
-    return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(
-      InteractiveBox,
-      {
-        ref,
-        withFocusVisibleOutline: true,
-        role: "button",
-        className: pressableBoxVariants({
-          variant,
-          className,
-          forceStyle
-        }),
-        ...props
-      }
-    ) });
-  }
-);
-
 const useColorVariable = nativewind.useUnstableNativeVariable;
 function useColorToken(className) {
   const token = className.split(/\s+/).find((part) => part.startsWith("text-"))?.slice("text-".length);
@@ -1046,6 +915,137 @@ function IndeterminateCircularProgress({
     }
   );
 }
+
+const pressableBoxVariants = tailwindVariants.tv(
+  {
+    extend: interactiveBoxVariants,
+    base: "overflow-hidden",
+    variants: {
+      variant: {
+        contained: [
+          "rounded-sm",
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "shadow-s bg-interactive-contained-pressable",
+          "hover:bg-interactive-contained-hover",
+          "focus:bg-interactive-contained-focus",
+          "active:bg-interactive-contained-active",
+          "disabled:bg-interactive-contained-disabled disabled:shadow-none",
+          "focus-visible:outline-border-muted"
+        ].join(" "),
+        outlined: [
+          "border bg-highlight",
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "border-interactive-outlined-pressable",
+          "hover:border-interactive-outlined-hover",
+          "focus:border-interactive-outlined-focus",
+          "active:border-interactive-outlined-active",
+          "disabled:border-interactive-outlined-disabled",
+          "focus-visible:outline-interactive-outlined-outline-focus"
+        ].join(" "),
+        ghost: [
+          "border border-transparent",
+          "hover:border hover:border-interactive-outlined-hover",
+          "focus:border focus:border-interactive-outlined-focus",
+          "active:border active:border-interactive-outlined-active",
+          "disabled:border-interactive-outlined-disabled",
+          "focus-visible:outline-interactive-outlined-outline-focus"
+        ].join(" ")
+      },
+      forceStyle: {
+        hover: "",
+        focus: "",
+        press: "scale-[0.975]"
+      }
+    },
+    compoundVariants: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? [
+      /* contained */
+      {
+        variant: "contained",
+        forceStyle: void 0,
+        ghost: false,
+        className: "shadow-s bg-interactive-contained-pressable"
+      },
+      {
+        variant: "contained",
+        forceStyle: "hover",
+        className: "shadow-s bg-interactive-contained-hover"
+      },
+      {
+        variant: "contained",
+        forceStyle: "focus",
+        className: "shadow-s bg-interactive-contained-focus"
+      },
+      {
+        variant: "contained",
+        forceStyle: "press",
+        className: "shadow-s bg-interactive-contained-active"
+      },
+      /* outlined */
+      {
+        variant: "outlined",
+        forceStyle: void 0,
+        ghost: false,
+        className: "border-interactive-outlined-pressable"
+      },
+      {
+        variant: "outlined",
+        forceStyle: "hover",
+        className: "border-interactive-outlined-hover"
+      },
+      {
+        variant: "outlined",
+        forceStyle: "focus",
+        className: "border-interactive-outlined-focus"
+      },
+      {
+        variant: "outlined",
+        forceStyle: "press",
+        className: "border-interactive-outlined-active"
+      },
+      /* ghost */
+      {
+        variant: "ghost",
+        forceStyle: void 0,
+        className: "border-transparent"
+      },
+      {
+        variant: "ghost",
+        forceStyle: "hover",
+        className: "border-interactive-outlined-hover"
+      },
+      {
+        variant: "ghost",
+        forceStyle: "focus",
+        className: "border-interactive-outlined-focus"
+      },
+      {
+        variant: "ghost",
+        forceStyle: "press",
+        className: "border-interactive-outlined-active"
+      }
+    ] : void 0,
+    defaultVariants: {
+      variant: "contained"
+    }
+  },
+  { twMerge: false }
+);
+const PressableBox = react.forwardRef(
+  ({ className, variant, forceStyle, accent, ...props }, ref) => {
+    return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(
+      InteractiveBox,
+      {
+        ref,
+        withFocusVisibleOutline: true,
+        role: "button",
+        className: pressableBoxVariants({
+          variant,
+          className,
+          forceStyle
+        }),
+        ...props
+      }
+    ) });
+  }
+);
 
 const buttonHeight = {
   sm: 38,
@@ -1810,22 +1810,27 @@ function Switch({ accent, ...rest }) {
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(SwitchInner, { ...rest }) });
 }
 
-function useControllableValue(controlled, defaultValue, onValueChange) {
-  const [internal, setInternal] = react.useState(defaultValue);
-  const value = controlled ?? internal;
+function useControllableValue({
+  value: controlledValue,
+  defaultValue,
+  onValueChange
+}) {
+  const [internalValue, setInternalValue] = react.useState(defaultValue);
+  const value = controlledValue ?? internalValue;
   const setValue = react.useCallback(
     (next) => {
-      if (controlled === void 0) {
-        setInternal(next);
+      if (controlledValue === void 0) {
+        setInternalValue(next);
       }
       if (next !== value) {
         onValueChange?.(next);
       }
     },
-    [controlled, onValueChange, value]
+    [controlledValue, onValueChange, value]
   );
   return [value, setValue];
 }
+
 const selectTriggerBaseClassName = [
   "flex-row items-center justify-between gap-xs",
   "rounded-md border px-m py-xs min-h-[44px]",
@@ -1948,11 +1953,11 @@ function SelectInner({
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledby
 }) {
-  const [current, setValue] = useControllableValue(
+  const [current, setValue] = useControllableValue({
     value,
     defaultValue,
     onValueChange
-  );
+  });
   const [open, setOpen] = react.useState(false);
   const { height: windowHeight } = reactNative.useWindowDimensions();
   const selected = options.find((option) => option.value === current);
@@ -2028,20 +2033,45 @@ function Select({ accent, ...rest }) {
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(SelectInner, { ...rest }) });
 }
 
-const RadioContext = react.createContext(void 0);
-const RadioContextProvider = RadioContext.Provider;
-function useRadioContext() {
-  const context = react.useContext(RadioContext);
-  if (!context) {
-    throw new Error(
-      "Radio and RadioButton must be rendered inside a RadioGroup or RadioButtonGroup."
-    );
-  }
-  return context;
+function createSelectionContext(missingProviderMessage) {
+  const Context = react.createContext(void 0);
+  return {
+    SelectionContextProvider: Context.Provider,
+    useSelection: () => {
+      const context = react.useContext(Context);
+      if (!context) {
+        throw new Error(missingProviderMessage);
+      }
+      return context;
+    }
+  };
+}
+function useSelectionValue({
+  value: controlledValue,
+  defaultValue,
+  onValueChange,
+  disabled
+}) {
+  const [value, onSelect] = useControllableValue({
+    value: controlledValue,
+    defaultValue,
+    onValueChange
+  });
+  return react.useMemo(
+    () => ({ value, onSelect, disabled }),
+    [value, onSelect, disabled]
+  );
 }
 
+const {
+  SelectionContextProvider: RadioContextProvider,
+  useSelection: useRadioContext
+} = createSelectionContext(
+  "Radio and RadioButton must be rendered inside a RadioGroup or RadioButtonGroup."
+);
+
 function RadioGroup({
-  value: controlledValue,
+  value,
   defaultValue,
   onValueChange,
   accent,
@@ -2049,15 +2079,12 @@ function RadioGroup({
   children,
   ...props
 }) {
-  const [value, onSelect] = useControllableValue(
-    controlledValue,
+  const context = useSelectionValue({
+    value,
     defaultValue,
-    onValueChange
-  );
-  const context = react.useMemo(
-    () => ({ value, onSelect, disabled }),
-    [value, onSelect, disabled]
-  );
+    onValueChange,
+    disabled
+  });
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(View, { role: "radiogroup", ...props, children }) }) });
 }
 
@@ -2129,8 +2156,23 @@ function Radio({ value, label, disabled }) {
   );
 }
 
+function SegmentedBar({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    Surface,
+    {
+      variant: "lowered",
+      size: "sm",
+      className: `flex-row items-stretch self-start gap-xxs px-xs py-0 min-h-[44px] ${className ?? ""}`,
+      ...props
+    }
+  );
+}
+
 function RadioButtonGroup({
-  value: controlledValue,
+  value,
   defaultValue,
   onValueChange,
   accent,
@@ -2138,26 +2180,13 @@ function RadioButtonGroup({
   children,
   ...props
 }) {
-  const [value, onSelect] = useControllableValue(
-    controlledValue,
+  const context = useSelectionValue({
+    value,
     defaultValue,
-    onValueChange
-  );
-  const context = react.useMemo(
-    () => ({ value, onSelect, disabled }),
-    [value, onSelect, disabled]
-  );
-  return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(
-    Surface,
-    {
-      variant: "lowered",
-      role: "radiogroup",
-      size: "sm",
-      className: "flex-row items-stretch self-start gap-xxs px-xs py-0 min-h-[44px]",
-      ...props,
-      children
-    }
-  ) }) });
+    onValueChange,
+    disabled
+  });
+  return /* @__PURE__ */ jsxRuntime.jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(SegmentedBar, { role: "radiogroup", accent, ...props, children }) });
 }
 
 const chipVariants = tailwindVariants.tv({
@@ -2174,7 +2203,7 @@ const chipVariants = tailwindVariants.tv({
   }
 });
 const segmentVariants = tailwindVariants.tv({
-  base: "relative flex-center min-h-[32px] rounded-xs border border-transparent px-m transition-[border-color] duration-fast ease-in",
+  base: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent px-m transition-[border-color] duration-fast ease-in",
   variants: {
     selected: { true: "", false: "" },
     disabled: { true: "", false: "" }
@@ -2187,8 +2216,8 @@ const segmentVariants = tailwindVariants.tv({
     }
   ]
 });
-const labelVariants = tailwindVariants.tv({
-  base: "z-1 select-none font-body-bold text-base text-center transition-[color] duration-fast ease-in",
+const foregroundVariants = tailwindVariants.tv({
+  base: "z-1 transition-[color] duration-fast ease-in",
   variants: {
     selected: {
       true: "text-on-accent",
@@ -2207,6 +2236,49 @@ const labelVariants = tailwindVariants.tv({
     }
   ]
 });
+const labelVariants = tailwindVariants.tv({
+  extend: foregroundVariants,
+  base: "select-none font-body-bold text-base text-center"
+});
+function SegmentedItem({
+  label,
+  icon,
+  selected,
+  disabled,
+  ...props
+}) {
+  const isDisabled = disabled === true;
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    InteractiveBox,
+    {
+      withFocusVisibleOutline: true,
+      "aria-label": label,
+      disabled,
+      className: "group flex-center min-h-[44px] rounded-xs focus-visible:outline-interactive-outlined-outline-focus",
+      ...props,
+      children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: segmentVariants({ selected, disabled: isDisabled }), children: [
+        /* @__PURE__ */ jsxRuntime.jsx(View, { className: chipVariants({ selected, disabled: isDisabled }) }),
+        icon ? /* @__PURE__ */ jsxRuntime.jsx(
+          Icon,
+          {
+            icon,
+            size: 20,
+            className: foregroundVariants({ selected, disabled: isDisabled })
+          }
+        ) : null,
+        /* @__PURE__ */ jsxRuntime.jsx(
+          Text,
+          {
+            numberOfLines: 1,
+            className: labelVariants({ selected, disabled: isDisabled }),
+            children: label
+          }
+        )
+      ] })
+    }
+  );
+}
+
 function RadioButton({
   value,
   label,
@@ -2220,29 +2292,130 @@ function RadioButton({
   const selected = selectedValue === value;
   const isDisabled = disabled === true || groupDisabled === true;
   return /* @__PURE__ */ jsxRuntime.jsx(
-    InteractiveBox,
+    SegmentedItem,
     {
-      withFocusVisibleOutline: true,
       role: "radio",
       "aria-checked": selected,
       "aria-disabled": isDisabled,
-      "aria-label": label,
+      label,
+      selected,
       disabled: isDisabled,
-      className: "group flex-center min-h-[44px] rounded-xs focus-visible:outline-interactive-outlined-outline-focus",
       onPress: () => {
         onSelect(value);
-      },
-      children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: segmentVariants({ selected, disabled: isDisabled }), children: [
-        /* @__PURE__ */ jsxRuntime.jsx(View, { className: chipVariants({ selected, disabled: isDisabled }) }),
-        /* @__PURE__ */ jsxRuntime.jsx(
-          Text,
-          {
-            numberOfLines: 1,
-            className: labelVariants({ selected, disabled: isDisabled }),
-            children: label
-          }
-        )
-      ] })
+      }
+    }
+  );
+}
+
+const {
+  SelectionContextProvider: NavBarContextProvider,
+  useSelection: useNavBarContext
+} = createSelectionContext("NavBarItem must be rendered inside a NavBar.");
+
+function NavBar({
+  value,
+  defaultValue,
+  onValueChange,
+  accent,
+  disabled,
+  children,
+  ...props
+}) {
+  const context = useSelectionValue({
+    value,
+    defaultValue,
+    onValueChange,
+    disabled
+  });
+  return /* @__PURE__ */ jsxRuntime.jsx(NavBarContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(SegmentedBar, { role: "navigation", accent, ...props, children }) });
+}
+
+function NavBarItem({
+  href,
+  label,
+  icon,
+  disabled,
+  onPress
+}) {
+  const {
+    value: currentValue,
+    onSelect,
+    disabled: navBarDisabled
+  } = useNavBarContext();
+  const selected = href !== void 0 && currentValue === href;
+  const isDisabled = disabled === true || navBarDisabled === true;
+  const selectHref = href === void 0 ? void 0 : (event) => {
+    event.preventDefault();
+    onSelect(href);
+  };
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    SegmentedItem,
+    {
+      role: "link",
+      href: isDisabled ? void 0 : href,
+      "aria-current": selected ? "page" : void 0,
+      "aria-disabled": isDisabled,
+      label,
+      icon,
+      selected,
+      disabled: isDisabled,
+      onPress: onPress ?? selectHref
+    }
+  );
+}
+
+const {
+  SelectionContextProvider: TabsContextProvider,
+  useSelection: useTabsContext
+} = createSelectionContext("Tab must be rendered inside Tabs.");
+
+function Tabs({
+  value,
+  defaultValue,
+  onValueChange,
+  accent,
+  disabled,
+  children,
+  ...props
+}) {
+  const context = useSelectionValue({
+    value,
+    defaultValue,
+    onValueChange,
+    disabled
+  });
+  return /* @__PURE__ */ jsxRuntime.jsx(TabsContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(SegmentedBar, { role: "tablist", accent, ...props, children }) });
+}
+
+function Tab({
+  value,
+  label,
+  icon,
+  disabled,
+  onPress,
+  ...props
+}) {
+  const {
+    value: currentValue,
+    onSelect,
+    disabled: tabsDisabled
+  } = useTabsContext();
+  const selected = currentValue === value;
+  const isDisabled = disabled === true || tabsDisabled === true;
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    SegmentedItem,
+    {
+      role: "tab",
+      "aria-selected": selected,
+      "aria-disabled": isDisabled,
+      label,
+      icon,
+      selected,
+      disabled: isDisabled,
+      onPress: onPress ?? (() => {
+        onSelect(value);
+      }),
+      ...props
     }
   );
 }
@@ -2850,6 +3023,8 @@ exports.InternalLinkButton = InternalLinkButton;
 exports.LinearProgress = LinearProgress;
 exports.Message = Message;
 exports.Modal = Modal;
+exports.NavBar = NavBar;
+exports.NavBarItem = NavBarItem;
 exports.Paragraph = Paragraph;
 exports.PresenceList = PresenceList;
 exports.PresenceOne = PresenceOne;
@@ -2879,6 +3054,8 @@ exports.Surface = Surface;
 exports.Switch = Switch;
 exports.SwitchBreakpointsUsingDisplayNone = SwitchBreakpointsUsingDisplayNone;
 exports.SwitchBreakpointsUsingNull = SwitchBreakpointsUsingNull;
+exports.Tab = Tab;
+exports.Tabs = Tabs;
 exports.Text = Text;
 exports.TextArea = TextArea;
 exports.VStack = VStack;
