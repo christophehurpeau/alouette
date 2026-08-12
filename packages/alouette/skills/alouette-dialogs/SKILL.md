@@ -10,7 +10,7 @@ description: >
   SuccessAlertDialog. Load when adding a modal, confirmation, or alert dialog.
 type: core
 library: alouette
-library_version: "21.0.0"
+library_version: "22.0.0"
 requires:
   - alouette-theming
   - alouette-actions

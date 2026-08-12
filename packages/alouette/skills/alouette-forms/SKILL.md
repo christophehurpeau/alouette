@@ -16,7 +16,7 @@ description: >
   validated form, or an edit-in-a-modal row.
 type: core
 library: alouette
-library_version: "21.0.0"
+library_version: "22.0.0"
 requires:
   - alouette-theming
   - alouette-actions

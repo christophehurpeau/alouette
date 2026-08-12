@@ -12,15 +12,15 @@ description: >
   Load when adding buttons or custom pressable elements.
 type: core
 library: alouette
-library_version: "21.0.0"
+library_version: "22.0.0"
 requires:
   - alouette-theming
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Button.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/ActionButton.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/IconButton.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/PressableBox.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/PressableListItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/PressableBox.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/PressableListItem.tsx"
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -173,7 +173,7 @@ Correct:
 `variant` is only `"contained" | "outlined" | "ghost"`; the accent is chosen via
 the `accent` prop. (`ghost` is a variant value, not a separate boolean prop.)
 
-Source: packages/alouette/src/ui/data/PressableBox.tsx, ui/actions/Button.tsx
+Source: packages/alouette/src/ui/actions/PressableBox.tsx, ui/actions/Button.tsx
 
 ### MEDIUM IconButton without aria-label
 

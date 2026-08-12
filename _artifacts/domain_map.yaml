@@ -7,7 +7,7 @@
 
 library:
   name: 'alouette'
-  version: '21.0.0'
+  version: '22.0.0'
   repository: 'https://github.com/christophehurpeau/alouette'
   description: 'Multi-platform (web + React Native iOS/Android) React design system built on NativeWind v5 and Tailwind CSS v4, styled entirely via className with semantic theme tokens and CSS-driven animations.'
   primary_framework: 'React / React Native'
@@ -386,7 +386,7 @@ skills:
           <Button variant="ghost-contained" text="Cancel" />
         correct_pattern: |
           <Button variant="outlined" ghost text="Cancel" />
-        source: 'packages/alouette/src/ui/data/PressableBox.tsx, ui/actions/Button.tsx'
+        source: 'packages/alouette/src/ui/actions/PressableBox.tsx, ui/actions/Button.tsx'
         priority: 'HIGH'
         status: 'active'
       - mistake: 'IconButton without aria-label'
@@ -564,7 +564,7 @@ skills:
           <Badge onPress={select}>Filter</Badge>
         correct_pattern: |
           <PressableBox onPress={select}><Badge>Filter</Badge></PressableBox>
-        source: 'packages/alouette/src/ui/data/Badge.tsx; ui/data/PressableBox.tsx'
+        source: 'packages/alouette/src/ui/data/Badge.tsx; ui/actions/PressableBox.tsx'
         priority: 'LOW'
         status: 'active'
   # ---------------------------------------------------------------------------

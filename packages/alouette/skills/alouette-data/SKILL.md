@@ -12,7 +12,7 @@ description: >
   affordance.
 type: core
 library: alouette
-library_version: "21.0.0"
+library_version: "22.0.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -225,7 +225,7 @@ Source: packages/alouette/src/ui/data/Badge.tsx
 states. For a tappable chip, wrap it (or build the chip) with `PressableBox`
 from alouette-actions, which wires the hover/focus/press/disabled states.
 
-Source: packages/alouette/src/ui/data/Badge.tsx; ui/data/PressableBox.tsx
+Source: packages/alouette/src/ui/data/Badge.tsx; ui/actions/PressableBox.tsx
 
 ### HIGH Hand-rolling the label + value + pencil row
 

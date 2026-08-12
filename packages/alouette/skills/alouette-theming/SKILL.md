@@ -11,7 +11,7 @@ description: >
   when shipping a custom palette.
 type: core
 library: alouette
-library_version: "21.0.0"
+library_version: "22.0.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx"
