@@ -24,6 +24,8 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SelectionContext.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedBar.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tabs.stories.tsx"
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.

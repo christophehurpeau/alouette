@@ -20,6 +20,7 @@ import { AsteriskSimpleRegularIcon } from 'alouette-icons/phosphor-icons/Asteris
 import { useForm, FormProvider, useFormContext, Controller, useFieldArray } from 'react-hook-form';
 import { PlusRegularIcon } from 'alouette-icons/phosphor-icons/PlusRegularIcon';
 import { TrashRegularIcon } from 'alouette-icons/phosphor-icons/TrashRegularIcon';
+import { PencilSimpleRegularIcon } from 'alouette-icons/phosphor-icons/PencilSimpleRegularIcon';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
 import * as WebBrowser from 'expo-web-browser';
 import { WebBrowserPresentationStyle } from 'expo-web-browser';
@@ -1642,12 +1643,12 @@ function ActionButton({
   ...buttonProps
 }) {
   const { buttonState, error, handlePress } = usePressAsync(onPress);
-  return /* @__PURE__ */ jsxs(VStack, { children: [
+  return /* @__PURE__ */ jsxs(VStack, { className: "shrink", children: [
     /* @__PURE__ */ jsx(Button, { ...buttonProps, state: buttonState, onPress: handlePress }),
     /* @__PURE__ */ jsx(
       View,
       {
-        className: `overflow-hidden transition-[height,opacity] duration-collapse p-sm ${error ? "h-auto opacity-100" : "h-0 opacity-0"}`,
+        className: `overflow-hidden transition-[height,opacity] duration-collapse p-sm ${error ? "h-auto opacity-100" : "absolute h-0 opacity-0"}`,
         children: /* @__PURE__ */ jsx(ErrorMessage, { size: "sm", children: errorToMessage(error) })
       }
     )
@@ -2668,6 +2669,128 @@ function SimpleVForm({
   );
 }
 
+function EditableItem({
+  label,
+  summary,
+  details,
+  editAriaLabel,
+  editIcon = /* @__PURE__ */ jsx(PencilSimpleRegularIcon, {}),
+  variant,
+  accent,
+  disabled,
+  onEdit,
+  children
+}) {
+  return /* @__PURE__ */ jsxs(VStack, { className: "gap-xs", children: [
+    /* @__PURE__ */ jsxs(HStack, { className: "items-center justify-between gap-sm", children: [
+      /* @__PURE__ */ jsxs(VStack, { className: "shrink", children: [
+        /* @__PURE__ */ jsxs(HStack, { className: "items-center gap-sm", children: [
+          /* @__PURE__ */ jsx(Text, { className: "font-body-bold text-md", children: label }),
+          summary
+        ] }),
+        details ? /* @__PURE__ */ jsx(Text, { className: "text-muted text-sm", children: details }) : null
+      ] }),
+      /* @__PURE__ */ jsx(
+        IconButton,
+        {
+          size: "sm",
+          icon: editIcon,
+          variant,
+          accent,
+          disabled,
+          "aria-label": editAriaLabel,
+          onPress: onEdit
+        }
+      )
+    ] }),
+    children
+  ] });
+}
+
+function FormEditableItem({
+  label,
+  summary,
+  details,
+  editAriaLabel,
+  editIcon,
+  variant,
+  accent,
+  disabled,
+  title,
+  size,
+  closeButtonAriaLabel,
+  cancelLabel,
+  submitLabel,
+  submitErrorToMessage,
+  defaultValues,
+  mode,
+  onSubmit,
+  children
+}) {
+  const [editing, setEditing] = useState(false);
+  function close() {
+    setEditing(false);
+  }
+  const handleSubmit = async (values, event) => {
+    await onSubmit(values, event);
+    setEditing(false);
+  };
+  return /* @__PURE__ */ jsx(
+    EditableItem,
+    {
+      label,
+      summary,
+      details,
+      editAriaLabel,
+      editIcon,
+      variant,
+      accent,
+      disabled,
+      onEdit: () => {
+        setEditing(true);
+      },
+      children: editing ? /* @__PURE__ */ jsx(
+        Form,
+        {
+          defaultValues,
+          mode,
+          render: ({ submit }) => /* @__PURE__ */ jsx(
+            Modal,
+            {
+              visible: true,
+              title: title ?? label,
+              accent,
+              size,
+              closeButtonAriaLabel,
+              footer: /* @__PURE__ */ jsxs(Fragment$1, { children: [
+                /* @__PURE__ */ jsx(
+                  Button,
+                  {
+                    variant: "outlined",
+                    text: cancelLabel,
+                    onPress: close
+                  }
+                ),
+                /* @__PURE__ */ jsx(
+                  FormSubmitButton,
+                  {
+                    label: submitLabel,
+                    errorToMessage: submitErrorToMessage,
+                    onPress: submit
+                  }
+                )
+              ] }),
+              onClose: close,
+              children
+            }
+          ),
+          onSubmit: handleSubmit
+        }
+      ) : null
+    }
+  );
+}
+
 const badgeVariants = tv(
   {
     slots: {
@@ -2970,5 +3093,5 @@ function ExternalLink({
   return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioGroup, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Button, CircularProgress, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioGroup, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme };
 //# sourceMappingURL=index-react-native.es.js.map

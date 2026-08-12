@@ -23,6 +23,7 @@ const AsteriskSimpleRegularIcon = require('alouette-icons/phosphor-icons/Asteris
 const reactHookForm = require('react-hook-form');
 const PlusRegularIcon = require('alouette-icons/phosphor-icons/PlusRegularIcon');
 const TrashRegularIcon = require('alouette-icons/phosphor-icons/TrashRegularIcon');
+const PencilSimpleRegularIcon = require('alouette-icons/phosphor-icons/PencilSimpleRegularIcon');
 const CaretRightRegularIcon = require('alouette-icons/phosphor-icons/CaretRightRegularIcon');
 const WebBrowser = require('expo-web-browser');
 
@@ -1657,12 +1658,12 @@ function ActionButton({
   ...buttonProps
 }) {
   const { buttonState, error, handlePress } = usePressAsync(onPress);
-  return /* @__PURE__ */ jsxRuntime.jsxs(VStack, { children: [
+  return /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: "shrink", children: [
     /* @__PURE__ */ jsxRuntime.jsx(Button, { ...buttonProps, state: buttonState, onPress: handlePress }),
     /* @__PURE__ */ jsxRuntime.jsx(
       View,
       {
-        className: `overflow-hidden transition-[height,opacity] duration-collapse p-sm ${error ? "h-auto opacity-100" : "h-0 opacity-0"}`,
+        className: `overflow-hidden transition-[height,opacity] duration-collapse p-sm ${error ? "h-auto opacity-100" : "absolute h-0 opacity-0"}`,
         children: /* @__PURE__ */ jsxRuntime.jsx(ErrorMessage, { size: "sm", children: errorToMessage(error) })
       }
     )
@@ -2683,6 +2684,128 @@ function SimpleVForm({
   );
 }
 
+function EditableItem({
+  label,
+  summary,
+  details,
+  editAriaLabel,
+  editIcon = /* @__PURE__ */ jsxRuntime.jsx(PencilSimpleRegularIcon.PencilSimpleRegularIcon, {}),
+  variant,
+  accent,
+  disabled,
+  onEdit,
+  children
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: "gap-xs", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "items-center justify-between gap-sm", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: "shrink", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "items-center gap-sm", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "font-body-bold text-md", children: label }),
+          summary
+        ] }),
+        details ? /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "text-muted text-sm", children: details }) : null
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        IconButton,
+        {
+          size: "sm",
+          icon: editIcon,
+          variant,
+          accent,
+          disabled,
+          "aria-label": editAriaLabel,
+          onPress: onEdit
+        }
+      )
+    ] }),
+    children
+  ] });
+}
+
+function FormEditableItem({
+  label,
+  summary,
+  details,
+  editAriaLabel,
+  editIcon,
+  variant,
+  accent,
+  disabled,
+  title,
+  size,
+  closeButtonAriaLabel,
+  cancelLabel,
+  submitLabel,
+  submitErrorToMessage,
+  defaultValues,
+  mode,
+  onSubmit,
+  children
+}) {
+  const [editing, setEditing] = react.useState(false);
+  function close() {
+    setEditing(false);
+  }
+  const handleSubmit = async (values, event) => {
+    await onSubmit(values, event);
+    setEditing(false);
+  };
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    EditableItem,
+    {
+      label,
+      summary,
+      details,
+      editAriaLabel,
+      editIcon,
+      variant,
+      accent,
+      disabled,
+      onEdit: () => {
+        setEditing(true);
+      },
+      children: editing ? /* @__PURE__ */ jsxRuntime.jsx(
+        Form,
+        {
+          defaultValues,
+          mode,
+          render: ({ submit }) => /* @__PURE__ */ jsxRuntime.jsx(
+            Modal,
+            {
+              visible: true,
+              title: title ?? label,
+              accent,
+              size,
+              closeButtonAriaLabel,
+              footer: /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+                /* @__PURE__ */ jsxRuntime.jsx(
+                  Button,
+                  {
+                    variant: "outlined",
+                    text: cancelLabel,
+                    onPress: close
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntime.jsx(
+                  FormSubmitButton,
+                  {
+                    label: submitLabel,
+                    errorToMessage: submitErrorToMessage,
+                    onPress: submit
+                  }
+                )
+              ] }),
+              onClose: close,
+              children
+            }
+          ),
+          onSubmit: handleSubmit
+        }
+      ) : null
+    }
+  );
+}
+
 const badgeVariants = tailwindVariants.tv(
   {
     slots: {
@@ -3000,11 +3123,13 @@ exports.Button = Button;
 exports.CircularProgress = CircularProgress;
 exports.ConfirmationMessage = ConfirmationMessage;
 exports.ConnectionState = ConnectionState;
+exports.EditableItem = EditableItem;
 exports.ErrorMessage = ErrorMessage;
 exports.ExternalLink = ExternalLink;
 exports.ExternalLinkButton = ExternalLinkButton;
 exports.FlatList = FlatList;
 exports.Form = Form;
+exports.FormEditableItem = FormEditableItem;
 exports.FormField = FormField;
 exports.FormFieldArray = FormFieldArray;
 exports.FormItem = FormItem;

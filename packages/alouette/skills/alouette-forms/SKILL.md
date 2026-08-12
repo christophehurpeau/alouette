@@ -8,9 +8,12 @@ description: >
   Validation on react-hook-form: Form owns the instance and exposes submit() via render
   prop (no control passing); FormField wires Controller to FormItem label/error/required;
   FormFieldArray wraps useFieldArray with add/remove; FormSubmitButton drives
-  loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage
-  required (i18n); FormValidationError distinguishes invalid fields from onSubmit failures.
-  Load when building text fields, toggles, radio groups, or a validated form.
+  loading/success/failed; SimpleVForm is the vertical-stack shortcut;
+  FormEditableItem is an EditableItem row whose editor is a modal owning its own
+  Form (mounted per open, so cancel is an unmount — no snapshot/restore).
+  errorToMessage required (i18n); FormValidationError distinguishes invalid fields
+  from onSubmit failures. Load when building text fields, toggles, radio groups, a
+  validated form, or an edit-in-a-modal row.
 type: core
 library: alouette
 library_version: "21.0.0"
@@ -31,9 +34,11 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormFieldArray.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormSubmitButton.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormFieldArray.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableItem.stories.tsx"
 ---
 
 This skill builds on alouette-theming (token model) and alouette-actions (the
@@ -55,12 +60,7 @@ through context.
 ```tsx
 import { InputText } from "alouette";
 
-<InputText
-  mode="email"
-  value={email}
-  onChangeText={setEmail}
-  placeholder="you@example.com"
-/>;
+<InputText mode="email" value={email} onChangeText={setEmail} placeholder="you@example.com" />;
 ```
 
 ### Input modes
@@ -73,29 +73,14 @@ import { InputText } from "alouette";
 <InputText mode="number" value={qty} onChangeText={setQty} />
 ```
 
-### Multiline / TextArea
+### TextArea, Switch, disabled
 
 ```tsx
-import { TextArea } from "alouette";
+<TextArea value={notes} onChangeText={setNotes} placeholder="Notes" />
 
-<TextArea value={notes} onChangeText={setNotes} placeholder="Notes" />;
-```
+<Switch checked={on} onValueChange={setOn} />   {/* controlled */}
+<Switch onValueChange={(v) => log(v)} />        {/* uncontrolled */}
 
-### Switch (controlled or uncontrolled)
-
-```tsx
-import { Switch } from "alouette";
-
-// Controlled
-<Switch checked={on} onValueChange={setOn} />
-
-// Uncontrolled (manages its own state)
-<Switch onValueChange={(v) => log(v)} />
-```
-
-### Disabled
-
-```tsx
 <InputText disabled value={value} />
 <Switch disabled checked={on} />
 ```
@@ -142,26 +127,9 @@ import { RadioButtonGroup, RadioButton } from "alouette";
 </RadioButtonGroup>
 ```
 
-Use `RadioButtonGroup` inside a `FormField` `render` prop to get label/error
-wiring:
-
-```tsx
-<FormField<Values>
-  name="range"
-  label="Date range"
-  required
-  render={({ field, labelId }) => (
-    <RadioButtonGroup
-      value={field.value}
-      onValueChange={field.onChange}
-      aria-labelledby={labelId}
-    >
-      <RadioButton value="day" label="Day" />
-      <RadioButton value="week" label="Week" />
-    </RadioButtonGroup>
-  )}
-/>
-```
+Inside a form, render it from a `FormField` `render` prop for label/error
+wiring — `value={field.value}` + `onValueChange={field.onChange}` +
+`aria-labelledby={labelId}` (no `ref`, it is not focusable text).
 
 ## Validated forms
 
@@ -169,8 +137,7 @@ wiring:
 submit button.
 
 ```tsx
-import { SimpleVForm, FormField, FormValidationError } from "alouette";
-import { InputText } from "alouette";
+import { SimpleVForm, FormField, InputText, FormValidationError } from "alouette";
 
 interface Values { name: string; email: string }
 
@@ -185,23 +152,15 @@ function submitErrorToMessage(error: unknown): string {
   submitErrorToMessage={submitErrorToMessage}
   onSubmit={async (values) => saveToServer(values)}
   render={() => (
-    <>
-      <FormField<Values>
-        name="name"
-        label="Name"
-        required="Name is required."
-        render={({ field, labelId }) => (
-          <InputText
-            ref={field.ref}
-            value={field.value}
-            aria-labelledby={labelId}
-            onChangeText={field.onChange}
-            onBlur={field.onBlur}
-          />
-        )}
-      />
-      {/* more FormFields */}
-    </>
+    <FormField<Values>
+      name="name"
+      label="Name"
+      required="Name is required."
+      render={({ field, labelId }) => (
+        <InputText ref={field.ref} value={field.value} aria-labelledby={labelId}
+          onChangeText={field.onChange} onBlur={field.onBlur} />
+      )}
+    />
   )}
 />;
 ```
@@ -273,19 +232,52 @@ or via `${name}.fieldName` for an object item:
       name={`${name}.value` as `guests.${number}.value`}
       label={label}
       required="Guest name is required."
-      render={({ field, labelId }) => (
-        <InputText ref={field.ref} value={field.value as string}
-          aria-labelledby={labelId} onChangeText={field.onChange} onBlur={field.onBlur} />
-      )}
+      render={...}
     />
   )}
 />
 ```
 
+`render` on the inner `FormField` is an `InputText` wired exactly as above.
+
 The leading `minSize` items are padded in on mount and cannot be removed.
 Each row tints to the danger accent on hover over its remove button via
 `StableAccentScope` (see alouette-theming) — that's built in, not something
 callers wire up themselves.
+
+### Edit-in-a-modal rows with FormEditableItem
+
+`FormEditableItem` is an `EditableItem` row (see alouette-data/SKILL.md) whose
+editor is a modal owning **its own** `Form`. The `Form` is mounted only while
+editing, so it reseeds from `defaultValues` on every open and cancelling is a
+plain unmount — the screen's state is never touched by an abandoned edit.
+
+```tsx
+<FormEditableItem<Values>
+  label="Display name"
+  summary={<Badge accent="brand">{displayName}</Badge>}
+  editAriaLabel="Edit display name"
+  cancelLabel="Cancel"
+  submitLabel="Save"
+  submitErrorToMessage={submitErrorToMessage}
+  defaultValues={{ displayName }}
+  onSubmit={async (values) => saveToServer(values)}
+>
+  {/* the fields — an InputText FormField, wired as above */}
+  <FormField<Values> name="displayName" label="Name" required="A name is required."
+    render={...} />
+</FormEditableItem>
+```
+
+`children` are the fields (the modal body); the Cancel / Save footer is built
+for you. It takes the row props (`label`, `summary`, `details`, `editAriaLabel`,
+`editIcon`, `variant`, `accent`, `disabled` — see alouette-data/SKILL.md) plus
+`Form`'s `defaultValues` / `mode` / `onSubmit`, and the modal's `title`
+(defaults to `label`), `size` and `closeButtonAriaLabel`.
+
+The modal closes only once `onSubmit` resolves: a rejection (or a
+`FormValidationError` from invalid fields) keeps it open with the error on the
+submit button.
 
 ### Submit lifecycle
 
@@ -461,16 +453,7 @@ Wrong:
 <Button text="Add" onPress={() => setFields([...fields, {}])} />
 ```
 
-Correct:
-
-```tsx
-<FormFieldArray<Values>
-  name="guests"
-  label="Guests"
-  emptyValue={{ value: "" }}
-  render={({ name, label }) => <FormField name={`${name}.value`} label={label} ... />}
-/>
-```
+Correct: `FormFieldArray` (see above).
 
 Hand-rolled array state drifts from react-hook-form's own field array (stale
 indices on remove, no stable `key`, no built-in add/remove affordances).
@@ -478,6 +461,31 @@ indices on remove, no stable `key`, no built-in add/remove affordances).
 and add/remove buttons; `render` only supplies each item's own fields.
 
 Source: packages/alouette/src/ui/forms/FormFieldArray.tsx
+
+### HIGH Editing a field of the screen's form inside the modal, then restoring on cancel
+
+Wrong:
+
+```tsx
+const { field } = useController<Values, "diet">({ name: "diet" });
+const [editedFrom, setEditedFrom] = useState(field.value);
+
+<IconButton onPress={() => { setEditedFrom(field.value); setEditing(true); }} … />
+<Modal visible={editing} onClose={() => { field.onChange(editedFrom); setEditing(false); }}>
+  <DietFields />   {/* FormFields of the *screen's* form */}
+</Modal>
+```
+
+Correct: `<FormEditableItem defaultValues={{ diet }} onSubmit={save}>` with
+`<DietFields />` as children (see above).
+
+Binding the modal's fields to the surrounding form mutates shared state on every
+keystroke, which is why the value then has to be snapshotted on open and restored
+on cancel. `FormEditableItem` mounts a **separate** `Form` per open, seeded from
+`defaultValues`: cancel is an unmount, and the row keeps showing the last saved
+value with no restore logic.
+
+Source: packages/alouette/src/ui/forms/FormEditableItem.tsx
 
 ### MEDIUM Confusing RadioGroup with RadioButtonGroup
 

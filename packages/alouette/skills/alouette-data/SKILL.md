@@ -5,16 +5,22 @@ description: >
   categories. accent defaults to brand, size is sm/md, variant is
   solid (tinted) / solid.enabled (filled) / outlined; optional icon takes a
   rendered icon element and is auto-sized. Badge has no className prop and is
-  not pressable. Load when labelling an item with a status, count, tag or
-  category chip.
+  not pressable. EditableItem: a labelled row (bold label + summary node +
+  optional details/children) with a pencil IconButton; it owns no editor and
+  calls onEdit, editAriaLabel is required. Load when labelling an item with a
+  status, count, tag or category chip, or when showing a value with an edit
+  affordance.
 type: core
 library: alouette
 library_version: "21.0.0"
 requires:
   - alouette-theming
+  - alouette-actions
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.stories.tsx"
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -86,6 +92,48 @@ with a wrapper — it takes no `className`.
   <Badge accent="success" size="sm">Paid</Badge>
 </HStack>
 ```
+
+## EditableItem
+
+`EditableItem` is the labelled row that shows a saved value and offers to edit
+it: a bold `label`, a `summary` node beside it, and a pencil `IconButton` on the
+right. It owns **no** editor and no state — it calls `onEdit`.
+
+```tsx
+import { EditableItem, Badge } from "alouette";
+
+<EditableItem
+  label="Display name"
+  summary={<Badge accent="brand">Ada Lovelace</Badge>}
+  editAriaLabel="Edit display name"
+  onEdit={openEditor}
+/>;
+```
+
+`summary` is any node — a `Badge` is only the most compact option; a `Text`
+(sharp, muted or mono) reads better for a plain value, and omitting it leaves
+the label alone. `details` adds muted helper text under the label, and
+`children` render **below** the row for a value too large for `summary`.
+
+```tsx
+<EditableItem
+  label="Biography"
+  details="Shown on your public profile."
+  editAriaLabel="Edit biography"
+  onEdit={openEditor}
+>
+  <Paragraph>Mathematician and writer…</Paragraph>
+</EditableItem>
+```
+
+`editAriaLabel` is required — the button has no visible text. `editIcon`
+defaults to `PencilSimpleRegularIcon`; `variant` (`contained` / `outlined` /
+`ghost`), `accent` and `disabled` are forwarded to the `IconButton`.
+
+For the usual case — the editor is a modal form — use `FormEditableItem` from
+alouette-forms/SKILL.md, which adds the open state, the `Modal` and its own
+`Form`. Reach for `EditableItem` directly only when the editor is not a form
+(navigating to a screen, opening a picker).
 
 ## Common Mistakes
 
@@ -178,6 +226,44 @@ states. For a tappable chip, wrap it (or build the chip) with `PressableBox`
 from alouette-actions, which wires the hover/focus/press/disabled states.
 
 Source: packages/alouette/src/ui/data/Badge.tsx; ui/data/PressableBox.tsx
+
+### HIGH Hand-rolling the label + value + pencil row
+
+Wrong:
+
+```tsx
+<HStack className="items-center justify-between">
+  <HStack className="items-center gap-sm">
+    <Text className="font-body-bold text-md">Display name</Text>
+    <Badge>{name}</Badge>
+  </HStack>
+  <IconButton size="sm" icon={<PencilSimpleRegularIcon />} onPress={openEditor} />
+</HStack>
+```
+
+Correct:
+
+```tsx
+<EditableItem
+  label="Display name"
+  summary={<Badge>{name}</Badge>}
+  editAriaLabel="Edit display name"
+  onEdit={openEditor}
+/>
+```
+
+The hand-rolled row drifts on spacing and usually forgets the edit button's
+`aria-label`, leaving it unnamed for assistive tech. When the editor is a form
+modal, `FormEditableItem` replaces the surrounding state as well.
+
+Source: packages/alouette/src/ui/data/EditableItem.tsx
+
+### MEDIUM Expecting EditableItem to open an editor
+
+`EditableItem` renders no modal and holds no state — `onEdit` is yours to wire.
+Nothing happens on press until you open something from it.
+
+Source: packages/alouette/src/ui/data/EditableItem.tsx; ui/forms/FormEditableItem.tsx
 
 See also: alouette-icons/SKILL.md for importing icon elements;
 alouette-theming/SKILL.md for what each accent resolves to.
