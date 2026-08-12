@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.0.0...alouette@22.1.0) (2026-08-12)
+
+### Features
+
+* editable item
+* **navigation:** add NavBar and Tabs over a shared segmented base
+
 ## [22.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@21.0.0...alouette@22.0.0) (2026-08-11)
 
 ### ⚠ BREAKING CHANGES
