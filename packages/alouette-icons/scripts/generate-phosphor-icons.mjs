@@ -85,6 +85,10 @@ for (const icon of icons) {
   for (const [componentName, filepathInAssets] of [
     [`${icon.pascal_name}RegularIcon`, `regular/${icon.name}`],
     [`${icon.pascal_name}DuotoneIcon`, `duotone/${icon.name}-duotone`],
+    // the fill weight is only generated for the icons listed here
+    ...(["star"].includes(icon.name)
+      ? [[`${icon.pascal_name}FillIcon`, `fill/${icon.name}-fill`]]
+      : []),
   ]) {
     // const mjsContent = `export { ReactComponent as ${componentName} } from "@phosphor-icons/core/assets/${filepathInAssets}.svg";\n`;
     // const dtsContent = `declare const ${componentName}: SVGComponent;\n`;
