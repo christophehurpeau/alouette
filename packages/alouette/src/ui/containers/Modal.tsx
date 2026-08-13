@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
-import { useCurrentMode } from "../../core/ThemeContext";
 import { useScrollEndState } from "../../core/useScrollEndState";
 import { buttonHeight } from "../actions/Button";
 import { IconButton } from "../actions/IconButton";
@@ -17,7 +16,7 @@ import { ScrollView } from "../primitives/ScrollView";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { HStack } from "../stacks/stacks";
-import { StableAccentScope } from "./StableAccentScope";
+import { PortalAccentScope } from "./PortalAccentScope";
 
 // Yoga only knows `relative` and `absolute` — `position: sticky` is a web-only
 // feature and the class compiles away on native. A component that pins an
@@ -144,7 +143,6 @@ export function Modal({
 }: ModalProps): ReactNode {
   const { height: windowHeight } = useWindowDimensions();
   const titleId = useId();
-  const currentMode = useCurrentMode(); // because of the portal we need to reapply the mode
   const iconSize = size === "lg" ? "md" : size;
   const { isScrolledToEnd, scrollViewProps } = useScrollEndState();
   const styles = modalVariants({
@@ -165,7 +163,7 @@ export function Modal({
       animationType="fade"
       onRequestClose={onClose}
     >
-      <StableAccentScope accent={accent} mode={currentMode}>
+      <PortalAccentScope accent={accent}>
         <View className="flex-1 flex-center p-l">
           {/* Backdrop is an absolutely-filled sibling behind the panel, so it
               catches outside clicks without wrapping the panel — clicks inside
@@ -237,7 +235,7 @@ export function Modal({
             </View>
           </View>
         </View>
-      </StableAccentScope>
+      </PortalAccentScope>
     </RNModal>
   );
 }

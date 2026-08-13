@@ -1,0 +1,15 @@
+import type { ReactNode } from "react";
+import type { Accent } from "../../core/AlouetteConfig";
+export interface PortalAccentScopeProps {
+    accent?: Accent;
+    children?: ReactNode;
+}
+/**
+ * Theme scope for content rendered through a portal (Modal). Native has no
+ * portal — `ScopedTheme` pushes the theme's fully merged variables through
+ * context, which crosses the React tree wherever the host renders it — so a
+ * single `StableAccentScope` is enough. The web build re-applies the base mode
+ * first, see `PortalAccentScope.web.tsx`.
+ */
+export declare function PortalAccentScope({ accent, children, }: PortalAccentScopeProps): ReactNode;
+//# sourceMappingURL=PortalAccentScope.d.ts.map

@@ -529,6 +529,15 @@ function StableAccentScope({
   );
 }
 
+function PortalAccentScope({
+  accent,
+  children
+}) {
+  const inheritedTheme = useCurrentTheme();
+  const mode = useCurrentMode();
+  return /* @__PURE__ */ jsx(ScopedTheme, { theme: mode, children: /* @__PURE__ */ jsx(ScopedTheme, { theme: accent ? `${mode}_${accent}` : inheritedTheme, children }) });
+}
+
 function joinClasses(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -1384,7 +1393,6 @@ function Modal({
 }) {
   const { height: windowHeight } = useWindowDimensions();
   const titleId = useId();
-  const currentMode = useCurrentMode();
   const iconSize = size === "lg" ? "md" : size;
   const { isScrolledToEnd, scrollViewProps } = useScrollEndState();
   const styles = modalVariants({
@@ -1401,7 +1409,7 @@ function Modal({
       visible,
       animationType: "fade",
       onRequestClose: onClose,
-      children: /* @__PURE__ */ jsx(StableAccentScope, { accent, mode: currentMode, children: /* @__PURE__ */ jsxs(View, { className: "flex-1 flex-center p-l", children: [
+      children: /* @__PURE__ */ jsx(PortalAccentScope, { accent, children: /* @__PURE__ */ jsxs(View, { className: "flex-1 flex-center p-l", children: [
         /* @__PURE__ */ jsx(
           Pressable,
           {
@@ -3117,5 +3125,5 @@ function ExternalLink({
   );
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioGroup, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioGroup, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets };
 //# sourceMappingURL=index-browser.es.js.map

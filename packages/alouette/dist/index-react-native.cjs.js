@@ -545,6 +545,13 @@ function StableAccentScope({
   );
 }
 
+function PortalAccentScope({
+  accent,
+  children
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(StableAccentScope, { accent, children });
+}
+
 function joinClasses(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -1422,7 +1429,6 @@ function Modal({
 }) {
   const { height: windowHeight } = reactNative.useWindowDimensions();
   const titleId = react.useId();
-  const currentMode = useCurrentMode();
   const iconSize = size === "lg" ? "md" : size;
   const { isScrolledToEnd, scrollViewProps } = useScrollEndState();
   const styles = modalVariants({
@@ -1439,7 +1445,7 @@ function Modal({
       visible,
       animationType: "fade",
       onRequestClose: onClose,
-      children: /* @__PURE__ */ jsxRuntime.jsx(StableAccentScope, { accent, mode: currentMode, children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: "flex-1 flex-center p-l", children: [
+      children: /* @__PURE__ */ jsxRuntime.jsx(PortalAccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: "flex-1 flex-center p-l", children: [
         /* @__PURE__ */ jsxRuntime.jsx(
           reactNative.Pressable,
           {
@@ -3229,6 +3235,7 @@ exports.Modal = Modal;
 exports.NavBar = NavBar;
 exports.NavBarItem = NavBarItem;
 exports.Paragraph = Paragraph;
+exports.PortalAccentScope = PortalAccentScope;
 exports.PresenceList = PresenceList;
 exports.PresenceOne = PresenceOne;
 exports.PressableBox = PressableBox;

@@ -48,6 +48,8 @@ export type { AccentScopeProps } from "./ui/containers/AccentScope";
 export { AccentScope } from "./ui/containers/AccentScope";
 export type { StableAccentScopeProps } from "./ui/containers/StableAccentScope";
 export { StableAccentScope } from "./ui/containers/StableAccentScope";
+export type { PortalAccentScopeProps } from "./ui/containers/PortalAccentScope";
+export { PortalAccentScope } from "./ui/containers/PortalAccentScope";
 export type {
   PresenceListProps,
   PresenceOneProps,
