@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.1.0...alouette@22.2.0) (2026-08-13)
+
+### Features
+
+* add scrollbar styling and improve Modal component with header icon support
+* enhance Modal component with support for sticky positioning on web
+* export ThemeVariablesMap type from NativeThemeVariablesContext
+* remove outdated design principles and add styling conventions documentation
+
 ## [22.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.0.0...alouette@22.1.0) (2026-08-12)
 
 ### Features
