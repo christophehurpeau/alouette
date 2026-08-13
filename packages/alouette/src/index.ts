@@ -1,3 +1,4 @@
+export type { ThemeVariablesMap } from "./core/NativeThemeVariablesContext";
 export { AlouetteDecorator } from "./core/AlouetteDecorator";
 export type { AlouetteProviderProps } from "./core/AlouetteProvider";
 export { AlouetteProvider } from "./core/AlouetteProvider";
