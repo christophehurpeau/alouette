@@ -59,6 +59,19 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+
+    mode: {
+      description: "Light or dark theme mode.",
+      toolbar: {
+        title: "Mode",
+        icon: "sun",
+        items: [
+          { value: "light", title: "Light" },
+          { value: "dark", title: "Dark" },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   initialGlobals: {
     colorFormat: "srgb",

@@ -2,27 +2,129 @@ import { type ReactNode } from "react";
 import { type VariantProps } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { type SVGIconElement } from "../primitives/Icon";
-declare const panelVariants: import("tailwind-variants").TVReturnType<{
+declare const modalVariants: import("tailwind-variants").TVReturnType<{
     size: {
-        sm: string;
-        md: string;
-        lg: string;
+        sm: {
+            panel: string;
+            inset: string;
+            header: string;
+            scrollContent: string;
+            footer: string;
+        };
+        md: {
+            panel: string;
+            inset: string;
+            header: string;
+            scrollContent: string;
+            footer: string;
+        };
+        lg: {
+            panel: string;
+            inset: string;
+            header: string;
+            scrollContent: string;
+            footer: string;
+        };
     };
-}, undefined, "w-full max-h-full", {
+    withFooter: {
+        true: {
+            scrollContent: string;
+        };
+    };
+    stuck: {
+        true: {
+            footer: string;
+        };
+    };
+}, {
+    panel: string;
+    inset: string;
+    header: string;
+    scrollContent: string;
+    footer: string;
+}, undefined, {
     size: {
-        sm: string;
-        md: string;
-        lg: string;
+        sm: {
+            panel: string;
+            inset: string;
+            header: string;
+            scrollContent: string;
+            footer: string;
+        };
+        md: {
+            panel: string;
+            inset: string;
+            header: string;
+            scrollContent: string;
+            footer: string;
+        };
+        lg: {
+            panel: string;
+            inset: string;
+            header: string;
+            scrollContent: string;
+            footer: string;
+        };
     };
-}, undefined, import("tailwind-variants").TVReturnType<{
+    withFooter: {
+        true: {
+            scrollContent: string;
+        };
+    };
+    stuck: {
+        true: {
+            footer: string;
+        };
+    };
+}, {
+    panel: string;
+    inset: string;
+    header: string;
+    scrollContent: string;
+    footer: string;
+}, import("tailwind-variants").TVReturnType<{
     size: {
-        sm: string;
-        md: string;
-        lg: string;
+        sm: {
+            panel: string;
+            inset: string;
+            header: string;
+            scrollContent: string;
+            footer: string;
+        };
+        md: {
+            panel: string;
+            inset: string;
+            header: string;
+            scrollContent: string;
+            footer: string;
+        };
+        lg: {
+            panel: string;
+            inset: string;
+            header: string;
+            scrollContent: string;
+            footer: string;
+        };
     };
-}, undefined, "w-full max-h-full", unknown, unknown, undefined>>;
-type PanelVariantProps = VariantProps<typeof panelVariants>;
-interface ModalBaseProps {
+    withFooter: {
+        true: {
+            scrollContent: string;
+        };
+    };
+    stuck: {
+        true: {
+            footer: string;
+        };
+    };
+}, {
+    panel: string;
+    inset: string;
+    header: string;
+    scrollContent: string;
+    footer: string;
+}, undefined, unknown, unknown, undefined>>;
+type ModalVariantProps = VariantProps<typeof modalVariants>;
+export interface ModalProps {
     /** Whether the modal is shown. */
     visible: boolean;
     /**
@@ -31,12 +133,17 @@ interface ModalBaseProps {
      */
     onClose: () => void;
     children: ReactNode;
+    /**
+     * Heading rendered in the fixed header; also labels the dialog for assistive
+     * tech.
+     */
+    title: string;
     /** Accent-tinted icon rendered before the title in the header. */
     icon?: SVGIconElement;
     /** Actions row rendered below the body (e.g. Cancel/Confirm buttons). */
     footer?: ReactNode;
     accent?: Accent;
-    size?: PanelVariantProps["size"];
+    size?: ModalVariantProps["size"];
     /** Hide the header close button (the modal stays dismissible otherwise). */
     hideCloseButton?: boolean;
     /** Accessible label for the close button. */
@@ -50,17 +157,6 @@ interface ModalBaseProps {
     "aria-describedby"?: string;
     testID?: string;
 }
-interface ModalWithTitleProps extends ModalBaseProps {
-    /** Heading rendered in the header; also labels the dialog for assistive tech. */
-    title: string;
-    "aria-label"?: string;
-}
-interface ModalWithoutTitleProps extends ModalBaseProps {
-    title?: undefined;
-    /** Required when there is no `title`, so the dialog is still labelled. */
-    "aria-label": string;
-}
-export type ModalProps = ModalWithoutTitleProps | ModalWithTitleProps;
-export declare function Modal({ visible, onClose, children, icon, footer, accent, size, title, hideCloseButton, closeButtonAriaLabel, role, "aria-describedby": ariaDescribedby, testID, "aria-label": ariaLabel, }: ModalProps): ReactNode;
+export declare function Modal({ visible, onClose, children, icon, footer, accent, size, title, hideCloseButton, closeButtonAriaLabel, role, "aria-describedby": ariaDescribedby, testID, }: ModalProps): ReactNode;
 export {};
 //# sourceMappingURL=Modal.d.ts.map

@@ -43,7 +43,7 @@ function SafeAreaProvider({ children }) {
 }
 
 const AlouetteDecorator = (storyFn, context) => {
-  const theme = context.globals.backgrounds?.value === "#000000" ? "dark" : "light";
+  const theme = context.globals.mode === "dark" ? "dark" : "light";
   const themeVariables = context.parameters.alouette?.themeVariables;
   if (!themeVariables) {
     throw new Error(
@@ -270,40 +270,37 @@ const SafeAreaBox = forwardRef(
   }
 );
 
-const surfaceVariants = tv(
-  {
-    // overflow-hidden so the multi-layer shadow respects the rounded corners.
-    base: "overflow-hidden transition-background duration-fast",
-    variants: {
-      size: {
-        xxs: "p-xs rounded-xs",
-        xs: "p-sm rounded-xs",
-        sm: "p-m rounded-sm",
-        md: "p-xl rounded-sm",
-        lg: "p-xxl rounded-md"
-      },
-      variant: {
-        surface: "bg-surface",
-        highlight: "bg-highlight",
-        "highlight-accent": "bg-highlight-accent",
-        lowered: "bg-lowered",
-        translucent: "bg-translucent"
-      },
-      shadow: {
-        none: "shadow-none",
-        s: "shadow-s",
-        m: "shadow-m",
-        l: "shadow-l",
-        lowered: "shadow-lowered"
-      }
+const surfaceVariants = tv({
+  // overflow-hidden so the multi-layer shadow respects the rounded corners.
+  base: "overflow-hidden transition-background duration-fast",
+  variants: {
+    size: {
+      xxs: "p-xs rounded-xs",
+      xs: "p-sm rounded-xs",
+      sm: "p-m rounded-sm",
+      md: "p-xl rounded-sm",
+      lg: "p-xxl rounded-md"
     },
-    defaultVariants: {
-      size: "md",
-      variant: "surface"
+    variant: {
+      surface: "bg-surface",
+      highlight: "bg-highlight",
+      "highlight-accent": "bg-highlight-accent",
+      lowered: "bg-lowered",
+      translucent: "bg-translucent"
+    },
+    shadow: {
+      none: "shadow-none",
+      s: "shadow-s",
+      m: "shadow-m",
+      l: "shadow-l",
+      lowered: "shadow-lowered"
     }
   },
-  { twMerge: false }
-);
+  defaultVariants: {
+    size: "md",
+    variant: "surface"
+  }
+});
 const Surface = forwardRef(
   ({ className, size, variant, shadow, accent, ...props }, ref) => {
     const resolvedShadow = shadow ?? (variant === "lowered" ? "lowered" : "s");
@@ -698,6 +695,40 @@ const animationDurationsMs = {
   "fade": 300,
   "fast": 200
 };
+
+const scrollEndToleranceInPx = 1;
+function useScrollEndState() {
+  const [isScrolledToEnd, setIsScrolledToEnd] = useState(true);
+  const viewportHeightRef = useRef(0);
+  const contentHeightRef = useRef(0);
+  const scrollOffsetRef = useRef(0);
+  const updateIsScrolledToEnd = () => {
+    setIsScrolledToEnd(
+      contentHeightRef.current - scrollOffsetRef.current <= viewportHeightRef.current + scrollEndToleranceInPx
+    );
+  };
+  return {
+    isScrolledToEnd,
+    scrollViewProps: {
+      scrollEventThrottle: 16,
+      onLayout: (event) => {
+        viewportHeightRef.current = event.nativeEvent.layout.height;
+        updateIsScrolledToEnd();
+      },
+      onContentSizeChange: (_width, height) => {
+        contentHeightRef.current = height;
+        updateIsScrolledToEnd();
+      },
+      onScroll: (event) => {
+        const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+        scrollOffsetRef.current = contentOffset.y;
+        contentHeightRef.current = contentSize.height;
+        viewportHeightRef.current = layoutMeasurement.height;
+        updateIsScrolledToEnd();
+      }
+    }
+  };
+}
 
 function Icon({
   icon,
@@ -1276,35 +1307,52 @@ function IconButton({
   );
 }
 
-const panelVariants = tv(
-  {
+const modalVariants = tv({
+  slots: {
     // w-full so the panel shrinks on small screens (the backdrop padding keeps a
     // margin); max-w caps it on wide viewports.
-    base: "w-full max-h-full",
-    variants: {
-      size: {
-        sm: "max-w-[360px]",
-        md: "max-w-[520px]",
-        lg: "max-w-[720px]"
+    panel: "w-full max-h-full",
+    inset: "bg-highlight shadow-l",
+    header: "items-center gap-xs",
+    scrollContent: "",
+    // The border is transparent at rest so toggling it can't shift the layout.
+    footer: "items-center justify-end gap-m sticky bottom-0 bg-highlight border-t border-transparent"
+  },
+  variants: {
+    size: {
+      sm: {
+        panel: "max-w-[360px]",
+        inset: "rounded-sm p-xs",
+        header: "pl-xs",
+        scrollContent: "p-xs",
+        footer: "py-xs"
+      },
+      md: {
+        panel: "max-w-[520px]",
+        inset: "rounded-sm p-m",
+        header: "pl-m",
+        scrollContent: "p-m",
+        footer: "py-sm"
+      },
+      lg: {
+        panel: "max-w-[720px]",
+        inset: "rounded-md p-l",
+        header: "pl-l",
+        scrollContent: "p-l",
+        footer: "py-m"
       }
     },
-    defaultVariants: { size: "md" }
-  },
-  { twMerge: false }
-);
-const titleReserveVariants = tv(
-  {
-    variants: {
-      size: {
-        sm: "pr-xxl",
-        md: "pr-xl",
-        lg: "pr-xl"
-      }
+    withFooter: {
+      true: { scrollContent: "pb-0" }
     },
-    defaultVariants: { size: "md" }
+    // Only while the footer overlaps scrolled-past content does it need a rule
+    // separating it from the body; at the end of the scroll it sits in flow.
+    stuck: {
+      true: { footer: "border-border-muted" }
+    }
   },
-  { twMerge: false }
-);
+  defaultVariants: { size: "md" }
+});
 function Modal({
   visible,
   onClose,
@@ -1318,12 +1366,18 @@ function Modal({
   closeButtonAriaLabel = "Close",
   role = "dialog",
   "aria-describedby": ariaDescribedby,
-  testID,
-  "aria-label": ariaLabel
+  testID
 }) {
   const { height: windowHeight } = useWindowDimensions();
   const titleId = useId();
   const currentMode = useCurrentMode();
+  const iconSize = size === "lg" ? "md" : size;
+  const { isScrolledToEnd, scrollViewProps } = useScrollEndState();
+  const styles = modalVariants({
+    size,
+    withFooter: footer !== void 0,
+    stuck: footer !== void 0 && !isScrolledToEnd
+  });
   return /* @__PURE__ */ jsx(
     Modal$1,
     {
@@ -1346,54 +1400,52 @@ function Modal({
           {
             "aria-modal": true,
             role,
-            "aria-label": title === void 0 ? ariaLabel : void 0,
-            "aria-labelledby": title === void 0 ? void 0 : titleId,
+            "aria-labelledby": titleId,
             "aria-describedby": ariaDescribedby,
             testID,
-            className: `relative ${panelVariants({ size })}`,
-            children: /* @__PURE__ */ jsxs(
-              Surface,
-              {
-                variant: "highlight",
-                size,
-                shadow: "l",
-                className: "relative",
-                children: [
-                  hideCloseButton ? null : /* @__PURE__ */ jsx(
-                    IconButton,
-                    {
-                      icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
-                      variant: "ghost",
-                      size: size === "lg" ? "md" : size,
-                      "aria-label": closeButtonAriaLabel,
-                      className: "absolute right-sm top-sm z-10",
-                      onPress: onClose
-                    }
-                  ),
-                  /* @__PURE__ */ jsx(ScrollView, { style: { maxHeight: windowHeight * 0.7 }, children: /* @__PURE__ */ jsxs(VStack, { className: "gap-m", children: [
-                    title === void 0 && icon === void 0 ? null : /* @__PURE__ */ jsxs(
-                      HStack,
+            className: styles.panel(),
+            children: /* @__PURE__ */ jsxs(View, { className: styles.inset(), children: [
+              /* @__PURE__ */ jsxs(
+                HStack,
+                {
+                  className: styles.header(),
+                  style: { minHeight: buttonHeight[iconSize] },
+                  children: [
+                    icon === void 0 ? null : /* @__PURE__ */ jsx(Icon, { icon, size: 24, className: "text-accent" }),
+                    /* @__PURE__ */ jsx(
+                      Text,
                       {
-                        className: `items-center gap-xs ${hideCloseButton ? "" : titleReserveVariants({ size })}`,
-                        children: [
-                          icon === void 0 ? null : /* @__PURE__ */ jsx(Icon, { icon, size: 24, className: "text-accent" }),
-                          title === void 0 ? null : /* @__PURE__ */ jsx(
-                            Text,
-                            {
-                              nativeID: titleId,
-                              className: "shrink font-heading-bold text-xl leading-tight text-sharp",
-                              children: title
-                            }
-                          )
-                        ]
+                        nativeID: titleId,
+                        className: "shrink grow font-heading-bold text-xl leading-tight text-sharp",
+                        children: title
                       }
                     ),
+                    hideCloseButton ? null : /* @__PURE__ */ jsx(
+                      IconButton,
+                      {
+                        icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
+                        variant: "ghost",
+                        size: iconSize,
+                        "aria-label": closeButtonAriaLabel,
+                        onPress: onClose
+                      }
+                    )
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsx(
+                ScrollView,
+                {
+                  style: { maxHeight: windowHeight * 0.7 },
+                  contentContainerClassName: styles.scrollContent(),
+                  ...scrollViewProps,
+                  children: /* @__PURE__ */ jsxs(VStack, { children: [
                     children,
-                    footer === void 0 ? null : /* @__PURE__ */ jsx(HStack, { className: "items-center justify-end gap-m", children: footer })
-                  ] }) })
-                ]
-              }
-            )
+                    footer === void 0 ? null : /* @__PURE__ */ jsx(HStack, { className: styles.footer(), children: footer })
+                  ] })
+                }
+              )
+            ] })
           }
         )
       ] }) })

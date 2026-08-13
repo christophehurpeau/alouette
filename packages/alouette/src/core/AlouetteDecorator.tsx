@@ -7,7 +7,7 @@ import { SafeAreaProvider } from "./SafeAreaProvider";
 // eslint-disable-next-line react/function-component-definition -- not a component
 export const AlouetteDecorator: Decorator = (storyFn, context) => {
   const theme: "dark" | "light" =
-    context.globals.backgrounds?.value === "#000000" ? "dark" : "light";
+    context.globals.mode === "dark" ? "dark" : "light";
 
   // The `colorFormat` toolbar global (web storybook only) previews the wide-gamut
   // palette. It defaults to sRGB so what is reviewed matches what native renders.

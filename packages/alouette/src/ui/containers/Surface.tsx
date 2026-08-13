@@ -5,40 +5,37 @@ import type { Accent } from "../../core/AlouetteConfig";
 import { AccentScope } from "./AccentScope";
 import { Box, type BoxProps } from "./Box";
 
-const surfaceVariants = tv(
-  {
-    // overflow-hidden so the multi-layer shadow respects the rounded corners.
-    base: "overflow-hidden transition-background duration-fast",
-    variants: {
-      size: {
-        xxs: "p-xs rounded-xs",
-        xs: "p-sm rounded-xs",
-        sm: "p-m rounded-sm",
-        md: "p-xl rounded-sm",
-        lg: "p-xxl rounded-md",
-      },
-      variant: {
-        surface: "bg-surface",
-        highlight: "bg-highlight",
-        "highlight-accent": "bg-highlight-accent",
-        lowered: "bg-lowered",
-        translucent: "bg-translucent",
-      },
-      shadow: {
-        none: "shadow-none",
-        s: "shadow-s",
-        m: "shadow-m",
-        l: "shadow-l",
-        lowered: "shadow-lowered",
-      },
+const surfaceVariants = tv({
+  // overflow-hidden so the multi-layer shadow respects the rounded corners.
+  base: "overflow-hidden transition-background duration-fast",
+  variants: {
+    size: {
+      xxs: "p-xs rounded-xs",
+      xs: "p-sm rounded-xs",
+      sm: "p-m rounded-sm",
+      md: "p-xl rounded-sm",
+      lg: "p-xxl rounded-md",
     },
-    defaultVariants: {
-      size: "md",
-      variant: "surface",
+    variant: {
+      surface: "bg-surface",
+      highlight: "bg-highlight",
+      "highlight-accent": "bg-highlight-accent",
+      lowered: "bg-lowered",
+      translucent: "bg-translucent",
+    },
+    shadow: {
+      none: "shadow-none",
+      s: "shadow-s",
+      m: "shadow-m",
+      l: "shadow-l",
+      lowered: "shadow-lowered",
     },
   },
-  { twMerge: false },
-);
+  defaultVariants: {
+    size: "md",
+    variant: "surface",
+  },
+});
 
 type SurfaceVariantProps = VariantProps<typeof surfaceVariants>;
 

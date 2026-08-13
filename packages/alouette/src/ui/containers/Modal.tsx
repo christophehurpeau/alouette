@@ -4,6 +4,8 @@ import { Pressable, Modal as RNModal, useWindowDimensions } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useCurrentMode } from "../../core/ThemeContext";
+import { useScrollEndState } from "../../core/useScrollEndState";
+import { buttonHeight } from "../actions/Button";
 import { IconButton } from "../actions/IconButton";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { ScrollView } from "../primitives/ScrollView";
@@ -11,47 +13,64 @@ import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { HStack, VStack } from "../stacks/stacks";
 import { StableAccentScope } from "./StableAccentScope";
-import { Surface } from "./Surface";
 
-const panelVariants = tv(
-  {
+// The panel padding is split in half so the web scrollbar sits in a balanced
+// gutter: one half stays on the panel (outside the scroll box, between the panel
+// edge and the bar), the other moves into the scroll content container (inside
+// it, between the bar and the content). The header is outside the scroll box, so
+// it carries the inner half itself to stay aligned with the scrolling content;
+// the footer carries the bottom half, which the scroll content drops (pb-0).
+const modalVariants = tv({
+  slots: {
     // w-full so the panel shrinks on small screens (the backdrop padding keeps a
     // margin); max-w caps it on wide viewports.
-    base: "w-full max-h-full",
-    variants: {
-      size: {
-        sm: "max-w-[360px]",
-        md: "max-w-[520px]",
-        lg: "max-w-[720px]",
+    panel: "w-full max-h-full",
+    inset: "bg-highlight shadow-l",
+    header: "items-center gap-xs",
+    scrollContent: "",
+    // The border is transparent at rest so toggling it can't shift the layout.
+    footer:
+      "items-center justify-end gap-m sticky bottom-0 bg-highlight border-t border-transparent",
+  },
+  variants: {
+    size: {
+      sm: {
+        panel: "max-w-[360px]",
+        inset: "rounded-sm p-xs",
+        header: "pl-xs",
+        scrollContent: "p-xs",
+        footer: "py-xs",
+      },
+      md: {
+        panel: "max-w-[520px]",
+        inset: "rounded-sm p-m",
+        header: "pl-m",
+        scrollContent: "p-m",
+        footer: "py-sm",
+      },
+      lg: {
+        panel: "max-w-[720px]",
+        inset: "rounded-md p-l",
+        header: "pl-l",
+        scrollContent: "p-l",
+        footer: "py-m",
       },
     },
-    defaultVariants: { size: "md" },
-  },
-  { twMerge: false },
-);
-
-type PanelVariantProps = VariantProps<typeof panelVariants>;
-
-// The close button is absolutely positioned at a fixed corner inset, so its
-// height no longer dictates the header row height and it hugs the corner
-// regardless of the Surface's size-scaled padding. The title reserves right
-// padding so its text can't run under the button — larger sizes need less
-// because the Surface padding already pushes the text inward.
-const titleReserveVariants = tv(
-  {
-    variants: {
-      size: {
-        sm: "pr-xxl",
-        md: "pr-xl",
-        lg: "pr-xl",
-      },
+    withFooter: {
+      true: { scrollContent: "pb-0" },
     },
-    defaultVariants: { size: "md" },
+    // Only while the footer overlaps scrolled-past content does it need a rule
+    // separating it from the body; at the end of the scroll it sits in flow.
+    stuck: {
+      true: { footer: "border-border-muted" },
+    },
   },
-  { twMerge: false },
-);
+  defaultVariants: { size: "md" },
+});
 
-interface ModalBaseProps {
+type ModalVariantProps = VariantProps<typeof modalVariants>;
+
+export interface ModalProps {
   /** Whether the modal is shown. */
   visible: boolean;
   /**
@@ -60,12 +79,17 @@ interface ModalBaseProps {
    */
   onClose: () => void;
   children: ReactNode;
+  /**
+   * Heading rendered in the fixed header; also labels the dialog for assistive
+   * tech.
+   */
+  title: string;
   /** Accent-tinted icon rendered before the title in the header. */
   icon?: SVGIconElement;
   /** Actions row rendered below the body (e.g. Cancel/Confirm buttons). */
   footer?: ReactNode;
   accent?: Accent;
-  size?: PanelVariantProps["size"];
+  size?: ModalVariantProps["size"];
   /** Hide the header close button (the modal stays dismissible otherwise). */
   hideCloseButton?: boolean;
   /** Accessible label for the close button. */
@@ -79,20 +103,6 @@ interface ModalBaseProps {
   "aria-describedby"?: string;
   testID?: string;
 }
-
-interface ModalWithTitleProps extends ModalBaseProps {
-  /** Heading rendered in the header; also labels the dialog for assistive tech. */
-  title: string;
-  "aria-label"?: string;
-}
-
-interface ModalWithoutTitleProps extends ModalBaseProps {
-  title?: undefined;
-  /** Required when there is no `title`, so the dialog is still labelled. */
-  "aria-label": string;
-}
-
-export type ModalProps = ModalWithoutTitleProps | ModalWithTitleProps;
 
 export function Modal({
   visible,
@@ -108,11 +118,17 @@ export function Modal({
   role = "dialog",
   "aria-describedby": ariaDescribedby,
   testID,
-  "aria-label": ariaLabel,
 }: ModalProps): ReactNode {
   const { height: windowHeight } = useWindowDimensions();
   const titleId = useId();
   const currentMode = useCurrentMode(); // because of the portal we need to reapply the mode
+  const iconSize = size === "lg" ? "md" : size;
+  const { isScrolledToEnd, scrollViewProps } = useScrollEndState();
+  const styles = modalVariants({
+    size,
+    withFooter: footer !== undefined,
+    stuck: footer !== undefined && !isScrolledToEnd,
+  });
 
   return (
     <RNModal
@@ -136,64 +152,55 @@ export function Modal({
           <View
             aria-modal
             role={role}
-            aria-label={title === undefined ? ariaLabel : undefined}
-            aria-labelledby={title === undefined ? undefined : titleId}
+            aria-labelledby={titleId}
             aria-describedby={ariaDescribedby}
             testID={testID}
-            className={`relative ${panelVariants({ size })}`}
+            className={styles.panel()}
           >
-            <Surface
-              variant="highlight"
-              size={size}
-              shadow="l"
-              className="relative"
-            >
-              {hideCloseButton ? null : (
-                <IconButton
-                  icon={<XRegularIcon />}
-                  variant="ghost"
-                  size={size === "lg" ? "md" : size}
-                  aria-label={closeButtonAriaLabel}
-                  className="absolute right-sm top-sm z-10"
-                  onPress={onClose}
-                />
-              )}
+            <View className={styles.inset()}>
+              {/* Header sits outside the scroll box: the title and the close
+                  button stay put while the body scrolls under them. */}
+              <HStack
+                className={styles.header()}
+                style={{ minHeight: buttonHeight[iconSize] }}
+              >
+                {icon === undefined ? null : (
+                  <Icon icon={icon} size={24} className="text-accent" />
+                )}
+                <Text
+                  nativeID={titleId}
+                  className="shrink grow font-heading-bold text-xl leading-tight text-sharp"
+                >
+                  {title}
+                </Text>
+                {hideCloseButton ? null : (
+                  <IconButton
+                    icon={<XRegularIcon />}
+                    variant="ghost"
+                    size={iconSize}
+                    aria-label={closeButtonAriaLabel}
+                    onPress={onClose}
+                  />
+                )}
+              </HStack>
 
               {/* Pixel maxHeight (not a %) so the ScrollView sizes to its
                   content and only scrolls once it exceeds ~70% of the screen.
-                  Header and footer live inside so the whole panel scrolls. */}
-              <ScrollView style={{ maxHeight: windowHeight * 0.7 }}>
-                <VStack className="gap-m">
-                  {title === undefined && icon === undefined ? null : (
-                    <HStack
-                      className={`items-center gap-xs ${
-                        hideCloseButton ? "" : titleReserveVariants({ size })
-                      }`}
-                    >
-                      {icon === undefined ? null : (
-                        <Icon icon={icon} size={24} className="text-accent" />
-                      )}
-                      {title === undefined ? null : (
-                        <Text
-                          nativeID={titleId}
-                          className="shrink font-heading-bold text-xl leading-tight text-sharp"
-                        >
-                          {title}
-                        </Text>
-                      )}
-                    </HStack>
-                  )}
-
+                  The footer lives inside so it follows the body. */}
+              <ScrollView
+                style={{ maxHeight: windowHeight * 0.7 }}
+                contentContainerClassName={styles.scrollContent()}
+                {...scrollViewProps}
+              >
+                <VStack>
                   {children}
 
                   {footer === undefined ? null : (
-                    <HStack className="items-center justify-end gap-m">
-                      {footer}
-                    </HStack>
+                    <HStack className={styles.footer()}>{footer}</HStack>
                   )}
                 </VStack>
               </ScrollView>
-            </Surface>
+            </View>
           </View>
         </View>
       </StableAccentScope>

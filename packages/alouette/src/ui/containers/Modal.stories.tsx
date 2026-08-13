@@ -1,8 +1,10 @@
 import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
 import { type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
 import { Paragraph } from "../primitives/Text";
+import { VStack } from "../stacks/stacks";
 import { Story, accents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Modal, type ModalProps } from "./Modal";
@@ -11,26 +13,17 @@ type ThisStory = StoryObj<typeof Modal>;
 
 // Stateful demo wrapper: a trigger button that opens the modal and manages the
 // open/close state, forwarding the props under test.
+interface ModalDemoProps extends Omit<ModalProps, "onClose" | "visible"> {
+  triggerLabel?: string;
+  onClose?: () => void;
+}
+
 function ModalDemo({
   triggerLabel = "Open modal",
   onClose,
   ...props
-}: Omit<ModalProps, "onClose" | "visible"> & {
-  triggerLabel?: string;
-  onClose?: () => void;
-}): ReactNode {
+}: ModalDemoProps): ReactNode {
   const [visible, setVisible] = useState(false);
-  const merged = {
-    ...props,
-    visible,
-    onClose: () => {
-      setVisible(false);
-      onClose?.();
-    },
-  };
-  // The discriminated union (title vs aria-label) loses its correlation when
-  // spread through JSX; the incoming props are already type-checked.
-  const modalProps = merged as ModalProps;
   return (
     <>
       <Button
@@ -40,7 +33,14 @@ function ModalDemo({
           setVisible(true);
         }}
       />
-      <Modal {...modalProps} />
+      <Modal
+        {...props}
+        visible={visible}
+        onClose={() => {
+          setVisible(false);
+          onClose?.();
+        }}
+      />
     </>
   );
 }
@@ -50,7 +50,7 @@ export default {
   component: Modal,
   parameters: {
     componentSubtitle:
-      "Accessible dialog overlay. Dismissible via backdrop, close button, Escape, or Android back.",
+      "Accessible dialog overlay with a pinned title header. Dismissible via backdrop, close button, Escape, or Android back.",
   },
   argTypes: {
     title: { control: "text" },
@@ -83,65 +83,106 @@ export const PreviewModalStory: ThisStory = {
   ),
 };
 
+type ModalSize = NonNullable<ModalProps["size"]>;
+
+// One trigger per size: the size drives the panel width, the panel/scroll
+// padding, and the header close-button size together.
+interface SizeTriggersProps {
+  render: (size: ModalSize) => ReactNode;
+}
+
+function SizeTriggers({ render }: SizeTriggersProps): ReactNode {
+  return (
+    <VStack className="items-start gap-xs">
+      {render("sm")}
+      {render("md")}
+      {render("lg")}
+    </VStack>
+  );
+}
+
 export const Variants: ThisStory = {
   render: () => (
     <Story>
-      <Story.Section title="Sizes">
-        <StoryGrid.Row flexWrap>
-          {(["sm", "md", "lg"] as const).map((size) => (
-            <StoryGrid.Col key={size} title={size}>
-              <ModalDemo
-                size={size}
-                title={`${size} modal`}
-                triggerLabel={`Open ${size}`}
-              >
-                <Paragraph>
-                  A {size} modal caps its width on wide viewports and shrinks to
-                  fit narrow screens.
-                </Paragraph>
-              </ModalDemo>
-            </StoryGrid.Col>
-          ))}
-        </StoryGrid.Row>
-      </Story.Section>
-
       <Story.Section title="Composition">
         <StoryGrid.Row flexWrap>
-          <StoryGrid.Col title="With footer actions">
-            <ModalDemo
-              title="Save changes?"
-              triggerLabel="Footer"
-              footer={
-                <>
-                  <Button variant="outlined" text="Discard" onPress={fn()} />
-                  <Button text="Save" onPress={fn()} />
-                </>
-              }
-            >
-              <Paragraph>Your changes will be lost if you discard.</Paragraph>
-            </ModalDemo>
+          <StoryGrid.Col title="Title only">
+            <SizeTriggers
+              render={(size) => (
+                <ModalDemo
+                  size={size}
+                  title={`${size} modal`}
+                  triggerLabel={size}
+                >
+                  <Paragraph>
+                    A {size} modal caps its width on wide viewports and shrinks
+                    to fit narrow screens.
+                  </Paragraph>
+                </ModalDemo>
+              )}
+            />
           </StoryGrid.Col>
 
-          <StoryGrid.Col title="No title (aria-label)">
-            <ModalDemo triggerLabel="No title" aria-label="Quick action">
-              <Paragraph>
-                Without a title, an aria-label keeps the dialog labelled for
-                assistive tech.
-              </Paragraph>
-            </ModalDemo>
+          <StoryGrid.Col title="With footer actions">
+            <SizeTriggers
+              render={(size) => (
+                <ModalDemo
+                  size={size}
+                  title="Save changes?"
+                  triggerLabel={size}
+                  footer={
+                    <>
+                      <Button
+                        variant="outlined"
+                        text="Discard"
+                        onPress={fn()}
+                      />
+                      <Button text="Save" onPress={fn()} />
+                    </>
+                  }
+                >
+                  <Paragraph>
+                    Your changes will be lost if you discard.
+                  </Paragraph>
+                </ModalDemo>
+              )}
+            />
+          </StoryGrid.Col>
+
+          <StoryGrid.Col title="With header icon">
+            <SizeTriggers
+              render={(size) => (
+                <ModalDemo
+                  size={size}
+                  title="Heads up"
+                  triggerLabel={size}
+                  icon={<WarningRegularIcon />}
+                >
+                  <Paragraph>
+                    The icon is accent-tinted and sits before the title in the
+                    header.
+                  </Paragraph>
+                </ModalDemo>
+              )}
+            />
           </StoryGrid.Col>
 
           <StoryGrid.Col title="Close button hidden">
-            <ModalDemo
-              hideCloseButton
-              title="Confirm"
-              triggerLabel="No close button"
-              footer={<Button text="Got it" onPress={fn()} />}
-            >
-              <Paragraph>
-                Dismiss via the backdrop, Escape, or an explicit action.
-              </Paragraph>
-            </ModalDemo>
+            <SizeTriggers
+              render={(size) => (
+                <ModalDemo
+                  hideCloseButton
+                  size={size}
+                  title="Confirm"
+                  triggerLabel={size}
+                  footer={<Button text="Got it" onPress={fn()} />}
+                >
+                  <Paragraph>
+                    Dismiss via the backdrop, Escape, or an explicit action.
+                  </Paragraph>
+                </ModalDemo>
+              )}
+            />
           </StoryGrid.Col>
         </StoryGrid.Row>
       </Story.Section>
@@ -178,15 +219,44 @@ export const Variants: ThisStory = {
   ),
 };
 
+// The panel padding is split in half: the panel holds the gutter outside the
+// scroll box (panel edge to scrollbar) and the scroll content container holds
+// the one inside it (scrollbar to content). Equal halves are what makes the
+// scrollbar sit balanced, so both are measured here.
+interface ModalRegions {
+  scrollBox: HTMLElement;
+  outsideGutter: string;
+  insideGutter: string;
+}
+
+function readModalRegions(panel: HTMLElement): ModalRegions {
+  const scrollBox = [...panel.querySelectorAll("*")].find((element) => {
+    const { overflowY } = getComputedStyle(element);
+    return overflowY === "auto" || overflowY === "scroll";
+  });
+  const contentContainer = scrollBox?.firstElementChild;
+  if (
+    !(scrollBox instanceof HTMLElement) ||
+    !(scrollBox.parentElement instanceof HTMLElement) ||
+    !contentContainer
+  ) {
+    throw new TypeError("Modal has no scrollable region");
+  }
+  return {
+    scrollBox,
+    outsideGutter: getComputedStyle(scrollBox.parentElement).paddingRight,
+    insideGutter: getComputedStyle(contentContainer).paddingRight,
+  };
+}
+
 export const ScrollingBodyStory: ThisStory = {
   name: "Scrolling body",
   render: () => (
     <ModalDemo title="Terms" triggerLabel="Long content">
-      {Array.from({ length: 12 }, (_, index) => (
+      {Array.from({ length: 24 }, (_, index) => (
         <Paragraph key={index}>
-          Paragraph {index + 1}. The whole panel scrolls once it exceeds ~70% of
-          the viewport height — title, body, and footer are all part of the
-          scroll region.
+          Paragraph {index + 1}. Only the body scrolls once it exceeds ~70% of
+          the viewport height — the header stays put above it.
         </Paragraph>
       ))}
     </ModalDemo>
@@ -194,9 +264,45 @@ export const ScrollingBodyStory: ThisStory = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "Long content" }));
-    await screen.findByRole("dialog");
+    const panel = await screen.findByRole("dialog");
+
+    const { scrollBox, outsideGutter, insideGutter } = readModalRegions(panel);
+    await expect(outsideGutter).toBe("16px");
+    await expect(insideGutter).toBe(outsideGutter);
+
+    const panelLeft = panel.getBoundingClientRect().left;
+    const title = screen.getByText("Terms");
+    const paragraph = screen.getByText(/^Paragraph 1\./);
+    await expect(
+      paragraph.getBoundingClientRect().left - panelLeft,
+    ).toBeCloseTo(32, 0);
+    // Header carries the same inner inset as the scrolling content.
+    await expect(title.getBoundingClientRect().left).toBeCloseTo(
+      paragraph.getBoundingClientRect().left,
+      0,
+    );
+
+    // Header is outside the scroll region: it neither scrolls nor moves.
+    await expect(scrollBox.contains(title)).toBe(false);
+    const titleTop = title.getBoundingClientRect().top;
+    scrollBox.scrollTop = scrollBox.scrollHeight;
+    await waitFor(async () => {
+      await expect(scrollBox.scrollTop).toBeGreaterThan(0);
+    });
+    await expect(title.getBoundingClientRect().top).toBeCloseTo(titleTop, 0);
   },
 };
+
+function findStickyAncestor(from: HTMLElement): HTMLElement {
+  for (
+    let element: HTMLElement | null = from;
+    element;
+    element = element.parentElement
+  ) {
+    if (getComputedStyle(element).position === "sticky") return element;
+  }
+  throw new TypeError("Modal footer is not sticky");
+}
 
 export const ScrollingBodyWithFooterStory: ThisStory = {
   name: "Scrolling body with footer",
@@ -211,11 +317,10 @@ export const ScrollingBodyWithFooterStory: ThisStory = {
         </>
       }
     >
-      {Array.from({ length: 12 }, (_, index) => (
+      {Array.from({ length: 24 }, (_, index) => (
         <Paragraph key={index}>
-          Paragraph {index + 1}. The whole panel scrolls once it exceeds ~70% of
-          the viewport height — title, body, and footer are all part of the
-          scroll region.
+          Paragraph {index + 1}. The footer sticks to the bottom of the scroll
+          box, and shows a top border only while it covers scrolled content.
         </Paragraph>
       ))}
     </ModalDemo>
@@ -223,7 +328,25 @@ export const ScrollingBodyWithFooterStory: ThisStory = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "Long content" }));
-    await screen.findByRole("dialog");
+    const panel = await screen.findByRole("dialog");
+    const { scrollBox } = readModalRegions(panel);
+    const footer = findStickyAncestor(
+      within(panel).getByRole("button", { name: "Decline" }),
+    );
+
+    const transparent = "rgba(0, 0, 0, 0)";
+    // Stuck over the remaining content: the border separates it from the body.
+    await waitFor(async () => {
+      await expect(getComputedStyle(footer).borderTopColor).not.toBe(
+        transparent,
+      );
+    });
+
+    scrollBox.scrollTop = scrollBox.scrollHeight;
+    // At the end of the scroll the footer rests in flow — no rule needed.
+    await waitFor(async () => {
+      await expect(getComputedStyle(footer).borderTopColor).toBe(transparent);
+    });
   },
 };
 
