@@ -31,6 +31,9 @@ declare const modalVariants: import("tailwind-variants").TVReturnType<{
             scrollContent: string;
         };
     };
+    detachedFooter: {
+        true: {};
+    };
     stuck: {
         true: {
             footer: string;
@@ -71,6 +74,9 @@ declare const modalVariants: import("tailwind-variants").TVReturnType<{
             scrollContent: string;
         };
     };
+    detachedFooter: {
+        true: {};
+    };
     stuck: {
         true: {
             footer: string;
@@ -110,6 +116,9 @@ declare const modalVariants: import("tailwind-variants").TVReturnType<{
         true: {
             scrollContent: string;
         };
+    };
+    detachedFooter: {
+        true: {};
     };
     stuck: {
         true: {

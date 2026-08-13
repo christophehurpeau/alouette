@@ -1307,6 +1307,7 @@ function IconButton({
   );
 }
 
+const supportsStickyPosition = Platform.OS === "web";
 const modalVariants = tv({
   slots: {
     // w-full so the panel shrinks on small screens (the backdrop padding keeps a
@@ -1315,7 +1316,8 @@ const modalVariants = tv({
     inset: "bg-highlight shadow-l",
     header: "items-center gap-xs",
     scrollContent: "",
-    // The border is transparent at rest so toggling it can't shift the layout.
+    // `sticky` pins it to the bottom of the scroll box on web. The border is
+    // transparent at rest so toggling it can't shift the layout.
     footer: "items-center justify-end gap-m sticky bottom-0 bg-highlight border-t border-transparent"
   },
   variants: {
@@ -1345,12 +1347,24 @@ const modalVariants = tv({
     withFooter: {
       true: { scrollContent: "pb-0" }
     },
+    // Native has no sticky positioning, so the footer sits below the scroll box
+    // instead of inside it — outside the scroll content container it has to
+    // carry that container's horizontal padding itself to stay aligned with the
+    // body.
+    detachedFooter: {
+      true: {}
+    },
     // Only while the footer overlaps scrolled-past content does it need a rule
     // separating it from the body; at the end of the scroll it sits in flow.
     stuck: {
       true: { footer: "border-border-muted" }
     }
   },
+  compoundVariants: [
+    { size: "sm", detachedFooter: true, class: { footer: "px-xs" } },
+    { size: "md", detachedFooter: true, class: { footer: "px-m" } },
+    { size: "lg", detachedFooter: true, class: { footer: "px-l" } }
+  ],
   defaultVariants: { size: "md" }
 });
 function Modal({
@@ -1376,8 +1390,10 @@ function Modal({
   const styles = modalVariants({
     size,
     withFooter: footer !== void 0,
-    stuck: footer !== void 0 && !isScrolledToEnd
+    stuck: footer !== void 0 && !isScrolledToEnd,
+    detachedFooter: !supportsStickyPosition
   });
+  const footerElement = footer === void 0 ? null : /* @__PURE__ */ jsx(HStack, { className: styles.footer(), children: footer });
   return /* @__PURE__ */ jsx(
     Modal$1,
     {
@@ -1433,18 +1449,20 @@ function Modal({
                   ]
                 }
               ),
-              /* @__PURE__ */ jsx(
+              /* @__PURE__ */ jsxs(
                 ScrollView,
                 {
+                  className: "shrink",
                   style: { maxHeight: windowHeight * 0.7 },
                   contentContainerClassName: styles.scrollContent(),
                   ...scrollViewProps,
-                  children: /* @__PURE__ */ jsxs(VStack, { children: [
+                  children: [
                     children,
-                    footer === void 0 ? null : /* @__PURE__ */ jsx(HStack, { className: styles.footer(), children: footer })
-                  ] })
+                    supportsStickyPosition ? footerElement : null
+                  ]
                 }
-              )
+              ),
+              supportsStickyPosition ? null : footerElement
             ] })
           }
         )

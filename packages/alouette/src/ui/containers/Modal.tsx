@@ -1,6 +1,11 @@
 import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
 import { type ReactNode, useId } from "react";
-import { Pressable, Modal as RNModal, useWindowDimensions } from "react-native";
+import {
+  Platform,
+  Pressable,
+  Modal as RNModal,
+  useWindowDimensions,
+} from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useCurrentMode } from "../../core/ThemeContext";
@@ -11,8 +16,13 @@ import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { ScrollView } from "../primitives/ScrollView";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
-import { HStack, VStack } from "../stacks/stacks";
+import { HStack } from "../stacks/stacks";
 import { StableAccentScope } from "./StableAccentScope";
+
+// Yoga only knows `relative` and `absolute` — `position: sticky` is a web-only
+// feature and the class compiles away on native. A component that pins an
+// element to the edge of a scroll box has to lay it out differently there.
+const supportsStickyPosition = Platform.OS === "web";
 
 // The panel padding is split in half so the web scrollbar sits in a balanced
 // gutter: one half stays on the panel (outside the scroll box, between the panel
@@ -28,7 +38,8 @@ const modalVariants = tv({
     inset: "bg-highlight shadow-l",
     header: "items-center gap-xs",
     scrollContent: "",
-    // The border is transparent at rest so toggling it can't shift the layout.
+    // `sticky` pins it to the bottom of the scroll box on web. The border is
+    // transparent at rest so toggling it can't shift the layout.
     footer:
       "items-center justify-end gap-m sticky bottom-0 bg-highlight border-t border-transparent",
   },
@@ -59,12 +70,24 @@ const modalVariants = tv({
     withFooter: {
       true: { scrollContent: "pb-0" },
     },
+    // Native has no sticky positioning, so the footer sits below the scroll box
+    // instead of inside it — outside the scroll content container it has to
+    // carry that container's horizontal padding itself to stay aligned with the
+    // body.
+    detachedFooter: {
+      true: {},
+    },
     // Only while the footer overlaps scrolled-past content does it need a rule
     // separating it from the body; at the end of the scroll it sits in flow.
     stuck: {
       true: { footer: "border-border-muted" },
     },
   },
+  compoundVariants: [
+    { size: "sm", detachedFooter: true, class: { footer: "px-xs" } },
+    { size: "md", detachedFooter: true, class: { footer: "px-m" } },
+    { size: "lg", detachedFooter: true, class: { footer: "px-l" } },
+  ],
   defaultVariants: { size: "md" },
 });
 
@@ -128,7 +151,12 @@ export function Modal({
     size,
     withFooter: footer !== undefined,
     stuck: footer !== undefined && !isScrolledToEnd,
+    detachedFooter: !supportsStickyPosition,
   });
+  const footerElement =
+    footer === undefined ? null : (
+      <HStack className={styles.footer()}>{footer}</HStack>
+    );
 
   return (
     <RNModal
@@ -185,21 +213,27 @@ export function Modal({
               </HStack>
 
               {/* Pixel maxHeight (not a %) so the ScrollView sizes to its
-                  content and only scrolls once it exceeds ~70% of the screen.
-                  The footer lives inside so it follows the body. */}
+                  content and only scrolls once it exceeds ~70% of the screen;
+                  `shrink` lets it give way to the header and the detached
+                  footer when the panel hits the screen height. */}
               <ScrollView
+                className="shrink"
                 style={{ maxHeight: windowHeight * 0.7 }}
                 contentContainerClassName={styles.scrollContent()}
                 {...scrollViewProps}
               >
-                <VStack>
-                  {children}
+                {children}
 
-                  {footer === undefined ? null : (
-                    <HStack className={styles.footer()}>{footer}</HStack>
-                  )}
-                </VStack>
+                {/* Web keeps the footer in the scroll content, where `sticky`
+                    pins it to the bottom edge and the body scrolls under it. */}
+                {supportsStickyPosition ? footerElement : null}
               </ScrollView>
+
+              {/* Native has no sticky positioning: the footer sits after the
+                  scroll box instead. Same result — the ScrollView grows with
+                  its content up to its maxHeight, so the footer is right below
+                  short content and pinned under a full-height body. */}
+              {supportsStickyPosition ? null : footerElement}
             </View>
           </View>
         </View>
