@@ -50,6 +50,9 @@ domains:
   - name: 'Animating presence'
     slug: 'animation'
     description: 'CSS-keyframe enter/exit animations run on native via Reanimated, orchestrated with PresenceOne/PresenceList.'
+  - name: 'Styling conventions'
+    slug: 'styling'
+    description: 'How a component declares and applies its classes: tailwind-variants tv() variants and slots, className over inline style, pixel sizes as arbitrary values, and the alouette design principles.'
   - name: 'Responsive breakpoints'
     slug: 'responsive'
     description: 'Switching layout by window width with breakpoint helpers and static responsive utility classes.'
@@ -816,6 +819,67 @@ skills:
           // alouette sm: starts at 480px; md 768 / lg 1024 / xl 1280
           <View className="md:flex-row" />
         source: 'packages/alouette/src/config/Breakpoints.ts'
+        priority: 'MEDIUM'
+        status: 'active'
+  # ---------------------------------------------------------------------------
+  - name: 'Apply styling conventions'
+    slug: 'alouette-styling'
+    domain: 'styling'
+    description: "Declare a component's classes with tailwind-variants: enum-like props (variant/size/shadow/selected/disabled) are tv() variants, and a component that styles several elements uses one tv() with slots. Style through className, never inline style for a static value. Write pixel dimensions as arbitrary values (w-[380px], min-h-[44px]) instead of the canonical spacing-scale class. Carries the alouette design principles."
+    type: 'core'
+    packages: ['alouette']
+    covers:
+      - 'tv() variants + VariantProps + defaultVariants'
+      - 'tv() slots (one tv per component)'
+      - 'className vs inline style'
+      - 'arbitrary pixel values (w-[380px], min-h-[44px])'
+      - 'design principles'
+    tasks:
+      - 'Add a variant/size prop to a component'
+      - 'Style a multi-element component'
+      - 'Set an explicit pixel dimension'
+    failure_modes:
+      - mistake: 'Record lookup map instead of a tv() variant'
+        mechanism: "A Record (LAYER_CLASS[variant]) duplicates the prop union by hand and provides no defaultVariants, no compound variants and no className merge; tv() derives the prop type via VariantProps."
+        wrong_pattern: |
+          const LAYER_CLASS = { surface: "bg-surface", lowered: "bg-lowered" } as const;
+          <Box className={LAYER_CLASS[variant]} />
+        correct_pattern: |
+          const boxVariants = tv({
+            variants: { variant: { surface: "bg-surface", lowered: "bg-lowered" } },
+            defaultVariants: { variant: "surface" },
+          });
+          <Box className={boxVariants({ variant })} />
+        source: 'packages/alouette/src/ui/containers/Surface.tsx'
+        priority: 'HIGH'
+        status: 'active'
+      - mistake: 'Several tv() objects for one component'
+        mechanism: 'Repeating the same variants (selected/disabled/size) across one tv per element means each variant change must be made in every object and the elements drift; a single tv() with slots declares them once.'
+        wrong_pattern: |
+          const chipVariants = tv({ variants: { selected: …, disabled: … } });
+          const labelVariants = tv({ variants: { selected: …, disabled: … } });
+        correct_pattern: |
+          const itemVariants = tv({ slots: { chip: "…", label: "…" }, variants: { selected: { true: { chip: "…", label: "…" } } } });
+          const styles = itemVariants({ selected, disabled });
+        source: 'packages/alouette/src/ui/containers/Modal.tsx'
+        priority: 'HIGH'
+        status: 'active'
+      - mistake: 'Inline style for a static value'
+        mechanism: 'An inline style is invisible to variants, state modifiers and theming, and on web it silently wins over the class it conflicts with. Reserve style for values computed at runtime (a measured dimension).'
+        wrong_pattern: |
+          <View style={{ maxWidth: 460, paddingHorizontal: 16 }} />
+        correct_pattern: |
+          <View className="max-w-[460px] px-m" />
+        source: 'packages/alouette/src/ui/containers/Modal.tsx'
+        priority: 'MEDIUM'
+        status: 'active'
+      - mistake: 'Collapsing a pixel size to the spacing-scale class'
+        mechanism: 'w-95 / min-h-11 are the same pixels but read as scale steps and hide the measurement (min-h-[44px] is the accessibility touch-target minimum). Keep the arbitrary value even when the linter suggests the shorthand.'
+        wrong_pattern: |
+          <View className="w-95 min-h-11" />
+        correct_pattern: |
+          <View className="w-[380px] min-h-[44px]" />
+        source: 'packages/alouette/src/ui/actions/Button.tsx; CLAUDE.md (Touch targets)'
         priority: 'MEDIUM'
         status: 'active'
   # ---------------------------------------------------------------------------

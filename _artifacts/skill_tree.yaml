@@ -16,9 +16,10 @@ coverage:
     - name: 'alouette-icons'
       reason: 'Auto-generated Phosphor icons; consumer usage is covered by the alouette-icons skill shipped in the alouette package.'
 
-# Structure: FLAT. 14 task-focused skills mapping ~1:1 to developer intents,
+# Structure: FLAT. 15 task-focused skills mapping ~1:1 to developer intents,
 # all shipped in the single client-facing package (packages/alouette/skills/).
-# No router skill (set is < 15 and discoverable via `npx @tanstack/intent list`).
+# No router skill (the set stays small and discoverable via
+# `npx @tanstack/intent list`).
 # No core overview skill — each skill stands alone. `requires` expresses load
 # order where a skill genuinely depends on another's concepts (theming is
 # foundational; setup precedes runtime concerns).
@@ -239,6 +240,20 @@ skills:
       - 'christophehurpeau/alouette:packages/alouette/src/windowSize/SwitchBreakpoints.tsx'
       - 'christophehurpeau/alouette:packages/alouette/src/windowSize/useCurrentBreakpointName.ts'
       - 'christophehurpeau/alouette:packages/alouette/src/config/Breakpoints.ts'
+
+  - name: 'alouette-styling'
+    slug: 'alouette-styling'
+    type: 'core'
+    domain: 'styling'
+    path: 'packages/alouette/skills/alouette-styling/SKILL.md'
+    package: 'packages/alouette'
+    description: "Styling conventions for writing components with alouette: enum-like props (variant/size/shadow/state) are tailwind-variants tv() variants instead of a Record lookup, a component that styles several elements uses one tv() with slots instead of several tv objects, styling goes through className instead of inline style, and pixel sizes are written as arbitrary values (w-[380px]) rather than the canonical spacing-scale class. States the alouette design principles. Load when writing, restyling or reviewing a component."
+    requires:
+      - 'alouette-theming'
+    sources:
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/containers/Surface.tsx'
+      - 'christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx'
 
   - name: 'alouette-icons'
     slug: 'alouette-icons'

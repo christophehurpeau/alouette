@@ -69,6 +69,11 @@ always renders sRGB.
 
 ### Styling stack
 
+Before writing or restyling a component, load the **`alouette-styling`** skill
+(`packages/alouette/skills/alouette-styling/SKILL.md`, symlinked into
+`.claude/skills/`): the design principles, `tv()` variants and `slots`,
+`className` over inline `style`, and pixel sizes as arbitrary values.
+
 This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define **structural** tokens/keyframes (type/radius/shadow/spacing/animation, fonts, utilities) in `packages/alouette/scripts/build-css.ts`; define **color** palettes in `packages/alouette/src/theme-generator/paletteSpecs.ts`. Regenerate with `pnpm --filter alouette build:css` — never edit the generated CSS (`global.css`, `core.css`, `default-palette.css`, `default-palette-oklch.css`) directly.
 
 `build:css` writes a split output: `core.css` (structural, color-free), `default-palette.css` (the default palette in sRGB hex — `@theme` color defaults + the twelve `.<theme>` blocks, the latter behind a web-only `@supports` so native never compiles them), `default-palette-oklch.css` (the optional wide-gamut overlay: the same tokens as `oklch()` behind `@supports`), `global.css` (aggregator `@import`ing core + the sRGB palette, **not** the oklch overlay — that stays an explicit extra import), plus `defaultThemeVariablesSrgb.ts`, `animationDurationsMs.ts`. Color generation lives in the shipped, exported `src/theme-generator/` module (`generateTheme`, `writeTheme`, `createColorScale`, `tokenScaleMap`, `paletteSpecs`); `build-css.ts` is a thin driver that calls `generateTheme()` for the default palette. An app generates its own palette the same way, from its own build script: `writeTheme({ outDir, overrides })` (node-only, from `alouette/theme-generator`) writes `palette.css` + `themeVariables.ts` (hex) and `palette-oklch.css` (the opt-in wide-gamut overlay, skipped by `srgbOnly`; CSS only — the map has no oklch counterpart since web never reads it); the app then imports `alouette/core.css` + its palette CSS and passes the generated map to `<AlouetteProvider themeVariables={...}>`. `generateTheme(overrides)` → `{ css, oklchCss, themeVariables, oklchThemeVariables }` is the in-memory form for an app that writes the files itself.
@@ -232,21 +237,6 @@ render as a full pill. Use `rounded-sm` for control containers and `rounded-xs`
 for nested segments (matches `Button`).
 
 # React
-
-## Map enum-like props to classes with tailwind-variants
-
-When a prop selects between a fixed set of classes (e.g. `variant`, `shadow`, `size`), express it as a `tv()` variant — not a `Record`/object lookup map (`LAYER_CLASS[variant]`). The variant keys become the prop's type automatically (via `VariantProps`), and `defaultVariants` handles defaults. Only resolve a value in component code when one variant's default depends on another prop.
-
-```tsx
-// Preferred
-const surfaceVariants = tv({
-  variants: { variant: { surface: "bg-surface", lowered: "bg-lowered" } },
-  defaultVariants: { variant: "surface" },
-});
-
-// Avoid
-const LAYER_CLASS = { surface: "bg-surface", lowered: "bg-lowered" } as const;
-```
 
 ## Always use interface to define props
 
