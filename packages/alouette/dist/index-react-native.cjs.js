@@ -2925,6 +2925,13 @@ function Badge({
   ] }) });
 }
 
+function Bullet({ icon, children }) {
+  return /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "gap-sm items-start", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, className: "text-accent" }),
+    /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "shrink", children })
+  ] });
+}
+
 const connectedHoldMs = 1200;
 function ConnectionState({
   state,
@@ -3189,6 +3196,7 @@ exports.Badge = Badge;
 exports.Box = Box;
 exports.BreakpointNameEnum = BreakpointNameEnum;
 exports.Breakpoints = Breakpoints;
+exports.Bullet = Bullet;
 exports.Button = Button;
 exports.CircularProgress = CircularProgress;
 exports.ConfirmationMessage = ConfirmationMessage;

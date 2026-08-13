@@ -128,6 +128,8 @@ export type { FormEditableItemProps } from "./ui/forms/FormEditableItem";
 export { FormEditableItem } from "./ui/forms/FormEditableItem";
 export type { BadgeProps } from "./ui/data/Badge";
 export { Badge } from "./ui/data/Badge";
+export type { BulletProps } from "./ui/data/Bullet";
+export { Bullet } from "./ui/data/Bullet";
 export type { EditableItemProps } from "./ui/data/EditableItem";
 export { EditableItem } from "./ui/data/EditableItem";
 export type {
