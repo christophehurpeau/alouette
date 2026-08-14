@@ -23,6 +23,7 @@ const pressableBoxVariants = tv(
           "focus:bg-interactive-contained-focus",
           "active:bg-interactive-contained-active",
           "disabled:bg-interactive-contained-disabled disabled:shadow-none",
+          "aria-disabled:bg-interactive-contained-disabled aria-disabled:shadow-none",
           "focus-visible:outline-border-muted",
         ].join(" "),
         outlined: [
@@ -34,6 +35,7 @@ const pressableBoxVariants = tv(
           "focus:border-interactive-outlined-focus",
           "active:border-interactive-outlined-active",
           "disabled:border-interactive-outlined-disabled",
+          "aria-disabled:border-interactive-outlined-disabled",
           "focus-visible:outline-interactive-outlined-outline-focus",
         ].join(" "),
         ghost: [
@@ -42,6 +44,7 @@ const pressableBoxVariants = tv(
           "focus:border focus:border-interactive-outlined-focus",
           "active:border active:border-interactive-outlined-active",
           "disabled:border-interactive-outlined-disabled",
+          "aria-disabled:border-interactive-outlined-disabled",
           "focus-visible:outline-interactive-outlined-outline-focus",
         ].join(" "),
       },

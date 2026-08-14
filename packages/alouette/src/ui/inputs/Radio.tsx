@@ -1,36 +1,9 @@
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
-import { useCurrentMode, useCurrentTheme } from "../../core/ThemeContext";
 import { InteractiveBox } from "../containers/Box";
-import { ScopedTheme } from "../containers/ScopedTheme";
 import { Text } from "../primitives/Text";
-import { View } from "../primitives/View";
+import { RadioIndicator } from "../selection/RadioIndicator";
 import { useRadioContext } from "./RadioContext";
-
-const indicatorVariants = tv({
-  base: "size-[22px] rounded-full border-2 items-center justify-center transition-[border-color] duration-fast ease-in",
-  variants: {
-    selected: {
-      true: "border-accent",
-      false:
-        "border-interactive-outlined-pressable group-hover:border-interactive-outlined-hover group-active:border-interactive-outlined-active",
-    },
-    disabled: {
-      true: "border-interactive-outlined-disabled",
-      false: "",
-    },
-  },
-});
-
-const dotVariants = tv({
-  base: "size-[10px] rounded-full bg-accent transition-transform duration-fast ease-in",
-  variants: {
-    selected: {
-      true: "scale-100",
-      false: "scale-0",
-    },
-  },
-});
 
 const labelVariants = tv({
   base: "text-base",
@@ -56,8 +29,6 @@ export function Radio({ value, label, disabled }: RadioProps): ReactNode {
   } = useRadioContext();
   const selected = selectedValue === value;
   const isDisabled = disabled === true || groupDisabled === true;
-  const currentTheme = useCurrentTheme();
-  const currentMode = useCurrentMode();
 
   return (
     <InteractiveBox
@@ -72,15 +43,7 @@ export function Radio({ value, label, disabled }: RadioProps): ReactNode {
         onSelect(value);
       }}
     >
-      <ScopedTheme
-        theme={
-          currentTheme === currentMode ? `${currentTheme}_brand` : currentTheme
-        }
-      >
-        <View className={indicatorVariants({ selected, disabled: isDisabled })}>
-          <View className={dotVariants({ selected })} />
-        </View>
-      </ScopedTheme>
+      <RadioIndicator selected={selected} disabled={isDisabled} />
       <Text className={labelVariants({ disabled: isDisabled })}>{label}</Text>
     </InteractiveBox>
   );

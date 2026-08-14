@@ -968,6 +968,7 @@ const pressableBoxVariants = tailwindVariants.tv(
           "focus:bg-interactive-contained-focus",
           "active:bg-interactive-contained-active",
           "disabled:bg-interactive-contained-disabled disabled:shadow-none",
+          "aria-disabled:bg-interactive-contained-disabled aria-disabled:shadow-none",
           "focus-visible:outline-border-muted"
         ].join(" "),
         outlined: [
@@ -977,6 +978,7 @@ const pressableBoxVariants = tailwindVariants.tv(
           "focus:border-interactive-outlined-focus",
           "active:border-interactive-outlined-active",
           "disabled:border-interactive-outlined-disabled",
+          "aria-disabled:border-interactive-outlined-disabled",
           "focus-visible:outline-interactive-outlined-outline-focus"
         ].join(" "),
         ghost: [
@@ -985,6 +987,7 @@ const pressableBoxVariants = tailwindVariants.tv(
           "focus:border focus:border-interactive-outlined-focus",
           "active:border active:border-interactive-outlined-active",
           "disabled:border-interactive-outlined-disabled",
+          "aria-disabled:border-interactive-outlined-disabled",
           "focus-visible:outline-interactive-outlined-outline-focus"
         ].join(" ")
       },
@@ -2144,7 +2147,7 @@ const {
   SelectionContextProvider: RadioContextProvider,
   useSelection: useRadioContext
 } = createSelectionContext(
-  "Radio and RadioButton must be rendered inside a RadioGroup or RadioButtonGroup."
+  "Radio, RadioButton and RadioCard must be rendered inside a RadioGroup, RadioButtonGroup or RadioCardGroup."
 );
 
 function RadioGroup({
@@ -2165,28 +2168,65 @@ function RadioGroup({
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(View, { role: "radiogroup", ...props, children }) }) });
 }
 
-const indicatorVariants = tailwindVariants.tv({
-  base: "size-[22px] rounded-full border-2 items-center justify-center transition-[border-color] duration-fast ease-in",
+function DefaultAccentScope({
+  children
+}) {
+  const currentTheme = useCurrentTheme();
+  const currentMode = useCurrentMode();
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    ScopedTheme,
+    {
+      theme: currentTheme === currentMode ? `${currentTheme}_brand` : currentTheme,
+      children
+    }
+  );
+}
+
+const radioIndicatorVariants = tailwindVariants.tv({
+  slots: {
+    ring: "size-[22px] rounded-full border-2 items-center justify-center transition-[border-color] duration-fast ease-in",
+    dot: "size-[10px] rounded-full bg-accent transition-transform duration-fast ease-in"
+  },
   variants: {
     selected: {
-      true: "border-accent",
-      false: "border-interactive-outlined-pressable group-hover:border-interactive-outlined-hover group-active:border-interactive-outlined-active"
+      true: { ring: "border-accent", dot: "scale-100" },
+      false: {
+        ring: "border-interactive-outlined-pressable group-hover:border-interactive-outlined-hover group-active:border-interactive-outlined-active",
+        dot: "scale-0"
+      }
+    },
+    onAccent: {
+      true: { ring: "border-on-accent", dot: "bg-on-accent" },
+      false: {}
     },
     disabled: {
-      true: "border-interactive-outlined-disabled",
-      false: ""
+      true: {
+        ring: "border-interactive-outlined-disabled",
+        dot: "bg-disabled-muted"
+      },
+      false: {}
     }
-  }
-});
-const dotVariants = tailwindVariants.tv({
-  base: "size-[10px] rounded-full bg-accent transition-transform duration-fast ease-in",
-  variants: {
-    selected: {
-      true: "scale-100",
-      false: "scale-0"
+  },
+  // On the disabled contained fill, `interactive-outlined-disabled` is the same
+  // color as the background — the ring needs the foreground disabled token the
+  // label next to it already uses.
+  compoundVariants: [
+    {
+      disabled: true,
+      onAccent: true,
+      class: { ring: "border-disabled-sharp", dot: "bg-disabled-sharp" }
     }
-  }
+  ]
 });
+function RadioIndicator({
+  selected,
+  disabled,
+  onAccent
+}) {
+  const styles = radioIndicatorVariants({ selected, disabled, onAccent });
+  return /* @__PURE__ */ jsxRuntime.jsx(DefaultAccentScope, { children: /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.ring(), children: /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.dot() }) }) });
+}
+
 const labelVariants$1 = tailwindVariants.tv({
   base: "text-base",
   variants: {
@@ -2204,8 +2244,6 @@ function Radio({ value, label, disabled }) {
   } = useRadioContext();
   const selected = selectedValue === value;
   const isDisabled = disabled === true || groupDisabled === true;
-  const currentTheme = useCurrentTheme();
-  const currentMode = useCurrentMode();
   return /* @__PURE__ */ jsxRuntime.jsxs(
     InteractiveBox,
     {
@@ -2220,13 +2258,7 @@ function Radio({ value, label, disabled }) {
         onSelect(value);
       },
       children: [
-        /* @__PURE__ */ jsxRuntime.jsx(
-          ScopedTheme,
-          {
-            theme: currentTheme === currentMode ? `${currentTheme}_brand` : currentTheme,
-            children: /* @__PURE__ */ jsxRuntime.jsx(View, { className: indicatorVariants({ selected, disabled: isDisabled }), children: /* @__PURE__ */ jsxRuntime.jsx(View, { className: dotVariants({ selected }) }) })
-          }
-        ),
+        /* @__PURE__ */ jsxRuntime.jsx(RadioIndicator, { selected, disabled: isDisabled }),
         /* @__PURE__ */ jsxRuntime.jsx(Text, { className: labelVariants$1({ disabled: isDisabled }), children: label })
       ]
     }
@@ -2382,6 +2414,134 @@ function RadioButton({
       }
     }
   );
+}
+
+const radioCardGroupVariants = tailwindVariants.tv({
+  base: "gap-xs",
+  variants: {
+    variant: {
+      list: "flex-col",
+      stack: "flex-row flex-wrap"
+    }
+  },
+  defaultVariants: { variant: "list" }
+});
+const RadioCardGroupVariantContext = react.createContext("list");
+function useRadioCardGroupVariant() {
+  return react.useContext(RadioCardGroupVariantContext);
+}
+function RadioCardGroup({
+  value,
+  defaultValue,
+  onValueChange,
+  accent,
+  disabled,
+  variant,
+  children,
+  ...props
+}) {
+  const context = useSelectionValue({
+    value,
+    defaultValue,
+    onValueChange,
+    disabled
+  });
+  return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(RadioCardGroupVariantContext, { value: variant ?? "list", children: /* @__PURE__ */ jsxRuntime.jsx(
+    View,
+    {
+      role: "radiogroup",
+      className: radioCardGroupVariants({ variant }),
+      ...props,
+      children
+    }
+  ) }) }) });
+}
+
+const radioCardVariants = tailwindVariants.tv(
+  {
+    slots: {
+      frame: "flex-row gap-m rounded-sm p-m min-h-[44px]",
+      icon: "",
+      label: "font-body-bold text-base",
+      description: "text-sm"
+    },
+    variants: {
+      // In a wrapping group the cards share each row instead of sizing to text,
+      // and the icon and the indicator hold the card's top corners.
+      layout: {
+        list: { frame: "items-center" },
+        stack: { frame: "items-start grow shrink basis-[240px]" }
+      },
+      selected: {
+        true: {
+          icon: "text-on-accent",
+          label: "text-on-accent",
+          description: "text-on-accent-muted"
+        },
+        false: {
+          icon: "text-muted",
+          label: "text-sharp",
+          description: "text-muted"
+        }
+      },
+      disabled: {
+        true: {
+          icon: "text-disabled-muted",
+          label: "text-disabled-sharp",
+          description: "text-disabled-muted"
+        },
+        false: {}
+      }
+    }
+  },
+  { twMerge: false }
+);
+function RadioCard({
+  value,
+  label,
+  description,
+  icon,
+  disabled
+}) {
+  const {
+    value: selectedValue,
+    onSelect,
+    disabled: groupDisabled
+  } = useRadioContext();
+  const layout = useRadioCardGroupVariant();
+  const selected = selectedValue === value;
+  const isDisabled = disabled === true || groupDisabled === true;
+  const styles = radioCardVariants({ layout, selected, disabled: isDisabled });
+  return /* @__PURE__ */ jsxRuntime.jsx(DefaultAccentScope, { children: /* @__PURE__ */ jsxRuntime.jsxs(
+    PressableBox,
+    {
+      variant: selected ? "contained" : "outlined",
+      role: "radio",
+      "aria-checked": selected,
+      "aria-disabled": isDisabled,
+      "aria-label": label,
+      disabled: isDisabled,
+      className: styles.frame(),
+      onPress: () => {
+        onSelect(value);
+      },
+      children: [
+        icon ? /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size: 24, className: styles.icon() }) : null,
+        /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: "flex-1 gap-xxs", children: [
+          /* @__PURE__ */ jsxRuntime.jsx(Text, { className: styles.label(), children: label }),
+          description ? /* @__PURE__ */ jsxRuntime.jsx(Text, { className: styles.description(), children: description }) : null
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          RadioIndicator,
+          {
+            selected,
+            disabled: isDisabled,
+            onAccent: selected
+          }
+        )
+      ]
+    }
+  ) });
 }
 
 const {
@@ -3244,6 +3404,8 @@ exports.QuestionAlertDialog = QuestionAlertDialog;
 exports.Radio = Radio;
 exports.RadioButton = RadioButton;
 exports.RadioButtonGroup = RadioButtonGroup;
+exports.RadioCard = RadioCard;
+exports.RadioCardGroup = RadioCardGroup;
 exports.RadioGroup = RadioGroup;
 exports.SafeAreaBox = SafeAreaBox;
 exports.ScopedTheme = ScopedTheme;

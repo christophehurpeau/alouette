@@ -4,5 +4,5 @@ export const {
   SelectionContextProvider: RadioContextProvider,
   useSelection: useRadioContext,
 } = createSelectionContext(
-  "Radio and RadioButton must be rendered inside a RadioGroup or RadioButtonGroup.",
+  "Radio, RadioButton and RadioCard must be rendered inside a RadioGroup, RadioButtonGroup or RadioCardGroup.",
 );
