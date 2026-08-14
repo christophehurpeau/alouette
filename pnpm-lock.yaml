@@ -324,8 +324,8 @@ importers:
         specifier: 8.2.1
         version: 8.2.1(@types/node@24.10.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0)
       vite-plugin-rnw:
-        specifier: 0.0.11
-        version: 0.0.11(@typescript/typescript6@6.0.2)(react-native-web@0.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(supports-color@8.1.1)(vite@8.2.1(@types/node@24.10.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
+        specifier: 0.0.12
+        version: 0.0.12(react-native-web@0.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(supports-color@8.1.1)(vite@8.2.1(@types/node@24.10.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
       vite-plugin-svgr:
         specifier: 4.5.0
         version: 4.5.0(@typescript/typescript6@6.0.2)(rollup@4.60.4)(supports-color@8.1.1)(vite@8.2.1(@types/node@24.10.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
@@ -4393,8 +4393,8 @@ packages:
   flow-enums-runtime@0.0.6:
     resolution: {integrity: sha512-3PYnM29RFXwvAN6Pc/scUfkI7RwhQ/xqyLUyPNlXUp9S40zI8nup9tUSrTLSVnWGBN38FNiGWbwZOB6uR4OGdw==}
 
-  flow-remove-types@2.321.0:
-    resolution: {integrity: sha512-lI0L3qT6WSgXJv1vdzwo/Qg3qSgSaLIqJtWHO9h6gFKqRWoMUDJ7pk6o6Zvasr71JpCFew8NroPPAGJBF8Rj3Q==}
+  flow-remove-types@2.326.0:
+    resolution: {integrity: sha512-yie1J9GOGHyDUl0BcC8xlGHi2e4XFcceWwgGHnJSaiLIWbneZNyb9kp0j7/1J8uIxthEev5YHivzoDRE+NABDA==}
     engines: {node: '>=4'}
     hasBin: true
 
@@ -5157,6 +5157,9 @@ packages:
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
+
+  magic-string@1.1.0:
+    resolution: {integrity: sha512-kS3VHe0nEPST2saQV4Rbkchcd3UBRkVTQHo1D3h/ZTwFDhai/mfKkmtPAtD129EOI7K3HlHIsFOt0WrI2/oU9g==}
 
   magicast@0.5.3:
     resolution: {integrity: sha512-pVKE4UdSQ7DvHzivsCIFx2BJn1mHG6KsyrFcaxFx6tONdneEuThrDx0Cj3AMg58KyN4pzYT+LHOotxDQDjNvkw==}
@@ -6467,6 +6470,13 @@ packages:
     peerDependencies:
       react-native-web: '*'
       typescript: ^5
+      vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+
+  vite-plugin-rnw@0.0.12:
+    resolution: {integrity: sha512-6GAFo+jB8Uv1xF8kXbEacm/RibBKcD4zTSjB0r5hkGDdbyvj98S0h6loe8MsRQNWDOMY55zpolLqEGM5rUwswA==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      react-native-web: '*'
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
 
   vite-plugin-svgr@4.5.0:
@@ -11228,7 +11238,7 @@ snapshots:
 
   flow-enums-runtime@0.0.6: {}
 
-  flow-remove-types@2.321.0:
+  flow-remove-types@2.326.0:
     dependencies:
       hermes-parser: 0.36.1
       pirates: 3.0.2
@@ -11907,6 +11917,10 @@ snapshots:
   lz-string@1.5.0: {}
 
   magic-string@0.30.21:
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.5.5
+
+  magic-string@1.1.0:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
@@ -13596,10 +13610,22 @@ snapshots:
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       '@vitejs/plugin-react': 5.2.0(supports-color@8.1.1)(vite@8.2.1(@types/node@24.10.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
-      flow-remove-types: 2.321.0
+      flow-remove-types: 2.326.0
       magic-string: 0.30.21
       react-native-web: 0.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       typescript: '@typescript/typescript6@6.0.2'
+      vite: 8.2.1(@types/node@24.10.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0)
+      vite-plugin-commonjs: 0.10.4
+    transitivePeerDependencies:
+      - supports-color
+
+  vite-plugin-rnw@0.0.12(react-native-web@0.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(supports-color@8.1.1)(vite@8.2.1(@types/node@24.10.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0)):
+    dependencies:
+      '@rolldown/pluginutils': 1.0.1
+      '@vitejs/plugin-react': 5.2.0(supports-color@8.1.1)(vite@8.2.1(@types/node@24.10.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0))
+      flow-remove-types: 2.326.0
+      magic-string: 1.1.0
+      react-native-web: 0.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       vite: 8.2.1(@types/node@24.10.1)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.0)
       vite-plugin-commonjs: 0.10.4
     transitivePeerDependencies:
