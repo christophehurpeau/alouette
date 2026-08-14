@@ -82,11 +82,14 @@ export function Message({
     <AccentScope accent={accent}>
       <Box className={messageFrameVariants({ size, variant })}>
         <Icon icon={icon} size={ICON_SIZE[size]} className="text-accent" />
-        <Text className="text-sharp grow">{children}</Text>
+        {/* React Native defaults flexShrink to 0: without `shrink` the text
+            keeps its content width and pushes the dismiss button out of the
+            frame instead of wrapping. */}
+        <Text className="text-sharp shrink grow">{children}</Text>
         {onDismiss ? (
           <Box
             style={{ width: dismissDiameter, height: dismissDiameter }}
-            className="flex-center"
+            className="shrink-0 flex-center"
           >
             <IconButton
               icon={<XRegularIcon />}

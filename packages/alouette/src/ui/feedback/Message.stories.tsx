@@ -165,6 +165,13 @@ export const Variants: ThisStory = {
       await expect(smIcon.getBoundingClientRect().width).toBe(20);
       await expect(mdIcon.getBoundingClientRect().width).toBe(24);
       await expect(lgIcon.getBoundingClientRect().width).toBe(28);
+
+      // ...and the text must wrap rather than push the dismiss button out.
+      for (const dismiss of narrow.querySelectorAll("button")) {
+        await expect(dismiss.getBoundingClientRect().right).toBeLessThanOrEqual(
+          narrow.getBoundingClientRect().right,
+        );
+      }
     }
   },
 };

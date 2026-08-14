@@ -1613,12 +1613,12 @@ function Message({
   const dismissDiameter = DISMISS_BUTTON_SIZE[size];
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsxs(Box, { className: messageFrameVariants({ size, variant }), children: [
     /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size: ICON_SIZE$1[size], className: "text-accent" }),
-    /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "text-sharp grow", children }),
+    /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "text-sharp shrink grow", children }),
     onDismiss ? /* @__PURE__ */ jsxRuntime.jsx(
       Box,
       {
         style: { width: dismissDiameter, height: dismissDiameter },
-        className: "flex-center",
+        className: "shrink-0 flex-center",
         children: /* @__PURE__ */ jsxRuntime.jsx(
           IconButton,
           {
