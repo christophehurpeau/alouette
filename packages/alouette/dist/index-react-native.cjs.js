@@ -1742,7 +1742,7 @@ function ActionButton({
     /* @__PURE__ */ jsxRuntime.jsx(
       View,
       {
-        className: `overflow-hidden transition-[height,opacity] duration-collapse p-sm ${error ? "h-auto opacity-100" : "absolute h-0 opacity-0"}`,
+        className: `overflow-hidden transition-[height,opacity] duration-collapse ${error ? "p-sm h-auto opacity-100" : "absolute h-0 opacity-0"}`,
         children: /* @__PURE__ */ jsxRuntime.jsx(ErrorMessage, { size: "sm", children: errorToMessage(error) })
       }
     )
