@@ -55,7 +55,9 @@
   --spacing-xs: 8px; /* previous $0.5 */
   --spacing-sm: 12px;
   --spacing-m: 16px; /* previous $1.0 */
+  --spacing-md: 16px;
   --spacing-l: 24px;
+  --spacing-lg: 24px;
   --spacing-xl: 32px; /* previous $2.0 */
   --spacing-xxl: 48px;
   --spacing-3xl: 64px; /* previous $3.0 */
