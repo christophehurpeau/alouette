@@ -92,6 +92,20 @@ export const Variants: ThisStory = {
         ))}
       </Story.Section>
 
+      <Story.Section title="Elevation">
+        <Story.SubSection title="surface (default), on the screen background">
+          <InfoMessage>Raised above the page.</InfoMessage>
+        </Story.SubSection>
+        <Story.SubSection withSurface title="flat, inside a surface">
+          <InfoMessage variant="flat">Info Message</InfoMessage>
+          <ConfirmationMessage variant="flat">
+            Success Message
+          </ConfirmationMessage>
+          <WarningMessage variant="flat">Warning Message</WarningMessage>
+          <ErrorMessage variant="flat">Error Message</ErrorMessage>
+        </Story.SubSection>
+      </Story.Section>
+
       <Story.Section withSurface title="Accent Messages">
         <InfoMessage>Info Message</InfoMessage>
         <ConfirmationMessage>Success Message</ConfirmationMessage>

@@ -76,7 +76,7 @@ export function usePressAsync(
             : new Error(String(caughtError));
         // eslint-disable-next-line no-console
         console.error(
-          "Unexpected error caught in ActionButton",
+          "Unexpected error caught in usePressAsync",
           normalizedError,
         );
         dispatch({ type: "reject", error: normalizedError });

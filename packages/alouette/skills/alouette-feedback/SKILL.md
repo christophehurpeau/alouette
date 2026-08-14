@@ -3,7 +3,9 @@ name: alouette-feedback
 description: >
   Semantic message banners: Message (requires accent + icon) and the presets
   InfoMessage, ConfirmationMessage, WarningMessage, ErrorMessage. Optional dismiss requires
-  onDismiss and dismissIconAriaLabel together; size is sm/md/lg. Also
+  onDismiss and dismissIconAriaLabel together; size is sm/md/lg; variant is
+  surface (raised, default) | flat (no shadow, for a message already inside a
+  surface). Also
   ConnectionState, a top-pinned network-status banner driven by a state prop,
   and LinearProgress / CircularProgress determinate progress indicators
   (progress 0-100, accent, size xs/sm/md/lg). Load when showing inline status,
@@ -60,6 +62,32 @@ import { InfoMessage, ConfirmationMessage, WarningMessage, ErrorMessage } from "
   Low disk space.
 </WarningMessage>
 ```
+
+### Elevation — `variant`
+
+`variant` is `"surface"` (default) or `"flat"`. `surface` carries `shadow-m`: the
+banner is its own raised layer above the screen background, which is what you
+want almost everywhere.
+
+`flat` only drops the shadow. Reach for it **only** when the message is already
+inside a raised surface — a `Modal`/`AlertDialog` panel, a `Surface` card, a
+`PressableListItem` row — where a second elevation reads as a card stacked on a
+card. Even there, prefer laying the message out on the screen background (its own
+`surface` banner above or below the card) when the layout allows it; `flat` is
+the allowance for when it cannot.
+
+```tsx
+<ErrorMessage>Payment failed.</ErrorMessage>              {/* on the page */}
+
+<Surface>
+  <Text>Billing</Text>
+  <ErrorMessage variant="flat">Payment failed.</ErrorMessage> {/* inside a card */}
+</Surface>
+```
+
+`AlertDialog` already renders its `errorToMessage` failure flat, and
+`ActionButton` exposes `errorMessageVariant` for the same reason (see
+alouette-actions).
 
 ### Custom Message (other accents / icons)
 
@@ -161,6 +189,32 @@ Correct:
 
 The base `Message` requires both `accent` and `icon`. For the common cases use a
 preset, which sets them.
+
+Source: packages/alouette/src/ui/feedback/Message.tsx
+
+### MEDIUM Reaching for variant="flat" outside a surface
+
+Wrong:
+
+```tsx
+<VStack>
+  <ErrorMessage variant="flat">Payment failed.</ErrorMessage>
+</VStack>
+```
+
+Correct:
+
+```tsx
+<VStack>
+  <ErrorMessage>Payment failed.</ErrorMessage>
+</VStack>
+```
+
+`flat` is not "the quiet look" — it is the fix for a banner nested in a raised
+surface. On the screen background it loses the elevation that separates the
+banner from the page. Default to `surface`; use `flat` only inside a Modal /
+AlertDialog panel or a `Surface`, and prefer restructuring so the message can sit
+on the page instead.
 
 Source: packages/alouette/src/ui/feedback/Message.tsx
 

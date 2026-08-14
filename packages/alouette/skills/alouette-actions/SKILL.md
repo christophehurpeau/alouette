@@ -7,7 +7,7 @@ description: >
   label is the required text prop (not children); IconButton
   requires aria-label. Interactive hover/focus/active/disabled states are built
   in. For async onPress use ActionButton (runs the promise, shows spinner +
-  inline error); Button state ('loading'|'success'|'failed') is the manual
+  inline error, errorMessageVariant flat when inside a surface); Button state ('loading'|'success'|'failed') is the manual
   escape hatch that overlays a spinner/terminal icon and disables the button.
   Load when adding buttons or custom pressable elements.
 type: core
@@ -73,6 +73,24 @@ import { ActionButton } from "alouette";
 
 `ActionButton` omits `onPress`/`state` from `ButtonProps` and manages them
 itself — don't pass `state` to it.
+
+The failure message is a raised `ErrorMessage`. When the button already sits
+inside a raised surface (a `Surface` card, a modal panel), pass
+`errorMessageVariant="flat"` so the message doesn't read as a card on a card:
+
+```tsx
+<Surface>
+  <ActionButton
+    text="Delete"
+    errorMessageVariant="flat"
+    onPress={remove}
+    errorToMessage={toMessage}
+  />
+</Surface>
+```
+
+Leave it unset everywhere else — see alouette-feedback for when `flat` is
+warranted.
 
 ### Manual loading state
 

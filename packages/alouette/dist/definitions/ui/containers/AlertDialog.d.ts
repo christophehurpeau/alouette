@@ -2,6 +2,21 @@ import { type ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import type { SVGIconElement } from "../primitives/Icon";
 import { type ModalProps } from "./Modal";
+interface AsyncActionProps {
+    /**
+     * Called when the user takes the action. Returning a promise puts the button
+     * in its loading state and locks the dialog until it settles — the cancel
+     * button is disabled and backdrop / Escape / Android back stop dismissing, so
+     * the action can't be cut short and a failure can't be scrolled away.
+     */
+    onConfirm: () => unknown;
+    /**
+     * Formats a rejection from {@link onConfirm} into the message shown in the
+     * footer. Without it a failure only flips the button to its failed state —
+     * the library can't provide a default without hardcoding an English string.
+     */
+    errorToMessage?: (error: unknown) => string;
+}
 interface AlertDialogBaseProps extends Pick<ModalProps, "size" | "testID"> {
     /** Whether the dialog is shown. */
     visible: boolean;
@@ -18,14 +33,12 @@ interface AlertDialogBaseProps extends Pick<ModalProps, "size" | "testID"> {
      */
     icon: SVGIconElement;
 }
-interface ConfirmAlertDialogProps extends AlertDialogBaseProps {
+interface ConfirmAlertDialogProps extends AlertDialogBaseProps, AsyncActionProps {
     /**
      * "confirm" (default) offers a cancel and a confirm action — for decisions,
      * typically destructive ones.
      */
     variant?: "confirm";
-    /** Called when the user confirms the action. */
-    onConfirm: () => void;
     /**
      * Called when the user rejects the action — cancel button, backdrop, Escape,
      * or the Android back button.
@@ -35,7 +48,7 @@ interface ConfirmAlertDialogProps extends AlertDialogBaseProps {
     confirmText?: ReactNode;
     /** Cancel button label. Defaults to "Cancel". */
     cancelText?: ReactNode;
-    /** Disables the confirm button (e.g. while an async action is pending). */
+    /** Disables the confirm button (e.g. while a form is invalid). */
     confirmDisabled?: boolean;
 }
 interface AcknowledgeAlertDialogProps extends AlertDialogBaseProps {
@@ -52,18 +65,16 @@ interface AcknowledgeAlertDialogProps extends AlertDialogBaseProps {
     /** Acknowledge button label. Defaults to "OK". */
     closeText?: ReactNode;
 }
-interface RequiredAlertDialogProps extends AlertDialogBaseProps {
+interface RequiredAlertDialogProps extends AlertDialogBaseProps, AsyncActionProps {
     /**
      * "required" offers a single action and cannot be dismissed by the backdrop,
      * Escape, or the Android back button — the user must respond (e.g. accept
      * updated terms, a forced sign-out).
      */
     variant: "required";
-    /** Called when the user takes the required action. */
-    onConfirm: () => void;
     /** Action button label. Defaults to "OK". */
     confirmText?: ReactNode;
-    /** Disables the action button (e.g. while an async action is pending). */
+    /** Disables the action button (e.g. while a form is invalid). */
     confirmDisabled?: boolean;
 }
 export type AlertDialogProps = AcknowledgeAlertDialogProps | ConfirmAlertDialogProps | RequiredAlertDialogProps;

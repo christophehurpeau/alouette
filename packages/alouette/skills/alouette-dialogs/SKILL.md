@@ -7,7 +7,9 @@ description: >
   confirm (cancel+confirm) | alert (single acknowledge) | required (single
   action, non-dismissible); accent defaults to danger. Prefer the icon-fixed
   presets QuestionAlertDialog / WarningAlertDialog / InfoAlertDialog /
-  SuccessAlertDialog. Load when adding a modal, confirmation, or alert dialog.
+  SuccessAlertDialog. onConfirm may return a promise: the dialog then shows a
+  loading state, locks dismissal until it settles, and renders a rejection with
+  errorToMessage. Load when adding a modal, confirmation, or alert dialog.
 type: core
 library: alouette
 library_version: "22.0.0"
@@ -101,8 +103,41 @@ import { QuestionAlertDialog, WarningAlertDialog } from "alouette";
 </WarningAlertDialog>
 ```
 
-`confirmDisabled` disables the primary button (e.g. while an async action runs).
+`confirmDisabled` disables the primary button (e.g. while a form is invalid).
 Button labels default to Confirm/Cancel (confirm), OK (alert/required).
+
+### Async confirmations
+
+`onConfirm` (confirm and required variants) may return a promise. The dialog then
+runs the same state machine as `ActionButton`: the button shows a spinner, the
+dialog locks (Cancel disabled, backdrop/Escape/Android-back stop dismissing) and
+unlocks when the promise settles. Do **not** hand-roll this with
+`confirmDisabled` and local state.
+
+Pass `errorToMessage` to turn a rejection into a message shown full width in the
+footer (a flat `ErrorMessage`, since the dialog panel is already raised), with
+the dialog left open so the action can be retried; without it a failure only
+flips the button to its failed state. There is no default formatter — a library
+one could only hardcode an English string.
+
+Close the dialog yourself once the promise resolves — the dialog never closes
+itself on success.
+
+```tsx
+<WarningAlertDialog
+  visible={confirming}
+  title="Delete project"
+  confirmText="Delete"
+  errorToMessage={(error) => (error instanceof Error ? error.message : t("unknownError"))}
+  onConfirm={async () => {
+    await deleteProject();
+    setConfirming(false);
+  }}
+  onCancel={() => setConfirming(false)}
+>
+  This permanently removes the project and its data.
+</WarningAlertDialog>
+```
 
 ## Common Mistakes
 

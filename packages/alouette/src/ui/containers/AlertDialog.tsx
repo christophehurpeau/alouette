@@ -3,11 +3,35 @@ import { InfoRegularIcon } from "alouette-icons/phosphor-icons/InfoRegularIcon";
 import { QuestionRegularIcon } from "alouette-icons/phosphor-icons/QuestionRegularIcon";
 import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
 import { type ReactNode, useId } from "react";
+import type { GestureResponderEvent } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
-import { Button } from "../actions/Button";
+import { Button, type ButtonState } from "../actions/Button";
+import { CollapsibleErrorMessage } from "../actions/CollapsibleErrorMessage";
+import { usePressAsync } from "../actions/usePressAsync";
 import type { SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
+import { HStack, VStack } from "../stacks/stacks";
 import { Modal, type ModalProps } from "./Modal";
+
+function noop(): void {
+  // Intentionally empty.
+}
+
+interface AsyncActionProps {
+  /**
+   * Called when the user takes the action. Returning a promise puts the button
+   * in its loading state and locks the dialog until it settles — the cancel
+   * button is disabled and backdrop / Escape / Android back stop dismissing, so
+   * the action can't be cut short and a failure can't be scrolled away.
+   */
+  onConfirm: () => unknown;
+  /**
+   * Formats a rejection from {@link onConfirm} into the message shown in the
+   * footer. Without it a failure only flips the button to its failed state —
+   * the library can't provide a default without hardcoding an English string.
+   */
+  errorToMessage?: (error: unknown) => string;
+}
 
 interface AlertDialogBaseProps extends Pick<ModalProps, "size" | "testID"> {
   /** Whether the dialog is shown. */
@@ -26,14 +50,13 @@ interface AlertDialogBaseProps extends Pick<ModalProps, "size" | "testID"> {
   icon: SVGIconElement;
 }
 
-interface ConfirmAlertDialogProps extends AlertDialogBaseProps {
+interface ConfirmAlertDialogProps
+  extends AlertDialogBaseProps, AsyncActionProps {
   /**
    * "confirm" (default) offers a cancel and a confirm action — for decisions,
    * typically destructive ones.
    */
   variant?: "confirm";
-  /** Called when the user confirms the action. */
-  onConfirm: () => void;
   /**
    * Called when the user rejects the action — cancel button, backdrop, Escape,
    * or the Android back button.
@@ -43,7 +66,7 @@ interface ConfirmAlertDialogProps extends AlertDialogBaseProps {
   confirmText?: ReactNode;
   /** Cancel button label. Defaults to "Cancel". */
   cancelText?: ReactNode;
-  /** Disables the confirm button (e.g. while an async action is pending). */
+  /** Disables the confirm button (e.g. while a form is invalid). */
   confirmDisabled?: boolean;
 }
 
@@ -62,18 +85,17 @@ interface AcknowledgeAlertDialogProps extends AlertDialogBaseProps {
   closeText?: ReactNode;
 }
 
-interface RequiredAlertDialogProps extends AlertDialogBaseProps {
+interface RequiredAlertDialogProps
+  extends AlertDialogBaseProps, AsyncActionProps {
   /**
    * "required" offers a single action and cannot be dismissed by the backdrop,
    * Escape, or the Android back button — the user must respond (e.g. accept
    * updated terms, a forced sign-out).
    */
   variant: "required";
-  /** Called when the user takes the required action. */
-  onConfirm: () => void;
   /** Action button label. Defaults to "OK". */
   confirmText?: ReactNode;
-  /** Disables the action button (e.g. while an async action is pending). */
+  /** Disables the action button (e.g. while a form is invalid). */
   confirmDisabled?: boolean;
 }
 
@@ -92,11 +114,58 @@ interface ResolvedVariant {
   onDismiss: () => void;
 }
 
+interface ActionFooterProps {
+  /** The variant's buttons, in reading order. */
+  children: ReactNode;
+  errorToMessage: AsyncActionProps["errorToMessage"];
+  error: Error | null;
+}
+
+// Modal lays the footer out as a right-aligned row; a single full-width child
+// turns it into a column so the failure message spans the dialog instead of
+// being squeezed to the width of the button that triggered it.
+function ActionFooter({
+  children,
+  errorToMessage,
+  error,
+}: ActionFooterProps): ReactNode {
+  const errorMessage =
+    errorToMessage === undefined ? null : (
+      // The dialog panel is already a raised surface, so the message is flat.
+      <CollapsibleErrorMessage
+        error={error}
+        errorToMessage={errorToMessage}
+        variant="flat"
+      />
+    );
+  return (
+    <VStack className="w-full gap-sm">
+      <HStack className="items-center justify-end gap-m">{children}</HStack>
+      {errorMessage}
+    </VStack>
+  );
+}
+
+interface ResolveVariantParams {
+  accent: Accent;
+  /** State of the confirm action, driven by `usePressAsync`. */
+  buttonState: ButtonState | undefined;
+  error: Error | null;
+  isPending: boolean;
+  handleConfirm: (event: GestureResponderEvent) => void;
+}
+
 // Resolves the variant-specific footer and dismiss handler outside the
 // component so its discriminated props can be narrowed by destructuring.
 function resolveVariant(
   props: AlertDialogProps,
-  accent: Accent,
+  {
+    accent,
+    buttonState,
+    error,
+    isPending,
+    handleConfirm,
+  }: ResolveVariantParams,
 ): ResolvedVariant {
   switch (props.variant) {
     case "alert": {
@@ -109,45 +178,61 @@ function resolveVariant(
       };
     }
     case "required": {
-      const { onConfirm, confirmText, confirmDisabled } = props;
+      const { confirmText, confirmDisabled, errorToMessage } = props;
       return {
         // Non-dismissible: only the explicit action closes it.
-        onDismiss: () => undefined,
+        onDismiss: noop,
         footer: (
-          <Button
-            accent={accent}
-            text={confirmText ?? "OK"}
-            disabled={confirmDisabled}
-            onPress={onConfirm}
-          />
+          <ActionFooter error={error} errorToMessage={errorToMessage}>
+            <Button
+              accent={accent}
+              text={confirmText ?? "OK"}
+              state={buttonState}
+              disabled={confirmDisabled}
+              onPress={handleConfirm}
+            />
+          </ActionFooter>
         ),
       };
     }
     case "confirm":
     case undefined:
     default: {
-      const { onConfirm, onCancel, confirmText, cancelText, confirmDisabled } =
-        props;
+      const {
+        onCancel,
+        confirmText,
+        cancelText,
+        confirmDisabled,
+        errorToMessage,
+      } = props;
       return {
-        onDismiss: onCancel,
+        onDismiss: isPending ? noop : onCancel,
         footer: (
-          <>
+          <ActionFooter error={error} errorToMessage={errorToMessage}>
             <Button
               variant="outlined"
               text={cancelText ?? "Cancel"}
+              disabled={isPending}
               onPress={onCancel}
             />
             <Button
               accent={accent}
               text={confirmText ?? "Confirm"}
+              state={buttonState}
               disabled={confirmDisabled}
-              onPress={onConfirm}
+              onPress={handleConfirm}
             />
-          </>
+          </ActionFooter>
         ),
       };
     }
   }
+}
+
+// The alert variant has no confirm action; its single button closes the dialog
+// synchronously and never drives the async state.
+function resolveConfirmHandler(props: AlertDialogProps): () => unknown {
+  return props.variant === "alert" ? noop : props.onConfirm;
 }
 
 export function AlertDialog(props: AlertDialogProps): ReactNode {
@@ -161,7 +246,17 @@ export function AlertDialog(props: AlertDialogProps): ReactNode {
     testID,
   } = props;
   const descriptionId = useId();
-  const { footer, onDismiss } = resolveVariant(props, accent);
+  const { buttonState, error, handlePress } = usePressAsync(
+    resolveConfirmHandler(props),
+  );
+  const isPending = buttonState === "loading";
+  const { footer, onDismiss } = resolveVariant(props, {
+    accent,
+    buttonState,
+    error,
+    isPending,
+    handleConfirm: handlePress,
+  });
 
   return (
     <Modal

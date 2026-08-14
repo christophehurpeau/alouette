@@ -120,6 +120,17 @@ export const ActionButtonVariantsStory: ThisStory = {
         />
       </Story.Section>
 
+      <Story.Section withSurface title="Flat error message inside a surface">
+        <ActionButton
+          text="Delete"
+          errorMessageVariant="flat"
+          errorToMessage={(error) =>
+            error instanceof Error ? error.message : "Unknown error"
+          }
+          onPress={() => rejectAfter(1500, "Simulated failure")}
+        />
+      </Story.Section>
+
       <Story.Section title="Synchronous onPress">
         <ActionButton
           text="Log"

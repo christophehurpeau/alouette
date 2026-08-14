@@ -9,11 +9,19 @@ declare const messageFrameVariants: import("tailwind-variants").TVReturnType<{
         md: string;
         lg: string;
     };
-}, undefined, "flex-row items-center bg-highlight-accent overflow-hidden", {
+    variant: {
+        surface: string;
+        flat: string;
+    };
+}, undefined, "flex-row items-center overflow-hidden bg-highlight-accent", {
     size: {
         sm: string;
         md: string;
         lg: string;
+    };
+    variant: {
+        surface: string;
+        flat: string;
     };
 }, undefined, import("tailwind-variants").TVReturnType<{
     size: {
@@ -21,12 +29,22 @@ declare const messageFrameVariants: import("tailwind-variants").TVReturnType<{
         md: string;
         lg: string;
     };
-}, undefined, "flex-row items-center bg-highlight-accent overflow-hidden", unknown, unknown, undefined>>;
+    variant: {
+        surface: string;
+        flat: string;
+    };
+}, undefined, "flex-row items-center overflow-hidden bg-highlight-accent", unknown, unknown, undefined>>;
 type MessageVariantProps = VariantProps<typeof messageFrameVariants>;
 type MessageSize = NonNullable<MessageVariantProps["size"]>;
+export type MessageVariant = NonNullable<MessageVariantProps["variant"]>;
 interface MessageBaseProps {
     accent: Accent;
     size?: MessageSize;
+    /**
+     * "surface" (default) is a raised banner. Use "flat" only when the message
+     * already sits inside a raised surface (a Modal footer, a Surface card).
+     */
+    variant?: MessageVariant;
     icon: SVGIconElement;
     children?: ReactNode;
 }
@@ -39,7 +57,7 @@ interface MessagePropsWithoutDismiss extends MessageBaseProps {
     dismissIconAriaLabel?: undefined;
 }
 export type MessageProps = MessagePropsWithDismiss | MessagePropsWithoutDismiss;
-export declare function Message({ icon, size, accent, children, onDismiss, dismissIconAriaLabel, }: MessageProps): ReactNode;
+export declare function Message({ icon, size, variant, accent, children, onDismiss, dismissIconAriaLabel, }: MessageProps): ReactNode;
 type AccentMessageProps = Except<MessageProps, "accent" | "icon">;
 export declare function InfoMessage(props: AccentMessageProps): ReactNode;
 export declare function ConfirmationMessage(props: AccentMessageProps): ReactNode;

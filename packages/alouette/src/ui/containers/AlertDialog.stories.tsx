@@ -133,6 +133,74 @@ function UsageDemo({
   );
 }
 
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+function rejectAfter(ms: number, message: string): Promise<never> {
+  return new Promise((_resolve, reject) => {
+    setTimeout(() => {
+      reject(new Error(message));
+    }, ms);
+  });
+}
+
+function errorToMessage(error: unknown): string {
+  return error instanceof Error ? error.message : "Unknown error";
+}
+
+interface AsyncAlertDialogDemoProps {
+  triggerLabel: string;
+  title: string;
+  confirmText?: string;
+  children: ReactNode;
+  /** Resolving closes the dialog; rejecting keeps it open with the message. */
+  onConfirm: () => Promise<void>;
+  testID?: string;
+}
+
+// Async counterpart of AlertDialogDemo: the dialog stays open until the promise
+// resolves, which is what lets a rejection be shown in place.
+function AsyncAlertDialogDemo({
+  triggerLabel,
+  title,
+  confirmText,
+  children,
+  onConfirm,
+  testID,
+}: AsyncAlertDialogDemoProps): ReactNode {
+  const [visible, setVisible] = useState(false);
+  const close = () => {
+    setVisible(false);
+  };
+  return (
+    <>
+      <Button
+        text={triggerLabel}
+        onPress={() => {
+          setVisible(true);
+        }}
+      />
+      <WarningAlertDialog
+        visible={visible}
+        title={title}
+        confirmText={confirmText}
+        errorToMessage={errorToMessage}
+        testID={testID}
+        onConfirm={async () => {
+          await onConfirm();
+          close();
+        }}
+        onCancel={close}
+      >
+        {children}
+      </WarningAlertDialog>
+    </>
+  );
+}
+
 export default {
   title: "alouette/Containers/AlertDialog",
   component: AlertDialog,
@@ -212,6 +280,48 @@ export const Variants: ThisStory = {
               You must accept the updated terms to continue. This dialog cannot
               be dismissed.
             </AlertDialogDemo>
+          </StoryGrid.Col>
+        </StoryGrid.Row>
+      </Story.Section>
+
+      <Story.Section title="Async confirm">
+        <StoryGrid.Row flexWrap>
+          <StoryGrid.Col title="resolves">
+            <AsyncAlertDialogDemo
+              title="Delete project"
+              triggerLabel="Resolves"
+              confirmText="Delete"
+              onConfirm={() => delay(1500)}
+            >
+              The confirm button spins while the request runs; Cancel and the
+              backdrop are locked until it settles.
+            </AsyncAlertDialogDemo>
+          </StoryGrid.Col>
+
+          <StoryGrid.Col title="rejects, message above">
+            <AsyncAlertDialogDemo
+              title="Delete project"
+              triggerLabel="Rejects above"
+              confirmText="Delete"
+              onConfirm={() =>
+                rejectAfter(1500, "Network unreachable. Check your connection.")
+              }
+            >
+              The dialog stays open on failure so the action can be retried.
+            </AsyncAlertDialogDemo>
+          </StoryGrid.Col>
+
+          <StoryGrid.Col title="rejects, message below">
+            <AsyncAlertDialogDemo
+              title="Delete project"
+              triggerLabel="Rejects below"
+              confirmText="Delete"
+              onConfirm={() =>
+                rejectAfter(1500, "Network unreachable. Check your connection.")
+              }
+            >
+              The dialog stays open on failure so the action can be retried.
+            </AsyncAlertDialogDemo>
           </StoryGrid.Col>
         </StoryGrid.Row>
       </Story.Section>
@@ -375,6 +485,26 @@ export const Tests: StoryObj<typeof AlertDialog> = {
           You must accept to continue.
         </AlertDialogDemo>
       </Story.Section>
+      <Story.Section title="Async confirm">
+        <AsyncAlertDialogDemo
+          title="Delete project"
+          triggerLabel="Open async confirm"
+          confirmText="Delete"
+          onConfirm={() => delay(400)}
+        >
+          The dialog is locked while the request runs.
+        </AsyncAlertDialogDemo>
+      </Story.Section>
+      <Story.Section title="Async confirm failure">
+        <AsyncAlertDialogDemo
+          title="Delete file"
+          triggerLabel="Open failing confirm"
+          confirmText="Delete"
+          onConfirm={() => rejectAfter(200, "Network unreachable")}
+        >
+          The failure is shown in the footer.
+        </AsyncAlertDialogDemo>
+      </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
@@ -417,6 +547,61 @@ export const Tests: StoryObj<typeof AlertDialog> = {
     await expect(screen.getByRole("alertdialog")).toBeInTheDocument();
     await userEvent.click(
       within(required).getByRole("button", { name: "Accept" }),
+    );
+    await waitFor(async () => {
+      await expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    });
+
+    // Async confirm: pending locks Cancel and the Escape dismissal, and the
+    // dialog closes once the caller closes it on resolve.
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open async confirm" }),
+    );
+    const asyncDialog = await screen.findByRole("alertdialog");
+    await userEvent.click(
+      within(asyncDialog).getByRole("button", { name: "Delete" }),
+    );
+    await waitFor(async () => {
+      await expect(
+        within(asyncDialog).getByRole("button", { name: "Cancel" }),
+      ).toHaveAttribute("aria-disabled", "true");
+    });
+    await userEvent.keyboard("{Escape}");
+    await expect(screen.getByRole("alertdialog")).toBeInTheDocument();
+    await waitFor(
+      async () => {
+        await expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+      },
+      { timeout: 2000 },
+    );
+
+    // A rejection keeps the dialog open, shows the message full width, and
+    // hands the buttons back so the action can be retried.
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open failing confirm" }),
+    );
+    const failingDialog = await screen.findByRole("alertdialog");
+    await userEvent.click(
+      within(failingDialog).getByRole("button", { name: "Delete" }),
+    );
+    await waitFor(async () => {
+      await expect(
+        within(failingDialog).getByText("Network unreachable"),
+      ).toBeVisible();
+    });
+    await expect(screen.getByRole("alertdialog")).toBeInTheDocument();
+    await expect(
+      within(failingDialog).getByRole("button", { name: "Cancel" }),
+    ).not.toHaveAttribute("aria-disabled", "true");
+    const message = within(failingDialog).getByRole("alert");
+    const confirmButton = within(failingDialog).getByRole("button", {
+      name: "Delete",
+    });
+    await expect(message.getBoundingClientRect().width).toBeGreaterThan(
+      confirmButton.getBoundingClientRect().width,
+    );
+    await userEvent.click(
+      within(failingDialog).getByRole("button", { name: "Cancel" }),
     );
     await waitFor(async () => {
       await expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();

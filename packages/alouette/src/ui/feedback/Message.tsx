@@ -15,21 +15,29 @@ import { Text } from "../primitives/Text";
 
 const messageFrameVariants = tv(
   {
-    base: "flex-row items-center bg-highlight-accent overflow-hidden",
+    base: "flex-row items-center overflow-hidden bg-highlight-accent",
     variants: {
       size: {
         sm: "gap-xs p-sm rounded-xs",
         md: "gap-m p-m rounded-sm",
         lg: "gap-l p-l rounded-md",
       },
+      variant: {
+        // Raised: the banner is its own layer above the screen background.
+        surface: "shadow-m",
+        // Flush: for a banner already inside a raised surface, where a second
+        // elevation would read as a card stacked on a card.
+        flat: "shadow-none border-border-muted border",
+      },
     },
-    defaultVariants: { size: "md" },
+    defaultVariants: { size: "md", variant: "surface" },
   },
   { twMerge: false },
 );
 
 type MessageVariantProps = VariantProps<typeof messageFrameVariants>;
 type MessageSize = NonNullable<MessageVariantProps["size"]>;
+export type MessageVariant = NonNullable<MessageVariantProps["variant"]>;
 
 const ICON_SIZE: Record<MessageSize, number> = { sm: 20, md: 24, lg: 28 };
 const DISMISS_BUTTON_SIZE: Record<MessageSize, number> = {
@@ -41,6 +49,11 @@ const DISMISS_BUTTON_SIZE: Record<MessageSize, number> = {
 interface MessageBaseProps {
   accent: Accent;
   size?: MessageSize;
+  /**
+   * "surface" (default) is a raised banner. Use "flat" only when the message
+   * already sits inside a raised surface (a Modal footer, a Surface card).
+   */
+  variant?: MessageVariant;
   icon: SVGIconElement;
   children?: ReactNode;
 }
@@ -58,6 +71,7 @@ export type MessageProps = MessagePropsWithDismiss | MessagePropsWithoutDismiss;
 export function Message({
   icon,
   size = "md",
+  variant,
   accent,
   children,
   onDismiss,
@@ -66,7 +80,7 @@ export function Message({
   const dismissDiameter = DISMISS_BUTTON_SIZE[size];
   return (
     <AccentScope accent={accent}>
-      <Box className={`shadow-m ${messageFrameVariants({ size })}`}>
+      <Box className={messageFrameVariants({ size, variant })}>
         <Icon icon={icon} size={ICON_SIZE[size]} className="text-accent" />
         <Text className="text-sharp grow">{children}</Text>
         {onDismiss ? (

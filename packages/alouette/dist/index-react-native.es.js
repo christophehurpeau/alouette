@@ -1559,7 +1559,175 @@ function Modal({
   );
 }
 
-function resolveVariant(props, accent) {
+const messageFrameVariants = tv(
+  {
+    base: "flex-row items-center overflow-hidden bg-highlight-accent",
+    variants: {
+      size: {
+        sm: "gap-xs p-sm rounded-xs",
+        md: "gap-m p-m rounded-sm",
+        lg: "gap-l p-l rounded-md"
+      },
+      variant: {
+        // Raised: the banner is its own layer above the screen background.
+        surface: "shadow-m",
+        // Flush: for a banner already inside a raised surface, where a second
+        // elevation would read as a card stacked on a card.
+        flat: "shadow-none border-border-muted border"
+      }
+    },
+    defaultVariants: { size: "md", variant: "surface" }
+  },
+  { twMerge: false }
+);
+const ICON_SIZE$1 = { sm: 20, md: 24, lg: 28 };
+const DISMISS_BUTTON_SIZE = {
+  sm: 24,
+  md: 40,
+  lg: 40
+};
+function Message({
+  icon,
+  size = "md",
+  variant,
+  accent,
+  children,
+  onDismiss,
+  dismissIconAriaLabel
+}) {
+  const dismissDiameter = DISMISS_BUTTON_SIZE[size];
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(Box, { className: messageFrameVariants({ size, variant }), children: [
+    /* @__PURE__ */ jsx(Icon, { icon, size: ICON_SIZE$1[size], className: "text-accent" }),
+    /* @__PURE__ */ jsx(Text, { className: "text-sharp grow", children }),
+    onDismiss ? /* @__PURE__ */ jsx(
+      Box,
+      {
+        style: { width: dismissDiameter, height: dismissDiameter },
+        className: "flex-center",
+        children: /* @__PURE__ */ jsx(
+          IconButton,
+          {
+            icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
+            iconSize: size === "sm" ? "fill" : void 0,
+            size: dismissDiameter,
+            variant: "ghost",
+            "aria-label": dismissIconAriaLabel,
+            onPress: onDismiss
+          }
+        )
+      }
+    ) : null
+  ] }) });
+}
+function InfoMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, accent: "info", icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
+}
+function ConfirmationMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, accent: "success", icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
+}
+function WarningMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, accent: "warning", icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
+}
+function ErrorMessage(props) {
+  return /* @__PURE__ */ jsx(Message, { ...props, accent: "danger", icon: /* @__PURE__ */ jsx(WarningDuotoneIcon, {}) });
+}
+
+function CollapsibleErrorMessage({
+  error,
+  errorToMessage,
+  variant
+}) {
+  return /* @__PURE__ */ jsx(
+    View,
+    {
+      role: "alert",
+      className: `overflow-hidden transition-[height,opacity] duration-collapse ${error ? "p-sm h-auto opacity-100" : "absolute h-0 opacity-0"}`,
+      children: error === null ? null : /* @__PURE__ */ jsx(ErrorMessage, { size: "sm", variant, children: errorToMessage(error) })
+    }
+  );
+}
+
+const settledDisplayDurationMs = 4e3;
+const idleState = { buttonState: void 0, error: null };
+function pressAsyncReducer(previousState, action) {
+  switch (action.type) {
+    case "start":
+      return { buttonState: "loading", error: null };
+    case "resolve":
+      return { buttonState: "success", error: null };
+    case "reject":
+      return { buttonState: "failed", error: action.error };
+    case "settledTimeout":
+      return { buttonState: void 0, error: previousState.error };
+    default:
+      throw new Error(`Unhandled action: ${JSON.stringify(action)}`);
+  }
+}
+function usePressAsync(onPress) {
+  const [pressAsyncState, dispatch] = useReducer(pressAsyncReducer, idleState);
+  const settledTimerRef = useRef(void 0);
+  useEffect(() => {
+    return () => {
+      clearTimeout(settledTimerRef.current);
+    };
+  }, []);
+  function handlePress(event) {
+    if (pressAsyncState.buttonState === "loading") return;
+    clearTimeout(settledTimerRef.current);
+    const result = onPress(event);
+    if (!(result instanceof Promise)) return;
+    dispatch({ type: "start" });
+    function scheduleSettledTimeout() {
+      settledTimerRef.current = setTimeout(() => {
+        dispatch({ type: "settledTimeout" });
+      }, settledDisplayDurationMs);
+    }
+    result.then(() => {
+      dispatch({ type: "resolve" });
+      scheduleSettledTimeout();
+    }).catch((caughtError) => {
+      const normalizedError = caughtError instanceof Error ? caughtError : new Error(String(caughtError));
+      console.error(
+        "Unexpected error caught in usePressAsync",
+        normalizedError
+      );
+      dispatch({ type: "reject", error: normalizedError });
+      scheduleSettledTimeout();
+    });
+  }
+  return { ...pressAsyncState, handlePress };
+}
+
+function noop() {
+}
+function ActionFooter({
+  children,
+  errorToMessage,
+  error
+}) {
+  const errorMessage = errorToMessage === void 0 ? null : (
+    // The dialog panel is already a raised surface, so the message is flat.
+    /* @__PURE__ */ jsx(
+      CollapsibleErrorMessage,
+      {
+        error,
+        errorToMessage,
+        variant: "flat"
+      }
+    )
+  );
+  return /* @__PURE__ */ jsxs(VStack, { className: "w-full gap-sm", children: [
+    /* @__PURE__ */ jsx(HStack, { className: "items-center justify-end gap-m", children }),
+    errorMessage
+  ] });
+}
+function resolveVariant(props, {
+  accent,
+  buttonState,
+  error,
+  isPending,
+  handleConfirm
+}) {
   switch (props.variant) {
     case "alert": {
       const { onClose, closeText } = props;
@@ -1569,33 +1737,41 @@ function resolveVariant(props, accent) {
       };
     }
     case "required": {
-      const { onConfirm, confirmText, confirmDisabled } = props;
+      const { confirmText, confirmDisabled, errorToMessage } = props;
       return {
         // Non-dismissible: only the explicit action closes it.
-        onDismiss: () => void 0,
-        footer: /* @__PURE__ */ jsx(
+        onDismiss: noop,
+        footer: /* @__PURE__ */ jsx(ActionFooter, { error, errorToMessage, children: /* @__PURE__ */ jsx(
           Button,
           {
             accent,
             text: confirmText ?? "OK",
+            state: buttonState,
             disabled: confirmDisabled,
-            onPress: onConfirm
+            onPress: handleConfirm
           }
-        )
+        ) })
       };
     }
     case "confirm":
     case void 0:
     default: {
-      const { onConfirm, onCancel, confirmText, cancelText, confirmDisabled } = props;
+      const {
+        onCancel,
+        confirmText,
+        cancelText,
+        confirmDisabled,
+        errorToMessage
+      } = props;
       return {
-        onDismiss: onCancel,
-        footer: /* @__PURE__ */ jsxs(Fragment$1, { children: [
+        onDismiss: isPending ? noop : onCancel,
+        footer: /* @__PURE__ */ jsxs(ActionFooter, { error, errorToMessage, children: [
           /* @__PURE__ */ jsx(
             Button,
             {
               variant: "outlined",
               text: cancelText ?? "Cancel",
+              disabled: isPending,
               onPress: onCancel
             }
           ),
@@ -1604,14 +1780,18 @@ function resolveVariant(props, accent) {
             {
               accent,
               text: confirmText ?? "Confirm",
+              state: buttonState,
               disabled: confirmDisabled,
-              onPress: onConfirm
+              onPress: handleConfirm
             }
           )
         ] })
       };
     }
   }
+}
+function resolveConfirmHandler(props) {
+  return props.variant === "alert" ? noop : props.onConfirm;
 }
 function AlertDialog(props) {
   const {
@@ -1624,7 +1804,17 @@ function AlertDialog(props) {
     testID
   } = props;
   const descriptionId = useId();
-  const { footer, onDismiss } = resolveVariant(props, accent);
+  const { buttonState, error, handlePress } = usePressAsync(
+    resolveConfirmHandler(props)
+  );
+  const isPending = buttonState === "loading";
+  const { footer, onDismiss } = resolveVariant(props, {
+    accent,
+    buttonState,
+    error,
+    isPending,
+    handleConfirm: handlePress
+  });
   return /* @__PURE__ */ jsx(
     Modal,
     {
@@ -1725,135 +1915,21 @@ function ExternalLinkText({
   ) });
 }
 
-const messageFrameVariants = tv(
-  {
-    base: "flex-row items-center bg-highlight-accent overflow-hidden",
-    variants: {
-      size: {
-        sm: "gap-xs p-sm rounded-xs",
-        md: "gap-m p-m rounded-sm",
-        lg: "gap-l p-l rounded-md"
-      }
-    },
-    defaultVariants: { size: "md" }
-  },
-  { twMerge: false }
-);
-const ICON_SIZE$1 = { sm: 20, md: 24, lg: 28 };
-const DISMISS_BUTTON_SIZE = {
-  sm: 24,
-  md: 40,
-  lg: 40
-};
-function Message({
-  icon,
-  size = "md",
-  accent,
-  children,
-  onDismiss,
-  dismissIconAriaLabel
-}) {
-  const dismissDiameter = DISMISS_BUTTON_SIZE[size];
-  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(Box, { className: `shadow-m ${messageFrameVariants({ size })}`, children: [
-    /* @__PURE__ */ jsx(Icon, { icon, size: ICON_SIZE$1[size], className: "text-accent" }),
-    /* @__PURE__ */ jsx(Text, { className: "text-sharp grow", children }),
-    onDismiss ? /* @__PURE__ */ jsx(
-      Box,
-      {
-        style: { width: dismissDiameter, height: dismissDiameter },
-        className: "flex-center",
-        children: /* @__PURE__ */ jsx(
-          IconButton,
-          {
-            icon: /* @__PURE__ */ jsx(XRegularIcon, {}),
-            iconSize: size === "sm" ? "fill" : void 0,
-            size: dismissDiameter,
-            variant: "ghost",
-            "aria-label": dismissIconAriaLabel,
-            onPress: onDismiss
-          }
-        )
-      }
-    ) : null
-  ] }) });
-}
-function InfoMessage(props) {
-  return /* @__PURE__ */ jsx(Message, { ...props, accent: "info", icon: /* @__PURE__ */ jsx(InfoRegularIcon, {}) });
-}
-function ConfirmationMessage(props) {
-  return /* @__PURE__ */ jsx(Message, { ...props, accent: "success", icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
-}
-function WarningMessage(props) {
-  return /* @__PURE__ */ jsx(Message, { ...props, accent: "warning", icon: /* @__PURE__ */ jsx(WarningRegularIcon, {}) });
-}
-function ErrorMessage(props) {
-  return /* @__PURE__ */ jsx(Message, { ...props, accent: "danger", icon: /* @__PURE__ */ jsx(WarningDuotoneIcon, {}) });
-}
-
-const settledDisplayDurationMs = 4e3;
-const idleState = { buttonState: void 0, error: null };
-function pressAsyncReducer(previousState, action) {
-  switch (action.type) {
-    case "start":
-      return { buttonState: "loading", error: null };
-    case "resolve":
-      return { buttonState: "success", error: null };
-    case "reject":
-      return { buttonState: "failed", error: action.error };
-    case "settledTimeout":
-      return { buttonState: void 0, error: previousState.error };
-    default:
-      throw new Error(`Unhandled action: ${JSON.stringify(action)}`);
-  }
-}
-function usePressAsync(onPress) {
-  const [pressAsyncState, dispatch] = useReducer(pressAsyncReducer, idleState);
-  const settledTimerRef = useRef(void 0);
-  useEffect(() => {
-    return () => {
-      clearTimeout(settledTimerRef.current);
-    };
-  }, []);
-  function handlePress(event) {
-    if (pressAsyncState.buttonState === "loading") return;
-    clearTimeout(settledTimerRef.current);
-    const result = onPress(event);
-    if (!(result instanceof Promise)) return;
-    dispatch({ type: "start" });
-    function scheduleSettledTimeout() {
-      settledTimerRef.current = setTimeout(() => {
-        dispatch({ type: "settledTimeout" });
-      }, settledDisplayDurationMs);
-    }
-    result.then(() => {
-      dispatch({ type: "resolve" });
-      scheduleSettledTimeout();
-    }).catch((caughtError) => {
-      const normalizedError = caughtError instanceof Error ? caughtError : new Error(String(caughtError));
-      console.error(
-        "Unexpected error caught in ActionButton",
-        normalizedError
-      );
-      dispatch({ type: "reject", error: normalizedError });
-      scheduleSettledTimeout();
-    });
-  }
-  return { ...pressAsyncState, handlePress };
-}
-
 function ActionButton({
   onPress,
   errorToMessage,
+  errorMessageVariant,
   ...buttonProps
 }) {
   const { buttonState, error, handlePress } = usePressAsync(onPress);
   return /* @__PURE__ */ jsxs(VStack, { className: "shrink", children: [
     /* @__PURE__ */ jsx(Button, { ...buttonProps, state: buttonState, onPress: handlePress }),
     /* @__PURE__ */ jsx(
-      View,
+      CollapsibleErrorMessage,
       {
-        className: `overflow-hidden transition-[height,opacity] duration-collapse ${error ? "p-sm h-auto opacity-100" : "absolute h-0 opacity-0"}`,
-        children: /* @__PURE__ */ jsx(ErrorMessage, { size: "sm", children: errorToMessage(error) })
+        error,
+        errorToMessage,
+        variant: errorMessageVariant
       }
     )
   ] });
