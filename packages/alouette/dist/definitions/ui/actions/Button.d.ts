@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { type VariantProps } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { type ExternalOpenLinkBehavior } from "../../expo/ExternalLink.shared";
 import { type SVGIconElement } from "../primitives/Icon";
 import { type PressableBoxProps } from "./PressableBox";
 export declare const buttonHeight: {
@@ -136,8 +137,10 @@ export interface ButtonProps extends Omit<PressableBoxProps, "children">, Button
 export declare function Button({ icon, text, disabled, state, accent, variant, size, className, ...pressableProps }: ButtonProps): ReactNode;
 export interface ExternalLinkButtonProps extends ButtonProps {
     href: string;
+    /** How the link opens. Defaults to an in-app browser sheet / a new tab. */
+    openLinkBehavior?: ExternalOpenLinkBehavior;
 }
-export declare function ExternalLinkButton({ href, onPress, ...buttonProps }: ExternalLinkButtonProps): ReactNode;
+export declare function ExternalLinkButton({ href, openLinkBehavior, onPress, ...buttonProps }: ExternalLinkButtonProps): ReactNode;
 export interface InternalLinkButtonProps extends ButtonProps {
     href: string;
 }

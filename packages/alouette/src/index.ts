@@ -86,6 +86,8 @@ export {
   ExternalLinkButton,
   InternalLinkButton,
 } from "./ui/actions/Button";
+export type { ExternalLinkTextProps } from "./ui/actions/ExternalLinkText";
+export { ExternalLinkText } from "./ui/actions/ExternalLinkText";
 export type { ActionButtonProps } from "./ui/actions/ActionButton";
 export { ActionButton } from "./ui/actions/ActionButton";
 export type { IconButtonProps } from "./ui/actions/IconButton";
@@ -182,7 +184,7 @@ export { Breakpoints, BreakpointNameEnum } from "./config/Breakpoints";
 export type {
   ExternalLinkProps,
   ExternalLinkRequiredComponentProps,
-  ExternalOpenLinkBehavior,
 } from "./expo/ExternalLink";
 export { ExternalLink } from "./expo/ExternalLink";
+export type { ExternalOpenLinkBehavior } from "./expo/ExternalLink.shared";
 export { styled } from "./ui/styled";

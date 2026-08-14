@@ -4,15 +4,12 @@ import type { ComponentProps, FunctionComponent, ReactNode } from "react";
 import { Linking } from "react-native";
 import type { GestureResponderEvent } from "react-native";
 import { useColorVariable } from "../core/useColorToken";
+import type { ExternalOpenLinkBehavior } from "./ExternalLink.shared";
 
 export interface ExternalLinkRequiredComponentProps {
   onPress?: (event: GestureResponderEvent) => Promise<void> | void;
 }
 
-export interface ExternalOpenLinkBehavior {
-  native: "linking" | "webBrowser";
-  web: "targetBlank" | "targetSelf";
-}
 const useOpenExternalLink = () => {
   const textSharp = useColorVariable("text-sharp");
   const bgSurface = useColorVariable("bg-surface");

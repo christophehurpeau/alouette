@@ -1,11 +1,8 @@
 import type { ComponentProps, FunctionComponent, ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
+import type { ExternalOpenLinkBehavior } from "./ExternalLink.shared";
 export interface ExternalLinkRequiredComponentProps {
     onPress?: (event: GestureResponderEvent) => Promise<void> | void;
-}
-export interface ExternalOpenLinkBehavior {
-    native: "linking" | "webBrowser";
-    web: "targetBlank" | "targetSelf";
 }
 export interface ExternalLinkProps<C extends FunctionComponent<any>> {
     as: C;

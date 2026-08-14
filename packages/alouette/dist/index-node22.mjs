@@ -1,7 +1,7 @@
 import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
 import { VariableContextProvider, styled as styled$1, useUnstableNativeVariable } from 'nativewind';
 import { createContext, useContext, forwardRef, Children, cloneElement, Fragment, useRef, useState, useEffect, isValidElement, useId, useReducer, useCallback, useMemo } from 'react';
-import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, useWindowDimensions, Modal as Modal$1, TextInput, Switch as Switch$1, Linking } from 'react-native';
+import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, Linking, useWindowDimensions, Modal as Modal$1, TextInput, Switch as Switch$1 } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { extendTailwindMerge, twMerge as twMerge$1 } from 'tailwind-merge';
@@ -9,12 +9,15 @@ import { tv } from 'tailwind-variants';
 import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
 import { CheckCircleRegularIcon } from 'alouette-icons/phosphor-icons/CheckCircleRegularIcon';
 import { WarningDuotoneIcon } from 'alouette-icons/phosphor-icons/WarningDuotoneIcon';
+import * as WebBrowser from 'expo-web-browser';
+import { WebBrowserPresentationStyle } from 'expo-web-browser';
 import Animated, { Easing, useSharedValue, withTiming, useAnimatedProps } from 'react-native-reanimated';
 import { Circle, Svg } from 'react-native-svg';
 import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
 import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
 import { QuestionRegularIcon } from 'alouette-icons/phosphor-icons/QuestionRegularIcon';
 import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
+import { ArrowSquareOutRegularIcon } from 'alouette-icons/phosphor-icons/ArrowSquareOutRegularIcon';
 import { CaretDownRegularIcon } from 'alouette-icons/phosphor-icons/CaretDownRegularIcon';
 import { AsteriskSimpleRegularIcon } from 'alouette-icons/phosphor-icons/AsteriskSimpleRegularIcon';
 import { useForm, FormProvider, useFormContext, Controller, useFieldArray } from 'react-hook-form';
@@ -22,8 +25,6 @@ import { PlusRegularIcon } from 'alouette-icons/phosphor-icons/PlusRegularIcon';
 import { TrashRegularIcon } from 'alouette-icons/phosphor-icons/TrashRegularIcon';
 import { PencilSimpleRegularIcon } from 'alouette-icons/phosphor-icons/PencilSimpleRegularIcon';
 import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
-import * as WebBrowser from 'expo-web-browser';
-import { WebBrowserPresentationStyle } from 'expo-web-browser';
 
 const NativeThemeVariablesContext = createContext(
   null
@@ -744,6 +745,59 @@ function useColorToken(className) {
   return useColorVariable(`--color-${token ?? "sharp"}`);
 }
 
+const useOpenExternalLink = () => {
+  const textSharp = useColorVariable("text-sharp");
+  const bgSurface = useColorVariable("bg-surface");
+  return async (href, openLinkBehavior) => {
+    switch (openLinkBehavior.native) {
+      case "webBrowser": {
+        return WebBrowser.openBrowserAsync(href, {
+          controlsColor: textSharp,
+          dismissButtonStyle: "close",
+          presentationStyle: WebBrowserPresentationStyle.PAGE_SHEET,
+          toolbarColor: bgSurface,
+          secondaryToolbarColor: bgSurface,
+          readerMode: false,
+          enableBarCollapsing: false,
+          showTitle: true,
+          enableDefaultShareMenuItem: true
+        });
+      }
+      case "linking": {
+        return Linking.openURL(href);
+      }
+      default: {
+        throw new Error(
+          `Unsupported openLinkBehavior.native: ${openLinkBehavior.native}`
+        );
+      }
+    }
+  };
+};
+function ExternalLink({
+  as: C,
+  href,
+  openLinkBehavior,
+  onPress,
+  ...props
+}) {
+  const openExternalLink = useOpenExternalLink();
+  const handlePress = (e) => {
+    if (onPress) {
+      onPress(e);
+      if (e?.defaultPrevented) return;
+    }
+    if (!href) return;
+    return openExternalLink(href, openLinkBehavior);
+  };
+  return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
+}
+
+const defaultExternalOpenLinkBehavior = {
+  native: "webBrowser",
+  web: "targetBlank"
+};
+
 function Icon({
   icon,
   size = 20,
@@ -1156,6 +1210,12 @@ function resolveTerminalIcon(state) {
   }
   return { terminalIcon: void 0, terminalIconAccent: void 0 };
 }
+function isButtonDisabled({
+  disabled,
+  state
+}) {
+  return disabled === true || state != null;
+}
 function Button({
   icon,
   text,
@@ -1183,7 +1243,7 @@ function Button({
   }, [isLoading]);
   const { terminalIcon, terminalIconAccent } = resolveTerminalIcon(state);
   const hasOverlayIcon = showSpinner || terminalIcon !== void 0;
-  const isDisabled = disabled === true || state != null;
+  const isDisabled = isButtonDisabled({ disabled, state });
   const styles = buttonVariants({
     size,
     variant,
@@ -1229,23 +1289,19 @@ function Button({
 }
 function ExternalLinkButton({
   href,
+  openLinkBehavior = defaultExternalOpenLinkBehavior,
   onPress,
   ...buttonProps
 }) {
   return /* @__PURE__ */ jsx(
-    Button,
+    ExternalLink,
     {
-      ...buttonProps,
+      as: Button,
+      href: isButtonDisabled(buttonProps) ? "" : href,
+      openLinkBehavior,
       role: "link",
-      onPress: (event) => {
-        onPress?.(event);
-        if (event.defaultPrevented) return;
-        if (Platform.OS === "web") {
-          window.open(href, "_blank", "noopener,noreferrer");
-        } else {
-          throw new Error("todo");
-        }
-      }
+      onPress: onPress ?? void 0,
+      ...buttonProps
     }
   );
 }
@@ -1598,6 +1654,75 @@ function InfoAlertDialog(props) {
 }
 function SuccessAlertDialog(props) {
   return /* @__PURE__ */ jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
+}
+
+const externalLinkTextVariants = tv(
+  {
+    slots: {
+      frame: "group flex-row items-center gap-xxs self-start rounded-xs py-xxs focus-visible:outline-interactive-outlined-outline-focus",
+      text: "shrink font-body-bold underline transition-[color] duration-fast ease-in",
+      icon: ""
+    },
+    variants: {
+      size: {
+        sm: { text: "text-sm" },
+        md: { text: "text-base" }
+      },
+      disabled: {
+        true: {
+          text: "text-disabled-muted",
+          icon: "text-disabled-muted"
+        },
+        false: {
+          text: "text-interactive-pressable group-hover:text-interactive-hover group-active:text-interactive-active",
+          icon: "text-interactive-pressable group-hover:text-interactive-hover group-active:text-interactive-active"
+        }
+      }
+    },
+    defaultVariants: { size: "md", disabled: false }
+  },
+  { twMerge: false }
+);
+function ExternalLinkText({
+  href,
+  openLinkBehavior = defaultExternalOpenLinkBehavior,
+  text,
+  icon = /* @__PURE__ */ jsx(ArrowSquareOutRegularIcon, {}),
+  accent,
+  size = "md",
+  disabled,
+  className,
+  onPress,
+  ...pressableProps
+}) {
+  const isDisabled = disabled === true;
+  const styles = externalLinkTextVariants({ size, disabled: isDisabled });
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(
+    ExternalLink,
+    {
+      withFocusVisibleOutline: true,
+      as: InteractiveBox,
+      href: isDisabled ? "" : href,
+      openLinkBehavior,
+      role: "link",
+      "aria-disabled": isDisabled,
+      disabled,
+      className: styles.frame({ className }),
+      onPress: onPress ?? void 0,
+      ...pressableProps,
+      children: [
+        /* @__PURE__ */ jsx(
+          Icon,
+          {
+            icon,
+            size: size === "sm" ? 16 : 20,
+            className: styles.icon()
+          }
+        ),
+        /* @__PURE__ */ jsx(Text, { className: styles.text(), children: text })
+      ]
+    }
+  ) });
 }
 
 const messageFrameVariants = tv(
@@ -3288,53 +3413,5 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-const useOpenExternalLink = () => {
-  const textSharp = useColorVariable("text-sharp");
-  const bgSurface = useColorVariable("bg-surface");
-  return async (href, openLinkBehavior) => {
-    switch (openLinkBehavior.native) {
-      case "webBrowser": {
-        return WebBrowser.openBrowserAsync(href, {
-          controlsColor: textSharp,
-          dismissButtonStyle: "close",
-          presentationStyle: WebBrowserPresentationStyle.PAGE_SHEET,
-          toolbarColor: bgSurface,
-          secondaryToolbarColor: bgSurface,
-          readerMode: false,
-          enableBarCollapsing: false,
-          showTitle: true,
-          enableDefaultShareMenuItem: true
-        });
-      }
-      case "linking": {
-        return Linking.openURL(href);
-      }
-      default: {
-        throw new Error(
-          `Unsupported openLinkBehavior.native: ${openLinkBehavior.native}`
-        );
-      }
-    }
-  };
-};
-function ExternalLink({
-  as: C,
-  href,
-  openLinkBehavior,
-  onPress,
-  ...props
-}) {
-  const openExternalLink = useOpenExternalLink();
-  const handlePress = (e) => {
-    if (onPress) {
-      onPress(e);
-      if (e?.defaultPrevented) return;
-    }
-    if (!href) return;
-    return openExternalLink(href, openLinkBehavior);
-  };
-  return /* @__PURE__ */ jsx(C, { ...props, onPress: handlePress });
-}
-
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme };
 //# sourceMappingURL=index-node22.mjs.map

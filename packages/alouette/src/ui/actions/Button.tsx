@@ -1,9 +1,13 @@
 import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
 import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/WarningDuotoneIcon";
 import { type ReactNode, useEffect, useState } from "react";
-import { Platform } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { ExternalLink } from "../../expo/ExternalLink";
+import {
+  type ExternalOpenLinkBehavior,
+  defaultExternalOpenLinkBehavior,
+} from "../../expo/ExternalLink.shared";
 import { AccentScope } from "../containers/AccentScope";
 import { IndeterminateCircularProgress } from "../feedback/CircularProgress";
 import { indeterminateExitDurationMs } from "../feedback/useSimulatedProgress";
@@ -114,6 +118,18 @@ export interface ButtonProps
   state?: ButtonState;
 }
 
+interface IsButtonDisabledParams {
+  disabled?: boolean | null;
+  state?: ButtonState;
+}
+
+function isButtonDisabled({
+  disabled,
+  state,
+}: IsButtonDisabledParams): boolean {
+  return disabled === true || state != null;
+}
+
 export function Button({
   icon,
   text,
@@ -148,7 +164,7 @@ export function Button({
   const { terminalIcon, terminalIconAccent } = resolveTerminalIcon(state);
   const hasOverlayIcon = showSpinner || terminalIcon !== undefined;
 
-  const isDisabled = disabled === true || state != null;
+  const isDisabled = isButtonDisabled({ disabled, state });
   const styles = buttonVariants({
     size,
     variant,
@@ -199,27 +215,27 @@ export function Button({
 
 export interface ExternalLinkButtonProps extends ButtonProps {
   href: string;
+  /** How the link opens. Defaults to an in-app browser sheet / a new tab. */
+  openLinkBehavior?: ExternalOpenLinkBehavior;
 }
 
 export function ExternalLinkButton({
   href,
+  openLinkBehavior = defaultExternalOpenLinkBehavior,
   onPress,
   ...buttonProps
 }: ExternalLinkButtonProps): ReactNode {
   return (
-    <Button
-      {...buttonProps}
+    <ExternalLink
+      as={Button}
+      // A disabled Pressable never sees the press that would cancel the
+      // navigation, so the href has to go with it — ExternalLink drops a falsy
+      // one on both platforms.
+      href={isButtonDisabled(buttonProps) ? "" : href}
+      openLinkBehavior={openLinkBehavior}
       role="link"
-      onPress={(event) => {
-        onPress?.(event);
-        if (event.defaultPrevented) return;
-        if (Platform.OS === "web") {
-          window.open(href, "_blank", "noopener,noreferrer");
-        } else {
-          throw new Error("todo");
-          // Linking.openURL(href);
-        }
-      }}
+      onPress={onPress ?? undefined}
+      {...buttonProps}
     />
   );
 }

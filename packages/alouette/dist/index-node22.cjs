@@ -12,12 +12,14 @@ const tailwindVariants = require('tailwind-variants');
 const XRegularIcon = require('alouette-icons/phosphor-icons/XRegularIcon');
 const CheckCircleRegularIcon = require('alouette-icons/phosphor-icons/CheckCircleRegularIcon');
 const WarningDuotoneIcon = require('alouette-icons/phosphor-icons/WarningDuotoneIcon');
+const WebBrowser = require('expo-web-browser');
 const Animated = require('react-native-reanimated');
 const reactNativeSvg = require('react-native-svg');
 const CheckRegularIcon = require('alouette-icons/phosphor-icons/CheckRegularIcon');
 const InfoRegularIcon = require('alouette-icons/phosphor-icons/InfoRegularIcon');
 const QuestionRegularIcon = require('alouette-icons/phosphor-icons/QuestionRegularIcon');
 const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegularIcon');
+const ArrowSquareOutRegularIcon = require('alouette-icons/phosphor-icons/ArrowSquareOutRegularIcon');
 const CaretDownRegularIcon = require('alouette-icons/phosphor-icons/CaretDownRegularIcon');
 const AsteriskSimpleRegularIcon = require('alouette-icons/phosphor-icons/AsteriskSimpleRegularIcon');
 const reactHookForm = require('react-hook-form');
@@ -25,7 +27,6 @@ const PlusRegularIcon = require('alouette-icons/phosphor-icons/PlusRegularIcon')
 const TrashRegularIcon = require('alouette-icons/phosphor-icons/TrashRegularIcon');
 const PencilSimpleRegularIcon = require('alouette-icons/phosphor-icons/PencilSimpleRegularIcon');
 const CaretRightRegularIcon = require('alouette-icons/phosphor-icons/CaretRightRegularIcon');
-const WebBrowser = require('expo-web-browser');
 
 function _interopNamespaceDefault(e) {
   const n = Object.create(null, { [Symbol.toStringTag]: { value: 'Module' } });
@@ -759,6 +760,59 @@ function useColorToken(className) {
   return useColorVariable(`--color-${token ?? "sharp"}`);
 }
 
+const useOpenExternalLink = () => {
+  const textSharp = useColorVariable("text-sharp");
+  const bgSurface = useColorVariable("bg-surface");
+  return async (href, openLinkBehavior) => {
+    switch (openLinkBehavior.native) {
+      case "webBrowser": {
+        return WebBrowser__namespace.openBrowserAsync(href, {
+          controlsColor: textSharp,
+          dismissButtonStyle: "close",
+          presentationStyle: WebBrowser.WebBrowserPresentationStyle.PAGE_SHEET,
+          toolbarColor: bgSurface,
+          secondaryToolbarColor: bgSurface,
+          readerMode: false,
+          enableBarCollapsing: false,
+          showTitle: true,
+          enableDefaultShareMenuItem: true
+        });
+      }
+      case "linking": {
+        return reactNative.Linking.openURL(href);
+      }
+      default: {
+        throw new Error(
+          `Unsupported openLinkBehavior.native: ${openLinkBehavior.native}`
+        );
+      }
+    }
+  };
+};
+function ExternalLink({
+  as: C,
+  href,
+  openLinkBehavior,
+  onPress,
+  ...props
+}) {
+  const openExternalLink = useOpenExternalLink();
+  const handlePress = (e) => {
+    if (onPress) {
+      onPress(e);
+      if (e?.defaultPrevented) return;
+    }
+    if (!href) return;
+    return openExternalLink(href, openLinkBehavior);
+  };
+  return /* @__PURE__ */ jsxRuntime.jsx(C, { ...props, onPress: handlePress });
+}
+
+const defaultExternalOpenLinkBehavior = {
+  native: "webBrowser",
+  web: "targetBlank"
+};
+
 function Icon({
   icon,
   size = 20,
@@ -1171,6 +1225,12 @@ function resolveTerminalIcon(state) {
   }
   return { terminalIcon: void 0, terminalIconAccent: void 0 };
 }
+function isButtonDisabled({
+  disabled,
+  state
+}) {
+  return disabled === true || state != null;
+}
 function Button({
   icon,
   text,
@@ -1198,7 +1258,7 @@ function Button({
   }, [isLoading]);
   const { terminalIcon, terminalIconAccent } = resolveTerminalIcon(state);
   const hasOverlayIcon = showSpinner || terminalIcon !== void 0;
-  const isDisabled = disabled === true || state != null;
+  const isDisabled = isButtonDisabled({ disabled, state });
   const styles = buttonVariants({
     size,
     variant,
@@ -1244,23 +1304,19 @@ function Button({
 }
 function ExternalLinkButton({
   href,
+  openLinkBehavior = defaultExternalOpenLinkBehavior,
   onPress,
   ...buttonProps
 }) {
   return /* @__PURE__ */ jsxRuntime.jsx(
-    Button,
+    ExternalLink,
     {
-      ...buttonProps,
+      as: Button,
+      href: isButtonDisabled(buttonProps) ? "" : href,
+      openLinkBehavior,
       role: "link",
-      onPress: (event) => {
-        onPress?.(event);
-        if (event.defaultPrevented) return;
-        if (reactNative.Platform.OS === "web") {
-          window.open(href, "_blank", "noopener,noreferrer");
-        } else {
-          throw new Error("todo");
-        }
-      }
+      onPress: onPress ?? void 0,
+      ...buttonProps
     }
   );
 }
@@ -1613,6 +1669,75 @@ function InfoAlertDialog(props) {
 }
 function SuccessAlertDialog(props) {
   return /* @__PURE__ */ jsxRuntime.jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsxRuntime.jsx(CheckRegularIcon.CheckRegularIcon, {}) });
+}
+
+const externalLinkTextVariants = tailwindVariants.tv(
+  {
+    slots: {
+      frame: "group flex-row items-center gap-xxs self-start rounded-xs py-xxs focus-visible:outline-interactive-outlined-outline-focus",
+      text: "shrink font-body-bold underline transition-[color] duration-fast ease-in",
+      icon: ""
+    },
+    variants: {
+      size: {
+        sm: { text: "text-sm" },
+        md: { text: "text-base" }
+      },
+      disabled: {
+        true: {
+          text: "text-disabled-muted",
+          icon: "text-disabled-muted"
+        },
+        false: {
+          text: "text-interactive-pressable group-hover:text-interactive-hover group-active:text-interactive-active",
+          icon: "text-interactive-pressable group-hover:text-interactive-hover group-active:text-interactive-active"
+        }
+      }
+    },
+    defaultVariants: { size: "md", disabled: false }
+  },
+  { twMerge: false }
+);
+function ExternalLinkText({
+  href,
+  openLinkBehavior = defaultExternalOpenLinkBehavior,
+  text,
+  icon = /* @__PURE__ */ jsxRuntime.jsx(ArrowSquareOutRegularIcon.ArrowSquareOutRegularIcon, {}),
+  accent,
+  size = "md",
+  disabled,
+  className,
+  onPress,
+  ...pressableProps
+}) {
+  const isDisabled = disabled === true;
+  const styles = externalLinkTextVariants({ size, disabled: isDisabled });
+  return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsxs(
+    ExternalLink,
+    {
+      withFocusVisibleOutline: true,
+      as: InteractiveBox,
+      href: isDisabled ? "" : href,
+      openLinkBehavior,
+      role: "link",
+      "aria-disabled": isDisabled,
+      disabled,
+      className: styles.frame({ className }),
+      onPress: onPress ?? void 0,
+      ...pressableProps,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          Icon,
+          {
+            icon,
+            size: size === "sm" ? 16 : 20,
+            className: styles.icon()
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(Text, { className: styles.text(), children: text })
+      ]
+    }
+  ) });
 }
 
 const messageFrameVariants = tailwindVariants.tv(
@@ -3303,54 +3428,6 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-const useOpenExternalLink = () => {
-  const textSharp = useColorVariable("text-sharp");
-  const bgSurface = useColorVariable("bg-surface");
-  return async (href, openLinkBehavior) => {
-    switch (openLinkBehavior.native) {
-      case "webBrowser": {
-        return WebBrowser__namespace.openBrowserAsync(href, {
-          controlsColor: textSharp,
-          dismissButtonStyle: "close",
-          presentationStyle: WebBrowser.WebBrowserPresentationStyle.PAGE_SHEET,
-          toolbarColor: bgSurface,
-          secondaryToolbarColor: bgSurface,
-          readerMode: false,
-          enableBarCollapsing: false,
-          showTitle: true,
-          enableDefaultShareMenuItem: true
-        });
-      }
-      case "linking": {
-        return reactNative.Linking.openURL(href);
-      }
-      default: {
-        throw new Error(
-          `Unsupported openLinkBehavior.native: ${openLinkBehavior.native}`
-        );
-      }
-    }
-  };
-};
-function ExternalLink({
-  as: C,
-  href,
-  openLinkBehavior,
-  onPress,
-  ...props
-}) {
-  const openExternalLink = useOpenExternalLink();
-  const handlePress = (e) => {
-    if (onPress) {
-      onPress(e);
-      if (e?.defaultPrevented) return;
-    }
-    if (!href) return;
-    return openExternalLink(href, openLinkBehavior);
-  };
-  return /* @__PURE__ */ jsxRuntime.jsx(C, { ...props, onPress: handlePress });
-}
-
 exports.SafeAreaProvider = reactNativeSafeAreaContext.SafeAreaProvider;
 exports.useSafeAreaInsets = reactNativeSafeAreaContext.useSafeAreaInsets;
 exports.AccentScope = AccentScope;
@@ -3371,6 +3448,7 @@ exports.EditableItem = EditableItem;
 exports.ErrorMessage = ErrorMessage;
 exports.ExternalLink = ExternalLink;
 exports.ExternalLinkButton = ExternalLinkButton;
+exports.ExternalLinkText = ExternalLinkText;
 exports.FlatList = FlatList;
 exports.Form = Form;
 exports.FormEditableItem = FormEditableItem;
