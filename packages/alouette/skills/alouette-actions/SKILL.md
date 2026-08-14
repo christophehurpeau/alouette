@@ -1,8 +1,9 @@
 ---
 name: alouette-actions
 description: >
-  Buttons (Button, IconButton, ExternalLinkButton, InternalLinkButton) and
-  pressable surfaces (PressableBox, PressableListItem). variant is
+  Buttons (Button, IconButton, ExternalLinkButton, InternalLinkButton), the
+  inline ExternalLinkText, and pressable surfaces (PressableBox,
+  PressableListItem). variant is
   contained|outlined|ghost, size is sm|md, accent defaults to brand. Button
   label is the required text prop (not children); IconButton
   requires aria-label. Interactive hover/focus/active/disabled states are built
@@ -12,7 +13,7 @@ description: >
   Load when adding buttons or custom pressable elements.
 type: core
 library: alouette
-library_version: "22.0.0"
+library_version: "22.4.0"
 requires:
   - alouette-theming
 sources:
@@ -142,12 +143,14 @@ import { PressableBox, PressableListItem, Text } from "alouette";
 ### Link buttons
 
 ```tsx
-import { ExternalLinkButton, InternalLinkButton } from "alouette";
+import { ExternalLinkButton, ExternalLinkText, InternalLinkButton } from "alouette";
 
 <ExternalLinkButton href="https://example.com" text="Open" />
 <InternalLinkButton href="/settings" text="Settings" />
 ```
 
+`ExternalLinkText` is the inline counterpart — an underlined text link with a
+leading arrow icon, for a link inside a sentence rather than a call to action.
 For full external-link control (in-app browser vs new tab), see
 alouette-external-links/SKILL.md.
 

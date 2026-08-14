@@ -7,14 +7,17 @@ description: >
   border-muted). Tokens are className-only: alouette exports no JS token-read
   hook. Read the current mode with useCurrentMode. For an accent that toggles at
   runtime (e.g. on hover) without remounting the subtree, use StableAccentScope
-  instead of AccentScope. Load when applying colors, accents or dark mode, or
-  when shipping a custom palette.
+  instead of AccentScope; inside a portal (a modal or any other overlay), where
+  the scope escapes the themed subtree, use PortalAccentScope. Load when applying
+  colors, accents or dark mode, or when shipping a custom palette.
 type: core
 library: alouette
-library_version: "22.0.0"
+library_version: "22.4.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/PortalAccentScope.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/PortalAccentScope.web.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/ScopedTheme.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/ScopedTheme.web.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteConfig.ts"
@@ -117,6 +120,29 @@ const [pendingRemoval, setPendingRemoval] = useState(false);
 </StableAccentScope>;
 ```
 
+### Theme a portalled subtree
+
+A portal renders outside the themed DOM subtree, so on web the theme className of
+its ancestors no longer applies and the accent has to be rebuilt from the base
+mode. `PortalAccentScope` does that — it is what `Modal` uses internally, so
+`Modal`'s own `accent` prop already works. Reach for it directly only when you
+portal something yourself:
+
+```tsx
+import { PortalAccentScope } from "alouette";
+
+<RNModal transparent visible={visible}>
+  <PortalAccentScope accent="danger">{overlay}</PortalAccentScope>
+</RNModal>;
+```
+
+Web nests two scopes — the outer one re-declares the full `light`/`dark` token
+set the portal escaped, the inner one layers the accent on top — and both stay
+mounted, so toggling `accent` never remounts the subtree. Native has no portal
+problem (`ScopedTheme` pushes merged variables through React context, which
+crosses wherever the host renders the tree), so there it is a single
+`StableAccentScope`.
+
 ### Ship a custom palette for the existing accents
 
 An app can re-color the existing accents (`brand`, `danger`, `info`, `success`,
@@ -166,11 +192,15 @@ CSS:
 ```
 
 ```tsx
-import { AlouetteProvider } from "alouette";
+import { AlouetteProvider, type ThemeVariablesMap } from "alouette";
 import { themeVariables } from "./themeVariables";
 
 <AlouetteProvider themeVariables={themeVariables}>{/* app */}</AlouetteProvider>;
 ```
+
+`ThemeVariablesMap` is exported for code that passes the map around (a theme
+switcher, a test helper). The `themeVariables.ts` that `writeTheme` emits already
+imports it from `alouette` and annotates the map with it.
 
 `PaletteSpec` per accent: `type` (`"accent"` | `"brightAccent"` | `"grayscale"`),
 `hue` (0–360), optional `hueHi` / `hueLo` (hue ramp across lightness) and

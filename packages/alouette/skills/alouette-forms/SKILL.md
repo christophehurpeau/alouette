@@ -1,22 +1,22 @@
 ---
 name: alouette-forms
 description: >
-  Forms end to end. Inputs: InputText (mode: password/email/number/tel/url/search),
-  TextArea, Switch (checked + onValueChange; use disabled not editable). Single-select:
-  RadioGroup + Radio (circle-dot list) and RadioButtonGroup + RadioButton (segmented
-  pill bar); controlled/uncontrolled via value/defaultValue/onValueChange + accent/disabled.
+  Inputs: InputText (mode: password/email/number/tel/url/search), TextArea, Switch
+  (checked + onValueChange; use disabled not editable). Single-select groups,
+  controlled or not via value/defaultValue/onValueChange + accent/disabled:
+  RadioGroup + Radio (circle-dot list), RadioButtonGroup + RadioButton (segmented
+  pill bar), RadioCardGroup + RadioCard (icon/label/description cards, list|stack).
   Validation on react-hook-form: Form owns the instance and exposes submit() via render
   prop (no control passing); FormField wires Controller to FormItem label/error/required;
   FormFieldArray wraps useFieldArray with add/remove; FormSubmitButton drives
   loading/success/failed; SimpleVForm is the vertical-stack shortcut;
-  FormEditableItem is an EditableItem row whose editor is a modal owning its own
-  Form (mounted per open, so cancel is an unmount — no snapshot/restore).
-  errorToMessage required (i18n); FormValidationError distinguishes invalid fields
-  from onSubmit failures. Load when building text fields, toggles, radio groups, a
-  validated form, or an edit-in-a-modal row.
+  FormEditableItem edits a row in a modal owning its own Form (mounted per open, so
+  cancel is an unmount). errorToMessage required (i18n); FormValidationError
+  distinguishes invalid fields from onSubmit failures. Load when building text fields,
+  toggles, radio groups, a validated form, or an edit-in-a-modal row.
 type: core
 library: alouette
-library_version: "22.0.0"
+library_version: "22.4.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -28,6 +28,9 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Radio.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioButtonGroup.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioButton.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCard.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/Form.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormItem.tsx"
@@ -85,51 +88,46 @@ import { InputText } from "alouette";
 <Switch disabled checked={on} />
 ```
 
-### RadioGroup — circle-dot single-select list
+### Single-select groups
 
-`RadioGroup` owns the selected value; `Radio` children read it via context.
-Controlled/uncontrolled via `value` / `defaultValue` + `onValueChange`. `accent`
-and `disabled` propagate to all options; `disabled` on an individual `Radio`
-disables only that option. Label the group via `aria-labelledby`.
+Three families share one API: the group owns the value (`value` / `defaultValue`
++ `onValueChange`, plus `accent` and `disabled`), children are composed rather
+than passed as an options array, and a child's own `disabled` affects only that
+option. Label the group via `aria-labelledby`.
+
+- `RadioGroup` + `Radio` — circle-dot list, for longer or self-evident options.
+- `RadioButtonGroup` + `RadioButton` — segmented pill bar: a lowered 44px track,
+  each pressable filling the tap target around a shorter visible chip. It is a
+  form input; for the same material used to move between destinations or switch
+  views use `NavBar` / `Tabs` (alouette-navigation/SKILL.md).
+- `RadioCardGroup` + `RadioCard` — cards with `icon`, `label`, `description` and
+  a radio indicator, for options that need explaining. The selected card is
+  `PressableBox`'s `contained` fill, the rest its `outlined` surface. Group
+  `variant` is `"list"` (default, one per row) or `"stack"` (cards wrap and share
+  a row from a 240px basis).
 
 ```tsx
-import { RadioGroup, Radio } from "alouette";
-
-<RadioGroup
-  defaultValue="week"
-  onValueChange={setRange}
-  aria-labelledby={labelId}
->
+<RadioGroup defaultValue="week" onValueChange={setRange} aria-labelledby={labelId}>
   <Radio value="day" label="Day" />
-  <Radio value="week" label="Week" />
   <Radio value="month" label="Month" disabled />
 </RadioGroup>
-```
-
-### RadioButtonGroup — segmented pill bar
-
-Same API as `RadioGroup` / `Radio`, but rendered as a pill-style segmented
-control. The track is a `Surface variant="lowered"` with no vertical padding
-(44 px); each `RadioButton` pressable fills the full 44 px tap target while
-centering a shorter visible chip.
-
-It is a form input: it answers a question and submits a value. For the same
-material used to move between destinations or switch views, use `NavBar` or
-`Tabs` — see alouette-navigation/SKILL.md.
-
-```tsx
-import { RadioButtonGroup, RadioButton } from "alouette";
 
 <RadioButtonGroup defaultValue="week" accent="brand">
   <RadioButton value="day" label="Day" />
   <RadioButton value="week" label="Week" />
-  <RadioButton value="month" label="Month" />
 </RadioButtonGroup>
+
+<RadioCardGroup variant="stack" defaultValue="public" onValueChange={setVisibility}>
+  <RadioCard value="public" icon={<GlobeRegularIcon />} label="Public"
+    description="Anyone with the link" />
+  <RadioCard value="private" icon={<LockRegularIcon />} label="Private" />
+</RadioCardGroup>
 ```
 
-Inside a form, render it from a `FormField` `render` prop for label/error
-wiring — `value={field.value}` + `onValueChange={field.onChange}` +
-`aria-labelledby={labelId}` (no `ref`, it is not focusable text).
+`label` is each option's accessible name — required even when a description
+carries the detail. Inside a form, render any of the three from a `FormField`
+`render` prop: `value={field.value}` + `onValueChange={field.onChange}` +
+`aria-labelledby={labelId}` (no `ref`, they are not focusable text).
 
 ## Validated forms
 
@@ -238,12 +236,10 @@ or via `${name}.fieldName` for an object item:
 />
 ```
 
-`render` on the inner `FormField` is an `InputText` wired exactly as above.
-
-The leading `minSize` items are padded in on mount and cannot be removed.
-Each row tints to the danger accent on hover over its remove button via
-`StableAccentScope` (see alouette-theming) — that's built in, not something
-callers wire up themselves.
+`render` on the inner `FormField` is an `InputText` wired exactly as above. The
+leading `minSize` items are padded in on mount and cannot be removed, and each
+row tints to the danger accent on hover over its remove button via
+`StableAccentScope` (alouette-theming) — built in, not caller-wired.
 
 ### Edit-in-a-modal rows with FormEditableItem
 
@@ -273,11 +269,9 @@ plain unmount — the screen's state is never touched by an abandoned edit.
 for you. It takes the row props (`label`, `summary`, `details`, `editAriaLabel`,
 `editIcon`, `variant`, `accent`, `disabled` — see alouette-data/SKILL.md) plus
 `Form`'s `defaultValues` / `mode` / `onSubmit`, and the modal's `title`
-(defaults to `label`), `size` and `closeButtonAriaLabel`.
-
-The modal closes only once `onSubmit` resolves: a rejection (or a
-`FormValidationError` from invalid fields) keeps it open with the error on the
-submit button.
+(defaults to `label`), `size` and `closeButtonAriaLabel`. The modal closes only
+once `onSubmit` resolves: a rejection (or a `FormValidationError` from invalid
+fields) keeps it open with the error on the submit button.
 
 ### Submit lifecycle
 
@@ -487,11 +481,18 @@ value with no restore logic.
 
 Source: packages/alouette/src/ui/forms/FormEditableItem.tsx
 
-### MEDIUM Confusing RadioGroup with RadioButtonGroup
+### MEDIUM Picking the wrong single-select family
 
 `RadioGroup` + `Radio`: vertical circle-dot list (longer option lists, labeled
 form fields). `RadioButtonGroup` + `RadioButton`: horizontal segmented pill bar
-(2–4 compact, equal-weight choices like view mode or time range). Neither
-replaces `Select` — use `Select` for large option lists.
+(2–4 compact, equal-weight choices like view mode or time range).
+`RadioCardGroup` + `RadioCard`: cards, for a few options that each need an icon
+and a line of explanation. None replaces `Select` — use `Select` for large option
+lists.
 
-Source: packages/alouette/src/ui/inputs/RadioGroup.tsx; ui/inputs/RadioButtonGroup.tsx
+The three share one context, so a child must sit inside its own group: a
+`RadioCard` under a `RadioGroup` renders, but a `Radio` outside any of the three
+throws "Radio, RadioButton and RadioCard must be rendered inside a RadioGroup,
+RadioButtonGroup or RadioCardGroup."
+
+Source: packages/alouette/src/ui/inputs/RadioGroup.tsx; ui/inputs/RadioButtonGroup.tsx; ui/inputs/RadioCardGroup.tsx

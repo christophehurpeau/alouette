@@ -7,12 +7,13 @@ description: >
   rendered icon element and is auto-sized. Badge has no className prop and is
   not pressable. EditableItem: a labelled row (bold label + summary node +
   optional details/children) with a pencil IconButton; it owns no editor and
-  calls onEdit, editAriaLabel is required. Load when labelling an item with a
-  status, count, tag or category chip, or when showing a value with an edit
-  affordance.
+  calls onEdit, editAriaLabel is required. Bullet: an icon + text list row, the
+  icon tinted with the current accent. Load when labelling an item with a
+  status, count, tag or category chip, when listing points with an icon, or when
+  showing a value with an edit affordance.
 type: core
 library: alouette
-library_version: "22.0.0"
+library_version: "22.4.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -21,6 +22,8 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.stories.tsx"
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -92,6 +95,26 @@ with a wrapper — it takes no `className`.
   <Badge accent="success" size="sm">Paid</Badge>
 </HStack>
 ```
+
+## Bullet
+
+`Bullet` is one row of an icon-led list: a leading `icon` tinted `text-accent`
+and the text as `children`. It takes no `accent` of its own — it reads the
+nearest scope, so accent a whole list by accenting its container. Stack rows in a
+`VStack` and choose the gap yourself.
+
+```tsx
+import { Bullet, VStack } from "alouette";
+import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
+
+<VStack className="gap-xs">
+  <Bullet icon={<CheckCircleRegularIcon />}>Consistent UI</Bullet>
+  <Bullet icon={<CheckCircleRegularIcon />}>Accessible</Bullet>
+</VStack>;
+```
+
+The icon stays aligned with the **first** line (`items-start`) and the text
+shrinks, so long content wraps under itself rather than pushing the icon down.
 
 ## EditableItem
 
@@ -257,6 +280,28 @@ The hand-rolled row drifts on spacing and usually forgets the edit button's
 modal, `FormEditableItem` replaces the surrounding state as well.
 
 Source: packages/alouette/src/ui/data/EditableItem.tsx
+
+### MEDIUM Hand-rolling a bulleted row
+
+Wrong:
+
+```tsx
+<HStack className="gap-sm items-start">
+  <Icon icon={<CheckCircleRegularIcon />} className="text-accent" />
+  <Text className="shrink">Accessible</Text>
+</HStack>
+```
+
+Correct:
+
+```tsx
+<Bullet icon={<CheckCircleRegularIcon />}>Accessible</Bullet>
+```
+
+That is exactly what `Bullet` renders. Hand-rolled rows drift on the gap and
+routinely drop `shrink` on the `Text`, which stops long text from wrapping.
+
+Source: packages/alouette/src/ui/data/Bullet.tsx
 
 ### MEDIUM Expecting EditableItem to open an editor
 

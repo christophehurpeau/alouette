@@ -12,7 +12,7 @@ description: >
   a tab bar, a section switcher, or navigation between routes.
 type: core
 library: alouette
-library_version: "22.0.0"
+library_version: "22.4.0"
 requires:
   - alouette-theming
   - alouette-actions

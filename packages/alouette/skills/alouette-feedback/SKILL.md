@@ -12,7 +12,7 @@ description: >
   alerts, dismissible notices, connection status, or progress.
 type: core
 library: alouette
-library_version: "22.0.0"
+library_version: "22.4.0"
 requires:
   - alouette-theming
 sources:

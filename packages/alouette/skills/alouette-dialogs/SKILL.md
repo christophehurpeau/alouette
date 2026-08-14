@@ -1,24 +1,27 @@
 ---
 name: alouette-dialogs
 description: >
-  Overlays: Modal (controlled by visible/onClose, with title or required
-  aria-label, optional icon/footer, size sm/md/lg, dismiss via backdrop/close/
-  Escape/Android-back) and AlertDialog for confirmations. AlertDialog variant is
-  confirm (cancel+confirm) | alert (single acknowledge) | required (single
-  action, non-dismissible); accent defaults to danger. Prefer the icon-fixed
-  presets QuestionAlertDialog / WarningAlertDialog / InfoAlertDialog /
+  Overlays: Modal (controlled by visible/onClose, required title, optional
+  icon/footer/role, size sm/md/lg, dismiss via backdrop/close/Escape/
+  Android-back) and AlertDialog for confirmations. The footer stays pinned to
+  the bottom of the scrolling body (sticky on web, below the scroll box on
+  native) and grows a separator while content scrolls under it. AlertDialog
+  variant is confirm (cancel+confirm) | alert (single acknowledge) | required
+  (single action, non-dismissible); accent defaults to danger. Prefer the
+  icon-fixed presets QuestionAlertDialog / WarningAlertDialog / InfoAlertDialog /
   SuccessAlertDialog. onConfirm may return a promise: the dialog then shows a
   loading state, locks dismissal until it settles, and renders a rejection with
   errorToMessage. Load when adding a modal, confirmation, or alert dialog.
 type: core
 library: alouette
-library_version: "22.0.0"
+library_version: "22.4.0"
 requires:
   - alouette-theming
   - alouette-actions
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AlertDialog.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/PortalAccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AlertDialog.stories.tsx"
 ---
@@ -59,14 +62,32 @@ function Example() {
 
 ## Core Patterns
 
-### Modal labelling
+### Modal header, body and footer
 
-A `Modal` must be labelled: pass `title` (rendered as the heading and used as the
-accessible name) or, when there is no visible heading, an `aria-label`. `size` is
-`"sm" | "md" | "lg"` (panel max-width + padding; default `md`). Optional `icon`
-tints with the accent before the title; `footer` is the actions row; long bodies
-scroll at ~70% viewport height. Use `hideCloseButton` to drop the corner close
-button (the modal stays dismissible via backdrop/Escape/back).
+`title` is **required**: it renders as the heading and labels the dialog for
+assistive tech (`aria-labelledby`). `size` is `"sm" | "md" | "lg"` (panel
+max-width + padding; default `md`). Optional `icon` tints with the accent before
+the title. Use `hideCloseButton` to drop the corner close button (the modal stays
+dismissible via backdrop/Escape/back), `role="alertdialog"` for an interruption
+that requires an explicit response, and `aria-describedby` to point at the
+element describing the dialog.
+
+The header sits **outside** the scroll box, so the title and the close button
+stay put while the body scrolls under them (the body scrolls at ~70% viewport
+height). `footer` is the actions row and stays pinned to the bottom of that
+body — `position: sticky` inside the scroll content on web, laid out below the
+scroll box on native, since Yoga has no sticky. It grows a top border only while
+content is scrolled under it, and loses it at the end of the scroll. That is
+built in: don't rebuild it with an absolutely-positioned bar or a scroll
+listener.
+
+### Accent across the portal
+
+`accent` themes the whole panel. A modal renders through a portal, i.e. outside
+the themed DOM subtree, so `Modal` rebuilds the scope inside with
+`PortalAccentScope` (also exported, for any other portalled overlay). An
+`AccentScope` placed *around* the `<Modal>` element in your tree does **not**
+reach the panel — pass `accent` to the modal itself.
 
 ### AlertDialog — confirmations
 
@@ -141,26 +162,72 @@ itself on success.
 
 ## Common Mistakes
 
-### HIGH Modal without title or aria-label
+### HIGH Labelling a Modal with aria-label instead of title
 
 Wrong:
 
 ```tsx
-<Modal visible={open} onClose={close}><Text>…</Text></Modal>
+<Modal visible={open} onClose={close} aria-label="Image preview"><Image … /></Modal>
 ```
 
 Correct:
 
 ```tsx
-<Modal visible={open} onClose={close} title="Details"><Text>…</Text></Modal>
-// or, with no visible heading:
-<Modal visible={open} onClose={close} aria-label="Image preview"><Image … /></Modal>
+<Modal visible={open} onClose={close} title="Image preview"><Image … /></Modal>
 ```
 
-`ModalProps` is a union that requires either `title` or `aria-label`; a dialog
-with no accessible name is an accessibility failure (and a type error).
+`title` is a required `ModalProps` prop and there is no `aria-label`: every modal
+gets a visible heading, which is also its accessible name (`aria-labelledby`).
+`aria-describedby` is the only aria prop `Modal` takes.
 
 Source: packages/alouette/src/ui/containers/Modal.tsx
+
+### MEDIUM Putting the action buttons in children instead of footer
+
+Wrong:
+
+```tsx
+<Modal visible={open} onClose={close} title="Details">
+  <Text>…</Text>
+  <HStack className="justify-end gap-m"><Button text="Done" onPress={close} /></HStack>
+</Modal>
+```
+
+Correct:
+
+```tsx
+<Modal visible={open} onClose={close} title="Details" footer={<Button text="Done" onPress={close} />}>
+  <Text>…</Text>
+</Modal>
+```
+
+A row placed in `children` scrolls away with the body. `footer` stays pinned at
+the bottom of the scroll box on both platforms, right-aligns its buttons, and
+takes on the separator border while content scrolls under it.
+
+Source: packages/alouette/src/ui/containers/Modal.tsx
+
+### MEDIUM Wrapping the Modal element in AccentScope
+
+Wrong:
+
+```tsx
+<AccentScope accent="danger">
+  <Modal visible={open} onClose={close} title="Delete project">…</Modal>
+</AccentScope>
+```
+
+Correct:
+
+```tsx
+<Modal accent="danger" visible={open} onClose={close} title="Delete project">…</Modal>
+```
+
+The panel renders through a portal, outside the themed subtree, so a surrounding
+scope never reaches it. `Modal` rebuilds the theme inside with
+`PortalAccentScope` from its own `accent` prop.
+
+Source: packages/alouette/src/ui/containers/PortalAccentScope.tsx
 
 ### HIGH Building a confirmation out of a raw Modal
 
