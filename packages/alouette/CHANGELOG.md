@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.5.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.4.0...alouette@22.5.0) (2026-08-14)
+
+### Features
+
+* add ExternalLinkText component for inline external links and use ExternalLink component
+* add RadioCard and RadioCardGroup components with stories and context support
+* enhance ActionButton and AlertDialog with async support and error handling
+
+### Bug Fixes
+
+* action button error message padding over button
+
 ## [22.4.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.3.0...alouette@22.4.0) (2026-08-13)
 
 ### Features
