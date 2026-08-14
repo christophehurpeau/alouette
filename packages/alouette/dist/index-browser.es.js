@@ -769,7 +769,9 @@ function Icon({
   className = "text-sharp"
 }) {
   return cloneElement(icon, {
-    className,
+    // An <svg> is a flex item with the CSS default flex-shrink: 1, so a long
+    // sibling squeezes it below `size`. React Native already defaults to 0.
+    className: `shrink-0 ${className}`,
     width: size,
     height: size
   });

@@ -1,3 +1,4 @@
+import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SwatchesRegularIcon } from "alouette-icons/phosphor-icons/SwatchesRegularIcon";
 import { Text } from "../primitives/Text";
@@ -113,6 +114,23 @@ export const Variants: ThisStory = {
         <ErrorMessage>Error Message</ErrorMessage>
       </Story.Section>
 
+      <Story.Section withSurface title="Narrow container">
+        <VStack className="w-55 gap-xs" aria-label="Narrow messages">
+          {SIZES.map((size) => (
+            <Message
+              key={size}
+              icon={<SwatchesRegularIcon />}
+              accent="info"
+              size={size}
+              dismissIconAriaLabel="Close message"
+              onDismiss={() => {}}
+            >
+              {`Narrow ${size} message with a long enough text to wrap`}
+            </Message>
+          ))}
+        </VStack>
+      </Story.Section>
+
       <Story.Section withSurface title="Edge Cases">
         <Message icon={<SwatchesRegularIcon />} accent="info">
           Example Message with very very very very very very very very very very
@@ -133,4 +151,20 @@ export const Variants: ThisStory = {
       </Story.Section>
     </Story>
   ),
+  play: async ({ canvasElement }) => {
+    // A wrapping text must not squeeze the leading icon below its size.
+    // Story renders its children once per mode, hence getAll.
+    for (const narrow of within(canvasElement).getAllByLabelText(
+      "Narrow messages",
+    )) {
+      // Two svgs per message: the leading icon, then the dismiss icon.
+      const [smIcon, , mdIcon, , lgIcon] = narrow.querySelectorAll("svg");
+      if (!smIcon || !mdIcon || !lgIcon) {
+        throw new Error("Expected a leading icon in each narrow message");
+      }
+      await expect(smIcon.getBoundingClientRect().width).toBe(20);
+      await expect(mdIcon.getBoundingClientRect().width).toBe(24);
+      await expect(lgIcon.getBoundingClientRect().width).toBe(28);
+    }
+  },
 };
