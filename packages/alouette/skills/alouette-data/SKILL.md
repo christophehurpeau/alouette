@@ -155,7 +155,8 @@ defaults to `PencilSimpleRegularIcon`; `variant` (`contained` / `outlined` /
 
 For the usual case — the editor is a modal form — use `FormEditableItem` from
 alouette-forms/SKILL.md, which adds the open state, the `Modal` and its own
-`Form`. Reach for `EditableItem` directly only when the editor is not a form
+`Form` — its fields come through `render`, which hands them that inner `Form`'s
+`control`. Reach for `EditableItem` directly only when the editor is not a form
 (navigating to a screen, opening a picker).
 
 ## Common Mistakes

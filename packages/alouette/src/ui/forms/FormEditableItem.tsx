@@ -1,5 +1,5 @@
 import { type ReactNode, useState } from "react";
-import type { FieldValues } from "react-hook-form";
+import type { Control, FieldValues } from "react-hook-form";
 import { Button } from "../actions/Button";
 import { Modal, type ModalProps } from "../containers/Modal";
 import { EditableItem, type EditableItemProps } from "../data/EditableItem";
@@ -28,8 +28,8 @@ export interface FormEditableItemProps<TFieldValues extends FieldValues>
   submitLabel: string;
   /** Forwarded to FormSubmitButton — see its errorToMessage doc. */
   submitErrorToMessage: (error: unknown) => string;
-  /** The fields, rendered as the modal body. */
-  children: ReactNode;
+  /** The fields, rendered as the modal body, bound to the modal Form's own control. */
+  render: (params: { control: Control<TFieldValues> }) => ReactNode;
 }
 
 /**
@@ -37,7 +37,8 @@ export interface FormEditableItemProps<TFieldValues extends FieldValues>
  * mounted only while editing, so it reseeds from `defaultValues` on every
  * open and cancelling is a plain unmount — the surrounding screen's state is
  * never touched by an abandoned edit, and nothing has to be snapshotted and
- * restored.
+ * restored. The fields come through `render`, not children, because they must
+ * bind to that inner Form's `control` rather than the screen's.
  */
 export function FormEditableItem<TFieldValues extends FieldValues>({
   label,
@@ -57,7 +58,7 @@ export function FormEditableItem<TFieldValues extends FieldValues>({
   defaultValues,
   mode,
   onSubmit,
-  children,
+  render,
 }: FormEditableItemProps<TFieldValues>): ReactNode {
   const [editing, setEditing] = useState(false);
 
@@ -94,7 +95,7 @@ export function FormEditableItem<TFieldValues extends FieldValues>({
         <Form
           defaultValues={defaultValues}
           mode={mode}
-          render={({ submit }) => (
+          render={({ control, submit }) => (
             <Modal
               visible
               title={title ?? label}
@@ -117,7 +118,7 @@ export function FormEditableItem<TFieldValues extends FieldValues>({
               }
               onClose={close}
             >
-              {children}
+              {render({ control })}
             </Modal>
           )}
           onSubmit={handleSubmit}

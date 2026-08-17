@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import {
+  type Control,
   type DefaultValues,
   type FieldValues,
   FormProvider,
@@ -20,13 +21,17 @@ export interface FormProps<TFieldValues extends FieldValues> {
   mode?: UseFormProps<TFieldValues>["mode"];
   onSubmit: SubmitHandler<TFieldValues>;
   onSubmitError?: (error: unknown) => void;
-  render: (params: { submit: () => Promise<void> }) => ReactNode;
+  render: (params: {
+    control: Control<TFieldValues>;
+    submit: () => Promise<void>;
+  }) => ReactNode;
 }
 
 /**
- * Owns the react-hook-form instance and exposes it through context, so
- * FormField never needs a `control` prop. submit() rejects with
- * FormValidationError when fields are invalid (nothing was submitted), so
+ * Owns the react-hook-form instance and hands its `control` to `render`, so
+ * every field below infers TFieldValues from the control it is given and its
+ * own value type from `name` — no type argument per field. submit() rejects
+ * with FormValidationError when fields are invalid (nothing was submitted), so
  * FormSubmitButton can tell that apart from a genuine onSubmit failure.
  * Without `onSubmitError`, an exception thrown from `onSubmit` is left to
  * propagate as a genuine unhandled rejection rather than being silently
@@ -60,5 +65,11 @@ export function Form<TFieldValues extends FieldValues>({
     return result;
   }
 
-  return <FormProvider {...form}>{render({ submit })}</FormProvider>;
+  // FormProvider stays so FormField can reach setFocus, and so app-level
+  // components deep in the tree can still opt into useFormContext.
+  return (
+    <FormProvider {...form}>
+      {render({ control: form.control, submit })}
+    </FormProvider>
+  );
 }

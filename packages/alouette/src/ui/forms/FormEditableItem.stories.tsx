@@ -83,26 +83,28 @@ function ProfileItem({
       closeButtonAriaLabel="Close editor"
       submitErrorToMessage={submitErrorToMessage}
       defaultValues={{ displayName }}
+      render={({ control }) => (
+        <FormField
+          control={control}
+          name="displayName"
+          label="Name"
+          required="A name is required."
+          render={({ field, labelId }) => (
+            <InputText
+              ref={field.ref}
+              value={field.value}
+              aria-labelledby={labelId}
+              onChangeText={field.onChange}
+              onBlur={field.onBlur}
+            />
+          )}
+        />
+      )}
       onSubmit={({ displayName: nextName }) => {
         if (failing) throw new Error("The server rejected the change.");
         setDisplayName(nextName);
       }}
-    >
-      <FormField<ProfileFormValues>
-        name="displayName"
-        label="Name"
-        required="A name is required."
-        render={({ field, labelId }) => (
-          <InputText
-            ref={field.ref}
-            value={field.value}
-            aria-labelledby={labelId}
-            onChangeText={field.onChange}
-            onBlur={field.onBlur}
-          />
-        )}
-      />
-    </FormEditableItem>
+    />
   );
 }
 

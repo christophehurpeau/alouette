@@ -2945,10 +2945,11 @@ function Form({
     if (onSubmitError) result.catch(onSubmitError);
     return result;
   }
-  return /* @__PURE__ */ jsxRuntime.jsx(reactHookForm.FormProvider, { ...form, children: render({ submit }) });
+  return /* @__PURE__ */ jsxRuntime.jsx(reactHookForm.FormProvider, { ...form, children: render({ control: form.control, submit }) });
 }
 
 function FormField({
+  control,
   name,
   label,
   required,
@@ -2956,7 +2957,7 @@ function FormField({
   renderError,
   render
 }) {
-  const { control, setFocus } = reactHookForm.useFormContext();
+  const { setFocus } = reactHookForm.useFormContext();
   return /* @__PURE__ */ jsxRuntime.jsx(
     reactHookForm.Controller,
     {
@@ -2984,6 +2985,7 @@ function FormField({
 }
 
 function FormFieldArrayItem({
+  control,
   name,
   itemLabel,
   removeLabel,
@@ -2994,7 +2996,7 @@ function FormFieldArrayItem({
 }) {
   const [pendingRemoval, setPendingRemoval] = react.useState(false);
   return /* @__PURE__ */ jsxRuntime.jsx(StableAccentScope, { accent: pendingRemoval ? "danger" : void 0, children: /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "gap-sm items-center p-xxs", children: [
-    /* @__PURE__ */ jsxRuntime.jsx(View, { className: "grow shrink basis-0", children: render({ name, index, label: itemLabel }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(View, { className: "grow shrink basis-0", children: render({ control, name, index, label: itemLabel }) }),
     removable ? /* @__PURE__ */ jsxRuntime.jsx(
       IconButton,
       {
@@ -3013,6 +3015,7 @@ function FormFieldArrayItem({
   ] }) });
 }
 function FormFieldArray({
+  control,
   name,
   label,
   details,
@@ -3023,11 +3026,11 @@ function FormFieldArray({
   removeLabel = (itemLabel) => `Remove ${itemLabel}`,
   render
 }) {
-  const { control } = reactHookForm.useFormContext();
   const { fields, append, remove } = reactHookForm.useFieldArray({
     control,
     name
   });
+  const appendedItem = emptyValue;
   const paddedRef = react.useRef(false);
   react.useEffect(() => {
     if (paddedRef.current) return;
@@ -3035,11 +3038,11 @@ function FormFieldArray({
     const shortfall = minSize - fields.length;
     if (shortfall > 0) {
       append(
-        Array.from({ length: shortfall }, () => emptyValue),
+        Array.from({ length: shortfall }, () => appendedItem),
         { shouldFocus: false }
       );
     }
-  }, [append, emptyValue, fields.length, minSize]);
+  }, [append, appendedItem, fields.length, minSize]);
   return /* @__PURE__ */ jsxRuntime.jsx(
     FormItem,
     {
@@ -3049,6 +3052,7 @@ function FormFieldArray({
         fields.map((field, index) => /* @__PURE__ */ jsxRuntime.jsx(
           FormFieldArrayItem,
           {
+            control,
             name: `${name}.${index}`,
             itemLabel: `${label} ${index + 1}`,
             removeLabel: removeLabel(`${label} ${index + 1}`),
@@ -3071,7 +3075,7 @@ function FormFieldArray({
             className: "self-start",
             disabled: disableAdd,
             onPress: () => {
-              append(emptyValue);
+              append(appendedItem);
             }
           }
         )
@@ -3106,8 +3110,8 @@ function SimpleVForm({
     Form,
     {
       ...formProps,
-      render: ({ submit }) => /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: className ?? "gap-l", children: [
-        render({ submit }),
+      render: ({ control, submit }) => /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: className ?? "gap-l", children: [
+        render({ control, submit }),
         /* @__PURE__ */ jsxRuntime.jsx(
           FormSubmitButton,
           {
@@ -3177,7 +3181,7 @@ function FormEditableItem({
   defaultValues,
   mode,
   onSubmit,
-  children
+  render
 }) {
   const [editing, setEditing] = react.useState(false);
   function close() {
@@ -3206,7 +3210,7 @@ function FormEditableItem({
         {
           defaultValues,
           mode,
-          render: ({ submit }) => /* @__PURE__ */ jsxRuntime.jsx(
+          render: ({ control, submit }) => /* @__PURE__ */ jsxRuntime.jsx(
             Modal,
             {
               visible: true,
@@ -3233,7 +3237,7 @@ function FormEditableItem({
                 )
               ] }),
               onClose: close,
-              children
+              children: render({ control })
             }
           ),
           onSubmit: handleSubmit

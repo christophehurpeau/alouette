@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { FieldValues } from "react-hook-form";
+import type { Control, FieldValues } from "react-hook-form";
 import { type FormProps } from "./Form";
 export interface SimpleVFormProps<TFieldValues extends FieldValues> extends Omit<FormProps<TFieldValues>, "render"> {
     submitLabel: string;
@@ -7,6 +7,7 @@ export interface SimpleVFormProps<TFieldValues extends FieldValues> extends Omit
     submitErrorToMessage: (error: unknown) => string;
     className?: string;
     render: (params: {
+        control: Control<TFieldValues>;
         submit: () => Promise<void>;
     }) => ReactNode;
 }

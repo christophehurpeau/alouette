@@ -1,7 +1,7 @@
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { type Control, useFormContext } from "react-hook-form";
 import { ConfirmationMessage } from "../feedback/Message";
 import { InputText } from "../inputs/InputText";
 import { Story } from "../story-components/Story";
@@ -45,15 +45,22 @@ function validateAge(value: string): string | undefined {
 }
 
 interface SimpleVFormFieldsProps {
+  control: Control<FormValues>;
   submit: () => Promise<void>;
 }
 
-function SimpleVFormFields({ submit }: SimpleVFormFieldsProps): ReactNode {
+function SimpleVFormFields({
+  control,
+  submit,
+}: SimpleVFormFieldsProps): ReactNode {
+  // setFocus lives on the form instance, not on control, so moving focus
+  // between fields is the one thing still read from context.
   const { setFocus } = useFormContext<FormValues>();
 
   return (
     <>
-      <FormField<FormValues>
+      <FormField
+        control={control}
         name="name"
         label="Name"
         validate={validateName}
@@ -73,7 +80,8 @@ function SimpleVFormFields({ submit }: SimpleVFormFieldsProps): ReactNode {
         )}
       />
 
-      <FormField<FormValues>
+      <FormField
+        control={control}
         name="email"
         label="Email"
         validate={validateEmail}
@@ -94,7 +102,8 @@ function SimpleVFormFields({ submit }: SimpleVFormFieldsProps): ReactNode {
         )}
       />
 
-      <FormField<FormValues>
+      <FormField
+        control={control}
         name="age"
         label="Age"
         validate={validateAge}
@@ -127,7 +136,9 @@ function SimpleVFormDemo(): ReactNode {
         defaultValues={{ name: "", email: "", age: "" }}
         submitLabel="Submit"
         submitErrorToMessage={submitErrorToMessage}
-        render={({ submit }) => <SimpleVFormFields submit={submit} />}
+        render={({ control, submit }) => (
+          <SimpleVFormFields control={control} submit={submit} />
+        )}
         onSubmit={(value) => {
           setSubmitted(value);
         }}

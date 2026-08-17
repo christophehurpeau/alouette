@@ -23,9 +23,10 @@ function FormFieldDemo(): ReactNode {
   return (
     <Form<SignUpValues>
       defaultValues={{ username: "", password: "" }}
-      render={() => (
+      render={({ control }) => (
         <VStack className="gap-l">
-          <FormField<SignUpValues>
+          <FormField
+            control={control}
             name="username"
             label="Username"
             required="Username is required."
@@ -40,7 +41,8 @@ function FormFieldDemo(): ReactNode {
             )}
           />
 
-          <FormField<SignUpValues>
+          <FormField
+            control={control}
             name="password"
             label="Password"
             validate={validatePassword}
@@ -76,7 +78,7 @@ export default {
   component: FormField,
   parameters: {
     componentSubtitle:
-      "Wires a react-hook-form Controller to FormItem's label/error/layout. Must be used inside <Form>. The renderError prop accepts a resolver returning ReactNode, so error content isn't limited to plain strings.",
+      "Wires a react-hook-form Controller to FormItem's label/error/layout. Must be used inside <Form>, whose render params supply the control that types name and field.value. The renderError prop accepts a resolver returning ReactNode, so error content isn't limited to plain strings.",
   },
 } satisfies Meta<typeof FormField>;
 

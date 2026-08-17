@@ -2930,10 +2930,11 @@ function Form({
     if (onSubmitError) result.catch(onSubmitError);
     return result;
   }
-  return /* @__PURE__ */ jsx(FormProvider, { ...form, children: render({ submit }) });
+  return /* @__PURE__ */ jsx(FormProvider, { ...form, children: render({ control: form.control, submit }) });
 }
 
 function FormField({
+  control,
   name,
   label,
   required,
@@ -2941,7 +2942,7 @@ function FormField({
   renderError,
   render
 }) {
-  const { control, setFocus } = useFormContext();
+  const { setFocus } = useFormContext();
   return /* @__PURE__ */ jsx(
     Controller,
     {
@@ -2969,6 +2970,7 @@ function FormField({
 }
 
 function FormFieldArrayItem({
+  control,
   name,
   itemLabel,
   removeLabel,
@@ -2979,7 +2981,7 @@ function FormFieldArrayItem({
 }) {
   const [pendingRemoval, setPendingRemoval] = useState(false);
   return /* @__PURE__ */ jsx(StableAccentScope, { accent: pendingRemoval ? "danger" : void 0, children: /* @__PURE__ */ jsxs(HStack, { className: "gap-sm items-center p-xxs", children: [
-    /* @__PURE__ */ jsx(View, { className: "grow shrink basis-0", children: render({ name, index, label: itemLabel }) }),
+    /* @__PURE__ */ jsx(View, { className: "grow shrink basis-0", children: render({ control, name, index, label: itemLabel }) }),
     removable ? /* @__PURE__ */ jsx(
       IconButton,
       {
@@ -2998,6 +3000,7 @@ function FormFieldArrayItem({
   ] }) });
 }
 function FormFieldArray({
+  control,
   name,
   label,
   details,
@@ -3008,11 +3011,11 @@ function FormFieldArray({
   removeLabel = (itemLabel) => `Remove ${itemLabel}`,
   render
 }) {
-  const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name
   });
+  const appendedItem = emptyValue;
   const paddedRef = useRef(false);
   useEffect(() => {
     if (paddedRef.current) return;
@@ -3020,11 +3023,11 @@ function FormFieldArray({
     const shortfall = minSize - fields.length;
     if (shortfall > 0) {
       append(
-        Array.from({ length: shortfall }, () => emptyValue),
+        Array.from({ length: shortfall }, () => appendedItem),
         { shouldFocus: false }
       );
     }
-  }, [append, emptyValue, fields.length, minSize]);
+  }, [append, appendedItem, fields.length, minSize]);
   return /* @__PURE__ */ jsx(
     FormItem,
     {
@@ -3034,6 +3037,7 @@ function FormFieldArray({
         fields.map((field, index) => /* @__PURE__ */ jsx(
           FormFieldArrayItem,
           {
+            control,
             name: `${name}.${index}`,
             itemLabel: `${label} ${index + 1}`,
             removeLabel: removeLabel(`${label} ${index + 1}`),
@@ -3056,7 +3060,7 @@ function FormFieldArray({
             className: "self-start",
             disabled: disableAdd,
             onPress: () => {
-              append(emptyValue);
+              append(appendedItem);
             }
           }
         )
@@ -3091,8 +3095,8 @@ function SimpleVForm({
     Form,
     {
       ...formProps,
-      render: ({ submit }) => /* @__PURE__ */ jsxs(VStack, { className: className ?? "gap-l", children: [
-        render({ submit }),
+      render: ({ control, submit }) => /* @__PURE__ */ jsxs(VStack, { className: className ?? "gap-l", children: [
+        render({ control, submit }),
         /* @__PURE__ */ jsx(
           FormSubmitButton,
           {
@@ -3162,7 +3166,7 @@ function FormEditableItem({
   defaultValues,
   mode,
   onSubmit,
-  children
+  render
 }) {
   const [editing, setEditing] = useState(false);
   function close() {
@@ -3191,7 +3195,7 @@ function FormEditableItem({
         {
           defaultValues,
           mode,
-          render: ({ submit }) => /* @__PURE__ */ jsx(
+          render: ({ control, submit }) => /* @__PURE__ */ jsx(
             Modal,
             {
               visible: true,
@@ -3218,7 +3222,7 @@ function FormEditableItem({
                 )
               ] }),
               onClose: close,
-              children
+              children: render({ control })
             }
           ),
           onSubmit: handleSubmit

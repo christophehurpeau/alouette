@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { FieldValues } from "react-hook-form";
+import type { Control, FieldValues } from "react-hook-form";
 import { VStack } from "../stacks/stacks";
 import { Form, type FormProps } from "./Form";
 import { FormSubmitButton } from "./FormSubmitButton";
@@ -11,7 +11,10 @@ export interface SimpleVFormProps<
   /** Forwarded to FormSubmitButton — see its errorToMessage doc. */
   submitErrorToMessage: (error: unknown) => string;
   className?: string;
-  render: (params: { submit: () => Promise<void> }) => ReactNode;
+  render: (params: {
+    control: Control<TFieldValues>;
+    submit: () => Promise<void>;
+  }) => ReactNode;
 }
 
 /**
@@ -28,9 +31,9 @@ export function SimpleVForm<TFieldValues extends FieldValues>({
   return (
     <Form
       {...formProps}
-      render={({ submit }) => (
+      render={({ control, submit }) => (
         <VStack className={className ?? "gap-l"}>
-          {render({ submit })}
+          {render({ control, submit })}
           <FormSubmitButton
             label={submitLabel}
             errorToMessage={submitErrorToMessage}

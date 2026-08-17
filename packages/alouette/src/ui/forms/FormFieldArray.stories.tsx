@@ -1,7 +1,7 @@
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
-import { type ArrayPath, Controller, useWatch } from "react-hook-form";
+import { type Control, Controller, useWatch } from "react-hook-form";
 import { Surface } from "../containers/Surface";
 import { ConfirmationMessage } from "../feedback/Message";
 import { InputText } from "../inputs/InputText";
@@ -36,9 +36,10 @@ function GuestListForm({
         defaultValues={{
           guests: defaultGuests.map((value) => ({ value })),
         }}
-        render={({ submit }) => (
+        render={({ control, submit }) => (
           <VStack className="gap-l">
-            <FormFieldArray<GuestListValues>
+            <FormFieldArray
+              control={control}
               name="guests"
               label="Guests"
               details={details}
@@ -47,14 +48,15 @@ function GuestListForm({
               addLabel="Add guest"
               removeLabel={(itemLabel) => `Remove ${itemLabel}`}
               render={({ name, label }) => (
-                <FormField<GuestListValues>
-                  name={`${name}.value` as `guests.${number}.value`}
+                <FormField
+                  control={control}
+                  name={`${name}.value`}
                   label={label}
                   required="Guest name is required."
                   render={({ field, labelId }) => (
                     <InputText
                       ref={field.ref}
-                      value={field.value as string}
+                      value={field.value}
                       aria-labelledby={labelId}
                       onChangeText={field.onChange}
                       onBlur={field.onBlur}
@@ -95,8 +97,9 @@ function PeopleForm({ defaultPeople = [] }: PeopleFormProps): ReactNode {
   return (
     <Form<PeopleValues>
       defaultValues={{ people: defaultPeople }}
-      render={() => (
-        <FormFieldArray<PeopleValues>
+      render={({ control }) => (
+        <FormFieldArray
+          control={control}
           name="people"
           label="People"
           details="Each row is a { firstName, lastName } object."
@@ -106,14 +109,15 @@ function PeopleForm({ defaultPeople = [] }: PeopleFormProps): ReactNode {
             <Surface variant="surface" size="xs">
               <HStack className="gap-xs">
                 <View className="grow shrink basis-0">
-                  <FormField<PeopleValues>
-                    name={`${name}.firstName` as `people.${number}.firstName`}
+                  <FormField
+                    control={control}
+                    name={`${name}.firstName`}
                     label={`${label} first name`}
                     required="First name is required."
                     render={({ field, labelId }) => (
                       <InputText
                         ref={field.ref}
-                        value={field.value as string}
+                        value={field.value}
                         aria-labelledby={labelId}
                         onChangeText={field.onChange}
                         onBlur={field.onBlur}
@@ -122,13 +126,14 @@ function PeopleForm({ defaultPeople = [] }: PeopleFormProps): ReactNode {
                   />
                 </View>
                 <View className="grow shrink basis-0">
-                  <FormField<PeopleValues>
-                    name={`${name}.lastName` as `people.${number}.lastName`}
+                  <FormField
+                    control={control}
+                    name={`${name}.lastName`}
                     label={`${label} last name`}
                     render={({ field, labelId }) => (
                       <InputText
                         ref={field.ref}
-                        value={field.value as string}
+                        value={field.value}
                         aria-labelledby={labelId}
                         onChangeText={field.onChange}
                         onBlur={field.onBlur}
@@ -154,30 +159,33 @@ interface RawGuestListFormProps {
   defaultGuests?: string[];
 }
 
-function RawGuestFields(): ReactNode {
+interface RawGuestFieldsProps {
+  control: Control<RawGuestValues>;
+}
+
+function RawGuestFields({ control }: RawGuestFieldsProps): ReactNode {
   // Disable adding another row while the last one is still empty, so the list
   // can't grow into a trail of blank inputs.
-  const guests = useWatch<RawGuestValues, "guests">({ name: "guests" });
+  const guests = useWatch({ control, name: "guests" });
   const lastIsEmpty = guests.at(-1)?.trim().length === 0;
 
   return (
-    <FormFieldArray<RawGuestValues>
-      // react-hook-form's ArrayPath type excludes arrays of primitives, so a
-      // raw string[] field can't satisfy it — useFieldArray still drives it
-      // fine at runtime, so cast the name for this escape-hatch case.
-      name={"guests" as unknown as ArrayPath<RawGuestValues>}
+    <FormFieldArray
+      control={control}
+      name="guests"
       label="Guests"
       details="Each row is a raw string, bound directly to the item path."
       emptyValue=""
       addLabel="Add guest"
       disableAdd={lastIsEmpty}
       render={({ name, label }) => (
-        <Controller<RawGuestValues>
+        <Controller
+          control={control}
           name={name}
           render={({ field }) => (
             <InputText
               ref={field.ref}
-              value={field.value as string}
+              value={field.value}
               aria-label={label}
               onChangeText={field.onChange}
               onBlur={field.onBlur}
@@ -195,7 +203,7 @@ function RawGuestListForm({
   return (
     <Form<RawGuestValues>
       defaultValues={{ guests: defaultGuests }}
-      render={() => <RawGuestFields />}
+      render={({ control }) => <RawGuestFields control={control} />}
       onSubmit={() => {}}
     />
   );

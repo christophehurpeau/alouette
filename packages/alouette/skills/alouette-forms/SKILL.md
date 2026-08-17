@@ -6,17 +6,19 @@ description: >
   controlled or not via value/defaultValue/onValueChange + accent/disabled:
   RadioGroup + Radio (circle-dot list), RadioButtonGroup + RadioButton (segmented
   pill bar), RadioCardGroup + RadioCard (icon/label/description cards, list|stack).
-  Validation on react-hook-form: Form owns the instance and exposes submit() via render
-  prop (no control passing); FormField wires Controller to FormItem label/error/required;
-  FormFieldArray wraps useFieldArray with add/remove; FormSubmitButton drives
-  loading/success/failed; SimpleVForm is the vertical-stack shortcut;
-  FormEditableItem edits a row in a modal owning its own Form (mounted per open, so
-  cancel is an unmount). errorToMessage required (i18n); FormValidationError
-  distinguishes invalid fields from onSubmit failures. Load when building text fields,
-  toggles, radio groups, a validated form, or an edit-in-a-modal row.
+  Validation on react-hook-form: Form owns the instance and hands { control, submit } to
+  its render prop, and every field takes that control — so the form type is written once
+  on Form and each field's value type comes from its own name. FormField wires Controller
+  to FormItem label/error/required; FormFieldArray wraps useFieldArray with add/remove;
+  FormSubmitButton drives loading/success/failed; SimpleVForm is the vertical-stack
+  shortcut; FormEditableItem edits a row in a modal owning its own Form (mounted per
+  open, so cancel is an unmount, and its fields come through render, not children).
+  errorToMessage required (i18n); FormValidationError distinguishes invalid fields from
+  onSubmit failures. Load when building text fields, toggles, radio groups, a validated
+  form, or an edit-in-a-modal row.
 type: core
 library: alouette
-library_version: "22.4.0"
+library_version: "22.6.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -53,10 +55,20 @@ Two layers. **Inputs** are the raw controls: `InputText` wraps react-native
 `TextInput` with alouette styling and a `mode` prop, `TextArea` is a multiline
 `InputText`, and `Switch` wraps the native switch with themed colors.
 **Composition** wraps [react-hook-form](https://react-hook-form.com): `Form`
-owns the form instance and hands `submit()` to its subtree, `FormField` binds
-one field to a labelled, error-aware row and renders any input, and the submit
-button reuses the async-action lifecycle. You do not touch `control` — it flows
-through context.
+owns the form instance and hands `{ control, submit }` to its subtree,
+`FormField` binds one field to a labelled, error-aware row and renders any
+input, and the submit button reuses the async-action lifecycle.
+
+`control` is how the types flow, exactly as in react-hook-form's own
+`Controller`: write the form type **once** on `<Form<Values>>`, then pass its
+`control` to each field. The field infers the form type from the control and its
+own value type from `name`, so `field.value` is that one field's type — never a
+union of every field, and never a per-field type argument.
+
+```tsx
+<Form<Values> … render={({ control }) => <FormField control={control} name="age" … />} />
+//                                       field.value is Values["age"], inferred
+```
 
 ## Inputs
 
@@ -127,7 +139,9 @@ option. Label the group via `aria-labelledby`.
 `label` is each option's accessible name — required even when a description
 carries the detail. Inside a form, render any of the three from a `FormField`
 `render` prop: `value={field.value}` + `onValueChange={field.onChange}` +
-`aria-labelledby={labelId}` (no `ref`, they are not focusable text).
+`aria-labelledby={labelId}` (no `ref`, they are not focusable text). Since
+`field.value` is typed from `name`, a `"day" | "week"` union field arrives as
+that union, not as a widened `string`.
 
 ## Validated forms
 
@@ -149,8 +163,9 @@ function submitErrorToMessage(error: unknown): string {
   submitLabel="Submit"
   submitErrorToMessage={submitErrorToMessage}
   onSubmit={async (values) => saveToServer(values)}
-  render={() => (
-    <FormField<Values>
+  render={({ control }) => (
+    <FormField
+      control={control}
       name="name"
       label="Name"
       required="Name is required."
@@ -163,11 +178,17 @@ function submitErrorToMessage(error: unknown): string {
 />;
 ```
 
+The type argument goes on `SimpleVForm` / `Form` only — `defaultValues` is a
+`DeepPartial`, which infers poorly, so that one stays explicit. Nothing below it
+needs one.
+
 ### FormField wiring
 
 `FormField` renders any input through `render` — it is not tied to `InputText`.
 The rendered input must spread the three `field` bindings and the label:
 
+- `control={control}` — from the enclosing `Form`'s `render` params; types `name`
+  and `field.value`.
 - `ref={field.ref}` — lets pressing the label focus the input (via
   react-hook-form `setFocus`).
 - `value={field.value}` / `onChangeText={field.onChange}` / `onBlur={field.onBlur}`.
@@ -179,7 +200,8 @@ message; any other `ReactNode` is the message shown once the field is left empty
 `undefined`). For rich/non-string error content, use `renderError`.
 
 ```tsx
-<FormField<Values>
+<FormField
+  control={control}
   name="email"
   label="Email"
   validate={(v) => (/^[^@]+@[^@]+$/.test(v) ? undefined : "Enter a valid email.")}
@@ -190,10 +212,14 @@ message; any other `ReactNode` is the message shown once the field is left empty
 />
 ```
 
+`validate`'s `v` is that field's value type, so a `number` field's validator takes
+a number without a cast.
+
 ### Custom layout with Form
 
 When the layout isn't a plain vertical stack, use `Form` directly and place a
-`FormSubmitButton` (or call `submit` yourself). `render` receives `{ submit }`.
+`FormSubmitButton` (or call `submit` yourself). `render` receives
+`{ control, submit }`.
 
 ```tsx
 import { Form, FormSubmitButton } from "alouette";
@@ -201,7 +227,7 @@ import { Form, FormSubmitButton } from "alouette";
 <Form<Values>
   defaultValues={{ name: "", email: "" }}
   onSubmit={async (values) => saveToServer(values)}
-  render={({ submit }) => (
+  render={({ control, submit }) => (
     <>
       {/* fields */}
       <FormSubmitButton label="Save" errorToMessage={submitErrorToMessage} onPress={submit} />
@@ -210,24 +236,31 @@ import { Form, FormSubmitButton } from "alouette";
 />;
 ```
 
+To split the fields into their own component, give it a
+`control: Control<Values>` prop rather than reaching for `useFormContext`. The
+form instance is still in context — `setFocus` (to move focus between fields)
+only lives there — but `control` is what carries the types.
+
 ### Repeatable item lists with FormFieldArray
 
 `FormFieldArray` wraps react-hook-form's `useFieldArray` and owns the array
 label, add/remove buttons, and padding to a minimum count. It is agnostic
-about item shape — `render` gets the item's path prefix (e.g. `"guests.0"`)
-and composes its own `FormField`(s) from it, bound directly for a raw value
-or via `${name}.fieldName` for an object item:
+about item shape — `render` gets the item's path prefix, typed
+`` `${name}.${number}` ``, and composes its own `FormField`(s) from it, bound
+directly for a raw value or via `${name}.fieldName` for an object item:
 
 ```tsx
-<FormFieldArray<Values>
+<FormFieldArray
+  control={control}
   name="guests"
   label="Guests"
   emptyValue={{ value: "" }}
   minSize={1}
   addLabel="Add guest"
   render={({ name, label }) => (
-    <FormField<Values>
-      name={`${name}.value` as `guests.${number}.value`}
+    <FormField
+      control={control}
+      name={`${name}.value`}
       label={label}
       required="Guest name is required."
       render={...}
@@ -235,6 +268,14 @@ or via `${name}.fieldName` for an object item:
   )}
 />
 ```
+
+No cast on the sub-path: because the item prefix is a template literal type,
+`` `${name}.value` `` becomes `` `guests.${number}.value` ``, a real field path.
+`emptyValue` is the array's item type, and `name` accepts arrays of primitives
+too (`guests: string[]`, `emptyValue=""`) — alouette's own `FormArrayPath` is
+used rather than react-hook-form's `ArrayPath`, which excludes them. `render`
+also receives `control`, for an item renderer defined away from the call site;
+inline, the enclosing `control` is already in scope.
 
 `render` on the inner `FormField` is an `InputText` wired exactly as above. The
 leading `minSize` items are padded in on mount and cannot be removed, and each
@@ -258,14 +299,17 @@ plain unmount — the screen's state is never touched by an abandoned edit.
   submitErrorToMessage={submitErrorToMessage}
   defaultValues={{ displayName }}
   onSubmit={async (values) => saveToServer(values)}
->
-  {/* the fields — an InputText FormField, wired as above */}
-  <FormField<Values> name="displayName" label="Name" required="A name is required."
-    render={...} />
-</FormEditableItem>
+  render={({ control }) => (
+    /* the fields — an InputText FormField, wired as above */
+    <FormField control={control} name="displayName" label="Name"
+      required="A name is required." render={...} />
+  )}
+/>
 ```
 
-`children` are the fields (the modal body); the Cancel / Save footer is built
+`render` supplies the fields (the modal body) and hands them the **inner** Form's
+`control` — they are not children, precisely because they must bind to that form
+and not to the screen's. The Cancel / Save footer is built
 for you. It takes the row props (`label`, `summary`, `details`, `editAriaLabel`,
 `editIcon`, `variant`, `accent`, `disabled` — see alouette-data/SKILL.md) plus
 `Form`'s `defaultValues` / `mode` / `onSubmit`, and the modal's `title`
@@ -347,23 +391,26 @@ in React Native.
 
 Source: packages/alouette/src/ui/inputs/Switch.tsx
 
-### HIGH Passing control / register to FormField
+### HIGH Omitting control, or writing the form type on every FormField
 
 Wrong:
 
 ```tsx
-<FormField control={control} name="name" ... />
+<Form<Values> render={() => <FormField<Values> name="name" ... />} />
 ```
 
 Correct:
 
 ```tsx
-<Form render={() => <FormField name="name" ... />} />
+<Form<Values> render={({ control }) => <FormField control={control} name="name" ... />} />
 ```
 
-`Form` provides the react-hook-form instance through context; `FormField` reads
-`control` and `setFocus` itself via `useFormContext`. There is no `control` prop —
-just render `FormField` inside `Form`.
+`control` is required and is the only inference site: it types `name` against the
+form and makes `field.value` that one field's type. Writing `FormField<Values>`
+instead is an arity error (`TName` has no default) — deliberately, because an
+explicit type argument would block `TName` from ever being inferred from `name`
+and degrade `field.value` to a union of every field in the form. Reaching for
+`useFormContext` to avoid threading `control` gets you the same union.
 
 Source: packages/alouette/src/ui/forms/FormField.tsx; ui/forms/Form.tsx
 
@@ -372,13 +419,14 @@ Source: packages/alouette/src/ui/forms/FormField.tsx; ui/forms/Form.tsx
 Wrong:
 
 ```tsx
-<FormField name="name" label="Name">{({ field }) => <InputText ... />}</FormField>
+<FormField control={control} name="name" label="Name">{({ field }) => <InputText ... />}</FormField>
 ```
 
 Correct:
 
 ```tsx
-<FormField name="name" label="Name" render={({ field, labelId }) => <InputText ... />} />
+<FormField control={control} name="name" label="Name"
+  render={({ field, labelId }) => <InputText ... />} />
 ```
 
 The input is supplied through the `render` prop, not children — a function child
@@ -443,7 +491,9 @@ Source: packages/alouette/src/ui/forms/FormSubmitButton.tsx
 Wrong:
 
 ```tsx
-{fields.map((f, i) => <FormField key={i} name={`guests.${i}.value`} ... />)}
+{fields.map((f, i) => (
+  <FormField key={i} control={control} name={`guests.${i}.value`} ... />
+))}
 <Button text="Add" onPress={() => setFields([...fields, {}])} />
 ```
 
@@ -470,8 +520,9 @@ const [editedFrom, setEditedFrom] = useState(field.value);
 </Modal>
 ```
 
-Correct: `<FormEditableItem defaultValues={{ diet }} onSubmit={save}>` with
-`<DietFields />` as children (see above).
+Correct: `<FormEditableItem defaultValues={{ diet }} onSubmit={save}
+render={({ control }) => <DietFields control={control} />} />` (see above) — the
+fields bind to the modal Form's own `control`, not to the screen's.
 
 Binding the modal's fields to the surrounding form mutates shared state on every
 keystroke, which is why the value then has to be snapshotted on open and restored

@@ -33,9 +33,10 @@ function FormSubmitButtonDemo(): ReactNode {
     <>
       <Form<NewsletterValues>
         defaultValues={{ email: "" }}
-        render={({ submit }) => (
+        render={({ control, submit }) => (
           <VStack className="gap-l">
-            <FormField<NewsletterValues>
+            <FormField
+              control={control}
               name="email"
               label="Email"
               required="Email is required."

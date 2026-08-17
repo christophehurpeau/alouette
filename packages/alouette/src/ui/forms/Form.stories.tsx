@@ -22,7 +22,7 @@ export default {
   component: Form,
   parameters: {
     componentSubtitle:
-      "Owns the react-hook-form instance and shares it via context, so FormField never needs a control prop. Renders whatever layout you pass to render — SimpleVForm standardizes the common VStack + submit button case.",
+      "Owns the react-hook-form instance and hands its control to render, so each field infers the form type from the control and its own value type from name. Renders whatever layout you pass to render — SimpleVForm standardizes the common VStack + submit button case.",
   },
 } satisfies Meta<typeof Form>;
 
@@ -33,9 +33,10 @@ export const FormStory: ThisStory = {
       <Story.Section title="Custom layout, built from FormField and a plain Button">
         <Form<SignInValues>
           defaultValues={{ email: "" }}
-          render={({ submit }) => (
+          render={({ control, submit }) => (
             <VStack className="gap-l">
-              <FormField<SignInValues>
+              <FormField
+                control={control}
                 name="email"
                 label="Email"
                 validate={validateEmail}

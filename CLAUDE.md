@@ -299,16 +299,51 @@ A function-as-prop is not readable as JSX children — name it `render` so the c
 
 ```tsx
 // Preferred
-interface FormFieldProps {
-  render: (params: { field: ControllerRenderProps }) => ReactNode;
+interface FormFieldProps<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+> {
+  control: Control<TFieldValues>;
+  name: TName;
+  render: (params: {
+    field: ControllerRenderProps<TFieldValues, TName>;
+  }) => ReactNode;
 }
-<FormField name="email" render={({ field }) => <InputText {...field} />} />;
+<FormField
+  control={control}
+  name="email"
+  render={({ field }) => <InputText {...field} />}
+/>;
 
 // Avoid
 interface FormFieldProps {
   children: (params: { field: ControllerRenderProps }) => ReactNode;
 }
 <FormField name="email">{({ field }) => <InputText {...field} />}</FormField>;
+```
+
+## Thread `control` to infer generic form types, don't re-declare them
+
+A generic wrapper needs an inference site in its props, because TypeScript has no
+partial type-argument inference: the moment a call site writes
+`<FormField<Values> name="email" …>`, `TName` can no longer be inferred from
+`name` and the field's value degrades to a union of every field in the form.
+react-hook-form's own answer is `control`, and alouette follows it — `Form` hands
+`{ control, submit }` to its `render` prop, each field takes `control`, so the
+form type is written **once** on `<Form<Values>>` and everything below is
+inferred. Prefer this over a `createForm<Values>()` factory returning bound
+components: an object returned from a call is opaque to tree-shaking, so
+importing it would retain every form component (and `Modal`, `EditableItem`, …)
+for an app rendering a single text field.
+
+```tsx
+// Preferred — one type argument, `field.value` is string
+<Form<Values> render={({ control, submit }) => (
+  <FormField control={control} name="email" … />
+)} />
+
+// Avoid — the type argument blocks inference; field.value is string | number | …
+<FormField<Values> name="email" … />
 ```
 
 ## Never silently swallow unexpected errors
@@ -353,20 +388,23 @@ interface FormFieldProps {
 Don't reimplement disabled/loading/focus handling that another component in the library already gets right — compose that component instead of duplicating its logic.
 
 ```tsx
-// Preferred — Button already handles disabled/loading accessibly
-function FormSubmitButton({ label, onPress }: FormSubmitButtonProps) {
-  const { isSubmitting } = useFormState();
+// Preferred — ActionButton already derives loading/success/failed from the promise
+function FormSubmitButton({
+  label,
+  onPress,
+  errorToMessage,
+}: FormSubmitButtonProps): ReactNode {
   return (
-    <Button
+    <ActionButton
       text={label}
-      disabled={isSubmitting}
-      state={isSubmitting ? "loading" : undefined}
+      errorToMessage={errorToMessage}
       onPress={onPress}
     />
   );
 }
 
-// Avoid — reimplementing disabled/aria state on a raw Pressable
+// Avoid — a raw Button plus a hand-rolled isSubmitting boolean, or disabled/aria
+// state reimplemented on a raw Pressable
 ```
 
 ## Single-select groups: controllable value + context

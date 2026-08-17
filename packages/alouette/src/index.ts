@@ -126,7 +126,11 @@ export type { FormProps } from "./ui/forms/Form";
 export { Form, FormValidationError } from "./ui/forms/Form";
 export type { FormFieldProps } from "./ui/forms/FormField";
 export { FormField } from "./ui/forms/FormField";
-export type { FormFieldArrayProps } from "./ui/forms/FormFieldArray";
+export type {
+  FormArrayItem,
+  FormArrayPath,
+  FormFieldArrayProps,
+} from "./ui/forms/FormFieldArray";
 export { FormFieldArray } from "./ui/forms/FormFieldArray";
 export type { FormSubmitButtonProps } from "./ui/forms/FormSubmitButton";
 export { FormSubmitButton } from "./ui/forms/FormSubmitButton";
