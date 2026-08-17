@@ -1,6 +1,6 @@
 {
   "name": "storybook-native-app",
-  "version": "12.6.0",
+  "version": "12.7.0",
   "private": true,
   "license": "MIT",
   "type": "module",

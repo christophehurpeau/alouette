@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.7.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.6.0...alouette@22.7.0) (2026-08-17)
+
+### Features
+
+* enhance form components with control prop for better type inference
+
 ## [22.6.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.5.1...alouette@22.6.0) (2026-08-14)
 
 ### Features
