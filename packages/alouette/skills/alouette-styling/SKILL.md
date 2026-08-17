@@ -10,7 +10,7 @@ description: >
   when writing, restyling or reviewing a component.
 type: core
 library: alouette
-library_version: "22.4.0"
+library_version: "22.6.0"
 requires:
   - alouette-theming
 sources:

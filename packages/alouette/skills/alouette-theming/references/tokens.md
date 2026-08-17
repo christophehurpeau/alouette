@@ -57,6 +57,9 @@ Use as `p-*`, `px-*`, `py-*`, `m-*`, `gap-*`, etc. (`--spacing-*`).
 
 `xxs` · `xs` · `sm` · `m` · `l` · `xl` · `xxl` · `3xl` · `4xl`
 
+`md` and `lg` are aliases of `m` (16px) and `l` (24px); the single-letter
+spelling is the one used across the library.
+
 Example: `className="p-m gap-xs"` (not `p-4 gap-2`).
 
 ## Radius scale

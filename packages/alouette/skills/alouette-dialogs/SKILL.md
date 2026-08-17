@@ -14,7 +14,7 @@ description: >
   errorToMessage. Load when adding a modal, confirmation, or alert dialog.
 type: core
 library: alouette
-library_version: "22.4.0"
+library_version: "22.6.0"
 requires:
   - alouette-theming
   - alouette-actions

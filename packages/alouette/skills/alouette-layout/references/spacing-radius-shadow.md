@@ -15,8 +15,10 @@ Applies to `p-*`, `px-*`, `py-*`, `pt-*`/`pb-*`/`pl-*`/`pr-*`, `m-*`, `gap-*`,
 <HStack className="gap-l px-xl" />
 ```
 
-Note the single-letter middle steps (`m`, `l`) — there is no `md`/`lg` in the
-spacing scale (those exist only in the radius scale).
+Note the single-letter middle steps (`m` 16px, `l` 24px). `md` and `lg` exist as
+aliases of those two, but the single-letter spelling is the one used across the
+library — keep to it so spacing reads consistently. In the radius scale, `md` and
+`lg` are the real (and only) names for their steps.
 
 ## Radius
 
