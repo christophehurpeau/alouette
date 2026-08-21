@@ -26,7 +26,7 @@ const inputVariants = tv(
     ].join(" "),
     variants: {
       multiline: {
-        false: "rounded-md px-m py-xs",
+        false: "min-h-[44px] rounded-md px-m py-xs",
         true: "min-h-[80px] resize-y rounded-xs px-xs py-xs",
       },
       forceStyle: {
