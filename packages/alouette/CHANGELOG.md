@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.8.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.7.0...alouette@22.8.0) (2026-08-21)
+
+### Features
+
+* add compact prop to RadioButton and RadioButtonGroup for tighter layout
+
+### Bug Fixes
+
+* **InputText:** update input text to be at least 44px for accessibility
+
 ## [22.7.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.6.0...alouette@22.7.0) (2026-08-17)
 
 ### Features
