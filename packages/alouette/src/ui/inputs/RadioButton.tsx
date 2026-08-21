@@ -17,6 +17,7 @@ export function RadioButton({
     value: selectedValue,
     onSelect,
     disabled: groupDisabled,
+    compact,
   } = useRadioContext();
   const selected = selectedValue === value;
   const isDisabled = disabled === true || groupDisabled === true;
@@ -29,6 +30,7 @@ export function RadioButton({
       label={label}
       selected={selected}
       disabled={isDisabled}
+      compact={compact}
       onPress={() => {
         onSelect(value);
       }}

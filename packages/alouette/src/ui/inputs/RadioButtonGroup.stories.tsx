@@ -17,6 +17,7 @@ export default {
   },
   argTypes: {
     disabled: { control: "boolean" },
+    compact: { control: "boolean" },
     accent: {
       control: "select",
       options: [undefined, "brand", "danger", "info", "success", "warning"],
@@ -55,6 +56,20 @@ function RadioButtonGroupVariant({ accent }: { accent?: Accent }): ReactNode {
   );
 }
 
+function WeekdaysGroup({ compact }: { compact?: boolean }): ReactNode {
+  return (
+    <RadioButtonGroup compact={compact} defaultValue="wed">
+      <RadioButton value="mon" label="Mon" />
+      <RadioButton value="tue" label="Tue" />
+      <RadioButton value="wed" label="Wed" />
+      <RadioButton value="thu" label="Thu" />
+      <RadioButton value="fri" label="Fri" />
+      <RadioButton value="sat" label="Sat" />
+      <RadioButton value="sun" label="Sun" />
+    </RadioButtonGroup>
+  );
+}
+
 export const VariantsRadioButtonGroupStory: ThisStory = {
   name: "RadioButtonGroup Variants",
   render: () => (
@@ -64,6 +79,14 @@ export const VariantsRadioButtonGroupStory: ThisStory = {
         <RadioButtonGroupVariant accent="brand" />
         <RadioButtonGroupVariant accent="danger" />
         <RadioButtonGroupVariant accent="success" />
+      </Story.Section>
+      <Story.Section title="Compact">
+        <Story.SubSection withSurface title="Default">
+          <WeekdaysGroup />
+        </Story.SubSection>
+        <Story.SubSection withSurface title="compact">
+          <WeekdaysGroup compact />
+        </Story.SubSection>
       </Story.Section>
     </Story>
   ),
@@ -80,14 +103,31 @@ export const TestsRadioButtonGroupStory: StoryObj<typeof RadioButtonGroup> = {
           <RadioButton disabled value="month" label="Month" />
         </RadioButtonGroup>
       </Story.Section>
+      <Story.Section title="Compact">
+        <RadioButtonGroup compact defaultValue="day">
+          <RadioButton value="day" label="Day" />
+          <RadioButton value="week" label="Week" />
+        </RadioButtonGroup>
+        <RadioButtonGroup defaultValue="day">
+          <RadioButton value="day" label="Day" />
+          <RadioButton value="week" label="Week" />
+        </RadioButtonGroup>
+      </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const day = canvas.getByRole("radio", { name: "Day" });
-    const week = canvas.getByRole("radio", { name: "Week" });
-    const month = canvas.getByRole("radio", { name: "Month" });
+    const [group, compactGroup, defaultGroup] =
+      canvas.getAllByRole("radiogroup");
+    if (!group || !compactGroup || !defaultGroup) {
+      throw new Error("expected three radiogroups");
+    }
+    const uncontrolled = within(group);
+
+    const day = uncontrolled.getByRole("radio", { name: "Day" });
+    const week = uncontrolled.getByRole("radio", { name: "Week" });
+    const month = uncontrolled.getByRole("radio", { name: "Month" });
 
     await expect(day).toHaveAttribute("aria-checked", "true");
     await expect(week).toHaveAttribute("aria-checked", "false");
@@ -96,9 +136,20 @@ export const TestsRadioButtonGroupStory: StoryObj<typeof RadioButtonGroup> = {
     // The lowered Surface bar is exactly 44px (zero vertical padding), and each
     // option's tap target fills it to the 44px accessibility minimum even though
     // the visible chip inside is shorter.
-    const group = canvas.getByRole("radiogroup");
     await expect(group.getBoundingClientRect().height).toBe(44);
     for (const option of [day, week, month]) {
+      await expect(
+        option.getBoundingClientRect().height,
+      ).toBeGreaterThanOrEqual(44);
+    }
+
+    // `compact` only removes horizontal room: same options, narrower bar, and
+    // the tap targets keep the 44px minimum.
+    await expect(compactGroup.getBoundingClientRect().height).toBe(44);
+    await expect(compactGroup.getBoundingClientRect().width).toBeLessThan(
+      defaultGroup.getBoundingClientRect().width,
+    );
+    for (const option of within(compactGroup).getAllByRole("radio")) {
       await expect(
         option.getBoundingClientRect().height,
       ).toBeGreaterThanOrEqual(44);

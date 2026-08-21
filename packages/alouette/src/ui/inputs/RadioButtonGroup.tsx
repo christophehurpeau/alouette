@@ -6,7 +6,10 @@ import {
 } from "../selection/SelectionContext";
 import { RadioContextProvider } from "./RadioContext";
 
-export type RadioButtonGroupProps = SelectionGroupProps;
+export interface RadioButtonGroupProps extends SelectionGroupProps {
+  /** Tightens the horizontal padding so many options fit on one row. */
+  compact?: boolean;
+}
 
 export function RadioButtonGroup({
   value,
@@ -14,6 +17,7 @@ export function RadioButtonGroup({
   onValueChange,
   accent,
   disabled,
+  compact,
   children,
   ...props
 }: RadioButtonGroupProps): ReactNode {
@@ -22,6 +26,7 @@ export function RadioButtonGroup({
     defaultValue,
     onValueChange,
     disabled,
+    compact,
   });
 
   return (

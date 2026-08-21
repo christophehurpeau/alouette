@@ -4,6 +4,8 @@ export interface SelectionContextValue {
     value: string | undefined;
     onSelect: (value: string) => void;
     disabled?: boolean;
+    /** Tighter horizontal padding, for a group holding many options. */
+    compact?: boolean;
 }
 export interface SelectionGroupProps {
     /** Controlled selected value. */
@@ -22,7 +24,9 @@ interface SelectionContext {
 }
 /** One context per group family, so a misplaced child gets a precise error. */
 export declare function createSelectionContext(missingProviderMessage: string): SelectionContext;
-export type SelectionValueProps = Pick<SelectionGroupProps, "defaultValue" | "disabled" | "onValueChange" | "value">;
-export declare function useSelectionValue({ value: controlledValue, defaultValue, onValueChange, disabled, }: SelectionValueProps): SelectionContextValue;
+export interface SelectionValueProps extends Pick<SelectionGroupProps, "defaultValue" | "disabled" | "onValueChange" | "value"> {
+    compact?: boolean;
+}
+export declare function useSelectionValue({ value: controlledValue, defaultValue, onValueChange, disabled, compact, }: SelectionValueProps): SelectionContextValue;
 export {};
 //# sourceMappingURL=SelectionContext.d.ts.map

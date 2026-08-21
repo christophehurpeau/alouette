@@ -7,6 +7,8 @@ export interface SelectionContextValue {
   value: string | undefined;
   onSelect: (value: string) => void;
   disabled?: boolean;
+  /** Tighter horizontal padding, for a group holding many options. */
+  compact?: boolean;
 }
 
 export interface SelectionGroupProps {
@@ -43,16 +45,19 @@ export function createSelectionContext(
   };
 }
 
-export type SelectionValueProps = Pick<
+export interface SelectionValueProps extends Pick<
   SelectionGroupProps,
   "defaultValue" | "disabled" | "onValueChange" | "value"
->;
+> {
+  compact?: boolean;
+}
 
 export function useSelectionValue({
   value: controlledValue,
   defaultValue,
   onValueChange,
   disabled,
+  compact,
 }: SelectionValueProps): SelectionContextValue {
   const [value, onSelect] = useControllableValue({
     value: controlledValue,
@@ -60,7 +65,7 @@ export function useSelectionValue({
     onValueChange,
   });
   return useMemo(
-    () => ({ value, onSelect, disabled }),
-    [value, onSelect, disabled],
+    () => ({ value, onSelect, disabled, compact }),
+    [value, onSelect, disabled, compact],
   );
 }

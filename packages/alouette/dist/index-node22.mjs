@@ -2316,7 +2316,8 @@ function useSelectionValue({
   value: controlledValue,
   defaultValue,
   onValueChange,
-  disabled
+  disabled,
+  compact
 }) {
   const [value, onSelect] = useControllableValue({
     value: controlledValue,
@@ -2324,8 +2325,8 @@ function useSelectionValue({
     onValueChange
   });
   return useMemo(
-    () => ({ value, onSelect, disabled }),
-    [value, onSelect, disabled]
+    () => ({ value, onSelect, disabled, compact }),
+    [value, onSelect, disabled, compact]
   );
 }
 
@@ -2472,6 +2473,7 @@ function RadioButtonGroup({
   onValueChange,
   accent,
   disabled,
+  compact,
   children,
   ...props
 }) {
@@ -2479,7 +2481,8 @@ function RadioButtonGroup({
     value,
     defaultValue,
     onValueChange,
-    disabled
+    disabled,
+    compact
   });
   return /* @__PURE__ */ jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsx(SegmentedBar, { role: "radiogroup", accent, ...props, children }) });
 }
@@ -2498,11 +2501,13 @@ const chipVariants = tv({
   }
 });
 const segmentVariants = tv({
-  base: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent px-m transition-[border-color] duration-fast ease-in",
+  base: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent transition-[border-color] duration-fast ease-in",
   variants: {
     selected: { true: "", false: "" },
-    disabled: { true: "", false: "" }
+    disabled: { true: "", false: "" },
+    compact: { true: "px-xs", false: "px-m" }
   },
+  defaultVariants: { compact: false },
   compoundVariants: [
     {
       selected: false,
@@ -2540,6 +2545,7 @@ function SegmentedItem({
   icon,
   selected,
   disabled,
+  compact,
   ...props
 }) {
   const isDisabled = disabled === true;
@@ -2551,25 +2557,31 @@ function SegmentedItem({
       disabled,
       className: "group flex-center min-h-[44px] rounded-xs focus-visible:outline-interactive-outlined-outline-focus",
       ...props,
-      children: /* @__PURE__ */ jsxs(View, { className: segmentVariants({ selected, disabled: isDisabled }), children: [
-        /* @__PURE__ */ jsx(View, { className: chipVariants({ selected, disabled: isDisabled }) }),
-        icon ? /* @__PURE__ */ jsx(
-          Icon,
-          {
-            icon,
-            size: 20,
-            className: foregroundVariants({ selected, disabled: isDisabled })
-          }
-        ) : null,
-        /* @__PURE__ */ jsx(
-          Text,
-          {
-            numberOfLines: 1,
-            className: labelVariants({ selected, disabled: isDisabled }),
-            children: label
-          }
-        )
-      ] })
+      children: /* @__PURE__ */ jsxs(
+        View,
+        {
+          className: segmentVariants({ selected, disabled: isDisabled, compact }),
+          children: [
+            /* @__PURE__ */ jsx(View, { className: chipVariants({ selected, disabled: isDisabled }) }),
+            icon ? /* @__PURE__ */ jsx(
+              Icon,
+              {
+                icon,
+                size: 20,
+                className: foregroundVariants({ selected, disabled: isDisabled })
+              }
+            ) : null,
+            /* @__PURE__ */ jsx(
+              Text,
+              {
+                numberOfLines: 1,
+                className: labelVariants({ selected, disabled: isDisabled }),
+                children: label
+              }
+            )
+          ]
+        }
+      )
     }
   );
 }
@@ -2582,7 +2594,8 @@ function RadioButton({
   const {
     value: selectedValue,
     onSelect,
-    disabled: groupDisabled
+    disabled: groupDisabled,
+    compact
   } = useRadioContext();
   const selected = selectedValue === value;
   const isDisabled = disabled === true || groupDisabled === true;
@@ -2595,6 +2608,7 @@ function RadioButton({
       label,
       selected,
       disabled: isDisabled,
+      compact,
       onPress: () => {
         onSelect(value);
       }

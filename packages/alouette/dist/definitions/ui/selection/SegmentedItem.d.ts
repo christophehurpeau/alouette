@@ -5,6 +5,8 @@ export interface SegmentedItemProps extends Omit<InteractiveBoxProps, "aria-labe
     label: string;
     icon?: SVGIconElement;
     selected: boolean;
+    /** Tighter horizontal padding, set by a compact group. */
+    compact?: boolean;
     /**
      * react-native's types have no `aria-current` / `aria-controls` / `href`, but
      * react-native-web forwards all three (an `href` makes it render an `<a>`) and
@@ -14,5 +16,5 @@ export interface SegmentedItemProps extends Omit<InteractiveBoxProps, "aria-labe
     "aria-controls"?: string;
     href?: string;
 }
-export declare function SegmentedItem({ label, icon, selected, disabled, ...props }: SegmentedItemProps): ReactNode;
+export declare function SegmentedItem({ label, icon, selected, disabled, compact, ...props }: SegmentedItemProps): ReactNode;
 //# sourceMappingURL=SegmentedItem.d.ts.map

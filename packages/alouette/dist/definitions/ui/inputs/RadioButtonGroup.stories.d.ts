@@ -11,6 +11,9 @@ declare const _default: {
         disabled: {
             control: "boolean";
         };
+        compact: {
+            control: "boolean";
+        };
         accent: {
             control: "select";
             options: (string | undefined)[];

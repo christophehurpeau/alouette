@@ -27,11 +27,13 @@ const chipVariants = tv({
 // 44px. Its border is permanently transparent and only animates color on the
 // row's hover/active, driven by the `group` on the pressable.
 const segmentVariants = tv({
-  base: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent px-m transition-[border-color] duration-fast ease-in",
+  base: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent transition-[border-color] duration-fast ease-in",
   variants: {
     selected: { true: "", false: "" },
     disabled: { true: "", false: "" },
+    compact: { true: "px-xs", false: "px-m" },
   },
+  defaultVariants: { compact: false },
   compoundVariants: [
     {
       selected: false,
@@ -78,6 +80,8 @@ export interface SegmentedItemProps extends Omit<
   label: string;
   icon?: SVGIconElement;
   selected: boolean;
+  /** Tighter horizontal padding, set by a compact group. */
+  compact?: boolean;
   /**
    * react-native's types have no `aria-current` / `aria-controls` / `href`, but
    * react-native-web forwards all three (an `href` makes it render an `<a>`) and
@@ -93,6 +97,7 @@ export function SegmentedItem({
   icon,
   selected,
   disabled,
+  compact,
   ...props
 }: SegmentedItemProps): ReactNode {
   const isDisabled = disabled === true;
@@ -105,7 +110,9 @@ export function SegmentedItem({
       className="group flex-center min-h-[44px] rounded-xs focus-visible:outline-interactive-outlined-outline-focus"
       {...props}
     >
-      <View className={segmentVariants({ selected, disabled: isDisabled })}>
+      <View
+        className={segmentVariants({ selected, disabled: isDisabled, compact })}
+      >
         <View className={chipVariants({ selected, disabled: isDisabled })} />
         {icon ? (
           <Icon
