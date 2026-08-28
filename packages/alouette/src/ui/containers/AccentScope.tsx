@@ -5,7 +5,7 @@ import { ScopedTheme } from "./ScopedTheme";
 
 export interface AccentScopeProps {
   mode?: "dark" | "light";
-  accent?: Accent;
+  accent?: Accent | "none";
   children?: ReactNode;
 }
 
@@ -21,5 +21,9 @@ export function AccentScope({
   // ScopedTheme applies the accent theme's *resolved* variables (base mode + accent),
   // so a single scope works at any depth — no need to pre-apply the base mode.
   const mode = forcedMode ?? currentMode;
-  return <ScopedTheme theme={`${mode}_${accent}`}>{children}</ScopedTheme>;
+  return (
+    <ScopedTheme theme={accent === "none" ? mode : `${mode}_${accent}`}>
+      {children}
+    </ScopedTheme>
+  );
 }

@@ -91,7 +91,7 @@ function AccentScope({
     return children;
   }
   const mode = forcedMode ?? currentMode;
-  return /* @__PURE__ */ jsxRuntime.jsx(ScopedTheme, { theme: `${mode}_${accent}`, children });
+  return /* @__PURE__ */ jsxRuntime.jsx(ScopedTheme, { theme: accent === "none" ? mode : `${mode}_${accent}`, children });
 }
 
 const twMerge = tailwindMerge.extendTailwindMerge({
