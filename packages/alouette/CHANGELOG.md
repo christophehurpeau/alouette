@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.9.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.8.0...alouette@22.9.0) (2026-08-28)
+
+### Features
+
+* add className prop to RadioCard and RadioCardGroup components
+* popover and inputtextautocomplete
+* proper scrollview in web with reset css
+
+### Bug Fixes
+
+* **ExternalLinkText:** remove unnecessary padding from frame slot
+
 ## [22.8.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.7.0...alouette@22.8.0) (2026-08-21)
 
 ### Features
