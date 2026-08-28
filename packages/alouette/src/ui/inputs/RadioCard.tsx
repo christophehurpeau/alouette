@@ -58,6 +58,7 @@ export interface RadioCardProps {
   description?: string;
   icon?: SVGIconElement;
   disabled?: boolean;
+  className?: string;
 }
 
 export function RadioCard({
@@ -66,6 +67,7 @@ export function RadioCard({
   description,
   icon,
   disabled,
+  className,
 }: RadioCardProps): ReactNode {
   const {
     value: selectedValue,
@@ -86,7 +88,7 @@ export function RadioCard({
         aria-disabled={isDisabled}
         aria-label={label}
         disabled={isDisabled}
-        className={styles.frame()}
+        className={styles.frame({ className })}
         onPress={() => {
           onSelect(value);
         }}

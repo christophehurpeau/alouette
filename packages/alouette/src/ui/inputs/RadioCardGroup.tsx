@@ -35,7 +35,9 @@ export function useRadioCardGroupVariant(): RadioCardGroupVariant {
 }
 
 export interface RadioCardGroupProps
-  extends SelectionGroupProps, RadioCardGroupVariantProps {}
+  extends SelectionGroupProps, RadioCardGroupVariantProps {
+  className?: string;
+}
 
 export function RadioCardGroup({
   value,
@@ -44,6 +46,7 @@ export function RadioCardGroup({
   accent,
   disabled,
   variant,
+  className,
   children,
   ...props
 }: RadioCardGroupProps): ReactNode {
@@ -60,7 +63,7 @@ export function RadioCardGroup({
         <RadioCardGroupVariantContext value={variant ?? "list"}>
           <View
             role="radiogroup"
-            className={radioCardGroupVariants({ variant })}
+            className={radioCardGroupVariants({ variant, className })}
             {...props}
           >
             {children}

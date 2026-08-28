@@ -2925,6 +2925,7 @@ function RadioCardGroup({
   accent,
   disabled,
   variant,
+  className,
   children,
   ...props
 }) {
@@ -2938,7 +2939,7 @@ function RadioCardGroup({
     View,
     {
       role: "radiogroup",
-      className: radioCardGroupVariants({ variant }),
+      className: radioCardGroupVariants({ variant, className }),
       ...props,
       children
     }
@@ -2989,7 +2990,8 @@ function RadioCard({
   label,
   description,
   icon,
-  disabled
+  disabled,
+  className
 }) {
   const {
     value: selectedValue,
@@ -3009,7 +3011,7 @@ function RadioCard({
       "aria-disabled": isDisabled,
       "aria-label": label,
       disabled: isDisabled,
-      className: styles.frame(),
+      className: styles.frame({ className }),
       onPress: () => {
         onSelect(value);
       },
