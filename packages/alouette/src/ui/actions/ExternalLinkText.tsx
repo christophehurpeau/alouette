@@ -18,7 +18,7 @@ const externalLinkTextVariants = tv(
   {
     slots: {
       frame:
-        "group flex-row items-center gap-xxs self-start rounded-xs py-xxs focus-visible:outline-interactive-outlined-outline-focus",
+        "group flex-row items-center gap-xxs self-start focus-visible:outline-interactive-outlined-outline-focus",
       text: "shrink font-body-bold underline transition-[color] duration-fast ease-in",
       icon: "",
     },
