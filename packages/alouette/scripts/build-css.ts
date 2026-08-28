@@ -285,6 +285,18 @@ ${Object.entries(animationDurationsMs)
 @utility font-extrabold  { font-weight: 100; letter-spacing: -0.1em; }
 @utility font-black      { font-weight: 100; letter-spacing: -0.1em; }
 
+/* text-base-size-only — the body size *without* the line-height the text-* scale
+   utilities pair with it (Tailwind v4 emits both from one utility). A single-line
+   native TextInput must not carry a line-height: iOS pins the field's line box to
+   min == max == that height and leaves the extra leading above the glyphs, so the
+   value renders below the middle of the box while the placeholder — drawn without
+   those attributes — stays centered. Web needs no such thing (an <input> centers
+   its text whatever the line-height is), so pair it as
+   \`web:text-base native:text-base-size-only\`. */
+@utility text-base-size-only {
+  font-size: var(--text-base);
+}
+
 /* flex-center — center children on both axes. Replaces the old Box \`center\`
    variant. Named flex-center (not \`center\`) to avoid clashing with any future
    text-align / place-* shorthand. */

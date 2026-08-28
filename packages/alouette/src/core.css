@@ -136,16 +136,22 @@
     color: hotpink;
   }
 
+  /* reset - equivalent to ScrollViewStyleReset */
+  #root,
+  #storybook-root,
+  body,
+  html {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  body {
+    overflow: hidden;
+  }
+
   /* let height/width keyframes interpolate to/from auto (collapse-in/out) on web */
   :root {
     interpolate-size: allow-keywords;
-  }
-
-  body,
-  #root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
   }
 
   /* scrollbar-width/-color have no native equivalent, so this sits behind the
@@ -314,6 +320,18 @@
 @utility font-black {
   font-weight: 100;
   letter-spacing: -0.1em;
+}
+
+/* text-base-size-only — the body size *without* the line-height the text-* scale
+   utilities pair with it (Tailwind v4 emits both from one utility). A single-line
+   native TextInput must not carry a line-height: iOS pins the field's line box to
+   min == max == that height and leaves the extra leading above the glyphs, so the
+   value renders below the middle of the box while the placeholder — drawn without
+   those attributes — stays centered. Web needs no such thing (an <input> centers
+   its text whatever the line-height is), so pair it as
+   `web:text-base native:text-base-size-only`. */
+@utility text-base-size-only {
+  font-size: var(--text-base);
 }
 
 /* flex-center — center children on both axes. Replaces the old Box `center`

@@ -180,8 +180,8 @@ const [fontsLoaded] = useFonts({
 Alouette ships a universal component set styled through `className`:
 
 - **Actions** — `Button`, `ExternalLinkButton`, `InternalLinkButton`, `IconButton`
-- **Containers** — `Box`, `InteractiveBox`, `SafeAreaBox`, `Surface`, `ScopedTheme`, `AccentScope`, `PresenceOne`, `PresenceList`
-- **Inputs** — `InputText`, `TextArea`, `Switch`
+- **Containers** — `Box`, `InteractiveBox`, `SafeAreaBox`, `Surface`, `Popover`, `ScopedTheme`, `AccentScope`, `PresenceOne`, `PresenceList`
+- **Inputs** — `InputText`, `InputTextAutocomplete`, `TextArea`, `Switch`
 - **Feedback** — `Message`, `InfoMessage`, `ConfirmationMessage`, `WarningMessage`
 - **Data** — `PressableBox`, `PressableListItem`
 - **Layout** — `GradientBackground`, `GradientScrollView`
@@ -189,6 +189,31 @@ Alouette ships a universal component set styled through `className`:
 - **Responsive** — `SwitchBreakpointsUsingDisplayNone`, `SwitchBreakpointsUsingNull`, `useCurrentBreakpointName`
 
 For detailed examples and API documentation, visit our [Storybook](https://www.chromatic.com/library?appId=679f9e8df3edc5f07975b64a).
+
+### Autocomplete
+
+`InputTextAutocomplete` is a text input backed by a filtered listbox, built on
+[downshift](https://github.com/downshift-js/downshift):
+
+```tsx
+import { InputTextAutocomplete } from "alouette";
+
+<InputTextAutocomplete
+  aria-label="Fruit"
+  placeholder="Search a fruit..."
+  options={[
+    { label: "Apple", value: "apple" },
+    { label: "Banana", value: "banana" },
+    { label: "Durian (sold out)", value: "durian", disabled: true },
+  ]}
+  onValueChange={setFruit}
+/>;
+```
+
+Options are filtered by a case-insensitive match on their label; pass
+`filterOption` for anything else. Selection is controllable through
+`value`/`defaultValue`/`onValueChange`, and the text through
+`inputValue`/`defaultInputValue`/`onInputValueChange`.
 
 ### Text styling
 

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 export interface StableAccentScopeProps {
     mode?: "dark" | "light";
-    accent?: Accent;
+    accent?: Accent | "none";
     children?: ReactNode;
 }
 /**

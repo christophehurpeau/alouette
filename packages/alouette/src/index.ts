@@ -56,6 +56,8 @@ export type {
 } from "./ui/containers/Presence";
 export { PresenceList, PresenceOne } from "./ui/containers/Presence";
 export { animationDurationsMs } from "./animationDurationsMs";
+export type { PopoverProps } from "./ui/containers/Popover";
+export { Popover } from "./ui/containers/Popover";
 export type { SurfaceProps } from "./ui/containers/Surface";
 export { Surface } from "./ui/containers/Surface";
 export type { ModalProps } from "./ui/containers/Modal";
@@ -94,6 +96,11 @@ export type { IconButtonProps } from "./ui/actions/IconButton";
 export { IconButton } from "./ui/actions/IconButton";
 export type { InputTextMode, InputTextProps } from "./ui/inputs/InputText";
 export { InputText } from "./ui/inputs/InputText";
+export type {
+  AutocompleteOption,
+  InputTextAutocompleteProps,
+} from "./ui/inputs/InputTextAutocomplete.shared";
+export { InputTextAutocomplete } from "./ui/inputs/InputTextAutocomplete";
 export type { TextAreaProps } from "./ui/inputs/TextArea";
 export { TextArea } from "./ui/inputs/TextArea";
 export type { SwitchProps } from "./ui/inputs/Switch";

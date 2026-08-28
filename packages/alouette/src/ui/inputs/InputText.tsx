@@ -10,7 +10,7 @@ import { useColorVariable } from "../../core/useColorToken";
 const inputVariants = tv(
   {
     base: [
-      "bg-highlight text-base text-sharp",
+      "bg-highlight text-sharp",
       "border",
       "transition-[border-color,background-color,outline-color] duration-fast ease-in",
       "outline-interactive-outlined-pressable", // to have proper outline color transition
@@ -26,8 +26,23 @@ const inputVariants = tv(
     ].join(" "),
     variants: {
       multiline: {
-        false: "min-h-[44px] rounded-md px-m py-xs",
-        true: "min-h-[80px] resize-y rounded-xs px-xs py-xs",
+        // Centering the text of a single-line field is per-platform. iOS
+        // centers the line itself, but only without a line-height —
+        // `text-base-size-only` is `text-base` minus the 1.4 line-height the
+        // scale pairs with it, which iOS would turn into leading above the
+        // glyphs (the value then sits ~3pt low while the placeholder, drawn
+        // without those attributes, stays centered). Android lays the text out
+        // from the top of the box — `min-h-[44px]` makes it taller than the
+        // line — until `align-middle` sets its gravity (RN maps the style
+        // `verticalAlign` to `textAlignVertical`); on web that would be a real
+        // `vertical-align` on the `<input>`, hence the platform scope. Web
+        // keeps the scale: an `<input>` centers its text whatever the
+        // line-height is.
+        false:
+          "web:text-base native:text-base-size-only android:align-middle min-h-[44px] rounded-md px-m py-xs",
+        // Multiline is a paragraph: there the line-height is what spaces the
+        // lines, and the text belongs at the top of the box.
+        true: "text-base min-h-[80px] resize-y rounded-xs px-xs py-xs",
       },
       forceStyle: {
         undefined: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED

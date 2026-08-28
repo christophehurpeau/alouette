@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { Accent, AlouetteTheme } from "../../core/AlouetteConfig";
 import { useCurrentMode, useCurrentTheme } from "../../core/ThemeContext";
 import { ScopedTheme } from "./ScopedTheme";
 
 export interface StableAccentScopeProps {
   mode?: "dark" | "light";
-  accent?: Accent;
+  accent?: Accent | "none";
   children?: ReactNode;
 }
 
@@ -23,11 +23,11 @@ export function StableAccentScope({
 }: StableAccentScopeProps): ReactNode {
   const currentTheme = useCurrentTheme();
   const currentMode = useCurrentMode();
-  return (
-    <ScopedTheme
-      theme={accent ? `${forcedMode ?? currentMode}_${accent}` : currentTheme}
-    >
-      {children}
-    </ScopedTheme>
-  );
+
+  const theme = ((): AlouetteTheme => {
+    if (!accent) return currentTheme;
+    if (accent === "none") return forcedMode ?? currentMode;
+    return `${forcedMode ?? currentMode}_${accent}`;
+  })();
+  return <ScopedTheme theme={theme}>{children}</ScopedTheme>;
 }

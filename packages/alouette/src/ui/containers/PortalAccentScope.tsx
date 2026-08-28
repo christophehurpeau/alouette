@@ -3,7 +3,7 @@ import type { Accent } from "../../core/AlouetteConfig";
 import { StableAccentScope } from "./StableAccentScope";
 
 export interface PortalAccentScopeProps {
-  accent?: Accent;
+  accent?: Accent | "none";
   children?: ReactNode;
 }
 

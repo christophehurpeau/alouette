@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { AlouetteTheme } from "../../core/AlouetteConfig";
 import { useCurrentMode, useCurrentTheme } from "../../core/ThemeContext";
 import type { PortalAccentScopeProps } from "./PortalAccentScope";
 import { ScopedTheme } from "./ScopedTheme";
@@ -18,11 +19,15 @@ export function PortalAccentScope({
 }: PortalAccentScopeProps): ReactNode {
   const inheritedTheme = useCurrentTheme();
   const mode = useCurrentMode();
+
+  const theme = ((): AlouetteTheme => {
+    if (!accent) return inheritedTheme;
+    if (accent === "none") return mode;
+    return `${mode}_${accent}`;
+  })();
   return (
     <ScopedTheme theme={mode}>
-      <ScopedTheme theme={accent ? `${mode}_${accent}` : inheritedTheme}>
-        {children}
-      </ScopedTheme>
+      <ScopedTheme theme={theme}>{children}</ScopedTheme>
     </ScopedTheme>
   );
 }

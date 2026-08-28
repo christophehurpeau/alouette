@@ -206,7 +206,6 @@ On web, prefer a Google Fonts stylesheet over `useFonts`. With Expo Router, add
 `app/+html.tsx`:
 
 ```tsx
-import { ScrollViewStyleReset } from "expo-router/html";
 import type { PropsWithChildren } from "react";
 
 export default function Root({ children }: PropsWithChildren) {
@@ -219,7 +218,6 @@ export default function Root({ children }: PropsWithChildren) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Sora:wght@400;700;800&display=swap"
         />
-        <ScrollViewStyleReset />
       </head>
       <body>{children}</body>
     </html>

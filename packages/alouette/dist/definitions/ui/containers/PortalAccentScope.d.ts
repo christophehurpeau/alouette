@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 export interface PortalAccentScopeProps {
-    accent?: Accent;
+    accent?: Accent | "none";
     children?: ReactNode;
 }
 /**

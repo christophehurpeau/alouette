@@ -1,7 +1,7 @@
 import { jsx, jsxs, Fragment as Fragment$1 } from 'react/jsx-runtime';
 import { VariableContextProvider, styled as styled$1, useUnstableNativeVariable } from 'nativewind';
 import { createContext, useContext, forwardRef, Children, cloneElement, Fragment, useRef, useState, useEffect, isValidElement, useId, useReducer, useCallback, useMemo } from 'react';
-import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, Linking, useWindowDimensions, Modal as Modal$1, TextInput, Switch as Switch$1 } from 'react-native';
+import { useColorScheme, View as View$1, Text as Text$1, ScrollView as ScrollView$1, FlatList as FlatList$1, SectionList as SectionList$1, Pressable, Platform, Modal as Modal$1, Linking, useWindowDimensions, TextInput, Switch as Switch$1 } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { extendTailwindMerge, twMerge as twMerge$1 } from 'tailwind-merge';
@@ -419,7 +419,7 @@ function Story({
   return /* @__PURE__ */ jsxs(ScrollWrapper, { children: [
     documentation && /* @__PURE__ */ jsx(Surface, { accent: "info", className: "mb-xxl", children: documentation }),
     ["light", ...noDarkMode ? [] : ["dark"]].map(
-      (mode) => /* @__PURE__ */ jsx(ScopedTheme, { theme: mode, children: /* @__PURE__ */ jsx(View, { className: "bg-screen p-l", children }) }, mode)
+      (mode) => /* @__PURE__ */ jsx(ScopedTheme, { theme: mode, children: /* @__PURE__ */ jsx(ScrollView, { className: "h-full bg-screen px-l", children }) }, mode)
     )
   ] });
 }
@@ -522,13 +522,12 @@ function StableAccentScope({
 }) {
   const currentTheme = useCurrentTheme();
   const currentMode = useCurrentMode();
-  return /* @__PURE__ */ jsx(
-    ScopedTheme,
-    {
-      theme: accent ? `${forcedMode ?? currentMode}_${accent}` : currentTheme,
-      children
-    }
-  );
+  const theme = (() => {
+    if (!accent) return currentTheme;
+    if (accent === "none") return forcedMode ?? currentMode;
+    return `${forcedMode ?? currentMode}_${accent}`;
+  })();
+  return /* @__PURE__ */ jsx(ScopedTheme, { theme, children });
 }
 
 function PortalAccentScope({
@@ -704,6 +703,62 @@ const animationDurationsMs = {
   "fade": 300,
   "fast": 200
 };
+
+const statusBarGap = 8;
+function PopoverOverlay({
+  placement,
+  "aria-label": ariaLabel,
+  onClose,
+  children
+}) {
+  const insets = useSafeAreaInsets();
+  return /* @__PURE__ */ jsxs(
+    View,
+    {
+      className: placement === "top" ? "flex-1 justify-start px-xl" : "flex-1 justify-center px-xl",
+      style: placement === "top" ? { paddingTop: insets.top + statusBarGap } : void 0,
+      children: [
+        /* @__PURE__ */ jsx(
+          Pressable,
+          {
+            "aria-hidden": true,
+            focusable: false,
+            className: "absolute inset-0 bg-translucent",
+            onPress: onClose
+          }
+        ),
+        /* @__PURE__ */ jsx(View, { "aria-label": ariaLabel, className: "w-full", children })
+      ]
+    }
+  );
+}
+function Popover({
+  open,
+  onClose,
+  placement = "center",
+  accent,
+  "aria-label": ariaLabel,
+  children
+}) {
+  return /* @__PURE__ */ jsx(
+    Modal$1,
+    {
+      transparent: true,
+      visible: open,
+      animationType: "fade",
+      onRequestClose: onClose,
+      children: /* @__PURE__ */ jsx(SafeAreaProvider, { children: /* @__PURE__ */ jsx(PortalAccentScope, { accent, children: /* @__PURE__ */ jsx(
+        PopoverOverlay,
+        {
+          placement,
+          "aria-label": ariaLabel,
+          onClose,
+          children
+        }
+      ) }) })
+    }
+  );
+}
 
 const scrollEndToleranceInPx = 1;
 function useScrollEndState() {
@@ -1849,7 +1904,7 @@ function SuccessAlertDialog(props) {
 const externalLinkTextVariants = tv(
   {
     slots: {
-      frame: "group flex-row items-center gap-xxs self-start rounded-xs py-xxs focus-visible:outline-interactive-outlined-outline-focus",
+      frame: "group flex-row items-center gap-xxs self-start focus-visible:outline-interactive-outlined-outline-focus",
       text: "shrink font-body-bold underline transition-[color] duration-fast ease-in",
       icon: ""
     },
@@ -1938,7 +1993,7 @@ function ActionButton({
 const inputVariants = tv(
   {
     base: [
-      "bg-highlight text-base text-sharp",
+      "bg-highlight text-sharp",
       "border",
       "transition-[border-color,background-color,outline-color] duration-fast ease-in",
       "outline-interactive-outlined-pressable",
@@ -1953,8 +2008,22 @@ const inputVariants = tv(
     ].join(" "),
     variants: {
       multiline: {
-        false: "min-h-[44px] rounded-md px-m py-xs",
-        true: "min-h-[80px] resize-y rounded-xs px-xs py-xs"
+        // Centering the text of a single-line field is per-platform. iOS
+        // centers the line itself, but only without a line-height —
+        // `text-base-size-only` is `text-base` minus the 1.4 line-height the
+        // scale pairs with it, which iOS would turn into leading above the
+        // glyphs (the value then sits ~3pt low while the placeholder, drawn
+        // without those attributes, stays centered). Android lays the text out
+        // from the top of the box — `min-h-[44px]` makes it taller than the
+        // line — until `align-middle` sets its gravity (RN maps the style
+        // `verticalAlign` to `textAlignVertical`); on web that would be a real
+        // `vertical-align` on the `<input>`, hence the platform scope. Web
+        // keeps the scale: an `<input>` centers its text whatever the
+        // line-height is.
+        false: "web:text-base native:text-base-size-only android:align-middle min-h-[44px] rounded-md px-m py-xs",
+        // Multiline is a paragraph: there the line-height is what spaces the
+        // lines, and the text belongs at the top of the box.
+        true: "text-base min-h-[80px] resize-y rounded-xs px-xs py-xs"
       },
       forceStyle: {
         undefined: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "border-interactive-outlined-pressable" : "",
@@ -2024,6 +2093,304 @@ const InputText = forwardRef(
   }
 );
 
+function useControllableValue({
+  value: controlledValue,
+  defaultValue,
+  onValueChange
+}) {
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const value = controlledValue ?? internalValue;
+  const setValue = useCallback(
+    (next) => {
+      if (controlledValue === void 0) {
+        setInternalValue(next);
+      }
+      if (next !== value) {
+        onValueChange?.(next);
+      }
+    },
+    [controlledValue, onValueChange, value]
+  );
+  return [value, setValue];
+}
+
+const optionVariants = tv(
+  {
+    base: [
+      "flex-row items-center justify-between gap-xxs rounded-xs px-m py-xs my-xxs min-h-[44px]",
+      "active:bg-interactive-contained-active"
+    ].join(" "),
+    variants: {
+      cursor: {
+        // A listbox driving its cursor from JS owns both the pointer and the
+        // keyboard position, so leaving CSS hover on would light a second row
+        // while the arrow keys move elsewhere.
+        rest: "bg-interactive-contained-pressable",
+        highlighted: "bg-interactive-contained-hover",
+        hover: [
+          "bg-interactive-contained-pressable",
+          "hover:bg-interactive-contained-hover focus:bg-interactive-contained-focus"
+        ].join(" ")
+      },
+      disabled: {
+        true: "opacity-50",
+        false: ""
+      }
+    },
+    defaultVariants: { cursor: "hover", disabled: false }
+  },
+  { twMerge: false }
+);
+function cursorState(highlighted) {
+  if (highlighted === void 0) return "hover";
+  return highlighted ? "highlighted" : "rest";
+}
+const ListboxOption = forwardRef(
+  ({ option, selected, highlighted, ...props }, ref) => {
+    return /* @__PURE__ */ jsxs(
+      Pressable,
+      {
+        ref,
+        role: "option",
+        ...props,
+        "aria-disabled": option.disabled === true,
+        "aria-selected": selected,
+        disabled: option.disabled,
+        className: optionVariants({
+          cursor: cursorState(highlighted),
+          disabled: option.disabled
+        }),
+        children: [
+          /* @__PURE__ */ jsx(Text, { numberOfLines: 1, className: "flex-1 text-base text-on-accent", children: option.label }),
+          selected ? /* @__PURE__ */ jsx(
+            Icon,
+            {
+              icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}),
+              size: 18,
+              className: "text-on-accent"
+            }
+          ) : null
+        ]
+      }
+    );
+  }
+);
+
+const { useCombobox } = require("downshift/react-native");
+
+function noScrollIntoView() {
+}
+function defaultFilterOption(option, inputValue) {
+  return option.label.toLowerCase().includes(inputValue.toLowerCase());
+}
+function optionToString(option) {
+  return option ? option.label : "";
+}
+function useAutocomplete({
+  options,
+  value,
+  defaultValue,
+  onValueChange,
+  inputValue,
+  defaultInputValue,
+  onInputValueChange,
+  disabled,
+  filterOption,
+  scrollIntoView,
+  inputInPopover,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby
+}) {
+  const [currentValue, setCurrentValue] = useControllableValue({
+    value,
+    defaultValue,
+    onValueChange
+  });
+  const selectedOption = options.find((option) => option.value === currentValue) ?? null;
+  const [currentInputValue = "", setCurrentInputValue] = useControllableValue({
+    value: inputValue,
+    defaultValue: defaultInputValue ?? // `value` as well as `defaultValue`: a caller controlling the selection
+    // without controlling the text still expects the field to start on the
+    // selected label rather than empty.
+    options.find((option) => option.value === (defaultValue ?? value))?.label,
+    onValueChange: onInputValueChange
+  });
+  const selectedLabel = selectedOption?.label;
+  const visibleOptions = useMemo(() => {
+    if (currentInputValue === "" || currentInputValue === selectedLabel) {
+      return options;
+    }
+    return options.filter((option) => filterOption(option, currentInputValue));
+  }, [options, currentInputValue, selectedLabel, filterOption]);
+  const {
+    isOpen,
+    highlightedIndex,
+    getInputProps,
+    getMenuProps,
+    getItemProps,
+    openMenu,
+    closeMenu
+  } = useCombobox({
+    items: visibleOptions,
+    itemToString: optionToString,
+    inputValue: currentInputValue,
+    selectedItem: selectedOption,
+    isItemDisabled: (option) => option.disabled === true,
+    onInputValueChange: ({ inputValue: nextInputValue }) => {
+      setCurrentInputValue(nextInputValue);
+    },
+    onSelectedItemChange: ({ selectedItem }) => {
+      setCurrentValue(selectedItem ? selectedItem.value : "");
+    },
+    ...{ scrollIntoView: noScrollIntoView }
+  });
+  return {
+    isOpen,
+    visibleOptions,
+    currentValue,
+    currentInputValue,
+    highlightedIndex,
+    inputProps: getInputProps(
+      {
+        disabled,
+        "aria-label": ariaLabel,
+        // Overrides the id downshift points at by default: this combobox
+        // renders no label element of its own, so that id would dangle.
+        "aria-labelledby": ariaLabelledby
+      },
+      { suppressRefError: !isOpen }
+    ),
+    menuProps: getMenuProps(
+      {
+        // Same override as the input: without a label element of our own,
+        // downshift's default `aria-labelledby` would point at nothing. The
+        // listbox is left unnamed unless the caller supplies a real label.
+        "aria-labelledby": ariaLabelledby
+      },
+      // The menu only exists while open — it lives in a Popover, which renders
+      // nothing until then, so downshift has no ref to hold in between.
+      { suppressRefError: !isOpen }
+    ),
+    getItemProps: (params) => getItemProps(params),
+    openMenu,
+    closeMenu
+  };
+}
+function AutocompleteMenu({
+  visibleOptions,
+  currentValue,
+  highlightedIndex,
+  menuProps,
+  getItemProps,
+  emptyLabel
+}) {
+  const { ref: menuRef, ...restMenuProps } = menuProps;
+  return /* @__PURE__ */ jsxs(Surface, { variant: "highlight", shadow: "l", size: "sm", className: "p-xs pl-md", children: [
+    visibleOptions.length === 0 ? /* @__PURE__ */ jsx(Text, { role: "status", className: "px-m py-xs text-base text-muted", children: emptyLabel }) : null,
+    /* @__PURE__ */ jsx(View, { ref: menuRef, ...restMenuProps, children: /* @__PURE__ */ jsx(
+      ScrollView,
+      {
+        className: "max-h-[240px] pr-xs",
+        keyboardShouldPersistTaps: "handled",
+        children: visibleOptions.map((option, index) => {
+          const {
+            ref: itemRef,
+            onClick: onItemClick,
+            onPress: onItemPress,
+            ...itemProps
+          } = getItemProps({ item: option, index });
+          const selected = option.value === currentValue;
+          return /* @__PURE__ */ jsx(
+            ListboxOption,
+            {
+              ref: itemRef,
+              ...itemProps,
+              option,
+              selected,
+              highlighted: index === highlightedIndex,
+              onPress: onItemPress ?? onItemClick
+            },
+            option.value
+          );
+        })
+      }
+    ) })
+  ] });
+}
+
+function InputTextAutocomplete({
+  filterOption = defaultFilterOption,
+  emptyLabel = "No result",
+  placeholder,
+  disabled,
+  accent,
+  mode,
+  className,
+  testID,
+  ...rest
+}) {
+  const {
+    isOpen,
+    currentInputValue,
+    inputProps,
+    openMenu,
+    closeMenu,
+    ...menu
+  } = useAutocomplete({
+    ...rest,
+    disabled,
+    filterOption,
+    scrollIntoView: false,
+    inputInPopover: true
+  });
+  const { ref: inputRef, onKeyDown, onClick, ...restInputProps } = inputProps;
+  return /* @__PURE__ */ jsxs(Fragment$1, { children: [
+    /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(
+      InputText,
+      {
+        readOnly: true,
+        role: "combobox",
+        "aria-expanded": isOpen,
+        "aria-label": rest["aria-label"],
+        "aria-labelledby": rest["aria-labelledby"],
+        value: currentInputValue,
+        mode,
+        placeholder,
+        disabled,
+        testID,
+        className,
+        onPressIn: () => {
+          if (!disabled) openMenu();
+        }
+      }
+    ) }),
+    /* @__PURE__ */ jsx(
+      Popover,
+      {
+        open: isOpen,
+        placement: "top",
+        accent: "none",
+        "aria-label": rest["aria-label"],
+        onClose: closeMenu,
+        children: /* @__PURE__ */ jsxs(View, { className: "gap-xs", children: [
+          /* @__PURE__ */ jsx(
+            InputText,
+            {
+              ref: inputRef,
+              autoFocus: true,
+              mode: mode ?? "search",
+              placeholder,
+              ...restInputProps,
+              onPressIn: onClick
+            }
+          ),
+          /* @__PURE__ */ jsx(AutocompleteMenu, { ...menu, emptyLabel })
+        ] })
+      }
+    )
+  ] });
+}
+
 const TextArea = forwardRef((props, ref) => {
   return /* @__PURE__ */ jsx(InputText, { ref, multiline: true, ...props });
 });
@@ -2074,27 +2441,6 @@ function SwitchInner({
 }
 function Switch({ accent, ...rest }) {
   return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(SwitchInner, { ...rest }) });
-}
-
-function useControllableValue({
-  value: controlledValue,
-  defaultValue,
-  onValueChange
-}) {
-  const [internalValue, setInternalValue] = useState(defaultValue);
-  const value = controlledValue ?? internalValue;
-  const setValue = useCallback(
-    (next) => {
-      if (controlledValue === void 0) {
-        setInternalValue(next);
-      }
-      if (next !== value) {
-        onValueChange?.(next);
-      }
-    },
-    [controlledValue, onValueChange, value]
-  );
-  return [value, setValue];
 }
 
 const selectTriggerBaseClassName = [
@@ -2158,56 +2504,6 @@ const triggerVariants = tv(
   },
   { twMerge: false }
 );
-const optionVariants = tv(
-  {
-    base: [
-      "flex-row items-center justify-between gap-xxs rounded-xs px-m py-m my-xxs",
-      "hover:bg-interactive-contained-hover focus:bg-interactive-contained-focus active:bg-interactive-contained-active"
-    ].join(" "),
-    variants: {
-      selected: {
-        true: "bg-interactive-contained-active",
-        false: "bg-interactive-contained-pressable"
-      },
-      disabled: {
-        true: "opacity-50",
-        false: ""
-      }
-    },
-    defaultVariants: { selected: false, disabled: false }
-  },
-  { twMerge: false }
-);
-function SelectOptionRow({
-  option,
-  selected,
-  onSelect
-}) {
-  return /* @__PURE__ */ jsxs(
-    Pressable,
-    {
-      role: "option",
-      "aria-selected": selected,
-      "aria-disabled": option.disabled === true,
-      disabled: option.disabled,
-      className: optionVariants({ selected, disabled: option.disabled }),
-      onPress: () => {
-        onSelect(option.value);
-      },
-      children: [
-        /* @__PURE__ */ jsx(Text, { numberOfLines: 1, className: "flex-1 text-base text-on-accent", children: option.label }),
-        selected ? /* @__PURE__ */ jsx(
-          Icon,
-          {
-            icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}),
-            size: 18,
-            className: "text-on-accent"
-          }
-        ) : null
-      ]
-    }
-  );
-}
 function SelectInner({
   options,
   value,
@@ -2258,39 +2554,31 @@ function SelectInner({
       }
     ),
     /* @__PURE__ */ jsx(
-      Modal$1,
+      Popover,
       {
-        transparent: true,
-        visible: open,
-        animationType: "fade",
-        onRequestClose: () => {
+        open,
+        "aria-label": ariaLabel,
+        onClose: () => {
           setOpen(false);
         },
-        children: /* @__PURE__ */ jsx(
-          Pressable,
+        children: /* @__PURE__ */ jsx(Surface, { variant: "highlight", shadow: "l", size: "sm", className: "py-xs", children: /* @__PURE__ */ jsx(
+          ScrollView,
           {
-            className: "flex-1 justify-center bg-translucent px-xl",
-            onPress: () => {
-              setOpen(false);
-            },
-            children: /* @__PURE__ */ jsx(Pressable, { className: "w-full", "aria-label": ariaLabel, children: /* @__PURE__ */ jsx(Surface, { variant: "highlight", shadow: "l", size: "sm", className: "py-xs", children: /* @__PURE__ */ jsx(
-              ScrollView,
+            style: { maxHeight: windowHeight * 0.7 },
+            showsVerticalScrollIndicator: false,
+            children: options.map((option) => /* @__PURE__ */ jsx(
+              ListboxOption,
               {
-                style: { maxHeight: windowHeight * 0.7 },
-                showsVerticalScrollIndicator: false,
-                children: options.map((option) => /* @__PURE__ */ jsx(
-                  SelectOptionRow,
-                  {
-                    option,
-                    selected: option.value === current,
-                    onSelect
-                  },
-                  option.value
-                ))
-              }
-            ) }) })
+                option,
+                selected: option.value === current,
+                onPress: () => {
+                  onSelect(option.value);
+                }
+              },
+              option.value
+            ))
           }
-        )
+        ) })
       }
     )
   ] });
@@ -3507,5 +3795,5 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme };
 //# sourceMappingURL=index-react-native.es.js.map
