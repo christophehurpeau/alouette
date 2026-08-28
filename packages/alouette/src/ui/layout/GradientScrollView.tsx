@@ -18,8 +18,8 @@ const GradientScrollViewInner = forwardRef<
 >(({ children, ...scrollViewProps }, ref) => {
   return (
     <RNScrollView ref={ref} {...scrollViewProps}>
-      <View className="absolute left-0 right-0 top-[-600] height-[600] background-(--color-screen-gradient-start)" />
-      <View className="absolute left-0 right-0 bottom-[-600] height-[600] background-(--color-screen-gradient-end)" />
+      <View className="absolute left-0 right-0 top-[-600] height-[600] bg-screen-gradient-start" />
+      <View className="absolute left-0 right-0 bottom-[-600] height-[600] bg-screen-gradient-end" />
       <GradientBackground />
       {children}
     </RNScrollView>

@@ -3694,8 +3694,8 @@ function GradientBackground({
 
 const GradientScrollViewInner = forwardRef(({ children, ...scrollViewProps }, ref) => {
   return /* @__PURE__ */ jsxs(ScrollView$1, { ref, ...scrollViewProps, children: [
-    /* @__PURE__ */ jsx(View$1, { className: "absolute left-0 right-0 top-[-600] height-[600] background-(--color-screen-gradient-start)" }),
-    /* @__PURE__ */ jsx(View$1, { className: "absolute left-0 right-0 bottom-[-600] height-[600] background-(--color-screen-gradient-end)" }),
+    /* @__PURE__ */ jsx(View$1, { className: "absolute left-0 right-0 top-[-600] height-[600] bg-screen-gradient-start" }),
+    /* @__PURE__ */ jsx(View$1, { className: "absolute left-0 right-0 bottom-[-600] height-[600] bg-screen-gradient-end" }),
     /* @__PURE__ */ jsx(GradientBackground, {}),
     children
   ] });

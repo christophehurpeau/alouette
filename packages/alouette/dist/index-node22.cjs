@@ -3709,8 +3709,8 @@ function GradientBackground({
 
 const GradientScrollViewInner = react.forwardRef(({ children, ...scrollViewProps }, ref) => {
   return /* @__PURE__ */ jsxRuntime.jsxs(reactNative.ScrollView, { ref, ...scrollViewProps, children: [
-    /* @__PURE__ */ jsxRuntime.jsx(reactNative.View, { className: "absolute left-0 right-0 top-[-600] height-[600] background-(--color-screen-gradient-start)" }),
-    /* @__PURE__ */ jsxRuntime.jsx(reactNative.View, { className: "absolute left-0 right-0 bottom-[-600] height-[600] background-(--color-screen-gradient-end)" }),
+    /* @__PURE__ */ jsxRuntime.jsx(reactNative.View, { className: "absolute left-0 right-0 top-[-600] height-[600] bg-screen-gradient-start" }),
+    /* @__PURE__ */ jsxRuntime.jsx(reactNative.View, { className: "absolute left-0 right-0 bottom-[-600] height-[600] bg-screen-gradient-end" }),
     /* @__PURE__ */ jsxRuntime.jsx(GradientBackground, {}),
     children
   ] });
