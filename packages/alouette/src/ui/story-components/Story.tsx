@@ -110,7 +110,9 @@ export function Story({
       {(["light", ...(noDarkMode ? [] : ["dark"])] as ("dark" | "light")[]).map(
         (mode) => (
           <ScopedTheme key={mode} theme={mode}>
-            <View className="bg-screen p-l">{children}</View>
+            <ScrollView className="h-full bg-screen px-l">
+              {children}
+            </ScrollView>
           </ScopedTheme>
         ),
       )}
