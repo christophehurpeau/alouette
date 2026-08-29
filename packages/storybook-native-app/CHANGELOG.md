@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.10.0](///compare/storybook-native-app@12.9.0...storybook-native-app@12.10.0) (2026-08-29)
+
+### Features
+
+* screen scroll containers ([#359](undefined/undefined/undefined/issues/359))
+
+Version bump for dependency: alouette
+
+
 ## [12.9.0](///compare/storybook-native-app@12.8.0...storybook-native-app@12.9.0) (2026-08-28)
 
 ### Features

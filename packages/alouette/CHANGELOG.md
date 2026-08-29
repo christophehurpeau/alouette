@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.10.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.9.0...alouette@22.10.0) (2026-08-29)
+
+### Features
+
+* allow 'none' as a valid accent option in AccentScope component
+* screen scroll containers ([#359](https://github.com/christophehurpeau/alouette/issues/359))
+
+### Bug Fixes
+
+* correct background class names in GradientScrollViewInner component
+
 ## [22.9.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.8.0...alouette@22.9.0) (2026-08-28)
 
 ### Features
