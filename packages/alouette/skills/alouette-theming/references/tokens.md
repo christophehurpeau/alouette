@@ -11,37 +11,37 @@ below are the underlying CSS variables, used inside the generated palette CSS.
 
 ### Surfaces & backgrounds
 
-| Token            | className examples            |
-| ---------------- | ----------------------------- |
-| `surface`        | `bg-surface`                  |
-| `lowered`        | `bg-lowered`                  |
-| `highlight`      | `bg-highlight`                |
-| `highlight-accent` | `bg-highlight-accent`       |
-| `translucent`    | `bg-translucent`              |
-| `screen`         | `bg-screen`                   |
+| Token              | className examples    |
+| ------------------ | --------------------- |
+| `surface`          | `bg-surface`          |
+| `lowered`          | `bg-lowered`          |
+| `highlight`        | `bg-highlight`        |
+| `highlight-accent` | `bg-highlight-accent` |
+| `translucent`      | `bg-translucent`      |
+| `screen`           | `bg-screen`           |
 
 ### Text / foreground
 
-| Token              | className          | Use                          |
-| ------------------ | ------------------ | ---------------------------- |
-| `sharp`            | `text-sharp`       | Default body text            |
-| `muted`            | `text-muted`       | Secondary text               |
-| `accent`           | `text-accent`      | Accented text (current accent) |
-| `accent-muted`     | `text-accent-muted`| Muted accented text          |
-| `on-accent`        | `text-on-accent`   | Text on an accent background |
-| `on-accent-muted`  | `text-on-accent-muted` | Muted text on accent     |
-| `disabled-sharp`   | `text-disabled-sharp` | Disabled, on filled        |
-| `disabled-muted`   | `text-disabled-muted` | Disabled, on outline       |
+| Token             | className              | Use                            |
+| ----------------- | ---------------------- | ------------------------------ |
+| `sharp`           | `text-sharp`           | Default body text              |
+| `muted`           | `text-muted`           | Secondary text                 |
+| `accent`          | `text-accent`          | Accented text (current accent) |
+| `accent-muted`    | `text-accent-muted`    | Muted accented text            |
+| `on-accent`       | `text-on-accent`       | Text on an accent background   |
+| `on-accent-muted` | `text-on-accent-muted` | Muted text on accent           |
+| `disabled-sharp`  | `text-disabled-sharp`  | Disabled, on filled            |
+| `disabled-muted`  | `text-disabled-muted`  | Disabled, on outline           |
 
 ### Borders & gradients
 
-| Token                   | className              |
-| ----------------------- | ---------------------- |
-| `border-sharp`          | `border-border-sharp`  |
-| `border-muted`          | `border-border-muted`  |
-| `screen-gradient-start` | `from-screen-gradient-start` |
-| `screen-gradient-middle`| `via-screen-gradient-middle` |
-| `screen-gradient-end`   | `to-screen-gradient-end` |
+| Token                    | className                    |
+| ------------------------ | ---------------------------- |
+| `border-sharp`           | `border-border-sharp`        |
+| `border-muted`           | `border-border-muted`        |
+| `screen-gradient-start`  | `from-screen-gradient-start` |
+| `screen-gradient-middle` | `via-screen-gradient-middle` |
+| `screen-gradient-end`    | `to-screen-gradient-end`     |
 
 ### Interactive & form tokens
 

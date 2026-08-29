@@ -69,6 +69,19 @@
       },
       "dependsOn": [],
       "problemMatcher": []
+    },
+    {
+      "label": "demo-app",
+      "type": "shell",
+      "command": "pnpm start",
+      "options": {
+        "cwd": "${workspaceFolder}/packages/expo-demo-app"
+      },
+      "group": {
+        "kind": "none"
+      },
+      "dependsOn": [],
+      "problemMatcher": []
     }
   ]
 }

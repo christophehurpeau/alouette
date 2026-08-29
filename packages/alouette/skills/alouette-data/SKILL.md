@@ -13,7 +13,7 @@ description: >
   showing a value with an edit affordance.
 type: core
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -92,7 +92,9 @@ with a wrapper — it takes no `className`.
 ```tsx
 <HStack className="gap-xs items-center">
   <Text className="text-base">Invoice #128</Text>
-  <Badge accent="success" size="sm">Paid</Badge>
+  <Badge accent="success" size="sm">
+    Paid
+  </Badge>
 </HStack>
 ```
 
@@ -207,13 +209,17 @@ Source: packages/alouette/src/ui/data/Badge.tsx
 Wrong:
 
 ```tsx
-<Badge variant="filled" size="lg">Active</Badge>
+<Badge variant="filled" size="lg">
+  Active
+</Badge>
 ```
 
 Correct:
 
 ```tsx
-<Badge variant="solid.enabled" size="md">Active</Badge>
+<Badge variant="solid.enabled" size="md">
+  Active
+</Badge>
 ```
 
 `variant` is exactly `"solid" | "solid.enabled" | "outlined"` (note the dotted
@@ -234,7 +240,9 @@ Wrong:
 Correct:
 
 ```tsx
-<Badge accent="success" size="sm">Paid</Badge>
+<Badge accent="success" size="sm">
+  Paid
+</Badge>
 ```
 
 A manual pill uses raw Tailwind colors instead of accent tokens, so it does not
@@ -261,7 +269,11 @@ Wrong:
     <Text className="font-body-bold text-md">Display name</Text>
     <Badge>{name}</Badge>
   </HStack>
-  <IconButton size="sm" icon={<PencilSimpleRegularIcon />} onPress={openEditor} />
+  <IconButton
+    size="sm"
+    icon={<PencilSimpleRegularIcon />}
+    onPress={openEditor}
+  />
 </HStack>
 ```
 

@@ -6,9 +6,9 @@
  * {@link PresenceList} so the exit timer matches the CSS animation.
  */
 export const animationDurationsMs = {
-  "slide": 600,
-  "collapse": 800,
-  "progress": 600,
-  "fade": 300,
-  "fast": 200
+  slide: 600,
+  collapse: 800,
+  progress: 600,
+  fade: 300,
+  fast: 200,
 } as const;

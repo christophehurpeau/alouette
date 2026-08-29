@@ -9,7 +9,7 @@ description: >
   different component tree per size, or unmounting a heavy off-screen variant.
 type: core
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/windowSize/SwitchBreakpoints.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/windowSize/useCurrentBreakpointName.ts"
@@ -121,7 +121,7 @@ Wrong:
 
 ```tsx
 const cls = `${bp}:flex-row`;
-<View className={cls} />
+<View className={cls} />;
 ```
 
 Correct:

@@ -8,7 +8,7 @@ description: >
   when rendering any text; avoids font-bold and raw color classes.
 type: core
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 requires:
   - alouette-theming
 sources:
@@ -65,7 +65,9 @@ tuned for display sizes. For smaller emphasis, use `font-body-bold`.
 (+ `-muted` variants). Accent color follows the nearest accent scope:
 
 ```tsx
-<Text accent="brand" className="text-accent">Brand-colored</Text>
+<Text accent="brand" className="text-accent">
+  Brand-colored
+</Text>
 ```
 
 ## Common Mistakes
@@ -96,14 +98,14 @@ Wrong:
 
 ```tsx
 import { Text } from "react-native";
-<Text className="text-muted">Hi</Text>
+<Text className="text-muted">Hi</Text>;
 ```
 
 Correct:
 
 ```tsx
 import { Text } from "alouette";
-<Text className="text-muted">Hi</Text>
+<Text className="text-muted">Hi</Text>;
 ```
 
 react-native's `Text` has no `font-body` default, no semantic color, and no

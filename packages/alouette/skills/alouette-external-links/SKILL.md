@@ -9,7 +9,7 @@ description: >
   wrappers. Load when linking out to external URLs from alouette UI.
 type: composition
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 requires:
   - alouette-actions
 sources:
@@ -93,7 +93,7 @@ Wrong:
 
 ```tsx
 import { Linking } from "react-native";
-<Pressable onPress={() => Linking.openURL(href)} />
+<Pressable onPress={() => Linking.openURL(href)} />;
 ```
 
 Correct:

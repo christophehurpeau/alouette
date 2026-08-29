@@ -1,1 +1,1 @@
-{"version":3,"file":"animationDurationsMs.d.ts","sourceRoot":"","sources":["../../src/animationDurationsMs.ts"],"names":[],"mappings":"AAEA;;;;GAIG;AACH,eAAO,MAAM,oBAAoB;aAC/B,KAAO,EAAE,GAAG;aACZ,QAAU,EAAE,GAAG;aACf,QAAU,EAAE,GAAG;aACf,IAAM,EAAE,GAAG;aACX,IAAM,EAAE,GAAG;CACH,CAAC"}
+{"version":3,"file":"animationDurationsMs.d.ts","sourceRoot":"","sources":["../../src/animationDurationsMs.ts"],"names":[],"mappings":"AAEA;;;;GAIG;AACH,eAAO,MAAM,oBAAoB;aAC/B,KAAK,EAAE,GAAG;aACV,QAAQ,EAAE,GAAG;aACb,QAAQ,EAAE,GAAG;aACb,IAAI,EAAE,GAAG;aACT,IAAI,EAAE,GAAG;CACD,CAAC"}

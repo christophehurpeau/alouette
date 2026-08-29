@@ -4,6 +4,7 @@
     "@pob/root/tsconfigs/targets/node-24.json"
   ],
   "include": [
+    "*.config.js",
     "*.config.ts",
     "*.config.mts",
     "*.config.cts",
@@ -12,7 +13,10 @@
     "scripts/**/*.cts",
     "packages/*/scripts/**/*.ts",
     "packages/*/scripts/**/*.mts",
-    "packages/*/scripts/**/*.cts"
+    "packages/*/scripts/**/*.cts",
+    "packages/*/e2e/**/*.ts",
+    "packages/*/e2e/**/*.mts",
+    "packages/*/e2e/**/*.cts"
   ],
   "compilerOptions": {
     "noEmit": true,

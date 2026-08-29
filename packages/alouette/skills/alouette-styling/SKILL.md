@@ -10,7 +10,7 @@ description: >
   when writing, restyling or reviewing a component.
 type: core
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 requires:
   - alouette-theming
 sources:
@@ -76,7 +76,11 @@ to every element from a single call, so the elements cannot drift.
 
 ```tsx
 const modalVariants = tv({
-  slots: { panel: "w-full max-h-full", inset: "bg-highlight shadow-l", footer: "…" },
+  slots: {
+    panel: "w-full max-h-full",
+    inset: "bg-highlight shadow-l",
+    footer: "…",
+  },
   variants: {
     size: {
       sm: { panel: "max-w-[360px]", inset: "rounded-sm p-xs", footer: "py-xs" },
@@ -152,7 +156,9 @@ Correct:
 ```tsx
 const itemVariants = tv({
   slots: { chip: "…", segment: "…", label: "…" },
-  variants: { selected: { true: { chip: "opacity-100", label: "text-on-accent" } } },
+  variants: {
+    selected: { true: { chip: "opacity-100", label: "text-on-accent" } },
+  },
 });
 const styles = itemVariants({ selected, disabled });
 ```

@@ -47,9 +47,9 @@ on `Surface`.
 
 ## Quick mapping from raw Tailwind
 
-| Don't write | Write        |
-| ----------- | ------------ |
-| `p-4`       | `p-m`        |
-| `gap-2`     | `gap-xs`     |
-| `rounded-lg`| `rounded-sm` or `rounded-md` |
-| `shadow-md` | `shadow-m`   |
+| Don't write  | Write                        |
+| ------------ | ---------------------------- |
+| `p-4`        | `p-m`                        |
+| `gap-2`      | `gap-xs`                     |
+| `rounded-lg` | `rounded-sm` or `rounded-md` |
+| `shadow-md`  | `shadow-m`                   |

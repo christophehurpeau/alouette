@@ -1,0 +1,13 @@
+
+/.expo/
+/android/
+/ios/
+/dist/
+/dist-native/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+*.icon/

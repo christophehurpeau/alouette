@@ -77,6 +77,47 @@ const AlouetteDecorator = (storyFn, context) => {
   return /* @__PURE__ */ jsxRuntime.jsx(reactNativeSafeAreaContext.SafeAreaProvider, { children: /* @__PURE__ */ jsxRuntime.jsx(AlouetteProvider, { themeVariables, children: /* @__PURE__ */ jsxRuntime.jsx(ScopedTheme, { theme, children: storyFn(context) }) }) });
 };
 
+const allSafeAreaEdges = [
+  "top",
+  "bottom",
+  "left",
+  "right"
+];
+const ConsumedSafeAreaEdgesContext = react.createContext([]);
+function useConsumedSafeAreaEdges() {
+  return react.useContext(ConsumedSafeAreaEdgesContext);
+}
+function SafeAreaScope({
+  consumedEdges,
+  children
+}) {
+  const parentEdges = useConsumedSafeAreaEdges();
+  const mergedEdges = allSafeAreaEdges.filter(
+    (edge) => parentEdges.includes(edge) || consumedEdges.includes(edge)
+  );
+  return /* @__PURE__ */ jsxRuntime.jsx(ConsumedSafeAreaEdgesContext.Provider, { value: mergedEdges, children });
+}
+
+function useScreenSafeAreaPadding(edges) {
+  const insets = reactNativeSafeAreaContext.useSafeAreaInsets();
+  const consumedEdges = useConsumedSafeAreaEdges();
+  const appliedEdges = edges ?? allSafeAreaEdges.filter((edge) => !consumedEdges.includes(edge));
+  const padding = {};
+  if (insets.top > 0 && appliedEdges.includes("top")) {
+    padding.paddingTop = insets.top;
+  }
+  if (insets.bottom > 0 && appliedEdges.includes("bottom")) {
+    padding.paddingBottom = insets.bottom;
+  }
+  if (insets.left > 0 && appliedEdges.includes("left")) {
+    padding.paddingLeft = insets.left;
+  }
+  if (insets.right > 0 && appliedEdges.includes("right")) {
+    padding.paddingRight = insets.right;
+  }
+  return Object.keys(padding).length === 0 ? void 0 : padding;
+}
+
 const View = react.forwardRef((props, ref) => {
   return /* @__PURE__ */ jsxRuntime.jsx(reactNative.View, { ref, ...props });
 });
@@ -712,11 +753,11 @@ function PresenceOne({
 }
 
 const animationDurationsMs = {
-  "slide": 600,
-  "collapse": 800,
-  "progress": 600,
-  "fade": 300,
-  "fast": 200
+  slide: 600,
+  collapse: 800,
+  progress: 600,
+  fade: 300,
+  fast: 200
 };
 
 const statusBarGap = 8;
@@ -3719,6 +3760,80 @@ const GradientScrollView = react.forwardRef(({ accent, children, ...scrollViewPr
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(GradientScrollViewInner, { ref, ...scrollViewProps, children }) });
 });
 
+function ScreenCenterLayout({
+  header,
+  content,
+  footer
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: "grow gap-xl min-h-screen", children: [
+    header,
+    /* @__PURE__ */ jsxRuntime.jsx(reactNative.View, { className: "grow flex-center", children: content }),
+    footer
+  ] });
+}
+
+function useScreenContainerProps({
+  className,
+  contentContainerClassName,
+  contentContainerStyle,
+  edges
+}) {
+  const safeAreaPadding = useScreenSafeAreaPadding(edges);
+  return {
+    className: tailwindMerge.twMerge("bg-screen min-h-full", className),
+    contentContainerClassName: tailwindMerge.twMerge("grow", contentContainerClassName),
+    contentContainerStyle: safeAreaPadding ? [contentContainerStyle, safeAreaPadding] : contentContainerStyle
+  };
+}
+
+function ScreenScrollView({
+  className,
+  contentContainerClassName,
+  contentContainerStyle,
+  edges,
+  ...props
+}) {
+  const containerProps = useScreenContainerProps({
+    className,
+    contentContainerClassName,
+    contentContainerStyle,
+    edges
+  });
+  return /* @__PURE__ */ jsxRuntime.jsx(ScrollView, { ...containerProps, ...props });
+}
+
+function ScreenFlatList({
+  className,
+  contentContainerClassName,
+  contentContainerStyle,
+  edges,
+  ...props
+}) {
+  const containerProps = useScreenContainerProps({
+    className,
+    contentContainerClassName,
+    contentContainerStyle,
+    edges
+  });
+  return /* @__PURE__ */ jsxRuntime.jsx(FlatList, { ...containerProps, ...props });
+}
+
+function ScreenSectionList({
+  className,
+  contentContainerClassName,
+  contentContainerStyle,
+  edges,
+  ...props
+}) {
+  const containerProps = useScreenContainerProps({
+    className,
+    contentContainerClassName,
+    contentContainerStyle,
+    edges
+  });
+  return /* @__PURE__ */ jsxRuntime.jsx(SectionList, { ...containerProps, ...props });
+}
+
 const Breakpoints = {
   /**
    * min-width: 0
@@ -3872,7 +3987,12 @@ exports.RadioCard = RadioCard;
 exports.RadioCardGroup = RadioCardGroup;
 exports.RadioGroup = RadioGroup;
 exports.SafeAreaBox = SafeAreaBox;
+exports.SafeAreaScope = SafeAreaScope;
 exports.ScopedTheme = ScopedTheme;
+exports.ScreenCenterLayout = ScreenCenterLayout;
+exports.ScreenFlatList = ScreenFlatList;
+exports.ScreenScrollView = ScreenScrollView;
+exports.ScreenSectionList = ScreenSectionList;
 exports.ScrollView = ScrollView;
 exports.SectionList = SectionList;
 exports.Select = Select;
@@ -3900,8 +4020,10 @@ exports.WarningAlertDialog = WarningAlertDialog;
 exports.WarningMessage = WarningMessage;
 exports.animationDurationsMs = animationDurationsMs;
 exports.styled = styled;
+exports.useConsumedSafeAreaEdges = useConsumedSafeAreaEdges;
 exports.useCurrentBreakpointName = useCurrentBreakpointName;
 exports.useCurrentBreakpointNameFiltered = useCurrentBreakpointNameFiltered;
 exports.useCurrentMode = useCurrentMode;
 exports.useCurrentTheme = useCurrentTheme;
+exports.useScreenSafeAreaPadding = useScreenSafeAreaPadding;
 //# sourceMappingURL=index-react-native.cjs.js.map

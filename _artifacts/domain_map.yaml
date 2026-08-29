@@ -6,89 +6,89 @@
 # Status: draft
 
 library:
-  name: 'alouette'
-  version: '22.6.0'
-  repository: 'https://github.com/christophehurpeau/alouette'
-  description: 'Multi-platform (web + React Native iOS/Android) React design system built on NativeWind v5 and Tailwind CSS v4, styled entirely via className with semantic theme tokens and CSS-driven animations.'
-  primary_framework: 'React / React Native'
+  name: "alouette"
+  version: "22.9.0"
+  repository: "https://github.com/christophehurpeau/alouette"
+  description: "Multi-platform (web + React Native iOS/Android) React design system built on NativeWind v5 and Tailwind CSS v4, styled entirely via className with semantic theme tokens and CSS-driven animations."
+  primary_framework: "React / React Native"
 
 # Skills are for app developers CONSUMING alouette components.
 # Out of scope (per maintainer): authoring new alouette components, the internal
 # scripts/build-css.ts token workflow, and navigation/routing.
 
 domains:
-  - name: 'Setting up an alouette app'
-    slug: 'setup'
-    description: 'Wiring alouette into an Expo/React Native app: metro config, global.css + @source, provider, fonts, safe area. Cross-platform (ios/android/web).'
-  - name: 'Theming with modes and accents'
-    slug: 'theming'
-    description: 'How light/dark modes and accents (brand/danger/info/success/warning) cascade through ScopedTheme/AccentScope, and how children consume base tokens.'
-  - name: 'Styling text'
-    slug: 'typography'
-    description: 'Text/Paragraph styling via combined font family+weight utilities, Tailwind sizes, and semantic color tokens.'
-  - name: 'Laying out screens and surfaces'
-    slug: 'layout'
-    description: 'Boxes, surfaces, stacks, separators, gradients, and the spacing/radius/shadow token scale.'
-  - name: 'Interactive actions'
-    slug: 'actions'
-    description: 'Buttons, icon buttons, link buttons, and pressable surfaces with interactive token states.'
-  - name: 'Form inputs'
-    slug: 'forms'
-    description: 'Text inputs, text areas, switches, radio groups (RadioGroup/Radio circle-dot list, RadioButtonGroup/RadioButton segmented pill bar) with controlled/uncontrolled and disabled handling, plus react-hook-form composition (Form/FormField/FormSubmitButton/SimpleVForm/FormEditableItem) for validated forms.'
-  - name: 'Displaying data'
-    slug: 'data'
-    description: 'Components that annotate or summarise content: Badge status/count/category pills, and EditableItem label/value rows with an edit affordance.'
-  - name: 'Navigation'
-    slug: 'navigation'
-    description: 'Segmented groups that move between destinations (NavBar/NavBarItem) or switch views on one screen (Tabs/Tab), sharing the RadioButtonGroup material.'
-  - name: 'Feedback messages'
-    slug: 'feedback'
-    description: 'Semantic message banners with optional dismiss, a top-pinned network connection status banner, and determinate progress indicators.'
-  - name: 'Dialogs and overlays'
-    slug: 'dialogs'
-    description: 'Modal overlays and AlertDialog confirmations (confirm/alert/required variants) with accessible labelling and dismiss handling.'
-  - name: 'Animating presence'
-    slug: 'animation'
-    description: 'CSS-keyframe enter/exit animations run on native via Reanimated, orchestrated with PresenceOne/PresenceList.'
-  - name: 'Styling conventions'
-    slug: 'styling'
-    description: 'How a component declares and applies its classes: tailwind-variants tv() variants and slots, className over inline style, pixel sizes as arbitrary values, and the alouette design principles.'
-  - name: 'Responsive breakpoints'
-    slug: 'responsive'
-    description: 'Switching layout by window width with breakpoint helpers and static responsive utility classes.'
+  - name: "Setting up an alouette app"
+    slug: "setup"
+    description: "Wiring alouette into an Expo/React Native app: metro config, global.css + @source, provider, fonts, safe area. Cross-platform (ios/android/web)."
+  - name: "Theming with modes and accents"
+    slug: "theming"
+    description: "How light/dark modes and accents (brand/danger/info/success/warning) cascade through ScopedTheme/AccentScope, and how children consume base tokens."
+  - name: "Styling text"
+    slug: "typography"
+    description: "Text/Paragraph styling via combined font family+weight utilities, Tailwind sizes, and semantic color tokens."
+  - name: "Laying out screens and surfaces"
+    slug: "layout"
+    description: "Boxes, surfaces, stacks, separators, gradients, and the spacing/radius/shadow token scale."
+  - name: "Interactive actions"
+    slug: "actions"
+    description: "Buttons, icon buttons, link buttons, and pressable surfaces with interactive token states."
+  - name: "Form inputs"
+    slug: "forms"
+    description: "Text inputs, text areas, switches, radio groups (RadioGroup/Radio circle-dot list, RadioButtonGroup/RadioButton segmented pill bar) with controlled/uncontrolled and disabled handling, plus react-hook-form composition (Form/FormField/FormSubmitButton/SimpleVForm/FormEditableItem) for validated forms."
+  - name: "Displaying data"
+    slug: "data"
+    description: "Components that annotate or summarise content: Badge status/count/category pills, and EditableItem label/value rows with an edit affordance."
+  - name: "Navigation"
+    slug: "navigation"
+    description: "Segmented groups that move between destinations (NavBar/NavBarItem) or switch views on one screen (Tabs/Tab), sharing the RadioButtonGroup material."
+  - name: "Feedback messages"
+    slug: "feedback"
+    description: "Semantic message banners with optional dismiss, a top-pinned network connection status banner, and determinate progress indicators."
+  - name: "Dialogs and overlays"
+    slug: "dialogs"
+    description: "Modal overlays and AlertDialog confirmations (confirm/alert/required variants) with accessible labelling and dismiss handling."
+  - name: "Animating presence"
+    slug: "animation"
+    description: "CSS-keyframe enter/exit animations run on native via Reanimated, orchestrated with PresenceOne/PresenceList."
+  - name: "Styling conventions"
+    slug: "styling"
+    description: "How a component declares and applies its classes: tailwind-variants tv() variants and slots, className over inline style, pixel sizes as arbitrary values, and the alouette design principles."
+  - name: "Responsive breakpoints"
+    slug: "responsive"
+    description: "Switching layout by window width with breakpoint helpers and static responsive utility classes."
 
 skills:
   # ---------------------------------------------------------------------------
-  - name: 'Set up alouette in an app'
-    slug: 'alouette-setup'
-    domain: 'setup'
-    description: 'Install and wire alouette into an Expo app: withAlouetteConfig metro plugin, import alouette/global.css, @source globs, AlouetteProvider, SafeAreaProvider, loading Sora/Chivo Mono fonts. Covers ios/android/web support.'
-    type: 'lifecycle'
-    packages: ['alouette']
+  - name: "Set up alouette in an app"
+    slug: "alouette-setup"
+    domain: "setup"
+    description: "Install and wire alouette into an Expo app: withAlouetteConfig metro plugin, import alouette/global.css, @source globs, AlouetteProvider, SafeAreaProvider, loading Sora/Chivo Mono fonts. Covers ios/android/web support."
+    type: "lifecycle"
+    packages: ["alouette"]
     covers:
-      - 'AlouetteProvider'
-      - 'SafeAreaProvider'
-      - 'withAlouetteConfig (alouette/metro.cjs)'
-      - 'postcss.config.mjs (Tailwind via PostCSS)'
-      - 'alouette/global.css + @source'
-      - 'NativeWind v5 / Tailwind v4 setup'
-      - 'font loading (Sora, ChivoMono)'
+      - "AlouetteProvider"
+      - "SafeAreaProvider"
+      - "withAlouetteConfig (alouette/metro.cjs)"
+      - "postcss.config.mjs (Tailwind via PostCSS)"
+      - "alouette/global.css + @source"
+      - "NativeWind v5 / Tailwind v4 setup"
+      - "font loading (Sora, ChivoMono)"
     tasks:
-      - 'Initialize a new app that uses alouette'
-      - 'Configure metro for alouette + NativeWind'
-      - 'Make alouette classes detected by the Tailwind scanner'
+      - "Initialize a new app that uses alouette"
+      - "Configure metro for alouette + NativeWind"
+      - "Make alouette classes detected by the Tailwind scanner"
     failure_modes:
-      - mistake: 'Missing postcss.config — Tailwind never runs'
+      - mistake: "Missing postcss.config — Tailwind never runs"
         mechanism: "withAlouetteConfig -> withNativewind delegates CSS compilation to Expo's Metro transform worker, which runs Tailwind only if it finds a postcss.config file at the project root. Absent -> CSS passes straight to lightningcss verbatim, zero utilities are emitted, components render unstyled (only the hotpink body fallback), and the build logs spam 'Unknown at rule: @utility/@source/@theme'. @tailwindcss/postcss ships as a dependency of alouette, so apps add only the config file."
         wrong_pattern: |
           /* no postcss.config at the app package root */
         correct_pattern: |
           // postcss.config.mjs at the app package root
           export default { plugins: { "@tailwindcss/postcss": {} } };
-        source: 'packages/storybook-native-app/postcss.config.mjs'
-        priority: 'CRITICAL'
-        status: 'active'
-      - mistake: 'global.css missing @source, or wrong path in a monorepo'
+        source: "packages/storybook-native-app/postcss.config.mjs"
+        priority: "CRITICAL"
+        status: "active"
+      - mistake: "global.css missing @source, or wrong path in a monorepo"
         mechanism: "Tailwind v4 only emits classes it finds in scanned files. Three silent (no-error) failure modes produce the same unstyled result: (1) no @source for alouette's source -> every alouette utility is purged; (2) no @source for the app's own source -> the app's own classes (e.g. arbitrary values) are purged while alouette's still work, easy to misdiagnose; (3) in a monorepo where alouette is hoisted to the repo-root node_modules, ../node_modules/alouette/src resolves to nothing -> use the correct depth. @source is a text-scan of alouette's shipped src/*.tsx literals, decoupled from the JS bundle (which Metro resolves to dist)."
         wrong_pattern: |
           /* app global.css */
@@ -100,11 +100,11 @@ skills:
           @source "./**/*.{ts,tsx}"; /* the app's own classes */
           @source "../node_modules/alouette/src/**/*.{ts,tsx,js}"; /* alouette source */
           /* monorepo hoist: @source "../../../node_modules/alouette/src/**/*.{ts,tsx,js}" */
-        source: 'packages/storybook-native-app/src/global.css'
-        priority: 'CRITICAL'
-        status: 'active'
-      - mistake: 'Metro config omits withAlouetteConfig'
-        mechanism: 'alouette ships a metro wrapper that enables NativeWind/react-native-css processing; without it className styles never compile on native.'
+        source: "packages/storybook-native-app/src/global.css"
+        priority: "CRITICAL"
+        status: "active"
+      - mistake: "Metro config omits withAlouetteConfig"
+        mechanism: "alouette ships a metro wrapper that enables NativeWind/react-native-css processing; without it className styles never compile on native."
         wrong_pattern: |
           const { getDefaultConfig } = require("expo/metro-config.js");
           module.exports = getDefaultConfig(__dirname);
@@ -112,11 +112,11 @@ skills:
           const { withAlouetteConfig } = require("alouette/metro.cjs");
           const { getDefaultConfig } = require("expo/metro-config.js");
           module.exports = withAlouetteConfig(getDefaultConfig(__dirname));
-        source: 'packages/storybook-native-app/metro.config.cjs, packages/alouette/metro.cjs'
-        priority: 'CRITICAL'
-        status: 'active'
-      - mistake: 'App tree not wrapped in AlouetteProvider'
-        mechanism: 'AlouetteProvider applies the OS light/dark scheme as the root ScopedTheme; without it, base tokens (bg-surface, text-sharp, text-accent) have no resolved values and components render with missing colors.'
+        source: "packages/storybook-native-app/metro.config.cjs, packages/alouette/metro.cjs"
+        priority: "CRITICAL"
+        status: "active"
+      - mistake: "App tree not wrapped in AlouetteProvider"
+        mechanism: "AlouetteProvider applies the OS light/dark scheme as the root ScopedTheme; without it, base tokens (bg-surface, text-sharp, text-accent) have no resolved values and components render with missing colors."
         wrong_pattern: |
           export function App() {
             return <Screen />;
@@ -130,11 +130,11 @@ skills:
               </AlouetteProvider>
             );
           }
-        source: 'packages/alouette/src/core/AlouetteProvider.tsx'
-        priority: 'CRITICAL'
-        status: 'active'
-      - mistake: 'Bold/extrabold fonts not loaded'
-        mechanism: 'On native, bold and extrabold are distinct font files (SoraBold, SoraExtraBold, ChivoMono*). If only the regular weight is loaded, font-body-bold/font-heading-extrabold silently fall back to regular.'
+        source: "packages/alouette/src/core/AlouetteProvider.tsx"
+        priority: "CRITICAL"
+        status: "active"
+      - mistake: "Bold/extrabold fonts not loaded"
+        mechanism: "On native, bold and extrabold are distinct font files (SoraBold, SoraExtraBold, ChivoMono*). If only the regular weight is loaded, font-body-bold/font-heading-extrabold silently fall back to regular."
         wrong_pattern: |
           useFonts({ Sora_400Regular });
         correct_pattern: |
@@ -146,32 +146,32 @@ skills:
             ChivoMonoBold: ChivoMono_700Bold,
             ChivoMonoExtraBold: ChivoMono_800ExtraBold,
           });
-        source: 'packages/storybook-native-app/src/App.tsx'
-        priority: 'HIGH'
-        status: 'active'
+        source: "packages/storybook-native-app/src/App.tsx"
+        priority: "HIGH"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Theme with modes and accents'
-    slug: 'alouette-theming'
-    domain: 'theming'
-    description: 'Re-theme a subtree with accents (brand/danger/info/success/warning) and light/dark modes. Use the accent prop or AccentScope/ScopedTheme; children always consume base tokens (bg-surface, text-accent, border-muted). For an accent that toggles at runtime without remounting the subtree, use StableAccentScope. Tokens are className-only (no JS token-read hook); read mode with useCurrentMode.'
-    type: 'core'
-    packages: ['alouette']
+  - name: "Theme with modes and accents"
+    slug: "alouette-theming"
+    domain: "theming"
+    description: "Re-theme a subtree with accents (brand/danger/info/success/warning) and light/dark modes. Use the accent prop or AccentScope/ScopedTheme; children always consume base tokens (bg-surface, text-accent, border-muted). For an accent that toggles at runtime without remounting the subtree, use StableAccentScope. Tokens are className-only (no JS token-read hook); read mode with useCurrentMode."
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'AccentScope'
-      - 'StableAccentScope'
-      - 'ScopedTheme'
-      - 'accent prop'
-      - 'base tokens vs role tokens'
-      - 'className-only token access'
-      - 'useCurrentMode / useCurrentTheme'
-      - 'AlouetteModeTheme / Accent types'
+      - "AccentScope"
+      - "StableAccentScope"
+      - "ScopedTheme"
+      - "accent prop"
+      - "base tokens vs role tokens"
+      - "className-only token access"
+      - "useCurrentMode / useCurrentTheme"
+      - "AlouetteModeTheme / Accent types"
     tasks:
-      - 'Render an accent (brand/danger/...) region'
-      - 'Read a theme color in JS for a non-className prop'
-      - 'Force a dark subtree inside a light app'
+      - "Render an accent (brand/danger/...) region"
+      - "Read a theme color in JS for a non-className prop"
+      - "Force a dark subtree inside a light app"
     failure_modes:
-      - mistake: 'Hardcoding raw Tailwind colors instead of tokens'
-        mechanism: 'Raw Tailwind palette classes (bg-blue-500, text-gray-600) ignore the alouette theme, so they do not adapt to mode or accent and break dark mode.'
+      - mistake: "Hardcoding raw Tailwind colors instead of tokens"
+        mechanism: "Raw Tailwind palette classes (bg-blue-500, text-gray-600) ignore the alouette theme, so they do not adapt to mode or accent and break dark mode."
         wrong_pattern: |
           <View className="bg-blue-500">
             <Text className="text-gray-600">Hi</Text>
@@ -180,12 +180,12 @@ skills:
           <Surface accent="brand">
             <Text className="text-accent">Hi</Text>
           </Surface>
-        source: 'CLAUDE.md (Theming and accents); packages/alouette/src/ui/containers/AccentScope.tsx'
-        priority: 'HIGH'
-        status: 'active'
-        skills: ['alouette-theming', 'alouette-typography', 'alouette-layout']
-      - mistake: 'Setting color manually instead of accent'
-        mechanism: 'Manually picking accent hex/classes per element duplicates theme logic; setting accent re-themes the whole subtree so children use base tokens that resolve to the role + current mode.'
+        source: "CLAUDE.md (Theming and accents); packages/alouette/src/ui/containers/AccentScope.tsx"
+        priority: "HIGH"
+        status: "active"
+        skills: ["alouette-theming", "alouette-typography", "alouette-layout"]
+      - mistake: "Setting color manually instead of accent"
+        mechanism: "Manually picking accent hex/classes per element duplicates theme logic; setting accent re-themes the whole subtree so children use base tokens that resolve to the role + current mode."
         wrong_pattern: |
           <Box>
             <Text style={{ color: "#c00" }}>Error</Text>
@@ -194,22 +194,22 @@ skills:
           <Box accent="danger">
             <Text className="text-accent">Error</Text>
           </Box>
-        source: 'packages/alouette/src/ui/containers/Box.tsx, AccentScope.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Wrapping an accent-capable component in AccentScope'
-        mechanism: 'Text, Surface, Box, Button, Message and others accept an accent prop directly; AccentScope is only for grouping several children or wrapping ones that do not take the prop.'
+        source: "packages/alouette/src/ui/containers/Box.tsx, AccentScope.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Wrapping an accent-capable component in AccentScope"
+        mechanism: "Text, Surface, Box, Button, Message and others accept an accent prop directly; AccentScope is only for grouping several children or wrapping ones that do not take the prop."
         wrong_pattern: |
           <AccentScope accent="brand">
             <Text className="text-accent">Title</Text>
           </AccentScope>
         correct_pattern: |
           <Text accent="brand" className="text-accent">Title</Text>
-        source: 'packages/alouette/src/ui/primitives/Text.tsx, ui/containers/AccentScope.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Using AccentScope for an accent that toggles at runtime'
-        mechanism: 'AccentScope only renders its ScopedTheme wrapper when accent is set, returning children unwrapped otherwise, so toggling accent mounts or unmounts that wrapper in either direction and remounts the subtree, dropping focus from any input inside. StableAccentScope always keeps ScopedTheme mounted and falls back to the inherited theme when accent is unset, so toggling only changes the theme prop.'
+        source: "packages/alouette/src/ui/primitives/Text.tsx, ui/containers/AccentScope.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Using AccentScope for an accent that toggles at runtime"
+        mechanism: "AccentScope only renders its ScopedTheme wrapper when accent is set, returning children unwrapped otherwise, so toggling accent mounts or unmounts that wrapper in either direction and remounts the subtree, dropping focus from any input inside. StableAccentScope always keeps ScopedTheme mounted and falls back to the inherited theme when accent is unset, so toggling only changes the theme prop."
         wrong_pattern: |
           <AccentScope accent={hovered ? "danger" : undefined}>
             <RowContent />
@@ -218,10 +218,10 @@ skills:
           <StableAccentScope accent={hovered ? "danger" : undefined}>
             <RowContent />
           </StableAccentScope>
-        source: 'packages/alouette/src/ui/containers/StableAccentScope.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Reading a token value in JS instead of applying a className'
+        source: "packages/alouette/src/ui/containers/StableAccentScope.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Reading a token value in JS instead of applying a className"
         mechanism: "alouette exports no token-read hook (useThemeToken was removed in 21.0.0). NativeWind's variable context is a native-only path: on web the theme is a className resolved by the palette CSS and nothing populates that context, so the read comes back undefined."
         wrong_pattern: |
           import { useUnstableNativeVariable } from "nativewind";
@@ -229,47 +229,47 @@ skills:
           <Text style={{ color }}>Hi</Text>;
         correct_pattern: |
           <Text className="text-accent">Hi</Text>
-        source: 'packages/alouette/src/ui/containers/ScopedTheme.web.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Expecting var() chains to resolve on native'
-        mechanism: 'On native, NativeWind resolves CSS variables from a lookup table and cannot follow a var() that points at another var(); alouette sub-themes use hardcoded hex (light_info/dark_info) for this reason.'
+        source: "packages/alouette/src/ui/containers/ScopedTheme.web.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Expecting var() chains to resolve on native"
+        mechanism: "On native, NativeWind resolves CSS variables from a lookup table and cannot follow a var() that points at another var(); alouette sub-themes use hardcoded hex (light_info/dark_info) for this reason."
         wrong_pattern: |
           /* defining a custom theme var that references another var */
           --color-accent: var(--color-brand);
         correct_pattern: |
           /* resolve to a concrete value per mode+role */
           --color-accent: #2563eb;
-        source: 'CLAUDE.md (Native constraint: no CSS variable chains)'
-        priority: 'MEDIUM'
-        status: 'active'
+        source: "CLAUDE.md (Native constraint: no CSS variable chains)"
+        priority: "MEDIUM"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Style text'
-    slug: 'alouette-typography'
-    domain: 'typography'
-    description: 'Style Text and Paragraph entirely via className: combined font family+weight utilities (font-body, font-body-bold, font-heading-extrabold, font-mono*), Tailwind text-* sizes, and semantic color tokens (text-sharp, text-muted, text-accent, text-on-accent). No variant props.'
-    type: 'core'
-    packages: ['alouette']
+  - name: "Style text"
+    slug: "alouette-typography"
+    domain: "typography"
+    description: "Style Text and Paragraph entirely via className: combined font family+weight utilities (font-body, font-body-bold, font-heading-extrabold, font-mono*), Tailwind text-* sizes, and semantic color tokens (text-sharp, text-muted, text-accent, text-on-accent). No variant props."
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'Text / Paragraph'
-      - 'font-{body|heading|mono}[-bold|-extrabold]'
-      - 'text-xs..text-6xl'
-      - 'text-sharp / text-muted / text-accent / text-on-accent'
+      - "Text / Paragraph"
+      - "font-{body|heading|mono}[-bold|-extrabold]"
+      - "text-xs..text-6xl"
+      - "text-sharp / text-muted / text-accent / text-on-accent"
     tasks:
-      - 'Render a heading and body copy'
-      - 'Render muted/accented text'
-      - 'Compose nested inline text styles'
+      - "Render a heading and body copy"
+      - "Render muted/accented text"
+      - "Compose nested inline text styles"
     failure_modes:
-      - mistake: 'Using font-bold instead of font-body-bold'
-        mechanism: 'On native, bold/extrabold are separate font files baked into the family utility; a standalone font-weight utility (font-bold/font-extrabold/font-normal) has no effect and is overridden.'
+      - mistake: "Using font-bold instead of font-body-bold"
+        mechanism: "On native, bold/extrabold are separate font files baked into the family utility; a standalone font-weight utility (font-bold/font-extrabold/font-normal) has no effect and is overridden."
         wrong_pattern: |
           <Text className="font-bold text-base">Title</Text>
         correct_pattern: |
           <Text className="font-body-bold text-base">Title</Text>
-        source: 'CLAUDE.md (Text styling); packages/alouette/src/ui/primitives/Text.stories.tsx (Invalid section)'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Using react-native Text instead of alouette Text'
+        source: "CLAUDE.md (Text styling); packages/alouette/src/ui/primitives/Text.stories.tsx (Invalid section)"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Using react-native Text instead of alouette Text"
         mechanism: "react-native's Text has no font-body default, no semantic color, and no accent; alouette Text applies font-body + text-sharp and participates in theming."
         wrong_pattern: |
           import { Text } from "react-native";
@@ -277,203 +277,203 @@ skills:
         correct_pattern: |
           import { Text } from "alouette";
           <Text className="text-muted">Hi</Text>
-        source: 'packages/alouette/src/ui/primitives/Text.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Using a heading font below text-xl'
-        mechanism: 'The font-heading* family is tuned for display sizes (text-xl / 24px and up); used at smaller sizes it looks off — font-body-bold is the right tool for small emphasized text.'
+        source: "packages/alouette/src/ui/primitives/Text.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Using a heading font below text-xl"
+        mechanism: "The font-heading* family is tuned for display sizes (text-xl / 24px and up); used at smaller sizes it looks off — font-body-bold is the right tool for small emphasized text."
         wrong_pattern: |
           <Text className="font-heading-bold text-base">Section</Text>
         correct_pattern: |
           <Text className="font-heading-bold text-xl">Section</Text>
-        source: 'scripts/build-css.ts (type scale); src/ui/primitives/Text.stories.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Coloring text with raw Tailwind palette'
-        mechanism: 'text-gray-500 / text-black ignore the theme and break dark mode; semantic tokens resolve per mode and accent.'
+        source: "scripts/build-css.ts (type scale); src/ui/primitives/Text.stories.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Coloring text with raw Tailwind palette"
+        mechanism: "text-gray-500 / text-black ignore the theme and break dark mode; semantic tokens resolve per mode and accent."
         wrong_pattern: |
           <Text className="text-black">Body</Text>
         correct_pattern: |
           <Text className="text-sharp">Body</Text>
-        source: 'CLAUDE.md (Color tokens)'
-        priority: 'MEDIUM'
-        status: 'active'
-        skills: ['alouette-typography', 'alouette-theming']
+        source: "CLAUDE.md (Color tokens)"
+        priority: "MEDIUM"
+        status: "active"
+        skills: ["alouette-typography", "alouette-theming"]
   # ---------------------------------------------------------------------------
-  - name: 'Lay out screens, surfaces and stacks'
-    slug: 'alouette-layout'
-    domain: 'layout'
-    description: 'Compose layout with Box/InteractiveBox/SafeAreaBox, Surface (variant/size/shadow), Stack/HStack/VStack, Separator, ScreenCenterLayout, and gradients (GradientBackground/GradientScrollView). Use the alouette spacing (xxs..4xl), radius (xs..lg) and shadow (s/m/l/lowered) token scale.'
-    type: 'core'
-    packages: ['alouette']
+  - name: "Lay out screens, surfaces and stacks"
+    slug: "alouette-layout"
+    domain: "layout"
+    description: "Compose layout with Box/InteractiveBox/SafeAreaBox, Surface (variant/size/shadow), Stack/HStack/VStack, Separator, ScreenCenterLayout, and gradients (GradientBackground/GradientScrollView). Use the alouette spacing (xxs..4xl), radius (xs..lg) and shadow (s/m/l/lowered) token scale."
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'Box / InteractiveBox / SafeAreaBox'
-      - 'Surface (variant, size, shadow)'
-      - 'Stack / HStack / VStack / Separator'
-      - 'GradientBackground / GradientScrollView'
-      - 'ScreenCenterLayout'
-      - 'spacing/radius/shadow token scale (p-m, gap-xs, rounded-sm, shadow-m)'
+      - "Box / InteractiveBox / SafeAreaBox"
+      - "Surface (variant, size, shadow)"
+      - "Stack / HStack / VStack / Separator"
+      - "GradientBackground / GradientScrollView"
+      - "ScreenCenterLayout"
+      - "spacing/radius/shadow token scale (p-m, gap-xs, rounded-sm, shadow-m)"
     tasks:
-      - 'Build a card with elevation'
-      - 'Stack elements vertically/horizontally with gaps'
-      - 'Add a screen background gradient'
+      - "Build a card with elevation"
+      - "Stack elements vertically/horizontally with gaps"
+      - "Add a screen background gradient"
     failure_modes:
-      - mistake: 'Surface lowered/shadow passed as wrong prop shape'
+      - mistake: "Surface lowered/shadow passed as wrong prop shape"
         mechanism: 'Surface takes variant ("surface"|"lowered"|"translucent"|"highlight"|"highlight-accent") and shadow ("s"|"m"|"l"|"lowered"); there is no boolean lowered prop (older docs showed one). shadow defaults to "s", or "lowered" when variant="lowered".'
         wrong_pattern: |
           <Surface lowered>Sunken</Surface>
         correct_pattern: |
           <Surface variant="lowered">Sunken</Surface>
-        source: 'packages/alouette/src/ui/containers/Surface.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Using raw numeric spacing instead of tokens'
-        mechanism: 'p-4 / gap-2 / rounded-lg use the default Tailwind scale, not the alouette spacing/radius scale; layouts drift from the design system rhythm.'
+        source: "packages/alouette/src/ui/containers/Surface.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Using raw numeric spacing instead of tokens"
+        mechanism: "p-4 / gap-2 / rounded-lg use the default Tailwind scale, not the alouette spacing/radius scale; layouts drift from the design system rhythm."
         wrong_pattern: |
           <VStack className="gap-2 p-4 rounded-lg">…</VStack>
         correct_pattern: |
           <VStack className="gap-xs p-m rounded-sm">…</VStack>
-        source: 'packages/alouette/src/config/tokens.stories.tsx; src/global.css (--spacing-*, --radius-*)'
-        priority: 'MEDIUM'
-        status: 'active'
-        skills: ['alouette-layout', 'alouette-theming']
-      - mistake: 'Reaching for expo-linear-gradient for backgrounds'
-        mechanism: 'alouette gradients are pure NativeWind classes (bg-linear-to-t from-screen-gradient-*); GradientBackground/GradientScrollView need no gradient library. expo-linear-gradient is not a dependency.'
+        source: "packages/alouette/src/config/tokens.stories.tsx; src/global.css (--spacing-*, --radius-*)"
+        priority: "MEDIUM"
+        status: "active"
+        skills: ["alouette-layout", "alouette-theming"]
+      - mistake: "Reaching for expo-linear-gradient for backgrounds"
+        mechanism: "alouette gradients are pure NativeWind classes (bg-linear-to-t from-screen-gradient-*); GradientBackground/GradientScrollView need no gradient library. expo-linear-gradient is not a dependency."
         wrong_pattern: |
           import { LinearGradient } from "expo-linear-gradient";
           <LinearGradient colors={[...]} />
         correct_pattern: |
           import { GradientBackground } from "alouette";
           <GradientBackground accent="brand" />
-        source: 'packages/alouette/src/ui/layout/GradientBackground.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Stack used as RN Stack / wrong import'
-        mechanism: 'alouette Stack is flex-row flex-wrap; HStack is flex-row; VStack is flex-col. They are thin View wrappers — do not confuse with a navigation Stack.'
+        source: "packages/alouette/src/ui/layout/GradientBackground.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Stack used as RN Stack / wrong import"
+        mechanism: "alouette Stack is flex-row flex-wrap; HStack is flex-row; VStack is flex-col. They are thin View wrappers — do not confuse with a navigation Stack."
         wrong_pattern: |
           <Stack className="flex-col">…</Stack>  {/* Stack is row+wrap */}
         correct_pattern: |
           <VStack className="gap-m">…</VStack>
-        source: 'packages/alouette/src/ui/stacks/stacks.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
+        source: "packages/alouette/src/ui/stacks/stacks.tsx"
+        priority: "MEDIUM"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Build buttons and pressable surfaces'
-    slug: 'alouette-actions'
-    domain: 'actions'
+  - name: "Build buttons and pressable surfaces"
+    slug: "alouette-actions"
+    domain: "actions"
     description: 'Buttons (Button, IconButton, ExternalLinkButton, InternalLinkButton) and pressable surfaces (PressableBox, PressableListItem). variant is "contained"|"outlined"; size is "sm"|"md"; accent defaults to "brand". Interactive token states (hover/focus/active/disabled) are built in.'
-    type: 'core'
-    packages: ['alouette']
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'Button (text, icon, variant, size, accent)'
-      - 'IconButton (icon, size, aria-label)'
-      - 'ExternalLinkButton / InternalLinkButton'
-      - 'PressableBox / PressableListItem'
+      - "Button (text, icon, variant, size, accent)"
+      - "IconButton (icon, size, aria-label)"
+      - "ExternalLinkButton / InternalLinkButton"
+      - "PressableBox / PressableListItem"
     tasks:
-      - 'Add a primary/secondary button'
-      - 'Add an icon-only button'
-      - 'Make a custom pressable card'
+      - "Add a primary/secondary button"
+      - "Add an icon-only button"
+      - "Make a custom pressable card"
     failure_modes:
-      - mistake: 'Passing button label as children, not text'
-        mechanism: 'Button renders its label from the required text prop (and an optional icon prop); children are not used, so a <Button>Save</Button> renders no label.'
+      - mistake: "Passing button label as children, not text"
+        mechanism: "Button renders its label from the required text prop (and an optional icon prop); children are not used, so a <Button>Save</Button> renders no label."
         wrong_pattern: |
           <Button>Save</Button>
         correct_pattern: |
           <Button text="Save" icon={<CheckRegularIcon />} />
-        source: 'packages/alouette/src/ui/actions/Button.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Using stale variant names (ghost-contained, primary)'
+        source: "packages/alouette/src/ui/actions/Button.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Using stale variant names (ghost-contained, primary)"
         mechanism: 'variant is only "contained" | "outlined"; ghost is a separate boolean. Older docs listed ghost-contained/ghost-outlined and accent props that no longer exist.'
         wrong_pattern: |
           <Button variant="ghost-contained" text="Cancel" />
         correct_pattern: |
           <Button variant="outlined" ghost text="Cancel" />
-        source: 'packages/alouette/src/ui/actions/PressableBox.tsx, ui/actions/Button.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'IconButton without aria-label'
-        mechanism: 'IconButton requires an aria-label (typed as required) because it has no text; omitting it is an accessibility failure and a type error agents may try to silence.'
+        source: "packages/alouette/src/ui/actions/PressableBox.tsx, ui/actions/Button.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "IconButton without aria-label"
+        mechanism: "IconButton requires an aria-label (typed as required) because it has no text; omitting it is an accessibility failure and a type error agents may try to silence."
         wrong_pattern: |
           <IconButton icon={<XRegularIcon />} onPress={close} />
         correct_pattern: |
           <IconButton icon={<XRegularIcon />} aria-label="Close" onPress={close} />
-        source: 'packages/alouette/src/ui/actions/IconButton.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
+        source: "packages/alouette/src/ui/actions/IconButton.tsx"
+        priority: "MEDIUM"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Build forms and inputs'
-    slug: 'alouette-forms'
-    domain: 'forms'
-    description: 'Inputs — InputText (mode: password/email/number/tel/url/search), TextArea (multiline InputText), Switch (controlled or uncontrolled); use the disabled prop (not editable); Switch takes checked + onValueChange. Single-select: RadioGroup + Radio (circle-dot vertical list) and RadioButtonGroup + RadioButton (segmented pill bar); both are controlled/uncontrolled via value/defaultValue/onValueChange + accent/disabled. Validation/composition on react-hook-form — Form owns the instance and exposes submit() via a render prop (no control passing); FormField binds a Controller to FormItem label/error/required and renders any input via render; FormFieldArray wraps useFieldArray for repeatable lists; FormSubmitButton (ActionButton) drives loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage is required; FormValidationError distinguishes invalid fields from an onSubmit failure.'
-    type: 'core'
-    packages: ['alouette']
+  - name: "Build forms and inputs"
+    slug: "alouette-forms"
+    domain: "forms"
+    description: "Inputs — InputText (mode: password/email/number/tel/url/search), TextArea (multiline InputText), Switch (controlled or uncontrolled); use the disabled prop (not editable); Switch takes checked + onValueChange. Single-select: RadioGroup + Radio (circle-dot vertical list) and RadioButtonGroup + RadioButton (segmented pill bar); both are controlled/uncontrolled via value/defaultValue/onValueChange + accent/disabled. Validation/composition on react-hook-form — Form owns the instance and exposes submit() via a render prop (no control passing); FormField binds a Controller to FormItem label/error/required and renders any input via render; FormFieldArray wraps useFieldArray for repeatable lists; FormSubmitButton (ActionButton) drives loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage is required; FormValidationError distinguishes invalid fields from an onSubmit failure."
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'InputText (mode, disabled, multiline)'
-      - 'TextArea'
-      - 'Switch (checked, onValueChange, accent)'
-      - 'RadioGroup + Radio (circle-dot single-select list)'
-      - 'RadioButtonGroup + RadioButton (segmented pill bar single-select)'
-      - 'Form (defaultValues, onSubmit, submit render prop, onSubmitError)'
-      - 'FormField (name, label, required, validate, render, renderError)'
-      - 'FormFieldArray (name, emptyValue, minSize, add/remove)'
-      - 'FormSubmitButton (errorToMessage, ActionButton lifecycle)'
-      - 'SimpleVForm (submitLabel, submitErrorToMessage)'
-      - 'FormValidationError'
+      - "InputText (mode, disabled, multiline)"
+      - "TextArea"
+      - "Switch (checked, onValueChange, accent)"
+      - "RadioGroup + Radio (circle-dot single-select list)"
+      - "RadioButtonGroup + RadioButton (segmented pill bar single-select)"
+      - "Form (defaultValues, onSubmit, submit render prop, onSubmitError)"
+      - "FormField (name, label, required, validate, render, renderError)"
+      - "FormFieldArray (name, emptyValue, minSize, add/remove)"
+      - "FormSubmitButton (errorToMessage, ActionButton lifecycle)"
+      - "SimpleVForm (submitLabel, submitErrorToMessage)"
+      - "FormValidationError"
     tasks:
-      - 'Add an email/password field'
-      - 'Add a multiline note field'
-      - 'Add a toggle'
-      - 'Build a validated vertical form with a submit button'
-      - 'Add a repeatable list of fields'
+      - "Add an email/password field"
+      - "Add a multiline note field"
+      - "Add a toggle"
+      - "Build a validated vertical form with a submit button"
+      - "Add a repeatable list of fields"
     failure_modes:
-      - mistake: 'Disabling input with editable={false}'
-        mechanism: 'InputText exposes a disabled prop that sets editable, aria-disabled and disabled styling; passing editable directly bypasses the disabled visual state and a11y.'
+      - mistake: "Disabling input with editable={false}"
+        mechanism: "InputText exposes a disabled prop that sets editable, aria-disabled and disabled styling; passing editable directly bypasses the disabled visual state and a11y."
         wrong_pattern: |
           <InputText editable={false} />
         correct_pattern: |
           <InputText disabled />
-        source: 'packages/alouette/src/ui/inputs/InputText.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Setting keyboardType/secureTextEntry manually'
-        mechanism: 'The mode prop bundles inputMode + keyboardType + autoComplete + secureTextEntry for password/email/number/tel/url/search; setting them piecemeal is error-prone and inconsistent across platforms.'
+        source: "packages/alouette/src/ui/inputs/InputText.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Setting keyboardType/secureTextEntry manually"
+        mechanism: "The mode prop bundles inputMode + keyboardType + autoComplete + secureTextEntry for password/email/number/tel/url/search; setting them piecemeal is error-prone and inconsistent across platforms."
         wrong_pattern: |
           <InputText secureTextEntry autoComplete="current-password" />
         correct_pattern: |
           <InputText mode="password" />
-        source: 'packages/alouette/src/ui/inputs/InputText.tsx (MODE_PROPS)'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Switch onChange instead of onValueChange'
-        mechanism: 'Switch is uncontrolled unless checked is passed and reports via onValueChange(value: boolean); wiring onChange/value like a web checkbox does nothing.'
+        source: "packages/alouette/src/ui/inputs/InputText.tsx (MODE_PROPS)"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Switch onChange instead of onValueChange"
+        mechanism: "Switch is uncontrolled unless checked is passed and reports via onValueChange(value: boolean); wiring onChange/value like a web checkbox does nothing."
         wrong_pattern: |
           <Switch value={on} onChange={(e) => setOn(e.target.checked)} />
         correct_pattern: |
           <Switch checked={on} onValueChange={setOn} />
-        source: 'packages/alouette/src/ui/inputs/Switch.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Passing control/register to FormField'
-        mechanism: 'Form provides the react-hook-form instance through context; FormField reads control and setFocus itself via useFormContext. There is no control prop — just render FormField inside Form.'
+        source: "packages/alouette/src/ui/inputs/Switch.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Passing control/register to FormField"
+        mechanism: "Form provides the react-hook-form instance through context; FormField reads control and setFocus itself via useFormContext. There is no control prop — just render FormField inside Form."
         wrong_pattern: |
           <FormField control={control} name="name" ... />
         correct_pattern: |
           <Form render={() => <FormField name="name" ... />} />
-        source: 'packages/alouette/src/ui/forms/FormField.tsx; ui/forms/Form.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Naming FormField input function children instead of render'
-        mechanism: 'The input is supplied through the render prop, not children — a function child is ignored.'
+        source: "packages/alouette/src/ui/forms/FormField.tsx; ui/forms/Form.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Naming FormField input function children instead of render"
+        mechanism: "The input is supplied through the render prop, not children — a function child is ignored."
         wrong_pattern: |
           <FormField name="name" label="Name">{({ field }) => <InputText ... />}</FormField>
         correct_pattern: |
           <FormField name="name" label="Name" render={({ field, labelId }) => <InputText ... />} />
-        source: 'packages/alouette/src/ui/forms/FormField.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Forgetting field.ref / aria-labelledby on the input'
-        mechanism: 'Without field.ref, pressing the label cannot focus the input and react-hook-form setFocus no-ops; without aria-labelledby={labelId} the input has no accessible name.'
+        source: "packages/alouette/src/ui/forms/FormField.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Forgetting field.ref / aria-labelledby on the input"
+        mechanism: "Without field.ref, pressing the label cannot focus the input and react-hook-form setFocus no-ops; without aria-labelledby={labelId} the input has no accessible name."
         wrong_pattern: |
           render={({ field }) => <InputText value={field.value} onChangeText={field.onChange} />}
         correct_pattern: |
@@ -481,246 +481,246 @@ skills:
             <InputText ref={field.ref} value={field.value} aria-labelledby={labelId}
               onChangeText={field.onChange} onBlur={field.onBlur} />
           )}
-        source: 'packages/alouette/src/ui/forms/FormField.tsx; ui/forms/FormItem.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Omitting errorToMessage or hardcoding an English default'
-        mechanism: 'errorToMessage is required (not defaulted) because a library default could only be a hardcoded, untranslatable string. Handle FormValidationError inside it to distinguish invalid fields from a genuine submit failure.'
+        source: "packages/alouette/src/ui/forms/FormField.tsx; ui/forms/FormItem.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Omitting errorToMessage or hardcoding an English default"
+        mechanism: "errorToMessage is required (not defaulted) because a library default could only be a hardcoded, untranslatable string. Handle FormValidationError inside it to distinguish invalid fields from a genuine submit failure."
         wrong_pattern: |
           <FormSubmitButton label="Save" onPress={submit} />
         correct_pattern: |
           <FormSubmitButton label="Save" onPress={submit} errorToMessage={submitErrorToMessage} />
-        source: 'packages/alouette/src/ui/forms/FormSubmitButton.tsx; ui/forms/Form.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Reimplementing the submit button loading state'
-        mechanism: 'FormSubmitButton (or SimpleVForm, which adds it) derives loading/success/failed from the submit promise like any ActionButton; a raw Button with manual isSubmitting/disabled duplicates that.'
+        source: "packages/alouette/src/ui/forms/FormSubmitButton.tsx; ui/forms/Form.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Reimplementing the submit button loading state"
+        mechanism: "FormSubmitButton (or SimpleVForm, which adds it) derives loading/success/failed from the submit promise like any ActionButton; a raw Button with manual isSubmitting/disabled duplicates that."
         wrong_pattern: |
           <Button text="Save" disabled={isSubmitting} onPress={submit} />
         correct_pattern: |
           <FormSubmitButton label="Save" onPress={submit} errorToMessage={submitErrorToMessage} />
-        source: 'packages/alouette/src/ui/forms/FormSubmitButton.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Mapping a data array of fields instead of FormFieldArray'
-        mechanism: 'Hand-rolled array state drifts from react-hook-form field arrays (stale indices on remove, no stable key, no built-in add/remove affordances). FormFieldArray wraps useFieldArray and supplies the label, indentation, and add/remove buttons.'
+        source: "packages/alouette/src/ui/forms/FormSubmitButton.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Mapping a data array of fields instead of FormFieldArray"
+        mechanism: "Hand-rolled array state drifts from react-hook-form field arrays (stale indices on remove, no stable key, no built-in add/remove affordances). FormFieldArray wraps useFieldArray and supplies the label, indentation, and add/remove buttons."
         wrong_pattern: |
           {fields.map((f, i) => <FormField key={i} name={`guests.${i}.value`} ... />)}
         correct_pattern: |
           <FormFieldArray name="guests" label="Guests" emptyValue={{ value: "" }}
             render={({ name, label }) => <FormField name={`${name}.value`} label={label} ... />} />
-        source: 'packages/alouette/src/ui/forms/FormFieldArray.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
+        source: "packages/alouette/src/ui/forms/FormFieldArray.tsx"
+        priority: "MEDIUM"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Display data annotations'
-    slug: 'alouette-data'
-    domain: 'data'
+  - name: "Display data annotations"
+    slug: "alouette-data"
+    domain: "data"
     description: 'Badge, a small display-only pill for status, counts or categories. accent defaults to "brand"; size is "sm"|"md"; variant is "solid"|"solid.enabled"|"outlined". An optional icon prop takes a rendered icon element and is sized from size. No className and no press handling.'
-    type: 'core'
-    packages: ['alouette']
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'Badge (accent, size, variant, icon, children)'
+      - "Badge (accent, size, variant, icon, children)"
     tasks:
-      - 'Label a row with a status pill'
-      - 'Show a count or category chip next to a title'
+      - "Label a row with a status pill"
+      - "Show a count or category chip next to a title"
     failure_modes:
-      - mistake: 'Passing the icon as a component instead of an element'
-        mechanism: 'icon is typed SVGIconElement (a rendered element), like Button and Message; a component reference is a type error and renders nothing.'
+      - mistake: "Passing the icon as a component instead of an element"
+        mechanism: "icon is typed SVGIconElement (a rendered element), like Button and Message; a component reference is a type error and renders nothing."
         wrong_pattern: |
           <Badge icon={StarRegularIcon}>Featured</Badge>
         correct_pattern: |
           <Badge icon={<StarRegularIcon />}>Featured</Badge>
-        source: 'packages/alouette/src/ui/data/Badge.tsx; ui/primitives/Icon.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Passing className to Badge'
-        mechanism: 'BadgeProps is accent | size | variant | icon | children — there is no className or style prop. Appearance comes from accent + variant; spacing and placement come from a wrapping Box.'
+        source: "packages/alouette/src/ui/data/Badge.tsx; ui/primitives/Icon.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Passing className to Badge"
+        mechanism: "BadgeProps is accent | size | variant | icon | children — there is no className or style prop. Appearance comes from accent + variant; spacing and placement come from a wrapping Box."
         wrong_pattern: |
           <Badge className="ml-xs bg-blue-500">New</Badge>
         correct_pattern: |
           <Box className="ml-xs"><Badge accent="info">New</Badge></Box>
-        source: 'packages/alouette/src/ui/data/Badge.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Inventing variant or size values'
+        source: "packages/alouette/src/ui/data/Badge.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Inventing variant or size values"
         mechanism: 'variant is exactly "solid" | "solid.enabled" | "outlined" (dotted name) and size is only "sm" | "md" — unlike Message there is no lg.'
         wrong_pattern: |
           <Badge variant="filled" size="lg">Active</Badge>
         correct_pattern: |
           <Badge variant="solid.enabled" size="md">Active</Badge>
-        source: 'packages/alouette/src/ui/data/Badge.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Hand-rolling a pill with Box + Text'
-        mechanism: 'A manual pill uses raw Tailwind colors instead of accent tokens, so it ignores light/dark mode and the AccentScope, and its padding/radius drift from the scale.'
+        source: "packages/alouette/src/ui/data/Badge.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Hand-rolling a pill with Box + Text"
+        mechanism: "A manual pill uses raw Tailwind colors instead of accent tokens, so it ignores light/dark mode and the AccentScope, and its padding/radius drift from the scale."
         wrong_pattern: |
           <Box className="rounded-full bg-green-100 px-xs py-xxs"><Text className="text-xs">Paid</Text></Box>
         correct_pattern: |
           <Badge accent="success" size="sm">Paid</Badge>
-        source: 'packages/alouette/src/ui/data/Badge.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Expecting Badge to be pressable'
-        mechanism: 'Badge renders a plain Box — no onPress, no role, no interactive token states. A tappable chip is PressableBox (alouette-actions).'
+        source: "packages/alouette/src/ui/data/Badge.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Expecting Badge to be pressable"
+        mechanism: "Badge renders a plain Box — no onPress, no role, no interactive token states. A tappable chip is PressableBox (alouette-actions)."
         wrong_pattern: |
           <Badge onPress={select}>Filter</Badge>
         correct_pattern: |
           <PressableBox onPress={select}><Badge>Filter</Badge></PressableBox>
-        source: 'packages/alouette/src/ui/data/Badge.tsx; ui/actions/PressableBox.tsx'
-        priority: 'LOW'
-        status: 'active'
+        source: "packages/alouette/src/ui/data/Badge.tsx; ui/actions/PressableBox.tsx"
+        priority: "LOW"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Navigate between destinations and views'
-    slug: 'alouette-navigation'
-    domain: 'navigation'
+  - name: "Navigate between destinations and views"
+    slug: "alouette-navigation"
+    domain: "navigation"
     description: 'NavBar + NavBarItem (role="navigation" / role="link" / aria-current="page") and Tabs + Tab (role="tablist" / role="tab" / aria-selected). Compose-children groups over the shared segmented base (SegmentedBar/SegmentedItem, SelectionContext): lowered 44px bar, raised chip, optional leading icon, accent + disabled, value/defaultValue/onValueChange, and a per-item href + onPress (an anchor on web, and what expo Router <Link asChild> injects) that replaces the group callback.'
-    type: 'core'
-    packages: ['alouette']
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'NavBar (value, defaultValue, onValueChange, accent, disabled) / NavBarItem (href, label, icon, disabled, onPress)'
-      - 'Tabs / Tab (same, plus id + aria-controls for panel wiring)'
+      - "NavBar (value, defaultValue, onValueChange, accent, disabled) / NavBarItem (href, label, icon, disabled, onPress)"
+      - "Tabs / Tab (same, plus id + aria-controls for panel wiring)"
     tasks:
-      - 'Add a top-level navigation bar between routes'
-      - 'Switch between views on one screen with a tab bar'
+      - "Add a top-level navigation bar between routes"
+      - "Switch between views on one screen with a tab bar"
     failure_modes:
-      - mistake: 'Passing an options array instead of children'
-        mechanism: 'NavBar and Tabs are compose-children groups like RadioButtonGroup; there is no options prop — each child reads the selected value from the group context.'
+      - mistake: "Passing an options array instead of children"
+        mechanism: "NavBar and Tabs are compose-children groups like RadioButtonGroup; there is no options prop — each child reads the selected value from the group context."
         wrong_pattern: |
           <Tabs options={[{ value: "day", label: "Day" }]} />
         correct_pattern: |
           <Tabs aria-label="Period" defaultValue="day"><Tab value="day" label="Day" /></Tabs>
-        source: 'packages/alouette/src/ui/navigation/Tabs.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Using Tabs for route navigation (or NavBar for in-page views)'
+        source: "packages/alouette/src/ui/navigation/Tabs.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Using Tabs for route navigation (or NavBar for in-page views)"
         mechanism: 'Both render the same material but expose different semantics: role="tab" promises a panel on the same screen, role="link" + aria-current="page" promises a destination. Assistive tech announces them differently.'
         wrong_pattern: |
           <Tabs value={pathname} onValueChange={router.push}>…</Tabs>
         correct_pattern: |
           <NavBar aria-label="Main" value={pathname} onValueChange={router.push}>…</NavBar>
-        source: 'packages/alouette/src/ui/navigation/NavBar.tsx; ui/navigation/Tabs.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Item onPress on an uncontrolled group'
+        source: "packages/alouette/src/ui/navigation/NavBar.tsx; ui/navigation/Tabs.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Item onPress on an uncontrolled group"
         mechanism: "An item's onPress replaces the group's selection callback, so an uncontrolled group's internal value never moves and the chip stays where it was."
         wrong_pattern: |
           <NavBar defaultValue="/home"><NavBarItem href="/settings" label="Settings" onPress={go} /></NavBar>
         correct_pattern: |
           <NavBar value={pathname}><NavBarItem href="/settings" label="Settings" onPress={go} /></NavBar>
-        source: 'packages/alouette/src/ui/navigation/NavBarItem.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Navigating from an item onPress without preventDefault'
-        mechanism: 'An item with an href renders a real anchor on web, so a handler that routes in JS must cancel the browser default or the page reloads on top of the JS navigation. The built-in handler does it; a custom one must too (expo Router <Link asChild> already does).'
+        source: "packages/alouette/src/ui/navigation/NavBarItem.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Navigating from an item onPress without preventDefault"
+        mechanism: "An item with an href renders a real anchor on web, so a handler that routes in JS must cancel the browser default or the page reloads on top of the JS navigation. The built-in handler does it; a custom one must too (expo Router <Link asChild> already does)."
         wrong_pattern: |
           <NavBarItem href="/settings" label="Settings" onPress={() => router.push("/settings")} />
         correct_pattern: |
           <Link href="/settings" asChild><NavBarItem label="Settings" /></Link>
-        source: 'packages/alouette/src/ui/navigation/NavBarItem.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Hand-rolling the bar with Surface + PressableBox'
-        mechanism: 'SegmentedBar/SegmentedItem already give a 44px tap target inside a 44px lowered bar, the chip opacity cross-fade, the focus-visible outline and the hover/active border; a hand-rolled bar drifts from all four.'
+        source: "packages/alouette/src/ui/navigation/NavBarItem.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Hand-rolling the bar with Surface + PressableBox"
+        mechanism: "SegmentedBar/SegmentedItem already give a 44px tap target inside a 44px lowered bar, the chip opacity cross-fade, the focus-visible outline and the hover/active border; a hand-rolled bar drifts from all four."
         wrong_pattern: |
           <Surface variant="lowered" className="flex-row"><PressableBox variant="ghost">…</PressableBox></Surface>
         correct_pattern: |
           <Tabs aria-label="Period" defaultValue="week"><Tab value="week" label="Week" /></Tabs>
-        source: 'packages/alouette/src/ui/selection/SegmentedBar.tsx; ui/selection/SegmentedItem.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Omitting aria-label on the group'
-        mechanism: 'NavBar renders a navigation landmark and Tabs a tab list; unnamed, they are indistinguishable when a screen has more than one.'
+        source: "packages/alouette/src/ui/selection/SegmentedBar.tsx; ui/selection/SegmentedItem.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Omitting aria-label on the group"
+        mechanism: "NavBar renders a navigation landmark and Tabs a tab list; unnamed, they are indistinguishable when a screen has more than one."
         wrong_pattern: |
           <NavBar value={pathname}>…</NavBar>
         correct_pattern: |
           <NavBar aria-label="Main" value={pathname}>…</NavBar>
-        source: 'packages/alouette/src/ui/navigation/NavBar.tsx'
-        priority: 'LOW'
-        status: 'active'
+        source: "packages/alouette/src/ui/navigation/NavBar.tsx"
+        priority: "LOW"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Show feedback messages'
-    slug: 'alouette-feedback'
-    domain: 'feedback'
-    description: 'Semantic banners: Message (requires accent + icon) and the preset InfoMessage/ConfirmationMessage/WarningMessage. Optional dismiss requires both onDismiss and dismissIconAriaLabel. size is sm/md/lg. Also ConnectionState, a top-pinned network-status banner driven by a state prop.'
-    type: 'core'
-    packages: ['alouette']
+  - name: "Show feedback messages"
+    slug: "alouette-feedback"
+    domain: "feedback"
+    description: "Semantic banners: Message (requires accent + icon) and the preset InfoMessage/ConfirmationMessage/WarningMessage. Optional dismiss requires both onDismiss and dismissIconAriaLabel. size is sm/md/lg. Also ConnectionState, a top-pinned network-status banner driven by a state prop."
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'Message'
-      - 'InfoMessage / ConfirmationMessage / WarningMessage'
-      - 'onDismiss + dismissIconAriaLabel'
-      - 'ConnectionState (state + forceVisible/forceHidden)'
+      - "Message"
+      - "InfoMessage / ConfirmationMessage / WarningMessage"
+      - "onDismiss + dismissIconAriaLabel"
+      - "ConnectionState (state + forceVisible/forceHidden)"
     tasks:
-      - 'Show an info/success/warning banner'
-      - 'Make a dismissible message'
-      - 'Surface network connection status'
+      - "Show an info/success/warning banner"
+      - "Make a dismissible message"
+      - "Surface network connection status"
     failure_modes:
-      - mistake: 'onDismiss without dismissIconAriaLabel'
-        mechanism: 'Message types onDismiss and dismissIconAriaLabel as a required pair; providing one without the other is a type error and an a11y gap on the dismiss button.'
+      - mistake: "onDismiss without dismissIconAriaLabel"
+        mechanism: "Message types onDismiss and dismissIconAriaLabel as a required pair; providing one without the other is a type error and an a11y gap on the dismiss button."
         wrong_pattern: |
           <InfoMessage onDismiss={hide}>Saved</InfoMessage>
         correct_pattern: |
           <InfoMessage onDismiss={hide} dismissIconAriaLabel="Dismiss">
             Saved
           </InfoMessage>
-        source: 'packages/alouette/src/ui/feedback/Message.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Raw Message without accent/icon'
-        mechanism: 'The base Message requires both accent and icon; for the common cases use the presets (InfoMessage/ConfirmationMessage/WarningMessage) which set them.'
+        source: "packages/alouette/src/ui/feedback/Message.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Raw Message without accent/icon"
+        mechanism: "The base Message requires both accent and icon; for the common cases use the presets (InfoMessage/ConfirmationMessage/WarningMessage) which set them."
         wrong_pattern: |
           <Message>Heads up</Message>
         correct_pattern: |
           <WarningMessage>Heads up</WarningMessage>
-        source: 'packages/alouette/src/ui/feedback/Message.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Hand-building a colored banner instead of Message'
+        source: "packages/alouette/src/ui/feedback/Message.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Hand-building a colored banner instead of Message"
         mechanism: 'A manual <Box className="bg-yellow-100"> loses semantic theming, the accent icon, dark-mode support and dismiss a11y that Message provides.'
         wrong_pattern: |
           <Box className="bg-yellow-100"><Text>Warning</Text></Box>
         correct_pattern: |
           <WarningMessage>Warning</WarningMessage>
-        source: 'packages/alouette/src/ui/feedback/Message.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-        skills: ['alouette-feedback', 'alouette-theming']
-      - mistake: 'ConnectionState in a non-positioned, non-clipping parent'
-        mechanism: 'The banner is absolute inset-x-0 top-0 and slides in from off-screen; without a relative ancestor it anchors to the wrong element, and without overflow-hidden the pre-slide pill leaks above the container.'
+        source: "packages/alouette/src/ui/feedback/Message.tsx"
+        priority: "MEDIUM"
+        status: "active"
+        skills: ["alouette-feedback", "alouette-theming"]
+      - mistake: "ConnectionState in a non-positioned, non-clipping parent"
+        mechanism: "The banner is absolute inset-x-0 top-0 and slides in from off-screen; without a relative ancestor it anchors to the wrong element, and without overflow-hidden the pre-slide pill leaks above the container."
         wrong_pattern: |
           <Box><ConnectionState state={status}>Reconnecting…</ConnectionState></Box>
         correct_pattern: |
           <Box className="relative overflow-hidden"><ConnectionState state={status}>Reconnecting…</ConnectionState></Box>
-        source: 'packages/alouette/src/ui/feedback/ConnectionState.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Passing accent to ConnectionState'
-        mechanism: 'ConnectionState derives its accent from state (success when connected, danger otherwise); there is no accent prop, so theme it by changing state.'
+        source: "packages/alouette/src/ui/feedback/ConnectionState.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Passing accent to ConnectionState"
+        mechanism: "ConnectionState derives its accent from state (success when connected, danger otherwise); there is no accent prop, so theme it by changing state."
         wrong_pattern: |
           <ConnectionState accent="danger" state="disconnected">Offline</ConnectionState>
         correct_pattern: |
           <ConnectionState state="disconnected">Offline</ConnectionState>
-        source: 'packages/alouette/src/ui/feedback/ConnectionState.tsx'
-        priority: 'LOW'
-        status: 'active'
+        source: "packages/alouette/src/ui/feedback/ConnectionState.tsx"
+        priority: "LOW"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Animate enter/exit presence'
-    slug: 'alouette-animation'
-    domain: 'animation'
-    description: 'Animate mount/unmount with PresenceOne (swap one keyed child) and PresenceList (add/remove across a keyed list) using CSS keyframe classes (animate-slide-in/out, animate-collapse-in/out). exitDurationMs must come from animationDurationsMs so the unmount timer matches the CSS animation. Animations run on native via react-native-reanimated.'
-    type: 'core'
-    packages: ['alouette']
+  - name: "Animate enter/exit presence"
+    slug: "alouette-animation"
+    domain: "animation"
+    description: "Animate mount/unmount with PresenceOne (swap one keyed child) and PresenceList (add/remove across a keyed list) using CSS keyframe classes (animate-slide-in/out, animate-collapse-in/out). exitDurationMs must come from animationDurationsMs so the unmount timer matches the CSS animation. Animations run on native via react-native-reanimated."
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'PresenceOne / PresenceList'
-      - 'animationDurationsMs (slide, collapse)'
-      - 'animate-slide-in/out, animate-collapse-in/out'
-      - 'react-native-reanimated requirement (native)'
+      - "PresenceOne / PresenceList"
+      - "animationDurationsMs (slide, collapse)"
+      - "animate-slide-in/out, animate-collapse-in/out"
+      - "react-native-reanimated requirement (native)"
     tasks:
-      - 'Cross-fade/slide a swapping card'
-      - 'Animate items into and out of a list'
+      - "Cross-fade/slide a swapping card"
+      - "Animate items into and out of a list"
     failure_modes:
-      - mistake: 'Hardcoding exitDurationMs instead of animationDurationsMs'
-        mechanism: 'The unmount timer must match the CSS keyframe duration; a hardcoded number drifts from the framework value, cutting the exit animation short or leaving ghost nodes mounted.'
+      - mistake: "Hardcoding exitDurationMs instead of animationDurationsMs"
+        mechanism: "The unmount timer must match the CSS keyframe duration; a hardcoded number drifts from the framework value, cutting the exit animation short or leaving ghost nodes mounted."
         wrong_pattern: |
           <PresenceOne activeKey={id} exitDurationMs={600}
             enterClassName="animate-slide-in" exitClassName="animate-slide-out">
@@ -728,20 +728,20 @@ skills:
           import { animationDurationsMs } from "alouette";
           <PresenceOne activeKey={id} exitDurationMs={animationDurationsMs.slide}
             enterClassName="animate-slide-in" exitClassName="animate-slide-out">
-        source: 'packages/alouette/src/animationDurationsMs.ts; ui/containers/Presence.stories.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'PresenceList children without stable keys'
-        mechanism: 'PresenceList diffs children by key to play add/remove animations; index keys or missing keys make removed items jump or skip their exit animation.'
+        source: "packages/alouette/src/animationDurationsMs.ts; ui/containers/Presence.stories.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "PresenceList children without stable keys"
+        mechanism: "PresenceList diffs children by key to play add/remove animations; index keys or missing keys make removed items jump or skip their exit animation."
         wrong_pattern: |
           {items.map((it, i) => <InfoMessage key={i}>{it}</InfoMessage>)}
         correct_pattern: |
           {items.map((it) => <InfoMessage key={it.id}>{it.label}</InfoMessage>)}
-        source: 'packages/alouette/src/ui/containers/Presence.tsx (usePresenceList)'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'PresenceOne child that does not forward className'
-        mechanism: 'PresenceOne merges enter/exit animation classes onto the child via cloneElement; a child that drops className (or a Fragment) gets no animation. Use an alouette component or one that forwards className to its root view.'
+        source: "packages/alouette/src/ui/containers/Presence.tsx (usePresenceList)"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "PresenceOne child that does not forward className"
+        mechanism: "PresenceOne merges enter/exit animation classes onto the child via cloneElement; a child that drops className (or a Fragment) gets no animation. Use an alouette component or one that forwards className to its root view."
         wrong_pattern: |
           <PresenceOne activeKey={id} exitDurationMs={animationDurationsMs.slide}>
             <>{content}</>
@@ -751,95 +751,95 @@ skills:
             enterClassName="animate-slide-in" exitClassName="animate-slide-out">
             <Box>{content}</Box>
           </PresenceOne>
-        source: 'packages/alouette/src/ui/containers/Presence.tsx (PresenceOne)'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Expecting animations without reanimated on native'
-        mechanism: 'NativeWind v5 runs CSS transitions/animations on native through react-native-reanimated (+ react-native-worklets babel plugin); without them, animations silently no-op on device while still working on web.'
+        source: "packages/alouette/src/ui/containers/Presence.tsx (PresenceOne)"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Expecting animations without reanimated on native"
+        mechanism: "NativeWind v5 runs CSS transitions/animations on native through react-native-reanimated (+ react-native-worklets babel plugin); without them, animations silently no-op on device while still working on web."
         wrong_pattern: |
           // babel.config.js with no worklets plugin, reanimated not installed
         correct_pattern: |
           // install react-native-reanimated; babel plugins: ["react-native-worklets/plugin"]
-        source: 'packages/storybook-native-app/babel.config.js; packages/alouette/package.json peerDependencies'
-        priority: 'HIGH'
-        status: 'active'
+        source: "packages/storybook-native-app/babel.config.js; packages/alouette/package.json peerDependencies"
+        priority: "HIGH"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Respond to breakpoints'
-    slug: 'alouette-responsive'
-    domain: 'responsive'
-    description: 'Build adaptive layouts. Prefer Tailwind responsive variant classes (sm:/md:/lg:/xl:) — they work on web and native; alouette customizes the widths (sm 480 / md 768 / lg 1024 / xl 1280). Fall back to SwitchBreakpointsUsingDisplayNone / SwitchBreakpointsUsingNull and useCurrentBreakpointName only when a class cannot express the change (different component tree per size, or unmounting a heavy off-screen variant).'
-    type: 'core'
-    packages: ['alouette']
+  - name: "Respond to breakpoints"
+    slug: "alouette-responsive"
+    domain: "responsive"
+    description: "Build adaptive layouts. Prefer Tailwind responsive variant classes (sm:/md:/lg:/xl:) — they work on web and native; alouette customizes the widths (sm 480 / md 768 / lg 1024 / xl 1280). Fall back to SwitchBreakpointsUsingDisplayNone / SwitchBreakpointsUsingNull and useCurrentBreakpointName only when a class cannot express the change (different component tree per size, or unmounting a heavy off-screen variant)."
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'responsive variant classes (sm:/md:/lg:/xl:) — preferred'
-      - 'SwitchBreakpointsUsingDisplayNone / SwitchBreakpointsUsingNull (fallback)'
-      - 'useCurrentBreakpointName / useCurrentBreakpointNameFiltered'
-      - 'Breakpoints / BreakpointNameEnum (sm 480 / md 768 / lg 1024 / xl 1280)'
+      - "responsive variant classes (sm:/md:/lg:/xl:) — preferred"
+      - "SwitchBreakpointsUsingDisplayNone / SwitchBreakpointsUsingNull (fallback)"
+      - "useCurrentBreakpointName / useCurrentBreakpointNameFiltered"
+      - "Breakpoints / BreakpointNameEnum (sm 480 / md 768 / lg 1024 / xl 1280)"
     tasks:
-      - 'Make a layout adapt with responsive classes'
-      - 'Swap a different component tree per breakpoint'
-      - 'Read the current breakpoint in JS'
+      - "Make a layout adapt with responsive classes"
+      - "Swap a different component tree per breakpoint"
+      - "Read the current breakpoint in JS"
     failure_modes:
-      - mistake: 'Using SwitchBreakpoints where a responsive class would do'
-        mechanism: 'Responsive variant classes (sm:/md:/lg:/xl:) are the default tool and work on web + native; SwitchBreakpoints mounts multiple subtrees and should be reserved for genuinely different components or unmounting heavy off-screen variants.'
+      - mistake: "Using SwitchBreakpoints where a responsive class would do"
+        mechanism: "Responsive variant classes (sm:/md:/lg:/xl:) are the default tool and work on web + native; SwitchBreakpoints mounts multiple subtrees and should be reserved for genuinely different components or unmounting heavy off-screen variants."
         wrong_pattern: |
           <SwitchBreakpointsUsingNull
             base={<View className="flex-col" />}
             medium={<View className="flex-row" />} />
         correct_pattern: |
           <View className="flex-col md:flex-row" />
-        source: 'packages/alouette/src/windowSize/SwitchBreakpoints.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'SwitchBreakpoints without a base slot'
-        mechanism: 'The base slot is required (SetRequired); without it there is no fallback below the smallest defined breakpoint and TypeScript rejects it.'
+        source: "packages/alouette/src/windowSize/SwitchBreakpoints.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "SwitchBreakpoints without a base slot"
+        mechanism: "The base slot is required (SetRequired); without it there is no fallback below the smallest defined breakpoint and TypeScript rejects it."
         wrong_pattern: |
           <SwitchBreakpointsUsingNull medium={<Wide />} />
         correct_pattern: |
           <SwitchBreakpointsUsingNull base={<Narrow />} medium={<Wide />} />
-        source: 'packages/alouette/src/windowSize/SwitchBreakpoints.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Constructing dynamic responsive class names'
+        source: "packages/alouette/src/windowSize/SwitchBreakpoints.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Constructing dynamic responsive class names"
         mechanism: "Tailwind v4 only emits classes it sees as literal strings; building `${bp}:flex-row` at runtime means the class is never generated."
         wrong_pattern: |
           const cls = `${bp}:flex-row`;
           <View className={cls} />
         correct_pattern: |
           <View className="md:flex-row" />
-        source: 'packages/alouette/src/windowSize/SwitchBreakpoints.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
+        source: "packages/alouette/src/windowSize/SwitchBreakpoints.tsx"
+        priority: "MEDIUM"
+        status: "active"
       - mistake: "Assuming Tailwind's default breakpoint widths"
-        mechanism: 'alouette overrides the breakpoint widths to sm 480 / md 768 / lg 1024 / xl 1280, so picking a prefix by Tailwind defaults (sm = 640) shifts the layout boundary.'
+        mechanism: "alouette overrides the breakpoint widths to sm 480 / md 768 / lg 1024 / xl 1280, so picking a prefix by Tailwind defaults (sm = 640) shifts the layout boundary."
         wrong_pattern: |
           // expecting sm: to start at 640px
           <View className="sm:flex-row" />
         correct_pattern: |
           // alouette sm: starts at 480px; md 768 / lg 1024 / xl 1280
           <View className="md:flex-row" />
-        source: 'packages/alouette/src/config/Breakpoints.ts'
-        priority: 'MEDIUM'
-        status: 'active'
+        source: "packages/alouette/src/config/Breakpoints.ts"
+        priority: "MEDIUM"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Apply styling conventions'
-    slug: 'alouette-styling'
-    domain: 'styling'
+  - name: "Apply styling conventions"
+    slug: "alouette-styling"
+    domain: "styling"
     description: "Declare a component's classes with tailwind-variants: enum-like props (variant/size/shadow/selected/disabled) are tv() variants, and a component that styles several elements uses one tv() with slots. Style through className, never inline style for a static value. Write pixel dimensions as arbitrary values (w-[380px], min-h-[44px]) instead of the canonical spacing-scale class. Carries the alouette design principles."
-    type: 'core'
-    packages: ['alouette']
+    type: "core"
+    packages: ["alouette"]
     covers:
-      - 'tv() variants + VariantProps + defaultVariants'
-      - 'tv() slots (one tv per component)'
-      - 'className vs inline style'
-      - 'arbitrary pixel values (w-[380px], min-h-[44px])'
-      - 'design principles'
+      - "tv() variants + VariantProps + defaultVariants"
+      - "tv() slots (one tv per component)"
+      - "className vs inline style"
+      - "arbitrary pixel values (w-[380px], min-h-[44px])"
+      - "design principles"
     tasks:
-      - 'Add a variant/size prop to a component'
-      - 'Style a multi-element component'
-      - 'Set an explicit pixel dimension'
+      - "Add a variant/size prop to a component"
+      - "Style a multi-element component"
+      - "Set an explicit pixel dimension"
     failure_modes:
-      - mistake: 'Record lookup map instead of a tv() variant'
+      - mistake: "Record lookup map instead of a tv() variant"
         mechanism: "A Record (LAYER_CLASS[variant]) duplicates the prop union by hand and provides no defaultVariants, no compound variants and no className merge; tv() derives the prop type via VariantProps."
         wrong_pattern: |
           const LAYER_CLASS = { surface: "bg-surface", lowered: "bg-lowered" } as const;
@@ -850,103 +850,103 @@ skills:
             defaultVariants: { variant: "surface" },
           });
           <Box className={boxVariants({ variant })} />
-        source: 'packages/alouette/src/ui/containers/Surface.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Several tv() objects for one component'
-        mechanism: 'Repeating the same variants (selected/disabled/size) across one tv per element means each variant change must be made in every object and the elements drift; a single tv() with slots declares them once.'
+        source: "packages/alouette/src/ui/containers/Surface.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Several tv() objects for one component"
+        mechanism: "Repeating the same variants (selected/disabled/size) across one tv per element means each variant change must be made in every object and the elements drift; a single tv() with slots declares them once."
         wrong_pattern: |
           const chipVariants = tv({ variants: { selected: …, disabled: … } });
           const labelVariants = tv({ variants: { selected: …, disabled: … } });
         correct_pattern: |
           const itemVariants = tv({ slots: { chip: "…", label: "…" }, variants: { selected: { true: { chip: "…", label: "…" } } } });
           const styles = itemVariants({ selected, disabled });
-        source: 'packages/alouette/src/ui/containers/Modal.tsx'
-        priority: 'HIGH'
-        status: 'active'
-      - mistake: 'Inline style for a static value'
-        mechanism: 'An inline style is invisible to variants, state modifiers and theming, and on web it silently wins over the class it conflicts with. Reserve style for values computed at runtime (a measured dimension).'
+        source: "packages/alouette/src/ui/containers/Modal.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Inline style for a static value"
+        mechanism: "An inline style is invisible to variants, state modifiers and theming, and on web it silently wins over the class it conflicts with. Reserve style for values computed at runtime (a measured dimension)."
         wrong_pattern: |
           <View style={{ maxWidth: 460, paddingHorizontal: 16 }} />
         correct_pattern: |
           <View className="max-w-[460px] px-m" />
-        source: 'packages/alouette/src/ui/containers/Modal.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Collapsing a pixel size to the spacing-scale class'
-        mechanism: 'w-95 / min-h-11 are the same pixels but read as scale steps and hide the measurement (min-h-[44px] is the accessibility touch-target minimum). Keep the arbitrary value even when the linter suggests the shorthand.'
+        source: "packages/alouette/src/ui/containers/Modal.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Collapsing a pixel size to the spacing-scale class"
+        mechanism: "w-95 / min-h-11 are the same pixels but read as scale steps and hide the measurement (min-h-[44px] is the accessibility touch-target minimum). Keep the arbitrary value even when the linter suggests the shorthand."
         wrong_pattern: |
           <View className="w-95 min-h-11" />
         correct_pattern: |
           <View className="w-[380px] min-h-[44px]" />
-        source: 'packages/alouette/src/ui/actions/Button.tsx; CLAUDE.md (Touch targets)'
-        priority: 'MEDIUM'
-        status: 'active'
+        source: "packages/alouette/src/ui/actions/Button.tsx; CLAUDE.md (Touch targets)"
+        priority: "MEDIUM"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Use Phosphor icons with alouette'
-    slug: 'alouette-icons'
-    domain: 'layout'
-    description: 'Import icons from alouette-icons/phosphor-icons/IconName and render via the Icon component or pass them to Button/IconButton/Message. Tint via a text-* className (resolved to a color token); size in px.'
-    type: 'composition'
-    packages: ['alouette']
+  - name: "Use Phosphor icons with alouette"
+    slug: "alouette-icons"
+    domain: "layout"
+    description: "Import icons from alouette-icons/phosphor-icons/IconName and render via the Icon component or pass them to Button/IconButton/Message. Tint via a text-* className (resolved to a color token); size in px."
+    type: "composition"
+    packages: ["alouette"]
     compositions:
-      - library: 'alouette-icons'
-        skill: 'alouette-icons'
+      - library: "alouette-icons"
+        skill: "alouette-icons"
     covers:
-      - 'alouette-icons/phosphor-icons/<IconName>'
-      - 'Icon (icon, size, className tint)'
-      - 'icon prop on Button/IconButton/Message'
+      - "alouette-icons/phosphor-icons/<IconName>"
+      - "Icon (icon, size, className tint)"
+      - "icon prop on Button/IconButton/Message"
     tasks:
-      - 'Render a standalone tinted icon'
-      - 'Put an icon in a button'
+      - "Render a standalone tinted icon"
+      - "Put an icon in a button"
     failure_modes:
-      - mistake: 'Importing the whole icon set'
-        mechanism: 'Icons are individually importable modules (alouette-icons/phosphor-icons/ArrowLeftRegularIcon); a barrel import pulls in the entire generated set and bloats the bundle.'
+      - mistake: "Importing the whole icon set"
+        mechanism: "Icons are individually importable modules (alouette-icons/phosphor-icons/ArrowLeftRegularIcon); a barrel import pulls in the entire generated set and bloats the bundle."
         wrong_pattern: |
           import { ArrowLeftRegularIcon } from "alouette-icons";
         correct_pattern: |
           import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
-        source: 'packages/alouette/src/ui/actions/Button.stories.tsx; CLAUDE.md (Icons)'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Tinting an icon with a color prop'
-        mechanism: 'Icon resolves a text-* className to a concrete --color-* token and passes it as the SVG color; passing color directly bypasses theming and breaks mode/role adaptation.'
+        source: "packages/alouette/src/ui/actions/Button.stories.tsx; CLAUDE.md (Icons)"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Tinting an icon with a color prop"
+        mechanism: "Icon resolves a text-* className to a concrete --color-* token and passes it as the SVG color; passing color directly bypasses theming and breaks mode/role adaptation."
         wrong_pattern: |
           <Icon icon={<InfoRegularIcon />} color="#888" />
         correct_pattern: |
           <Icon icon={<InfoRegularIcon />} className="text-muted" />
-        source: 'packages/alouette/src/ui/primitives/Icon.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Sizing icon via className width/height'
-        mechanism: 'Icon takes a numeric size prop (px) that it applies as width/height on the SVG; w-*/h-* classes are not how alouette sizes icons.'
+        source: "packages/alouette/src/ui/primitives/Icon.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Sizing icon via className width/height"
+        mechanism: "Icon takes a numeric size prop (px) that it applies as width/height on the SVG; w-*/h-* classes are not how alouette sizes icons."
         wrong_pattern: |
           <Icon icon={<InfoRegularIcon />} className="w-6 h-6" />
         correct_pattern: |
           <Icon icon={<InfoRegularIcon />} size={24} />
-        source: 'packages/alouette/src/ui/primitives/Icon.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
+        source: "packages/alouette/src/ui/primitives/Icon.tsx"
+        priority: "MEDIUM"
+        status: "active"
   # ---------------------------------------------------------------------------
-  - name: 'Open external links'
-    slug: 'alouette-external-links'
-    domain: 'actions'
-    description: 'Open external URLs with ExternalLink (wraps expo-web-browser / Linking) or ExternalLinkButton. Configure openLinkBehavior per platform (native: linking|webBrowser; web: targetBlank|targetSelf).'
-    type: 'composition'
-    packages: ['alouette']
+  - name: "Open external links"
+    slug: "alouette-external-links"
+    domain: "actions"
+    description: "Open external URLs with ExternalLink (wraps expo-web-browser / Linking) or ExternalLinkButton. Configure openLinkBehavior per platform (native: linking|webBrowser; web: targetBlank|targetSelf)."
+    type: "composition"
+    packages: ["alouette"]
     compositions:
-      - library: 'expo-web-browser'
-        skill: 'alouette-external-links'
+      - library: "expo-web-browser"
+        skill: "alouette-external-links"
     covers:
-      - 'ExternalLink (as, href, openLinkBehavior)'
-      - 'ExternalLinkButton'
-      - 'ExternalOpenLinkBehavior'
+      - "ExternalLink (as, href, openLinkBehavior)"
+      - "ExternalLinkButton"
+      - "ExternalOpenLinkBehavior"
     tasks:
-      - 'Open a URL in an in-app browser on native'
-      - 'Open a URL in a new tab on web'
+      - "Open a URL in an in-app browser on native"
+      - "Open a URL in a new tab on web"
     failure_modes:
-      - mistake: 'Calling Linking.openURL directly'
-        mechanism: 'ExternalLink centralizes per-platform behavior (in-app web browser with themed chrome on native, target=_blank on web); calling Linking directly loses the themed browser sheet and web behavior.'
+      - mistake: "Calling Linking.openURL directly"
+        mechanism: "ExternalLink centralizes per-platform behavior (in-app web browser with themed chrome on native, target=_blank on web); calling Linking directly loses the themed browser sheet and web behavior."
         wrong_pattern: |
           import { Linking } from "react-native";
           <Pressable onPress={() => Linking.openURL(href)} />
@@ -954,60 +954,66 @@ skills:
           <ExternalLink as={Button} href={href}
             openLinkBehavior={{ native: "webBrowser", web: "targetBlank" }}
             text="Open" />
-        source: 'packages/alouette/src/expo/ExternalLink.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
-      - mistake: 'Omitting openLinkBehavior'
-        mechanism: 'openLinkBehavior is required and selects the native and web strategies; without it the link cannot decide how to open and throws on an unsupported branch.'
+        source: "packages/alouette/src/expo/ExternalLink.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Omitting openLinkBehavior"
+        mechanism: "openLinkBehavior is required and selects the native and web strategies; without it the link cannot decide how to open and throws on an unsupported branch."
         wrong_pattern: |
           <ExternalLink as={Button} href={href} text="Open" />
         correct_pattern: |
           <ExternalLink as={Button} href={href}
             openLinkBehavior={{ native: "linking", web: "targetSelf" }}
             text="Open" />
-        source: 'packages/alouette/src/expo/ExternalLink.tsx'
-        priority: 'MEDIUM'
-        status: 'active'
+        source: "packages/alouette/src/expo/ExternalLink.tsx"
+        priority: "MEDIUM"
+        status: "active"
 
 tensions:
-  - name: 'Web works, native silently fails'
-    skills: ['alouette-typography', 'alouette-theming', 'alouette-animation', 'alouette-setup']
-    description: 'Patterns valid on web (font-bold, raw Tailwind colors, CSS animations, calc mixing % and px) compile but silently no-op or fall back on native.'
-    implication: 'Agents testing only in the browser produce code that looks correct but renders wrong on iOS/Android — alouette targets all three unless app config restricts support.'
-  - name: 'Familiar Tailwind vs alouette tokens'
-    skills: ['alouette-theming', 'alouette-typography', 'alouette-layout']
-    description: 'Raw Tailwind palette/scale classes are faster to reach for but ignore the alouette theme; semantic tokens cost a lookup but adapt to mode and accent.'
-    implication: 'Agents default to bg-blue-500/p-4/text-gray-600, breaking dark mode and semantic theming instead of using bg-surface/p-m/text-muted.'
-  - name: 'Animation class vs unmount timer coupling'
-    skills: ['alouette-animation']
-    description: 'The CSS keyframe duration (animate-*) and the JS exitDurationMs must stay equal; they live in two places.'
-    implication: 'Agents hardcode a duration that drifts from animationDurationsMs, truncating exit animations or leaving nodes mounted.'
-  - name: 'Re-theme a subtree vs color one element'
-    skills: ['alouette-theming', 'alouette-actions', 'alouette-feedback']
-    description: 'Setting accent re-themes a whole subtree so children use base tokens; hardcoding a color styles one element but does not cascade.'
-    implication: 'Agents hardcode accent colors per element instead of setting accent once, duplicating theme logic and missing mode adaptation.'
+  - name: "Web works, native silently fails"
+    skills:
+      [
+        "alouette-typography",
+        "alouette-theming",
+        "alouette-animation",
+        "alouette-setup",
+      ]
+    description: "Patterns valid on web (font-bold, raw Tailwind colors, CSS animations, calc mixing % and px) compile but silently no-op or fall back on native."
+    implication: "Agents testing only in the browser produce code that looks correct but renders wrong on iOS/Android — alouette targets all three unless app config restricts support."
+  - name: "Familiar Tailwind vs alouette tokens"
+    skills: ["alouette-theming", "alouette-typography", "alouette-layout"]
+    description: "Raw Tailwind palette/scale classes are faster to reach for but ignore the alouette theme; semantic tokens cost a lookup but adapt to mode and accent."
+    implication: "Agents default to bg-blue-500/p-4/text-gray-600, breaking dark mode and semantic theming instead of using bg-surface/p-m/text-muted."
+  - name: "Animation class vs unmount timer coupling"
+    skills: ["alouette-animation"]
+    description: "The CSS keyframe duration (animate-*) and the JS exitDurationMs must stay equal; they live in two places."
+    implication: "Agents hardcode a duration that drifts from animationDurationsMs, truncating exit animations or leaving nodes mounted."
+  - name: "Re-theme a subtree vs color one element"
+    skills: ["alouette-theming", "alouette-actions", "alouette-feedback"]
+    description: "Setting accent re-themes a whole subtree so children use base tokens; hardcoding a color styles one element but does not cascade."
+    implication: "Agents hardcode accent colors per element instead of setting accent once, duplicating theme logic and missing mode adaptation."
 
 cross_references:
-  - from: 'alouette-setup'
-    to: 'alouette-theming'
-    reason: 'After wiring the provider, the developer needs the token/role model to style anything.'
-  - from: 'alouette-theming'
-    to: 'alouette-typography'
-    reason: 'Color tokens (text-sharp/text-muted/text-accent) are applied through Text.'
-  - from: 'alouette-actions'
-    to: 'alouette-icons'
-    reason: 'Buttons take an icon prop; icon imports/tinting live in the icons skill.'
-  - from: 'alouette-feedback'
-    to: 'alouette-animation'
-    reason: 'Messages are commonly rendered inside PresenceList for animated add/remove.'
-  - from: 'alouette-animation'
-    to: 'alouette-setup'
-    reason: 'Native animations require react-native-reanimated + worklets wired during setup.'
-  - from: 'alouette-layout'
-    to: 'alouette-responsive'
-    reason: 'Breakpoint switching chooses between layout variants.'
-  - from: 'alouette-actions'
-    to: 'alouette-external-links'
-    reason: 'ExternalLinkButton/ExternalLink handle outbound URLs from action elements.'
+  - from: "alouette-setup"
+    to: "alouette-theming"
+    reason: "After wiring the provider, the developer needs the token/role model to style anything."
+  - from: "alouette-theming"
+    to: "alouette-typography"
+    reason: "Color tokens (text-sharp/text-muted/text-accent) are applied through Text."
+  - from: "alouette-actions"
+    to: "alouette-icons"
+    reason: "Buttons take an icon prop; icon imports/tinting live in the icons skill."
+  - from: "alouette-feedback"
+    to: "alouette-animation"
+    reason: "Messages are commonly rendered inside PresenceList for animated add/remove."
+  - from: "alouette-animation"
+    to: "alouette-setup"
+    reason: "Native animations require react-native-reanimated + worklets wired during setup."
+  - from: "alouette-layout"
+    to: "alouette-responsive"
+    reason: "Breakpoint switching chooses between layout variants."
+  - from: "alouette-actions"
+    to: "alouette-external-links"
+    reason: "ExternalLinkButton/ExternalLink handle outbound URLs from action elements."
 
 gaps: []

@@ -33,18 +33,27 @@
   "overrides": {
     "Switch": {
       "primaryStory": "PreviewSwitchStory",
-      "skip": ["alouette-inputs-switch--tests", "alouette-inputs-switch--documentation"]
+      "skip": [
+        "alouette-inputs-switch--tests",
+        "alouette-inputs-switch--documentation"
+      ]
     },
     "InputText": {
       "primaryStory": "PreviewInputTextStory",
-      "skip": ["alouette-inputs-inputtext--tests", "alouette-inputs-inputtext--documentation"]
+      "skip": [
+        "alouette-inputs-inputtext--tests",
+        "alouette-inputs-inputtext--documentation"
+      ]
     },
     "TextArea": {
       "primaryStory": "PreviewTextAreaStory",
       "skip": ["alouette-inputs-textarea--documentation"]
     },
     "PresenceOne": { "cardMode": "column" },
-    "Select": { "cardMode": "column", "skip": ["alouette-inputs-select--tests"] },
+    "Select": {
+      "cardMode": "column",
+      "skip": ["alouette-inputs-select--tests"]
+    },
     "GradientBackground": { "cardMode": "column" },
     "AlertDialog": { "skip": ["alouette-containers-alertdialog--tests"] },
     "Modal": { "skip": ["alouette-containers-modal--tests"] },

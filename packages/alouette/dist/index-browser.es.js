@@ -63,6 +63,47 @@ const useSafeAreaInsets = () => ({
   right: 0
 });
 
+const allSafeAreaEdges = [
+  "top",
+  "bottom",
+  "left",
+  "right"
+];
+const ConsumedSafeAreaEdgesContext = createContext([]);
+function useConsumedSafeAreaEdges() {
+  return useContext(ConsumedSafeAreaEdgesContext);
+}
+function SafeAreaScope({
+  consumedEdges,
+  children
+}) {
+  const parentEdges = useConsumedSafeAreaEdges();
+  const mergedEdges = allSafeAreaEdges.filter(
+    (edge) => parentEdges.includes(edge) || consumedEdges.includes(edge)
+  );
+  return /* @__PURE__ */ jsx(ConsumedSafeAreaEdgesContext.Provider, { value: mergedEdges, children });
+}
+
+function useScreenSafeAreaPadding(edges) {
+  const insets = useSafeAreaInsets();
+  const consumedEdges = useConsumedSafeAreaEdges();
+  const appliedEdges = edges ?? allSafeAreaEdges.filter((edge) => !consumedEdges.includes(edge));
+  const padding = {};
+  if (insets.top > 0 && appliedEdges.includes("top")) {
+    padding.paddingTop = insets.top;
+  }
+  if (insets.bottom > 0 && appliedEdges.includes("bottom")) {
+    padding.paddingBottom = insets.bottom;
+  }
+  if (insets.left > 0 && appliedEdges.includes("left")) {
+    padding.paddingLeft = insets.left;
+  }
+  if (insets.right > 0 && appliedEdges.includes("right")) {
+    padding.paddingRight = insets.right;
+  }
+  return Object.keys(padding).length === 0 ? void 0 : padding;
+}
+
 const View = forwardRef((props, ref) => {
   return /* @__PURE__ */ jsx(View$1, { ref, ...props });
 });
@@ -705,11 +746,11 @@ function PresenceOne({
 }
 
 const animationDurationsMs = {
-  "slide": 600,
-  "collapse": 800,
-  "progress": 600,
-  "fade": 300,
-  "fast": 200
+  slide: 600,
+  collapse: 800,
+  progress: 600,
+  fade: 300,
+  fast: 200
 };
 
 const aboveModalClassName = "z-[10000]";
@@ -3719,6 +3760,80 @@ const GradientScrollView = forwardRef(({ accent, children, ...scrollViewProps },
   return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsx(GradientScrollViewInner, { ref, ...scrollViewProps, children }) });
 });
 
+function ScreenCenterLayout({
+  header,
+  content,
+  footer
+}) {
+  return /* @__PURE__ */ jsxs(VStack, { className: "grow gap-xl min-h-screen", children: [
+    header,
+    /* @__PURE__ */ jsx(View$1, { className: "grow flex-center", children: content }),
+    footer
+  ] });
+}
+
+function useScreenContainerProps({
+  className,
+  contentContainerClassName,
+  contentContainerStyle,
+  edges
+}) {
+  const safeAreaPadding = useScreenSafeAreaPadding(edges);
+  return {
+    className: twMerge$1("bg-screen min-h-full", className),
+    contentContainerClassName: twMerge$1("grow", contentContainerClassName),
+    contentContainerStyle: safeAreaPadding ? [contentContainerStyle, safeAreaPadding] : contentContainerStyle
+  };
+}
+
+function ScreenScrollView({
+  className,
+  contentContainerClassName,
+  contentContainerStyle,
+  edges,
+  ...props
+}) {
+  const containerProps = useScreenContainerProps({
+    className,
+    contentContainerClassName,
+    contentContainerStyle,
+    edges
+  });
+  return /* @__PURE__ */ jsx(ScrollView, { ...containerProps, ...props });
+}
+
+function ScreenFlatList({
+  className,
+  contentContainerClassName,
+  contentContainerStyle,
+  edges,
+  ...props
+}) {
+  const containerProps = useScreenContainerProps({
+    className,
+    contentContainerClassName,
+    contentContainerStyle,
+    edges
+  });
+  return /* @__PURE__ */ jsx(FlatList, { ...containerProps, ...props });
+}
+
+function ScreenSectionList({
+  className,
+  contentContainerClassName,
+  contentContainerStyle,
+  edges,
+  ...props
+}) {
+  const containerProps = useScreenContainerProps({
+    className,
+    contentContainerClassName,
+    contentContainerStyle,
+    edges
+  });
+  return /* @__PURE__ */ jsx(SectionList, { ...containerProps, ...props });
+}
+
 const Breakpoints = {
   /**
    * min-width: 0
@@ -3812,5 +3927,5 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaProvider, ScopedTheme, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaProvider, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useScreenSafeAreaPadding };
 //# sourceMappingURL=index-browser.es.js.map

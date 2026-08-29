@@ -83,6 +83,15 @@ export default [
       ],
     },
   },
+  // alouette's package exports declare only the node / react-native / browser
+  // conditions (no "default"), which metro and the bundlers resolve but the
+  // eslint node resolver cannot follow from a consumer package.
+  {
+    files: ["packages/expo-demo-app/**/*.{ts,tsx}"],
+    rules: {
+      "import-x/no-unresolved": ["error", { ignore: ["^alouette(/|$)"] }],
+    },
+  },
   ...storybook.configs["flat/recommended"],
   // react-native-css (NativeWind v5's native engine) breaks at runtime with
   // lightningcss >=1.31 ("failed to deserialize Specifier"), so the app pins
