@@ -1,10 +1,10 @@
 {
   "files": [],
   "references": [
-    { "path": "tsconfig.tools.json" },
     { "path": "packages/alouette-icons/tsconfig.json" },
     { "path": "packages/alouette/tsconfig.json" },
+    { "path": "packages/expo-demo-app/tsconfig.json" },
     { "path": "packages/storybook-native-app/tsconfig.json" },
-    { "path": "packages/expo-demo-app/tsconfig.json" }
+    { "path": "tsconfig.tools.json" }
   ]
 }

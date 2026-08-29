@@ -10,6 +10,7 @@ This repository is a monorepo using workspaces.
 | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
 | [alouette](packages/alouette)                         | <a href="https://npmjs.org/package/alouette"><img src="https://img.shields.io/npm/v/alouette.svg?style=flat-square"></a>             | A modern, customizable design system built on top of NativeWind v5 with configurable defaults |
 | [alouette-icons](packages/alouette-icons)             | <a href="https://npmjs.org/package/alouette-icons"><img src="https://img.shields.io/npm/v/alouette-icons.svg?style=flat-square"></a> | icons for alouette                                                                            |
+| [expo-demo-app](packages/expo-demo-app)               |                                                                                                                                      |
 | [storybook-native-app](packages/storybook-native-app) |                                                                                                                                      |
 
 ## 🤖 Using an AI agent?
