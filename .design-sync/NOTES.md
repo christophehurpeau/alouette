@@ -49,8 +49,8 @@ Shape: storybook. Package: `alouette` (window global `Alouette`).
   doubt, a manual full-page capture, same as any other framing difference the
   rubric says to ignore. Don't re-diagnose this on future tall stories.
 - `[GENERAL]` `--tests` stories (`AlertDialog Tests`, `Modal Tests`, `Select
-  Tests`, `Text Tests`, plus the pre-existing `Switch Tests`/`InputText
-  Tests`) all carry a `play:` interaction function (opens a dialog, types
+Tests`, `Text Tests`, plus the pre-existing `Switch Tests`/`InputText
+Tests`) all carry a `play:` interaction function (opens a dialog, types
   into a field, etc.) that Storybook autoplays on load but the compiled
   preview never invokes — so the ds preview renders the pre-interaction
   state while the storybook reference shows the post-interaction state
@@ -211,6 +211,6 @@ Shape: storybook. Package: `alouette` (window global `Alouette`).
 - **react-native-css/components path** is a versioned dist path
   (`dist/commonjs/components/index.cjs`). A react-native-css major bump may move
   it — update `tsconfig.bundle.json` if the bundle errors `Could not resolve
-  "react-native-web"`.
+"react-native-web"`.
 - **EXPO_PUBLIC_STORYBOOK_ENABLED="true"** in the shim matches storybook; if a
   component branches on it in a way that diverges from production web, revisit.

@@ -16,9 +16,7 @@ import { SafeAreaProvider, AlouetteProvider, ScopedTheme } from "alouette";
 
 <SafeAreaProvider>
   <AlouetteProvider>
-    <ScopedTheme theme="light">
-      {/* app */}
-    </ScopedTheme>
+    <ScopedTheme theme="light">{/* app */}</ScopedTheme>
   </AlouetteProvider>
 </SafeAreaProvider>;
 ```
@@ -87,7 +85,7 @@ import { HStack, VStack, Separator, Surface, Button, Badge } from "alouette";
     </HStack>
     <Separator />
   </VStack>
-</Surface>
+</Surface>;
 ```
 
 `HStack`/`VStack` are `Stack` with `direction="row"`/`"column"`; row layouts

@@ -4,23 +4,28 @@ description: >
   Overlays: Modal (controlled by visible/onClose, required title, optional
   icon/footer/role, size sm/md/lg, dismiss via backdrop/close/Escape/
   Android-back) and AlertDialog for confirmations. The footer stays pinned to
-  the bottom of the scrolling body (sticky on web, below the scroll box on
-  native) and grows a separator while content scrolls under it. AlertDialog
+  the bottom of the scrolling body and grows a separator while content scrolls
+  under it. AlertDialog
   variant is confirm (cancel+confirm) | alert (single acknowledge) | required
   (single action, non-dismissible); accent defaults to danger. Prefer the
   icon-fixed presets QuestionAlertDialog / WarningAlertDialog / InfoAlertDialog /
   SuccessAlertDialog. onConfirm may return a promise: the dialog then shows a
   loading state, locks dismissal until it settles, and renders a rejection with
-  errorToMessage. Load when adding a modal, confirmation, or alert dialog.
+  errorToMessage. Popover is the chrome-less escape hatch, rendering children
+  above everything and outside any overflow-hidden ancestor: anchored under
+  anchorRef on web, a top/center overlay on native. Load when adding a modal,
+  confirmation, alert dialog, or a dropdown escaping a clipping container.
 type: core
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 requires:
   - alouette-theming
   - alouette-actions
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AlertDialog.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Popover.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Popover.web.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/PortalAccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AlertDialog.stories.tsx"
@@ -86,7 +91,7 @@ listener.
 `accent` themes the whole panel. A modal renders through a portal, i.e. outside
 the themed DOM subtree, so `Modal` rebuilds the scope inside with
 `PortalAccentScope` (also exported, for any other portalled overlay). An
-`AccentScope` placed *around* the `<Modal>` element in your tree does **not**
+`AccentScope` placed _around_ the `<Modal>` element in your tree does **not**
 reach the panel — pass `accent` to the modal itself.
 
 ### AlertDialog — confirmations
@@ -149,7 +154,9 @@ itself on success.
   visible={confirming}
   title="Delete project"
   confirmText="Delete"
-  errorToMessage={(error) => (error instanceof Error ? error.message : t("unknownError"))}
+  errorToMessage={(error) =>
+    error instanceof Error ? error.message : t("unknownError")
+  }
   onConfirm={async () => {
     await deleteProject();
     setConfirming(false);
@@ -159,6 +166,52 @@ itself on success.
   This permanently removes the project and its data.
 </WarningAlertDialog>
 ```
+
+### Popover — content above a clipping ancestor
+
+`Popover` is the low-level overlay behind `Select` and `InputTextAutocomplete`:
+it renders `children` above everything, outside the clipping of any
+`overflow-hidden` ancestor (`Surface` is one by design). It brings **no** panel
+chrome — no title, no close button, no padding — so wrap the content in a
+`Surface` yourself.
+
+```tsx
+import { Popover, Surface, IconButton } from "alouette";
+
+const anchorRef = useRef<View>(null);
+const [open, setOpen] = useState(false);
+
+<View ref={anchorRef}>
+  <IconButton aria-label="More" onPress={() => setOpen(true)} … />
+</View>
+<Popover
+  open={open}
+  anchorRef={anchorRef}
+  aria-label="Actions"
+  onClose={() => setOpen(false)}
+>
+  <Surface variant="highlight" shadow="l" size="sm">{menu}</Surface>
+</Popover>;
+```
+
+The two platforms present it differently, and that is deliberate:
+
+- **web** — portals into `document.body` and positions itself under
+  `anchorRef`, matching its width. It follows the anchor through page and nested
+  scrolling, sits above react-native-web's own `Modal` layer (so a popover inside
+  a dialog is not hidden behind it), and closes on Escape or a press outside the
+  content and the anchor.
+- **native** — `anchorRef` is **ignored** and the content is presented as an
+  overlay in a transparent `Modal`, because a `Modal` resigns the keyboard of
+  whatever is behind it, so an anchored dropdown over a focused input is not
+  renderable. `placement` picks the presentation: `"center"` (default) for
+  content of fixed height, `"top"` to pin it below the status bar so the first
+  row stays put while the content resizes. Web falls back to the same overlay
+  when no `anchorRef` is given.
+
+`accent` themes the content through `PortalAccentScope`; pass `accent="none"` to
+render it on the neutral mode tokens under an accented ancestor. `aria-label`
+names the overlay.
 
 ## Common Mistakes
 
@@ -189,14 +242,21 @@ Wrong:
 ```tsx
 <Modal visible={open} onClose={close} title="Details">
   <Text>…</Text>
-  <HStack className="justify-end gap-m"><Button text="Done" onPress={close} /></HStack>
+  <HStack className="justify-end gap-m">
+    <Button text="Done" onPress={close} />
+  </HStack>
 </Modal>
 ```
 
 Correct:
 
 ```tsx
-<Modal visible={open} onClose={close} title="Details" footer={<Button text="Done" onPress={close} />}>
+<Modal
+  visible={open}
+  onClose={close}
+  title="Details"
+  footer={<Button text="Done" onPress={close} />}
+>
   <Text>…</Text>
 </Modal>
 ```
@@ -213,14 +273,18 @@ Wrong:
 
 ```tsx
 <AccentScope accent="danger">
-  <Modal visible={open} onClose={close} title="Delete project">…</Modal>
+  <Modal visible={open} onClose={close} title="Delete project">
+    …
+  </Modal>
 </AccentScope>
 ```
 
 Correct:
 
 ```tsx
-<Modal accent="danger" visible={open} onClose={close} title="Delete project">…</Modal>
+<Modal accent="danger" visible={open} onClose={close} title="Delete project">
+  …
+</Modal>
 ```
 
 The panel renders through a portal, outside the themed subtree, so a surrounding
@@ -236,8 +300,12 @@ Wrong: a `Modal` with hand-placed Cancel/Confirm buttons and manual `role`.
 Correct:
 
 ```tsx
-<QuestionAlertDialog visible={open} title="Discard changes?"
-  onConfirm={discard} onCancel={close} />
+<QuestionAlertDialog
+  visible={open}
+  title="Discard changes?"
+  onConfirm={discard}
+  onCancel={close}
+/>
 ```
 
 `AlertDialog` sets `role="alertdialog"`, wires the description to

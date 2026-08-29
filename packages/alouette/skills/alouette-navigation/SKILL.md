@@ -12,7 +12,7 @@ description: >
   a tab bar, a section switcher, or navigation between routes.
 type: core
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -37,12 +37,12 @@ bar whose selected item raises a chip. `NavBar` navigates between destinations,
 `Tabs` switches views on the same screen. They differ only in accessibility
 semantics — pick by what the press does, not by how it looks.
 
-| | `NavBar` / `NavBarItem` | `Tabs` / `Tab` |
-| --- | --- | --- |
-| use for | routes, destinations | views on the current screen |
-| container role | `navigation` | `tablist` |
-| item role | `link` | `tab` |
-| selected marker | `aria-current="page"` | `aria-selected` |
+|                 | `NavBar` / `NavBarItem` | `Tabs` / `Tab`              |
+| --------------- | ----------------------- | --------------------------- |
+| use for         | routes, destinations    | views on the current screen |
+| container role  | `navigation`            | `tablist`                   |
+| item role       | `link`                  | `tab`                       |
+| selected marker | `aria-current="page"`   | `aria-selected`             |
 
 ## Setup
 
@@ -65,7 +65,11 @@ Both groups own the value: `defaultValue` for uncontrolled, `value` +
 value is the current route, matched against each item's `href`.
 
 ```tsx
-<NavBar aria-label="Main" value={pathname} onValueChange={(href) => router.push(href)}>
+<NavBar
+  aria-label="Main"
+  value={pathname}
+  onValueChange={(href) => router.push(href)}
+>
   <NavBarItem href="/home" label="Home" />
   <NavBarItem href="/reports" label="Reports" />
 </NavBar>
@@ -161,13 +165,17 @@ Source: packages/alouette/src/ui/navigation/Tabs.tsx
 Wrong:
 
 ```tsx
-<Tabs value={pathname} onValueChange={router.push}>…</Tabs>
+<Tabs value={pathname} onValueChange={router.push}>
+  …
+</Tabs>
 ```
 
 Correct:
 
 ```tsx
-<NavBar aria-label="Main" value={pathname} onValueChange={router.push}>…</NavBar>
+<NavBar aria-label="Main" value={pathname} onValueChange={router.push}>
+  …
+</NavBar>
 ```
 
 The two render the same material but expose different semantics: `tab` promises
@@ -204,7 +212,11 @@ Source: packages/alouette/src/ui/navigation/NavBarItem.tsx
 Wrong:
 
 ```tsx
-<NavBarItem href="/settings" label="Settings" onPress={() => router.push("/settings")} />
+<NavBarItem
+  href="/settings"
+  label="Settings"
+  onPress={() => router.push("/settings")}
+/>
 ```
 
 Correct:

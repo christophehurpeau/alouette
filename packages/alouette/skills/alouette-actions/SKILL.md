@@ -13,7 +13,7 @@ description: >
   Load when adding buttons or custom pressable elements.
 type: core
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 requires:
   - alouette-theming
 sources:
@@ -68,7 +68,9 @@ import { ActionButton } from "alouette";
   accent="danger"
   text="Delete"
   onPress={async () => deleteItem(id)}
-  errorToMessage={(error) => (error instanceof Error ? error.message : "Failed")}
+  errorToMessage={(error) =>
+    error instanceof Error ? error.message : "Failed"
+  }
 />;
 ```
 
@@ -104,7 +106,7 @@ animation before the terminal icon). Any non-`undefined` `state` disables presse
 ```tsx
 import { Button, type ButtonState } from "alouette";
 
-<Button text="Save" state={submitState} onPress={save} />
+<Button text="Save" state={submitState} onPress={save} />;
 // submitState: ButtonState | undefined = "loading" | "success" | "failed"
 ```
 
@@ -220,7 +222,11 @@ Source: packages/alouette/src/ui/actions/IconButton.tsx
 Wrong:
 
 ```tsx
-<IconButton icon={<TrashRegularIcon />} aria-label="Delete" onPress={async () => deleteItem(id)} />
+<IconButton
+  icon={<TrashRegularIcon />}
+  aria-label="Delete"
+  onPress={async () => deleteItem(id)}
+/>
 ```
 
 Correct:
@@ -231,7 +237,9 @@ Correct:
   text="Delete"
   icon={<TrashRegularIcon />}
   onPress={async () => deleteItem(id)}
-  errorToMessage={(error) => (error instanceof Error ? error.message : "Failed")}
+  errorToMessage={(error) =>
+    error instanceof Error ? error.message : "Failed"
+  }
 />
 ```
 

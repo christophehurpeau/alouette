@@ -746,11 +746,11 @@ function PresenceOne({
 }
 
 const animationDurationsMs = {
-  "slide": 600,
-  "collapse": 800,
-  "progress": 600,
-  "fade": 300,
-  "fast": 200
+  slide: 600,
+  collapse: 800,
+  progress: 600,
+  fade: 300,
+  fast: 200
 };
 
 const aboveModalClassName = "z-[10000]";

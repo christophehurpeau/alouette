@@ -11,7 +11,7 @@ description: >
   cards, spacing, or backgrounds.
 type: core
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 requires:
   - alouette-theming
 sources:
@@ -133,9 +133,12 @@ every edge an ancestor `SafeAreaScope` has not declared consumed. Chrome that
 already applies an inset declares it once, and nesting scopes merge:
 
 ```tsx
-<SafeAreaScope consumedEdges={["top"]}>   {/* header applies insets.top itself */}
-  <SafeAreaScope consumedEdges={["bottom"]}>  {/* bottom bar applies insets.bottom */}
-    <ScreenScrollView>…</ScreenScrollView>     {/* pads left/right only */}
+{/* header applies insets.top itself */}
+<SafeAreaScope consumedEdges={["top"]}>
+  {/* bottom bar applies insets.bottom */}
+  <SafeAreaScope consumedEdges={["bottom"]}>
+    {/* pads left/right only */}
+    <ScreenScrollView>…</ScreenScrollView>
   </SafeAreaScope>
 </SafeAreaScope>
 ```
@@ -193,14 +196,14 @@ Wrong:
 
 ```tsx
 import { LinearGradient } from "expo-linear-gradient";
-<LinearGradient colors={["#fff", "#eee"]} />
+<LinearGradient colors={["#fff", "#eee"]} />;
 ```
 
 Correct:
 
 ```tsx
 import { GradientBackground } from "alouette";
-<GradientBackground accent="brand" />
+<GradientBackground accent="brand" />;
 ```
 
 alouette gradients are pure NativeWind classes; `GradientBackground` /

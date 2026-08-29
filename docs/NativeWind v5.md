@@ -2823,6 +2823,7 @@ props.expo === false
 )}
 <Tab value="npm">
 <CodeBlock language="bash">
+
 <Pre>
 {[
 props.deps?.length

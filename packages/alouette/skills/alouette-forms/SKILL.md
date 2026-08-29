@@ -2,27 +2,31 @@
 name: alouette-forms
 description: >
   Inputs: InputText (mode: password/email/number/tel/url/search), TextArea, Switch
-  (checked + onValueChange; use disabled not editable). Single-select groups
-  (value/defaultValue/onValueChange + accent/disabled): RadioGroup + Radio
-  (circle-dot list), RadioButtonGroup + RadioButton (segmented pill bar),
-  RadioCardGroup + RadioCard (icon/label/description cards). Validation on
-  react-hook-form: Form hands { control, submit } to its render prop, and every field
-  takes that control — so the form type is written once on Form and each field's value
-  type comes from its name. FormField wires Controller to
-  FormItem label/error/required; FormFieldArray wraps useFieldArray; FormSubmitButton
-  drives loading/success/failed; SimpleVForm is the vertical-stack shortcut;
-  FormEditableItem edits a row in a modal with its own Form. errorToMessage is required
-  (i18n); FormValidationError separates invalid fields from onSubmit failures. Load when
-  building text fields, toggles, radio groups, a validated form, or an edit-in-a-modal
-  row.
+  (checked + onValueChange; use disabled not editable), InputTextAutocomplete (a
+  combobox over an options array). Single-select groups
+  (value/defaultValue/onValueChange + accent/disabled): RadioGroup + Radio,
+  RadioButtonGroup + RadioButton, RadioCardGroup + RadioCard. Validation on
+  react-hook-form: Form hands { control, submit } to its render prop and every field
+  takes that control, so the form type is written once on Form and each field's value
+  type comes from its name. FormField wires Controller to FormItem
+  label/error/required; FormFieldArray wraps useFieldArray; FormSubmitButton drives
+  loading/success/failed; SimpleVForm is the vertical-stack shortcut;
+  FormEditableItem edits a row in a modal with its own Form. errorToMessage is
+  required (i18n); FormValidationError separates invalid fields from onSubmit
+  failures. Load when building text fields, toggles, radio groups, or a validated
+  form.
 type: core
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 requires:
   - alouette-theming
   - alouette-actions
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputText.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.shared.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.web.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/TextArea.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Switch.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioGroup.tsx"
@@ -74,7 +78,12 @@ union of every field, and never a per-field type argument.
 ```tsx
 import { InputText } from "alouette";
 
-<InputText mode="email" value={email} onChangeText={setEmail} placeholder="you@example.com" />;
+<InputText
+  mode="email"
+  value={email}
+  onChangeText={setEmail}
+  placeholder="you@example.com"
+/>;
 ```
 
 ### Input modes
@@ -99,48 +108,20 @@ import { InputText } from "alouette";
 <Switch disabled checked={on} />
 ```
 
-### Single-select groups
+### Autocomplete and single-select groups
 
-Three families share one API: the group owns the value (`value` / `defaultValue`
-+ `onValueChange`, plus `accent` and `disabled`), children are composed rather
-than passed as an options array, and a child's own `disabled` affects only that
-option. Label the group via `aria-labelledby`.
+`InputTextAutocomplete` is a text field backed by a filtered listbox, for
+narrowing a known list by typing. Three single-select families share one
+group-owns-the-value API and compose their children rather than take an options
+array: `RadioGroup` + `Radio` (circle-dot list),
+`RadioButtonGroup` + `RadioButton` (segmented pill bar) and
+`RadioCardGroup` + `RadioCard` (icon/label/description cards). Inside a form,
+render any of them from a `FormField` `render` prop with
+`value={field.value}` + `onValueChange={field.onChange}` +
+`aria-labelledby={labelId}` (no `ref` — they are not focusable text).
 
-- `RadioGroup` + `Radio` — circle-dot list, for longer or self-evident options.
-- `RadioButtonGroup` + `RadioButton` — segmented pill bar: a lowered 44px track,
-  each pressable filling the tap target around a shorter visible chip. It is a
-  form input; for the same material used to move between destinations or switch
-  views use `NavBar` / `Tabs` (alouette-navigation/SKILL.md).
-- `RadioCardGroup` + `RadioCard` — cards with `icon`, `label`, `description` and
-  a radio indicator, for options that need explaining. The selected card is
-  `PressableBox`'s `contained` fill, the rest its `outlined` surface. Group
-  `variant` is `"list"` (default, one per row) or `"stack"` (cards wrap and share
-  a row from a 240px basis).
+Props, platform behavior and examples: [references/choice-inputs.md](references/choice-inputs.md).
 
-```tsx
-<RadioGroup defaultValue="week" onValueChange={setRange} aria-labelledby={labelId}>
-  <Radio value="day" label="Day" />
-  <Radio value="month" label="Month" disabled />
-</RadioGroup>
-
-<RadioButtonGroup defaultValue="week" accent="brand">
-  <RadioButton value="day" label="Day" />
-  <RadioButton value="week" label="Week" />
-</RadioButtonGroup>
-
-<RadioCardGroup variant="stack" defaultValue="public" onValueChange={setVisibility}>
-  <RadioCard value="public" icon={<GlobeRegularIcon />} label="Public"
-    description="Anyone with the link" />
-  <RadioCard value="private" icon={<LockRegularIcon />} label="Private" />
-</RadioCardGroup>
-```
-
-`label` is each option's accessible name — required even when a description
-carries the detail. Inside a form, render any of the three from a `FormField`
-`render` prop: `value={field.value}` + `onValueChange={field.onChange}` +
-`aria-labelledby={labelId}` (no `ref`, they are not focusable text). Since
-`field.value` is typed from `name`, a `"day" | "week"` union field arrives as
-that union, not as a widened `string`.
 
 ## Validated forms
 
@@ -148,12 +129,21 @@ that union, not as a widened `string`.
 submit button.
 
 ```tsx
-import { SimpleVForm, FormField, InputText, FormValidationError } from "alouette";
+import {
+  SimpleVForm,
+  FormField,
+  InputText,
+  FormValidationError,
+} from "alouette";
 
-interface Values { name: string; email: string }
+interface Values {
+  name: string;
+  email: string;
+}
 
 function submitErrorToMessage(error: unknown): string {
-  if (error instanceof FormValidationError) return "Please fix the errors above.";
+  if (error instanceof FormValidationError)
+    return "Please fix the errors above.";
   return error instanceof Error ? error.message : "Something went wrong.";
 }
 
@@ -169,8 +159,13 @@ function submitErrorToMessage(error: unknown): string {
       label="Name"
       required="Name is required."
       render={({ field, labelId }) => (
-        <InputText ref={field.ref} value={field.value} aria-labelledby={labelId}
-          onChangeText={field.onChange} onBlur={field.onBlur} />
+        <InputText
+          ref={field.ref}
+          value={field.value}
+          aria-labelledby={labelId}
+          onChangeText={field.onChange}
+          onBlur={field.onBlur}
+        />
       )}
     />
   )}
@@ -203,10 +198,18 @@ message; any other `ReactNode` is the message shown once the field is left empty
   control={control}
   name="email"
   label="Email"
-  validate={(v) => (/^[^@]+@[^@]+$/.test(v) ? undefined : "Enter a valid email.")}
+  validate={(v) =>
+    /^[^@]+@[^@]+$/.test(v) ? undefined : "Enter a valid email."
+  }
   render={({ field, labelId }) => (
-    <InputText ref={field.ref} mode="email" value={field.value}
-      aria-labelledby={labelId} onChangeText={field.onChange} onBlur={field.onBlur} />
+    <InputText
+      ref={field.ref}
+      mode="email"
+      value={field.value}
+      aria-labelledby={labelId}
+      onChangeText={field.onChange}
+      onBlur={field.onBlur}
+    />
   )}
 />
 ```
@@ -229,7 +232,11 @@ import { Form, FormSubmitButton } from "alouette";
   render={({ control, submit }) => (
     <>
       {/* fields */}
-      <FormSubmitButton label="Save" errorToMessage={submitErrorToMessage} onPress={submit} />
+      <FormSubmitButton
+        label="Save"
+        errorToMessage={submitErrorToMessage}
+        onPress={submit}
+      />
     </>
   )}
 />;
@@ -401,7 +408,11 @@ Wrong:
 Correct:
 
 ```tsx
-<FormSubmitButton label="Save" onPress={submit} errorToMessage={submitErrorToMessage} />
+<FormSubmitButton
+  label="Save"
+  onPress={submit}
+  errorToMessage={submitErrorToMessage}
+/>
 ```
 
 `errorToMessage` is required (not defaulted) because a library default could only
@@ -471,8 +482,9 @@ Source: packages/alouette/src/ui/forms/FormEditableItem.tsx
 form fields). `RadioButtonGroup` + `RadioButton`: horizontal segmented pill bar
 (2–4 compact, equal-weight choices like view mode or time range).
 `RadioCardGroup` + `RadioCard`: cards, for a few options that each need an icon
-and a line of explanation. None replaces `Select` — use `Select` for large option
-lists.
+and a line of explanation. None of the three replaces the two components for long
+lists: `Select` when the value is picked from the list, `InputTextAutocomplete`
+when the user types to narrow it.
 
 The three share one context, so a child must sit inside its own group: a
 `RadioCard` under a `RadioGroup` renders, but a `Radio` outside any of the three

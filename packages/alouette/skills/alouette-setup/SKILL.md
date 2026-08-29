@@ -10,7 +10,7 @@ description: >
   and web.
 type: lifecycle
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 sources:
   - "christophehurpeau/alouette:packages/storybook-native-app/metro.config.cjs"
   - "christophehurpeau/alouette:packages/storybook-native-app/postcss.config.mjs"
@@ -122,9 +122,9 @@ matches the palette CSS the app imports:
 
 | Palette              | CSS                                             | `themeVariables`                                       |
 | -------------------- | ----------------------------------------------- | ------------------------------------------------------ |
-| default              | `alouette/global.css`                           | `themeVariables` from `alouette/defaultThemeVariables`  |
-| default + wide gamut | \+ `alouette/default-palette-oklch.css`         | unchanged — the overlay is CSS-only                     |
-| the app's own        | `alouette/core.css` + its generated palette CSS | its generated `themeVariables` module                   |
+| default              | `alouette/global.css`                           | `themeVariables` from `alouette/defaultThemeVariables` |
+| default + wide gamut | \+ `alouette/default-palette-oklch.css`         | unchanged — the overlay is CSS-only                    |
+| the app's own        | `alouette/core.css` + its generated palette CSS | its generated `themeVariables` module                  |
 
 The default map lives at the `alouette/defaultThemeVariables` subpath — it is not
 re-exported from the `alouette` root entry. It is sRGB hex on every platform,
@@ -142,7 +142,10 @@ files:
 // scripts/build-theme.ts
 import { writeTheme } from "alouette/theme-generator";
 
-writeTheme({ outDir: "src", overrides: { brand: { type: "accent", hue: 300 } } });
+writeTheme({
+  outDir: "src",
+  overrides: { brand: { type: "accent", hue: 300 } },
+});
 ```
 
 ```css
@@ -180,8 +183,12 @@ import {
 } from "@expo-google-fonts/chivo-mono";
 
 useFonts({
-  SoraRegular, SoraBold, SoraExtraBold,
-  ChivoMonoRegular, ChivoMonoBold, ChivoMonoExtraBold,
+  SoraRegular,
+  SoraBold,
+  SoraExtraBold,
+  ChivoMonoRegular,
+  ChivoMonoBold,
+  ChivoMonoExtraBold,
 });
 ```
 

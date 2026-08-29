@@ -9,7 +9,7 @@ description: >
   react-native-reanimated. Load when adding transitions or enter/exit animations.
 type: core
 library: alouette
-library_version: "22.6.0"
+library_version: "22.9.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/animationDurationsMs.ts"
@@ -118,14 +118,14 @@ Wrong:
 import { Pressable } from "react-native";
 <Pressable className="transition-[transform] duration-200 active:scale-[0.975]">
   {children}
-</Pressable>
+</Pressable>;
 ```
 
 Correct:
 
 ```tsx
 import { InteractiveBox } from "alouette";
-<InteractiveBox onPress={open}>{children}</InteractiveBox>
+<InteractiveBox onPress={open}>{children}</InteractiveBox>;
 ```
 
 alouette's interactive components already bundle press/hover/focus transitions
@@ -163,13 +163,17 @@ Source: packages/alouette/src/animationDurationsMs.ts; ui/containers/Presence.st
 Wrong:
 
 ```tsx
-{items.map((it, i) => <InfoMessage key={i}>{it}</InfoMessage>)}
+{
+  items.map((it, i) => <InfoMessage key={i}>{it}</InfoMessage>);
+}
 ```
 
 Correct:
 
 ```tsx
-{items.map((it) => <InfoMessage key={it.id}>{it.label}</InfoMessage>)}
+{
+  items.map((it) => <InfoMessage key={it.id}>{it.label}</InfoMessage>);
+}
 ```
 
 `PresenceList` diffs children by key to play add/remove animations. Index keys
@@ -190,8 +194,12 @@ Wrong:
 Correct:
 
 ```tsx
-<PresenceOne activeKey={id} exitDurationMs={animationDurationsMs.slide}
-  enterClassName="animate-slide-in" exitClassName="animate-slide-out">
+<PresenceOne
+  activeKey={id}
+  exitDurationMs={animationDurationsMs.slide}
+  enterClassName="animate-slide-in"
+  exitClassName="animate-slide-out"
+>
   <Box>{content}</Box>
 </PresenceOne>
 ```
