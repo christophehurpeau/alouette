@@ -3,6 +3,8 @@ name: alouette-layout
 description: >
   Compose layout with Box / InteractiveBox / SafeAreaBox, Surface
   (variant/size/shadow), Stack / HStack / VStack, Separator, ScreenCenterLayout,
+  the screen scroll containers (ScreenScrollView / ScreenFlatList /
+  ScreenSectionList, with safe-area edges declared through SafeAreaScope),
   and gradients (GradientBackground / GradientScrollView). Use the alouette
   spacing (xxs..4xl), radius (xs..lg) and shadow (s/m/l/lowered) scale via
   p-*/gap-*/rounded-*/shadow-* classes. Load when building screen structure,
@@ -19,6 +21,10 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/Separator.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientBackground.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientScrollView.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenScrollView.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenFlatList.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenSectionList.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/core/SafeAreaEdgesContext.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/config/tokens.stories.tsx"
 ---
 
@@ -100,6 +106,46 @@ import { GradientBackground, GradientScrollView } from "alouette";
   {content}
 </GradientScrollView>;
 ```
+
+### Screen scroll containers
+
+`ScreenScrollView`, `ScreenFlatList` and `ScreenSectionList` are the scrollable
+body of a screen: a `bg-screen min-h-full` frame, a `grow` content container
+(both extendable — the incoming `className` / `contentContainerClassName` are
+merged with tailwind-merge), and the safe-area insets applied to the **content**,
+so the background bleeds under the system bars while the content clears them.
+
+```tsx
+import { ScreenScrollView, ScreenFlatList } from "alouette";
+
+<ScreenScrollView contentContainerClassName="p-m gap-m">{content}</ScreenScrollView>
+
+<ScreenFlatList<Contact>
+  data={contacts}
+  contentContainerClassName="p-m gap-xxs"
+  keyExtractor={(item) => item.id}
+  renderItem={({ item }) => <ContactRow {...item} />}
+/>
+```
+
+Which edges get padded is decided by context, not by each call site: they pad
+every edge an ancestor `SafeAreaScope` has not declared consumed. Chrome that
+already applies an inset declares it once, and nesting scopes merge:
+
+```tsx
+<SafeAreaScope consumedEdges={["top"]}>   {/* header applies insets.top itself */}
+  <SafeAreaScope consumedEdges={["bottom"]}>  {/* bottom bar applies insets.bottom */}
+    <ScreenScrollView>…</ScreenScrollView>     {/* pads left/right only */}
+  </SafeAreaScope>
+</SafeAreaScope>
+```
+
+`edges` overrides the scope for one screen (`edges={["bottom"]}`, `edges={[]}`),
+and `useScreenSafeAreaPadding(edges?)` exposes the same resolution for a custom
+container. Insets are native-only — `useSafeAreaInsets` is stubbed to zeros on
+web — and are only passed as `contentContainerStyle` when non-zero, because on
+native an inline style wins over the className, so an inset edge would override a
+same-edge padding class.
 
 ## Common Mistakes
 

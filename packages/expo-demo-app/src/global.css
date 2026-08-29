@@ -1,0 +1,5 @@
+@import "alouette/core.css";
+@import "alouette/default-palette.css";
+
+@source '../../alouette/src';
+@source '../src';
