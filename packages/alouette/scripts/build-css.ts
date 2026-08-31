@@ -304,6 +304,17 @@ ${Object.entries(animationDurationsMs)
   align-items: center;
   justify-content: center;
 }
+
+/* flex-wrap-balance — \`flex-wrap: balance\` evens out the item count across
+   lines instead of packing every line full, so the last row is never a lone
+   orphan. Only Safari 26+ implements it; everywhere else (and on native, where
+   the compiler drops the feature query) the utility stays plain \`wrap\`. */
+@utility flex-wrap-balance {
+  flex-wrap: wrap;
+  @supports (flex-wrap: balance) {
+    flex-wrap: balance;
+  }
+}
 `;
 
 writeFileSync(join(srcDir, "core.css"), coreCss);
