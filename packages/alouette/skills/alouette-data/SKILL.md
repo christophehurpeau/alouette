@@ -4,8 +4,9 @@ description: >
   Data-display components. Badge: a small pill label for status, counts or
   categories. accent defaults to brand, size is sm/md, variant is
   solid (tinted) / solid.enabled (filled) / outlined; optional icon takes a
-  rendered icon element and is auto-sized. Badge has no className prop and is
-  not pressable. EditableItem: a labelled row (bold label + summary node +
+  rendered icon element and is auto-sized. Badge has no className prop and, like
+  Bullet, is display-only: never wrap it in a Link or Pressable.
+  EditableItem: a labelled row (bold label + summary node +
   optional details/children) with a pencil IconButton; it owns no editor and
   calls onEdit, editAriaLabel is required. Bullet: an icon + text list row, the
   icon tinted with the current accent. Load when labelling an item with a
@@ -32,7 +33,8 @@ This skill builds on alouette-theming. Read it first for the accent model.
 
 `Badge` is a small, self-sizing pill that labels something: a status, a count, a
 category. It is display-only — it renders no press handling and no accessible
-role.
+role, and is never wrapped in a `Link` or `Pressable` to gain one; put the link
+beside it.
 
 ## Setup
 
@@ -251,13 +253,39 @@ the scale.
 
 Source: packages/alouette/src/ui/data/Badge.tsx
 
-### LOW Expecting Badge to be pressable
+### HIGH Wrapping a display-only component in a Link or Pressable
 
-`Badge` renders a plain `Box` — no `onPress`, no `role`, no interactive token
-states. For a tappable chip, wrap it (or build the chip) with `PressableBox`
-from alouette-actions, which wires the hover/focus/press/disabled states.
+`Badge`, `Bullet` and an `EditableItem` `summary` are display-only; wrapping one
+to make it interactive is forbidden — see alouette-styling/SKILL.md for the rule.
+On native it is also broken layout: an expo Router `<Link>` without `asChild`
+renders a `Text`, which cannot contain the `View` these components render.
 
-Source: packages/alouette/src/ui/data/Badge.tsx; ui/actions/PressableBox.tsx
+Wrong:
+
+```tsx
+<Link href={ticket.url}>
+  <Badge>{ticket.key}</Badge>
+</Link>
+```
+
+Correct — the link beside the badge it labels, or inside the `Bullet` text:
+
+```tsx
+<HStack className="gap-xs items-center">
+  <ExternalLinkText size="sm" href={ticket.url} text={ticket.key} />
+  {ticket.status ? <Badge size="sm">{ticket.status}</Badge> : null}
+</HStack>
+
+<Bullet icon={<FileRegularIcon />}>
+  <ExternalLinkText href={doc.url} text={doc.title} />
+</Bullet>
+```
+
+When the pressable target must itself be a pill, build the chip with
+`PressableBox` (alouette-actions) rather than nesting a `Badge` in a link.
+
+Source: packages/alouette/src/ui/data/Badge.tsx; ui/actions/ExternalLinkText.tsx;
+ui/actions/PressableBox.tsx
 
 ### HIGH Hand-rolling the label + value + pencil row
 
@@ -324,4 +352,6 @@ Nothing happens on press until you open something from it.
 Source: packages/alouette/src/ui/data/EditableItem.tsx; ui/forms/FormEditableItem.tsx
 
 See also: alouette-icons/SKILL.md for importing icon elements;
-alouette-theming/SKILL.md for what each accent resolves to.
+alouette-theming/SKILL.md for what each accent resolves to;
+alouette-external-links/SKILL.md and alouette-actions/SKILL.md for the link and
+pressable components these display-only ones must never stand in for.

@@ -6,8 +6,9 @@ description: >
   a Record lookup, give one component a single tv() with slots instead of several
   tv objects, style through className instead of inline style, and write pixel
   sizes as arbitrary values (w-[380px]) rather than the canonical spacing-scale
-  class. States the alouette design principles every component must satisfy. Load
-  when writing, restyling or reviewing a component.
+  class. States the alouette design principles every component must satisfy,
+  including that interactivity is a component and never a wrapper. Load when
+  writing, restyling or reviewing a component.
 type: core
 library: alouette
 library_version: "22.9.0"
@@ -114,6 +115,14 @@ spacing-scale class (`w-95`, `max-w-115`, `min-h-11`). The scale class hides the
 actual pixel value, which is the thing being reasoned about. This applies to
 one-off pixel dimensions only; padding, gap and radius still use the token scale
 (`p-m`, `gap-xs`, `rounded-sm`).
+
+### Interactivity is a component, never a wrapper
+
+Nesting a display-only component in a `Link` or `Pressable` does not make it
+interactive: the wrapper takes the role while the visible element keeps none of
+the `interactive-*` states, no focus-visible outline and no affordance. Use a
+pressable component (alouette-actions/SKILL.md), and put the display-only
+element inside or beside it.
 
 ## Common Mistakes
 

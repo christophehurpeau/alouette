@@ -197,6 +197,9 @@ The neutral `interactive-{hover,active,pressable,muted}` tokens are **foreground
 (icon/text) colors, not backgrounds; the accent `interactive-contained-*` tokens
 are the fills.
 
+Never make a display-only component interactive by wrapping it: see
+"Interactivity is a component, never a wrapper" in the `alouette-styling` skill.
+
 ## Depth: inset track + raised element
 
 Build depth by pairing a lowered container with a raised child, as `Switch` does:

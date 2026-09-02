@@ -128,7 +128,10 @@ makes the icon take 80% of the button.
 ### Pressable surfaces
 
 `PressableBox` is a themed, pressable container (`variant`, `accent`,
-`forceStyle`). `PressableListItem` is a row with a trailing caret.
+`forceStyle`). `PressableListItem` is a row with a trailing caret. These, and the
+link components below, are how something becomes interactive — never by wrapping
+a display-only component (`Badge`, `Bullet`, `Text`) in a `Link` or `Pressable`
+(alouette-styling/SKILL.md).
 
 ```tsx
 import { PressableBox, PressableListItem, Text } from "alouette";
