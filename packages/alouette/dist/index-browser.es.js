@@ -3662,6 +3662,132 @@ function Bullet({ icon, children }) {
   ] });
 }
 
+const Code = forwardRef(
+  ({ className, ...props }, ref) => {
+    return /* @__PURE__ */ jsx(
+      Text,
+      {
+        ref,
+        role: "code",
+        className: `font-mono bg-highlight rounded-xs px-xxs py-px select-auto ${className ?? ""}`,
+        ...props
+      }
+    );
+  }
+);
+
+const codeBlockVariants = tv({
+  slots: {
+    frame: "gap-xs",
+    title: "font-mono text-xs text-muted",
+    // web:whitespace-pre so a long line scrolls instead of wrapping; native
+    // already keeps the line intact inside the horizontal ScrollView, which
+    // gives the Text an unconstrained width.
+    code: "font-mono text-sharp select-auto web:whitespace-pre"
+  },
+  variants: {
+    size: {
+      sm: { code: "text-xs" },
+      md: { code: "text-sm" }
+    }
+  },
+  defaultVariants: { size: "md" }
+});
+function CodeBlock({
+  title,
+  size,
+  className,
+  children
+}) {
+  const styles = codeBlockVariants({ size });
+  return /* @__PURE__ */ jsxs(
+    Surface,
+    {
+      variant: "lowered",
+      size: "sm",
+      className: styles.frame({ className }),
+      children: [
+        title === void 0 ? null : /* @__PURE__ */ jsx(Text, { className: styles.title(), children: title }),
+        /* @__PURE__ */ jsx(ScrollView, { horizontal: true, children: /* @__PURE__ */ jsx(Text, { role: "code", className: styles.code(), children }) })
+      ]
+    }
+  );
+}
+
+const blockquoteRole = "blockquote";
+const blockquoteVariants = tv({
+  slots: {
+    // The accent rule is the whole affordance: no fill, so a quote reads as a
+    // quote wherever it sits (screen, Surface, Message).
+    frame: "gap-xs border-l-4 border-accent pl-m",
+    quote: "text-sharp"
+  },
+  variants: {
+    size: {
+      sm: { quote: "text-base" },
+      md: { quote: "text-lg" }
+    }
+  },
+  defaultVariants: { size: "md" }
+});
+function Blockquote({
+  children,
+  citation,
+  accent,
+  size,
+  className
+}) {
+  const styles = blockquoteVariants({ size });
+  return /* @__PURE__ */ jsxs(
+    Box,
+    {
+      accent,
+      role: blockquoteRole,
+      className: styles.frame({ className }),
+      children: [
+        /* @__PURE__ */ jsx(Paragraph, { className: styles.quote(), children }),
+        citation
+      ]
+    }
+  );
+}
+
+const citationVariants = tv({
+  slots: {
+    frame: "flex-row items-center gap-xxs",
+    text: "text-muted select-auto"
+  },
+  variants: {
+    size: {
+      sm: { text: "text-xs" },
+      md: { text: "text-sm" }
+    }
+  },
+  defaultVariants: { size: "md" }
+});
+function Citation({
+  children,
+  href,
+  openLinkBehavior = defaultExternalOpenLinkBehavior,
+  accent,
+  size,
+  className
+}) {
+  const styles = citationVariants({ size });
+  return /* @__PURE__ */ jsxs(Box, { accent, className: styles.frame({ className }), children: [
+    /* @__PURE__ */ jsx(Text, { className: styles.text(), children: "\u2014" }),
+    href === void 0 ? /* @__PURE__ */ jsx(Text, { className: styles.text(), children }) : /* @__PURE__ */ jsx(
+      ExternalLinkText,
+      {
+        href,
+        openLinkBehavior,
+        size: "sm",
+        text: children
+      }
+    )
+  ] });
+}
+
 const connectedHoldMs = 1200;
 function ConnectionState({
   state,
@@ -3941,5 +4067,5 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Box, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaProvider, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useScreenSafeAreaPadding };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, Badge, Blockquote, Box, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InternalLinkButton, LinearProgress, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaProvider, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useSafeAreaInsets, useScreenSafeAreaPadding };
 //# sourceMappingURL=index-browser.es.js.map

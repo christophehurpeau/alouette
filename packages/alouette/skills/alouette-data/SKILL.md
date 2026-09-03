@@ -9,9 +9,14 @@ description: >
   EditableItem: a labelled row (bold label + summary node +
   optional details/children) with a pencil IconButton; it owns no editor and
   calls onEdit, editAriaLabel is required. Bullet: an icon + text list row, the
-  icon tinted with the current accent. Load when labelling an item with a
-  status, count, tag or category chip, when listing points with an icon, or when
-  showing a value with an edit affordance.
+  icon tinted with the current accent. Code: an inline mono fragment that
+  inherits the surrounding text size. CodeBlock: a lowered block of code that
+  scrolls horizontally, with an optional title. Blockquote: a quoted excerpt with
+  an accent rule and an optional citation node. Citation: an em dash plus the
+  source, optionally linked. Load when labelling an item with a
+  status, count, tag or category chip, when listing points with an icon, when
+  showing a value with an edit affordance, or when rendering code, a quote or
+  its attribution.
 type: core
 library: alouette
 library_version: "22.9.0"
@@ -25,6 +30,10 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Code.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/CodeBlock.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Blockquote.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Citation.tsx"
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -119,6 +128,60 @@ import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircl
 
 The icon stays aligned with the **first** line (`items-start`) and the text
 shrinks, so long content wraps under itself rather than pushing the icon down.
+
+## Code and CodeBlock
+
+`Code` is an inline fragment — mono family on the highlight layer, `role="code"`
+(a real `<code>` on web). It sets **no** size class, so nested in a `Text` or
+`Paragraph` it inherits the surrounding size and never breaks the line rhythm.
+
+```tsx
+import { Code, CodeBlock, Paragraph } from "alouette";
+
+<Paragraph>
+  Run <Code>pnpm --filter alouette build:css</Code> after editing the palette.
+</Paragraph>;
+```
+
+`CodeBlock` is the block form: a lowered `Surface` holding mono text that scrolls
+horizontally instead of wrapping, with an optional `title` (a file name or a
+language) above it and `size` `"sm" | "md"` (default `"md"`) for the code text.
+
+```tsx
+<CodeBlock title="theme.ts">{`export const theme = {
+  accent: "brand",
+};`}</CodeBlock>
+```
+
+Both are display-only. To offer copying, put an `IconButton` beside the block —
+never wrap it in a pressable.
+
+## Blockquote and Citation
+
+`Blockquote` renders a quoted excerpt behind an accent rule on its leading edge
+(`role="blockquote"` → a real `<blockquote>` on web); its `children` are the
+quote text and go into a `Paragraph`, sized by `size` `"sm" | "md"`. Attribution
+goes to the `citation` prop as a node — normally a `Citation`.
+
+```tsx
+import { Blockquote, Citation } from "alouette";
+
+<Blockquote
+  accent="brand"
+  citation={
+    <Citation href="https://example.com/the-left-hand-of-darkness">
+      The Left Hand of Darkness
+    </Citation>
+  }
+>
+  Light is the left hand of darkness.
+</Blockquote>;
+```
+
+`Citation` is an em dash plus the source, muted, `size` `"sm" | "md"`. With
+`href` the source becomes an `ExternalLinkText` (so `openLinkBehavior` applies);
+without it, plain muted text. It stands alone under any excerpt, not only under a
+`Blockquote`.
 
 ## EditableItem
 
@@ -350,6 +413,51 @@ Source: packages/alouette/src/ui/data/Bullet.tsx
 Nothing happens on press until you open something from it.
 
 Source: packages/alouette/src/ui/data/EditableItem.tsx; ui/forms/FormEditableItem.tsx
+
+### MEDIUM Pinning a size on inline Code
+
+Wrong:
+
+```tsx
+<Paragraph className="text-xl">
+  Run <Code className="text-sm">build:css</Code> first.
+</Paragraph>
+```
+
+Correct:
+
+```tsx
+<Paragraph className="text-xl">
+  Run <Code>build:css</Code> first.
+</Paragraph>
+```
+
+`Code` deliberately carries no size class so it inherits the text it sits in; a
+fixed size makes the fragment jump out of the line on both platforms.
+
+Source: packages/alouette/src/ui/data/Code.tsx
+
+### MEDIUM Hand-rolling a code block with Surface + Text
+
+Wrong:
+
+```tsx
+<Surface variant="lowered">
+  <Text className="font-mono text-sm">{snippet}</Text>
+</Surface>
+```
+
+Correct:
+
+```tsx
+<CodeBlock title="theme.ts">{snippet}</CodeBlock>
+```
+
+The hand-rolled block wraps long lines instead of scrolling them, and drops the
+`select-auto` / `web:whitespace-pre` pair that keeps the code selectable and
+its indentation intact on web.
+
+Source: packages/alouette/src/ui/data/CodeBlock.tsx
 
 See also: alouette-icons/SKILL.md for importing icon elements;
 alouette-theming/SKILL.md for what each accent resolves to;
