@@ -11,6 +11,10 @@ declare const _default: {
         disabled: {
             control: "boolean";
         };
+        orientation: {
+            control: "inline-radio";
+            options: string[];
+        };
         accent: {
             control: "select";
             options: (string | undefined)[];

@@ -4,73 +4,69 @@ import { InteractiveBox, type InteractiveBoxProps } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
+import type { SegmentedOrientation } from "./SelectionContext";
 
-// The selected chip is a raised layer that cross-fades on opacity so the
+// chip — the selected layer is raised and cross-fades on opacity so the
 // background and shadow animate together with no border. Swapping a bordered
 // variant instead would flash a border on the outgoing segment mid-transition.
-const chipVariants = tv({
-  base: "absolute inset-0 rounded-xs transition-opacity duration-fast ease-in",
-  variants: {
-    selected: {
-      true: "opacity-100",
-      false: "opacity-0",
-    },
-    disabled: {
-      true: "bg-interactive-contained-disabled",
-      false: "bg-interactive-contained-pressable shadow-s",
-    },
-  },
-});
-
-// The visible chip is shorter than the 44px pressable, so the lowered
+// segment — the visible chip is shorter than the 44px pressable, so the lowered
 // SegmentedBar shows around it as an inset frame while the tap target stays
 // 44px. Its border is permanently transparent and only animates color on the
 // row's hover/active, driven by the `group` on the pressable.
-const segmentVariants = tv({
-  base: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent transition-[border-color] duration-fast ease-in",
-  variants: {
-    selected: { true: "", false: "" },
-    disabled: { true: "", false: "" },
-    compact: { true: "px-xs", false: "px-m" },
+// foreground — label and icon share one color set. Native resolves the icon
+// tint through useColorToken, which reads the base `text-*` only, so the hover
+// tint and the stacking above the chip are web-only.
+const segmentedItemVariants = tv({
+  slots: {
+    pressable:
+      "group flex-center min-h-[44px] rounded-xs focus-visible:outline-interactive-outlined-outline-focus",
+    segment:
+      "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent transition-[border-color] duration-fast ease-in",
+    chip: "absolute inset-0 rounded-xs transition-opacity duration-fast ease-in",
+    foreground: "z-1 transition-[color] duration-fast ease-in",
+    label: "select-none font-body-bold text-base text-center",
   },
-  defaultVariants: { compact: false },
+  variants: {
+    selected: {
+      true: { chip: "opacity-100", foreground: "text-on-accent" },
+      false: {
+        chip: "opacity-0",
+        foreground: "text-muted group-hover:text-sharp",
+      },
+    },
+    disabled: {
+      true: {
+        chip: "bg-interactive-contained-disabled",
+        foreground: "text-disabled-muted group-hover:text-disabled-muted",
+      },
+      false: { chip: "bg-interactive-contained-pressable shadow-s" },
+    },
+    compact: { true: { segment: "px-xs" }, false: { segment: "px-m" } },
+    orientation: {
+      horizontal: {},
+      // A stacked item spans the bar's width, so the chip stretches with it
+      // instead of shrinking to its own label.
+      vertical: { pressable: "items-stretch", segment: "self-stretch" },
+    },
+  },
+  defaultVariants: { compact: false, orientation: "horizontal" },
   compoundVariants: [
     {
       selected: false,
       disabled: false,
-      class:
-        "group-hover:border-interactive-outlined-hover group-active:border-interactive-outlined-active",
+      class: {
+        segment:
+          "group-hover:border-interactive-outlined-hover group-active:border-interactive-outlined-active",
+      },
     },
-  ],
-});
-
-// Label and icon share one color set. Native resolves the icon tint through
-// useColorToken, which reads the base `text-*` only, so the hover tint and the
-// stacking above the chip are web-only.
-const foregroundVariants = tv({
-  base: "z-1 transition-[color] duration-fast ease-in",
-  variants: {
-    selected: {
-      true: "text-on-accent",
-      false: "text-muted group-hover:text-sharp",
-    },
-    disabled: {
-      true: "text-disabled-muted group-hover:text-disabled-muted",
-      false: "",
-    },
-  },
-  compoundVariants: [
     {
       selected: true,
       disabled: true,
-      class: "text-disabled-sharp group-hover:text-disabled-sharp",
+      class: {
+        foreground: "text-disabled-sharp group-hover:text-disabled-sharp",
+      },
     },
   ],
-});
-
-const labelVariants = tv({
-  extend: foregroundVariants,
-  base: "select-none font-body-bold text-base text-center",
 });
 
 export interface SegmentedItemProps extends Omit<
@@ -82,6 +78,8 @@ export interface SegmentedItemProps extends Omit<
   selected: boolean;
   /** Tighter horizontal padding, set by a compact group. */
   compact?: boolean;
+  /** Set by a vertical group: the item stretches to the bar's width. */
+  orientation?: SegmentedOrientation;
   /**
    * react-native's types have no `aria-current` / `aria-controls` / `href`, but
    * react-native-web forwards all three (an `href` makes it render an `<a>`) and
@@ -98,32 +96,32 @@ export function SegmentedItem({
   selected,
   disabled,
   compact,
+  orientation,
   ...props
 }: SegmentedItemProps): ReactNode {
-  const isDisabled = disabled === true;
+  const styles = segmentedItemVariants({
+    selected,
+    disabled: disabled === true,
+    compact,
+    orientation,
+  });
 
   return (
     <InteractiveBox
       withFocusVisibleOutline
       aria-label={label}
       disabled={disabled}
-      className="group flex-center min-h-[44px] rounded-xs focus-visible:outline-interactive-outlined-outline-focus"
+      className={styles.pressable()}
       {...props}
     >
-      <View
-        className={segmentVariants({ selected, disabled: isDisabled, compact })}
-      >
-        <View className={chipVariants({ selected, disabled: isDisabled })} />
+      <View className={styles.segment()}>
+        <View className={styles.chip()} />
         {icon ? (
-          <Icon
-            icon={icon}
-            size={20}
-            className={foregroundVariants({ selected, disabled: isDisabled })}
-          />
+          <Icon icon={icon} size={20} className={styles.foreground()} />
         ) : null}
         <Text
           numberOfLines={1}
-          className={labelVariants({ selected, disabled: isDisabled })}
+          className={styles.label({ class: styles.foreground() })}
         >
           {label}
         </Text>

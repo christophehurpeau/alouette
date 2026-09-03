@@ -128,6 +128,7 @@ export type { RadioCardGroupProps } from "./ui/inputs/RadioCardGroup";
 export { RadioCardGroup } from "./ui/inputs/RadioCardGroup";
 export type { RadioCardProps } from "./ui/inputs/RadioCard";
 export { RadioCard } from "./ui/inputs/RadioCard";
+export type { SegmentedOrientation } from "./ui/selection/SelectionContext";
 export type { NavBarProps } from "./ui/navigation/NavBar";
 export { NavBar } from "./ui/navigation/NavBar";
 export type { NavBarItemProps } from "./ui/navigation/NavBarItem";

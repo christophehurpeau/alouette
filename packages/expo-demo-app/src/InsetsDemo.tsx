@@ -1,5 +1,7 @@
 import {
   HStack,
+  NavBar,
+  NavBarItem,
   RadioButton,
   RadioButtonGroup,
   SafeAreaScope,
@@ -97,13 +99,18 @@ function InsetsReadout({
         </Text>
       </HStack>
 
-      <Link href={withHeader ? "/no-header" : "/"}>
-        <Text className="font-body-bold text-accent">
-          {withHeader
-            ? "Go to the page without header"
-            : "Go to the page with header"}
-        </Text>
-      </Link>
+      <NavBar
+        aria-label="Demo pages"
+        orientation="vertical"
+        value={withHeader ? "/" : "/no-header"}
+      >
+        <Link asChild href="/">
+          <NavBarItem label="With header" />
+        </Link>
+        <Link asChild href="/no-header">
+          <NavBarItem label="Without header" />
+        </Link>
+      </NavBar>
     </VStack>
   );
 }

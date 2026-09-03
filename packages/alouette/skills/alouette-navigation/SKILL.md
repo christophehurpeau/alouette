@@ -8,8 +8,10 @@ description: >
   material: a lowered 44px bar with a raised chip per item, optional leading
   icon, accent + disabled, controlled value or defaultValue + onValueChange, and
   a per-item href + onPress (a real anchor on web, and what expo Router
-  <Link asChild> injects) that wins over the group callback. Load when building
-  a tab bar, a section switcher, or navigation between routes.
+  <Link asChild> injects) that wins over the group callback. NavBar also takes
+  orientation="vertical" for a sidebar rail. Navigation is never a
+  RadioButtonGroup or a Link wrapped around a Text. Load when building a tab
+  bar, a section switcher, or navigation between routes.
 type: core
 library: alouette
 library_version: "22.9.0"
@@ -71,7 +73,7 @@ value is the current route, matched against each item's `href`.
   onValueChange={(href) => router.push(href)}
 >
   <NavBarItem href="/home" label="Home" />
-  <NavBarItem href="/reports" label="Reports" />
+  <NavBarItem href="/reports" label="Business Reports" />
 </NavBar>
 ```
 
@@ -99,6 +101,26 @@ import { Link } from "expo-router";
     <NavBarItem label="Home" />
   </Link>
 </NavBar>;
+```
+
+### Vertical rail
+
+`NavBar` takes `orientation="vertical"`: the same lowered track, stacked. Each
+item keeps its 44px tap target and its chip spans the bar's width instead of
+shrinking to its label. The bar is content-width — give it a `className` width
+for a fixed rail. `Tabs` and `RadioButtonGroup` stay horizontal.
+
+```tsx
+<NavBar
+  aria-label="Main"
+  className="w-[220px]"
+  orientation="vertical"
+  value={pathname}
+  onValueChange={router.push}
+>
+  <NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
+  <NavBarItem href="/reports" label="Business Reports" />
+</NavBar>
 ```
 
 ### Leading icon
@@ -183,6 +205,43 @@ a panel on the same screen, `link` + `aria-current="page"` promises a
 destination. Assistive tech announces them differently.
 
 Source: packages/alouette/src/ui/navigation/NavBar.tsx; ui/navigation/Tabs.tsx
+
+### HIGH Navigating with a RadioButtonGroup, or a Link wrapped around a Text
+
+Wrong:
+
+```tsx
+<RadioButtonGroup value={pathname} onValueChange={router.push}>
+  <RadioButton value="/home" label="Home" />
+</RadioButtonGroup>
+
+<Link href="/reports">
+  <Text className="text-accent">Go to reports</Text>
+</Link>
+```
+
+Correct:
+
+```tsx
+<NavBar aria-label="Main" value={pathname}>
+  <Link href="/home" asChild>
+    <NavBarItem label="Home" />
+  </Link>
+  <Link href="/reports" asChild>
+    <NavBarItem label="Business Reports" />
+  </Link>
+</NavBar>
+```
+
+`RadioButtonGroup` renders the same bar, but it announces a form control:
+`radiogroup` + `radio` + `aria-checked` promises a value being edited, not a
+destination, and it emits no anchor on web. A `Link` around a `Text` is the
+wrapper mistake from alouette-styling — the text gets no `interactive-*` state,
+no focus-visible outline and no 44px target. Both cases are a `NavBar`; a
+vertical list of destinations is `orientation="vertical"`, not a
+`RadioButtonGroup`.
+
+Source: packages/alouette/src/ui/navigation/NavBar.tsx; ui/inputs/RadioButtonGroup.tsx
 
 ### MEDIUM Item onPress on an uncontrolled group
 

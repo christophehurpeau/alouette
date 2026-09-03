@@ -2661,7 +2661,8 @@ function useSelectionValue({
   defaultValue,
   onValueChange,
   disabled,
-  compact
+  compact,
+  orientation
 }) {
   const [value, onSelect] = useControllableValue({
     value: controlledValue,
@@ -2669,8 +2670,8 @@ function useSelectionValue({
     onValueChange
   });
   return react.useMemo(
-    () => ({ value, onSelect, disabled, compact }),
-    [value, onSelect, disabled, compact]
+    () => ({ value, onSelect, disabled, compact, orientation }),
+    [value, onSelect, disabled, compact, orientation]
   );
 }
 
@@ -2758,7 +2759,7 @@ function RadioIndicator({
   return /* @__PURE__ */ jsxRuntime.jsx(DefaultAccentScope, { children: /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.ring(), children: /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.dot() }) }) });
 }
 
-const labelVariants$1 = tailwindVariants.tv({
+const labelVariants = tailwindVariants.tv({
   base: "text-base",
   variants: {
     disabled: {
@@ -2790,13 +2791,24 @@ function Radio({ value, label, disabled }) {
       },
       children: [
         /* @__PURE__ */ jsxRuntime.jsx(RadioIndicator, { selected, disabled: isDisabled }),
-        /* @__PURE__ */ jsxRuntime.jsx(Text, { className: labelVariants$1({ disabled: isDisabled }), children: label })
+        /* @__PURE__ */ jsxRuntime.jsx(Text, { className: labelVariants({ disabled: isDisabled }), children: label })
       ]
     }
   );
 }
 
+const segmentedBarVariants = tailwindVariants.tv({
+  base: "items-stretch self-start gap-xxs px-xs py-0",
+  variants: {
+    orientation: {
+      horizontal: "flex-row min-h-[44px]",
+      vertical: "flex-col"
+    }
+  },
+  defaultVariants: { orientation: "horizontal" }
+});
 function SegmentedBar({
+  orientation,
   className,
   ...props
 }) {
@@ -2805,7 +2817,7 @@ function SegmentedBar({
     {
       variant: "lowered",
       size: "sm",
-      className: `flex-row items-stretch self-start gap-xxs px-xs py-0 min-h-[44px] ${className ?? ""}`,
+      className: segmentedBarVariants({ orientation, className }),
       ...props
     }
   );
@@ -2831,58 +2843,54 @@ function RadioButtonGroup({
   return /* @__PURE__ */ jsxRuntime.jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(SegmentedBar, { role: "radiogroup", accent, ...props, children }) });
 }
 
-const chipVariants = tailwindVariants.tv({
-  base: "absolute inset-0 rounded-xs transition-opacity duration-fast ease-in",
+const segmentedItemVariants = tailwindVariants.tv({
+  slots: {
+    pressable: "group flex-center min-h-[44px] rounded-xs focus-visible:outline-interactive-outlined-outline-focus",
+    segment: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent transition-[border-color] duration-fast ease-in",
+    chip: "absolute inset-0 rounded-xs transition-opacity duration-fast ease-in",
+    foreground: "z-1 transition-[color] duration-fast ease-in",
+    label: "select-none font-body-bold text-base text-center"
+  },
   variants: {
     selected: {
-      true: "opacity-100",
-      false: "opacity-0"
+      true: { chip: "opacity-100", foreground: "text-on-accent" },
+      false: {
+        chip: "opacity-0",
+        foreground: "text-muted group-hover:text-sharp"
+      }
     },
     disabled: {
-      true: "bg-interactive-contained-disabled",
-      false: "bg-interactive-contained-pressable shadow-s"
+      true: {
+        chip: "bg-interactive-contained-disabled",
+        foreground: "text-disabled-muted group-hover:text-disabled-muted"
+      },
+      false: { chip: "bg-interactive-contained-pressable shadow-s" }
+    },
+    compact: { true: { segment: "px-xs" }, false: { segment: "px-m" } },
+    orientation: {
+      horizontal: {},
+      // A stacked item spans the bar's width, so the chip stretches with it
+      // instead of shrinking to its own label.
+      vertical: { pressable: "items-stretch", segment: "self-stretch" }
     }
-  }
-});
-const segmentVariants = tailwindVariants.tv({
-  base: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent transition-[border-color] duration-fast ease-in",
-  variants: {
-    selected: { true: "", false: "" },
-    disabled: { true: "", false: "" },
-    compact: { true: "px-xs", false: "px-m" }
   },
-  defaultVariants: { compact: false },
+  defaultVariants: { compact: false, orientation: "horizontal" },
   compoundVariants: [
     {
       selected: false,
       disabled: false,
-      class: "group-hover:border-interactive-outlined-hover group-active:border-interactive-outlined-active"
-    }
-  ]
-});
-const foregroundVariants = tailwindVariants.tv({
-  base: "z-1 transition-[color] duration-fast ease-in",
-  variants: {
-    selected: {
-      true: "text-on-accent",
-      false: "text-muted group-hover:text-sharp"
+      class: {
+        segment: "group-hover:border-interactive-outlined-hover group-active:border-interactive-outlined-active"
+      }
     },
-    disabled: {
-      true: "text-disabled-muted group-hover:text-disabled-muted",
-      false: ""
-    }
-  },
-  compoundVariants: [
     {
       selected: true,
       disabled: true,
-      class: "text-disabled-sharp group-hover:text-disabled-sharp"
+      class: {
+        foreground: "text-disabled-sharp group-hover:text-disabled-sharp"
+      }
     }
   ]
-});
-const labelVariants = tailwindVariants.tv({
-  extend: foregroundVariants,
-  base: "select-none font-body-bold text-base text-center"
 });
 function SegmentedItem({
   label,
@@ -2890,42 +2898,35 @@ function SegmentedItem({
   selected,
   disabled,
   compact,
+  orientation,
   ...props
 }) {
-  const isDisabled = disabled === true;
+  const styles = segmentedItemVariants({
+    selected,
+    disabled: disabled === true,
+    compact,
+    orientation
+  });
   return /* @__PURE__ */ jsxRuntime.jsx(
     InteractiveBox,
     {
       withFocusVisibleOutline: true,
       "aria-label": label,
       disabled,
-      className: "group flex-center min-h-[44px] rounded-xs focus-visible:outline-interactive-outlined-outline-focus",
+      className: styles.pressable(),
       ...props,
-      children: /* @__PURE__ */ jsxRuntime.jsxs(
-        View,
-        {
-          className: segmentVariants({ selected, disabled: isDisabled, compact }),
-          children: [
-            /* @__PURE__ */ jsxRuntime.jsx(View, { className: chipVariants({ selected, disabled: isDisabled }) }),
-            icon ? /* @__PURE__ */ jsxRuntime.jsx(
-              Icon,
-              {
-                icon,
-                size: 20,
-                className: foregroundVariants({ selected, disabled: isDisabled })
-              }
-            ) : null,
-            /* @__PURE__ */ jsxRuntime.jsx(
-              Text,
-              {
-                numberOfLines: 1,
-                className: labelVariants({ selected, disabled: isDisabled }),
-                children: label
-              }
-            )
-          ]
-        }
-      )
+      children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: styles.segment(), children: [
+        /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.chip() }),
+        icon ? /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size: 20, className: styles.foreground() }) : null,
+        /* @__PURE__ */ jsxRuntime.jsx(
+          Text,
+          {
+            numberOfLines: 1,
+            className: styles.label({ class: styles.foreground() }),
+            children: label
+          }
+        )
+      ] })
     }
   );
 }
@@ -3101,6 +3102,7 @@ function NavBar({
   onValueChange,
   accent,
   disabled,
+  orientation,
   children,
   ...props
 }) {
@@ -3108,9 +3110,19 @@ function NavBar({
     value,
     defaultValue,
     onValueChange,
-    disabled
+    disabled,
+    orientation
   });
-  return /* @__PURE__ */ jsxRuntime.jsx(NavBarContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(SegmentedBar, { role: "navigation", accent, ...props, children }) });
+  return /* @__PURE__ */ jsxRuntime.jsx(NavBarContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(
+    SegmentedBar,
+    {
+      role: "navigation",
+      orientation,
+      accent,
+      ...props,
+      children
+    }
+  ) });
 }
 
 function NavBarItem({
@@ -3123,7 +3135,8 @@ function NavBarItem({
   const {
     value: currentValue,
     onSelect,
-    disabled: navBarDisabled
+    disabled: navBarDisabled,
+    orientation
   } = useNavBarContext();
   const selected = href !== void 0 && currentValue === href;
   const isDisabled = disabled === true || navBarDisabled === true;
@@ -3142,6 +3155,7 @@ function NavBarItem({
       icon,
       selected,
       disabled: isDisabled,
+      orientation,
       onPress: onPress ?? selectHref
     }
   );

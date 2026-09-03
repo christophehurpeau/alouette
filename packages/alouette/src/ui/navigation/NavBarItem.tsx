@@ -37,6 +37,7 @@ export function NavBarItem({
     value: currentValue,
     onSelect,
     disabled: navBarDisabled,
+    orientation,
   } = useNavBarContext();
   const selected = href !== undefined && currentValue === href;
   const isDisabled = disabled === true || navBarDisabled === true;
@@ -63,6 +64,7 @@ export function NavBarItem({
       icon={icon}
       selected={selected}
       disabled={isDisabled}
+      orientation={orientation}
       onPress={onPress ?? selectHref}
     />
   );

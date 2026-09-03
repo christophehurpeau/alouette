@@ -1,11 +1,14 @@
 import type { Provider, ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
+/** Row of chips (the default) or a column of full-width ones. */
+export type SegmentedOrientation = "horizontal" | "vertical";
 export interface SelectionContextValue {
     value: string | undefined;
     onSelect: (value: string) => void;
     disabled?: boolean;
     /** Tighter horizontal padding, for a group holding many options. */
     compact?: boolean;
+    orientation?: SegmentedOrientation;
 }
 export interface SelectionGroupProps {
     /** Controlled selected value. */
@@ -26,7 +29,8 @@ interface SelectionContext {
 export declare function createSelectionContext(missingProviderMessage: string): SelectionContext;
 export interface SelectionValueProps extends Pick<SelectionGroupProps, "defaultValue" | "disabled" | "onValueChange" | "value"> {
     compact?: boolean;
+    orientation?: SegmentedOrientation;
 }
-export declare function useSelectionValue({ value: controlledValue, defaultValue, onValueChange, disabled, compact, }: SelectionValueProps): SelectionContextValue;
+export declare function useSelectionValue({ value: controlledValue, defaultValue, onValueChange, disabled, compact, orientation, }: SelectionValueProps): SelectionContextValue;
 export {};
 //# sourceMappingURL=SelectionContext.d.ts.map

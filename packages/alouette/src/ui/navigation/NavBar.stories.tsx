@@ -22,6 +22,10 @@ export default {
   },
   argTypes: {
     disabled: { control: "boolean" },
+    orientation: {
+      control: "inline-radio",
+      options: ["horizontal", "vertical"],
+    },
     accent: {
       control: "select",
       options: [undefined, "brand", "danger", "info", "success", "warning"],
@@ -36,7 +40,7 @@ export const PreviewNavBarStory: ThisStory = {
       <NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
       <NavBarItem
         href="/reports"
-        label="Reports"
+        label="Business Reports"
         icon={<ChartBarRegularIcon />}
       />
       <NavBarItem
@@ -48,6 +52,37 @@ export const PreviewNavBarStory: ThisStory = {
   ),
 };
 
+function VerticalNavBar({
+  accent,
+  className,
+}: {
+  accent?: Accent;
+  className?: string;
+}): ReactNode {
+  return (
+    <NavBar
+      aria-label="Sidebar"
+      accent={accent}
+      className={className}
+      defaultValue="/home"
+      orientation="vertical"
+    >
+      <NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
+      <NavBarItem
+        href="/reports"
+        label="Business Reports"
+        icon={<ChartBarRegularIcon />}
+      />
+      <NavBarItem
+        disabled
+        href="/settings"
+        label="Settings"
+        icon={<GearRegularIcon />}
+      />
+    </NavBar>
+  );
+}
+
 function NavBarVariant({ accent }: { accent?: Accent }): ReactNode {
   return (
     <Story.SubSection withSurface title={accent ?? "Default"}>
@@ -55,7 +90,7 @@ function NavBarVariant({ accent }: { accent?: Accent }): ReactNode {
         <NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
         <NavBarItem
           href="/reports"
-          label="Reports"
+          label="Business Reports"
           icon={<ChartBarRegularIcon />}
         />
         <NavBarItem
@@ -67,7 +102,7 @@ function NavBarVariant({ accent }: { accent?: Accent }): ReactNode {
       </NavBar>
       <NavBar aria-label="Labels only" accent={accent} defaultValue="/home">
         <NavBarItem href="/home" label="Home" />
-        <NavBarItem href="/reports" label="Reports" />
+        <NavBarItem href="/reports" label="Business Reports" />
       </NavBar>
       <NavBar
         disabled
@@ -76,8 +111,10 @@ function NavBarVariant({ accent }: { accent?: Accent }): ReactNode {
         defaultValue="/home"
       >
         <NavBarItem href="/home" label="Home" />
-        <NavBarItem href="/reports" label="Reports" />
+        <NavBarItem href="/reports" label="Business Reports" />
       </NavBar>
+      <VerticalNavBar accent={accent} />
+      <VerticalNavBar accent={accent} className="w-[220px]" />
     </Story.SubSection>
   );
 }
@@ -113,7 +150,7 @@ function NavBarRouterDemo(): ReactNode {
         <NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
         <NavBarItem
           href="/reports"
-          label="Reports"
+          label="Business Reports"
           icon={<ChartBarRegularIcon />}
         />
         <NavBarItem
@@ -139,8 +176,17 @@ export const TestsNavBarStory: ThisStory = {
       <Story.Section title="Uncontrolled">
         <NavBar aria-label="Uncontrolled" defaultValue="/home">
           <NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
-          <NavBarItem href="/reports" label="Reports" />
+          <NavBarItem href="/reports" label="Business Reports" />
           <NavBarItem disabled href="/settings" label="Settings" />
+        </NavBar>
+        <NavBar
+          aria-label="Vertical"
+          defaultValue="/home"
+          orientation="vertical"
+        >
+          <NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
+          <NavBarItem href="/reports" label="Business Reports" />
+          <NavBarItem href="/settings" label="A much longer destination" />
         </NavBar>
       </Story.Section>
       <Story.Section title="Controlled">
@@ -154,7 +200,7 @@ export const TestsNavBarStory: ThisStory = {
     const nav = canvas.getByRole("navigation", { name: "Uncontrolled" });
     const navCanvas = within(nav);
     const home = navCanvas.getByRole("link", { name: "Home" });
-    const reports = navCanvas.getByRole("link", { name: "Reports" });
+    const reports = navCanvas.getByRole("link", { name: "Business Reports" });
     const settings = navCanvas.getByRole("link", { name: "Settings" });
 
     await expect(home).toHaveAttribute("aria-current", "page");
@@ -193,10 +239,38 @@ export const TestsNavBarStory: ThisStory = {
     );
     await expect(canvas.getByText("group change: none")).toBeTruthy();
 
-    router.getByRole("link", { name: "Reports" }).click();
+    router.getByRole("link", { name: "Business Reports" }).click();
 
     await waitFor(() =>
       expect(canvas.getByText("group change: /reports")).toBeTruthy(),
+    );
+
+    const vertical = canvas.getByRole("navigation", { name: "Vertical" });
+    const verticalItems = within(vertical).getAllByRole("link");
+    const [first, second, longest] = verticalItems;
+    if (!first || !second || !longest) {
+      throw new Error("expected three vertical items");
+    }
+
+    const verticalBox = vertical.getBoundingClientRect();
+    // Stacked: every item keeps the 44px tap target, so the bar is at least as
+    // tall as the three of them, and each item starts below the previous one.
+    await expect(verticalBox.height).toBeGreaterThanOrEqual(3 * 44);
+    for (const item of verticalItems) {
+      await expect(item.getBoundingClientRect().height).toBeGreaterThanOrEqual(
+        44,
+      );
+    }
+    await expect(second.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      first.getBoundingClientRect().bottom,
+    );
+    // Items span the bar's width instead of shrinking to their own label, so
+    // the shortest and the longest measure the same.
+    await expect(first.getBoundingClientRect().width).toBe(
+      longest.getBoundingClientRect().width,
+    );
+    await expect(first.getBoundingClientRect().width).toBeLessThan(
+      verticalBox.width,
     );
   },
 };

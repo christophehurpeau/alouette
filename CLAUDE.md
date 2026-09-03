@@ -231,6 +231,9 @@ full height as the tap target, and centers a shorter visible chip (`min-h-[32px]
 frame. No absolute track, no z-order tricks, no inline `style`. `RadioButtonGroup`,
 `NavBar` and `Tabs` all build on it, and each one's `play` test measures both the
 container (== 44) and each item (>= 44) so the geometry can't regress.
+`SegmentedBar` also has an `orientation` variant, exposed only on `NavBar`
+(`orientation="vertical"` — a sidebar rail): the bar stacks, each item still owns
+a 44px tap target and its chip stretches to the bar's width.
 
 ## Radius scale is large — `rounded-md` is a stadium
 
@@ -431,7 +434,10 @@ Each family only adds its roles: `radiogroup` + `radio`/`aria-checked`
 `tablist` + `tab`/`aria-selected` (`Tabs`/`Tab`), `navigation` + `link` +
 `aria-current="page"` (`NavBar`/`NavBarItem`, both in `src/ui/navigation/`). A nav
 or tab item may carry its own `onPress` (it then wins over the group's
-`onValueChange`, and the group must be controlled).
+`onValueChange`, and the group must be controlled). Pick by semantics, not by
+looks: anything that moves between routes is a `NavBar` — never a
+`RadioButtonGroup` (it announces a form value) and never a `Link` wrapped around
+a `Text` (no interactive state, no focus outline, no 44px target).
 
 `NavBarItem` is the exception to `value`: its identity is `href`, which
 react-native-web turns into a real `<a>` (native ignores it) — so expo Router's

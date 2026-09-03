@@ -3,12 +3,16 @@ import { createContext, useContext, useMemo } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useControllableValue } from "../../core/useControllableValue";
 
+/** Row of chips (the default) or a column of full-width ones. */
+export type SegmentedOrientation = "horizontal" | "vertical";
+
 export interface SelectionContextValue {
   value: string | undefined;
   onSelect: (value: string) => void;
   disabled?: boolean;
   /** Tighter horizontal padding, for a group holding many options. */
   compact?: boolean;
+  orientation?: SegmentedOrientation;
 }
 
 export interface SelectionGroupProps {
@@ -50,6 +54,7 @@ export interface SelectionValueProps extends Pick<
   "defaultValue" | "disabled" | "onValueChange" | "value"
 > {
   compact?: boolean;
+  orientation?: SegmentedOrientation;
 }
 
 export function useSelectionValue({
@@ -58,6 +63,7 @@ export function useSelectionValue({
   onValueChange,
   disabled,
   compact,
+  orientation,
 }: SelectionValueProps): SelectionContextValue {
   const [value, onSelect] = useControllableValue({
     value: controlledValue,
@@ -65,7 +71,7 @@ export function useSelectionValue({
     onValueChange,
   });
   return useMemo(
-    () => ({ value, onSelect, disabled, compact }),
-    [value, onSelect, disabled, compact],
+    () => ({ value, onSelect, disabled, compact, orientation }),
+    [value, onSelect, disabled, compact, orientation],
   );
 }
