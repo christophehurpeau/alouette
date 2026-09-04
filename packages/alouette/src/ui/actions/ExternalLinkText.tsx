@@ -1,6 +1,5 @@
 import { ArrowSquareOutRegularIcon } from "alouette-icons/phosphor-icons/ArrowSquareOutRegularIcon";
 import type { ReactNode } from "react";
-import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { ExternalLink } from "../../expo/ExternalLink";
 import {
@@ -11,45 +10,14 @@ import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBox, type InteractiveBoxProps } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
-
-// Native resolves the icon tint through useColorToken, which reads the base
-// `text-*` only, so the group-driven hover/active tint is web-only.
-const externalLinkTextVariants = tv(
-  {
-    slots: {
-      frame:
-        "group flex-row items-center gap-xxs self-start focus-visible:outline-interactive-outlined-outline-focus",
-      text: "shrink font-body-bold underline transition-[color] duration-fast ease-in",
-      icon: "",
-    },
-    variants: {
-      size: {
-        sm: { text: "text-sm" },
-        md: { text: "text-base" },
-      },
-      disabled: {
-        true: {
-          text: "text-disabled-muted",
-          icon: "text-disabled-muted",
-        },
-        false: {
-          text: "text-interactive-pressable group-hover:text-interactive-hover group-active:text-interactive-active",
-          icon: "text-interactive-pressable group-hover:text-interactive-hover group-active:text-interactive-active",
-        },
-      },
-    },
-    defaultVariants: { size: "md", disabled: false },
-  },
-  { twMerge: false },
-);
-
-type ExternalLinkTextSizeProps = Pick<
-  VariantProps<typeof externalLinkTextVariants>,
-  "size"
->;
+import {
+  type LinkTextSizeProps,
+  linkTextIconSize,
+  linkTextVariants,
+} from "./LinkText";
 
 export interface ExternalLinkTextProps
-  extends Omit<InteractiveBoxProps, "children">, ExternalLinkTextSizeProps {
+  extends Omit<InteractiveBoxProps, "children">, LinkTextSizeProps {
   href: string;
   /** How the link opens. Defaults to an in-app browser sheet / a new tab. */
   openLinkBehavior?: ExternalOpenLinkBehavior;
@@ -77,7 +45,7 @@ export function ExternalLinkText({
   ...pressableProps
 }: ExternalLinkTextProps): ReactNode {
   const isDisabled = disabled === true;
-  const styles = externalLinkTextVariants({ size, disabled: isDisabled });
+  const styles = linkTextVariants({ size, disabled: isDisabled });
 
   return (
     <AccentScope accent={accent}>
@@ -98,7 +66,7 @@ export function ExternalLinkText({
       >
         <Icon
           icon={icon}
-          size={size === "sm" ? 16 : 20}
+          size={linkTextIconSize(size)}
           className={styles.icon()}
         />
         <Text className={styles.text()}>{text}</Text>

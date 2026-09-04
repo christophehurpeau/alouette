@@ -19,12 +19,12 @@ import { QuestionRegularIcon } from 'alouette-icons/phosphor-icons/QuestionRegul
 import { WarningRegularIcon } from 'alouette-icons/phosphor-icons/WarningRegularIcon';
 import { ArrowSquareOutRegularIcon } from 'alouette-icons/phosphor-icons/ArrowSquareOutRegularIcon';
 import { CaretDownRegularIcon } from 'alouette-icons/phosphor-icons/CaretDownRegularIcon';
+import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
 import { AsteriskSimpleRegularIcon } from 'alouette-icons/phosphor-icons/AsteriskSimpleRegularIcon';
 import { useForm, FormProvider, useFormContext, Controller, useFieldArray } from 'react-hook-form';
 import { PlusRegularIcon } from 'alouette-icons/phosphor-icons/PlusRegularIcon';
 import { TrashRegularIcon } from 'alouette-icons/phosphor-icons/TrashRegularIcon';
 import { PencilSimpleRegularIcon } from 'alouette-icons/phosphor-icons/PencilSimpleRegularIcon';
-import { CaretRightRegularIcon } from 'alouette-icons/phosphor-icons/CaretRightRegularIcon';
 
 const NativeThemeVariablesContext = createContext(
   null
@@ -2006,7 +2006,7 @@ function SuccessAlertDialog(props) {
   return /* @__PURE__ */ jsx(AlertDialog, { ...props, icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}) });
 }
 
-const externalLinkTextVariants = tv(
+const linkTextVariants = tv(
   {
     slots: {
       frame: "group flex-row items-center gap-xxs self-start focus-visible:outline-interactive-outlined-outline-focus",
@@ -2033,6 +2033,49 @@ const externalLinkTextVariants = tv(
   },
   { twMerge: false }
 );
+function linkTextIconSize(size) {
+  return size === "sm" ? 16 : 20;
+}
+function LinkPressable(props) {
+  return /* @__PURE__ */ jsx(InteractiveBox, { ...props });
+}
+function LinkText({
+  href,
+  text,
+  icon,
+  accent,
+  size = "md",
+  disabled,
+  className,
+  ...pressableProps
+}) {
+  const isDisabled = disabled === true;
+  const styles = linkTextVariants({ size, disabled: isDisabled });
+  return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(
+    LinkPressable,
+    {
+      withFocusVisibleOutline: true,
+      role: "link",
+      href: isDisabled ? void 0 : href,
+      "aria-disabled": isDisabled,
+      disabled,
+      className: styles.frame({ className }),
+      ...pressableProps,
+      children: [
+        icon ? /* @__PURE__ */ jsx(
+          Icon,
+          {
+            icon,
+            size: linkTextIconSize(size),
+            className: styles.icon()
+          }
+        ) : null,
+        /* @__PURE__ */ jsx(Text, { className: styles.text(), children: text })
+      ]
+    }
+  ) });
+}
+
 function ExternalLinkText({
   href,
   openLinkBehavior = defaultExternalOpenLinkBehavior,
@@ -2046,7 +2089,7 @@ function ExternalLinkText({
   ...pressableProps
 }) {
   const isDisabled = disabled === true;
-  const styles = externalLinkTextVariants({ size, disabled: isDisabled });
+  const styles = linkTextVariants({ size, disabled: isDisabled });
   return /* @__PURE__ */ jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxs(
     ExternalLink,
     {
@@ -2065,7 +2108,7 @@ function ExternalLinkText({
           Icon,
           {
             icon,
-            size: size === "sm" ? 16 : 20,
+            size: linkTextIconSize(size),
             className: styles.icon()
           }
         ),
@@ -2351,8 +2394,8 @@ function useControllableValue({
 const optionVariants = tv(
   {
     base: [
-      "flex-row items-center justify-between gap-xxs rounded-xs px-m py-xs my-xxs min-h-[44px]",
-      "active:bg-interactive-contained-active",
+      "flex-row items-center justify-between gap-xxs rounded-xs px-m py-xs min-h-[44px]",
+      "active:bg-interactive-soft-active",
       // The row's fill is the cursor, and the combobox input keeps the focus:
       // an outline here would ring a row the keyboard never lands on. A
       // zero-width one, because react-native-css drops `outline-style: none`
@@ -2364,12 +2407,9 @@ const optionVariants = tv(
         // A listbox driving its cursor from JS owns both the pointer and the
         // keyboard position, so leaving CSS hover on would light a second row
         // while the arrow keys move elsewhere.
-        rest: "bg-interactive-contained-pressable",
-        highlighted: "bg-interactive-contained-hover",
-        hover: [
-          "bg-interactive-contained-pressable",
-          "hover:bg-interactive-contained-hover focus:bg-interactive-contained-focus"
-        ].join(" ")
+        rest: "",
+        highlighted: "bg-interactive-soft-hover",
+        hover: "hover:bg-interactive-soft-hover focus:bg-interactive-soft-focus"
       },
       disabled: {
         true: "opacity-50",
@@ -2400,15 +2440,8 @@ const ListboxOption = forwardRef(
           disabled: option.disabled
         }),
         children: [
-          /* @__PURE__ */ jsx(Text, { numberOfLines: 1, className: "flex-1 text-base text-on-accent", children: option.label }),
-          selected ? /* @__PURE__ */ jsx(
-            Icon,
-            {
-              icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}),
-              size: 18,
-              className: "text-on-accent"
-            }
-          ) : null
+          /* @__PURE__ */ jsx(Text, { numberOfLines: 1, className: "flex-1 text-base text-sharp", children: option.label }),
+          selected ? /* @__PURE__ */ jsx(Icon, { icon: /* @__PURE__ */ jsx(CheckRegularIcon, {}), size: 18, className: "text-accent" }) : null
         ]
       }
     );
@@ -2530,6 +2563,7 @@ function AutocompleteMenu({
       ScrollView,
       {
         className: "max-h-[240px] pr-xs",
+        contentContainerClassName: "gap-1",
         keyboardShouldPersistTaps: "handled",
         children: visibleOptions.map((option, index) => {
           const {
@@ -2805,8 +2839,8 @@ function SelectInner({
         children: /* @__PURE__ */ jsx(Surface, { variant: "highlight", shadow: "l", size: "sm", className: "py-xs", children: /* @__PURE__ */ jsx(
           ScrollView,
           {
+            contentContainerClassName: "gap-1",
             style: { maxHeight: windowHeight * 0.7 },
-            showsVerticalScrollIndicator: false,
             children: options.map((option) => /* @__PURE__ */ jsx(
               ListboxOption,
               {
@@ -3376,6 +3410,125 @@ function NavBarItem({
       orientation,
       stretch,
       onPress: onPress ?? selectHref
+    }
+  );
+}
+
+const BreadcrumbItemContext = createContext(void 0);
+const BreadcrumbItemContextProvider = BreadcrumbItemContext.Provider;
+function useBreadcrumbItemContext() {
+  const context = useContext(BreadcrumbItemContext);
+  if (!context) {
+    throw new Error("BreadcrumbItem must be rendered inside Breadcrumbs.");
+  }
+  return context;
+}
+
+const breadcrumbsVariants = tv({
+  slots: {
+    frame: "flex-row flex-wrap items-center",
+    separator: "text-muted"
+  }
+});
+function BreadcrumbSlot({
+  current,
+  disabled,
+  onNavigate,
+  children
+}) {
+  const context = useMemo(
+    () => ({ current, disabled, onNavigate }),
+    [current, disabled, onNavigate]
+  );
+  return /* @__PURE__ */ jsx(BreadcrumbItemContextProvider, { value: context, children });
+}
+function Breadcrumbs({
+  "aria-label": ariaLabel = "Breadcrumb",
+  separator = /* @__PURE__ */ jsx(CaretRightRegularIcon, {}),
+  onNavigate,
+  accent,
+  disabled = false,
+  children,
+  className
+}) {
+  const styles = breadcrumbsVariants();
+  const lastIndex = Children.count(children) - 1;
+  return /* @__PURE__ */ jsx(
+    Box,
+    {
+      role: "navigation",
+      "aria-label": ariaLabel,
+      accent,
+      className: styles.frame({ className }),
+      children: Children.map(children, (child, index) => /* @__PURE__ */ jsxs(
+        BreadcrumbSlot,
+        {
+          current: index === lastIndex,
+          disabled,
+          onNavigate,
+          children: [
+            index > 0 ? /* @__PURE__ */ jsx(Icon, { icon: separator, size: 16, className: styles.separator() }) : null,
+            child
+          ]
+        }
+      ))
+    }
+  );
+}
+
+const breadcrumbItemVariants = tv({
+  slots: {
+    // LinkText is already the row; it only needs the tap target around it.
+    link: "min-h-[44px] px-xxs",
+    page: "flex-row items-center gap-xxs min-h-[44px] px-xxs",
+    icon: "text-sharp",
+    label: "select-none font-body-bold text-base text-sharp"
+  }
+});
+function CurrentCrumbText(props) {
+  return /* @__PURE__ */ jsx(Text, { ...props });
+}
+function BreadcrumbItem({
+  href,
+  label,
+  icon,
+  disabled,
+  onPress
+}) {
+  const {
+    current,
+    disabled: breadcrumbsDisabled,
+    onNavigate
+  } = useBreadcrumbItemContext();
+  const isDisabled = disabled === true || breadcrumbsDisabled;
+  const styles = breadcrumbItemVariants();
+  if (current) {
+    return /* @__PURE__ */ jsxs(View, { className: styles.page(), children: [
+      icon ? /* @__PURE__ */ jsx(
+        Icon,
+        {
+          icon,
+          size: linkTextIconSize("md"),
+          className: styles.icon()
+        }
+      ) : null,
+      /* @__PURE__ */ jsx(CurrentCrumbText, { "aria-current": "page", className: styles.label(), children: label })
+    ] });
+  }
+  const navigate = onNavigate === void 0 || href === void 0 ? void 0 : (event) => {
+    event.preventDefault();
+    onNavigate(href);
+  };
+  return /* @__PURE__ */ jsx(
+    LinkText,
+    {
+      href,
+      text: label,
+      icon,
+      "aria-label": label,
+      disabled: isDisabled,
+      className: styles.link(),
+      onPress: onPress ?? navigate
     }
   );
 }
@@ -4518,5 +4671,5 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, AppHeader, AppHeaderAccount, AppHeaderActions, AppHeaderBrand, Avatar, Badge, Blockquote, Box, BrandLogo, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InternalLinkButton, LinearProgress, Menu, MenuItem, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useScreenSafeAreaPadding };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, AppHeader, AppHeaderAccount, AppHeaderActions, AppHeaderBrand, Avatar, Badge, Blockquote, Box, BrandLogo, BreadcrumbItem, Breadcrumbs, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InternalLinkButton, LinearProgress, LinkText, Menu, MenuItem, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useScreenSafeAreaPadding };
 //# sourceMappingURL=index-node22.mjs.map

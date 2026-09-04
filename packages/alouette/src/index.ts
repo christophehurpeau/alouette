@@ -97,6 +97,8 @@ export {
   ExternalLinkButton,
   InternalLinkButton,
 } from "./ui/actions/Button";
+export type { LinkTextProps } from "./ui/actions/LinkText";
+export { LinkText } from "./ui/actions/LinkText";
 export type { ExternalLinkTextProps } from "./ui/actions/ExternalLinkText";
 export { ExternalLinkText } from "./ui/actions/ExternalLinkText";
 export type { ActionButtonProps } from "./ui/actions/ActionButton";
@@ -137,6 +139,10 @@ export type { NavBarProps } from "./ui/navigation/NavBar";
 export { NavBar } from "./ui/navigation/NavBar";
 export type { NavBarItemProps } from "./ui/navigation/NavBarItem";
 export { NavBarItem } from "./ui/navigation/NavBarItem";
+export type { BreadcrumbsProps } from "./ui/navigation/Breadcrumbs";
+export { Breadcrumbs } from "./ui/navigation/Breadcrumbs";
+export type { BreadcrumbItemProps } from "./ui/navigation/BreadcrumbItem";
+export { BreadcrumbItem } from "./ui/navigation/BreadcrumbItem";
 export type { TabsProps } from "./ui/navigation/Tabs";
 export { Tabs } from "./ui/navigation/Tabs";
 export type { TabProps } from "./ui/navigation/Tab";

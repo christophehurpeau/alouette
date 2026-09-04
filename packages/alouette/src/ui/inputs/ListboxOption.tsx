@@ -10,13 +10,17 @@ import { Icon } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import type { SelectOption } from "./Select.shared";
 
-// The background carries the cursor only; selection shows as the check icon, so
-// hovering the selected row never swaps its fill from one accent step to another.
+// The background carries the cursor only: a row has no ground at rest and takes
+// a fill as the cursor lands on it. That fill comes from the `interactive-soft-*`
+// family — a tone of the popover's own surface rather than the accent — so the
+// label keeps its color instead of flipping onto an accent ground, and an
+// untouched list reads as rows on the surface. Selection shows as the check icon,
+// so hovering the selected row never swaps its fill from one step to another.
 const optionVariants = tv(
   {
     base: [
       "flex-row items-center justify-between gap-xxs rounded-xs px-m py-xs min-h-[44px]",
-      "active:bg-interactive-contained-active",
+      "active:bg-interactive-soft-active",
       // The row's fill is the cursor, and the combobox input keeps the focus:
       // an outline here would ring a row the keyboard never lands on. A
       // zero-width one, because react-native-css drops `outline-style: none`
@@ -28,12 +32,10 @@ const optionVariants = tv(
         // A listbox driving its cursor from JS owns both the pointer and the
         // keyboard position, so leaving CSS hover on would light a second row
         // while the arrow keys move elsewhere.
-        rest: "bg-interactive-contained-pressable",
-        highlighted: "bg-interactive-contained-hover",
-        hover: [
-          "bg-interactive-contained-pressable",
-          "hover:bg-interactive-contained-hover focus:bg-interactive-contained-focus",
-        ].join(" "),
+        rest: "",
+        highlighted: "bg-interactive-soft-hover",
+        hover:
+          "hover:bg-interactive-soft-hover focus:bg-interactive-soft-focus",
       },
       disabled: {
         true: "opacity-50",
@@ -88,15 +90,11 @@ export const ListboxOption = forwardRef<RNView, ListboxOptionProps>(
           disabled: option.disabled,
         })}
       >
-        <Text numberOfLines={1} className="flex-1 text-base text-on-accent">
+        <Text numberOfLines={1} className="flex-1 text-base text-sharp">
           {option.label}
         </Text>
         {selected ? (
-          <Icon
-            icon={<CheckRegularIcon />}
-            size={18}
-            className="text-on-accent"
-          />
+          <Icon icon={<CheckRegularIcon />} size={18} className="text-accent" />
         ) : null}
       </Pressable>
     );
