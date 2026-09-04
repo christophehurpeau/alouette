@@ -94,8 +94,8 @@ function SelectInner({
           {/* Pixel maxHeight (not a %) so the ScrollView sizes to its
               content and only scrolls once it exceeds ~70% of the screen. */}
           <ScrollView
+            contentContainerClassName="gap-1"
             style={{ maxHeight: windowHeight * 0.7 }}
-            showsVerticalScrollIndicator={false}
           >
             {options.map((option) => (
               <ListboxOption

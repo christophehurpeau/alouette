@@ -273,6 +273,7 @@ export function AutocompleteMenu({
       <View ref={menuRef} {...restMenuProps}>
         <ScrollView
           className="max-h-[240px] pr-xs"
+          contentContainerClassName="gap-1"
           keyboardShouldPersistTaps="handled"
         >
           {visibleOptions.map((option, index) => {

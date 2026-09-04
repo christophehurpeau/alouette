@@ -15,7 +15,7 @@ import type { SelectOption } from "./Select.shared";
 const optionVariants = tv(
   {
     base: [
-      "flex-row items-center justify-between gap-xxs rounded-xs px-m py-xs my-xxs min-h-[44px]",
+      "flex-row items-center justify-between gap-xxs rounded-xs px-m py-xs min-h-[44px]",
       "active:bg-interactive-contained-active",
       // The row's fill is the cursor, and the combobox input keeps the focus:
       // an outline here would ring a row the keyboard never lands on. A
