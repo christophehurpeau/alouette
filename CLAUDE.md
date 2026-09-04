@@ -10,6 +10,7 @@ pnpm build              # Build all packages (rollup + type definitions)
 pnpm watch              # Rebuild on changes
 pnpm lint               # Prettier + ESLint
 pnpm test               # Run unit tests (vitest, from the repo root)
+pnpm -C ./packages/storybook-native-app test # Run storybook stories tests
 pnpm tsc                # TypeScript check
 ```
 
@@ -18,18 +19,18 @@ pnpm tsc                # TypeScript check
 The play-function suite lives in the Storybook app, not the root `pnpm test` (root runs the vitest unit tests under `packages/alouette`). Run it from that package in browser mode:
 
 ```bash
-cd packages/storybook-native-app && npx vitest run --project=storybook   # all stories
-cd packages/storybook-native-app && npx vitest run --project=storybook Radio   # filter by file
+pnpm -C ./packages/storybook-native-app test   # all stories
+pnpm -C ./packages/storybook-native-app test Radio   # filter by file
 ```
 
 You can't visually validate rendering — only behavior via `play`. Styling/material looks are the user's to confirm.
 
 Verify with one deliberate pass: `pnpm tsc`, then `eslint` scoped to the files you changed, then the single relevant test. Don't re-run a check to re-confirm a pass or to isolate output you could have parsed the first time.
 
-Run a single test file:
+Run a single unit test file:
 
 ```bash
-TZ=UTC npx vitest run packages/alouette/src/config/utils/colorContrast.test.ts
+pnpm test run packages/alouette/src/config/utils/colorContrast.test.ts
 ```
 
 ## Architecture
@@ -45,12 +46,12 @@ pnpm workspaces monorepo with 3 packages:
 `storybook-native-app` runs **two** Storybooks over the same
 `packages/alouette/src/**/*.stories.tsx`, from separate config directories:
 
-|            | `.storybook/` (Vite)                            | `.rnstorybook/` (React Native)                                     |
-| ---------- | ----------------------------------------------- | ------------------------------------------------------------------ |
-| framework  | `@storybook/react-vite`                         | `@storybook/react-native` (on-device UI, via `src/App.tsx` → Expo) |
-| run        | `storybook dev` / `pnpm storybook`              | `expo start` — iOS, Android **and Expo web**                       |
-| play tests | `vitest --project=storybook` (headless browser) | none                                                               |
-| addons     | `addon-docs`, autodocs, `DocTemplate`           | the `ondevice-*` addons                                            |
+|            | `.storybook/` (Vite)                                              | `.rnstorybook/` (React Native)                                     |
+| ---------- | ----------------------------------------------------------------- | ------------------------------------------------------------------ |
+| framework  | `@storybook/react-vite`                                           | `@storybook/react-native` (on-device UI, via `src/App.tsx` → Expo) |
+| run        | `storybook dev` / `pnpm storybook`                                | `expo start` — iOS, Android **and Expo web**                       |
+| play tests | `pnpm -C ./packages/storybook-native-app test` (headless browser) | none                                                               |
+| addons     | `addon-docs`, autodocs, `DocTemplate`                             | the `ondevice-*` addons                                            |
 
 The React Native one is not native-only — Expo web runs it through
 react-native-web — so **the two previews must stay in sync**. Both declare the
@@ -186,6 +187,7 @@ a colored `focus-visible` outline and `AccentScope`. This is how `Button` and
 
 - `contained` → `bg-interactive-contained-{pressable,hover,focus,active,disabled}` + `shadow-s`, text `text-on-accent`.
 - `outlined` / `ghost` → `border-interactive-outlined-{pressable,hover,focus,active,disabled}`, text `text-sharp`.
+- `soft` → no border, no ground at rest, filling on `hover`/`focus`/`active` with `bg-interactive-soft-*`. That family is a **surface tone**, not the accent, so the label keeps its own color — never add a `group-hover:text-on-accent` flip to it. Used where a border tint reads as noise: the `AppHeader` pressables and `MenuItem` rows.
 
 Pass `role`/`aria-*` through `PressableBox` (they override its default
 `role="button"`). When a child indicator must react to the row's state and can't
@@ -234,6 +236,29 @@ container (== 44) and each item (>= 44) so the geometry can't regress.
 `SegmentedBar` also has an `orientation` variant, exposed only on `NavBar`
 (`orientation="vertical"` — a sidebar rail): the bar stacks, each item still owns
 a 44px tap target and its chip stretches to the bar's width.
+
+The focus ring belongs on the **visible chip**, not on the oversized pressable:
+the pressable fills the bar's content box and `Surface` is `overflow-hidden`, so
+an `outline-offset-2` drawn there is painted outside the bar and clipped away.
+`SegmentedItem` therefore passes `withFocusVisibleOutline={false}` to its
+`InteractiveBox` and rings the chip with `group-focus-visible:outline-2
+group-focus-visible:outline-offset-2` — the chip's ~6px of slack holds the 2px
+offset + 2px ring.
+
+## Suppressing a focus ring: `outline-solid outline-0`, never `outline-none`
+
+`outline-none` is a **no-op**: react-native-css keeps `solid`/`dotted`/`dashed`
+only and drops `outline-style: none`, and styles are applied at runtime so there
+is no `.outline-*` stylesheet to fall back on — the UA `:focus-visible` ring
+survives. Use `outline-solid outline-0`.
+
+`interactiveBoxVariants`' `withFocusVisibleOutline: false` branch emits it, so a
+`PressableBox` / `InteractiveBox` passes `withFocusVisibleOutline={false}`
+(`MenuItem`, `SegmentedItem`); non-`Box` elements write the classes
+(`ListboxOption`, the `<select>` in `Select.web.tsx`). Assert
+`getComputedStyle(el).outlineWidth === "0px"` **while the element holds keyboard
+focus** — `outlineStyle` is not reliable, and the ring only shows on
+`:focus-visible`.
 
 ## Radius scale is large — `rounded-md` is a stadium
 

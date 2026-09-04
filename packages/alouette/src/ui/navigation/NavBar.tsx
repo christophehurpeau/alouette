@@ -15,6 +15,12 @@ export interface NavBarProps extends SelectionGroupProps {
    * fix the rail.
    */
   orientation?: SegmentedOrientation;
+  /**
+   * The bar fills the width it is given instead of hugging its destinations,
+   * which share it equally — what a stacked `AppHeader` wants for the line it
+   * hands to the navigation.
+   */
+  stretch?: boolean;
   className?: string;
 }
 
@@ -30,6 +36,7 @@ export function NavBar({
   accent,
   disabled,
   orientation,
+  stretch,
   children,
   ...props
 }: NavBarProps): ReactNode {
@@ -39,6 +46,7 @@ export function NavBar({
     onValueChange,
     disabled,
     orientation,
+    stretch,
   });
 
   return (
@@ -46,6 +54,7 @@ export function NavBar({
       <SegmentedBar
         role="navigation"
         orientation={orientation}
+        stretch={stretch}
         accent={accent}
         {...props}
       >

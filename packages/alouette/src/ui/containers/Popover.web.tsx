@@ -36,6 +36,8 @@ export function Popover({
   open,
   onClose,
   anchorRef,
+  align = "start",
+  width = "anchor",
   placement = "center",
   accent,
   "aria-label": ariaLabel,
@@ -111,13 +113,19 @@ export function Popover({
   if (!position) return null;
 
   return createPortal(
+    // The box keeps the anchor's own width and the panel is laid out inside it,
+    // so alignment needs no measuring pass: a flex item wider than its row
+    // overflows away from the edge it is justified against — `justify-end`
+    // therefore pins the panel's right edge to the anchor's.
     <div
       ref={contentRef}
       aria-label={ariaLabel}
-      className={`absolute ${aboveModalClassName}`}
+      className={`absolute flex flex-row ${
+        align === "end" ? "justify-end" : "justify-start"
+      } ${aboveModalClassName}`}
       style={{ top: position.top, left: position.left, width: position.width }}
     >
-      {content}
+      <div className={width === "content" ? "w-max" : "w-full"}>{content}</div>
     </div>,
     document.body,
   );

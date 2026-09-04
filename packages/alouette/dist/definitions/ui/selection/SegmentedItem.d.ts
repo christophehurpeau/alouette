@@ -10,6 +10,8 @@ export interface SegmentedItemProps extends Omit<InteractiveBoxProps, "aria-labe
     compact?: boolean;
     /** Set by a vertical group: the item stretches to the bar's width. */
     orientation?: SegmentedOrientation;
+    /** Set by a stretched group: the item takes an equal share of the bar. */
+    stretch?: boolean;
     /**
      * react-native's types have no `aria-current` / `aria-controls` / `href`, but
      * react-native-web forwards all three (an `href` makes it render an `<a>`) and
@@ -19,5 +21,5 @@ export interface SegmentedItemProps extends Omit<InteractiveBoxProps, "aria-labe
     "aria-controls"?: string;
     href?: string;
 }
-export declare function SegmentedItem({ label, icon, selected, disabled, compact, orientation, ...props }: SegmentedItemProps): ReactNode;
+export declare function SegmentedItem({ label, icon, selected, disabled, compact, orientation, stretch, ...props }: SegmentedItemProps): ReactNode;
 //# sourceMappingURL=SegmentedItem.d.ts.map

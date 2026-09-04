@@ -19,7 +19,7 @@ export default {
         component: `### Variants
 - \`size\`: \`sm\` | \`md\` | any number (custom diameter px)
 - \`iconSize\`: \`"fill"\` makes the icon fill 80% of the button (default 50%)
-- \`variant\`: contained | outlined | ghost-contained | ghost-outlined
+- \`variant\`: contained | outlined | ghost | soft
 - Wrap in \`<AccentTheme accent="brand"/>\` (or any accent: brand|info|success|warning|danger) to switch the interactive token set; it composes with current light/dark mode`,
       },
     },
@@ -74,7 +74,7 @@ export const Variants: ThisStory = {
                   title={state || "default"}
                 >
                   <VStack className="gap-xs">
-                    {(["contained", "outlined", "ghost"] as const).map(
+                    {(["contained", "outlined", "ghost", "soft"] as const).map(
                       (variant) => (
                         <HStack key={variant} className="gap-xs items-center">
                           <IconButton

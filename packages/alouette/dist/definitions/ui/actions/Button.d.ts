@@ -1,4 +1,5 @@
-import { type ReactNode } from "react";
+import { type ReactNode, type Ref } from "react";
+import type { View as RNView } from "react-native";
 import { type VariantProps } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { type ExternalOpenLinkBehavior } from "../../expo/ExternalLink.shared";
@@ -27,6 +28,9 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
             text: string;
         };
         ghost: {
+            text: string;
+        };
+        soft: {
             text: string;
         };
     };
@@ -68,6 +72,9 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
         ghost: {
             text: string;
         };
+        soft: {
+            text: string;
+        };
     };
     disabled: {
         true: {};
@@ -107,6 +114,9 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
         ghost: {
             text: string;
         };
+        soft: {
+            text: string;
+        };
     };
     disabled: {
         true: {};
@@ -133,6 +143,11 @@ export interface ButtonProps extends Omit<PressableBoxProps, "children">, Button
     accent?: Accent;
     text: ReactNode;
     state?: ButtonState;
+    /**
+     * Forwarded to the underlying `PressableBox`, so the button can anchor a
+     * `Popover` or a `Menu`. React 19 carries it in with the other props.
+     */
+    ref?: Ref<RNView>;
 }
 export declare function Button({ icon, text, disabled, state, accent, variant, size, className, ...pressableProps }: ButtonProps): ReactNode;
 export interface ExternalLinkButtonProps extends ButtonProps {

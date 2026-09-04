@@ -14,8 +14,11 @@ const selectVariants = tv(
         "outline-interactive-outlined-pressable", // for a proper outline color transition
       ].join(" "),
       placeholder: "color-(--color-form-placeholder) bg-highlight",
+      // The wrapper draws the focus ring (`focus-within:outline-*`), so the
+      // native control carries none — a zero-width one, because react-native-css
+      // drops `outline-style: none` and the browser's ring would stay.
       select:
-        "appearance-none min-h-[44px] w-auto m-0 border-0 bg-transparent text-transparent font-[inherit] py-0 outline-none grow",
+        "appearance-none min-h-[44px] w-auto m-0 border-0 bg-transparent text-transparent font-[inherit] py-0 outline-solid outline-0 grow",
       option: "bg-highlight",
     },
     variants: {

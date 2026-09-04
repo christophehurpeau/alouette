@@ -1,4 +1,4 @@
-import { expect, waitFor, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
 import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
@@ -129,6 +129,26 @@ export const VariantsNavBarStory: ThisStory = {
         <NavBarVariant accent="danger" />
         <NavBarVariant accent="success" />
       </Story.Section>
+
+      <Story.Section title="Stretch">
+        <Text className="text-sm text-muted">
+          Fills the width it is given, the destinations sharing it equally —
+          what a stacked AppHeader hands its navigation.
+        </Text>
+        <NavBar stretch aria-label="Stretch" defaultValue="/home">
+          <NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
+          <NavBarItem
+            href="/reports"
+            label="Business Reports"
+            icon={<ChartBarRegularIcon />}
+          />
+          <NavBarItem
+            href="/settings"
+            label="Settings"
+            icon={<GearRegularIcon />}
+          />
+        </NavBar>
+      </Story.Section>
     </Story>
   ),
 };
@@ -191,6 +211,15 @@ export const TestsNavBarStory: ThisStory = {
       </Story.Section>
       <Story.Section title="Controlled">
         <NavBarRouterDemo />
+      </Story.Section>
+      <Story.Section title="Stretched">
+        <VStack className="w-[600px]">
+          <NavBar stretch aria-label="Stretched" defaultValue="/home">
+            <NavBarItem href="/home" label="Home" />
+            <NavBarItem href="/reports" label="Business Reports" />
+            <NavBarItem href="/settings" label="Settings" />
+          </NavBar>
+        </VStack>
       </Story.Section>
     </Story>
   ),
@@ -272,5 +301,47 @@ export const TestsNavBarStory: ThisStory = {
     await expect(first.getBoundingClientRect().width).toBeLessThan(
       verticalBox.width,
     );
+
+    const stretched = canvas.getByRole("navigation", { name: "Stretched" });
+    const stretchedBox = stretched.getBoundingClientRect();
+    // The bar takes the width its container gives it instead of hugging its
+    // destinations, and they grow to fill it — the last one ends at the bar's
+    // padding rather than leaving the spare width empty.
+    await expect(stretchedBox.width).toBe(600);
+    await expect(stretchedBox.height).toBe(44);
+    const stretchedItems = within(stretched).getAllByRole("link");
+    const lastStretched = stretchedItems.at(-1);
+    if (!lastStretched) {
+      throw new Error("expected stretched items");
+    }
+    await expect(lastStretched.getBoundingClientRect().right).toBeGreaterThan(
+      stretchedBox.right - 16,
+    );
+
+    // The focus ring is drawn on the visible chip, not on the pressable: the
+    // pressable fills the bar's content box and the bar clips, so an outline
+    // there would be cut away. Ring box (offset + width) stays inside the bar.
+    home.focus();
+    await userEvent.tab({ shift: true });
+    await userEvent.tab();
+    await expect(document.activeElement).toBe(home);
+
+    const chip = home.firstElementChild;
+    if (!chip) throw new Error("expected a chip inside the item");
+    const chipStyle = getComputedStyle(chip);
+    await expect(chipStyle.outlineWidth).toBe("2px");
+    // Zero-width, not `outline-style: none`: react-native-css drops that style,
+    // so the browser's own focus ring is overridden rather than removed.
+    await expect(getComputedStyle(home).outlineWidth).toBe("0px");
+
+    const ring =
+      Number.parseFloat(chipStyle.outlineOffset) +
+      Number.parseFloat(chipStyle.outlineWidth);
+    const chipBox = chip.getBoundingClientRect();
+    const navBox = nav.getBoundingClientRect();
+    await expect(chipBox.top - ring).toBeGreaterThanOrEqual(navBox.top);
+    await expect(chipBox.bottom + ring).toBeLessThanOrEqual(navBox.bottom);
+    await expect(chipBox.left - ring).toBeGreaterThanOrEqual(navBox.left);
+    await expect(chipBox.right + ring).toBeLessThanOrEqual(navBox.right);
   },
 };

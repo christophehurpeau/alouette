@@ -7,15 +7,23 @@ import type { SegmentedOrientation } from "./SelectionContext";
 // inset frame comes from the shorter chip inside it. Vertical: the same frame,
 // rotated — the bar is as tall as its stacked items and the chips stretch to
 // its width.
+// The bar is content-width, so it never spreads across whatever holds it;
+// `stretch` opts into the opposite, for a container that is meant to be filled
+// (the stacked line of an AppHeader). Where the container is content-sized
+// anyway — the `md` line of that same header — stretching changes nothing.
 const segmentedBarVariants = tv({
-  base: "items-stretch self-start gap-xxs px-xs py-0",
+  base: "items-stretch gap-xxs px-xs py-0",
   variants: {
     orientation: {
       horizontal: "flex-row min-h-[44px]",
       vertical: "flex-col",
     },
+    stretch: {
+      true: "self-stretch",
+      false: "self-start",
+    },
   },
-  defaultVariants: { orientation: "horizontal" },
+  defaultVariants: { orientation: "horizontal", stretch: false },
 });
 
 export interface SegmentedBarProps extends Omit<
@@ -24,6 +32,7 @@ export interface SegmentedBarProps extends Omit<
 > {
   role: "navigation" | "radiogroup" | "tablist";
   orientation?: SegmentedOrientation;
+  stretch?: boolean;
 }
 
 /**
@@ -33,6 +42,7 @@ export interface SegmentedBarProps extends Omit<
  */
 export function SegmentedBar({
   orientation,
+  stretch,
   className,
   ...props
 }: SegmentedBarProps): ReactNode {
@@ -40,7 +50,7 @@ export function SegmentedBar({
     <Surface
       variant="lowered"
       size="sm"
-      className={segmentedBarVariants({ orientation, className })}
+      className={segmentedBarVariants({ orientation, stretch, className })}
       {...props}
     />
   );

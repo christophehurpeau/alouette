@@ -45,6 +45,10 @@ export const interactiveBoxVariants = tv({
   variants: {
     withFocusVisibleOutline: {
       true: "focus-visible:outline-2 focus-visible:outline-offset-2",
+      // `outline-none` cannot express this: react-native-css keeps solid,
+      // dotted and dashed outline styles only and drops `none`, so the
+      // browser's own focus ring is overridden with a zero-width one instead.
+      false: "outline-solid outline-0",
     },
   },
 });

@@ -150,6 +150,13 @@ const tokenScaleMap = {
   "interactive-contained-hover": selfAdaptive(7, 7, 2, 8),
   "interactive-contained-focus": selfAdaptive(7, 7, 2, 8),
   "interactive-contained-active": selfAdaptive(7, 7, 3, 7),
+  // A ground-only state set for a control that has no rest ground at all
+  // (PressableBox's `soft`): the fill stays a tone of the surrounding surface —
+  // toward the screen in light mode, a step up in dark — so the label keeps its
+  // own color instead of flipping onto an accent fill.
+  "interactive-soft-hover": self(5, 3),
+  "interactive-soft-focus": self(5, 3),
+  "interactive-soft-active": self(6, 4),
   "interactive-outlined-pressable": self(7, 9),
   "interactive-outlined-hover": self(8, 7),
   "interactive-outlined-focus": self(8, 7),

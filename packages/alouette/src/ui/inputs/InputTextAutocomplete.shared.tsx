@@ -42,6 +42,8 @@ interface ComboboxItemProps extends Omit<PressableProps, "onPress"> {
   ref: Ref<RNView>;
   onClick?: () => void;
   onPress?: () => void;
+  /** Web only: how downshift moves its cursor with the pointer. */
+  onMouseMove?: () => void;
 }
 
 interface ComboboxItemParams {
@@ -278,6 +280,7 @@ export function AutocompleteMenu({
               ref: itemRef,
               onClick: onItemClick,
               onPress: onItemPress,
+              onMouseMove: onItemMouseMove,
               ...itemProps
             } = getItemProps({ item: option, index });
             const selected = option.value === currentValue;
@@ -293,6 +296,11 @@ export function AutocompleteMenu({
                 // `onPress`; react-native-web's Pressable overwrites any
                 // `onClick` it is handed with its own press responder.
                 onPress={onItemPress ?? onItemClick}
+                // Same for the cursor: the row paints from downshift's
+                // `highlightedIndex`, and its `onMouseMove` is the only thing
+                // that moves it with the pointer — a DOM handler a
+                // react-native-web Pressable drops, hence `onHoverIn`.
+                onHoverIn={onItemMouseMove}
               />
             );
           })}

@@ -37,6 +37,9 @@
   --color-interactive-contained-hover: #f8f8f8;
   --color-interactive-contained-focus: #f8f8f8;
   --color-interactive-contained-active: #eeeeee;
+  --color-interactive-soft-hover: #eeeeee;
+  --color-interactive-soft-focus: #eeeeee;
+  --color-interactive-soft-active: #dbdbdb;
   --color-interactive-outlined-pressable: #5d5d5d;
   --color-interactive-outlined-hover: #838383;
   --color-interactive-outlined-focus: #838383;
@@ -82,6 +85,9 @@
       --color-interactive-contained-hover: #f8f8f8;
       --color-interactive-contained-focus: #f8f8f8;
       --color-interactive-contained-active: #eeeeee;
+      --color-interactive-soft-hover: #eeeeee;
+      --color-interactive-soft-focus: #eeeeee;
+      --color-interactive-soft-active: #dbdbdb;
       --color-interactive-outlined-pressable: #5d5d5d;
       --color-interactive-outlined-hover: #838383;
       --color-interactive-outlined-focus: #838383;
@@ -125,6 +131,9 @@
       --color-interactive-contained-hover: #555555;
       --color-interactive-contained-focus: #555555;
       --color-interactive-contained-active: #555555;
+      --color-interactive-soft-hover: #3d3d3d;
+      --color-interactive-soft-focus: #3d3d3d;
+      --color-interactive-soft-active: #484848;
       --color-interactive-outlined-pressable: #555555;
       --color-interactive-outlined-hover: #bcbcbc;
       --color-interactive-outlined-focus: #bcbcbc;
@@ -153,6 +162,9 @@
       --color-interactive-contained-hover: #0e7a9a;
       --color-interactive-contained-focus: #0e7a9a;
       --color-interactive-contained-active: #2493b7;
+      --color-interactive-soft-hover: #e2f1f7;
+      --color-interactive-soft-focus: #e2f1f7;
+      --color-interactive-soft-active: #bde2f1;
       --color-interactive-outlined-pressable: #0a6783;
       --color-interactive-outlined-hover: #2493b7;
       --color-interactive-outlined-focus: #2493b7;
@@ -181,6 +193,9 @@
       --color-interactive-contained-hover: #0d78a3;
       --color-interactive-contained-focus: #0d78a3;
       --color-interactive-contained-active: #2391c1;
+      --color-interactive-soft-hover: #e4f0f7;
+      --color-interactive-soft-focus: #e4f0f7;
+      --color-interactive-soft-active: #c3e0f1;
       --color-interactive-outlined-pressable: #0a668b;
       --color-interactive-outlined-hover: #2391c1;
       --color-interactive-outlined-focus: #2391c1;
@@ -209,6 +224,9 @@
       --color-interactive-contained-hover: #0e8626;
       --color-interactive-contained-focus: #0e8626;
       --color-interactive-contained-active: #24a037;
+      --color-interactive-soft-hover: #daf8d9;
+      --color-interactive-soft-focus: #daf8d9;
+      --color-interactive-soft-active: #a2f2a4;
       --color-interactive-outlined-pressable: #0a721f;
       --color-interactive-outlined-hover: #24a037;
       --color-interactive-outlined-focus: #24a037;
@@ -237,6 +255,9 @@
       --color-interactive-contained-hover: #9f7a0f;
       --color-interactive-contained-focus: #9f7a0f;
       --color-interactive-contained-active: #e2b930;
+      --color-interactive-soft-hover: #f7eece;
+      --color-interactive-soft-focus: #f7eece;
+      --color-interactive-soft-active: #f5e7b7;
       --color-interactive-outlined-pressable: #916f0c;
       --color-interactive-outlined-hover: #e2b930;
       --color-interactive-outlined-focus: #e2b930;
@@ -265,6 +286,9 @@
       --color-interactive-contained-hover: #cd112c;
       --color-interactive-contained-focus: #cd112c;
       --color-interactive-contained-active: #f1293f;
+      --color-interactive-soft-hover: #f7eaea;
+      --color-interactive-soft-focus: #f7eaea;
+      --color-interactive-soft-active: #f1d2d1;
       --color-interactive-outlined-pressable: #af0d23;
       --color-interactive-outlined-hover: #f1293f;
       --color-interactive-outlined-focus: #f1293f;
@@ -293,6 +317,9 @@
       --color-interactive-contained-hover: #1f6d87;
       --color-interactive-contained-focus: #1f6d87;
       --color-interactive-contained-active: #1f6d87;
+      --color-interactive-soft-hover: #163d4b;
+      --color-interactive-soft-focus: #163d4b;
+      --color-interactive-soft-active: #184f61;
       --color-interactive-outlined-pressable: #1f6d87;
       --color-interactive-outlined-hover: #37add5;
       --color-interactive-outlined-focus: #37add5;
@@ -321,6 +348,9 @@
       --color-interactive-contained-hover: #1f6b8e;
       --color-interactive-contained-focus: #1f6b8e;
       --color-interactive-contained-active: #1f6b8e;
+      --color-interactive-soft-hover: #163d50;
+      --color-interactive-soft-focus: #163d50;
+      --color-interactive-soft-active: #184e67;
       --color-interactive-outlined-pressable: #1f6b8e;
       --color-interactive-outlined-hover: #36abe0;
       --color-interactive-outlined-focus: #36abe0;
@@ -349,6 +379,9 @@
       --color-interactive-contained-hover: #1f772a;
       --color-interactive-contained-focus: #1f772a;
       --color-interactive-contained-active: #1f772a;
+      --color-interactive-soft-hover: #16431a;
+      --color-interactive-soft-focus: #16431a;
+      --color-interactive-soft-active: #19561f;
       --color-interactive-outlined-pressable: #1f772a;
       --color-interactive-outlined-hover: #37bc48;
       --color-interactive-outlined-focus: #37bc48;
@@ -377,6 +410,9 @@
       --color-interactive-contained-hover: #8f7021;
       --color-interactive-contained-focus: #8f7021;
       --color-interactive-contained-active: #8f7021;
+      --color-interactive-soft-hover: #785f28;
+      --color-interactive-soft-focus: #785f28;
+      --color-interactive-soft-active: #846724;
       --color-interactive-outlined-pressable: #8f7021;
       --color-interactive-outlined-hover: #e0b93c;
       --color-interactive-outlined-focus: #e0b93c;
@@ -405,6 +441,9 @@
       --color-interactive-contained-hover: #b2242d;
       --color-interactive-contained-focus: #b2242d;
       --color-interactive-contained-active: #b2242d;
+      --color-interactive-soft-hover: #64191a;
+      --color-interactive-soft-focus: #64191a;
+      --color-interactive-soft-active: #811c20;
       --color-interactive-outlined-pressable: #b2242d;
       --color-interactive-outlined-hover: #f56d6d;
       --color-interactive-outlined-focus: #f56d6d;

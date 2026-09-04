@@ -6,6 +6,7 @@ declare const pressableBoxVariants: import("tailwind-variants").TVReturnType<{
         contained: string;
         outlined: string;
         ghost: string;
+        soft: string;
     };
     forceStyle: {
         hover: string;
@@ -15,18 +16,22 @@ declare const pressableBoxVariants: import("tailwind-variants").TVReturnType<{
 }, undefined, "overflow-hidden", {
     withFocusVisibleOutline: {
         true: string;
+        false: string;
     };
 }, undefined, import("tailwind-variants").TVReturnType<{
     withFocusVisibleOutline: {
         true: string;
+        false: string;
     };
 }, undefined, string, {
     withFocusVisibleOutline: {
         true: string;
+        false: string;
     };
 }, undefined, import("tailwind-variants").TVReturnType<{
     withFocusVisibleOutline: {
         true: string;
+        false: string;
     };
 }, undefined, string, unknown, unknown, undefined>>>;
 type PressableBoxVariantProps = VariantProps<typeof pressableBoxVariants>;
@@ -34,6 +39,12 @@ export interface PressableBoxProps extends RNPressableProps, PressableBoxVariant
     accent?: Accent;
     className?: string;
     forceStyle?: "focus" | "hover" | "press";
+    /**
+     * Set it to `false` on a row of a list that already paints its cursor (a
+     * menu item, a listbox option): the focus moves with the pointer there, so
+     * the outline would ring whatever the mouse is over.
+     */
+    withFocusVisibleOutline?: boolean;
 }
 export declare const PressableBox: import("react").ForwardRefExoticComponent<PressableBoxProps & import("react").RefAttributes<RNView>>;
 export {};

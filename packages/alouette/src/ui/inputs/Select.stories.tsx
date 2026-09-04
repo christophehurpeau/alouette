@@ -1,4 +1,4 @@
-import { expect, fn, within } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
 import { Story, accents } from "../story-components/Story";
@@ -131,5 +131,12 @@ export const Tests: StoryObj<typeof Select> = {
       name: "Durian (sold out)",
     });
     await expect(durian).toBeDisabled();
+
+    // The wrapper draws the focus ring, so the control itself carries none —
+    // as a zero-width outline, since react-native-css drops the `outline-none`
+    // style and the browser's own ring would otherwise show through.
+    await userEvent.tab();
+    await expect(select).toHaveFocus();
+    await expect(getComputedStyle(select).outlineWidth).toBe("0px");
   },
 };

@@ -35,6 +35,9 @@ const tokenSwatchVariants = tv({
       "interactive-contained-focus": "bg-(--color-interactive-contained-focus)",
       "interactive-contained-active":
         "bg-(--color-interactive-contained-active)",
+      "interactive-soft-hover": "bg-(--color-interactive-soft-hover)",
+      "interactive-soft-focus": "bg-(--color-interactive-soft-focus)",
+      "interactive-soft-active": "bg-(--color-interactive-soft-active)",
       "interactive-outlined-pressable":
         "bg-(--color-interactive-outlined-pressable)",
       "interactive-outlined-hover": "bg-(--color-interactive-outlined-hover)",
@@ -91,6 +94,9 @@ interface TokenSwatchProps {
     | "interactive-outlined-outline-focus"
     | "interactive-outlined-pressable"
     | "interactive-pressable"
+    | "interactive-soft-active"
+    | "interactive-soft-focus"
+    | "interactive-soft-hover"
     | "lowered"
     | "muted"
     | "on-accent-muted"
@@ -169,6 +175,9 @@ function AccentTokens({ accent }: AccentTokensProps): ReactNode {
         <TokenSwatch token="interactive-contained-hover" />
         <TokenSwatch token="interactive-contained-focus" />
         <TokenSwatch token="interactive-contained-active" />
+        <TokenSwatch token="interactive-soft-hover" />
+        <TokenSwatch token="interactive-soft-focus" />
+        <TokenSwatch token="interactive-soft-active" />
         <TokenSwatch token="interactive-outlined-pressable" />
         <TokenSwatch token="interactive-outlined-hover" />
         <TokenSwatch token="interactive-outlined-focus" />

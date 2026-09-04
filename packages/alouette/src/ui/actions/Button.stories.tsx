@@ -16,7 +16,7 @@ export default {
     docs: {
       description: {
         component: `### Variants
-- \`variant\`: contained | outlined | ghost-contained | ghost-outlined
+- \`variant\`: contained | outlined | ghost | soft
 - \`size\`: sm (38px) | md (44px)
 - Wrap in \`<AccentTheme accent="brand"/>\` (or any accent: brand|info|success|warning|danger) to switch the interactive token set; it composes with the current light/dark mode automatically.
 
@@ -70,7 +70,7 @@ export const Variants: ThisStory = {
                   title={state ?? "Default"}
                 >
                   <VStack className="gap-xs p-xxs">
-                    {(["contained", "outlined", "ghost"] as const).map(
+                    {(["contained", "outlined", "ghost", "soft"] as const).map(
                       (variant) => (
                         <Button
                           key={variant}
@@ -101,43 +101,49 @@ export const Variants: ThisStory = {
       <Story.Section title="States">
         <Story.SubSection title="Loading">
           <StoryGrid.Row flexWrap>
-            {(["contained", "outlined", "ghost"] as const).map((variant) => (
-              <Button
-                key={variant}
-                state="loading"
-                variant={variant}
-                icon={<ArrowLeftRegularIcon />}
-                text={variant}
-              />
-            ))}
+            {(["contained", "outlined", "ghost", "soft"] as const).map(
+              (variant) => (
+                <Button
+                  key={variant}
+                  state="loading"
+                  variant={variant}
+                  icon={<ArrowLeftRegularIcon />}
+                  text={variant}
+                />
+              ),
+            )}
           </StoryGrid.Row>
         </Story.SubSection>
 
         <Story.SubSection title="Failed">
           <StoryGrid.Row flexWrap>
-            {(["contained", "outlined", "ghost"] as const).map((variant) => (
-              <Button
-                key={variant}
-                state="failed"
-                variant={variant}
-                icon={<ArrowLeftRegularIcon />}
-                text={variant}
-              />
-            ))}
+            {(["contained", "outlined", "ghost", "soft"] as const).map(
+              (variant) => (
+                <Button
+                  key={variant}
+                  state="failed"
+                  variant={variant}
+                  icon={<ArrowLeftRegularIcon />}
+                  text={variant}
+                />
+              ),
+            )}
           </StoryGrid.Row>
         </Story.SubSection>
 
         <Story.SubSection title="Success">
           <StoryGrid.Row flexWrap>
-            {(["contained", "outlined", "ghost"] as const).map((variant) => (
-              <Button
-                key={variant}
-                state="success"
-                variant={variant}
-                icon={<ArrowLeftRegularIcon />}
-                text={variant}
-              />
-            ))}
+            {(["contained", "outlined", "ghost", "soft"] as const).map(
+              (variant) => (
+                <Button
+                  key={variant}
+                  state="success"
+                  variant={variant}
+                  icon={<ArrowLeftRegularIcon />}
+                  text={variant}
+                />
+              ),
+            )}
           </StoryGrid.Row>
         </Story.SubSection>
 

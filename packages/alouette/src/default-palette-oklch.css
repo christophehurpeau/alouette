@@ -37,6 +37,9 @@
       --color-interactive-contained-hover: oklch(0.98 0 0);
       --color-interactive-contained-focus: oklch(0.98 0 0);
       --color-interactive-contained-active: oklch(0.948 0 0);
+      --color-interactive-soft-hover: oklch(0.948 0 0);
+      --color-interactive-soft-focus: oklch(0.948 0 0);
+      --color-interactive-soft-active: oklch(0.89 0 0);
       --color-interactive-outlined-pressable: oklch(0.48 0 0);
       --color-interactive-outlined-hover: oklch(0.61 0 0);
       --color-interactive-outlined-focus: oklch(0.61 0 0);
@@ -80,6 +83,9 @@
       --color-interactive-contained-hover: oklch(0.98 0 0);
       --color-interactive-contained-focus: oklch(0.98 0 0);
       --color-interactive-contained-active: oklch(0.948 0 0);
+      --color-interactive-soft-hover: oklch(0.948 0 0);
+      --color-interactive-soft-focus: oklch(0.948 0 0);
+      --color-interactive-soft-active: oklch(0.89 0 0);
       --color-interactive-outlined-pressable: oklch(0.48 0 0);
       --color-interactive-outlined-hover: oklch(0.61 0 0);
       --color-interactive-outlined-focus: oklch(0.61 0 0);
@@ -123,6 +129,9 @@
       --color-interactive-contained-hover: oklch(0.45 0 0);
       --color-interactive-contained-focus: oklch(0.45 0 0);
       --color-interactive-contained-active: oklch(0.45 0 0);
+      --color-interactive-soft-hover: oklch(0.36 0 0);
+      --color-interactive-soft-focus: oklch(0.36 0 0);
+      --color-interactive-soft-active: oklch(0.4 0 0);
       --color-interactive-outlined-pressable: oklch(0.45 0 0);
       --color-interactive-outlined-hover: oklch(0.795 0 0);
       --color-interactive-outlined-focus: oklch(0.795 0 0);
@@ -151,6 +160,9 @@
       --color-interactive-contained-hover: oklch(0.54 0.1312 225);
       --color-interactive-contained-focus: oklch(0.54 0.1312 225);
       --color-interactive-contained-active: oklch(0.62 0.1428 225);
+      --color-interactive-soft-hover: oklch(0.948 0.0201 225);
+      --color-interactive-soft-focus: oklch(0.948 0.0201 225);
+      --color-interactive-soft-active: oklch(0.89 0.0472 225);
       --color-interactive-outlined-pressable: oklch(0.48 0.1166 225);
       --color-interactive-outlined-hover: oklch(0.62 0.1428 225);
       --color-interactive-outlined-focus: oklch(0.62 0.1428 225);
@@ -179,6 +191,9 @@
       --color-interactive-contained-hover: oklch(0.54 0.1422 233);
       --color-interactive-contained-focus: oklch(0.54 0.1422 233);
       --color-interactive-contained-active: oklch(0.62 0.1548 233);
+      --color-interactive-soft-hover: oklch(0.948 0.018 233);
+      --color-interactive-soft-focus: oklch(0.948 0.018 233);
+      --color-interactive-soft-active: oklch(0.89 0.0423 233);
       --color-interactive-outlined-pressable: oklch(0.48 0.1264 233);
       --color-interactive-outlined-hover: oklch(0.62 0.1548 233);
       --color-interactive-outlined-focus: oklch(0.62 0.1548 233);
@@ -207,6 +222,9 @@
       --color-interactive-contained-hover: oklch(0.54 0.2236 145);
       --color-interactive-contained-focus: oklch(0.54 0.2236 145);
       --color-interactive-contained-active: oklch(0.62 0.2435 145);
+      --color-interactive-soft-hover: oklch(0.948 0.0565 145);
+      --color-interactive-soft-focus: oklch(0.948 0.0565 145);
+      --color-interactive-soft-active: oklch(0.89 0.1469 145);
       --color-interactive-outlined-pressable: oklch(0.48 0.1987 145);
       --color-interactive-outlined-hover: oklch(0.62 0.2435 145);
       --color-interactive-outlined-focus: oklch(0.62 0.2435 145);
@@ -235,6 +253,9 @@
       --color-interactive-contained-hover: oklch(0.6 0.1373 87);
       --color-interactive-contained-focus: oklch(0.6 0.1373 87);
       --color-interactive-contained-active: oklch(0.8 0.1738 91);
+      --color-interactive-soft-hover: oklch(0.948 0.0521 93.96);
+      --color-interactive-soft-focus: oklch(0.948 0.0521 93.96);
+      --color-interactive-soft-active: oklch(0.928 0.0775 93.56);
       --color-interactive-outlined-pressable: oklch(0.56 0.1282 86.2);
       --color-interactive-outlined-hover: oklch(0.8 0.1738 91);
       --color-interactive-outlined-focus: oklch(0.8 0.1738 91);
@@ -263,6 +284,9 @@
       --color-interactive-contained-hover: oklch(0.54 0.2385 23.22);
       --color-interactive-contained-focus: oklch(0.54 0.2385 23.22);
       --color-interactive-contained-active: oklch(0.62 0.2594 22.66);
+      --color-interactive-soft-hover: oklch(0.948 0.0186 20.36);
+      --color-interactive-soft-focus: oklch(0.948 0.0186 20.36);
+      --color-interactive-soft-active: oklch(0.89 0.045 20.77);
       --color-interactive-outlined-pressable: oklch(0.48 0.2121 23.64);
       --color-interactive-outlined-hover: oklch(0.62 0.2594 22.66);
       --color-interactive-outlined-focus: oklch(0.62 0.2594 22.66);
@@ -291,6 +315,9 @@
       --color-interactive-contained-hover: oklch(0.5 0.1102 225);
       --color-interactive-contained-focus: oklch(0.5 0.1102 225);
       --color-interactive-contained-active: oklch(0.5 0.1102 225);
+      --color-interactive-soft-hover: oklch(0.34 0.0664 225);
+      --color-interactive-soft-focus: oklch(0.34 0.0664 225);
+      --color-interactive-soft-active: oklch(0.4 0.0841 225);
       --color-interactive-outlined-pressable: oklch(0.5 0.1102 225);
       --color-interactive-outlined-hover: oklch(0.7 0.1542 225);
       --color-interactive-outlined-focus: oklch(0.7 0.1542 225);
@@ -319,6 +346,9 @@
       --color-interactive-contained-hover: oklch(0.5 0.1195 233);
       --color-interactive-contained-focus: oklch(0.5 0.1195 233);
       --color-interactive-contained-active: oklch(0.5 0.1195 233);
+      --color-interactive-soft-hover: oklch(0.34 0.072 233);
+      --color-interactive-soft-focus: oklch(0.34 0.072 233);
+      --color-interactive-soft-active: oklch(0.4 0.0912 233);
       --color-interactive-outlined-pressable: oklch(0.5 0.1195 233);
       --color-interactive-outlined-hover: oklch(0.7 0.1672 233);
       --color-interactive-outlined-focus: oklch(0.7 0.1672 233);
@@ -347,6 +377,9 @@
       --color-interactive-contained-hover: oklch(0.5 0.1878 145);
       --color-interactive-contained-focus: oklch(0.5 0.1878 145);
       --color-interactive-contained-active: oklch(0.5 0.1878 145);
+      --color-interactive-soft-hover: oklch(0.34 0.1132 145);
+      --color-interactive-soft-focus: oklch(0.34 0.1132 145);
+      --color-interactive-soft-active: oklch(0.4 0.1434 145);
       --color-interactive-outlined-pressable: oklch(0.5 0.1878 145);
       --color-interactive-outlined-hover: oklch(0.7 0.2629 145);
       --color-interactive-outlined-focus: oklch(0.7 0.2629 145);
@@ -375,6 +408,9 @@
       --color-interactive-contained-hover: oklch(0.56 0.1163 86.2);
       --color-interactive-contained-focus: oklch(0.56 0.1163 86.2);
       --color-interactive-contained-active: oklch(0.56 0.1163 86.2);
+      --color-interactive-soft-hover: oklch(0.5 0.0922 85);
+      --color-interactive-soft-focus: oklch(0.5 0.0922 85);
+      --color-interactive-soft-active: oklch(0.53 0.1051 85.6);
       --color-interactive-outlined-pressable: oklch(0.56 0.1163 86.2);
       --color-interactive-outlined-hover: oklch(0.8 0.1662 91);
       --color-interactive-outlined-focus: oklch(0.8 0.1662 91);
@@ -403,6 +439,9 @@
       --color-interactive-contained-hover: oklch(0.5 0.2004 23.5);
       --color-interactive-contained-focus: oklch(0.5 0.2004 23.5);
       --color-interactive-contained-active: oklch(0.5 0.2004 23.5);
+      --color-interactive-soft-hover: oklch(0.34 0.1211 24.62);
+      --color-interactive-soft-focus: oklch(0.34 0.1211 24.62);
+      --color-interactive-soft-active: oklch(0.4 0.1533 24.2);
       --color-interactive-outlined-pressable: oklch(0.5 0.2004 23.5);
       --color-interactive-outlined-hover: oklch(0.7 0.2143 22.1);
       --color-interactive-outlined-focus: oklch(0.7 0.2143 22.1);

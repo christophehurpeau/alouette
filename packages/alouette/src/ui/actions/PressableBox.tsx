@@ -47,6 +47,20 @@ const pressableBoxVariants = tv(
           "aria-disabled:border-interactive-outlined-disabled",
           "focus-visible:outline-interactive-outlined-outline-focus",
         ].join(" "),
+        // No ground and no border at rest: the affordance is the fill arriving
+        // on hover, like a listbox row (ListboxOption). The fill is a tone of
+        // the surrounding surface, not the accent, so the label keeps its own
+        // color. No radius either (twMerge is off here, so a variant radius
+        // would collide with the caller's own).
+        soft: [
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "bg-transparent",
+          "hover:bg-interactive-soft-hover",
+          "focus:bg-interactive-soft-focus",
+          "active:bg-interactive-soft-active",
+          "disabled:bg-transparent",
+          "aria-disabled:bg-transparent",
+          "focus-visible:outline-offset-0 focus-visible:outline-interactive-outlined-outline-focus",
+        ].join(" "),
       },
       forceStyle: {
         hover: "",
@@ -121,6 +135,27 @@ const pressableBoxVariants = tv(
             forceStyle: "press",
             className: "border-interactive-outlined-active",
           },
+          /* soft */
+          {
+            variant: "soft",
+            forceStyle: undefined,
+            className: "bg-transparent",
+          },
+          {
+            variant: "soft",
+            forceStyle: "hover",
+            className: "bg-interactive-soft-hover",
+          },
+          {
+            variant: "soft",
+            forceStyle: "focus",
+            className: "bg-interactive-soft-focus",
+          },
+          {
+            variant: "soft",
+            forceStyle: "press",
+            className: "bg-interactive-soft-active",
+          },
         ]
       : undefined,
     defaultVariants: {
@@ -137,16 +172,32 @@ export interface PressableBoxProps
   accent?: Accent;
   className?: string;
   forceStyle?: "focus" | "hover" | "press";
+  /**
+   * Set it to `false` on a row of a list that already paints its cursor (a
+   * menu item, a listbox option): the focus moves with the pointer there, so
+   * the outline would ring whatever the mouse is over.
+   */
+  withFocusVisibleOutline?: boolean;
 }
 
 // TODO what is the diff between <Box interactive> and PressableBox ?
 export const PressableBox = forwardRef<RNView, PressableBoxProps>(
-  ({ className, variant, forceStyle, accent, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      forceStyle,
+      accent,
+      withFocusVisibleOutline = true,
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <AccentScope accent={accent}>
         <InteractiveBox
           ref={ref}
-          withFocusVisibleOutline
+          withFocusVisibleOutline={withFocusVisibleOutline}
           role="button"
           className={pressableBoxVariants({
             variant,

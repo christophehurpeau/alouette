@@ -9,6 +9,8 @@ export interface SelectionContextValue {
     /** Tighter horizontal padding, for a group holding many options. */
     compact?: boolean;
     orientation?: SegmentedOrientation;
+    /** The bar fills its container and its items share that width. */
+    stretch?: boolean;
 }
 export interface SelectionGroupProps {
     /** Controlled selected value. */
@@ -30,7 +32,8 @@ export declare function createSelectionContext(missingProviderMessage: string): 
 export interface SelectionValueProps extends Pick<SelectionGroupProps, "defaultValue" | "disabled" | "onValueChange" | "value"> {
     compact?: boolean;
     orientation?: SegmentedOrientation;
+    stretch?: boolean;
 }
-export declare function useSelectionValue({ value: controlledValue, defaultValue, onValueChange, disabled, compact, orientation, }: SelectionValueProps): SelectionContextValue;
+export declare function useSelectionValue({ value: controlledValue, defaultValue, onValueChange, disabled, compact, orientation, stretch, }: SelectionValueProps): SelectionContextValue;
 export {};
 //# sourceMappingURL=SelectionContext.d.ts.map

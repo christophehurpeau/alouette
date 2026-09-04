@@ -9,14 +9,17 @@ export declare const Box: import("react").ForwardRefExoticComponent<BoxProps & i
 export declare const interactiveBoxVariants: import("tailwind-variants").TVReturnType<{
     withFocusVisibleOutline: {
         true: string;
+        false: string;
     };
 }, undefined, string, {
     withFocusVisibleOutline: {
         true: string;
+        false: string;
     };
 }, undefined, import("tailwind-variants").TVReturnType<{
     withFocusVisibleOutline: {
         true: string;
+        false: string;
     };
 }, undefined, string, unknown, unknown, undefined>>;
 export interface InteractiveBoxProps extends VariantProps<typeof interactiveBoxVariants>, PressableProps {

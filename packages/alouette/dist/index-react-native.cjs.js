@@ -274,7 +274,11 @@ const interactiveBoxVariants = tailwindVariants.tv({
   ].join(" "),
   variants: {
     withFocusVisibleOutline: {
-      true: "focus-visible:outline-2 focus-visible:outline-offset-2"
+      true: "focus-visible:outline-2 focus-visible:outline-offset-2",
+      // `outline-none` cannot express this: react-native-css keeps solid,
+      // dotted and dashed outline styles only and drops `none`, so the
+      // browser's own focus ring is overridden with a zero-width one instead.
+      false: "outline-solid outline-0"
     }
   }
 });
@@ -1139,6 +1143,20 @@ const pressableBoxVariants = tailwindVariants.tv(
           "disabled:border-interactive-outlined-disabled",
           "aria-disabled:border-interactive-outlined-disabled",
           "focus-visible:outline-interactive-outlined-outline-focus"
+        ].join(" "),
+        // No ground and no border at rest: the affordance is the fill arriving
+        // on hover, like a listbox row (ListboxOption). The fill is a tone of
+        // the surrounding surface, not the accent, so the label keeps its own
+        // color. No radius either (twMerge is off here, so a variant radius
+        // would collide with the caller's own).
+        soft: [
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "bg-transparent",
+          "hover:bg-interactive-soft-hover",
+          "focus:bg-interactive-soft-focus",
+          "active:bg-interactive-soft-active",
+          "disabled:bg-transparent",
+          "aria-disabled:bg-transparent",
+          "focus-visible:outline-offset-0 focus-visible:outline-interactive-outlined-outline-focus"
         ].join(" ")
       },
       forceStyle: {
@@ -1212,6 +1230,27 @@ const pressableBoxVariants = tailwindVariants.tv(
         variant: "ghost",
         forceStyle: "press",
         className: "border-interactive-outlined-active"
+      },
+      /* soft */
+      {
+        variant: "soft",
+        forceStyle: void 0,
+        className: "bg-transparent"
+      },
+      {
+        variant: "soft",
+        forceStyle: "hover",
+        className: "bg-interactive-soft-hover"
+      },
+      {
+        variant: "soft",
+        forceStyle: "focus",
+        className: "bg-interactive-soft-focus"
+      },
+      {
+        variant: "soft",
+        forceStyle: "press",
+        className: "bg-interactive-soft-active"
       }
     ] : void 0,
     defaultVariants: {
@@ -1221,12 +1260,19 @@ const pressableBoxVariants = tailwindVariants.tv(
   { twMerge: false }
 );
 const PressableBox = react.forwardRef(
-  ({ className, variant, forceStyle, accent, ...props }, ref) => {
+  ({
+    className,
+    variant,
+    forceStyle,
+    accent,
+    withFocusVisibleOutline = true,
+    ...props
+  }, ref) => {
     return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(
       InteractiveBox,
       {
         ref,
-        withFocusVisibleOutline: true,
+        withFocusVisibleOutline,
         role: "button",
         className: pressableBoxVariants({
           variant,
@@ -1255,7 +1301,7 @@ const buttonVariants = tailwindVariants.tv(
     variants: {
       size: {
         sm: {
-          frame: "rounded-sm px-xs gap-xxs min-h-[38px]",
+          frame: "rounded-sm px-sm gap-xxs min-h-[38px]",
           text: "text-sm py-xxs"
         },
         md: {
@@ -1266,7 +1312,8 @@ const buttonVariants = tailwindVariants.tv(
       variant: {
         contained: { text: "text-on-accent" },
         outlined: { text: "text-sharp" },
-        ghost: { text: "text-sharp" }
+        ghost: { text: "text-sharp" },
+        soft: { text: "text-sharp" }
       },
       disabled: { true: {}, false: {} },
       dimmed: {
@@ -1291,6 +1338,7 @@ const buttonVariants = tailwindVariants.tv(
         }
       },
       { variant: "outlined", disabled: false, class: { icon: "text-sharp" } },
+      { variant: "soft", disabled: false, class: { icon: "text-sharp" } },
       {
         variant: "contained",
         disabled: true,
@@ -1298,6 +1346,11 @@ const buttonVariants = tailwindVariants.tv(
       },
       {
         variant: "outlined",
+        disabled: true,
+        class: { icon: "text-disabled-muted", text: "text-disabled-muted" }
+      },
+      {
+        variant: "soft",
         disabled: true,
         class: { icon: "text-disabled-muted", text: "text-disabled-muted" }
       }
@@ -1433,7 +1486,8 @@ const iconButtonVariants = tailwindVariants.tv(
       variant: {
         contained: {},
         outlined: {},
-        ghost: {}
+        ghost: {},
+        soft: {}
       },
       disabled: {
         true: {},
@@ -1457,6 +1511,11 @@ const iconButtonVariants = tailwindVariants.tv(
         class: { icon: "text-sharp" }
       },
       {
+        variant: "soft",
+        disabled: false,
+        class: { icon: "text-sharp" }
+      },
+      {
         variant: "contained",
         disabled: true,
         class: { icon: "text-disabled-sharp" }
@@ -1468,6 +1527,11 @@ const iconButtonVariants = tailwindVariants.tv(
       },
       {
         variant: "ghost",
+        disabled: true,
+        class: { icon: "text-disabled-muted" }
+      },
+      {
+        variant: "soft",
         disabled: true,
         class: { icon: "text-disabled-muted" }
       }
@@ -2046,6 +2110,135 @@ function ActionButton({
   ] });
 }
 
+const MenuContext = react.createContext(void 0);
+const MenuContextProvider = MenuContext.Provider;
+function useMenuContext() {
+  const context = react.useContext(MenuContext);
+  if (!context) {
+    throw new Error("MenuItem must be rendered inside a Menu.");
+  }
+  return context;
+}
+
+function Menu({
+  render,
+  label,
+  header,
+  accent,
+  onOpenChange,
+  children
+}) {
+  const triggerRef = react.useRef(null);
+  const [menuNode, setMenuNode] = react.useState(null);
+  const [open, setOpen] = react.useState(false);
+  const setOpenState = react.useCallback(
+    (next) => {
+      setOpen(next);
+      onOpenChange?.(next);
+    },
+    [onOpenChange]
+  );
+  const close = react.useCallback(() => {
+    setOpenState(false);
+  }, [setOpenState]);
+  const toggle = react.useCallback(() => {
+    setOpenState(!open);
+  }, [open, setOpenState]);
+  const contextValue = react.useMemo(() => ({ close }), [close]);
+  return /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    render({
+      ref: triggerRef,
+      onPress: toggle,
+      "aria-haspopup": "menu",
+      "aria-expanded": open
+    }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      Popover,
+      {
+        open,
+        anchorRef: triggerRef,
+        align: "end",
+        width: "content",
+        placement: "top",
+        accent: accent ?? "none",
+        onClose: close,
+        children: /* @__PURE__ */ jsxRuntime.jsx(View, { className: "pt-xxs", children: /* @__PURE__ */ jsxRuntime.jsxs(
+          Surface,
+          {
+            variant: "highlight",
+            shadow: "l",
+            size: "sm",
+            className: "p-xs min-w-[220px]",
+            children: [
+              header === void 0 ? null : /* @__PURE__ */ jsxRuntime.jsx(View, { className: "px-m py-xs", children: header }),
+              /* @__PURE__ */ jsxRuntime.jsx(MenuContextProvider, { value: contextValue, children: /* @__PURE__ */ jsxRuntime.jsx(View, { ref: setMenuNode, role: "menu", "aria-label": label, children }) })
+            ]
+          }
+        ) })
+      }
+    )
+  ] });
+}
+
+const menuItemVariants = tailwindVariants.tv({
+  slots: {
+    frame: "flex-row items-center gap-xs rounded-xs px-m min-h-[44px]",
+    icon: "text-muted",
+    label: "flex-1 text-base text-sharp"
+  },
+  variants: {
+    accented: {
+      true: { icon: "text-accent", label: "text-accent" },
+      false: {}
+    },
+    disabled: {
+      true: { icon: "text-disabled-muted", label: "text-disabled-sharp" },
+      false: {}
+    }
+  },
+  defaultVariants: { accented: false, disabled: false }
+});
+function MenuItem({
+  label,
+  icon,
+  accent,
+  href,
+  disabled,
+  onPress
+}) {
+  const { close } = useMenuContext();
+  const styles = menuItemVariants({
+    accented: accent !== void 0,
+    disabled
+  });
+  const press = (event) => {
+    onPress?.(event);
+    close();
+  };
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    PressableBox,
+    {
+      variant: "soft",
+      withFocusVisibleOutline: false,
+      accent,
+      className: styles.frame(),
+      disabled,
+      ...{
+        role: "menuitem",
+        // A disabled Pressable never sees the press, so dropping the href is
+        // the only thing that stops the browser from following the link anyway.
+        href: disabled === true ? void 0 : href,
+        "aria-disabled": disabled === true,
+        onPress: press
+      },
+      children: [
+        icon ? /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size: 20, className: styles.icon() }) : null,
+        /* @__PURE__ */ jsxRuntime.jsx(Text, { className: styles.label(), children: label })
+      ]
+    }
+  );
+}
+
 const inputVariants = tailwindVariants.tv(
   {
     base: [
@@ -2174,7 +2367,12 @@ const optionVariants = tailwindVariants.tv(
   {
     base: [
       "flex-row items-center justify-between gap-xxs rounded-xs px-m py-xs my-xxs min-h-[44px]",
-      "active:bg-interactive-contained-active"
+      "active:bg-interactive-contained-active",
+      // The row's fill is the cursor, and the combobox input keeps the focus:
+      // an outline here would ring a row the keyboard never lands on. A
+      // zero-width one, because react-native-css drops `outline-style: none`
+      // (`outline-none`) and leaves the browser's own ring in place.
+      "outline-solid outline-0"
     ].join(" "),
     variants: {
       cursor: {
@@ -2353,6 +2551,7 @@ function AutocompleteMenu({
             ref: itemRef,
             onClick: onItemClick,
             onPress: onItemPress,
+            onMouseMove: onItemMouseMove,
             ...itemProps
           } = getItemProps({ item: option, index });
           const selected = option.value === currentValue;
@@ -2364,7 +2563,8 @@ function AutocompleteMenu({
               option,
               selected,
               highlighted: index === highlightedIndex,
-              onPress: onItemPress ?? onItemClick
+              onPress: onItemPress ?? onItemClick,
+              onHoverIn: onItemMouseMove
             },
             option.value
           );
@@ -2662,7 +2862,8 @@ function useSelectionValue({
   onValueChange,
   disabled,
   compact,
-  orientation
+  orientation,
+  stretch
 }) {
   const [value, onSelect] = useControllableValue({
     value: controlledValue,
@@ -2670,8 +2871,8 @@ function useSelectionValue({
     onValueChange
   });
   return react.useMemo(
-    () => ({ value, onSelect, disabled, compact, orientation }),
-    [value, onSelect, disabled, compact, orientation]
+    () => ({ value, onSelect, disabled, compact, orientation, stretch }),
+    [value, onSelect, disabled, compact, orientation, stretch]
   );
 }
 
@@ -2798,17 +2999,22 @@ function Radio({ value, label, disabled }) {
 }
 
 const segmentedBarVariants = tailwindVariants.tv({
-  base: "items-stretch self-start gap-xxs px-xs py-0",
+  base: "items-stretch gap-xxs px-xs py-0",
   variants: {
     orientation: {
       horizontal: "flex-row min-h-[44px]",
       vertical: "flex-col"
+    },
+    stretch: {
+      true: "self-stretch",
+      false: "self-start"
     }
   },
-  defaultVariants: { orientation: "horizontal" }
+  defaultVariants: { orientation: "horizontal", stretch: false }
 });
 function SegmentedBar({
   orientation,
+  stretch,
   className,
   ...props
 }) {
@@ -2817,7 +3023,7 @@ function SegmentedBar({
     {
       variant: "lowered",
       size: "sm",
-      className: segmentedBarVariants({ orientation, className }),
+      className: segmentedBarVariants({ orientation, stretch, className }),
       ...props
     }
   );
@@ -2845,8 +3051,8 @@ function RadioButtonGroup({
 
 const segmentedItemVariants = tailwindVariants.tv({
   slots: {
-    pressable: "group flex-center min-h-[44px] rounded-xs focus-visible:outline-interactive-outlined-outline-focus",
-    segment: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent transition-[border-color] duration-fast ease-in",
+    pressable: "group flex-center min-h-[44px] rounded-xs",
+    segment: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent transition-[border-color] duration-fast ease-in group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-interactive-outlined-outline-focus",
     chip: "absolute inset-0 rounded-xs transition-opacity duration-fast ease-in",
     foreground: "z-1 transition-[color] duration-fast ease-in",
     label: "select-none font-body-bold text-base text-center"
@@ -2872,10 +3078,31 @@ const segmentedItemVariants = tailwindVariants.tv({
       // A stacked item spans the bar's width, so the chip stretches with it
       // instead of shrinking to its own label.
       vertical: { pressable: "items-stretch", segment: "self-stretch" }
-    }
+    },
+    // A stretched bar hands its extra width to its items; a stacked one already
+    // spans that width, so only a row shares it.
+    stretch: { true: {}, false: {} }
   },
-  defaultVariants: { compact: false, orientation: "horizontal" },
+  defaultVariants: {
+    compact: false,
+    orientation: "horizontal",
+    stretch: false
+  },
   compoundVariants: [
+    {
+      stretch: true,
+      orientation: "horizontal",
+      // `grow`, not `flex-1`: a zero basis would make every item an equal share
+      // of the bar and truncate the longer labels the moment the bar is only as
+      // wide as its content. Growing from the natural width instead leaves the
+      // labels intact and only shares the space a stretched bar has to spare —
+      // with the chip stretching too, so the row reads as adjacent segments
+      // instead of labels floating in their own space.
+      class: {
+        pressable: "grow items-stretch",
+        segment: "self-stretch"
+      }
+    },
     {
       selected: false,
       disabled: false,
@@ -2899,19 +3126,21 @@ function SegmentedItem({
   disabled,
   compact,
   orientation,
+  stretch,
   ...props
 }) {
   const styles = segmentedItemVariants({
     selected,
     disabled: disabled === true,
     compact,
-    orientation
+    orientation,
+    stretch
   });
   return /* @__PURE__ */ jsxRuntime.jsx(
     InteractiveBox,
     {
-      withFocusVisibleOutline: true,
       "aria-label": label,
+      withFocusVisibleOutline: false,
       disabled,
       className: styles.pressable(),
       ...props,
@@ -3103,6 +3332,7 @@ function NavBar({
   accent,
   disabled,
   orientation,
+  stretch,
   children,
   ...props
 }) {
@@ -3111,13 +3341,15 @@ function NavBar({
     defaultValue,
     onValueChange,
     disabled,
-    orientation
+    orientation,
+    stretch
   });
   return /* @__PURE__ */ jsxRuntime.jsx(NavBarContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(
     SegmentedBar,
     {
       role: "navigation",
       orientation,
+      stretch,
       accent,
       ...props,
       children
@@ -3136,7 +3368,8 @@ function NavBarItem({
     value: currentValue,
     onSelect,
     disabled: navBarDisabled,
-    orientation
+    orientation,
+    stretch
   } = useNavBarContext();
   const selected = href !== void 0 && currentValue === href;
   const isDisabled = disabled === true || navBarDisabled === true;
@@ -3156,6 +3389,7 @@ function NavBarItem({
       selected,
       disabled: isDisabled,
       orientation,
+      stretch,
       onPress: onPress ?? selectHref
     }
   );
@@ -3606,6 +3840,42 @@ function FormEditableItem({
   );
 }
 
+const avatarVariants = tailwindVariants.tv({
+  slots: {
+    frame: "flex-center shrink-0 rounded-full bg-enabled",
+    label: "font-body-bold text-on-accent"
+  },
+  variants: {
+    size: {
+      sm: { frame: "size-[28px]", label: "text-xs" },
+      md: { frame: "size-[32px]", label: "text-sm" },
+      lg: { frame: "size-[40px]", label: "text-base" }
+    }
+  },
+  defaultVariants: { size: "md" }
+});
+const avatarIconSize = { sm: 16, md: 18, lg: 22 };
+function initialsFromName(name) {
+  return name.trim().split(/\s+/).slice(0, 2).map((part) => part.slice(0, 1)).join("").toUpperCase();
+}
+function Avatar({
+  name,
+  icon,
+  accent = "brand",
+  size,
+  className
+}) {
+  const styles = avatarVariants({ size });
+  return /* @__PURE__ */ jsxRuntime.jsx(Box, { accent, className: styles.frame({ className }), children: icon ? /* @__PURE__ */ jsxRuntime.jsx(
+    Icon,
+    {
+      icon,
+      size: avatarIconSize[size ?? "md"],
+      className: "text-on-accent"
+    }
+  ) : /* @__PURE__ */ jsxRuntime.jsx(Text, { className: styles.label(), children: name === void 0 ? "" : initialsFromName(name) }) });
+}
+
 const badgeVariants = tailwindVariants.tv(
   {
     slots: {
@@ -3974,6 +4244,202 @@ function ScreenSectionList({
   return /* @__PURE__ */ jsxRuntime.jsx(SectionList, { ...containerProps, ...props });
 }
 
+const appHeaderVariants = tailwindVariants.tv({
+  slots: {
+    frame: "",
+    inner: "w-full self-center flex-row flex-wrap items-center justify-between",
+    startSlot: "items-start web:md:flex-1",
+    endSlot: "items-end web:md:order-3 web:md:flex-1",
+    navSlot: "w-full items-stretch web:md:order-2 web:md:w-auto web:md:items-center"
+  },
+  variants: {
+    size: {
+      sm: { inner: "gap-xs px-s md:px-m py-xs md:gap-sm" },
+      md: { inner: "gap-sm px-m md:px-l py-sm md:gap-m" }
+    },
+    variant: {
+      // `shadow-bar` casts downwards only: the header sits above the page, it is
+      // not a raised control catching a highlight on its own top edge.
+      bar: { frame: "bg-highlight shadow-bar" },
+      // Part of the page it heads (a landing hero): no ground of its own, so
+      // whatever is behind shows through.
+      transparent: { frame: "bg-transparent" }
+    },
+    contentWidth: {
+      boxed: { inner: "max-w-[1200px]" },
+      full: {}
+    },
+    withActions: {
+      // Without actions the end slot is a pure spacer: it only has to exist on
+      // the single-line layout, where it balances the start slot.
+      false: { endSlot: "hidden web:md:flex" },
+      true: {}
+    }
+  },
+  defaultVariants: {
+    size: "md",
+    variant: "bar",
+    contentWidth: "boxed"
+  }
+});
+function AppHeader({
+  brand,
+  actions,
+  children,
+  size,
+  variant,
+  contentWidth,
+  withSafeAreaTop = true,
+  className,
+  ...props
+}) {
+  const consumedEdges = useConsumedSafeAreaEdges();
+  const safeAreaPadding = useScreenSafeAreaPadding(
+    withSafeAreaTop && !consumedEdges.includes("top") ? ["top"] : []
+  );
+  const styles = appHeaderVariants({
+    size,
+    variant,
+    contentWidth,
+    withActions: actions !== void 0
+  });
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    Box,
+    {
+      role: "banner",
+      className: styles.frame({ className }),
+      style: safeAreaPadding,
+      ...props,
+      children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: styles.inner(), children: [
+        /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.startSlot(), children: brand }),
+        /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.endSlot(), children: actions }),
+        children ? /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.navSlot(), children }) : null
+      ] })
+    }
+  );
+}
+
+const appHeaderBrandVariants = tailwindVariants.tv({
+  slots: {
+    // The header slot aligns the brand.
+    frame: "items-center gap-xs",
+    title: "font-heading-bold text-xl",
+    subtitle: "text-muted text-sm"
+  },
+  variants: {
+    interactive: {
+      // A Pressable is not an HStack, hence the explicit row; it also needs
+      // room for its hover fill and focus outline. `-ml-xs` pulls that leading
+      // padding back out, so the fill bleeds into the header's gutter and the
+      // mark stays flush with the content edge — a linked brand lands exactly
+      // where a display-only one does. The trailing padding is kept: it only
+      // extends the hit area towards the navigation, where nothing lines up.
+      true: { frame: "flex-row rounded-sm px-sm py-xxs -ml-sm" },
+      false: {}
+    }
+  },
+  defaultVariants: { interactive: false }
+});
+function AppHeaderBrand({
+  title,
+  subtitle,
+  brandLogo,
+  href,
+  onPress,
+  ...props
+}) {
+  const interactive = href !== void 0 || onPress !== void 0;
+  const styles = appHeaderBrandVariants({ interactive });
+  const content = /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    brandLogo,
+    /* @__PURE__ */ jsxRuntime.jsxs(VStack, { children: [
+      /* @__PURE__ */ jsxRuntime.jsx(Text, { className: styles.title(), children: title }),
+      subtitle ? /* @__PURE__ */ jsxRuntime.jsx(Text, { className: styles.subtitle(), children: subtitle }) : null
+    ] })
+  ] });
+  if (!interactive) {
+    return /* @__PURE__ */ jsxRuntime.jsx(HStack, { className: styles.frame(), ...props, children: content });
+  }
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    PressableBox,
+    {
+      variant: "soft",
+      className: styles.frame(),
+      ...{
+        role: href === void 0 ? "button" : "link",
+        href,
+        onPress,
+        ...props
+      },
+      children: content
+    }
+  );
+}
+
+function BrandLogo({
+  icon,
+  accent = "brand"
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    Box,
+    {
+      accent,
+      className: "flex-center shrink-0 size-[32px] rounded-full bg-enabled",
+      children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size: 22, className: "text-on-accent" })
+    }
+  );
+}
+
+const appHeaderActionsVariants = tailwindVariants.tv({
+  base: "items-center gap-xs"
+});
+function AppHeaderActions({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(HStack, { className: appHeaderActionsVariants({ className }), ...props });
+}
+
+const appHeaderAccountVariants = tailwindVariants.tv({
+  base: "flex-row items-center gap-xxs rounded-sm px-xxs min-h-[44px]"
+});
+function AppHeaderAccount({
+  name,
+  icon,
+  accent,
+  header,
+  children
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    Menu,
+    {
+      label: name,
+      header,
+      render: (triggerProps) => /* @__PURE__ */ jsxRuntime.jsxs(
+        PressableBox,
+        {
+          variant: "soft",
+          "aria-label": name,
+          className: appHeaderAccountVariants(),
+          ...triggerProps,
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx(Avatar, { name, icon, accent }),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              Icon,
+              {
+                icon: /* @__PURE__ */ jsxRuntime.jsx(CaretDownRegularIcon.CaretDownRegularIcon, {}),
+                size: 14,
+                className: "text-muted"
+              }
+            )
+          ]
+        }
+      ),
+      children
+    }
+  );
+}
+
 const Breakpoints = {
   /**
    * min-width: 0
@@ -4074,9 +4540,15 @@ exports.ActionButton = ActionButton;
 exports.AlertDialog = AlertDialog;
 exports.AlouetteDecorator = AlouetteDecorator;
 exports.AlouetteProvider = AlouetteProvider;
+exports.AppHeader = AppHeader;
+exports.AppHeaderAccount = AppHeaderAccount;
+exports.AppHeaderActions = AppHeaderActions;
+exports.AppHeaderBrand = AppHeaderBrand;
+exports.Avatar = Avatar;
 exports.Badge = Badge;
 exports.Blockquote = Blockquote;
 exports.Box = Box;
+exports.BrandLogo = BrandLogo;
 exports.BreakpointNameEnum = BreakpointNameEnum;
 exports.Breakpoints = Breakpoints;
 exports.Bullet = Bullet;
@@ -4112,6 +4584,8 @@ exports.InputTextAutocomplete = InputTextAutocomplete;
 exports.InteractiveBox = InteractiveBox;
 exports.InternalLinkButton = InternalLinkButton;
 exports.LinearProgress = LinearProgress;
+exports.Menu = Menu;
+exports.MenuItem = MenuItem;
 exports.Message = Message;
 exports.Modal = Modal;
 exports.NavBar = NavBar;

@@ -6,7 +6,7 @@ import { PressableBox } from "./PressableBox";
 
 type ThisStory = StoryObj<typeof PressableBox>;
 
-const VARIANTS = ["contained", "outlined"] as const;
+const VARIANTS = ["contained", "outlined", "soft"] as const;
 
 export default {
   title: "alouette/Actions/PressableBox",

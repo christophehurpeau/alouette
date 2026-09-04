@@ -172,6 +172,9 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
     fg: "on-accent",
     bg: "interactive-contained-hover",
   },
+  // The soft variant keeps the label's own color over its fill.
+  { label: "sharp on soft:hover", fg: "sharp", bg: "interactive-soft-hover" },
+  { label: "accent on soft:hover", fg: "accent", bg: "interactive-soft-hover" },
   // ok if this fails.
   // {
   //   label: "on-accent on contained:active",

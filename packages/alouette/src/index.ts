@@ -103,6 +103,10 @@ export type { ActionButtonProps } from "./ui/actions/ActionButton";
 export { ActionButton } from "./ui/actions/ActionButton";
 export type { IconButtonProps } from "./ui/actions/IconButton";
 export { IconButton } from "./ui/actions/IconButton";
+export type { MenuProps, MenuTriggerParams } from "./ui/actions/Menu";
+export { Menu } from "./ui/actions/Menu";
+export type { MenuItemProps } from "./ui/actions/MenuItem";
+export { MenuItem } from "./ui/actions/MenuItem";
 export type { InputTextMode, InputTextProps } from "./ui/inputs/InputText";
 export { InputText } from "./ui/inputs/InputText";
 export type {
@@ -155,6 +159,8 @@ export type { SimpleVFormProps } from "./ui/forms/SimpleVForm";
 export { SimpleVForm } from "./ui/forms/SimpleVForm";
 export type { FormEditableItemProps } from "./ui/forms/FormEditableItem";
 export { FormEditableItem } from "./ui/forms/FormEditableItem";
+export type { AvatarProps } from "./ui/data/Avatar";
+export { Avatar } from "./ui/data/Avatar";
 export type { BadgeProps } from "./ui/data/Badge";
 export { Badge } from "./ui/data/Badge";
 export type { BulletProps } from "./ui/data/Bullet";
@@ -208,6 +214,17 @@ export type { ScreenFlatListProps } from "./ui/layout/ScreenFlatList";
 export { ScreenFlatList } from "./ui/layout/ScreenFlatList";
 export type { ScreenSectionListProps } from "./ui/layout/ScreenSectionList";
 export { ScreenSectionList } from "./ui/layout/ScreenSectionList";
+export type { AppHeaderProps } from "./ui/layout/AppHeader";
+export { AppHeader } from "./ui/layout/AppHeader";
+export type { AppHeaderSize } from "./ui/layout/AppHeader";
+export type { AppHeaderBrandProps } from "./ui/layout/AppHeaderBrand";
+export { AppHeaderBrand } from "./ui/layout/AppHeaderBrand";
+export type { BrandLogoProps } from "./ui/layout/BrandLogo";
+export { BrandLogo } from "./ui/layout/BrandLogo";
+export type { AppHeaderActionsProps } from "./ui/layout/AppHeaderActions";
+export { AppHeaderActions } from "./ui/layout/AppHeaderActions";
+export type { AppHeaderAccountProps } from "./ui/layout/AppHeaderAccount";
+export { AppHeaderAccount } from "./ui/layout/AppHeaderAccount";
 export {
   SwitchBreakpointsUsingDisplayNone,
   SwitchBreakpointsUsingNull,

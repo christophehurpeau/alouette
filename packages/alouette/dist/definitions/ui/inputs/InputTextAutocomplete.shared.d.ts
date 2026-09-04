@@ -22,6 +22,8 @@ interface ComboboxItemProps extends Omit<PressableProps, "onPress"> {
     ref: Ref<RNView>;
     onClick?: () => void;
     onPress?: () => void;
+    /** Web only: how downshift moves its cursor with the pointer. */
+    onMouseMove?: () => void;
 }
 interface ComboboxItemParams {
     item: AutocompleteOption;

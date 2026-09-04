@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import type { ReactNode, Ref } from "react";
+import type { View as RNView } from "react-native";
 import { tv } from "tailwind-variants";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { buttonHeight } from "./Button";
@@ -15,6 +16,7 @@ const iconButtonVariants = tv(
         contained: {},
         outlined: {},
         ghost: {},
+        soft: {},
       },
       disabled: {
         true: {},
@@ -38,6 +40,11 @@ const iconButtonVariants = tv(
         class: { icon: "text-sharp" },
       },
       {
+        variant: "soft",
+        disabled: false,
+        class: { icon: "text-sharp" },
+      },
+      {
         variant: "contained",
         disabled: true,
         class: { icon: "text-disabled-sharp" },
@@ -52,6 +59,11 @@ const iconButtonVariants = tv(
         disabled: true,
         class: { icon: "text-disabled-muted" },
       },
+      {
+        variant: "soft",
+        disabled: true,
+        class: { icon: "text-disabled-muted" },
+      },
     ],
     defaultVariants: { variant: "contained" },
   },
@@ -59,6 +71,11 @@ const iconButtonVariants = tv(
 );
 
 export interface IconButtonProps extends Omit<PressableBoxProps, "children"> {
+  /**
+   * Forwarded to the underlying `PressableBox`, so the button can anchor a
+   * `Popover` or a `Menu`. React 19 carries it in with the other props.
+   */
+  ref?: Ref<RNView>;
   icon: SVGIconElement;
   /** Preset size token, or any number for a custom diameter (px). */
   size?: number | "md" | "sm";

@@ -8,6 +8,12 @@ export interface NavBarProps extends SelectionGroupProps {
      * fix the rail.
      */
     orientation?: SegmentedOrientation;
+    /**
+     * The bar fills the width it is given instead of hugging its destinations,
+     * which share it equally — what a stacked `AppHeader` wants for the line it
+     * hands to the navigation.
+     */
+    stretch?: boolean;
     className?: string;
 }
 /**
@@ -15,5 +21,5 @@ export interface NavBarProps extends SelectionGroupProps {
  * destination — it matches an item's `href`, and is usually owned by the app's
  * router, so pass it controlled.
  */
-export declare function NavBar({ value, defaultValue, onValueChange, accent, disabled, orientation, children, ...props }: NavBarProps): ReactNode;
+export declare function NavBar({ value, defaultValue, onValueChange, accent, disabled, orientation, stretch, children, ...props }: NavBarProps): ReactNode;
 //# sourceMappingURL=NavBar.d.ts.map

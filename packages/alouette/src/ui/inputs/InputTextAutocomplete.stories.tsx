@@ -1,4 +1,4 @@
-import { expect, fn, screen, userEvent, within } from "storybook/test";
+import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 import { Text } from "../primitives/Text";
@@ -203,6 +203,18 @@ export const Tests: StoryObj<typeof InputTextAutocomplete> = {
     await expect(
       within(reopened).getByRole("option", { name: "Apple" }),
     ).toHaveAttribute("aria-selected", "false");
+
+    // The pointer moves that cursor as well, so the hovered row is the only
+    // highlighted one: downshift's `onMouseMove` is a DOM handler a
+    // react-native-web Pressable drops, hence the row's `onHoverIn`.
+    const banana = within(reopened).getByRole("option", { name: "Banana" });
+    await userEvent.hover(banana);
+    await waitFor(async () => {
+      await expect(input).toHaveAttribute(
+        "aria-activedescendant",
+        banana.getAttribute("id"),
+      );
+    });
 
     await userEvent.clear(input);
     await userEvent.type(input, "durian");

@@ -1,6 +1,7 @@
 import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
 import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/WarningDuotoneIcon";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, type Ref, useEffect, useState } from "react";
+import type { View as RNView } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { ExternalLink } from "../../expo/ExternalLink";
@@ -33,7 +34,7 @@ const buttonVariants = tv(
     variants: {
       size: {
         sm: {
-          frame: "rounded-sm px-xs gap-xxs min-h-[38px]",
+          frame: "rounded-sm px-sm gap-xxs min-h-[38px]",
           text: "text-sm py-xxs",
         },
         md: {
@@ -45,6 +46,7 @@ const buttonVariants = tv(
         contained: { text: "text-on-accent" },
         outlined: { text: "text-sharp" },
         ghost: { text: "text-sharp" },
+        soft: { text: "text-sharp" },
       },
       disabled: { true: {}, false: {} },
       dimmed: {
@@ -69,6 +71,7 @@ const buttonVariants = tv(
         },
       },
       { variant: "outlined", disabled: false, class: { icon: "text-sharp" } },
+      { variant: "soft", disabled: false, class: { icon: "text-sharp" } },
       {
         variant: "contained",
         disabled: true,
@@ -76,6 +79,11 @@ const buttonVariants = tv(
       },
       {
         variant: "outlined",
+        disabled: true,
+        class: { icon: "text-disabled-muted", text: "text-disabled-muted" },
+      },
+      {
+        variant: "soft",
         disabled: true,
         class: { icon: "text-disabled-muted", text: "text-disabled-muted" },
       },
@@ -116,6 +124,11 @@ export interface ButtonProps
   accent?: Accent;
   text: ReactNode;
   state?: ButtonState;
+  /**
+   * Forwarded to the underlying `PressableBox`, so the button can anchor a
+   * `Popover` or a `Menu`. React 19 carries it in with the other props.
+   */
+  ref?: Ref<RNView>;
 }
 
 interface IsButtonDisabledParams {

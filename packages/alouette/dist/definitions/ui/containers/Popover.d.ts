@@ -13,6 +13,18 @@ export interface PopoverProps {
      */
     anchorRef?: RefObject<RNView | null>;
     /**
+     * Which edge of the anchor the panel lines up with. Anchored web only, like
+     * {@link anchorRef} — `end` is what a menu hanging off a small trigger near
+     * the right edge needs.
+     */
+    align?: "end" | "start";
+    /**
+     * `anchor` (the default) makes the panel as wide as the anchor, which is what
+     * a field dropdown wants; `content` lets it size to its own content, for a
+     * menu whose trigger is narrower than its items. Anchored web only.
+     */
+    width?: "anchor" | "content";
+    /**
      * Placement of the overlay presentation (native, and web without an anchor).
      * `top` keeps it pinned below the status bar so its first row stays put while
      * its content resizes; `center` (the default) suits content whose height does

@@ -13,6 +13,8 @@ export interface SelectionContextValue {
   /** Tighter horizontal padding, for a group holding many options. */
   compact?: boolean;
   orientation?: SegmentedOrientation;
+  /** The bar fills its container and its items share that width. */
+  stretch?: boolean;
 }
 
 export interface SelectionGroupProps {
@@ -55,6 +57,7 @@ export interface SelectionValueProps extends Pick<
 > {
   compact?: boolean;
   orientation?: SegmentedOrientation;
+  stretch?: boolean;
 }
 
 export function useSelectionValue({
@@ -64,6 +67,7 @@ export function useSelectionValue({
   disabled,
   compact,
   orientation,
+  stretch,
 }: SelectionValueProps): SelectionContextValue {
   const [value, onSelect] = useControllableValue({
     value: controlledValue,
@@ -71,7 +75,7 @@ export function useSelectionValue({
     onValueChange,
   });
   return useMemo(
-    () => ({ value, onSelect, disabled, compact, orientation }),
-    [value, onSelect, disabled, compact, orientation],
+    () => ({ value, onSelect, disabled, compact, orientation, stretch }),
+    [value, onSelect, disabled, compact, orientation, stretch],
   );
 }
