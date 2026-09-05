@@ -5,18 +5,24 @@ import { BirdRegularIcon } from "alouette-icons/phosphor-icons/BirdRegularIcon";
 import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
 import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
 import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+import { SignOutRegularIcon } from "alouette-icons/phosphor-icons/SignOutRegularIcon";
+import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircleRegularIcon";
 import type { ReactNode } from "react";
 import { IconButton } from "../actions/IconButton";
 import { LinkText } from "../actions/LinkText";
+import { MenuItem } from "../actions/MenuItem";
 import { Box } from "../containers/Box";
 import { Surface } from "../containers/Surface";
+import { ColorModePicker } from "../inputs/ColorModePicker";
 import { NavBar } from "../navigation/NavBar";
 import { NavBarItem } from "../navigation/NavBarItem";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
+import { Separator } from "../stacks/Separator";
 import { HStack, VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
 import { AppHeader } from "./AppHeader";
+import { AppHeaderAccount } from "./AppHeaderAccount";
 import { AppHeaderActions } from "./AppHeaderActions";
 import { AppHeaderBrand } from "./AppHeaderBrand";
 import { AppLayout } from "./AppLayout";
@@ -82,6 +88,7 @@ function DemoHeader(): ReactNode {
       }
       actions={
         <AppHeaderActions>
+          <ColorModePicker />
           <IconButton
             aria-label="Notifications"
             icon={<BellRegularIcon />}
@@ -89,6 +96,25 @@ function DemoHeader(): ReactNode {
             variant="soft"
             onPress={fn()}
           />
+          <AppHeaderAccount
+            name="Camille Hurel"
+            header={
+              <Text className="text-sm text-muted">camille@example.com</Text>
+            }
+          >
+            <MenuItem
+              label="Profile"
+              icon={<UserCircleRegularIcon />}
+              href="/me"
+            />
+            <Separator role="separator" className="my-xxs" />
+            <MenuItem
+              label="Log out"
+              icon={<SignOutRegularIcon />}
+              accent="danger"
+              onPress={fn()}
+            />
+          </AppHeaderAccount>
         </AppHeaderActions>
       }
       contentWidth="full"

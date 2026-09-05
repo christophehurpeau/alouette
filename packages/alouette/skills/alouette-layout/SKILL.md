@@ -6,7 +6,7 @@ description: >
   the screen scroll containers (ScreenScrollView / ScreenFlatList /
   ScreenSectionList, with safe-area edges declared through SafeAreaScope),
   the application shell (AppLayout + AppHeader, AppHeaderBrand / BrandLogo /
-  AppHeaderActions / AppHeaderAccount),
+  AppHeaderActions / AppHeaderAccount / a ColorModePicker in the actions slot),
   and gradients (GradientBackground / GradientScrollView). Use the alouette
   spacing (xxs..4xl), radius (xs..lg) and shadow (s/m/l/lowered) scale via
   p-*/gap-*/rounded-*/shadow-* classes. Load when building screen structure, an
@@ -225,6 +225,12 @@ row wrapped in a link), `BrandLogo` (an icon on an accent disc),
 signed-in account as one `Avatar` trigger opening a `Menu` of `MenuItem`s, which
 is where session actions belong rather than in the bar itself.
 
+A light/dark switch goes in the same actions slot as a `ColorModePicker`
+(alouette-forms/SKILL.md) — one pill of icon-only chips, never two loose
+`IconButton`s. It reports the stored `ColorModePreference` only; the app applies
+it with `useResolvedColorMode` + `ScopedTheme` (alouette-theming/SKILL.md) and
+persists it.
+
 ```tsx
 <AppHeader
   brand={
@@ -236,6 +242,7 @@ is where session actions belong rather than in the bar itself.
   }
   actions={
     <AppHeaderActions>
+      <ColorModePicker value={preference} onValueChange={setPreference} />
       <IconButton
         icon={<BellRegularIcon />}
         aria-label="Notifications"
