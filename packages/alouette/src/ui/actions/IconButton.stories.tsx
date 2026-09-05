@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuotoneIcon";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import type { ReactNode } from "react";
 import { Text } from "../primitives/Text";
 import { HStack, VStack } from "../stacks/stacks";
 import { Story, accents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
-import { IconButton } from "./IconButton";
+import { IconButton, type IconButtonProps } from "./IconButton";
 
 type ThisStory = StoryObj<typeof IconButton>;
 
@@ -20,6 +22,7 @@ export default {
 - \`size\`: \`sm\` | \`md\` | any number (custom diameter px)
 - \`iconSize\`: \`"fill"\` makes the icon fill 80% of the button (default 50%)
 - \`variant\`: contained | outlined | ghost | soft
+- \`activeIcon\`: replaces \`icon\` while the button is hovered, focused or pressed — usually the duotone twin
 - Wrap in \`<AccentTheme accent="brand"/>\` (or any accent: brand|info|success|warning|danger) to switch the interactive token set; it composes with current light/dark mode`,
       },
     },
@@ -31,8 +34,64 @@ export const PreviewIconButtonStory: ThisStory = {
     size: "md",
     "aria-label": "Go back",
   },
-  render: (args) => <IconButton {...args} icon={<ArrowLeftRegularIcon />} />,
+  render: (args) => (
+    <IconButton
+      {...args}
+      icon={<ArrowLeftRegularIcon />}
+      activeIcon={<ArrowLeftDuotoneIcon />}
+    />
+  ),
 };
+
+interface BackIconButtonProps {
+  forceStyle?: IconButtonProps["forceStyle"];
+  /** Renders `icon` alone, so the glyph keeps one weight in every state. */
+  withoutActiveIcon?: boolean;
+}
+
+function BackIconButton({
+  forceStyle,
+  withoutActiveIcon,
+}: BackIconButtonProps): ReactNode {
+  return (
+    <IconButton
+      forceStyle={forceStyle}
+      icon={<ArrowLeftRegularIcon />}
+      activeIcon={withoutActiveIcon ? undefined : <ArrowLeftDuotoneIcon />}
+      aria-label="Go back"
+    />
+  );
+}
+
+function IconWeightRow({
+  withoutActiveIcon,
+}: Pick<BackIconButtonProps, "withoutActiveIcon">): ReactNode {
+  return (
+    <StoryGrid.Row>
+      <StoryGrid.Col title="default">
+        <BackIconButton withoutActiveIcon={withoutActiveIcon} />
+      </StoryGrid.Col>
+      <StoryGrid.Col title="hover">
+        <BackIconButton
+          forceStyle="hover"
+          withoutActiveIcon={withoutActiveIcon}
+        />
+      </StoryGrid.Col>
+      <StoryGrid.Col title="focus">
+        <BackIconButton
+          forceStyle="focus"
+          withoutActiveIcon={withoutActiveIcon}
+        />
+      </StoryGrid.Col>
+      <StoryGrid.Col title="press">
+        <BackIconButton
+          forceStyle="press"
+          withoutActiveIcon={withoutActiveIcon}
+        />
+      </StoryGrid.Col>
+    </StoryGrid.Row>
+  );
+}
 
 export const Variants: ThisStory = {
   render: () => (
@@ -44,11 +103,21 @@ export const Variants: ThisStory = {
               <IconButton
                 size={size}
                 icon={<ArrowLeftRegularIcon />}
+                activeIcon={<ArrowLeftDuotoneIcon />}
                 aria-label="Go back"
               />
             </StoryGrid.Col>
           ))}
         </StoryGrid.Row>
+      </Story.Section>
+
+      <Story.Section title="Icon weight">
+        <Story.SubSection title="activeIcon">
+          <IconWeightRow />
+        </Story.SubSection>
+        <Story.SubSection title="Without activeIcon">
+          <IconWeightRow withoutActiveIcon />
+        </Story.SubSection>
       </Story.Section>
 
       <Story.Section withSurface title="Variants">
@@ -86,6 +155,7 @@ export const Variants: ThisStory = {
                                 : state
                             }
                             icon={<ArrowLeftRegularIcon />}
+                            activeIcon={<ArrowLeftDuotoneIcon />}
                             aria-label="Go back"
                           />
                           <Text className="text-xs">

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { type SegmentedOrientation, type SelectionGroupProps } from "../selection/SelectionContext";
+import { type SegmentedOrientation, type SegmentedVariant, type SelectionGroupProps } from "../selection/SelectionContext";
 export interface NavBarProps extends SelectionGroupProps {
     "aria-label"?: string;
     /**
@@ -14,6 +14,12 @@ export interface NavBarProps extends SelectionGroupProps {
      * hands to the navigation.
      */
     stretch?: boolean;
+    /**
+     * `icon` renders the destinations as square icon-only chips in a pill-shaped
+     * bar; each item's `label` stays its accessible name, so an item must carry
+     * an `icon`.
+     */
+    variant?: SegmentedVariant;
     className?: string;
 }
 /**
@@ -21,5 +27,5 @@ export interface NavBarProps extends SelectionGroupProps {
  * destination — it matches an item's `href`, and is usually owned by the app's
  * router, so pass it controlled.
  */
-export declare function NavBar({ value, defaultValue, onValueChange, accent, disabled, orientation, stretch, children, ...props }: NavBarProps): ReactNode;
+export declare function NavBar({ value, defaultValue, onValueChange, accent, disabled, orientation, stretch, variant, children, ...props }: NavBarProps): ReactNode;
 //# sourceMappingURL=NavBar.d.ts.map

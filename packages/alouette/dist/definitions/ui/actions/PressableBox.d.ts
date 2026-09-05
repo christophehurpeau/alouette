@@ -13,7 +13,7 @@ declare const pressableBoxVariants: import("tailwind-variants").TVReturnType<{
         focus: string;
         press: string;
     };
-}, undefined, "overflow-hidden", {
+}, undefined, "group overflow-hidden", {
     withFocusVisibleOutline: {
         true: string;
         false: string;

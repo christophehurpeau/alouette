@@ -14,6 +14,10 @@ declare const _default: {
         compact: {
             control: "boolean";
         };
+        variant: {
+            control: "inline-radio";
+            options: string[];
+        };
         accent: {
             control: "select";
             options: (string | undefined)[];

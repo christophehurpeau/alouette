@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from "react";
 import type { View as RNView } from "react-native";
-import { type SVGIconElement } from "../primitives/Icon";
+import type { SVGIconElement } from "../primitives/Icon";
 import { type PressableBoxProps } from "./PressableBox";
 export interface IconButtonProps extends Omit<PressableBoxProps, "children"> {
     /**
@@ -9,11 +9,13 @@ export interface IconButtonProps extends Omit<PressableBoxProps, "children"> {
      */
     ref?: Ref<RNView>;
     icon: SVGIconElement;
+    /** Replaces `icon` while the button is hovered, focused or pressed. */
+    activeIcon?: SVGIconElement;
     /** Preset size token, or any number for a custom diameter (px). */
     size?: number | "md" | "sm";
     /** When "fill", the icon takes 80% of the button; default uses 50%. */
     iconSize?: "fill";
     "aria-label": string;
 }
-export declare function IconButton({ icon, disabled, size, iconSize, variant, className, ...pressableProps }: IconButtonProps): ReactNode;
+export declare function IconButton({ icon, activeIcon, disabled, size, iconSize, variant, className, forceStyle, ...pressableProps }: IconButtonProps): ReactNode;
 //# sourceMappingURL=IconButton.d.ts.map

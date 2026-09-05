@@ -2,6 +2,11 @@ import type { Provider, ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 /** Row of chips (the default) or a column of full-width ones. */
 export type SegmentedOrientation = "horizontal" | "vertical";
+/**
+ * `icon` is a pill-shaped bar of square icon-only chips: the item renders its
+ * `icon` alone and its `label` stays as the accessible name.
+ */
+export type SegmentedVariant = "icon" | "segmented";
 export interface SelectionContextValue {
     value: string | undefined;
     onSelect: (value: string) => void;
@@ -11,6 +16,7 @@ export interface SelectionContextValue {
     orientation?: SegmentedOrientation;
     /** The bar fills its container and its items share that width. */
     stretch?: boolean;
+    variant?: SegmentedVariant;
 }
 export interface SelectionGroupProps {
     /** Controlled selected value. */
@@ -33,7 +39,8 @@ export interface SelectionValueProps extends Pick<SelectionGroupProps, "defaultV
     compact?: boolean;
     orientation?: SegmentedOrientation;
     stretch?: boolean;
+    variant?: SegmentedVariant;
 }
-export declare function useSelectionValue({ value: controlledValue, defaultValue, onValueChange, disabled, compact, orientation, stretch, }: SelectionValueProps): SelectionContextValue;
+export declare function useSelectionValue({ value: controlledValue, defaultValue, onValueChange, disabled, compact, orientation, stretch, variant, }: SelectionValueProps): SelectionContextValue;
 export {};
 //# sourceMappingURL=SelectionContext.d.ts.map

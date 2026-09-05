@@ -16,6 +16,13 @@ export interface NavBarItemProps {
   href?: string;
   label: string;
   icon?: SVGIconElement;
+  /**
+   * Replaces `icon` while the item is hovered, focused or pressed, and for as
+   * long as it is the current destination — a duotone twin of `icon`, usually.
+   */
+  activeIcon?: SVGIconElement;
+  /** Accent tinting `activeIcon`, so the glyph changes color as well as weight. */
+  activeAccent?: SegmentedItemProps["activeAccent"];
   disabled?: boolean;
   /**
    * Handles the press instead of the group's `onValueChange` — this is what
@@ -30,6 +37,8 @@ export function NavBarItem({
   href,
   label,
   icon,
+  activeIcon,
+  activeAccent,
   disabled,
   onPress,
 }: NavBarItemProps): ReactNode {
@@ -39,6 +48,7 @@ export function NavBarItem({
     disabled: navBarDisabled,
     orientation,
     stretch,
+    variant,
   } = useNavBarContext();
   const selected = href !== undefined && currentValue === href;
   const isDisabled = disabled === true || navBarDisabled === true;
@@ -63,10 +73,13 @@ export function NavBarItem({
       aria-disabled={isDisabled}
       label={label}
       icon={icon}
+      activeIcon={activeIcon}
+      activeAccent={activeAccent}
       selected={selected}
       disabled={isDisabled}
       orientation={orientation}
       stretch={stretch}
+      variant={variant}
       onPress={onPress ?? selectHref}
     />
   );

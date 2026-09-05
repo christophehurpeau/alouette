@@ -10,6 +10,13 @@ export interface TabProps {
   value: string;
   label: string;
   icon?: SVGIconElement;
+  /**
+   * Replaces `icon` while the tab is hovered, focused or pressed, and for as
+   * long as it is selected.
+   */
+  activeIcon?: SVGIconElement;
+  /** Accent tinting `activeIcon`, so the glyph changes color as well as weight. */
+  activeAccent?: SegmentedItemProps["activeAccent"];
   disabled?: boolean;
   "aria-controls"?: string;
   id?: string;
@@ -24,6 +31,8 @@ export function Tab({
   value,
   label,
   icon,
+  activeIcon,
+  activeAccent,
   disabled,
   onPress,
   ...props
@@ -32,6 +41,7 @@ export function Tab({
     value: currentValue,
     onSelect,
     disabled: tabsDisabled,
+    variant,
   } = useTabsContext();
   const selected = currentValue === value;
   const isDisabled = disabled === true || tabsDisabled === true;
@@ -43,8 +53,11 @@ export function Tab({
       aria-disabled={isDisabled}
       label={label}
       icon={icon}
+      activeIcon={activeIcon}
+      activeAccent={activeAccent}
       selected={selected}
       disabled={isDisabled}
+      variant={variant}
       onPress={
         onPress ??
         (() => {

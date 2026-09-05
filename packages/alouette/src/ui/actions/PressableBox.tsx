@@ -11,7 +11,9 @@ import { InteractiveBox, interactiveBoxVariants } from "../containers/Box";
 const pressableBoxVariants = tv(
   {
     extend: interactiveBoxVariants,
-    base: "overflow-hidden",
+    // `group`: a child styles itself from the pressable's state — the icon
+    // swapped by InteractiveIcon, and anything an app composes on top.
+    base: "group overflow-hidden",
     variants: {
       variant: {
         contained: [

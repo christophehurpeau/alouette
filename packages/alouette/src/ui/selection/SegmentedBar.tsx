@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import { Surface, type SurfaceProps } from "../containers/Surface";
-import type { SegmentedOrientation } from "./SelectionContext";
+import type {
+  SegmentedOrientation,
+  SegmentedVariant,
+} from "./SelectionContext";
 
 // Horizontal: no vertical padding, so each 44px item fills the 44px bar and the
 // inset frame comes from the shorter chip inside it. Vertical: the chips stretch
@@ -13,7 +16,7 @@ import type { SegmentedOrientation } from "./SelectionContext";
 // (the stacked line of an AppHeader). Where the container is content-sized
 // anyway — the `md` line of that same header — stretching changes nothing.
 const segmentedBarVariants = tv({
-  base: "items-stretch gap-xxs px-xs py-0",
+  base: "items-stretch px-xs py-0",
   variants: {
     orientation: {
       horizontal: "flex-row min-h-[44px]",
@@ -23,8 +26,21 @@ const segmentedBarVariants = tv({
       true: "self-stretch",
       false: "self-start",
     },
+    // A bar of square icon chips is a stadium at the 44px height, so the track
+    // takes the same radius as the chips it holds. It drops its gap and its
+    // horizontal padding too: the chip is already inset inside its own 44px tap
+    // target, so keeping either would add to that slack and leave the icons
+    // floating far apart.
+    variant: {
+      segmented: "gap-xxs",
+      icon: "rounded-md gap-0",
+    },
   },
-  defaultVariants: { orientation: "horizontal", stretch: false },
+  defaultVariants: {
+    orientation: "horizontal",
+    stretch: false,
+    variant: "segmented",
+  },
 });
 
 export interface SegmentedBarProps extends Omit<
@@ -34,6 +50,7 @@ export interface SegmentedBarProps extends Omit<
   role: "navigation" | "radiogroup" | "tablist";
   orientation?: SegmentedOrientation;
   stretch?: boolean;
+  variant?: SegmentedVariant;
 }
 
 /**
@@ -44,6 +61,7 @@ export interface SegmentedBarProps extends Omit<
 export function SegmentedBar({
   orientation,
   stretch,
+  variant,
   className,
   ...props
 }: SegmentedBarProps): ReactNode {
@@ -51,7 +69,12 @@ export function SegmentedBar({
     <Surface
       variant="lowered"
       size="sm"
-      className={segmentedBarVariants({ orientation, stretch, className })}
+      className={segmentedBarVariants({
+        orientation,
+        stretch,
+        variant,
+        className,
+      })}
       {...props}
     />
   );

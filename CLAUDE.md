@@ -75,6 +75,10 @@ Before writing or restyling a component, load the **`alouette-styling`** skill
 `.claude/skills/`): the design principles, `tv()` variants and `slots`,
 `className` over inline `style`, and pixel sizes as arbitrary values.
 
+A `tv()`'s `base` holds only what every variant keeps. A property one variant
+cancels (`gap`, padding, border) goes on each variant instead — never in `base`
+with a neutralizing `gap-0` / `p-0` in the variant that opts out.
+
 This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define **structural** tokens/keyframes (type/radius/shadow/spacing/animation, fonts, utilities) in `packages/alouette/scripts/build-css.ts`; define **color** palettes in `packages/alouette/src/theme-generator/paletteSpecs.ts`. Regenerate with `pnpm --filter alouette build:css` — never edit the generated CSS (`global.css`, `core.css`, `default-palette.css`, `default-palette-oklch.css`) directly.
 
 `build:css` writes a split output: `core.css` (structural, color-free), `default-palette.css` (the default palette in sRGB hex — `@theme` color defaults + the twelve `.<theme>` blocks, the latter behind a web-only `@supports` so native never compiles them), `default-palette-oklch.css` (the optional wide-gamut overlay: the same tokens as `oklch()` behind `@supports`), `global.css` (aggregator `@import`ing core + the sRGB palette, **not** the oklch overlay — that stays an explicit extra import), plus `defaultThemeVariablesSrgb.ts`, `animationDurationsMs.ts`. Color generation lives in the shipped, exported `src/theme-generator/` module (`generateTheme`, `writeTheme`, `createColorScale`, `tokenScaleMap`, `paletteSpecs`); `build-css.ts` is a thin driver that calls `generateTheme()` for the default palette. An app generates its own palette the same way, from its own build script: `writeTheme({ outDir, overrides })` (node-only, from `alouette/theme-generator`) writes `palette.css` + `themeVariables.ts` (hex) and `palette-oklch.css` (the opt-in wide-gamut overlay, skipped by `srgbOnly`; CSS only — the map has no oklch counterpart since web never reads it); the app then imports `alouette/core.css` + its palette CSS and passes the generated map to `<AlouetteProvider themeVariables={...}>`. `generateTheme(overrides)` → `{ css, oklchCss, themeVariables, oklchThemeVariables }` is the in-memory form for an app that writes the files itself.
@@ -202,6 +206,34 @@ are the fills.
 Never make a display-only component interactive by wrapping it: see
 "Interactivity is a component, never a wrapper" in the `alouette-styling` skill.
 
+## `activeIcon`: the glyph may change weight on interaction
+
+`Button`, `IconButton`, `MenuItem` and the `SegmentedItem` family (`NavBarItem`,
+`Tab`, `RadioButton`) take an optional `activeIcon` beside `icon` — normally the
+duotone twin of the same Phosphor glyph. It renders while the pressable is
+hovered, focused or pressed, and permanently while the item is selected (the
+current `NavBar` page, the selected `Tab`, the checked `RadioButton`). This is an
+accent on top of the affordance, never a replacement for it: the rest/hover/press
+appearance still comes from the `interactive-*` tokens.
+
+The segmented family alone adds `activeAccent`: an accent for the swapped-in
+glyph, so it changes color as well as weight. It has to reach the icon through
+`text-accent` — the resting tints (`text-sharp`, `text-muted`) are
+grayscale-only tokens that an accent theme never redeclares, so an `AccentScope`
+around an icon that keeps its base tint is inert. `InteractiveIcon` applies both
+together, the same pairing as `Button`'s terminal icon.
+
+`InteractiveIcon` (`src/ui/primitives/InteractiveIcon.tsx`, exported) holds the
+whole mechanism — two stacked glyphs cross-fading on `opacity`, driven by
+`group-hover:` / `group-focus:` / `group-active:` off the enclosing pressable, so
+it only works inside one carrying `group` (`PressableBox` and `SegmentedItem`
+both do). Never hand-roll the swap with a JS hover state: it would re-render the
+row, cover hover only, and leave the keyboard out. With no `activeIcon` the
+component returns a bare `Icon` — no wrapper, no DOM change, so existing geometry
+assertions are untouched. The opacity classes live on the wrapping `View`s and
+never on `Icon`, which drops its `className` on native and reads only the `text-*`
+tint from it.
+
 ## Depth: inset track + raised element
 
 Build depth by pairing a lowered container with a raised child, as `Switch` does:
@@ -238,6 +270,38 @@ container (== 44) and each item (>= 44) so the geometry can't regress.
 a 44px tap target and its chip stretches to the bar's width and stands taller
 (`min-h-[40px]`), so the frame at the two ends comes from the bar's own `py-xs`
 rather than from the chip's shortfall.
+
+`variant="icon"` (on `RadioButtonGroup`, `NavBar` and `Tabs` alike) turns the bar
+into a pill (`rounded-md` on the track, the chips and the pressable) of square
+icon-only chips — a light/dark/system mode picker is the canonical use. The item
+renders its `icon` alone and its `label` stays the accessible name, so `label` is
+still required and `getByRole(…, { name })` keeps working; an item without an
+`icon` renders an empty chip. Because a 32px chip is 12px short of the touch
+target in the other axis, the icon variant adds `min-w-[44px]` to the pressable —
+the horizontal counterpart of `min-h-[44px]`, asserted by each group's `play`
+test.
+
+`ColorModePicker` (`src/ui/inputs/ColorModePicker.tsx`, exported) is the
+ready-made light/dark control built on that variant, over the stored
+`ColorModePreference` (`"light" | "dark" | "system"`). It reports the choice
+only — the app applies it, passing `useResolvedColorMode(preference)` to a
+`ScopedTheme`. `variant="with-system"` is three chips; `variant="system-lock"`
+(the default) is two, folding `system` into the chip it resolves to: that chip
+keeps its own sun or moon, adds the system badge, and pressing it toggles the
+lock — while coming back to it from the other chip follows the system rather
+than locking the same mode by hand (the other mode has nothing to follow, so it
+only ever locks). Because a badge has no accessible
+name, the state is announced through the name instead (`"Light (system)"`, from
+the overridable `followingSystemLabel`).
+
+That badge is `SegmentedItem`'s `indicator` prop (mirrored on `RadioButton`): an
+`SVGIconElement` rendered as a 10px glyph in a 14px halo pinned over the chip's
+top-right. It **adds** to `icon` and never replaces it, and only
+`variant="icon"` renders it — the icon chip is a circle whose corner lunes are
+~4px wide, so the badge has to overlap the glyph, and the halo takes the chip's
+own fill (`bg-interactive-contained-pressable` selected, `bg-lowered`
+unselected — the chip is transparent there and the lowered bar shows through) so
+it punches out of what it covers.
 
 The focus ring belongs on the **visible chip**, not on the oversized pressable:
 the pressable fills the bar's content box and `Surface` is `overflow-hidden`, so

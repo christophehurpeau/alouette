@@ -1,10 +1,16 @@
 import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { CopyDuotoneIcon } from "alouette-icons/phosphor-icons/CopyDuotoneIcon";
 import { CopyRegularIcon } from "alouette-icons/phosphor-icons/CopyRegularIcon";
+import { GearDuotoneIcon } from "alouette-icons/phosphor-icons/GearDuotoneIcon";
 import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
+import { PencilSimpleDuotoneIcon } from "alouette-icons/phosphor-icons/PencilSimpleDuotoneIcon";
 import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimpleRegularIcon";
+import { SignOutDuotoneIcon } from "alouette-icons/phosphor-icons/SignOutDuotoneIcon";
 import { SignOutRegularIcon } from "alouette-icons/phosphor-icons/SignOutRegularIcon";
+import { TrashDuotoneIcon } from "alouette-icons/phosphor-icons/TrashDuotoneIcon";
 import { TrashRegularIcon } from "alouette-icons/phosphor-icons/TrashRegularIcon";
+import { UserCircleDuotoneIcon } from "alouette-icons/phosphor-icons/UserCircleDuotoneIcon";
 import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircleRegularIcon";
 import { type ReactNode, useState } from "react";
 import { Text } from "../primitives/Text";
@@ -41,7 +47,7 @@ export default {
 
 - \`render\` hands the trigger its \`ref\`, \`onPress\`, \`aria-haspopup\` and \`aria-expanded\` — spread them onto any pressable
 - Use it for actions that are secondary, rare or destructive; a primary action stays a \`Button\` in the bar
-- An item runs its \`onPress\` and closes the menu; \`accent\` colours its label and icon, \`href\` makes it a real link on web
+- An item runs its \`onPress\` and closes the menu; \`accent\` colours its label and icon, \`href\` makes it a real link on web, \`activeIcon\` swaps the glyph while the row is hovered, focused or pressed
 - \`header\` renders outside the \`menu\` element, because a menu owns menu items only
 - The first item takes focus on open; arrows and Home/End move between items, the pointer moves it as it goes over a row, Escape closes and returns focus to the trigger`,
       },
@@ -56,12 +62,23 @@ function AccountMenu(): ReactNode {
       header={<Text className="text-sm text-muted">camille@example.com</Text>}
       render={(trigger) => <Button size="sm" text="Account" {...trigger} />}
     >
-      <MenuItem label="Profile" icon={<UserCircleRegularIcon />} href="/me" />
-      <MenuItem label="Settings" icon={<GearRegularIcon />} href="/settings" />
+      <MenuItem
+        label="Profile"
+        icon={<UserCircleRegularIcon />}
+        activeIcon={<UserCircleDuotoneIcon />}
+        href="/me"
+      />
+      <MenuItem
+        label="Settings"
+        icon={<GearRegularIcon />}
+        activeIcon={<GearDuotoneIcon />}
+        href="/settings"
+      />
       <Separator role="separator" className="my-xxs" />
       <MenuItem
         label="Log out"
         icon={<SignOutRegularIcon />}
+        activeIcon={<SignOutDuotoneIcon />}
         accent="danger"
         onPress={fn()}
       />
@@ -98,11 +115,13 @@ export const VariantsMenuStory: ThisStory = {
           <MenuItem
             label="Rename"
             icon={<PencilSimpleRegularIcon />}
+            activeIcon={<PencilSimpleDuotoneIcon />}
             onPress={fn()}
           />
           <MenuItem
             label="Duplicate"
             icon={<CopyRegularIcon />}
+            activeIcon={<CopyDuotoneIcon />}
             onPress={fn()}
           />
           <MenuItem disabled label="Archive" onPress={fn()} />
@@ -110,7 +129,32 @@ export const VariantsMenuStory: ThisStory = {
           <MenuItem
             label="Delete"
             icon={<TrashRegularIcon />}
+            activeIcon={<TrashDuotoneIcon />}
             accent="danger"
+            onPress={fn()}
+          />
+        </Menu>
+      </Story.Section>
+
+      <Story.Section withSurface title="Without activeIcon">
+        <Text className="text-sm text-muted">
+          The duotone twin is optional: a row with `icon` alone keeps one glyph
+          weight through hover, focus and press.
+        </Text>
+        <Menu
+          label="Single weight"
+          render={(trigger) => (
+            <Button size="sm" variant="outlined" text="Edit" {...trigger} />
+          )}
+        >
+          <MenuItem
+            label="Rename"
+            icon={<PencilSimpleRegularIcon />}
+            onPress={fn()}
+          />
+          <MenuItem
+            label="Duplicate"
+            icon={<CopyRegularIcon />}
             onPress={fn()}
           />
         </Menu>
@@ -145,6 +189,7 @@ function MenuDemo(): ReactNode {
         <MenuItem
           label="Rename"
           icon={<PencilSimpleRegularIcon />}
+          activeIcon={<PencilSimpleDuotoneIcon />}
           onPress={() => {
             setLastAction("rename");
           }}
@@ -161,6 +206,7 @@ function MenuDemo(): ReactNode {
         <MenuItem
           label="Delete"
           icon={<TrashRegularIcon />}
+          activeIcon={<TrashDuotoneIcon />}
           accent="danger"
           onPress={() => {
             setLastAction("delete");

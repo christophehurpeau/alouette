@@ -6,6 +6,12 @@ import { useControllableValue } from "../../core/useControllableValue";
 /** Row of chips (the default) or a column of full-width ones. */
 export type SegmentedOrientation = "horizontal" | "vertical";
 
+/**
+ * `icon` is a pill-shaped bar of square icon-only chips: the item renders its
+ * `icon` alone and its `label` stays as the accessible name.
+ */
+export type SegmentedVariant = "icon" | "segmented";
+
 export interface SelectionContextValue {
   value: string | undefined;
   onSelect: (value: string) => void;
@@ -15,6 +21,7 @@ export interface SelectionContextValue {
   orientation?: SegmentedOrientation;
   /** The bar fills its container and its items share that width. */
   stretch?: boolean;
+  variant?: SegmentedVariant;
 }
 
 export interface SelectionGroupProps {
@@ -58,6 +65,7 @@ export interface SelectionValueProps extends Pick<
   compact?: boolean;
   orientation?: SegmentedOrientation;
   stretch?: boolean;
+  variant?: SegmentedVariant;
 }
 
 export function useSelectionValue({
@@ -68,6 +76,7 @@ export function useSelectionValue({
   compact,
   orientation,
   stretch,
+  variant,
 }: SelectionValueProps): SelectionContextValue {
   const [value, onSelect] = useControllableValue({
     value: controlledValue,
@@ -75,7 +84,15 @@ export function useSelectionValue({
     onValueChange,
   });
   return useMemo(
-    () => ({ value, onSelect, disabled, compact, orientation, stretch }),
-    [value, onSelect, disabled, compact, orientation, stretch],
+    () => ({
+      value,
+      onSelect,
+      disabled,
+      compact,
+      orientation,
+      stretch,
+      variant,
+    }),
+    [value, onSelect, disabled, compact, orientation, stretch, variant],
   );
 }

@@ -9,11 +9,17 @@ import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon
 import { SignOutRegularIcon } from "alouette-icons/phosphor-icons/SignOutRegularIcon";
 import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircleRegularIcon";
 import { type ReactNode, useState } from "react";
+import {
+  type ColorModePreference,
+  useResolvedColorMode,
+} from "../../core/useColorMode";
 import { Button } from "../actions/Button";
 import { IconButton } from "../actions/IconButton";
 import { MenuItem } from "../actions/MenuItem";
 import { QuestionAlertDialog } from "../containers/AlertDialog";
 import { Box } from "../containers/Box";
+import { ScopedTheme } from "../containers/ScopedTheme";
+import { ColorModePicker } from "../inputs/ColorModePicker";
 import { NavBar } from "../navigation/NavBar";
 import { NavBarItem } from "../navigation/NavBarItem";
 import { Text } from "../primitives/Text";
@@ -69,6 +75,7 @@ export default {
 - \`AppHeaderBrand\` is a pressable when given \`href\`/\`onPress\` (expo Router's \`<Link asChild>\` injects both), a display-only row otherwise; its leading padding is pulled back with a negative margin, so the hover fill bleeds into the header's gutter while the mark stays flush with the content edge in both cases
 - Every pressable in the bar uses \`variant="soft"\`: nothing at rest, a background fill on hover/focus/press (as on a listbox row), rather than a border tint too thin to read in a header
 - A signed-in session is one \`AppHeaderAccount\` — an avatar trigger opening a \`Menu\` — not a row of buttons: logging out is the rarest thing the bar offers and the only destructive one, so it belongs behind the avatar with a \`danger\` accent, and confirming it is the app's call (the tests story wires it to a \`QuestionAlertDialog\`). A signed-out header keeps its plain \`Button\`s
+- A light/dark switch belongs in the actions slot as a \`ColorModePicker\` — a pill of icon-only chips reading as one control, rather than two loose \`IconButton\`s. \`variant="system-lock"\` is the two-chip one used here: the chip the OS currently supplies keeps its sun or moon and adds the system badge, and pressing it toggles the lock. The app owns the preference — it applies it with \`useResolvedColorMode\` + \`ScopedTheme\` and persists it
 - \`variant="bar"\` (default) is the application bar: its own background plus \`shadow-bar\`, a downward-only shadow cast on the page below. \`variant="transparent"\` is a header integrated into the page it heads (a landing hero): no background, no border, no shadow
 - The frame takes the device's top inset unless an ancestor \`SafeAreaScope\` consumed it; wrap the screen below in \`<SafeAreaScope consumedEdges={["top"]}>\``,
       },
@@ -159,6 +166,51 @@ function LoggedInActions({ onLogOut }: LoggedInActionsProps): ReactNode {
   );
 }
 
+// The picker reports the stored preference, useResolvedColorMode turns it into
+// a mode and a ScopedTheme applies it, so choosing an option re-themes the
+// header and the page under it — what an app wires to its own stored value. The
+// `system-lock` variant is the two-chip one: it starts on `system`, where the chip the
+// system supplies keeps its sun or moon and carries the system badge.
+function ThemedAppHeader(): ReactNode {
+  const [preference, setPreference] = useState<ColorModePreference>("system");
+  const mode = useResolvedColorMode(preference);
+
+  return (
+    <ScopedTheme theme={mode}>
+      <VStack className="bg-screen">
+        <AppHeader
+          aria-label="Themed header"
+          brand={<DemoBrand />}
+          actions={
+            <AppHeaderActions>
+              <ColorModePicker
+                variant="system-lock"
+                aria-label="Color mode"
+                value={preference}
+                onValueChange={setPreference}
+              />
+              <IconButton
+                aria-label="Notifications"
+                icon={<BellRegularIcon />}
+                size="sm"
+                variant="soft"
+                onPress={fn()}
+              />
+            </AppHeaderActions>
+          }
+          contentWidth="full"
+        >
+          <DemoNav label="Themed navigation" />
+        </AppHeader>
+        <VStack className="gap-xs px-l py-xl">
+          <Text className="font-heading-bold text-xl">Page content</Text>
+          <Text className="text-muted text-base">{`Rendered in ${mode} mode.`}</Text>
+        </VStack>
+      </VStack>
+    </ScopedTheme>
+  );
+}
+
 function LandingHero(): ReactNode {
   return (
     <Box accent="brand" className="bg-highlight-accent">
@@ -239,6 +291,13 @@ export const VariantsAppHeaderStory: ThisStory = {
         >
           <DemoNav label="Logged in" />
         </AppHeader>
+      </Story.Section>
+
+      <Story.Section title="Color mode">
+        <Text className="text-sm text-muted">
+          An icon RadioButtonGroup in the actions slot, themed live
+        </Text>
+        <ThemedAppHeader />
       </Story.Section>
 
       <Story.Section title="Variant">
@@ -460,6 +519,9 @@ export const TestsAppHeaderStory: ThisStory = {
           contentWidth="full"
         />
       </Story.Section>
+      <Story.Section title="Color mode">
+        <ThemedAppHeader />
+      </Story.Section>
       <Story.Section title="Variant">
         <AppHeader
           aria-label="Bar header"
@@ -600,5 +662,49 @@ export const TestsAppHeaderStory: ThisStory = {
     );
     await expect(transparentStyle.backgroundColor).toBe("rgba(0, 0, 0, 0)");
     await expect(transparentStyle.boxShadow).toBe("none");
+
+    // The ColorModePicker is an icon group in the actions slot: its labels name
+    // the options without being rendered, and choosing one re-themes the header
+    // it sits in. It starts on `system`, so the expected names come from the
+    // runner's own scheme rather than from an assumed one.
+    const systemMode = globalThis.matchMedia("(prefers-color-scheme: dark)")
+      .matches
+      ? "dark"
+      : "light";
+    const otherMode = systemMode === "dark" ? "light" : "dark";
+    const systemLabel = systemMode === "dark" ? "Dark" : "Light";
+    const otherLabel = systemMode === "dark" ? "Light" : "Dark";
+
+    const themedHeader = canvas.getByRole("banner", { name: "Themed header" });
+    const themedCanvas = within(themedHeader);
+    const modeSwitch = themedCanvas.getByRole("radiogroup", {
+      name: "Color mode",
+    });
+    const followingMode = within(modeSwitch).getByRole("radio", {
+      name: `${systemLabel} (system)`,
+    });
+    const lockedMode = within(modeSwitch).getByRole("radio", {
+      name: otherLabel,
+    });
+
+    await expect(within(modeSwitch).getAllByRole("radio")).toHaveLength(2);
+    await expect(within(modeSwitch).queryByText(systemLabel)).toBeNull();
+    await expect(followingMode).toHaveAttribute("aria-checked", "true");
+
+    const systemBackground = getComputedStyle(themedHeader).backgroundColor;
+
+    lockedMode.click();
+
+    await waitFor(() =>
+      expect(lockedMode).toHaveAttribute("aria-checked", "true"),
+    );
+    // The page copy is the header's sibling under the same ScopedTheme, so it is
+    // outside `themedCanvas`.
+    await expect(
+      canvas.getByText(`Rendered in ${otherMode} mode.`),
+    ).toBeTruthy();
+    await expect(getComputedStyle(themedHeader).backgroundColor).not.toBe(
+      systemBackground,
+    );
   },
 };

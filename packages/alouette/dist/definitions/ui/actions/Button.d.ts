@@ -140,6 +140,8 @@ type ButtonSizeProps = Pick<VariantProps<typeof buttonVariants>, "size">;
 export type ButtonState = "failed" | "loading" | "success";
 export interface ButtonProps extends Omit<PressableBoxProps, "children">, ButtonSizeProps {
     icon?: SVGIconElement;
+    /** Replaces `icon` while the button is hovered, focused or pressed. */
+    activeIcon?: SVGIconElement;
     accent?: Accent;
     text: ReactNode;
     state?: ButtonState;
@@ -149,7 +151,7 @@ export interface ButtonProps extends Omit<PressableBoxProps, "children">, Button
      */
     ref?: Ref<RNView>;
 }
-export declare function Button({ icon, text, disabled, state, accent, variant, size, className, ...pressableProps }: ButtonProps): ReactNode;
+export declare function Button({ icon, activeIcon, text, disabled, state, accent, variant, size, className, forceStyle, ...pressableProps }: ButtonProps): ReactNode;
 export interface ExternalLinkButtonProps extends ButtonProps {
     href: string;
     /** How the link opens. Defaults to an in-app browser sheet / a new tab. */

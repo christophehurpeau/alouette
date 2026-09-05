@@ -1,10 +1,15 @@
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
+import type { AccentScopeProps } from "../containers/AccentScope";
 import { InteractiveBox, type InteractiveBoxProps } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
+import { InteractiveIcon } from "../primitives/InteractiveIcon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
-import type { SegmentedOrientation } from "./SelectionContext";
+import type {
+  SegmentedOrientation,
+  SegmentedVariant,
+} from "./SelectionContext";
 
 // chip — the selected layer is raised and cross-fades on opacity so the
 // background and shadow animate together with no border. Swapping a bordered
@@ -17,7 +22,8 @@ import type { SegmentedOrientation } from "./SelectionContext";
 // (Surface is overflow-hidden), so an outline drawn on the pressable is cut
 // away — the chip's slack holds the 2px offset + 2px ring instead (6px a side
 // on a row, 2px on a stacked item, which the bar's own `py-xs` completes).
-// foreground — label and icon share one color set. Native resolves the icon
+// foreground — label and icon share one color set, and the icon's optional
+// `activeIcon` layer cross-fades on the same `group`. Native resolves the icon
 // tint through useColorToken, which reads the base `text-*` only, so the hover
 // tint and the stacking above the chip are web-only.
 const segmentedItemVariants = tv({
@@ -28,19 +34,35 @@ const segmentedItemVariants = tv({
     chip: "absolute inset-0 rounded-xs transition-opacity duration-fast ease-in",
     foreground: "z-1 transition-[color] duration-fast ease-in",
     label: "select-none font-body-bold text-base text-center",
+    // indicator — a badge over the glyph's top-right, not beside it: the icon
+    // chip is a circle and the lunes its 20px glyph leaves in the corners are
+    // ~4px wide, too narrow to hold anything. Its halo is the chip's own fill,
+    // so the badge punches out of the glyph it overlaps, and these insets keep
+    // its painted circle inside the chip in both sizes the icon variant takes
+    // (36px in a row, 40px stacked or stretched): 1.1px and 0.3px of clearance.
+    indicator:
+      "absolute right-[4px] top-[4px] z-1 flex-center size-[14px] rounded-full transition-[background-color] duration-fast ease-in",
   },
   variants: {
     selected: {
-      true: { chip: "opacity-100", foreground: "text-on-accent" },
+      true: {
+        chip: "opacity-100",
+        foreground: "text-on-accent",
+        indicator: "bg-interactive-contained-pressable",
+      },
       false: {
         chip: "opacity-0",
         foreground: "text-muted group-hover:text-sharp",
+        // The chip is transparent here, so the halo takes what shows through it:
+        // the lowered SegmentedBar behind.
+        indicator: "bg-lowered",
       },
     },
     disabled: {
       true: {
         chip: "bg-interactive-contained-disabled",
         foreground: "text-disabled-muted group-hover:text-disabled-muted",
+        indicator: "bg-interactive-contained-disabled",
       },
       false: { chip: "bg-interactive-contained-pressable shadow-s" },
     },
@@ -58,11 +80,28 @@ const segmentedItemVariants = tv({
     // A stretched bar hands its extra width to its items; a stacked one already
     // spans that width, so only a row shares it.
     stretch: { true: {}, false: {} },
+    // Declared last so its radius and padding land after the ones `compact` and
+    // `orientation` set, and win the merge.
+    variant: {
+      segmented: {},
+      // The chip is a 40px square with no label, so the pressable carries the
+      // tap target's width the way it already carries its height — the chip
+      // alone is 8px short of the 44px minimum. 40 and not 32: the 4px of slack
+      // that leaves on every side is exactly the focus ring (2px offset + 2px
+      // width), and it is the whole frame around the chip, the bar having
+      // dropped its own horizontal padding.
+      icon: {
+        pressable: "min-w-[44px]",
+        segment: "rounded-md self-center w-[36px] min-h-[36px] px-0",
+        chip: "rounded-md",
+      },
+    },
   },
   defaultVariants: {
     compact: false,
     orientation: "horizontal",
     stretch: false,
+    variant: "segmented",
   },
   compoundVariants: [
     {
@@ -80,6 +119,18 @@ const segmentedItemVariants = tv({
       },
     },
     {
+      // A square chip stays square whatever width the item is given, so a
+      // stretched or stacked icon bar centers it instead of stretching it.
+      variant: "icon",
+      stretch: true,
+      class: { segment: "self-center w-[40px]" },
+    },
+    {
+      variant: "icon",
+      orientation: "vertical",
+      class: { segment: "self-center w-[40px] min-h-[40px]" },
+    },
+    {
       selected: false,
       disabled: false,
       class: {
@@ -94,6 +145,13 @@ const segmentedItemVariants = tv({
         foreground: "text-disabled-sharp group-hover:text-disabled-sharp",
       },
     },
+    {
+      // `disabled` is declared after `selected`, so it would hand the halo the
+      // disabled chip's fill on an item that has no chip showing at all.
+      selected: false,
+      disabled: true,
+      class: { indicator: "bg-lowered" },
+    },
   ],
 });
 
@@ -103,6 +161,20 @@ export interface SegmentedItemProps extends Omit<
 > {
   label: string;
   icon?: SVGIconElement;
+  /**
+   * Replaces `icon` while the item is hovered, focused or pressed, and for as
+   * long as it is selected.
+   */
+  activeIcon?: SVGIconElement;
+  /** Accent tinting `activeIcon`, so the glyph changes color as well as weight. */
+  activeAccent?: AccentScopeProps["accent"];
+  /**
+   * Badge glyph pinned over the chip's top-right, in the foreground's own
+   * color: a secondary state the item's `label` spells out (following the
+   * system, unread changes). It adds to `icon`, it never replaces it, and it
+   * renders in `variant="icon"` only — a text chip has no room for it.
+   */
+  indicator?: SVGIconElement;
   selected: boolean;
   /** Tighter horizontal padding, set by a compact group. */
   compact?: boolean;
@@ -110,6 +182,11 @@ export interface SegmentedItemProps extends Omit<
   orientation?: SegmentedOrientation;
   /** Set by a stretched group: the item takes an equal share of the bar. */
   stretch?: boolean;
+  /**
+   * Set by the group. `icon` hides the label — it stays the accessible name —
+   * so an item in an icon group must carry an `icon` to render anything.
+   */
+  variant?: SegmentedVariant;
   /**
    * react-native's types have no `aria-current` / `aria-controls` / `href`, but
    * react-native-web forwards all three (an `href` makes it render an `<a>`) and
@@ -123,11 +200,15 @@ export interface SegmentedItemProps extends Omit<
 export function SegmentedItem({
   label,
   icon,
+  activeIcon,
+  activeAccent,
+  indicator,
   selected,
   disabled,
   compact,
   orientation,
   stretch,
+  variant,
   ...props
 }: SegmentedItemProps): ReactNode {
   const styles = segmentedItemVariants({
@@ -136,6 +217,7 @@ export function SegmentedItem({
     compact,
     orientation,
     stretch,
+    variant,
   });
 
   return (
@@ -152,14 +234,29 @@ export function SegmentedItem({
       <View className={styles.segment()}>
         <View className={styles.chip()} />
         {icon ? (
-          <Icon icon={icon} size={20} className={styles.foreground()} />
+          <InteractiveIcon
+            icon={icon}
+            activeIcon={activeIcon}
+            activeAccent={activeAccent}
+            active={selected}
+            disabled={disabled === true}
+            size={20}
+            className={styles.foreground()}
+          />
         ) : null}
-        <Text
-          numberOfLines={1}
-          className={styles.label({ class: styles.foreground() })}
-        >
-          {label}
-        </Text>
+        {variant === "icon" ? null : (
+          <Text
+            numberOfLines={1}
+            className={styles.label({ class: styles.foreground() })}
+          >
+            {label}
+          </Text>
+        )}
+        {variant === "icon" && indicator ? (
+          <View className={styles.indicator()}>
+            <Icon icon={indicator} size={10} className={styles.foreground()} />
+          </View>
+        ) : null}
       </View>
     </InteractiveBox>
   );

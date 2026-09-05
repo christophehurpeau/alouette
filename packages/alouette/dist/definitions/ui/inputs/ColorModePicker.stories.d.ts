@@ -1,9 +1,9 @@
 import type { StoryObj } from "@storybook/react-vite";
-import { Tabs } from "./Tabs";
-type ThisStory = StoryObj<typeof Tabs>;
+import { ColorModePicker } from "./ColorModePicker";
+type ThisStory = StoryObj<typeof ColorModePicker>;
 declare const _default: {
     title: string;
-    component: typeof Tabs;
+    component: typeof ColorModePicker;
     parameters: {
         componentSubtitle: string;
     };
@@ -22,7 +22,7 @@ declare const _default: {
     };
 };
 export default _default;
-export declare const PreviewTabsStory: ThisStory;
-export declare const VariantsTabsStory: ThisStory;
-export declare const TestsTabsStory: ThisStory;
-//# sourceMappingURL=Tabs.stories.d.ts.map
+export declare const PreviewColorModePickerStory: ThisStory;
+export declare const VariantsColorModePickerStory: ThisStory;
+export declare const TestsColorModePickerStory: ThisStory;
+//# sourceMappingURL=ColorModePicker.stories.d.ts.map

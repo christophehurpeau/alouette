@@ -1,9 +1,17 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { DesktopDuotoneIcon } from "alouette-icons/phosphor-icons/DesktopDuotoneIcon";
+import { DesktopRegularIcon } from "alouette-icons/phosphor-icons/DesktopRegularIcon";
+import { MoonDuotoneIcon } from "alouette-icons/phosphor-icons/MoonDuotoneIcon";
+import { MoonRegularIcon } from "alouette-icons/phosphor-icons/MoonRegularIcon";
+import { SunDuotoneIcon } from "alouette-icons/phosphor-icons/SunDuotoneIcon";
+import { SunRegularIcon } from "alouette-icons/phosphor-icons/SunRegularIcon";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
+import { Text } from "../primitives/Text";
+import type { SegmentedVariant } from "../selection/SelectionContext";
 import { Story } from "../story-components/Story";
-import { RadioButton } from "./RadioButton";
+import { RadioButton, type RadioButtonProps } from "./RadioButton";
 import { RadioButtonGroup } from "./RadioButtonGroup";
 
 type ThisStory = StoryObj<typeof RadioButtonGroup>;
@@ -18,6 +26,7 @@ export default {
   argTypes: {
     disabled: { control: "boolean" },
     compact: { control: "boolean" },
+    variant: { control: "inline-radio", options: ["segmented", "icon"] },
     accent: {
       control: "select",
       options: [undefined, "brand", "danger", "info", "success", "warning"],
@@ -36,6 +45,60 @@ export const PreviewRadioButtonGroupStory: ThisStory = {
   ),
 };
 
+interface ColorModeGroupProps {
+  label: string;
+  variant?: SegmentedVariant;
+  activeAccent?: RadioButtonProps["activeAccent"];
+  /** Renders `icon` alone, so the glyph keeps one weight throughout. */
+  withoutActiveIcon?: boolean;
+  /** Badges the light chip, the state its own label would spell out. */
+  withIndicator?: boolean;
+}
+
+/**
+ * A light/dark/system picker: the canonical icon group, and — as `variant`
+ * `icon` — square chips whose `label` is their accessible name only. The
+ * ready-made control is `ColorModePicker`, built on this.
+ */
+function ColorModeGroup({
+  label,
+  variant,
+  activeAccent,
+  withoutActiveIcon,
+  withIndicator,
+}: ColorModeGroupProps): ReactNode {
+  return (
+    <RadioButtonGroup
+      variant={variant}
+      aria-label={label}
+      defaultValue="system"
+    >
+      <RadioButton
+        value="light"
+        label="Light"
+        icon={<SunRegularIcon />}
+        activeIcon={withoutActiveIcon ? undefined : <SunDuotoneIcon />}
+        activeAccent={activeAccent}
+        indicator={withIndicator ? <DesktopRegularIcon /> : undefined}
+      />
+      <RadioButton
+        value="dark"
+        label="Dark"
+        icon={<MoonRegularIcon />}
+        activeIcon={withoutActiveIcon ? undefined : <MoonDuotoneIcon />}
+        activeAccent={activeAccent}
+      />
+      <RadioButton
+        value="system"
+        label="System"
+        icon={<DesktopRegularIcon />}
+        activeIcon={withoutActiveIcon ? undefined : <DesktopDuotoneIcon />}
+        activeAccent={activeAccent}
+      />
+    </RadioButtonGroup>
+  );
+}
+
 function RadioButtonGroupVariant({ accent }: { accent?: Accent }): ReactNode {
   return (
     <Story.SubSection withSurface title={accent ?? "Default"}>
@@ -52,6 +115,7 @@ function RadioButtonGroupVariant({ accent }: { accent?: Accent }): ReactNode {
         <RadioButton value="day" label="Day" />
         <RadioButton value="week" label="Week" />
       </RadioButtonGroup>
+      <ColorModeGroup activeAccent={accent} label="Active accent" />
     </Story.SubSection>
   );
 }
@@ -75,6 +139,11 @@ export const VariantsRadioButtonGroupStory: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
+        <Text className="text-sm text-muted">
+          Each accent is shown on the bar itself, then — in the last row — on
+          the glyph alone: no accent on the group, `activeAccent` on the
+          buttons.
+        </Text>
         <RadioButtonGroupVariant />
         <RadioButtonGroupVariant accent="brand" />
         <RadioButtonGroupVariant accent="danger" />
@@ -86,6 +155,69 @@ export const VariantsRadioButtonGroupStory: ThisStory = {
         </Story.SubSection>
         <Story.SubSection withSurface title="compact">
           <WeekdaysGroup compact />
+        </Story.SubSection>
+      </Story.Section>
+      <Story.Section title="Icon">
+        <Story.SubSection withSurface title="Icon chips">
+          <ColorModeGroup variant="icon" label="Color mode" />
+        </Story.SubSection>
+        <Story.SubSection withSurface title="Accent and disabled">
+          <RadioButtonGroup variant="icon" accent="brand" defaultValue="dark">
+            <RadioButton
+              value="light"
+              label="Light"
+              icon={<SunRegularIcon />}
+              activeIcon={<SunDuotoneIcon />}
+            />
+            <RadioButton
+              value="dark"
+              label="Dark"
+              icon={<MoonRegularIcon />}
+              activeIcon={<MoonDuotoneIcon />}
+            />
+            <RadioButton
+              disabled
+              value="system"
+              label="System"
+              icon={<DesktopRegularIcon />}
+              activeIcon={<DesktopDuotoneIcon />}
+            />
+          </RadioButtonGroup>
+          <RadioButtonGroup disabled variant="icon" defaultValue="light">
+            <RadioButton
+              value="light"
+              label="Light"
+              icon={<SunRegularIcon />}
+              activeIcon={<SunDuotoneIcon />}
+            />
+            <RadioButton
+              value="dark"
+              label="Dark"
+              icon={<MoonRegularIcon />}
+              activeIcon={<MoonDuotoneIcon />}
+            />
+          </RadioButtonGroup>
+        </Story.SubSection>
+        <Story.SubSection withSurface title="Without activeIcon">
+          <Text className="text-sm text-muted">
+            The duotone twin is optional. Drop `activeIcon` and the glyph keeps
+            one weight throughout, the chip carrying the whole affordance.
+          </Text>
+          <ColorModeGroup
+            withoutActiveIcon
+            variant="icon"
+            label="Single weight"
+          />
+        </Story.SubSection>
+        <Story.SubSection withSurface title="Indicator">
+          <Text className="text-sm text-muted">
+            `indicator` badges a chip for a secondary state its label spells out
+            — here the light chip. It sits over the glyph's top-right in a halo
+            of the chip's own fill, adding to the icon and never replacing it,
+            and only the icon variant renders it.
+          </Text>
+          <ColorModeGroup withIndicator variant="icon" label="With indicator" />
+          <ColorModeGroup withIndicator label="Segmented ignores it" />
         </Story.SubSection>
       </Story.Section>
     </Story>
@@ -112,6 +244,9 @@ export const TestsRadioButtonGroupStory: StoryObj<typeof RadioButtonGroup> = {
           <RadioButton value="day" label="Day" />
           <RadioButton value="week" label="Week" />
         </RadioButtonGroup>
+      </Story.Section>
+      <Story.Section title="Icon">
+        <ColorModeGroup variant="icon" label="Color mode" />
       </Story.Section>
     </Story>
   ),
@@ -163,5 +298,28 @@ export const TestsRadioButtonGroupStory: StoryObj<typeof RadioButtonGroup> = {
     month.click();
     await expect(month).toHaveAttribute("aria-checked", "false");
     await expect(week).toHaveAttribute("aria-checked", "true");
+
+    // Icon group: the label is the accessible name only — it is not rendered —
+    // and the square chip still sits in a 44x44 tap target.
+    const iconGroup = canvas.getByRole("radiogroup", { name: "Color mode" });
+    const iconCanvas = within(iconGroup);
+    const light = iconCanvas.getByRole("radio", { name: "Light" });
+    const dark = iconCanvas.getByRole("radio", { name: "Dark" });
+    const system = iconCanvas.getByRole("radio", { name: "System" });
+
+    await expect(iconCanvas.queryByText("Light")).toBeNull();
+    await expect(iconGroup.getBoundingClientRect().height).toBe(44);
+    for (const option of [light, dark, system]) {
+      const rect = option.getBoundingClientRect();
+      await expect(rect.height).toBeGreaterThanOrEqual(44);
+      await expect(rect.width).toBeGreaterThanOrEqual(44);
+    }
+
+    await expect(system).toHaveAttribute("aria-checked", "true");
+
+    dark.click();
+
+    await waitFor(() => expect(dark).toHaveAttribute("aria-checked", "true"));
+    await expect(system).toHaveAttribute("aria-checked", "false");
   },
 };

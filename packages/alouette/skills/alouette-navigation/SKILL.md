@@ -126,12 +126,37 @@ for a fixed rail. `Tabs` and `RadioButtonGroup` stay horizontal.
 ### Leading icon
 
 `icon` takes a rendered icon element and is auto-sized and auto-tinted from the
-item's selected/disabled state.
+item's selected/disabled state. `activeIcon` — typically the duotone twin of the
+same glyph — replaces it while the item is hovered, focused or pressed, and for
+as long as the item is selected: the current page in a `NavBar`, the selected
+`Tab`, the checked `RadioButton`. A disabled item never swaps.
 
 ```tsx
+import { HouseDuotoneIcon } from "alouette-icons/phosphor-icons/HouseDuotoneIcon";
 import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
 
-<NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />;
+<NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
+
+<NavBarItem
+  href="/home"
+  label="Home"
+  icon={<HouseRegularIcon />}
+  activeIcon={<HouseDuotoneIcon />}
+/>;
+```
+
+`activeAccent` tints `activeIcon` with an accent of its own, so the glyph changes
+color as well as weight. It is on `NavBarItem`, `Tab` and `RadioButton` only —
+`Button`, `IconButton` and `MenuItem` take `activeIcon` but not `activeAccent`.
+
+```tsx
+<NavBarItem
+  href="/archive"
+  label="Archive"
+  icon={<TrashRegularIcon />}
+  activeIcon={<TrashDuotoneIcon />}
+  activeAccent="danger"
+/>
 ```
 
 ### Accent and disabled

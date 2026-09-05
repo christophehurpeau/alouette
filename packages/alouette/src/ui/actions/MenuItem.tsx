@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
 import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
-import { Icon, type SVGIconElement } from "../primitives/Icon";
+import type { SVGIconElement } from "../primitives/Icon";
+import { InteractiveIcon } from "../primitives/InteractiveIcon";
 import { Text } from "../primitives/Text";
 import { useMenuContext } from "./MenuContext";
 import { PressableBox } from "./PressableBox";
@@ -32,6 +33,8 @@ const menuItemVariants = tv({
 export interface MenuItemProps {
   label: string;
   icon?: SVGIconElement;
+  /** Replaces `icon` while the row is hovered, focused or pressed. */
+  activeIcon?: SVGIconElement;
   /** Colours the row's label and icon — `danger` for a destructive action. */
   accent?: Accent;
   /**
@@ -47,6 +50,7 @@ export interface MenuItemProps {
 export function MenuItem({
   label,
   icon,
+  activeIcon,
   accent,
   href,
   disabled,
@@ -84,7 +88,15 @@ export function MenuItem({
         onPress: press,
       }}
     >
-      {icon ? <Icon icon={icon} size={20} className={styles.icon()} /> : null}
+      {icon ? (
+        <InteractiveIcon
+          icon={icon}
+          activeIcon={activeIcon}
+          disabled={disabled === true}
+          size={20}
+          className={styles.icon()}
+        />
+      ) : null}
       <Text className={styles.label()}>{label}</Text>
     </PressableBox>
   );

@@ -21,6 +21,12 @@ const QuestionRegularIcon = require('alouette-icons/phosphor-icons/QuestionRegul
 const WarningRegularIcon = require('alouette-icons/phosphor-icons/WarningRegularIcon');
 const ArrowSquareOutRegularIcon = require('alouette-icons/phosphor-icons/ArrowSquareOutRegularIcon');
 const CaretDownRegularIcon = require('alouette-icons/phosphor-icons/CaretDownRegularIcon');
+const DesktopDuotoneIcon = require('alouette-icons/phosphor-icons/DesktopDuotoneIcon');
+const DesktopRegularIcon = require('alouette-icons/phosphor-icons/DesktopRegularIcon');
+const MoonDuotoneIcon = require('alouette-icons/phosphor-icons/MoonDuotoneIcon');
+const MoonRegularIcon = require('alouette-icons/phosphor-icons/MoonRegularIcon');
+const SunDuotoneIcon = require('alouette-icons/phosphor-icons/SunDuotoneIcon');
+const SunRegularIcon = require('alouette-icons/phosphor-icons/SunRegularIcon');
 const CaretRightRegularIcon = require('alouette-icons/phosphor-icons/CaretRightRegularIcon');
 const AsteriskSimpleRegularIcon = require('alouette-icons/phosphor-icons/AsteriskSimpleRegularIcon');
 const reactHookForm = require('react-hook-form');
@@ -116,6 +122,14 @@ function useScreenSafeAreaPadding(edges) {
     padding.paddingRight = insets.right;
   }
   return Object.keys(padding).length === 0 ? void 0 : padding;
+}
+
+function useSystemColorMode() {
+  return reactNative.useColorScheme() === "dark" ? "dark" : "light";
+}
+function useResolvedColorMode(preference) {
+  const systemMode = useSystemColorMode();
+  return preference === "system" ? systemMode : preference;
 }
 
 const View = react.forwardRef((props, ref) => {
@@ -1109,10 +1123,60 @@ function IndeterminateCircularProgress({
   );
 }
 
+const interactiveIconVariants = tailwindVariants.tv({
+  slots: {
+    frame: "relative shrink-0",
+    rest: "transition-opacity duration-fast ease-in group-hover:opacity-0 group-focus:opacity-0 group-active:opacity-0",
+    active: "absolute inset-0 opacity-0 transition-opacity duration-fast ease-in group-hover:opacity-100 group-focus:opacity-100 group-active:opacity-100"
+  },
+  variants: {
+    active: {
+      true: { rest: "opacity-0", active: "opacity-100" },
+      false: {}
+    }
+  },
+  defaultVariants: { active: false }
+});
+function InteractiveIcon({
+  icon,
+  activeIcon,
+  activeAccent,
+  active = false,
+  disabled = false,
+  size = 20,
+  className = "text-sharp"
+}) {
+  if (activeIcon === void 0 || disabled) {
+    return /* @__PURE__ */ jsxRuntime.jsx(
+      Icon,
+      {
+        icon: active && activeIcon ? activeIcon : icon,
+        size,
+        className
+      }
+    );
+  }
+  const styles = interactiveIconVariants({ active });
+  const activeClassName = activeAccent ? "text-accent" : className;
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    View,
+    {
+      className: styles.frame({ className }),
+      style: { width: size, height: size },
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.rest(), children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size, className }) }),
+        /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.active(), children: /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent: activeAccent, children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: activeIcon, size, className: activeClassName }) }) })
+      ]
+    }
+  );
+}
+
 const pressableBoxVariants = tailwindVariants.tv(
   {
     extend: interactiveBoxVariants,
-    base: "overflow-hidden",
+    // `group`: a child styles itself from the pressable's state — the icon
+    // swapped by InteractiveIcon, and anything an app composes on top.
+    base: "group overflow-hidden",
     variants: {
       variant: {
         contained: [
@@ -1382,6 +1446,7 @@ function isButtonDisabled({
 }
 function Button({
   icon,
+  activeIcon,
   text,
   disabled,
   state,
@@ -1389,6 +1454,7 @@ function Button({
   variant = "contained",
   size = "md",
   className,
+  forceStyle,
   ...pressableProps
 }) {
   const isLoading = state === "loading";
@@ -1420,6 +1486,7 @@ function Button({
       accent,
       variant,
       disabled: isDisabled,
+      forceStyle,
       className: styles.frame({ className }),
       ...pressableProps,
       children: [
@@ -1439,9 +1506,12 @@ function Button({
           }
         ) }) }) : null,
         icon ? /* @__PURE__ */ jsxRuntime.jsx(
-          Icon,
+          InteractiveIcon,
           {
             icon,
+            activeIcon,
+            active: forceStyle !== void 0,
+            disabled: isDisabled,
             className: styles.icon(),
             size: size === "sm" ? 16 : 20
           }
@@ -1542,11 +1612,13 @@ const iconButtonVariants = tailwindVariants.tv(
 );
 function IconButton({
   icon,
+  activeIcon,
   disabled,
   size = "md",
   iconSize,
   variant = "contained",
   className,
+  forceStyle,
   ...pressableProps
 }) {
   const diameter = typeof size === "number" ? size : buttonHeight[size];
@@ -1556,13 +1628,17 @@ function IconButton({
     {
       variant,
       disabled,
+      forceStyle,
       className: styles.frame({ className }),
       style: { width: diameter, height: diameter },
       ...pressableProps,
       children: /* @__PURE__ */ jsxRuntime.jsx(
-        Icon,
+        InteractiveIcon,
         {
           icon,
+          activeIcon,
+          active: forceStyle !== void 0,
+          disabled: disabled === true,
           size: diameter * (iconSize === "fill" ? 0.8 : 0.55),
           className: styles.icon()
         }
@@ -2244,6 +2320,7 @@ const menuItemVariants = tailwindVariants.tv({
 function MenuItem({
   label,
   icon,
+  activeIcon,
   accent,
   href,
   disabled,
@@ -2275,7 +2352,16 @@ function MenuItem({
         onPress: press
       },
       children: [
-        icon ? /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size: 20, className: styles.icon() }) : null,
+        icon ? /* @__PURE__ */ jsxRuntime.jsx(
+          InteractiveIcon,
+          {
+            icon,
+            activeIcon,
+            disabled: disabled === true,
+            size: 20,
+            className: styles.icon()
+          }
+        ) : null,
         /* @__PURE__ */ jsxRuntime.jsx(Text, { className: styles.label(), children: label })
       ]
     }
@@ -2897,7 +2983,8 @@ function useSelectionValue({
   disabled,
   compact,
   orientation,
-  stretch
+  stretch,
+  variant
 }) {
   const [value, onSelect] = useControllableValue({
     value: controlledValue,
@@ -2905,8 +2992,16 @@ function useSelectionValue({
     onValueChange
   });
   return react.useMemo(
-    () => ({ value, onSelect, disabled, compact, orientation, stretch }),
-    [value, onSelect, disabled, compact, orientation, stretch]
+    () => ({
+      value,
+      onSelect,
+      disabled,
+      compact,
+      orientation,
+      stretch,
+      variant
+    }),
+    [value, onSelect, disabled, compact, orientation, stretch, variant]
   );
 }
 
@@ -3033,7 +3128,7 @@ function Radio({ value, label, disabled }) {
 }
 
 const segmentedBarVariants = tailwindVariants.tv({
-  base: "items-stretch gap-xxs px-xs py-0",
+  base: "items-stretch px-xs py-0",
   variants: {
     orientation: {
       horizontal: "flex-row min-h-[44px]",
@@ -3042,13 +3137,27 @@ const segmentedBarVariants = tailwindVariants.tv({
     stretch: {
       true: "self-stretch",
       false: "self-start"
+    },
+    // A bar of square icon chips is a stadium at the 44px height, so the track
+    // takes the same radius as the chips it holds. It drops its gap and its
+    // horizontal padding too: the chip is already inset inside its own 44px tap
+    // target, so keeping either would add to that slack and leave the icons
+    // floating far apart.
+    variant: {
+      segmented: "gap-xxs",
+      icon: "rounded-md gap-0"
     }
   },
-  defaultVariants: { orientation: "horizontal", stretch: false }
+  defaultVariants: {
+    orientation: "horizontal",
+    stretch: false,
+    variant: "segmented"
+  }
 });
 function SegmentedBar({
   orientation,
   stretch,
+  variant,
   className,
   ...props
 }) {
@@ -3057,7 +3166,12 @@ function SegmentedBar({
     {
       variant: "lowered",
       size: "sm",
-      className: segmentedBarVariants({ orientation, stretch, className }),
+      className: segmentedBarVariants({
+        orientation,
+        stretch,
+        variant,
+        className
+      }),
       ...props
     }
   );
@@ -3069,6 +3183,7 @@ function RadioButtonGroup({
   onValueChange,
   accent,
   disabled,
+  variant,
   compact,
   children,
   ...props
@@ -3078,9 +3193,19 @@ function RadioButtonGroup({
     defaultValue,
     onValueChange,
     disabled,
-    compact
+    compact,
+    variant
   });
-  return /* @__PURE__ */ jsxRuntime.jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(SegmentedBar, { role: "radiogroup", accent, ...props, children }) });
+  return /* @__PURE__ */ jsxRuntime.jsx(RadioContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(
+    SegmentedBar,
+    {
+      role: "radiogroup",
+      variant,
+      accent,
+      ...props,
+      children
+    }
+  ) });
 }
 
 const segmentedItemVariants = tailwindVariants.tv({
@@ -3089,20 +3214,35 @@ const segmentedItemVariants = tailwindVariants.tv({
     segment: "relative flex-row flex-center gap-xxs min-h-[32px] rounded-xs border border-transparent transition-[border-color] duration-fast ease-in group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-interactive-outlined-outline-focus",
     chip: "absolute inset-0 rounded-xs transition-opacity duration-fast ease-in",
     foreground: "z-1 transition-[color] duration-fast ease-in",
-    label: "select-none font-body-bold text-base text-center"
+    label: "select-none font-body-bold text-base text-center",
+    // indicator — a badge over the glyph's top-right, not beside it: the icon
+    // chip is a circle and the lunes its 20px glyph leaves in the corners are
+    // ~4px wide, too narrow to hold anything. Its halo is the chip's own fill,
+    // so the badge punches out of the glyph it overlaps, and these insets keep
+    // its painted circle inside the chip in both sizes the icon variant takes
+    // (36px in a row, 40px stacked or stretched): 1.1px and 0.3px of clearance.
+    indicator: "absolute right-[4px] top-[4px] z-1 flex-center size-[14px] rounded-full transition-[background-color] duration-fast ease-in"
   },
   variants: {
     selected: {
-      true: { chip: "opacity-100", foreground: "text-on-accent" },
+      true: {
+        chip: "opacity-100",
+        foreground: "text-on-accent",
+        indicator: "bg-interactive-contained-pressable"
+      },
       false: {
         chip: "opacity-0",
-        foreground: "text-muted group-hover:text-sharp"
+        foreground: "text-muted group-hover:text-sharp",
+        // The chip is transparent here, so the halo takes what shows through it:
+        // the lowered SegmentedBar behind.
+        indicator: "bg-lowered"
       }
     },
     disabled: {
       true: {
         chip: "bg-interactive-contained-disabled",
-        foreground: "text-disabled-muted group-hover:text-disabled-muted"
+        foreground: "text-disabled-muted group-hover:text-disabled-muted",
+        indicator: "bg-interactive-contained-disabled"
       },
       false: { chip: "bg-interactive-contained-pressable shadow-s" }
     },
@@ -3119,12 +3259,29 @@ const segmentedItemVariants = tailwindVariants.tv({
     },
     // A stretched bar hands its extra width to its items; a stacked one already
     // spans that width, so only a row shares it.
-    stretch: { true: {}, false: {} }
+    stretch: { true: {}, false: {} },
+    // Declared last so its radius and padding land after the ones `compact` and
+    // `orientation` set, and win the merge.
+    variant: {
+      segmented: {},
+      // The chip is a 40px square with no label, so the pressable carries the
+      // tap target's width the way it already carries its height — the chip
+      // alone is 8px short of the 44px minimum. 40 and not 32: the 4px of slack
+      // that leaves on every side is exactly the focus ring (2px offset + 2px
+      // width), and it is the whole frame around the chip, the bar having
+      // dropped its own horizontal padding.
+      icon: {
+        pressable: "min-w-[44px]",
+        segment: "rounded-md self-center w-[36px] min-h-[36px] px-0",
+        chip: "rounded-md"
+      }
+    }
   },
   defaultVariants: {
     compact: false,
     orientation: "horizontal",
-    stretch: false
+    stretch: false,
+    variant: "segmented"
   },
   compoundVariants: [
     {
@@ -3142,6 +3299,18 @@ const segmentedItemVariants = tailwindVariants.tv({
       }
     },
     {
+      // A square chip stays square whatever width the item is given, so a
+      // stretched or stacked icon bar centers it instead of stretching it.
+      variant: "icon",
+      stretch: true,
+      class: { segment: "self-center w-[40px]" }
+    },
+    {
+      variant: "icon",
+      orientation: "vertical",
+      class: { segment: "self-center w-[40px] min-h-[40px]" }
+    },
+    {
       selected: false,
       disabled: false,
       class: {
@@ -3154,17 +3323,28 @@ const segmentedItemVariants = tailwindVariants.tv({
       class: {
         foreground: "text-disabled-sharp group-hover:text-disabled-sharp"
       }
+    },
+    {
+      // `disabled` is declared after `selected`, so it would hand the halo the
+      // disabled chip's fill on an item that has no chip showing at all.
+      selected: false,
+      disabled: true,
+      class: { indicator: "bg-lowered" }
     }
   ]
 });
 function SegmentedItem({
   label,
   icon,
+  activeIcon,
+  activeAccent,
+  indicator,
   selected,
   disabled,
   compact,
   orientation,
   stretch,
+  variant,
   ...props
 }) {
   const styles = segmentedItemVariants({
@@ -3172,7 +3352,8 @@ function SegmentedItem({
     disabled: disabled === true,
     compact,
     orientation,
-    stretch
+    stretch,
+    variant
   });
   return /* @__PURE__ */ jsxRuntime.jsx(
     InteractiveBox,
@@ -3184,15 +3365,27 @@ function SegmentedItem({
       ...props,
       children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: styles.segment(), children: [
         /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.chip() }),
-        icon ? /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size: 20, className: styles.foreground() }) : null,
-        /* @__PURE__ */ jsxRuntime.jsx(
+        icon ? /* @__PURE__ */ jsxRuntime.jsx(
+          InteractiveIcon,
+          {
+            icon,
+            activeIcon,
+            activeAccent,
+            active: selected,
+            disabled: disabled === true,
+            size: 20,
+            className: styles.foreground()
+          }
+        ) : null,
+        variant === "icon" ? null : /* @__PURE__ */ jsxRuntime.jsx(
           Text,
           {
             numberOfLines: 1,
             className: styles.label({ class: styles.foreground() }),
             children: label
           }
-        )
+        ),
+        variant === "icon" && indicator ? /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.indicator(), children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: indicator, size: 10, className: styles.foreground() }) }) : null
       ] })
     }
   );
@@ -3201,13 +3394,19 @@ function SegmentedItem({
 function RadioButton({
   value,
   label,
-  disabled
+  icon,
+  activeIcon,
+  activeAccent,
+  indicator,
+  disabled,
+  onPress
 }) {
   const {
     value: selectedValue,
     onSelect,
     disabled: groupDisabled,
-    compact
+    compact,
+    variant
   } = useRadioContext();
   const selected = selectedValue === value;
   const isDisabled = disabled === true || groupDisabled === true;
@@ -3218,12 +3417,198 @@ function RadioButton({
       "aria-checked": selected,
       "aria-disabled": isDisabled,
       label,
+      icon,
+      activeIcon,
+      activeAccent,
+      indicator,
       selected,
       disabled: isDisabled,
       compact,
-      onPress: () => {
+      variant,
+      onPress: onPress ?? (() => {
         onSelect(value);
+      })
+    }
+  );
+}
+
+function ColorModeOption({
+  mode,
+  label,
+  indicator,
+  onPress
+}) {
+  if (mode === "dark") {
+    return /* @__PURE__ */ jsxRuntime.jsx(
+      RadioButton,
+      {
+        value: "dark",
+        label,
+        icon: /* @__PURE__ */ jsxRuntime.jsx(MoonRegularIcon.MoonRegularIcon, {}),
+        activeIcon: /* @__PURE__ */ jsxRuntime.jsx(MoonDuotoneIcon.MoonDuotoneIcon, {}),
+        indicator,
+        onPress
       }
+    );
+  }
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    RadioButton,
+    {
+      value: "light",
+      label,
+      icon: /* @__PURE__ */ jsxRuntime.jsx(SunRegularIcon.SunRegularIcon, {}),
+      activeIcon: /* @__PURE__ */ jsxRuntime.jsx(SunDuotoneIcon.SunDuotoneIcon, {}),
+      indicator,
+      onPress
+    }
+  );
+}
+function SystemColorModeOption({
+  value,
+  label,
+  onPress
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    RadioButton,
+    {
+      value,
+      label,
+      icon: /* @__PURE__ */ jsxRuntime.jsx(DesktopRegularIcon.DesktopRegularIcon, {}),
+      activeIcon: /* @__PURE__ */ jsxRuntime.jsx(DesktopDuotoneIcon.DesktopDuotoneIcon, {}),
+      onPress
+    }
+  );
+}
+function ColorModeLockOption({
+  mode,
+  label,
+  followsSystem,
+  followingSystemLabel,
+  onPress
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    ColorModeOption,
+    {
+      mode,
+      label: followsSystem ? followingSystemLabel(label) : label,
+      indicator: followsSystem ? /* @__PURE__ */ jsxRuntime.jsx(DesktopRegularIcon.DesktopRegularIcon, {}) : void 0,
+      onPress
+    }
+  );
+}
+function nextLockPreference({
+  mode,
+  preference,
+  resolvedMode,
+  systemMode
+}) {
+  if (mode !== resolvedMode) return mode === systemMode ? "system" : mode;
+  if (mode !== systemMode) return mode;
+  return preference === "system" ? mode : "system";
+}
+function ColorModePicker({
+  value,
+  defaultValue = "system",
+  onValueChange,
+  variant = "system-lock",
+  accent,
+  disabled,
+  "aria-label": ariaLabel = "Color mode",
+  lightLabel = "Light",
+  darkLabel = "Dark",
+  systemLabel = "System",
+  followingSystemLabel = (modeLabel) => `${modeLabel} (system)`
+}) {
+  const [preference = "system", setPreference] = useControllableValue({
+    value,
+    defaultValue,
+    onValueChange
+  });
+  const systemMode = useSystemColorMode();
+  if (variant === "system-lock") {
+    const resolvedMode = preference === "system" ? systemMode : preference;
+    const pressLock = (mode) => () => {
+      setPreference(
+        nextLockPreference({ mode, preference, resolvedMode, systemMode })
+      );
+    };
+    return (
+      // The group tracks the mode in effect, not the preference: `system` has no
+      // chip of its own here, it shows as the chip it resolves to.
+      /* @__PURE__ */ jsxRuntime.jsxs(
+        RadioButtonGroup,
+        {
+          variant: "icon",
+          "aria-label": ariaLabel,
+          accent,
+          disabled,
+          value: resolvedMode,
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx(
+              ColorModeLockOption,
+              {
+                mode: "light",
+                label: lightLabel,
+                followsSystem: preference === "system" && systemMode === "light",
+                followingSystemLabel,
+                onPress: pressLock("light")
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              ColorModeLockOption,
+              {
+                mode: "dark",
+                label: darkLabel,
+                followsSystem: preference === "system" && systemMode === "dark",
+                followingSystemLabel,
+                onPress: pressLock("dark")
+              }
+            )
+          ]
+        }
+      )
+    );
+  }
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    RadioButtonGroup,
+    {
+      variant: "icon",
+      "aria-label": ariaLabel,
+      accent,
+      disabled,
+      value: preference,
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          ColorModeOption,
+          {
+            mode: "light",
+            label: lightLabel,
+            onPress: () => {
+              setPreference("light");
+            }
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          ColorModeOption,
+          {
+            mode: "dark",
+            label: darkLabel,
+            onPress: () => {
+              setPreference("dark");
+            }
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          SystemColorModeOption,
+          {
+            value: "system",
+            label: systemLabel,
+            onPress: () => {
+              setPreference("system");
+            }
+          }
+        )
+      ]
     }
   );
 }
@@ -3371,6 +3756,7 @@ function NavBar({
   disabled,
   orientation,
   stretch,
+  variant,
   children,
   ...props
 }) {
@@ -3380,7 +3766,8 @@ function NavBar({
     onValueChange,
     disabled,
     orientation,
-    stretch
+    stretch,
+    variant
   });
   return /* @__PURE__ */ jsxRuntime.jsx(NavBarContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(
     SegmentedBar,
@@ -3388,6 +3775,7 @@ function NavBar({
       role: "navigation",
       orientation,
       stretch,
+      variant,
       accent,
       ...props,
       children
@@ -3399,6 +3787,8 @@ function NavBarItem({
   href,
   label,
   icon,
+  activeIcon,
+  activeAccent,
   disabled,
   onPress
 }) {
@@ -3407,7 +3797,8 @@ function NavBarItem({
     onSelect,
     disabled: navBarDisabled,
     orientation,
-    stretch
+    stretch,
+    variant
   } = useNavBarContext();
   const selected = href !== void 0 && currentValue === href;
   const isDisabled = disabled === true || navBarDisabled === true;
@@ -3424,10 +3815,13 @@ function NavBarItem({
       "aria-disabled": isDisabled,
       label,
       icon,
+      activeIcon,
+      activeAccent,
       selected,
       disabled: isDisabled,
       orientation,
       stretch,
+      variant,
       onPress: onPress ?? selectHref
     }
   );
@@ -3563,6 +3957,7 @@ function Tabs({
   onValueChange,
   accent,
   disabled,
+  variant,
   children,
   ...props
 }) {
@@ -3570,15 +3965,18 @@ function Tabs({
     value,
     defaultValue,
     onValueChange,
-    disabled
+    disabled,
+    variant
   });
-  return /* @__PURE__ */ jsxRuntime.jsx(TabsContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(SegmentedBar, { role: "tablist", accent, ...props, children }) });
+  return /* @__PURE__ */ jsxRuntime.jsx(TabsContextProvider, { value: context, children: /* @__PURE__ */ jsxRuntime.jsx(SegmentedBar, { role: "tablist", variant, accent, ...props, children }) });
 }
 
 function Tab({
   value,
   label,
   icon,
+  activeIcon,
+  activeAccent,
   disabled,
   onPress,
   ...props
@@ -3586,7 +3984,8 @@ function Tab({
   const {
     value: currentValue,
     onSelect,
-    disabled: tabsDisabled
+    disabled: tabsDisabled,
+    variant
   } = useTabsContext();
   const selected = currentValue === value;
   const isDisabled = disabled === true || tabsDisabled === true;
@@ -3598,8 +3997,11 @@ function Tab({
       "aria-disabled": isDisabled,
       label,
       icon,
+      activeIcon,
+      activeAccent,
       selected,
       disabled: isDisabled,
+      variant,
       onPress: onPress ?? (() => {
         onSelect(value);
       }),
@@ -4785,6 +5187,7 @@ exports.CircularProgress = CircularProgress;
 exports.Citation = Citation;
 exports.Code = Code;
 exports.CodeBlock = CodeBlock;
+exports.ColorModePicker = ColorModePicker;
 exports.ConfirmationMessage = ConfirmationMessage;
 exports.ConnectionState = ConnectionState;
 exports.EditableItem = EditableItem;
@@ -4810,6 +5213,7 @@ exports.InfoMessage = InfoMessage;
 exports.InputText = InputText;
 exports.InputTextAutocomplete = InputTextAutocomplete;
 exports.InteractiveBox = InteractiveBox;
+exports.InteractiveIcon = InteractiveIcon;
 exports.InternalLinkButton = InternalLinkButton;
 exports.LinearProgress = LinearProgress;
 exports.LinkText = LinkText;
@@ -4872,5 +5276,7 @@ exports.useCurrentBreakpointName = useCurrentBreakpointName;
 exports.useCurrentBreakpointNameFiltered = useCurrentBreakpointNameFiltered;
 exports.useCurrentMode = useCurrentMode;
 exports.useCurrentTheme = useCurrentTheme;
+exports.useResolvedColorMode = useResolvedColorMode;
 exports.useScreenSafeAreaPadding = useScreenSafeAreaPadding;
+exports.useSystemColorMode = useSystemColorMode;
 //# sourceMappingURL=index-react-native.cjs.js.map

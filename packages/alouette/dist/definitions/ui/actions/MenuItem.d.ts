@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
-import { type SVGIconElement } from "../primitives/Icon";
+import type { SVGIconElement } from "../primitives/Icon";
 export interface MenuItemProps {
     label: string;
     icon?: SVGIconElement;
+    /** Replaces `icon` while the row is hovered, focused or pressed. */
+    activeIcon?: SVGIconElement;
     /** Colours the row's label and icon — `danger` for a destructive action. */
     accent?: Accent;
     /**
@@ -16,5 +18,5 @@ export interface MenuItemProps {
     onPress?: (event: GestureResponderEvent) => void;
 }
 /** One action of a {@link Menu}. Pressing it runs `onPress` and closes the menu. */
-export declare function MenuItem({ label, icon, accent, href, disabled, onPress, }: MenuItemProps): ReactNode;
+export declare function MenuItem({ label, icon, activeIcon, accent, href, disabled, onPress, }: MenuItemProps): ReactNode;
 //# sourceMappingURL=MenuItem.d.ts.map

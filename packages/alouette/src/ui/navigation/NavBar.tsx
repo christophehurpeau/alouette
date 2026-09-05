@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { SegmentedBar } from "../selection/SegmentedBar";
 import {
   type SegmentedOrientation,
+  type SegmentedVariant,
   type SelectionGroupProps,
   useSelectionValue,
 } from "../selection/SelectionContext";
@@ -21,6 +22,12 @@ export interface NavBarProps extends SelectionGroupProps {
    * hands to the navigation.
    */
   stretch?: boolean;
+  /**
+   * `icon` renders the destinations as square icon-only chips in a pill-shaped
+   * bar; each item's `label` stays its accessible name, so an item must carry
+   * an `icon`.
+   */
+  variant?: SegmentedVariant;
   className?: string;
 }
 
@@ -37,6 +44,7 @@ export function NavBar({
   disabled,
   orientation,
   stretch,
+  variant,
   children,
   ...props
 }: NavBarProps): ReactNode {
@@ -47,6 +55,7 @@ export function NavBar({
     disabled,
     orientation,
     stretch,
+    variant,
   });
 
   return (
@@ -55,6 +64,7 @@ export function NavBar({
         role="navigation"
         orientation={orientation}
         stretch={stretch}
+        variant={variant}
         accent={accent}
         {...props}
       >

@@ -197,6 +197,34 @@ web it wins over the class it silently conflicts with.
 
 Source: packages/alouette/src/ui/containers/Modal.tsx
 
+### HIGH A `base` class a variant then has to override
+
+Wrong:
+
+```tsx
+tv({
+  base: "px-xs gap-xxs",
+  variants: { variant: { segmented: "", icon: "rounded-md gap-0" } },
+});
+```
+
+Correct:
+
+```tsx
+tv({
+  base: "px-xs",
+  variants: {
+    variant: { segmented: "gap-xxs", icon: "rounded-md gap-0" },
+  },
+});
+```
+
+`base` holds only what every variant keeps. A property one variant cancels
+belongs on each variant instead — the neutralizing class (`gap-0`, `p-0`,
+`border-0`) hides which value actually applies and depends on merge order to win.
+
+Source: packages/alouette/src/ui/selection/SegmentedBar.tsx
+
 ### MEDIUM Collapsing a pixel size to the spacing-scale class
 
 Wrong:

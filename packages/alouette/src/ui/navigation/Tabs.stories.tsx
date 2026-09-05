@@ -1,6 +1,10 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { BellDuotoneIcon } from "alouette-icons/phosphor-icons/BellDuotoneIcon";
+import { BellRegularIcon } from "alouette-icons/phosphor-icons/BellRegularIcon";
+import { CalendarDuotoneIcon } from "alouette-icons/phosphor-icons/CalendarDuotoneIcon";
 import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/CalendarRegularIcon";
+import { ChartBarDuotoneIcon } from "alouette-icons/phosphor-icons/ChartBarDuotoneIcon";
 import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
 import { type ReactNode, useState } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
@@ -8,7 +12,7 @@ import { Surface } from "../containers/Surface";
 import { Text } from "../primitives/Text";
 import { VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
-import { Tab } from "./Tab";
+import { Tab, type TabProps } from "./Tab";
 import { Tabs } from "./Tabs";
 
 type ThisStory = StoryObj<typeof Tabs>;
@@ -22,6 +26,7 @@ export default {
   },
   argTypes: {
     disabled: { control: "boolean" },
+    variant: { control: "inline-radio", options: ["segmented", "icon"] },
     accent: {
       control: "select",
       options: [undefined, "brand", "danger", "info", "success", "warning"],
@@ -40,13 +45,70 @@ export const PreviewTabsStory: ThisStory = {
   ),
 };
 
+function IconTabs({ accent }: { accent?: Accent }): ReactNode {
+  return (
+    <Tabs variant="icon" accent={accent} aria-label="Icons" defaultValue="week">
+      <Tab
+        value="week"
+        label="Week"
+        icon={<CalendarRegularIcon />}
+        activeIcon={<CalendarDuotoneIcon />}
+      />
+      <Tab
+        value="stats"
+        label="Stats"
+        icon={<ChartBarRegularIcon />}
+        activeIcon={<ChartBarDuotoneIcon />}
+      />
+      <Tab
+        disabled
+        value="alerts"
+        label="Alerts"
+        icon={<BellRegularIcon />}
+        activeIcon={<BellDuotoneIcon />}
+      />
+    </Tabs>
+  );
+}
+
+interface RangeTabsProps {
+  label: string;
+  accent?: Accent;
+  activeAccent?: TabProps["activeAccent"];
+  /** Renders `icon` alone, so the glyph keeps one weight throughout. */
+  withoutActiveIcon?: boolean;
+}
+
+function RangeTabs({
+  label,
+  accent,
+  activeAccent,
+  withoutActiveIcon,
+}: RangeTabsProps): ReactNode {
+  return (
+    <Tabs aria-label={label} accent={accent} defaultValue="week">
+      <Tab
+        value="week"
+        label="Week"
+        icon={<CalendarRegularIcon />}
+        activeIcon={withoutActiveIcon ? undefined : <CalendarDuotoneIcon />}
+        activeAccent={activeAccent}
+      />
+      <Tab
+        value="stats"
+        label="Stats"
+        icon={<ChartBarRegularIcon />}
+        activeIcon={withoutActiveIcon ? undefined : <ChartBarDuotoneIcon />}
+        activeAccent={activeAccent}
+      />
+    </Tabs>
+  );
+}
+
 function TabsVariant({ accent }: { accent?: Accent }): ReactNode {
   return (
     <Story.SubSection withSurface title={accent ?? "Default"}>
-      <Tabs aria-label="With icons" accent={accent} defaultValue="week">
-        <Tab value="week" label="Week" icon={<CalendarRegularIcon />} />
-        <Tab value="stats" label="Stats" icon={<ChartBarRegularIcon />} />
-      </Tabs>
+      <RangeTabs accent={accent} label="With icons" />
       <Tabs aria-label="Labels only" accent={accent} defaultValue="week">
         <Tab value="day" label="Day" />
         <Tab value="week" label="Week" />
@@ -56,6 +118,8 @@ function TabsVariant({ accent }: { accent?: Accent }): ReactNode {
         <Tab value="day" label="Day" />
         <Tab value="week" label="Week" />
       </Tabs>
+      <IconTabs accent={accent} />
+      <RangeTabs activeAccent={accent} label="Active accent" />
     </Story.SubSection>
   );
 }
@@ -65,10 +129,22 @@ export const VariantsTabsStory: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
+        <Text className="text-sm text-muted">
+          Each accent is shown on the bar itself, then — in the last row — on
+          the glyph alone: no accent on the group, `activeAccent` on the tabs.
+        </Text>
         <TabsVariant />
         <TabsVariant accent="brand" />
         <TabsVariant accent="danger" />
         <TabsVariant accent="success" />
+      </Story.Section>
+
+      <Story.Section withSurface title="Without activeIcon">
+        <Text className="text-sm text-muted">
+          The duotone twin is optional. Drop `activeIcon` and the glyph keeps
+          one weight throughout, the chip carrying the whole affordance.
+        </Text>
+        <RangeTabs withoutActiveIcon label="Single weight" />
       </Story.Section>
     </Story>
   ),
@@ -117,13 +193,21 @@ export const TestsTabsStory: ThisStory = {
     <Story noDarkMode>
       <Story.Section title="Uncontrolled">
         <Tabs aria-label="Period" defaultValue="day">
-          <Tab value="day" label="Day" icon={<CalendarRegularIcon />} />
+          <Tab
+            value="day"
+            label="Day"
+            icon={<CalendarRegularIcon />}
+            activeIcon={<CalendarDuotoneIcon />}
+          />
           <Tab value="week" label="Week" />
           <Tab disabled value="month" label="Month" />
         </Tabs>
       </Story.Section>
       <Story.Section title="With panels">
         <TabsWithPanels />
+      </Story.Section>
+      <Story.Section title="Icon">
+        <IconTabs />
       </Story.Section>
     </Story>
   ),
@@ -170,5 +254,31 @@ export const TestsTabsStory: ThisStory = {
       ),
     );
     await expect(canvas.getByText("Twelve weeks of activity.")).toBeTruthy();
+
+    // Icon tabs: the label names the tab without being rendered, and the square
+    // chip still sits in a 44x44 tap target.
+    const iconTablist = canvas.getByRole("tablist", { name: "Icons" });
+    const iconCanvas = within(iconTablist);
+    const iconWeek = iconCanvas.getByRole("tab", { name: "Week" });
+    const iconStats = iconCanvas.getByRole("tab", { name: "Stats" });
+    const iconAlerts = iconCanvas.getByRole("tab", { name: "Alerts" });
+
+    await expect(iconCanvas.queryByText("Stats")).toBeNull();
+    await expect(iconTablist.getBoundingClientRect().height).toBe(44);
+    for (const tab of [iconWeek, iconStats, iconAlerts]) {
+      const rect = tab.getBoundingClientRect();
+      await expect(rect.height).toBeGreaterThanOrEqual(44);
+      await expect(rect.width).toBeGreaterThanOrEqual(44);
+    }
+
+    await expect(iconWeek).toHaveAttribute("aria-selected", "true");
+    await expect(iconAlerts).toHaveAttribute("aria-disabled", "true");
+
+    iconStats.click();
+
+    await waitFor(() =>
+      expect(iconStats).toHaveAttribute("aria-selected", "true"),
+    );
+    await expect(iconWeek).toHaveAttribute("aria-selected", "false");
   },
 };

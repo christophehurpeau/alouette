@@ -1,23 +1,23 @@
 import { useCallback, useState } from "react";
 
-export interface UseControllableValueParams {
-  value: string | undefined;
-  defaultValue: string | undefined;
-  onValueChange?: (value: string) => void;
+export interface UseControllableValueParams<TValue extends string> {
+  value: TValue | undefined;
+  defaultValue: TValue | undefined;
+  onValueChange?: (value: TValue) => void;
 }
 
-export function useControllableValue({
+export function useControllableValue<TValue extends string = string>({
   value: controlledValue,
   defaultValue,
   onValueChange,
-}: UseControllableValueParams): readonly [
-  string | undefined,
-  (next: string) => void,
+}: UseControllableValueParams<TValue>): readonly [
+  TValue | undefined,
+  (next: TValue) => void,
 ] {
   const [internalValue, setInternalValue] = useState(defaultValue);
   const value = controlledValue ?? internalValue;
   const setValue = useCallback(
-    (next: string) => {
+    (next: TValue) => {
       if (controlledValue === undefined) {
         setInternalValue(next);
       }

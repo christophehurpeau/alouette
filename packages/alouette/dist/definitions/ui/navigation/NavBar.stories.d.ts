@@ -15,6 +15,10 @@ declare const _default: {
             control: "inline-radio";
             options: string[];
         };
+        variant: {
+            control: "inline-radio";
+            options: string[];
+        };
         accent: {
             control: "select";
             options: (string | undefined)[];

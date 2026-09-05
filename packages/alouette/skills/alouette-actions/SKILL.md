@@ -125,6 +125,26 @@ import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
 `size` is `"sm" | "md"` or a number (custom diameter in px); `iconSize="fill"`
 makes the icon take 80% of the button.
 
+### Icon weight on interaction
+
+`Button`, `IconButton` and `MenuItem` take an optional `activeIcon` next to
+`icon` — usually the duotone twin of the same glyph — rendered while the control
+is hovered, focused or pressed. It is an accent on top of the affordance, not a
+replacement: the background and border still come from the `interactive-*`
+tokens, and a disabled control never swaps.
+
+```tsx
+import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuotoneIcon";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+
+<Button
+  text="Back"
+  icon={<ArrowLeftRegularIcon />}
+  activeIcon={<ArrowLeftDuotoneIcon />}
+  onPress={goBack}
+/>;
+```
+
 ### Pressable surfaces
 
 `PressableBox` is a themed, pressable container (`variant`, `accent`,

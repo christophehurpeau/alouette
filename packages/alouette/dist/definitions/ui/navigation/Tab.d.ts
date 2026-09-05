@@ -5,6 +5,13 @@ export interface TabProps {
     value: string;
     label: string;
     icon?: SVGIconElement;
+    /**
+     * Replaces `icon` while the tab is hovered, focused or pressed, and for as
+     * long as it is selected.
+     */
+    activeIcon?: SVGIconElement;
+    /** Accent tinting `activeIcon`, so the glyph changes color as well as weight. */
+    activeAccent?: SegmentedItemProps["activeAccent"];
     disabled?: boolean;
     "aria-controls"?: string;
     id?: string;
@@ -14,5 +21,5 @@ export interface TabProps {
      */
     onPress?: SegmentedItemProps["onPress"];
 }
-export declare function Tab({ value, label, icon, disabled, onPress, ...props }: TabProps): ReactNode;
+export declare function Tab({ value, label, icon, activeIcon, activeAccent, disabled, onPress, ...props }: TabProps): ReactNode;
 //# sourceMappingURL=Tab.d.ts.map

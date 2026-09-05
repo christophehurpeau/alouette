@@ -19,6 +19,8 @@ export type {
   Accent,
 } from "./core/AlouetteConfig";
 export { useCurrentMode, useCurrentTheme } from "./core/ThemeContext";
+export type { ColorModePreference } from "./core/useColorMode";
+export { useResolvedColorMode, useSystemColorMode } from "./core/useColorMode";
 export type { ScopedThemeProps } from "./ui/containers/ScopedTheme";
 export { ScopedTheme } from "./ui/containers/ScopedTheme";
 export type { ViewProps } from "./ui/primitives/View";
@@ -84,6 +86,8 @@ export {
 } from "./ui/containers/AlertDialog";
 export type { IconProps, SVGIconElement } from "./ui/primitives/Icon";
 export { Icon } from "./ui/primitives/Icon";
+export type { InteractiveIconProps } from "./ui/primitives/InteractiveIcon";
+export { InteractiveIcon } from "./ui/primitives/InteractiveIcon";
 export type { PressableBoxProps } from "./ui/actions/PressableBox";
 export { PressableBox } from "./ui/actions/PressableBox";
 export type {
@@ -130,11 +134,19 @@ export type { RadioButtonGroupProps } from "./ui/inputs/RadioButtonGroup";
 export { RadioButtonGroup } from "./ui/inputs/RadioButtonGroup";
 export type { RadioButtonProps } from "./ui/inputs/RadioButton";
 export { RadioButton } from "./ui/inputs/RadioButton";
+export type {
+  ColorModePickerProps,
+  ColorModePickerVariant,
+} from "./ui/inputs/ColorModePicker";
+export { ColorModePicker } from "./ui/inputs/ColorModePicker";
 export type { RadioCardGroupProps } from "./ui/inputs/RadioCardGroup";
 export { RadioCardGroup } from "./ui/inputs/RadioCardGroup";
 export type { RadioCardProps } from "./ui/inputs/RadioCard";
 export { RadioCard } from "./ui/inputs/RadioCard";
-export type { SegmentedOrientation } from "./ui/selection/SelectionContext";
+export type {
+  SegmentedOrientation,
+  SegmentedVariant,
+} from "./ui/selection/SelectionContext";
 export type { NavBarProps } from "./ui/navigation/NavBar";
 export { NavBar } from "./ui/navigation/NavBar";
 export type { NavBarItemProps } from "./ui/navigation/NavBarItem";

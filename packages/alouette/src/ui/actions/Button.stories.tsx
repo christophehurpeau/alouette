@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuotoneIcon";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import type { ReactNode } from "react";
 import { VStack } from "../stacks/stacks";
 import { Story, accents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
-import { Button, ExternalLinkButton } from "./Button";
+import { Button, type ButtonProps, ExternalLinkButton } from "./Button";
 
 type ThisStory = StoryObj<typeof Button>;
 
@@ -27,6 +29,16 @@ export default {
 <AccentTheme accent="brand">
   <Button variant="outlined" text="Cancel" />
 </AccentTheme>
+~~~
+
+### Active icon
+\`activeIcon\` replaces \`icon\` while the button is hovered, focused or pressed — a duotone twin is the usual pick. It is optional: with \`icon\` alone the glyph keeps one weight in every state.
+~~~tsx
+<Button
+  text="Back"
+  icon={<ArrowLeftRegularIcon />}
+  activeIcon={<ArrowLeftDuotoneIcon />}
+/>
 ~~~`,
       },
     },
@@ -37,8 +49,55 @@ export const PreviewButtonStory: ThisStory = {
   args: {
     text: "Example",
   },
-  render: (args) => <Button {...args} icon={<ArrowLeftRegularIcon />} />,
+  render: (args) => (
+    <Button
+      {...args}
+      icon={<ArrowLeftRegularIcon />}
+      activeIcon={<ArrowLeftDuotoneIcon />}
+    />
+  ),
 };
+
+interface BackButtonProps {
+  forceStyle?: ButtonProps["forceStyle"];
+  /** Renders `icon` alone, so the glyph keeps one weight in every state. */
+  withoutActiveIcon?: boolean;
+}
+
+function BackButton({
+  forceStyle,
+  withoutActiveIcon,
+}: BackButtonProps): ReactNode {
+  return (
+    <Button
+      forceStyle={forceStyle}
+      icon={<ArrowLeftRegularIcon />}
+      activeIcon={withoutActiveIcon ? undefined : <ArrowLeftDuotoneIcon />}
+      text="Back"
+    />
+  );
+}
+
+function IconWeightRow({
+  withoutActiveIcon,
+}: Pick<BackButtonProps, "withoutActiveIcon">): ReactNode {
+  return (
+    <StoryGrid.Row flexWrap>
+      <StoryGrid.Col title="Default">
+        <BackButton withoutActiveIcon={withoutActiveIcon} />
+      </StoryGrid.Col>
+      <StoryGrid.Col title="hover">
+        <BackButton forceStyle="hover" withoutActiveIcon={withoutActiveIcon} />
+      </StoryGrid.Col>
+      <StoryGrid.Col title="focus">
+        <BackButton forceStyle="focus" withoutActiveIcon={withoutActiveIcon} />
+      </StoryGrid.Col>
+      <StoryGrid.Col title="press">
+        <BackButton forceStyle="press" withoutActiveIcon={withoutActiveIcon} />
+      </StoryGrid.Col>
+    </StoryGrid.Row>
+  );
+}
 
 export const Variants: ThisStory = {
   render: () => (
@@ -51,6 +110,7 @@ export const Variants: ThisStory = {
                 variant="contained"
                 size={size}
                 icon={<ArrowLeftRegularIcon />}
+                activeIcon={<ArrowLeftDuotoneIcon />}
                 text={size}
               />
             </StoryGrid.Col>
@@ -79,6 +139,7 @@ export const Variants: ThisStory = {
                           variant={variant}
                           forceStyle={state === "disabled" ? undefined : state}
                           icon={<ArrowLeftRegularIcon />}
+                          activeIcon={<ArrowLeftDuotoneIcon />}
                           text={variant}
                         />
                       ),
@@ -89,6 +150,15 @@ export const Variants: ThisStory = {
             </StoryGrid.Row>
           </Story.SubSection>
         ))}
+      </Story.Section>
+
+      <Story.Section withSurface title="Icon weight">
+        <Story.SubSection title="activeIcon">
+          <IconWeightRow />
+        </Story.SubSection>
+        <Story.SubSection title="Without activeIcon">
+          <IconWeightRow withoutActiveIcon />
+        </Story.SubSection>
       </Story.Section>
 
       <Story.Section title="External Link Button">

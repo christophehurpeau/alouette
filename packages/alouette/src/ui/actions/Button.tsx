@@ -13,6 +13,7 @@ import { AccentScope } from "../containers/AccentScope";
 import { IndeterminateCircularProgress } from "../feedback/CircularProgress";
 import { indeterminateExitDurationMs } from "../feedback/useSimulatedProgress";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
+import { InteractiveIcon } from "../primitives/InteractiveIcon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
@@ -121,6 +122,8 @@ function resolveTerminalIcon(state: ButtonState | undefined): {
 export interface ButtonProps
   extends Omit<PressableBoxProps, "children">, ButtonSizeProps {
   icon?: SVGIconElement;
+  /** Replaces `icon` while the button is hovered, focused or pressed. */
+  activeIcon?: SVGIconElement;
   accent?: Accent;
   text: ReactNode;
   state?: ButtonState;
@@ -145,6 +148,7 @@ function isButtonDisabled({
 
 export function Button({
   icon,
+  activeIcon,
   text,
   disabled,
   state,
@@ -152,6 +156,7 @@ export function Button({
   variant = "contained",
   size = "md",
   className,
+  forceStyle,
   ...pressableProps
 }: ButtonProps): ReactNode {
   const isLoading = state === "loading";
@@ -190,6 +195,7 @@ export function Button({
       accent={accent}
       variant={variant}
       disabled={isDisabled}
+      forceStyle={forceStyle}
       className={styles.frame({ className })}
       {...pressableProps}
     >
@@ -213,8 +219,13 @@ export function Button({
         </View>
       ) : null}
       {icon ? (
-        <Icon
+        <InteractiveIcon
           icon={icon}
+          activeIcon={activeIcon}
+          // A pinned state in a story has to swap the glyph too, the CSS
+          // hover/focus/press the swap listens on never firing there.
+          active={forceStyle !== undefined}
+          disabled={isDisabled}
           className={styles.icon()}
           size={size === "sm" ? 16 : 20}
         />

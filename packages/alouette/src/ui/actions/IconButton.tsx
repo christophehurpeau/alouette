@@ -1,7 +1,8 @@
 import type { ReactNode, Ref } from "react";
 import type { View as RNView } from "react-native";
 import { tv } from "tailwind-variants";
-import { Icon, type SVGIconElement } from "../primitives/Icon";
+import type { SVGIconElement } from "../primitives/Icon";
+import { InteractiveIcon } from "../primitives/InteractiveIcon";
 import { buttonHeight } from "./Button";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
@@ -77,6 +78,8 @@ export interface IconButtonProps extends Omit<PressableBoxProps, "children"> {
    */
   ref?: Ref<RNView>;
   icon: SVGIconElement;
+  /** Replaces `icon` while the button is hovered, focused or pressed. */
+  activeIcon?: SVGIconElement;
   /** Preset size token, or any number for a custom diameter (px). */
   size?: number | "md" | "sm";
   /** When "fill", the icon takes 80% of the button; default uses 50%. */
@@ -86,11 +89,13 @@ export interface IconButtonProps extends Omit<PressableBoxProps, "children"> {
 
 export function IconButton({
   icon,
+  activeIcon,
   disabled,
   size = "md",
   iconSize,
   variant = "contained",
   className,
+  forceStyle,
   ...pressableProps
 }: IconButtonProps): ReactNode {
   const diameter = typeof size === "number" ? size : buttonHeight[size];
@@ -100,12 +105,18 @@ export function IconButton({
     <PressableBox
       variant={variant}
       disabled={disabled}
+      forceStyle={forceStyle}
       className={styles.frame({ className })}
       style={{ width: diameter, height: diameter }}
       {...pressableProps}
     >
-      <Icon
+      <InteractiveIcon
         icon={icon}
+        activeIcon={activeIcon}
+        // A pinned state in a story has to swap the glyph too, the CSS
+        // hover/focus/press the swap listens on never firing there.
+        active={forceStyle !== undefined}
+        disabled={disabled === true}
         size={diameter * (iconSize === "fill" ? 0.8 : 0.55)}
         className={styles.icon()}
       />
