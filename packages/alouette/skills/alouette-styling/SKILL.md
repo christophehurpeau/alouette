@@ -11,7 +11,7 @@ description: >
   writing, restyling or reviewing a component.
 type: core
 library: alouette
-library_version: "22.9.0"
+library_version: "22.10.0"
 requires:
   - alouette-theming
 sources:

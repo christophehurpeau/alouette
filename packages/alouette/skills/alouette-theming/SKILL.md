@@ -10,11 +10,13 @@ description: >
   instead of AccentScope; inside a portal (a modal or any other overlay), where
   the scope escapes the themed subtree, use PortalAccentScope. All three also
   take accent="none", which resolves to the plain mode theme and so drops an
-  accent inherited from an ancestor. Load when applying colors, accents or dark
-  mode, or when shipping a custom palette.
+  accent inherited from an ancestor. A stored light/dark choice is a
+  ColorModePreference ("light" | "dark" | "system") resolved by
+  useResolvedColorMode and applied by the app through ScopedTheme. Load when
+  applying colors, accents or dark mode, or when shipping a custom palette.
 type: core
 library: alouette
-library_version: "22.9.0"
+library_version: "22.10.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx"
@@ -25,6 +27,7 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteConfig.ts"
   - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/NativeThemeVariablesContext.ts"
+  - "christophehurpeau/alouette:packages/alouette/src/core/useColorMode.ts"
   - "christophehurpeau/alouette:packages/alouette/src/theme-generator/generateTheme.ts"
   - "christophehurpeau/alouette:packages/alouette/src/theme-generator/writeTheme.ts"
   - "christophehurpeau/alouette:CLAUDE.md"
@@ -125,6 +128,30 @@ import { useCurrentMode, useCurrentTheme } from "alouette";
 
 const mode = useCurrentMode(); // "light" | "dark"
 const theme = useCurrentTheme(); // e.g. "dark_brand"
+```
+
+### Apply a stored light/dark preference
+
+A stored choice is a `ColorModePreference`: `"light" | "dark" | "system"`.
+`useSystemColorMode()` reads the OS setting (`prefers-color-scheme` on web) and
+`useResolvedColorMode(preference)` turns the preference into the mode to apply.
+Applying it is the app's job — pass the result to a `ScopedTheme` around the
+tree; `ColorModePicker` (alouette-forms/SKILL.md) is the ready-made control that
+reports the choice.
+
+```tsx
+import {
+  type ColorModePreference,
+  ColorModePicker,
+  ScopedTheme,
+  useResolvedColorMode,
+} from "alouette";
+
+const [preference, setPreference] = useState<ColorModePreference>("system");
+
+<ScopedTheme theme={useResolvedColorMode(preference)}>
+  <ColorModePicker value={preference} onValueChange={setPreference} />
+</ScopedTheme>;
 ```
 
 ### Toggle an accent without remounting the subtree

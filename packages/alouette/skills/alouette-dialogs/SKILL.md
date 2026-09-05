@@ -2,22 +2,22 @@
 name: alouette-dialogs
 description: >
   Overlays: Modal (controlled by visible/onClose, required title, optional
-  icon/footer/role, size sm/md/lg, dismiss via backdrop/close/Escape/
-  Android-back) and AlertDialog for confirmations. The footer stays pinned to
-  the bottom of the scrolling body and grows a separator while content scrolls
-  under it. AlertDialog
-  variant is confirm (cancel+confirm) | alert (single acknowledge) | required
-  (single action, non-dismissible); accent defaults to danger. Prefer the
-  icon-fixed presets QuestionAlertDialog / WarningAlertDialog / InfoAlertDialog /
-  SuccessAlertDialog. onConfirm may return a promise: the dialog then shows a
-  loading state, locks dismissal until it settles, and renders a rejection with
-  errorToMessage. Popover is the chrome-less escape hatch, rendering children
-  above everything and outside any overflow-hidden ancestor: anchored under
-  anchorRef on web, a top/center overlay on native. Load when adding a modal,
+  icon/footer/role, size sm/md/lg, dismissed via backdrop/close/Escape/Android-
+  back; footer pinned below the scrolling body) and AlertDialog for
+  confirmations. AlertDialog variant is confirm (cancel+confirm) | alert (single
+  acknowledge) | required (single action, non-dismissible); accent defaults to
+  danger. Prefer the icon-fixed presets
+  Question/Warning/Info/SuccessAlertDialog. onConfirm may return a promise: the
+  dialog then shows a loading state, locks dismissal until it settles, and
+  renders a rejection with errorToMessage. Popover is the chrome-less escape
+  hatch, rendering children above everything, outside any overflow-hidden
+  ancestor: anchored under anchorRef on web (align start|end, width
+  anchor|content), a top/center overlay on native. For actions off a trigger use
+  Menu + MenuItem, not a hand-built Popover. Load when adding a modal,
   confirmation, alert dialog, or a dropdown escaping a clipping container.
 type: core
 library: alouette
-library_version: "22.9.0"
+library_version: "22.10.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -197,7 +197,12 @@ const [open, setOpen] = useState(false);
 The two platforms present it differently, and that is deliberate:
 
 - **web** — portals into `document.body` and positions itself under
-  `anchorRef`, matching its width. It follows the anchor through page and nested
+  `anchorRef`. `align` picks the anchor edge it lines up with (`"start"` by
+  default, `"end"` for a panel hanging off a small trigger near the right edge)
+  and `width` its sizing: `"anchor"` (default, as wide as the anchor — what a
+  field dropdown wants) or `"content"`, sizing to its own content for a menu
+  whose trigger is narrower than its items. Both are anchored-web only, like
+  `anchorRef` itself. It follows the anchor through page and nested
   scrolling, sits above react-native-web's own `Modal` layer (so a popover inside
   a dialog is not hidden behind it), and closes on Escape or a press outside the
   content and the anchor.
@@ -212,6 +217,11 @@ The two platforms present it differently, and that is deliberate:
 `accent` themes the content through `PortalAccentScope`; pass `accent="none"` to
 render it on the neutral mode tokens under an accented ancestor. `aria-label`
 names the overlay.
+
+For a list of actions hanging off a trigger, use `Menu` + `MenuItem`
+(alouette-actions/SKILL.md) rather than assembling this yourself: it is this
+`Popover` plus the `menu`/`menuitem` roles, the trigger's `aria-haspopup` /
+`aria-expanded`, arrow-key roving focus and close-on-select.
 
 ## Common Mistakes
 

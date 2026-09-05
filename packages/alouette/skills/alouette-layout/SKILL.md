@@ -5,13 +5,15 @@ description: >
   (variant/size/shadow), Stack / HStack / VStack, Separator, ScreenCenterLayout,
   the screen scroll containers (ScreenScrollView / ScreenFlatList /
   ScreenSectionList, with safe-area edges declared through SafeAreaScope),
+  the application shell (AppLayout + AppHeader, AppHeaderBrand / BrandLogo /
+  AppHeaderActions / AppHeaderAccount),
   and gradients (GradientBackground / GradientScrollView). Use the alouette
   spacing (xxs..4xl), radius (xs..lg) and shadow (s/m/l/lowered) scale via
-  p-*/gap-*/rounded-*/shadow-* classes. Load when building screen structure,
-  cards, spacing, or backgrounds.
+  p-*/gap-*/rounded-*/shadow-* classes. Load when building screen structure, an
+  app header or shell, cards, spacing, or backgrounds.
 type: core
 library: alouette
-library_version: "22.9.0"
+library_version: "22.10.0"
 requires:
   - alouette-theming
 sources:
@@ -25,6 +27,12 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenFlatList.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenSectionList.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/SafeAreaEdgesContext.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppLayout.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeader.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderActions.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderAccount.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/BrandLogo.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/config/tokens.stories.tsx"
 ---
 
@@ -152,6 +160,98 @@ web — and are only passed as `contentContainerStyle` when non-zero, because on
 native an inline style wins over the className, so an inset edge would override a
 same-edge padding class.
 
+### Application shell
+
+`AppLayout` is the shell around a screen: a header, an optional left sidebar
+beside the screen, and a footer, all scrolling together as one page — the bar
+comes back by scrolling up rather than being pinned chrome. Every slot is
+composed by the caller; the layout places them, puts the screen in a `main`
+landmark sized to what is left, and applies the safe-area insets around the body,
+so the screen inside needs **no scroll container and no insets of its own**.
+
+```tsx
+import {
+  AppHeader,
+  AppHeaderBrand,
+  AppLayout,
+  NavBar,
+  NavBarItem,
+} from "alouette";
+
+<AppLayout
+  header={
+    <AppHeader brand={<AppHeaderBrand title="Alouette" href="/" />}>
+      <NavBar
+        stretch
+        aria-label="Main"
+        value={pathname}
+        onValueChange={router.push}
+      >
+        <NavBarItem href="/home" label="Home" />
+      </NavBar>
+    </AppHeader>
+  }
+  sidebar={
+    <NavBar
+      orientation="vertical"
+      className="w-[220px] grow"
+      aria-label="Sections"
+      value={section}
+      onValueChange={setSection}
+    >
+      …
+    </NavBar>
+  }
+  footer={<Footer />}
+>
+  {screen}
+</AppLayout>;
+```
+
+`AppHeader` is the `banner`: `brand` in the start slot, `actions` in the end
+slot, and its children are the navigation slot. From `md` on web the three sit on
+one boxed line with the navigation centered; below that — and on native at every
+width — brand and actions share the first line and the navigation spans the
+second (hence `stretch` on the bar). `size` is `"sm" | "md"`, `variant` is `"bar"`
+(default, its own ground plus a downward shadow) or `"transparent"` (for a
+landing hero), `contentWidth` is `"boxed"` (default, max 1200px) or `"full"`. It
+pads its own top safe-area inset unless an ancestor `SafeAreaScope` already
+consumed the edge (`withSafeAreaTop={false}` opts out).
+
+The slot components: `AppHeaderBrand` (`title`, optional `subtitle` and
+`brandLogo`; given `href` or `onPress` it becomes a real pressable instead of a
+row wrapped in a link), `BrandLogo` (an icon on an accent disc),
+`AppHeaderActions` (spaces the end-slot controls) and `AppHeaderAccount` — the
+signed-in account as one `Avatar` trigger opening a `Menu` of `MenuItem`s, which
+is where session actions belong rather than in the bar itself.
+
+```tsx
+<AppHeader
+  brand={
+    <AppHeaderBrand
+      title="Alouette"
+      brandLogo={<BrandLogo icon={<BirdRegularIcon />} />}
+      href="/"
+    />
+  }
+  actions={
+    <AppHeaderActions>
+      <IconButton
+        icon={<BellRegularIcon />}
+        aria-label="Notifications"
+        variant="ghost"
+      />
+      <AppHeaderAccount name="Ada Lovelace">
+        <MenuItem label="Profile" onPress={openProfile} />
+        <MenuItem label="Log out" accent="danger" onPress={logout} />
+      </AppHeaderAccount>
+    </AppHeaderActions>
+  }
+>
+  {navigation}
+</AppHeader>
+```
+
 ## Common Mistakes
 
 ### HIGH Surface lowered/shadow passed as the wrong prop shape
@@ -232,6 +332,31 @@ alouette `Stack` is `flex-row flex-wrap`. For a column use `VStack`; for a row
 use `HStack`. It is unrelated to navigation stacks.
 
 Source: packages/alouette/src/ui/stacks/stacks.tsx
+
+### MEDIUM Putting a screen scroll container inside AppLayout
+
+Wrong:
+
+```tsx
+<AppLayout header={<AppHeader … />}>
+  <ScreenScrollView contentContainerClassName="p-m">{content}</ScreenScrollView>
+</AppLayout>
+```
+
+Correct:
+
+```tsx
+<AppLayout header={<AppHeader … />}>
+  <VStack className="p-m gap-m">{content}</VStack>
+</AppLayout>
+```
+
+`AppLayout` is itself the scroll container — the header and footer scroll with
+the page — and it declares every safe-area edge consumed for its body. A nested
+scroll container gives a second scrollable inside the first and pads insets that
+are already applied.
+
+Source: packages/alouette/src/ui/layout/AppLayout.tsx
 
 ## References
 

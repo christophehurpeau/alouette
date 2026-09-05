@@ -1,25 +1,23 @@
 ---
 name: alouette-data
 description: >
-  Data-display components. Badge: a small pill label for status, counts or
-  categories. accent defaults to brand, size is sm/md, variant is
-  solid (tinted) / solid.enabled (filled) / outlined; optional icon takes a
-  rendered icon element and is auto-sized. Badge has no className prop and, like
-  Bullet, is display-only: never wrap it in a Link or Pressable.
-  EditableItem: a labelled row (bold label + summary node +
-  optional details/children) with a pencil IconButton; it owns no editor and
-  calls onEdit, editAriaLabel is required. Bullet: an icon + text list row, the
-  icon tinted with the current accent. Code: an inline mono fragment that
-  inherits the surrounding text size. CodeBlock: a lowered block of code that
-  scrolls horizontally, with an optional title. Blockquote: a quoted excerpt with
-  an accent rule and an optional citation node. Citation: an em dash plus the
-  source, optionally linked. Load when labelling an item with a
-  status, count, tag or category chip, when listing points with an icon, when
-  showing a value with an edit affordance, or when rendering code, a quote or
-  its attribution.
+  Data-display components, all display-only: never wrap one in a Link or
+  Pressable. Badge: a small pill for status, counts or categories — accent
+  defaults to brand, size sm/md, variant solid (tinted) / solid.enabled (filled)
+  / outlined, optional auto-sized icon, no className prop. Avatar: an accent
+  disc for a person or account — up to two initials from name, or an icon; size
+  sm/md/lg. EditableItem: a labelled row (bold label + summary node + optional
+  details) with a pencil IconButton; it owns no editor and calls onEdit,
+  editAriaLabel required. Bullet: an icon + text list row tinted with the
+  current accent. Code: an inline mono fragment. CodeBlock: a lowered,
+  horizontally scrolling block with an optional title. Blockquote: a quoted
+  excerpt with an accent rule and an optional citation. Citation: an em dash
+  plus the source, optionally linked. Load when showing a status chip, an icon
+  list row, an avatar, a value with an edit affordance, code, a quote or its
+  attribution.
 type: core
 library: alouette
-library_version: "22.9.0"
+library_version: "22.10.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -34,6 +32,7 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/CodeBlock.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Blockquote.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Citation.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Avatar.tsx"
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -107,6 +106,22 @@ with a wrapper — it takes no `className`.
     Paid
   </Badge>
 </HStack>
+```
+
+## Avatar
+
+`Avatar` is the accent disc standing for a person or an account: up to two
+initials derived from `name`, or an `icon` in their place. `size` is
+`"sm" | "md" | "lg"` (28/32/40px), `accent` defaults to `"brand"`, and
+`className` is for layout only. Display-only like `Badge` — a pressable avatar is
+a `PressableBox` (or an `AppHeaderAccount`, alouette-layout/SKILL.md) wrapped
+around one, never the disc given a role of its own.
+
+```tsx
+import { Avatar } from "alouette";
+
+<Avatar name="Ada Lovelace" />          {/* AL */}
+<Avatar size="lg" accent="info" icon={<UserRegularIcon />} />
 ```
 
 ## Bullet

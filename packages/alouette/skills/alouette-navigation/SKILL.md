@@ -8,13 +8,16 @@ description: >
   material: a lowered 44px bar with a raised chip per item, optional leading
   icon, accent + disabled, controlled value or defaultValue + onValueChange, and
   a per-item href + onPress (a real anchor on web, and what expo Router
-  <Link asChild> injects) that wins over the group callback. NavBar also takes
-  orientation="vertical" for a sidebar rail. Navigation is never a
+  <Link asChild> injects) that wins over the group callback. Both take
+  variant="icon" (a pill of square icon-only chips); NavBar also takes
+  orientation="vertical" for a sidebar rail and stretch to fill its line.
+  Breadcrumbs + BreadcrumbItem render the trail to the current page (links to
+  every ancestor, aria-current="page" on the last). Navigation is never a
   RadioButtonGroup or a Link wrapped around a Text. Load when building a tab
-  bar, a section switcher, or navigation between routes.
+  bar, a section switcher, a breadcrumb trail, or navigation between routes.
 type: core
 library: alouette
-library_version: "22.9.0"
+library_version: "22.10.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -26,8 +29,11 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SelectionContext.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedBar.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Breadcrumbs.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/BreadcrumbItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tabs.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Breadcrumbs.stories.tsx"
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -123,6 +129,25 @@ for a fixed rail. `Tabs` and `RadioButtonGroup` stay horizontal.
 </NavBar>
 ```
 
+`stretch` is the horizontal counterpart: the bar fills the width it is given and
+its items share it equally, instead of hugging its destinations. That is what the
+stacked line of an `AppHeader` wants (alouette-layout/SKILL.md).
+
+### Icon-only pill
+
+`variant="icon"` (on `NavBar`, `Tabs` and `RadioButtonGroup` alike) turns the bar
+into a pill of square icon-only chips. The item renders its `icon` alone and
+`label` stays its accessible name — so `label` is still required and
+`getByRole(…, { name })` keeps working, and an item without an `icon` renders an
+empty chip.
+
+```tsx
+<Tabs aria-label="View" variant="icon" defaultValue="list">
+  <Tab value="list" label="List" icon={<ListRegularIcon />} />
+  <Tab value="grid" label="Grid" icon={<SquaresFourRegularIcon />} />
+</Tabs>
+```
+
 ### Leading icon
 
 `icon` takes a rendered icon element and is auto-sized and auto-tinted from the
@@ -183,6 +208,31 @@ point it back at the tab. `Tabs` renders no panel.
 </Tabs>
 <Surface role="tabpanel" id="panel-week" aria-labelledby="tab-week">…</Surface>
 ```
+
+### Breadcrumbs — the trail to the current page
+
+`Breadcrumbs` is a `navigation` landmark holding `BreadcrumbItem`s from the root
+down to the page being viewed. It is not a segmented bar: it has no ground of its
+own, wraps on a narrow screen, and separates its crumbs with a caret (`separator`
+takes another icon element). Every crumb but the last is a `LinkText`; the last
+one is the current page, rendered as plain text carrying `aria-current="page"`.
+
+```tsx
+import { BreadcrumbItem, Breadcrumbs } from "alouette";
+
+<Breadcrumbs onNavigate={router.push}>
+  <BreadcrumbItem href="/" label="Home" icon={<HouseRegularIcon />} />
+  <BreadcrumbItem href="/reports" label="Reports" />
+  <BreadcrumbItem href="/reports/q3" label="Q3" />
+</Breadcrumbs>;
+```
+
+`onNavigate` receives the pressed crumb's `href` and cancels the anchor's own
+navigation — routing stays the app's job. Without it (and without an item
+`onPress`) the `<a>` navigates on web and native does nothing. `<Link asChild>`
+composes here too, injecting the `href` and a `preventDefault`ing `onPress`. Give
+the last crumb its own `href` anyway: the trail decides which one is current, by
+position.
 
 ## Common Mistakes
 

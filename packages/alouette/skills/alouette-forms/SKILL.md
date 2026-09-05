@@ -1,23 +1,24 @@
 ---
 name: alouette-forms
 description: >
-  Inputs: InputText (mode: password/email/number/tel/url/search), TextArea, Switch
-  (checked + onValueChange; use disabled not editable), InputTextAutocomplete (a
-  combobox over an options array). Single-select groups
+  Inputs: InputText (mode: password/email/number/tel/url/search), TextArea,
+  Switch (checked + onValueChange; use disabled not editable),
+  InputTextAutocomplete (a combobox). Single-select groups
   (value/defaultValue/onValueChange + accent/disabled): RadioGroup + Radio,
-  RadioButtonGroup + RadioButton, RadioCardGroup + RadioCard. Validation on
-  react-hook-form: Form hands { control, submit } to its render prop and every field
-  takes that control, so the form type is written once on Form and each field's value
-  type comes from its name. FormField wires Controller to FormItem
-  label/error/required; FormFieldArray wraps useFieldArray; FormSubmitButton drives
+  RadioButtonGroup + RadioButton (also variant="icon", the icon-only pill
+  ColorModePicker is built on), RadioCardGroup + RadioCard. On react-hook-form:
+  Form hands { control, submit } to its render prop and every field takes that
+  control, so the form type is written once and field value types are inferred
+  from name. FormField wires Controller to FormItem label/error/required;
+  FormFieldArray wraps useFieldArray; FormSubmitButton drives
   loading/success/failed; SimpleVForm is the vertical-stack shortcut;
   FormEditableItem edits a row in a modal with its own Form. errorToMessage is
   required (i18n); FormValidationError separates invalid fields from onSubmit
-  failures. Load when building text fields, toggles, radio groups, or a validated
-  form.
+  failures. Load when building inputs, radio groups, a color-mode picker or a
+  validated form.
 type: core
 library: alouette
-library_version: "22.9.0"
+library_version: "22.10.0"
 requires:
   - alouette-theming
   - alouette-actions
@@ -36,6 +37,8 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCard.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/ColorModePicker.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/ColorModePicker.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/Form.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormItem.tsx"
@@ -115,10 +118,12 @@ narrowing a known list by typing. Three single-select families share one
 group-owns-the-value API and compose their children rather than take an options
 array: `RadioGroup` + `Radio` (circle-dot list),
 `RadioButtonGroup` + `RadioButton` (segmented pill bar) and
-`RadioCardGroup` + `RadioCard` (icon/label/description cards). Inside a form,
-render any of them from a `FormField` `render` prop with
-`value={field.value}` + `onValueChange={field.onChange}` +
-`aria-labelledby={labelId}` (no `ref` — they are not focusable text).
+`RadioCardGroup` + `RadioCard` (icon/label/description cards).
+
+`RadioButtonGroup` also takes `variant="icon"` — a pill of square icon-only
+chips, each option's `label` staying its accessible name. `ColorModePicker` is
+the light/dark control built on it: it reports a `ColorModePreference` and the
+app applies it with `useResolvedColorMode` (alouette-theming/SKILL.md).
 
 Props, platform behavior and examples: [references/choice-inputs.md](references/choice-inputs.md).
 

@@ -52,7 +52,15 @@ option. Label the group via `aria-labelledby`.
   form input; for the same material used to move between destinations or switch
   views use `NavBar` / `Tabs` (alouette-navigation/SKILL.md). `compact` tightens
   each chip's horizontal padding so more options fit on one row — the 44px tap
-  target is unchanged.
+  target is unchanged. `variant="icon"` makes it a pill of square icon-only
+  chips: the option renders its `icon` alone and its `label` stays the accessible
+  name. A `RadioButton` also takes `activeIcon` (the duotone twin, swapped in
+  while hovered/focused/pressed and for as long as it is checked) with
+  `activeAccent` to tint it, an `indicator` badge over the chip's top-right (icon
+  groups only, and it adds to `icon` rather than replacing it — a badge has no
+  accessible name, so spell the state out in `label`), and its own `onPress`,
+  which replaces the group's `onValueChange` and therefore requires a controlled
+  group.
 - `RadioCardGroup` + `RadioCard` — cards with `icon`, `label`, `description` and
   a radio indicator, for options that need explaining. The selected card is
   `PressableBox`'s `contained` fill, the rest its `outlined` surface. Group
@@ -76,7 +84,39 @@ option. Label the group via `aria-labelledby`.
     description="Anyone with the link" />
   <RadioCard value="private" icon={<LockRegularIcon />} label="Private" />
 </RadioCardGroup>
+
+<RadioButtonGroup variant="icon" aria-label="View" defaultValue="list">
+  <RadioButton value="list" label="List" icon={<ListRegularIcon />}
+    activeIcon={<ListDuotoneIcon />} />
+  <RadioButton value="grid" label="Grid" icon={<SquaresFourRegularIcon />} />
+</RadioButtonGroup>
 ```
+
+## ColorModePicker
+
+The ready-made light/dark control built on that icon pill, over a stored
+`ColorModePreference` (`"light" | "dark" | "system"`). It reports the choice
+only — the app applies it, passing `useResolvedColorMode(preference)` to a
+`ScopedTheme` (alouette-theming/SKILL.md).
+
+```tsx
+import { ColorModePicker, ScopedTheme, useResolvedColorMode } from "alouette";
+
+const [preference, setPreference] = useState<ColorModePreference>("system");
+
+<ScopedTheme theme={useResolvedColorMode(preference)}>
+  <ColorModePicker value={preference} onValueChange={setPreference} />
+</ScopedTheme>;
+```
+
+`variant="system-lock"` (the default) is two chips: `system` folds into the chip
+it resolves to, which keeps its sun or moon and adds the system badge, and
+pressing that chip toggles the lock — while coming back to it from the other chip
+follows the system rather than locking the same mode by hand. Because a badge has
+no accessible name, the state is announced through the name instead
+(`"Light (system)"`, from the overridable `followingSystemLabel`).
+`variant="with-system"` is three chips, `system` getting its own. Every label is
+overridable (`lightLabel`, `darkLabel`, `systemLabel`, `aria-label`) for i18n.
 
 `label` is each option's accessible name — required even when a description
 carries the detail. Inside a form, render any of the three from a `FormField`
