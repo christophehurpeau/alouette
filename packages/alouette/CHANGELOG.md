@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.11.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.10.0...alouette@22.11.0) (2026-09-05)
+
+### Features
+
+* add Blockquote, Citation, Code, and CodeBlock components with stories
+* add ColorModePicker and active icon to dualtone
+* add flex-wrap-balance
+* app header and menu component
+* app layout component
+* breadcrumb component
+* vertical navbar component
+
+### Bug Fixes
+
+* tweak gap in AutocompleteMenu and Select components
+
 ## [22.10.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.9.0...alouette@22.10.0) (2026-08-29)
 
 ### Features
