@@ -15,7 +15,8 @@ import type { SegmentedOrientation } from "./SelectionContext";
 // row's hover/active, driven by the `group` on the pressable. The focus ring
 // lives here too: the pressable fills the bar's content box, and the bar clips
 // (Surface is overflow-hidden), so an outline drawn on the pressable is cut
-// away — the chip's 6px of slack holds the 2px offset + 2px ring.
+// away — the chip's slack holds the 2px offset + 2px ring instead (6px a side
+// on a row, 2px on a stacked item, which the bar's own `py-xs` completes).
 // foreground — label and icon share one color set. Native resolves the icon
 // tint through useColorToken, which reads the base `text-*` only, so the hover
 // tint and the stacking above the chip are web-only.
@@ -47,8 +48,12 @@ const segmentedItemVariants = tv({
     orientation: {
       horizontal: {},
       // A stacked item spans the bar's width, so the chip stretches with it
-      // instead of shrinking to its own label.
-      vertical: { pressable: "items-stretch", segment: "self-stretch" },
+      // instead of shrinking to its own label, and stands taller: a rail reads
+      // as rows, not as chips floating in a column.
+      vertical: {
+        pressable: "items-stretch",
+        segment: "self-stretch min-h-[40px]",
+      },
     },
     // A stretched bar hands its extra width to its items; a stacked one already
     // spans that width, so only a row shares it.

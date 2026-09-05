@@ -4,9 +4,10 @@ import { Surface, type SurfaceProps } from "../containers/Surface";
 import type { SegmentedOrientation } from "./SelectionContext";
 
 // Horizontal: no vertical padding, so each 44px item fills the 44px bar and the
-// inset frame comes from the shorter chip inside it. Vertical: the same frame,
-// rotated — the bar is as tall as its stacked items and the chips stretch to
-// its width.
+// inset frame comes from the shorter chip inside it. Vertical: the chips stretch
+// to the bar's width instead, so the frame at the two ends is the bar's own
+// `py-xs` — which is also what leaves the first and last focus ring room to
+// draw, the bar being overflow-hidden.
 // The bar is content-width, so it never spreads across whatever holds it;
 // `stretch` opts into the opposite, for a container that is meant to be filled
 // (the stacked line of an AppHeader). Where the container is content-sized
@@ -16,7 +17,7 @@ const segmentedBarVariants = tv({
   variants: {
     orientation: {
       horizontal: "flex-row min-h-[44px]",
-      vertical: "flex-col",
+      vertical: "flex-col py-xs",
     },
     stretch: {
       true: "self-stretch",

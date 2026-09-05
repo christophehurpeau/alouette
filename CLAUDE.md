@@ -235,7 +235,9 @@ frame. No absolute track, no z-order tricks, no inline `style`. `RadioButtonGrou
 container (== 44) and each item (>= 44) so the geometry can't regress.
 `SegmentedBar` also has an `orientation` variant, exposed only on `NavBar`
 (`orientation="vertical"` — a sidebar rail): the bar stacks, each item still owns
-a 44px tap target and its chip stretches to the bar's width.
+a 44px tap target and its chip stretches to the bar's width and stands taller
+(`min-h-[40px]`), so the frame at the two ends comes from the bar's own `py-xs`
+rather than from the chip's shortfall.
 
 The focus ring belongs on the **visible chip**, not on the oversized pressable:
 the pressable fills the bar's content box and `Surface` is `overflow-hidden`, so
@@ -243,7 +245,7 @@ an `outline-offset-2` drawn there is painted outside the bar and clipped away.
 `SegmentedItem` therefore passes `withFocusVisibleOutline={false}` to its
 `InteractiveBox` and rings the chip with `group-focus-visible:outline-2
 group-focus-visible:outline-offset-2` — the chip's ~6px of slack holds the 2px
-offset + 2px ring.
+offset + 2px ring (a stacked item has 2px, and the bar's `py-xs` completes it).
 
 ## Suppressing a focus ring: `outline-solid outline-0`, never `outline-none`
 

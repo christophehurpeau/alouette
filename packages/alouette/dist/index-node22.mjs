@@ -3022,7 +3022,7 @@ const segmentedBarVariants = tv({
   variants: {
     orientation: {
       horizontal: "flex-row min-h-[44px]",
-      vertical: "flex-col"
+      vertical: "flex-col py-xs"
     },
     stretch: {
       true: "self-stretch",
@@ -3095,8 +3095,12 @@ const segmentedItemVariants = tv({
     orientation: {
       horizontal: {},
       // A stacked item spans the bar's width, so the chip stretches with it
-      // instead of shrinking to its own label.
-      vertical: { pressable: "items-stretch", segment: "self-stretch" }
+      // instead of shrinking to its own label, and stands taller: a rail reads
+      // as rows, not as chips floating in a column.
+      vertical: {
+        pressable: "items-stretch",
+        segment: "self-stretch min-h-[40px]"
+      }
     },
     // A stretched bar hands its extra width to its items; a stacked one already
     // spans that width, so only a row shares it.
@@ -4382,6 +4386,74 @@ function ScreenSectionList({
   return /* @__PURE__ */ jsx(SectionList, { ...containerProps, ...props });
 }
 
+const appLayoutVariants = tv({
+  slots: {
+    frame: "min-h-full",
+    // The page's ground rides with the content, which is opaque and always
+    // fills the shell — the frame's own ground shows in one place only: the
+    // band a bounce opens past an edge.
+    content: "grow bg-screen",
+    body: "grow flex-col md:flex-row",
+    sidebar: "shrink-0 self-stretch p-sm md:p-m web:sticky web:top-0 web:max-h-screen",
+    // `shrink` is not redundant with `grow`: React Native's shrink is 0, so the
+    // screen would otherwise take its content's widest line as its width and
+    // widen the row past the shell — and the scroll is vertical, so what leaves
+    // the right edge is clipped, not reachable.
+    main: "grow shrink"
+  },
+  variants: {
+    withHeader: {
+      // That band bares the scroll container, never the content that slid away,
+      // so the frame carries the ground each end needs: the `bar` header's
+      // above, the screen's below, split at the middle where no band reaches.
+      // React Native cannot paint a gradient on a ScrollView, so native keeps
+      // the flat bar ground.
+      true: {
+        frame: "bg-highlight web:bg-linear-to-b web:from-highlight web:from-50% web:to-screen web:to-50%"
+      },
+      false: { frame: "bg-screen" }
+    }
+  }
+});
+function AppLayout({
+  header,
+  footer,
+  sidebar,
+  children,
+  className,
+  contentContainerClassName,
+  contentContainerStyle,
+  ...props
+}) {
+  const styles = appLayoutVariants({ withHeader: header !== void 0 });
+  const consumedEdges = useConsumedSafeAreaEdges();
+  const paddedEdges = allSafeAreaEdges.filter(
+    (edge) => !consumedEdges.includes(edge) && !(header !== void 0 && edge === "top")
+  );
+  const safeAreaPadding = useScreenSafeAreaPadding(paddedEdges);
+  return /* @__PURE__ */ jsxs(
+    ScrollView,
+    {
+      className: styles.frame({ className }),
+      contentContainerClassName: styles.content({
+        className: contentContainerClassName
+      }),
+      contentContainerStyle: safeAreaPadding ? [contentContainerStyle, safeAreaPadding] : contentContainerStyle,
+      ...props,
+      children: [
+        header,
+        /* @__PURE__ */ jsxs(SafeAreaScope, { consumedEdges: allSafeAreaEdges, children: [
+          /* @__PURE__ */ jsxs(View, { className: styles.body(), children: [
+            sidebar ? /* @__PURE__ */ jsx(View, { className: styles.sidebar(), children: sidebar }) : null,
+            /* @__PURE__ */ jsx(View, { role: "main", className: styles.main(), children })
+          ] }),
+          footer
+        ] })
+      ]
+    }
+  );
+}
+
 const appHeaderVariants = tv({
   slots: {
     frame: "",
@@ -4671,5 +4743,5 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, AppHeader, AppHeaderAccount, AppHeaderActions, AppHeaderBrand, Avatar, Badge, Blockquote, Box, BrandLogo, BreadcrumbItem, Breadcrumbs, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InternalLinkButton, LinearProgress, LinkText, Menu, MenuItem, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useScreenSafeAreaPadding };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, AppHeader, AppHeaderAccount, AppHeaderActions, AppHeaderBrand, AppLayout, Avatar, Badge, Blockquote, Box, BrandLogo, BreadcrumbItem, Breadcrumbs, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InternalLinkButton, LinearProgress, LinkText, Menu, MenuItem, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useScreenSafeAreaPadding };
 //# sourceMappingURL=index-node22.mjs.map
