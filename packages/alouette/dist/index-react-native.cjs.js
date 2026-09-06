@@ -4805,7 +4805,7 @@ function ScreenSectionList({
   return /* @__PURE__ */ jsxRuntime.jsx(SectionList, { ...containerProps, ...props });
 }
 
-const appLayoutVariants = tailwindVariants.tv({
+const appShellVariants = tailwindVariants.tv({
   slots: {
     frame: "min-h-full",
     // The page's ground rides with the content, which is opaque and always
@@ -4834,17 +4834,16 @@ const appLayoutVariants = tailwindVariants.tv({
     }
   }
 });
-function AppLayout({
+function AppShell({
   header,
   footer,
-  sidebar,
   children,
   className,
   contentContainerClassName,
   contentContainerStyle,
   ...props
 }) {
-  const styles = appLayoutVariants({ withHeader: header !== void 0 });
+  const styles = appShellVariants({ withHeader: header !== void 0 });
   const consumedEdges = useConsumedSafeAreaEdges();
   const paddedEdges = allSafeAreaEdges.filter(
     (edge) => !consumedEdges.includes(edge) && !(header !== void 0 && edge === "top")
@@ -4862,15 +4861,35 @@ function AppLayout({
       children: [
         header,
         /* @__PURE__ */ jsxRuntime.jsxs(SafeAreaScope, { consumedEdges: allSafeAreaEdges, children: [
-          /* @__PURE__ */ jsxRuntime.jsxs(View, { className: styles.body(), children: [
-            sidebar ? /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.sidebar(), children: sidebar }) : null,
-            /* @__PURE__ */ jsxRuntime.jsx(View, { role: "main", className: styles.main(), children })
-          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.body(), children }),
           footer
         ] })
       ]
     }
   );
+}
+function AppShellSidebar({
+  children,
+  className
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(View, { className: appShellVariants().sidebar({ className }), children });
+}
+function AppShellMain({
+  children,
+  className
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(View, { role: "main", className: appShellVariants().main({ className }), children });
+}
+
+function AppLayout({
+  sidebar,
+  children,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsxs(AppShell, { ...props, children: [
+    sidebar ? /* @__PURE__ */ jsxRuntime.jsx(AppShellSidebar, { children: sidebar }) : null,
+    /* @__PURE__ */ jsxRuntime.jsx(AppShellMain, { children })
+  ] });
 }
 
 const appHeaderVariants = tailwindVariants.tv({
@@ -4883,7 +4902,7 @@ const appHeaderVariants = tailwindVariants.tv({
   },
   variants: {
     size: {
-      xs: { inner: "gap-xs px-s md:px-m py-xs md:gap-xs" },
+      xs: { inner: "gap-xs px-xs md:px-m py-1 md:gap-xs" },
       sm: { inner: "gap-xs px-m md:px-l py-xs md:gap-sm" },
       md: { inner: "gap-sm px-m md:px-l py-sm md:gap-m" }
     },
@@ -4964,7 +4983,9 @@ const appHeaderBrandVariants = tailwindVariants.tv({
       // mark stays flush with the content edge — a linked brand lands exactly
       // where a display-only one does. The trailing padding is kept: it only
       // extends the hit area towards the navigation, where nothing lines up.
-      true: { frame: "flex-row rounded-sm px-sm py-xxs -ml-sm" },
+      true: {
+        frame: "flex-row rounded-sm  py-xxs px-xs md:px-sm -ml-xs md:-ml-sm"
+      },
       false: {}
     }
   },
@@ -5184,6 +5205,9 @@ exports.AppHeaderActions = AppHeaderActions;
 exports.AppHeaderBrand = AppHeaderBrand;
 exports.AppHeaderSignIn = AppHeaderSignIn;
 exports.AppLayout = AppLayout;
+exports.AppShell = AppShell;
+exports.AppShellMain = AppShellMain;
+exports.AppShellSidebar = AppShellSidebar;
 exports.Avatar = Avatar;
 exports.Badge = Badge;
 exports.Blockquote = Blockquote;

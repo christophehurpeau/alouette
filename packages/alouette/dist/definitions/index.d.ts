@@ -166,6 +166,8 @@ export type { ScreenSectionListProps } from "./ui/layout/ScreenSectionList";
 export { ScreenSectionList } from "./ui/layout/ScreenSectionList";
 export type { AppLayoutProps } from "./ui/layout/AppLayout";
 export { AppLayout } from "./ui/layout/AppLayout";
+export type { AppShellProps, AppShellSidebarProps, AppShellMainProps, } from "./ui/layout/AppShell";
+export { AppShell, AppShellSidebar, AppShellMain } from "./ui/layout/AppShell";
 export type { AppHeaderProps } from "./ui/layout/AppHeader";
 export { AppHeader } from "./ui/layout/AppHeader";
 export type { AppHeaderSize } from "./ui/layout/AppHeader";

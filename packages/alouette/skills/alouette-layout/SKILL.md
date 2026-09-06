@@ -29,6 +29,7 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenSectionList.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/SafeAreaEdgesContext.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppLayout.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppShell.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeader.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderActions.tsx"
@@ -280,6 +281,48 @@ persists it.
 </AppHeader>
 ```
 
+### Shell composed per route
+
+`AppLayout` decides the whole shell at one call site. When the shell is rendered
+**once** for a whole app — a root layout around a router outlet — but the rail
+belongs to one section of it, compose the same shell from its parts instead:
+`AppShell` (scroll container, header, footer, and the row the body sits in) plus
+a per-route `AppShellSidebar` and `AppShellMain`.
+
+```tsx
+// app/_layout.tsx — the shell, once
+<AppShell header={<AppHeader … />} footer={<Footer />}>
+  <Slot />
+</AppShell>
+
+// app/(reports)/_layout.tsx — this section, and only it, owns a rail
+<>
+  <AppShellSidebar>
+    <NavBar
+      orientation="vertical"
+      className="w-[220px] grow"
+      aria-label="Sections"
+      value={pathname}
+    >
+      <NavBarItem href="/reports/weekly" label="Weekly" />
+    </NavBar>
+  </AppShellSidebar>
+  <AppShellMain>
+    <Slot />
+  </AppShellMain>
+</>
+
+// a route with no rail
+<AppShellMain>{screen}</AppShellMain>
+```
+
+`AppShell` renders **no landmark of its own**: each route composing the body
+brings its own `AppShellMain`, one per rendered shell. The rail is a sibling
+placed **before** the main, never inside it — inside would put the navigation in
+the `main` landmark. Everything else is what `AppLayout` does, since that is the
+same component underneath: one scroll container, every safe-area edge declared
+consumed for the body, and a `web:sticky` rail slot.
+
 ## Common Mistakes
 
 ### HIGH Surface lowered/shadow passed as the wrong prop shape
@@ -411,6 +454,42 @@ scroll container gives a second scrollable inside the first and pads insets that
 are already applied.
 
 Source: packages/alouette/src/ui/layout/AppLayout.tsx
+
+### MEDIUM An AppLayout per route to give one section a sidebar
+
+Wrong:
+
+```tsx
+// every route rebuilds the whole shell to change the rail
+<AppLayout header={<AppHeader … />} sidebar={<NavBar …/>} footer={<Footer />}>
+  {screen}
+</AppLayout>
+```
+
+Correct:
+
+```tsx
+// the shell once, in the root layout
+<AppShell header={<AppHeader … />} footer={<Footer />}>
+  <Slot />
+</AppShell>
+
+// the section that owns a rail composes the body
+<>
+  <AppShellSidebar>
+    <NavBar orientation="vertical" className="w-[220px] grow" …/>
+  </AppShellSidebar>
+  <AppShellMain>
+    <Slot />
+  </AppShellMain>
+</>
+```
+
+A shell per route remounts the scroll container, the header and the footer on
+every navigation — the scroll position, the header state and the safe-area
+padding all reset. `AppShell` keeps one shell and lets the route decide the body.
+
+Source: packages/alouette/src/ui/layout/AppShell.tsx
 
 ## References
 

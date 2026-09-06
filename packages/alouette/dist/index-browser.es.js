@@ -4874,7 +4874,7 @@ function ScreenSectionList({
   return /* @__PURE__ */ jsx(SectionList, { ...containerProps, ...props });
 }
 
-const appLayoutVariants = tv({
+const appShellVariants = tv({
   slots: {
     frame: "min-h-full",
     // The page's ground rides with the content, which is opaque and always
@@ -4903,17 +4903,16 @@ const appLayoutVariants = tv({
     }
   }
 });
-function AppLayout({
+function AppShell({
   header,
   footer,
-  sidebar,
   children,
   className,
   contentContainerClassName,
   contentContainerStyle,
   ...props
 }) {
-  const styles = appLayoutVariants({ withHeader: header !== void 0 });
+  const styles = appShellVariants({ withHeader: header !== void 0 });
   const consumedEdges = useConsumedSafeAreaEdges();
   const paddedEdges = allSafeAreaEdges.filter(
     (edge) => !consumedEdges.includes(edge) && !(header !== void 0 && edge === "top")
@@ -4931,15 +4930,35 @@ function AppLayout({
       children: [
         header,
         /* @__PURE__ */ jsxs(SafeAreaScope, { consumedEdges: allSafeAreaEdges, children: [
-          /* @__PURE__ */ jsxs(View, { className: styles.body(), children: [
-            sidebar ? /* @__PURE__ */ jsx(View, { className: styles.sidebar(), children: sidebar }) : null,
-            /* @__PURE__ */ jsx(View, { role: "main", className: styles.main(), children })
-          ] }),
+          /* @__PURE__ */ jsx(View, { className: styles.body(), children }),
           footer
         ] })
       ]
     }
   );
+}
+function AppShellSidebar({
+  children,
+  className
+}) {
+  return /* @__PURE__ */ jsx(View, { className: appShellVariants().sidebar({ className }), children });
+}
+function AppShellMain({
+  children,
+  className
+}) {
+  return /* @__PURE__ */ jsx(View, { role: "main", className: appShellVariants().main({ className }), children });
+}
+
+function AppLayout({
+  sidebar,
+  children,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxs(AppShell, { ...props, children: [
+    sidebar ? /* @__PURE__ */ jsx(AppShellSidebar, { children: sidebar }) : null,
+    /* @__PURE__ */ jsx(AppShellMain, { children })
+  ] });
 }
 
 const appHeaderVariants = tv({
@@ -4952,7 +4971,7 @@ const appHeaderVariants = tv({
   },
   variants: {
     size: {
-      xs: { inner: "gap-xs px-s md:px-m py-xs md:gap-xs" },
+      xs: { inner: "gap-xs px-xs md:px-m py-1 md:gap-xs" },
       sm: { inner: "gap-xs px-m md:px-l py-xs md:gap-sm" },
       md: { inner: "gap-sm px-m md:px-l py-sm md:gap-m" }
     },
@@ -5033,7 +5052,9 @@ const appHeaderBrandVariants = tv({
       // mark stays flush with the content edge — a linked brand lands exactly
       // where a display-only one does. The trailing padding is kept: it only
       // extends the hit area towards the navigation, where nothing lines up.
-      true: { frame: "flex-row rounded-sm px-sm py-xxs -ml-sm" },
+      true: {
+        frame: "flex-row rounded-sm  py-xxs px-xs md:px-sm -ml-xs md:-ml-sm"
+      },
       false: {}
     }
   },
@@ -5240,5 +5261,5 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, AppHeader, AppHeaderAccount, AppHeaderActions, AppHeaderBrand, AppHeaderSignIn, AppLayout, Avatar, Badge, Blockquote, Box, BrandLogo, BreadcrumbItem, Breadcrumbs, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ColorModePicker, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InteractiveIcon, InternalLinkButton, LinearProgress, LinkText, Menu, MenuItem, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaProvider, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useResolvedColorMode, useSafeAreaInsets, useScreenSafeAreaPadding, useSystemColorMode };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, AppHeader, AppHeaderAccount, AppHeaderActions, AppHeaderBrand, AppHeaderSignIn, AppLayout, AppShell, AppShellMain, AppShellSidebar, Avatar, Badge, Blockquote, Box, BrandLogo, BreadcrumbItem, Breadcrumbs, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ColorModePicker, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InteractiveIcon, InternalLinkButton, LinearProgress, LinkText, Menu, MenuItem, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaProvider, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useResolvedColorMode, useSafeAreaInsets, useScreenSafeAreaPadding, useSystemColorMode };
 //# sourceMappingURL=index-browser.es.js.map

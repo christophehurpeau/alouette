@@ -20,7 +20,9 @@ const appHeaderBrandVariants = tv({
       // mark stays flush with the content edge — a linked brand lands exactly
       // where a display-only one does. The trailing padding is kept: it only
       // extends the hit area towards the navigation, where nothing lines up.
-      true: { frame: "flex-row rounded-sm px-sm py-xxs -ml-sm" },
+      true: {
+        frame: "flex-row rounded-sm  py-xxs px-xs md:px-sm -ml-xs md:-ml-sm",
+      },
       false: {},
     },
   },

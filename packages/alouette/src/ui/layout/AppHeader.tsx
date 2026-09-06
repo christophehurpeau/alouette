@@ -30,7 +30,7 @@ const appHeaderVariants = tv({
   },
   variants: {
     size: {
-      xs: { inner: "gap-xs px-s md:px-m py-xs md:gap-xs" },
+      xs: { inner: "gap-xs px-xs md:px-m py-1 md:gap-xs" },
       sm: { inner: "gap-xs px-m md:px-l py-xs md:gap-sm" },
       md: { inner: "gap-sm px-m md:px-l py-sm md:gap-m" },
     },
