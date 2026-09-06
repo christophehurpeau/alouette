@@ -6,7 +6,8 @@ description: >
   the screen scroll containers (ScreenScrollView / ScreenFlatList /
   ScreenSectionList, with safe-area edges declared through SafeAreaScope),
   the application shell (AppLayout + AppHeader, AppHeaderBrand / BrandLogo /
-  AppHeaderActions / AppHeaderAccount / a ColorModePicker in the actions slot),
+  AppHeaderActions / AppHeaderAccount signed in / AppHeaderSignIn signed out /
+  a ColorModePicker in the actions slot),
   and gradients (GradientBackground / GradientScrollView). Use the alouette
   spacing (xxs..4xl), radius (xs..lg) and shadow (s/m/l/lowered) scale via
   p-*/gap-*/rounded-*/shadow-* classes. Load when building screen structure, an
@@ -32,6 +33,7 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderActions.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderAccount.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderSignIn.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/BrandLogo.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/config/tokens.stories.tsx"
 ---
@@ -212,9 +214,9 @@ import {
 slot, and its children are the navigation slot. From `md` on web the three sit on
 one boxed line with the navigation centered; below that — and on native at every
 width — brand and actions share the first line and the navigation spans the
-second (hence `stretch` on the bar). `size` is `"sm" | "md"`, `variant` is `"bar"`
-(default, its own ground plus a downward shadow) or `"transparent"` (for a
-landing hero), `contentWidth` is `"boxed"` (default, max 1200px) or `"full"`. It
+second (hence `stretch` on the bar). `size` is `"xs" | "sm" | "md"`, `variant` is
+`"bar"` (default, its own ground plus a downward shadow) or `"transparent"` (for
+a landing hero), `contentWidth` is `"boxed"` (default, max 1200px) or `"full"`. It
 pads its own top safe-area inset unless an ancestor `SafeAreaScope` already
 consumed the edge (`withSafeAreaTop={false}` opts out).
 
@@ -224,6 +226,25 @@ row wrapped in a link), `BrandLogo` (an icon on an accent disc),
 `AppHeaderActions` (spaces the end-slot controls) and `AppHeaderAccount` — the
 signed-in account as one `Avatar` trigger opening a `Menu` of `MenuItem`s, which
 is where session actions belong rather than in the bar itself.
+
+Signed out, the session is `AppHeaderSignIn` instead: a `Button` with the bar's
+sizing, in the bar itself, because a visitor has exactly one action and it must
+stay one press away. Pass it straight as `actions`, or beside a secondary
+`variant="outlined"` "Sign up" inside an `AppHeaderActions`. It takes the `Button`
+props (`label` in place of `text`, `icon`, `accent`, `variant`, `disabled`) plus
+`href`, the in-app destination — a real `<a>` on web, ignored on native, where
+expo Router's `<Link asChild>` supplies the `onPress`. A destination outside the
+app on native takes an `ExternalLinkButton` (alouette-external-links/SKILL.md) in
+the slot instead.
+
+```tsx
+<AppHeader
+  brand={<AppHeaderBrand title="Alouette" href="/" />}
+  actions={<AppHeaderSignIn label="Log in" href="/login" />}
+>
+  {navigation}
+</AppHeader>
+```
 
 A light/dark switch goes in the same actions slot as a `ColorModePicker`
 (alouette-forms/SKILL.md) — one pill of icon-only chips, never two loose
@@ -298,6 +319,32 @@ Correct:
 scale, so layouts drift from the design-system rhythm.
 
 Source: src/config/tokens.stories.tsx (see references/spacing-radius-shadow.md)
+
+### HIGH Signed-out header hidden behind a "Guest" account menu
+
+Wrong:
+
+```tsx
+<AppHeaderAccount name="Guest" icon={<UserRegularIcon />}>
+  <ExternalLink as={MenuItem} href={`${authOrigin}/login`} label="Login" />
+</AppHeaderAccount>
+```
+
+Correct:
+
+```tsx
+<AppHeaderSignIn label="Login" href="/login" />
+```
+
+`AppHeaderAccount` is the signed-in session: an avatar standing for a person,
+opening the several actions that person has. A signed-out visitor has one, so
+wrapping it in an account menu invents an identity nobody has and buries the
+only call to action behind a second press. `AppHeaderSignIn` is the signed-out
+counterpart: a button in the bar, one press. When the destination is outside the
+app, an `ExternalLinkButton` goes in the slot the same way — still a button in
+the bar, never a menu.
+
+Source: packages/alouette/src/ui/layout/AppHeaderSignIn.tsx
 
 ### MEDIUM Reaching for expo-linear-gradient for backgrounds
 

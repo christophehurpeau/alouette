@@ -1,9 +1,12 @@
 import type { ReactNode } from "react";
 import { type VariantProps } from "tailwind-variants";
 import { type BoxProps } from "../containers/Box";
-export type AppHeaderSize = "md" | "sm";
+export type AppHeaderSize = "md" | "sm" | "xs";
 declare const appHeaderVariants: import("tailwind-variants").TVReturnType<{
     size: {
+        xs: {
+            inner: string;
+        };
         sm: {
             inner: string;
         };
@@ -39,6 +42,9 @@ declare const appHeaderVariants: import("tailwind-variants").TVReturnType<{
     navSlot: string;
 }, undefined, {
     size: {
+        xs: {
+            inner: string;
+        };
         sm: {
             inner: string;
         };
@@ -74,6 +80,9 @@ declare const appHeaderVariants: import("tailwind-variants").TVReturnType<{
     navSlot: string;
 }, import("tailwind-variants").TVReturnType<{
     size: {
+        xs: {
+            inner: string;
+        };
         sm: {
             inner: string;
         };

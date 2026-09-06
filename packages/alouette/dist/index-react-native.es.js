@@ -1314,6 +1314,7 @@ const PressableBox = forwardRef(
     variant,
     forceStyle,
     accent,
+    href,
     withFocusVisibleOutline = true,
     ...props
   }, ref) => {
@@ -1328,6 +1329,7 @@ const PressableBox = forwardRef(
           className,
           forceStyle
         }),
+        ...href === void 0 ? {} : { href, role: "link" },
         ...props
       }
     ) });
@@ -4866,7 +4868,8 @@ const appHeaderVariants = tv({
   },
   variants: {
     size: {
-      sm: { inner: "gap-xs px-s md:px-m py-xs md:gap-sm" },
+      xs: { inner: "gap-xs px-s md:px-m py-xs md:gap-xs" },
+      sm: { inner: "gap-xs px-m md:px-l py-xs md:gap-sm" },
       md: { inner: "gap-sm px-m md:px-l py-sm md:gap-m" }
     },
     variant: {
@@ -5052,6 +5055,14 @@ function AppHeaderAccount({
   );
 }
 
+function AppHeaderSignIn({
+  label,
+  size = "sm",
+  ...buttonProps
+}) {
+  return /* @__PURE__ */ jsx(Button, { size, text: label, ...buttonProps });
+}
+
 const Breakpoints = {
   /**
    * min-width: 0
@@ -5145,5 +5156,5 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, AppHeader, AppHeaderAccount, AppHeaderActions, AppHeaderBrand, AppLayout, Avatar, Badge, Blockquote, Box, BrandLogo, BreadcrumbItem, Breadcrumbs, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ColorModePicker, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InteractiveIcon, InternalLinkButton, LinearProgress, LinkText, Menu, MenuItem, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useResolvedColorMode, useScreenSafeAreaPadding, useSystemColorMode };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, AppHeader, AppHeaderAccount, AppHeaderActions, AppHeaderBrand, AppHeaderSignIn, AppLayout, Avatar, Badge, Blockquote, Box, BrandLogo, BreadcrumbItem, Breadcrumbs, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ColorModePicker, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InteractiveIcon, InternalLinkButton, LinearProgress, LinkText, Menu, MenuItem, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useResolvedColorMode, useScreenSafeAreaPadding, useSystemColorMode };
 //# sourceMappingURL=index-react-native.es.js.map

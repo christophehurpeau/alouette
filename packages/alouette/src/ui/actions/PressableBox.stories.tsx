@@ -1,3 +1,4 @@
+import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "../primitives/Text";
 import { HStack, VStack } from "../stacks/stacks";
@@ -78,4 +79,46 @@ export const Variants: ThisStory = {
       </Story.Section>
     </Story>
   ),
+};
+
+export const Tests: ThisStory = {
+  render: () => (
+    <Story noDarkMode>
+      <Story.Section title="Roles">
+        <PressableBox className="px-m py-xs rounded-sm self-start">
+          <Text className="text-on-accent">Plain</Text>
+        </PressableBox>
+        <PressableBox
+          href="/destination"
+          className="px-m py-xs rounded-sm self-start"
+        >
+          <Text className="text-on-accent">Linked</Text>
+        </PressableBox>
+        <PressableBox
+          href="/destination"
+          role="menuitem"
+          className="px-m py-xs rounded-sm self-start"
+        >
+          <Text className="text-on-accent">Menu row</Text>
+        </PressableBox>
+      </Story.Section>
+    </Story>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await expect(
+      canvas.getByRole("button", { name: "Plain" }),
+    ).not.toHaveAttribute("href");
+
+    const link = canvas.getByRole("link", { name: "Linked" });
+    await expect(link.tagName).toBe("A");
+    await expect(link).toHaveAttribute("href", "/destination");
+
+    // A caller's own role still wins over the href-derived one, as MenuItem
+    // needs on a row that keeps announcing itself as a menu item.
+    await expect(
+      canvas.getByRole("menuitem", { name: "Menu row" }),
+    ).toHaveAttribute("href", "/destination");
+  },
 };

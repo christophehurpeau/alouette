@@ -17,6 +17,10 @@ export interface AppHeaderAccountProps {
  * End slot of an `AppHeader`: the signed-in account, as one avatar trigger
  * opening a menu. Session actions belong in there rather than in the bar —
  * logging out is the rarest thing a header offers and the only destructive one.
+ *
+ * Signed in only. A signed-out header has a single action, so it stays in the
+ * bar as an `AppHeaderSignIn` — never a "Guest" avatar wrapping a one-item
+ * menu, which trades the one press the visitor came for against two.
  */
 export declare function AppHeaderAccount({ name, icon, accent, header, children, }: AppHeaderAccountProps): ReactNode;
 //# sourceMappingURL=AppHeaderAccount.d.ts.map

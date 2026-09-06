@@ -11,4 +11,5 @@ declare const _default: {
 export default _default;
 export declare const PreviewStory: ThisStory;
 export declare const Variants: ThisStory;
+export declare const Tests: ThisStory;
 //# sourceMappingURL=PressableBox.stories.d.ts.map

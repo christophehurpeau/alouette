@@ -183,6 +183,18 @@ state (`group-hover:`, `group-active:`) — that is how `InteractiveIcon` swaps 
 glyph. It also forwards its `ref`, as `Button` and `IconButton` do, so a button
 can anchor a `Popover` or a `Menu`.
 
+`href` makes it a link: react-native-web renders a real `<a>` (native ignores it
+and routes from `onPress` — expo Router's `<Link asChild>` injects both), and the
+default `role` becomes `"link"` instead of `"button"`. Every pressable built on
+it inherits this — `Button`, `IconButton`, `AppHeaderSignIn` — and a component
+needing another role passes its own (`MenuItem` stays a `menuitem`).
+
+```tsx
+<PressableBox href="/login">
+  <Text>Log in</Text>
+</PressableBox>
+```
+
 `withFocusVisibleOutline={false}` drops the focus ring for a row of a list that
 already paints its cursor (a menu item, a listbox option), where the outline
 would ring whatever the pointer crosses. It emits `outline-solid outline-0`, not

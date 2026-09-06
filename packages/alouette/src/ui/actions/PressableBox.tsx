@@ -173,6 +173,14 @@ export interface PressableBoxProps
   extends RNPressableProps, PressableBoxVariantProps {
   accent?: Accent;
   className?: string;
+  /**
+   * Destination. react-native's Pressable types have no `href`, while
+   * react-native-web forwards it and renders a real `<a>`; native ignores it,
+   * so a native app routes from `onPress` — expo Router's `<Link asChild>`
+   * injects both. Giving one turns the default `role` into `"link"`; a
+   * component that needs another one (a `menuitem`) still passes its own.
+   */
+  href?: string;
   forceStyle?: "focus" | "hover" | "press";
   /**
    * Set it to `false` on a row of a list that already paints its cursor (a
@@ -190,6 +198,7 @@ export const PressableBox = forwardRef<RNView, PressableBoxProps>(
       variant,
       forceStyle,
       accent,
+      href,
       withFocusVisibleOutline = true,
       ...props
     },
@@ -207,6 +216,9 @@ export const PressableBox = forwardRef<RNView, PressableBoxProps>(
             className,
             forceStyle,
           })}
+          // Spread because `href` is not part of the underlying Pressable's
+          // types, and before `props` so a caller's own `role` still wins.
+          {...(href === undefined ? {} : { href, role: "link" })}
           {...props}
         />
       </AccentScope>

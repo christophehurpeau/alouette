@@ -1329,6 +1329,7 @@ const PressableBox = react.forwardRef(
     variant,
     forceStyle,
     accent,
+    href,
     withFocusVisibleOutline = true,
     ...props
   }, ref) => {
@@ -1343,6 +1344,7 @@ const PressableBox = react.forwardRef(
           className,
           forceStyle
         }),
+        ...href === void 0 ? {} : { href, role: "link" },
         ...props
       }
     ) });
@@ -4881,7 +4883,8 @@ const appHeaderVariants = tailwindVariants.tv({
   },
   variants: {
     size: {
-      sm: { inner: "gap-xs px-s md:px-m py-xs md:gap-sm" },
+      xs: { inner: "gap-xs px-s md:px-m py-xs md:gap-xs" },
+      sm: { inner: "gap-xs px-m md:px-l py-xs md:gap-sm" },
       md: { inner: "gap-sm px-m md:px-l py-sm md:gap-m" }
     },
     variant: {
@@ -5067,6 +5070,14 @@ function AppHeaderAccount({
   );
 }
 
+function AppHeaderSignIn({
+  label,
+  size = "sm",
+  ...buttonProps
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(Button, { size, text: label, ...buttonProps });
+}
+
 const Breakpoints = {
   /**
    * min-width: 0
@@ -5171,6 +5182,7 @@ exports.AppHeader = AppHeader;
 exports.AppHeaderAccount = AppHeaderAccount;
 exports.AppHeaderActions = AppHeaderActions;
 exports.AppHeaderBrand = AppHeaderBrand;
+exports.AppHeaderSignIn = AppHeaderSignIn;
 exports.AppLayout = AppLayout;
 exports.Avatar = Avatar;
 exports.Badge = Badge;

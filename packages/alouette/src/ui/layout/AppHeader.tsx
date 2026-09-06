@@ -5,7 +5,7 @@ import { useScreenSafeAreaPadding } from "../../core/useScreenSafeAreaPadding";
 import { Box, type BoxProps } from "../containers/Box";
 import { View } from "../primitives/View";
 
-export type AppHeaderSize = "md" | "sm";
+export type AppHeaderSize = "md" | "sm" | "xs";
 
 // The bar is a frame (background, separation, safe-area inset) around a boxed
 // wrapping row. The DOM is the small layout: brand and actions share the first
@@ -30,7 +30,8 @@ const appHeaderVariants = tv({
   },
   variants: {
     size: {
-      sm: { inner: "gap-xs px-s md:px-m py-xs md:gap-sm" },
+      xs: { inner: "gap-xs px-s md:px-m py-xs md:gap-xs" },
+      sm: { inner: "gap-xs px-m md:px-l py-xs md:gap-sm" },
       md: { inner: "gap-sm px-m md:px-l py-sm md:gap-m" },
     },
     variant: {

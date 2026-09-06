@@ -177,6 +177,8 @@ export type { AppHeaderActionsProps } from "./ui/layout/AppHeaderActions";
 export { AppHeaderActions } from "./ui/layout/AppHeaderActions";
 export type { AppHeaderAccountProps } from "./ui/layout/AppHeaderAccount";
 export { AppHeaderAccount } from "./ui/layout/AppHeaderAccount";
+export type { AppHeaderSignInProps } from "./ui/layout/AppHeaderSignIn";
+export { AppHeaderSignIn } from "./ui/layout/AppHeaderSignIn";
 export { SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, } from "./windowSize/SwitchBreakpoints";
 export { useCurrentBreakpointName, useCurrentBreakpointNameFiltered, } from "./windowSize/useCurrentBreakpointName";
 export type { Breakpoint, BreakpointNames } from "./config/Breakpoints";

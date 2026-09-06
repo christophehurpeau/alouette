@@ -6,6 +6,7 @@ import { BookmarkSimpleRegularIcon } from "alouette-icons/phosphor-icons/Bookmar
 import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
 import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
 import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+import { SignInRegularIcon } from "alouette-icons/phosphor-icons/SignInRegularIcon";
 import { SignOutRegularIcon } from "alouette-icons/phosphor-icons/SignOutRegularIcon";
 import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircleRegularIcon";
 import { type ReactNode, useState } from "react";
@@ -13,7 +14,6 @@ import {
   type ColorModePreference,
   useResolvedColorMode,
 } from "../../core/useColorMode";
-import { Button } from "../actions/Button";
 import { IconButton } from "../actions/IconButton";
 import { MenuItem } from "../actions/MenuItem";
 import { QuestionAlertDialog } from "../containers/AlertDialog";
@@ -30,6 +30,7 @@ import { AppHeader } from "./AppHeader";
 import { AppHeaderAccount } from "./AppHeaderAccount";
 import { AppHeaderActions } from "./AppHeaderActions";
 import { AppHeaderBrand } from "./AppHeaderBrand";
+import { AppHeaderSignIn } from "./AppHeaderSignIn";
 import { BrandLogo } from "./BrandLogo";
 
 type ThisStory = StoryObj<typeof AppHeader>;
@@ -74,7 +75,8 @@ export default {
 - \`children\` is the navigation slot — omit it for a header without navigation
 - \`AppHeaderBrand\` is a pressable when given \`href\`/\`onPress\` (expo Router's \`<Link asChild>\` injects both), a display-only row otherwise; its leading padding is pulled back with a negative margin, so the hover fill bleeds into the header's gutter while the mark stays flush with the content edge in both cases
 - Every pressable in the bar uses \`variant="soft"\`: nothing at rest, a background fill on hover/focus/press (as on a listbox row), rather than a border tint too thin to read in a header
-- A signed-in session is one \`AppHeaderAccount\` — an avatar trigger opening a \`Menu\` — not a row of buttons: logging out is the rarest thing the bar offers and the only destructive one, so it belongs behind the avatar with a \`danger\` accent, and confirming it is the app's call (the tests story wires it to a \`QuestionAlertDialog\`). A signed-out header keeps its plain \`Button\`s
+- A signed-in session is one \`AppHeaderAccount\` — an avatar trigger opening a \`Menu\` — not a row of buttons: logging out is the rarest thing the bar offers and the only destructive one, so it belongs behind the avatar with a \`danger\` accent, and confirming it is the app's call (the tests story wires it to a \`QuestionAlertDialog\`)
+- A signed-out session is the mirror image: one action, so it stays in the bar as an \`AppHeaderSignIn\` — never an \`AppHeaderAccount\` named "Guest" wrapping a single "Log in" item, which puts a menu between the visitor and the only thing they came to press. It is a \`Button\` with the bar's sizing: pass it straight as \`actions\`, or beside a secondary \`variant="outlined"\` "Sign up" inside an \`AppHeaderActions\`. \`href\` is the in-app destination — a real \`<a>\` on web, ignored on native, where expo Router's \`<Link asChild>\` supplies the \`onPress\` (a destination outside the app on native takes an \`ExternalLinkButton\` in the slot instead)
 - A light/dark switch belongs in the actions slot as a \`ColorModePicker\` — a pill of icon-only chips reading as one control, rather than two loose \`IconButton\`s. \`variant="system-lock"\` is the two-chip one used here: the chip the OS currently supplies keeps its sun or moon and adds the system badge, and pressing it toggles the lock. The app owns the preference — it applies it with \`useResolvedColorMode\` + \`ScopedTheme\` and persists it
 - \`variant="bar"\` (default) is the application bar: its own background plus \`shadow-bar\`, a downward-only shadow cast on the page below. \`variant="transparent"\` is a header integrated into the page it heads (a landing hero): no background, no border, no shadow
 - The frame takes the device's top inset unless an ancestor \`SafeAreaScope\` consumed it; wrap the screen below in \`<SafeAreaScope consumedEdges={["top"]}>\``,
@@ -82,7 +84,7 @@ export default {
     },
   },
   argTypes: {
-    size: { control: "inline-radio", options: ["sm", "md"] },
+    size: { control: "inline-radio", options: ["xs", "sm", "md"] },
     variant: { control: "inline-radio", options: ["bar", "transparent"] },
     contentWidth: { control: "inline-radio", options: ["boxed", "full"] },
     withSafeAreaTop: { control: "boolean" },
@@ -124,8 +126,8 @@ function DemoBrand(): ReactNode {
 function LoggedOutActions(): ReactNode {
   return (
     <AppHeaderActions>
-      <Button size="sm" accent="success" text="Sign up" onPress={fn()} />
-      <Button size="sm" text="Log in" onPress={fn()} />
+      <AppHeaderSignIn variant="outlined" label="Sign up" onPress={fn()} />
+      <AppHeaderSignIn label="Log in" onPress={fn()} />
     </AppHeaderActions>
   );
 }
@@ -283,6 +285,23 @@ export const VariantsAppHeaderStory: ThisStory = {
         >
           <DemoNav label="Logged out" />
         </AppHeader>
+        <Text className="text-sm text-muted">
+          Logged out, one action — passed straight as actions, linking to the
+          sign-in screen
+        </Text>
+        <AppHeader
+          brand={<DemoBrand />}
+          actions={
+            <AppHeaderSignIn
+              label="Log in"
+              icon={<SignInRegularIcon />}
+              href="/login"
+            />
+          }
+          contentWidth="full"
+        >
+          <DemoNav label="Logged out, single action" />
+        </AppHeader>
         <Text className="text-sm text-muted">Logged in</Text>
         <AppHeader
           brand={<DemoBrand />}
@@ -318,6 +337,14 @@ export const VariantsAppHeaderStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Size">
+        <AppHeader
+          brand={<DemoBrand />}
+          actions={<LoggedInActions />}
+          contentWidth="full"
+          size="xs"
+        >
+          <DemoNav label="Extra small" />
+        </AppHeader>
         <AppHeader
           brand={<DemoBrand />}
           actions={<LoggedInActions />}
@@ -453,15 +480,12 @@ function SessionHeader(): ReactNode {
               }}
             />
           ) : (
-            <AppHeaderActions>
-              <Button
-                size="sm"
-                text="Log in"
-                onPress={() => {
-                  setLoggedIn(true);
-                }}
-              />
-            </AppHeaderActions>
+            <AppHeaderSignIn
+              label="Log in"
+              onPress={() => {
+                setLoggedIn(true);
+              }}
+            />
           )
         }
         contentWidth="full"
@@ -516,6 +540,14 @@ export const TestsAppHeaderStory: ThisStory = {
               title="Alouette"
             />
           }
+          contentWidth="full"
+        />
+      </Story.Section>
+      <Story.Section title="Signed out">
+        <AppHeader
+          aria-label="Signed out header"
+          brand={<DemoBrand />}
+          actions={<AppHeaderSignIn label="Log in" href="/login" />}
           contentWidth="full"
         />
       </Story.Section>
@@ -706,5 +738,14 @@ export const TestsAppHeaderStory: ThisStory = {
     await expect(getComputedStyle(themedHeader).backgroundColor).not.toBe(
       systemBackground,
     );
+
+    // Signed out, the action is in the bar itself: reachable without opening
+    // anything, and a real anchor when given an `href`.
+    const signedOut = canvas.getByRole("banner", { name: "Signed out header" });
+    const signIn = within(signedOut).getByRole("link", { name: "Log in" });
+
+    await expect(signIn.tagName).toBe("A");
+    await expect(signIn).toHaveAttribute("href", "/login");
+    await expect(within(signedOut).queryByRole("menu")).toBeNull();
   },
 };
