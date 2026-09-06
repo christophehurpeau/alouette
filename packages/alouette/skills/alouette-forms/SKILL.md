@@ -18,7 +18,7 @@ description: >
   validated form.
 type: core
 library: alouette
-library_version: "22.10.0"
+library_version: "22.11.0"
 requires:
   - alouette-theming
   - alouette-actions

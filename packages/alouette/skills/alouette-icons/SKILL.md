@@ -8,7 +8,7 @@ description: >
   when adding icons to alouette UI.
 type: composition
 library: alouette
-library_version: "22.10.0"
+library_version: "22.11.0"
 requires:
   - alouette-theming
 sources:

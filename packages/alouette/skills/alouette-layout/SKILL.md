@@ -7,14 +7,15 @@ description: >
   ScreenSectionList, with safe-area edges declared through SafeAreaScope),
   the application shell (AppLayout + AppHeader, AppHeaderBrand / BrandLogo /
   AppHeaderActions / AppHeaderAccount signed in / AppHeaderSignIn signed out /
-  a ColorModePicker in the actions slot),
+  a ColorModePicker in the actions slot; AppShell + AppShellSidebar +
+  AppShellMain when the shell is composed per route instead),
   and gradients (GradientBackground / GradientScrollView). Use the alouette
   spacing (xxs..4xl), radius (xs..lg) and shadow (s/m/l/lowered) scale via
   p-*/gap-*/rounded-*/shadow-* classes. Load when building screen structure, an
   app header or shell, cards, spacing, or backgrounds.
 type: core
 library: alouette
-library_version: "22.10.0"
+library_version: "22.11.0"
 requires:
   - alouette-theming
 sources:

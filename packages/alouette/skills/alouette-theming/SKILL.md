@@ -16,7 +16,7 @@ description: >
   applying colors, accents or dark mode, or when shipping a custom palette.
 type: core
 library: alouette
-library_version: "22.10.0"
+library_version: "22.11.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx"

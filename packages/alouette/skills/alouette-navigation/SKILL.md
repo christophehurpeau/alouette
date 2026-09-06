@@ -17,7 +17,7 @@ description: >
   bar, a section switcher, a breadcrumb trail, or navigation between routes.
 type: core
 library: alouette
-library_version: "22.10.0"
+library_version: "22.11.0"
 requires:
   - alouette-theming
   - alouette-actions

@@ -10,7 +10,7 @@ description: >
   and web.
 type: lifecycle
 library: alouette
-library_version: "22.10.0"
+library_version: "22.11.0"
 sources:
   - "christophehurpeau/alouette:packages/storybook-native-app/metro.config.cjs"
   - "christophehurpeau/alouette:packages/storybook-native-app/postcss.config.mjs"
