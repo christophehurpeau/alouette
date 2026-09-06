@@ -1,13 +1,13 @@
 ---
 name: alouette-setup
 description: >
-  Wire alouette into an Expo / React Native app: withAlouetteConfig metro
-  plugin, import alouette/global.css with @source globs, AlouetteProvider
-  (themeVariables is a required prop — pass the map from
-  alouette/defaultThemeVariables), SafeAreaProvider, and loading Sora / Chivo
-  Mono font weights. Load when bootstrapping a project, when alouette classes
-  render unstyled, or when fonts/bold weights look wrong. Covers ios, android
-  and web.
+  Wire alouette into an Expo / React Native app: the metro plugin that compiles
+  its styles, the CSS entry point and the source globs that decide which classes
+  survive, AlouetteProvider and the theme variables it needs to render colors on
+  native, the safe-area provider, and loading the Sora and Chivo Mono weights so
+  bold text is the right typeface. Load when bootstrapping a project, when
+  alouette classes render unstyled, or when fonts/bold weights look wrong.
+  Covers ios, android and web.
 type: lifecycle
 library: alouette
 library_version: "22.11.0"

@@ -1,12 +1,13 @@
 ---
 name: alouette-animation
 description: >
-  Animate alouette UI two ways: NativeWind transitions (transition-*, duration-*,
-  ease-* on state changes like active:/hover:/focus:) and CSS keyframe presence
-  animations via PresenceOne / PresenceList (animate-slide-in/out,
-  animate-collapse-in/out). exitDurationMs must come from animationDurationsMs so
-  the unmount timer matches the keyframe. Both run on native via
-  react-native-reanimated. Load when adding transitions or enter/exit animations.
+  Animate alouette UI two ways: NativeWind transition utilities for a change of
+  state (hover, focus, press), and PresenceOne / PresenceList for content
+  entering and leaving, which keep an element mounted long enough to play its
+  exit keyframes. Their exit timing is read from the library's
+  animationDurationsMs rather than hardcoded, so it stays in step with the
+  keyframes. Both run on native through react-native-reanimated. Load when
+  adding transitions or enter/exit animations.
 type: core
 library: alouette
 library_version: "22.11.0"

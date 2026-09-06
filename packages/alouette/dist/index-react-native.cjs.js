@@ -9,12 +9,13 @@ const reactNative = require('react-native');
 const reactNativeSafeAreaContext = require('react-native-safe-area-context');
 const tailwindMerge = require('tailwind-merge');
 const tailwindVariants = require('tailwind-variants');
-const XRegularIcon = require('alouette-icons/phosphor-icons/XRegularIcon');
+const PencilSimpleRegularIcon = require('alouette-icons/phosphor-icons/PencilSimpleRegularIcon');
 const CheckCircleRegularIcon = require('alouette-icons/phosphor-icons/CheckCircleRegularIcon');
 const WarningDuotoneIcon = require('alouette-icons/phosphor-icons/WarningDuotoneIcon');
 const WebBrowser = require('expo-web-browser');
 const Animated = require('react-native-reanimated');
 const reactNativeSvg = require('react-native-svg');
+const XRegularIcon = require('alouette-icons/phosphor-icons/XRegularIcon');
 const CheckRegularIcon = require('alouette-icons/phosphor-icons/CheckRegularIcon');
 const InfoRegularIcon = require('alouette-icons/phosphor-icons/InfoRegularIcon');
 const QuestionRegularIcon = require('alouette-icons/phosphor-icons/QuestionRegularIcon');
@@ -32,7 +33,6 @@ const AsteriskSimpleRegularIcon = require('alouette-icons/phosphor-icons/Asteris
 const reactHookForm = require('react-hook-form');
 const PlusRegularIcon = require('alouette-icons/phosphor-icons/PlusRegularIcon');
 const TrashRegularIcon = require('alouette-icons/phosphor-icons/TrashRegularIcon');
-const PencilSimpleRegularIcon = require('alouette-icons/phosphor-icons/PencilSimpleRegularIcon');
 
 function _interopNamespaceDefault(e) {
   const n = Object.create(null, { [Symbol.toStringTag]: { value: 'Module' } });
@@ -834,44 +834,71 @@ function Popover({
   );
 }
 
-const scrollEndToleranceInPx = 1;
-function useScrollEndState() {
-  const [isScrolledToEnd, setIsScrolledToEnd] = react.useState(true);
-  const viewportHeightRef = react.useRef(0);
-  const contentHeightRef = react.useRef(0);
-  const scrollOffsetRef = react.useRef(0);
-  const updateIsScrolledToEnd = () => {
-    setIsScrolledToEnd(
-      contentHeightRef.current - scrollOffsetRef.current <= viewportHeightRef.current + scrollEndToleranceInPx
-    );
-  };
-  return {
-    isScrolledToEnd,
-    scrollViewProps: {
-      scrollEventThrottle: 16,
-      onLayout: (event) => {
-        viewportHeightRef.current = event.nativeEvent.layout.height;
-        updateIsScrolledToEnd();
-      },
-      onContentSizeChange: (_width, height) => {
-        contentHeightRef.current = height;
-        updateIsScrolledToEnd();
-      },
-      onScroll: (event) => {
-        const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-        scrollOffsetRef.current = contentOffset.y;
-        contentHeightRef.current = contentSize.height;
-        viewportHeightRef.current = layoutMeasurement.height;
-        updateIsScrolledToEnd();
-      }
-    }
-  };
-}
-
 const useColorVariable = nativewind.useUnstableNativeVariable;
 function useColorToken(className) {
   const token = className.split(/\s+/).find((part) => part.startsWith("text-"))?.slice("text-".length);
   return useColorVariable(`--color-${token ?? "sharp"}`);
+}
+
+function Icon({
+  icon,
+  size = 20,
+  className = "text-sharp"
+}) {
+  const color = useColorToken(className);
+  return react.cloneElement(icon, {
+    color,
+    width: size,
+    height: size
+  });
+}
+
+const interactiveIconVariants = tailwindVariants.tv({
+  slots: {
+    frame: "relative shrink-0",
+    rest: "transition-opacity duration-fast ease-in group-hover:opacity-0 group-focus:opacity-0 group-active:opacity-0",
+    active: "absolute inset-0 opacity-0 transition-opacity duration-fast ease-in group-hover:opacity-100 group-focus:opacity-100 group-active:opacity-100"
+  },
+  variants: {
+    active: {
+      true: { rest: "opacity-0", active: "opacity-100" },
+      false: {}
+    }
+  },
+  defaultVariants: { active: false }
+});
+function InteractiveIcon({
+  icon,
+  activeIcon,
+  activeAccent,
+  active = false,
+  disabled = false,
+  size = 20,
+  className = "text-sharp"
+}) {
+  if (activeIcon === void 0 || disabled) {
+    return /* @__PURE__ */ jsxRuntime.jsx(
+      Icon,
+      {
+        icon: active && activeIcon ? activeIcon : icon,
+        size,
+        className
+      }
+    );
+  }
+  const styles = interactiveIconVariants({ active });
+  const activeClassName = activeAccent ? "text-accent" : className;
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    View,
+    {
+      className: styles.frame({ className }),
+      style: { width: size, height: size },
+      children: [
+        /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.rest(), children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size, className }) }),
+        /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.active(), children: /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent: activeAccent, children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: activeIcon, size, className: activeClassName }) }) })
+      ]
+    }
+  );
 }
 
 const useOpenExternalLink = () => {
@@ -926,19 +953,6 @@ const defaultExternalOpenLinkBehavior = {
   native: "webBrowser",
   web: "targetBlank"
 };
-
-function Icon({
-  icon,
-  size = 20,
-  className = "text-sharp"
-}) {
-  const color = useColorToken(className);
-  return react.cloneElement(icon, {
-    color,
-    width: size,
-    height: size
-  });
-}
 
 const AnimatedCircle = Animated.createAnimatedComponent(reactNativeSvg.Circle);
 const easeOut = Animated.Easing.bezier(0, 0, 0.58, 1);
@@ -1119,54 +1133,6 @@ function IndeterminateCircularProgress({
       hidden,
       accent,
       size
-    }
-  );
-}
-
-const interactiveIconVariants = tailwindVariants.tv({
-  slots: {
-    frame: "relative shrink-0",
-    rest: "transition-opacity duration-fast ease-in group-hover:opacity-0 group-focus:opacity-0 group-active:opacity-0",
-    active: "absolute inset-0 opacity-0 transition-opacity duration-fast ease-in group-hover:opacity-100 group-focus:opacity-100 group-active:opacity-100"
-  },
-  variants: {
-    active: {
-      true: { rest: "opacity-0", active: "opacity-100" },
-      false: {}
-    }
-  },
-  defaultVariants: { active: false }
-});
-function InteractiveIcon({
-  icon,
-  activeIcon,
-  activeAccent,
-  active = false,
-  disabled = false,
-  size = 20,
-  className = "text-sharp"
-}) {
-  if (activeIcon === void 0 || disabled) {
-    return /* @__PURE__ */ jsxRuntime.jsx(
-      Icon,
-      {
-        icon: active && activeIcon ? activeIcon : icon,
-        size,
-        className
-      }
-    );
-  }
-  const styles = interactiveIconVariants({ active });
-  const activeClassName = activeAccent ? "text-accent" : className;
-  return /* @__PURE__ */ jsxRuntime.jsxs(
-    View,
-    {
-      className: styles.frame({ className }),
-      style: { width: size, height: size },
-      children: [
-        /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.rest(), children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon, size, className }) }),
-        /* @__PURE__ */ jsxRuntime.jsx(View, { className: styles.active(), children: /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent: activeAccent, children: /* @__PURE__ */ jsxRuntime.jsx(Icon, { icon: activeIcon, size, className: activeClassName }) }) })
-      ]
     }
   );
 }
@@ -1647,6 +1613,94 @@ function IconButton({
       )
     }
   );
+}
+
+function EditableSurface({
+  title,
+  titleBadge,
+  details,
+  editAriaLabel,
+  editIcon = /* @__PURE__ */ jsxRuntime.jsx(PencilSimpleRegularIcon.PencilSimpleRegularIcon, {}),
+  editIconVariant,
+  accent,
+  className,
+  shadow,
+  size,
+  variant,
+  disabled,
+  onEdit,
+  children
+}) {
+  const titleId = react.useId();
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    Surface,
+    {
+      role: "region",
+      "aria-labelledby": titleId,
+      accent,
+      shadow,
+      size,
+      variant,
+      className,
+      children: /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: "gap-sm", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "items-start justify-between gap-sm", children: [
+          /* @__PURE__ */ jsxRuntime.jsxs(VStack, { className: "shrink items-start", children: [
+            /* @__PURE__ */ jsxRuntime.jsxs(HStack, { className: "items-center gap-sm", children: [
+              /* @__PURE__ */ jsxRuntime.jsx(Text, { nativeID: titleId, className: "font-heading-bold text-xl", children: title }),
+              titleBadge ? /* @__PURE__ */ jsxRuntime.jsx(View, { children: titleBadge }) : null
+            ] }),
+            details ? /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "text-muted text-sm", children: details }) : null
+          ] }),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            IconButton,
+            {
+              size: "sm",
+              icon: editIcon,
+              variant: editIconVariant,
+              disabled,
+              "aria-label": editAriaLabel,
+              onPress: onEdit
+            }
+          )
+        ] }),
+        children
+      ] })
+    }
+  );
+}
+
+const scrollEndToleranceInPx = 1;
+function useScrollEndState() {
+  const [isScrolledToEnd, setIsScrolledToEnd] = react.useState(true);
+  const viewportHeightRef = react.useRef(0);
+  const contentHeightRef = react.useRef(0);
+  const scrollOffsetRef = react.useRef(0);
+  const updateIsScrolledToEnd = () => {
+    setIsScrolledToEnd(
+      contentHeightRef.current - scrollOffsetRef.current <= viewportHeightRef.current + scrollEndToleranceInPx
+    );
+  };
+  return {
+    isScrolledToEnd,
+    scrollViewProps: {
+      scrollEventThrottle: 16,
+      onLayout: (event) => {
+        viewportHeightRef.current = event.nativeEvent.layout.height;
+        updateIsScrolledToEnd();
+      },
+      onContentSizeChange: (_width, height) => {
+        contentHeightRef.current = height;
+        updateIsScrolledToEnd();
+      },
+      onScroll: (event) => {
+        const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+        scrollOffsetRef.current = contentOffset.y;
+        contentHeightRef.current = contentSize.height;
+        viewportHeightRef.current = layoutMeasurement.height;
+        updateIsScrolledToEnd();
+      }
+    }
+  };
 }
 
 const supportsStickyPosition = reactNative.Platform.OS === "web";
@@ -4317,17 +4371,10 @@ function EditableItem({
   ] });
 }
 
-function FormEditableItem({
-  label,
-  summary,
-  details,
-  editAriaLabel,
-  editIcon,
-  variant,
-  accent,
-  disabled,
+function useFormEditorModal({
   title,
   size,
+  accent,
   closeButtonAriaLabel,
   cancelLabel,
   submitLabel,
@@ -4338,6 +4385,9 @@ function FormEditableItem({
   render
 }) {
   const [editing, setEditing] = react.useState(false);
+  function open() {
+    setEditing(true);
+  }
   function close() {
     setEditing(false);
   }
@@ -4345,6 +4395,59 @@ function FormEditableItem({
     await onSubmit(values, event);
     setEditing(false);
   };
+  return {
+    open,
+    editor: editing ? /* @__PURE__ */ jsxRuntime.jsx(
+      Form,
+      {
+        defaultValues,
+        mode,
+        render: ({ control, submit }) => /* @__PURE__ */ jsxRuntime.jsx(
+          Modal,
+          {
+            visible: true,
+            title,
+            accent,
+            size,
+            closeButtonAriaLabel,
+            footer: /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntime.jsx(Button, { variant: "outlined", text: cancelLabel, onPress: close }),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                FormSubmitButton,
+                {
+                  label: submitLabel,
+                  errorToMessage: submitErrorToMessage,
+                  onPress: submit
+                }
+              )
+            ] }),
+            onClose: close,
+            children: render({ control })
+          }
+        ),
+        onSubmit: handleSubmit
+      }
+    ) : null
+  };
+}
+
+function FormEditableItem({
+  label,
+  summary,
+  details,
+  editAriaLabel,
+  editIcon,
+  variant,
+  accent,
+  disabled,
+  title,
+  ...editorProps
+}) {
+  const { open, editor } = useFormEditorModal({
+    ...editorProps,
+    title: title ?? label,
+    accent
+  });
   return /* @__PURE__ */ jsxRuntime.jsx(
     EditableItem,
     {
@@ -4356,47 +4459,56 @@ function FormEditableItem({
       variant,
       accent,
       disabled,
-      onEdit: () => {
-        setEditing(true);
-      },
-      children: editing ? /* @__PURE__ */ jsxRuntime.jsx(
-        Form,
-        {
-          defaultValues,
-          mode,
-          render: ({ control, submit }) => /* @__PURE__ */ jsxRuntime.jsx(
-            Modal,
-            {
-              visible: true,
-              title: title ?? label,
-              accent,
-              size,
-              closeButtonAriaLabel,
-              footer: /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntime.jsx(
-                  Button,
-                  {
-                    variant: "outlined",
-                    text: cancelLabel,
-                    onPress: close
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntime.jsx(
-                  FormSubmitButton,
-                  {
-                    label: submitLabel,
-                    errorToMessage: submitErrorToMessage,
-                    onPress: submit
-                  }
-                )
-              ] }),
-              onClose: close,
-              children: render({ control })
-            }
-          ),
-          onSubmit: handleSubmit
-        }
-      ) : null
+      onEdit: open,
+      children: editor
+    }
+  );
+}
+
+function FormEditableSurface({
+  title,
+  titleBadge,
+  details,
+  editAriaLabel,
+  editIcon,
+  editIconVariant,
+  accent,
+  className,
+  shadow,
+  size,
+  variant,
+  disabled,
+  modalSize,
+  modalTitle,
+  children,
+  ...editorProps
+}) {
+  const { open, editor } = useFormEditorModal({
+    ...editorProps,
+    title: modalTitle ?? title,
+    size: modalSize,
+    accent
+  });
+  return /* @__PURE__ */ jsxRuntime.jsxs(
+    EditableSurface,
+    {
+      title,
+      titleBadge,
+      details,
+      editAriaLabel,
+      editIcon,
+      editIconVariant,
+      accent,
+      className,
+      shadow,
+      size,
+      variant,
+      disabled,
+      onEdit: open,
+      children: [
+        children,
+        editor
+      ]
     }
   );
 }
@@ -5227,6 +5339,7 @@ exports.ColorModePicker = ColorModePicker;
 exports.ConfirmationMessage = ConfirmationMessage;
 exports.ConnectionState = ConnectionState;
 exports.EditableItem = EditableItem;
+exports.EditableSurface = EditableSurface;
 exports.ErrorMessage = ErrorMessage;
 exports.ExternalLink = ExternalLink;
 exports.ExternalLinkButton = ExternalLinkButton;
@@ -5234,6 +5347,7 @@ exports.ExternalLinkText = ExternalLinkText;
 exports.FlatList = FlatList;
 exports.Form = Form;
 exports.FormEditableItem = FormEditableItem;
+exports.FormEditableSurface = FormEditableSurface;
 exports.FormField = FormField;
 exports.FormFieldArray = FormFieldArray;
 exports.FormItem = FormItem;

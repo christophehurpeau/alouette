@@ -1,15 +1,15 @@
 ---
 name: alouette-feedback
 description: >
-  Semantic message banners: Message (requires accent + icon) and the presets
-  InfoMessage, ConfirmationMessage, WarningMessage, ErrorMessage. Optional dismiss requires
-  onDismiss and dismissIconAriaLabel together; size is sm/md/lg; variant is
-  surface (raised, default) | flat (no shadow, for a message already inside a
-  surface). Also
-  ConnectionState, a top-pinned network-status banner driven by a state prop,
-  and LinearProgress / CircularProgress determinate progress indicators
-  (progress 0-100, accent, size xs/sm/md/lg). Load when showing inline status,
-  alerts, dismissible notices, connection status, or progress.
+  Tell the user what happened, in place. Message is the semantic banner —
+  InfoMessage, ConfirmationMessage, WarningMessage and ErrorMessage are its
+  ready-made meanings — optionally dismissible, and flattened when it sits
+  inside an already-raised surface. ConnectionState is the banner pinned at the
+  top of the screen reporting the network, and LinearProgress and
+  CircularProgress show how far a determinate operation has got. A failure
+  coming out of a button or a form is already rendered by that component, so
+  reach for these for status the screen itself has to state. Load when showing
+  inline status, alerts, dismissible notices, connection status, or progress.
 type: core
 library: alouette
 library_version: "22.11.0"

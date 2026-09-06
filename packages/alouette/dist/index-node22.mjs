@@ -6,13 +6,14 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 export { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { extendTailwindMerge, twMerge as twMerge$1 } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
-import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
+import { PencilSimpleRegularIcon } from 'alouette-icons/phosphor-icons/PencilSimpleRegularIcon';
 import { CheckCircleRegularIcon } from 'alouette-icons/phosphor-icons/CheckCircleRegularIcon';
 import { WarningDuotoneIcon } from 'alouette-icons/phosphor-icons/WarningDuotoneIcon';
 import * as WebBrowser from 'expo-web-browser';
 import { WebBrowserPresentationStyle } from 'expo-web-browser';
 import Animated, { Easing, useSharedValue, withTiming, useAnimatedProps } from 'react-native-reanimated';
 import { Circle, Svg } from 'react-native-svg';
+import { XRegularIcon } from 'alouette-icons/phosphor-icons/XRegularIcon';
 import { CheckRegularIcon } from 'alouette-icons/phosphor-icons/CheckRegularIcon';
 import { InfoRegularIcon } from 'alouette-icons/phosphor-icons/InfoRegularIcon';
 import { QuestionRegularIcon } from 'alouette-icons/phosphor-icons/QuestionRegularIcon';
@@ -30,7 +31,6 @@ import { AsteriskSimpleRegularIcon } from 'alouette-icons/phosphor-icons/Asteris
 import { useForm, FormProvider, useFormContext, Controller, useFieldArray } from 'react-hook-form';
 import { PlusRegularIcon } from 'alouette-icons/phosphor-icons/PlusRegularIcon';
 import { TrashRegularIcon } from 'alouette-icons/phosphor-icons/TrashRegularIcon';
-import { PencilSimpleRegularIcon } from 'alouette-icons/phosphor-icons/PencilSimpleRegularIcon';
 
 const NativeThemeVariablesContext = createContext(
   null
@@ -819,44 +819,71 @@ function Popover({
   );
 }
 
-const scrollEndToleranceInPx = 1;
-function useScrollEndState() {
-  const [isScrolledToEnd, setIsScrolledToEnd] = useState(true);
-  const viewportHeightRef = useRef(0);
-  const contentHeightRef = useRef(0);
-  const scrollOffsetRef = useRef(0);
-  const updateIsScrolledToEnd = () => {
-    setIsScrolledToEnd(
-      contentHeightRef.current - scrollOffsetRef.current <= viewportHeightRef.current + scrollEndToleranceInPx
-    );
-  };
-  return {
-    isScrolledToEnd,
-    scrollViewProps: {
-      scrollEventThrottle: 16,
-      onLayout: (event) => {
-        viewportHeightRef.current = event.nativeEvent.layout.height;
-        updateIsScrolledToEnd();
-      },
-      onContentSizeChange: (_width, height) => {
-        contentHeightRef.current = height;
-        updateIsScrolledToEnd();
-      },
-      onScroll: (event) => {
-        const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-        scrollOffsetRef.current = contentOffset.y;
-        contentHeightRef.current = contentSize.height;
-        viewportHeightRef.current = layoutMeasurement.height;
-        updateIsScrolledToEnd();
-      }
-    }
-  };
-}
-
 const useColorVariable = useUnstableNativeVariable;
 function useColorToken(className) {
   const token = className.split(/\s+/).find((part) => part.startsWith("text-"))?.slice("text-".length);
   return useColorVariable(`--color-${token ?? "sharp"}`);
+}
+
+function Icon({
+  icon,
+  size = 20,
+  className = "text-sharp"
+}) {
+  const color = useColorToken(className);
+  return cloneElement(icon, {
+    color,
+    width: size,
+    height: size
+  });
+}
+
+const interactiveIconVariants = tv({
+  slots: {
+    frame: "relative shrink-0",
+    rest: "transition-opacity duration-fast ease-in group-hover:opacity-0 group-focus:opacity-0 group-active:opacity-0",
+    active: "absolute inset-0 opacity-0 transition-opacity duration-fast ease-in group-hover:opacity-100 group-focus:opacity-100 group-active:opacity-100"
+  },
+  variants: {
+    active: {
+      true: { rest: "opacity-0", active: "opacity-100" },
+      false: {}
+    }
+  },
+  defaultVariants: { active: false }
+});
+function InteractiveIcon({
+  icon,
+  activeIcon,
+  activeAccent,
+  active = false,
+  disabled = false,
+  size = 20,
+  className = "text-sharp"
+}) {
+  if (activeIcon === void 0 || disabled) {
+    return /* @__PURE__ */ jsx(
+      Icon,
+      {
+        icon: active && activeIcon ? activeIcon : icon,
+        size,
+        className
+      }
+    );
+  }
+  const styles = interactiveIconVariants({ active });
+  const activeClassName = activeAccent ? "text-accent" : className;
+  return /* @__PURE__ */ jsxs(
+    View,
+    {
+      className: styles.frame({ className }),
+      style: { width: size, height: size },
+      children: [
+        /* @__PURE__ */ jsx(View, { className: styles.rest(), children: /* @__PURE__ */ jsx(Icon, { icon, size, className }) }),
+        /* @__PURE__ */ jsx(View, { className: styles.active(), children: /* @__PURE__ */ jsx(AccentScope, { accent: activeAccent, children: /* @__PURE__ */ jsx(Icon, { icon: activeIcon, size, className: activeClassName }) }) })
+      ]
+    }
+  );
 }
 
 const useOpenExternalLink = () => {
@@ -911,19 +938,6 @@ const defaultExternalOpenLinkBehavior = {
   native: "webBrowser",
   web: "targetBlank"
 };
-
-function Icon({
-  icon,
-  size = 20,
-  className = "text-sharp"
-}) {
-  const color = useColorToken(className);
-  return cloneElement(icon, {
-    color,
-    width: size,
-    height: size
-  });
-}
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const easeOut = Easing.bezier(0, 0, 0.58, 1);
@@ -1104,54 +1118,6 @@ function IndeterminateCircularProgress({
       hidden,
       accent,
       size
-    }
-  );
-}
-
-const interactiveIconVariants = tv({
-  slots: {
-    frame: "relative shrink-0",
-    rest: "transition-opacity duration-fast ease-in group-hover:opacity-0 group-focus:opacity-0 group-active:opacity-0",
-    active: "absolute inset-0 opacity-0 transition-opacity duration-fast ease-in group-hover:opacity-100 group-focus:opacity-100 group-active:opacity-100"
-  },
-  variants: {
-    active: {
-      true: { rest: "opacity-0", active: "opacity-100" },
-      false: {}
-    }
-  },
-  defaultVariants: { active: false }
-});
-function InteractiveIcon({
-  icon,
-  activeIcon,
-  activeAccent,
-  active = false,
-  disabled = false,
-  size = 20,
-  className = "text-sharp"
-}) {
-  if (activeIcon === void 0 || disabled) {
-    return /* @__PURE__ */ jsx(
-      Icon,
-      {
-        icon: active && activeIcon ? activeIcon : icon,
-        size,
-        className
-      }
-    );
-  }
-  const styles = interactiveIconVariants({ active });
-  const activeClassName = activeAccent ? "text-accent" : className;
-  return /* @__PURE__ */ jsxs(
-    View,
-    {
-      className: styles.frame({ className }),
-      style: { width: size, height: size },
-      children: [
-        /* @__PURE__ */ jsx(View, { className: styles.rest(), children: /* @__PURE__ */ jsx(Icon, { icon, size, className }) }),
-        /* @__PURE__ */ jsx(View, { className: styles.active(), children: /* @__PURE__ */ jsx(AccentScope, { accent: activeAccent, children: /* @__PURE__ */ jsx(Icon, { icon: activeIcon, size, className: activeClassName }) }) })
-      ]
     }
   );
 }
@@ -1632,6 +1598,94 @@ function IconButton({
       )
     }
   );
+}
+
+function EditableSurface({
+  title,
+  titleBadge,
+  details,
+  editAriaLabel,
+  editIcon = /* @__PURE__ */ jsx(PencilSimpleRegularIcon, {}),
+  editIconVariant,
+  accent,
+  className,
+  shadow,
+  size,
+  variant,
+  disabled,
+  onEdit,
+  children
+}) {
+  const titleId = useId();
+  return /* @__PURE__ */ jsx(
+    Surface,
+    {
+      role: "region",
+      "aria-labelledby": titleId,
+      accent,
+      shadow,
+      size,
+      variant,
+      className,
+      children: /* @__PURE__ */ jsxs(VStack, { className: "gap-sm", children: [
+        /* @__PURE__ */ jsxs(HStack, { className: "items-start justify-between gap-sm", children: [
+          /* @__PURE__ */ jsxs(VStack, { className: "shrink items-start", children: [
+            /* @__PURE__ */ jsxs(HStack, { className: "items-center gap-sm", children: [
+              /* @__PURE__ */ jsx(Text, { nativeID: titleId, className: "font-heading-bold text-xl", children: title }),
+              titleBadge ? /* @__PURE__ */ jsx(View, { children: titleBadge }) : null
+            ] }),
+            details ? /* @__PURE__ */ jsx(Text, { className: "text-muted text-sm", children: details }) : null
+          ] }),
+          /* @__PURE__ */ jsx(
+            IconButton,
+            {
+              size: "sm",
+              icon: editIcon,
+              variant: editIconVariant,
+              disabled,
+              "aria-label": editAriaLabel,
+              onPress: onEdit
+            }
+          )
+        ] }),
+        children
+      ] })
+    }
+  );
+}
+
+const scrollEndToleranceInPx = 1;
+function useScrollEndState() {
+  const [isScrolledToEnd, setIsScrolledToEnd] = useState(true);
+  const viewportHeightRef = useRef(0);
+  const contentHeightRef = useRef(0);
+  const scrollOffsetRef = useRef(0);
+  const updateIsScrolledToEnd = () => {
+    setIsScrolledToEnd(
+      contentHeightRef.current - scrollOffsetRef.current <= viewportHeightRef.current + scrollEndToleranceInPx
+    );
+  };
+  return {
+    isScrolledToEnd,
+    scrollViewProps: {
+      scrollEventThrottle: 16,
+      onLayout: (event) => {
+        viewportHeightRef.current = event.nativeEvent.layout.height;
+        updateIsScrolledToEnd();
+      },
+      onContentSizeChange: (_width, height) => {
+        contentHeightRef.current = height;
+        updateIsScrolledToEnd();
+      },
+      onScroll: (event) => {
+        const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+        scrollOffsetRef.current = contentOffset.y;
+        contentHeightRef.current = contentSize.height;
+        viewportHeightRef.current = layoutMeasurement.height;
+        updateIsScrolledToEnd();
+      }
+    }
+  };
 }
 
 const supportsStickyPosition = Platform.OS === "web";
@@ -4302,17 +4356,10 @@ function EditableItem({
   ] });
 }
 
-function FormEditableItem({
-  label,
-  summary,
-  details,
-  editAriaLabel,
-  editIcon,
-  variant,
-  accent,
-  disabled,
+function useFormEditorModal({
   title,
   size,
+  accent,
   closeButtonAriaLabel,
   cancelLabel,
   submitLabel,
@@ -4323,6 +4370,9 @@ function FormEditableItem({
   render
 }) {
   const [editing, setEditing] = useState(false);
+  function open() {
+    setEditing(true);
+  }
   function close() {
     setEditing(false);
   }
@@ -4330,6 +4380,59 @@ function FormEditableItem({
     await onSubmit(values, event);
     setEditing(false);
   };
+  return {
+    open,
+    editor: editing ? /* @__PURE__ */ jsx(
+      Form,
+      {
+        defaultValues,
+        mode,
+        render: ({ control, submit }) => /* @__PURE__ */ jsx(
+          Modal,
+          {
+            visible: true,
+            title,
+            accent,
+            size,
+            closeButtonAriaLabel,
+            footer: /* @__PURE__ */ jsxs(Fragment$1, { children: [
+              /* @__PURE__ */ jsx(Button, { variant: "outlined", text: cancelLabel, onPress: close }),
+              /* @__PURE__ */ jsx(
+                FormSubmitButton,
+                {
+                  label: submitLabel,
+                  errorToMessage: submitErrorToMessage,
+                  onPress: submit
+                }
+              )
+            ] }),
+            onClose: close,
+            children: render({ control })
+          }
+        ),
+        onSubmit: handleSubmit
+      }
+    ) : null
+  };
+}
+
+function FormEditableItem({
+  label,
+  summary,
+  details,
+  editAriaLabel,
+  editIcon,
+  variant,
+  accent,
+  disabled,
+  title,
+  ...editorProps
+}) {
+  const { open, editor } = useFormEditorModal({
+    ...editorProps,
+    title: title ?? label,
+    accent
+  });
   return /* @__PURE__ */ jsx(
     EditableItem,
     {
@@ -4341,47 +4444,56 @@ function FormEditableItem({
       variant,
       accent,
       disabled,
-      onEdit: () => {
-        setEditing(true);
-      },
-      children: editing ? /* @__PURE__ */ jsx(
-        Form,
-        {
-          defaultValues,
-          mode,
-          render: ({ control, submit }) => /* @__PURE__ */ jsx(
-            Modal,
-            {
-              visible: true,
-              title: title ?? label,
-              accent,
-              size,
-              closeButtonAriaLabel,
-              footer: /* @__PURE__ */ jsxs(Fragment$1, { children: [
-                /* @__PURE__ */ jsx(
-                  Button,
-                  {
-                    variant: "outlined",
-                    text: cancelLabel,
-                    onPress: close
-                  }
-                ),
-                /* @__PURE__ */ jsx(
-                  FormSubmitButton,
-                  {
-                    label: submitLabel,
-                    errorToMessage: submitErrorToMessage,
-                    onPress: submit
-                  }
-                )
-              ] }),
-              onClose: close,
-              children: render({ control })
-            }
-          ),
-          onSubmit: handleSubmit
-        }
-      ) : null
+      onEdit: open,
+      children: editor
+    }
+  );
+}
+
+function FormEditableSurface({
+  title,
+  titleBadge,
+  details,
+  editAriaLabel,
+  editIcon,
+  editIconVariant,
+  accent,
+  className,
+  shadow,
+  size,
+  variant,
+  disabled,
+  modalSize,
+  modalTitle,
+  children,
+  ...editorProps
+}) {
+  const { open, editor } = useFormEditorModal({
+    ...editorProps,
+    title: modalTitle ?? title,
+    size: modalSize,
+    accent
+  });
+  return /* @__PURE__ */ jsxs(
+    EditableSurface,
+    {
+      title,
+      titleBadge,
+      details,
+      editAriaLabel,
+      editIcon,
+      editIconVariant,
+      accent,
+      className,
+      shadow,
+      size,
+      variant,
+      disabled,
+      onEdit: open,
+      children: [
+        children,
+        editor
+      ]
     }
   );
 }
@@ -5177,5 +5289,5 @@ function SwitchBreakpointsUsingNull({
   return breakpoints[currentBreakpointName] ?? null;
 }
 
-export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, AppHeader, AppHeaderAccount, AppHeaderActions, AppHeaderBrand, AppHeaderSignIn, AppLayout, AppShell, AppShellMain, AppShellSidebar, Avatar, Badge, Blockquote, Box, BrandLogo, BreadcrumbItem, Breadcrumbs, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ColorModePicker, ConfirmationMessage, ConnectionState, EditableItem, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InteractiveIcon, InternalLinkButton, LinearProgress, LinkText, Menu, MenuItem, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useResolvedColorMode, useScreenSafeAreaPadding, useSystemColorMode };
+export { AccentScope, ActionButton, AlertDialog, AlouetteDecorator, AlouetteProvider, AppHeader, AppHeaderAccount, AppHeaderActions, AppHeaderBrand, AppHeaderSignIn, AppLayout, AppShell, AppShellMain, AppShellSidebar, Avatar, Badge, Blockquote, Box, BrandLogo, BreadcrumbItem, Breadcrumbs, BreakpointNameEnum, Breakpoints, Bullet, Button, CircularProgress, Citation, Code, CodeBlock, ColorModePicker, ConfirmationMessage, ConnectionState, EditableItem, EditableSurface, ErrorMessage, ExternalLink, ExternalLinkButton, ExternalLinkText, FlatList, Form, FormEditableItem, FormEditableSurface, FormField, FormFieldArray, FormItem, FormSubmitButton, FormValidationError, GradientBackground, GradientScrollView, HStack, Icon, IconButton, InfoAlertDialog, InfoMessage, InputText, InputTextAutocomplete, InteractiveBox, InteractiveIcon, InternalLinkButton, LinearProgress, LinkText, Menu, MenuItem, Message, Modal, NavBar, NavBarItem, Paragraph, Popover, PortalAccentScope, PresenceList, PresenceOne, PressableBox, PressableListItem, QuestionAlertDialog, Radio, RadioButton, RadioButtonGroup, RadioCard, RadioCardGroup, RadioGroup, SafeAreaBox, SafeAreaScope, ScopedTheme, ScreenCenterLayout, ScreenFlatList, ScreenScrollView, ScreenSectionList, ScrollView, SectionList, Select, Separator, SimpleVForm, StableAccentScope, Stack, Story, StoryContainer, StoryDecorator, StoryGrid, StoryTitle, SuccessAlertDialog, Surface, Switch, SwitchBreakpointsUsingDisplayNone, SwitchBreakpointsUsingNull, Tab, Tabs, Text, TextArea, VStack, View, WarningAlertDialog, WarningMessage, animationDurationsMs, styled, useConsumedSafeAreaEdges, useCurrentBreakpointName, useCurrentBreakpointNameFiltered, useCurrentMode, useCurrentTheme, useResolvedColorMode, useScreenSafeAreaPadding, useSystemColorMode };
 //# sourceMappingURL=index-node22.mjs.map

@@ -1,12 +1,12 @@
 ---
 name: alouette-external-links
 description: >
-  Open external URLs with ExternalLink (wraps expo-web-browser / Linking), or the
-  two ready-made call sites: ExternalLinkButton (a Button) and ExternalLinkText
-  (an inline text link with a leading arrow icon, size sm|md). openLinkBehavior
-  is per platform (native: linking|webBrowser; web: targetBlank|targetSelf) —
-  required on ExternalLink, defaulted to webBrowser/targetBlank on the two
-  wrappers. Load when linking out to external URLs from alouette UI.
+  Send the user to a URL outside the app. ExternalLink is the primitive over
+  expo-web-browser and Linking; ExternalLinkButton is the call-to-action shaped
+  call site and ExternalLinkText the inline one inside a sentence. How the link
+  opens is decided per platform — an in-app browser or the system one on native,
+  a new tab or the same one on web — and the two wrappers already pick the
+  usual answer. Load when linking out to external URLs from alouette UI.
 type: composition
 library: alouette
 library_version: "22.11.0"

@@ -1,20 +1,17 @@
 ---
 name: alouette-navigation
 description: >
-  Segmented navigation. NavBar + NavBarItem move between destinations
-  (role="navigation" + role="link" + aria-current="page"); Tabs + Tab switch
-  views on one screen (role="tablist" + role="tab" + aria-selected). Both are
-  compose-children groups (no options array) sharing the RadioButtonGroup
-  material: a lowered 44px bar with a raised chip per item, optional leading
-  icon, accent + disabled, controlled value or defaultValue + onValueChange, and
-  a per-item href + onPress (a real anchor on web, and what expo Router
-  <Link asChild> injects) that wins over the group callback. Both take
-  variant="icon" (a pill of square icon-only chips); NavBar also takes
-  orientation="vertical" for a sidebar rail and stretch to fill its line.
-  Breadcrumbs + BreadcrumbItem render the trail to the current page (links to
-  every ancestor, aria-current="page" on the last). Navigation is never a
-  RadioButtonGroup or a Link wrapped around a Text. Load when building a tab
-  bar, a section switcher, a breadcrumb trail, or navigation between routes.
+  Move the user between places. NavBar and NavBarItem navigate between
+  destinations — each item is a real link announced as the current page, and
+  composes with expo Router; Tabs and Tab switch between views of one screen,
+  announced as a tab list. Both are built by composing their items, over the
+  same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar
+  can also stand vertically as a sidebar rail. Breadcrumbs and BreadcrumbItem
+  render the trail back through the ancestors of the current page. Pick by
+  meaning, not by looks: navigation is never a RadioButtonGroup, which announces
+  a form value, and never a Link wrapped around a Text, which has no interactive
+  state. Load when building a tab bar, a section switcher, a breadcrumb trail,
+  or navigation between routes.
 type: core
 library: alouette
 library_version: "22.11.0"

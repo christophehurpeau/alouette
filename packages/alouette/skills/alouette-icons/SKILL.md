@@ -1,11 +1,12 @@
 ---
 name: alouette-icons
 description: >
-  Use Phosphor icons with alouette. Import each icon from
-  alouette-icons/phosphor-icons/IconName, then render via the Icon component or
-  pass it to Button / IconButton / Message icon props. Tint with a text-*
-  className (resolved to a color token); size with the numeric size prop. Load
-  when adding icons to alouette UI.
+  Use Phosphor icons with alouette. Each icon is imported from its own module
+  (alouette-icons/phosphor-icons/IconName) so only what is used is bundled, and
+  is then either rendered through the Icon component or handed as an element to
+  a component that takes one (Button, IconButton, Message). Its color comes from
+  a text-* token class rather than from the SVG, so an icon follows the theme
+  and the accent around it. Load when adding icons to alouette UI.
 type: composition
 library: alouette
 library_version: "22.11.0"

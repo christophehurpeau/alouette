@@ -1,21 +1,18 @@
 ---
 name: alouette-forms
 description: >
-  Inputs: InputText (mode: password/email/number/tel/url/search), TextArea,
-  Switch (checked + onValueChange; use disabled not editable),
-  InputTextAutocomplete (a combobox). Single-select groups
-  (value/defaultValue/onValueChange + accent/disabled): RadioGroup + Radio,
-  RadioButtonGroup + RadioButton (also variant="icon", the icon-only pill
-  ColorModePicker is built on), RadioCardGroup + RadioCard. On react-hook-form:
-  Form hands { control, submit } to its render prop and every field takes that
-  control, so the form type is written once and field value types are inferred
-  from name. FormField wires Controller to FormItem label/error/required;
-  FormFieldArray wraps useFieldArray; FormSubmitButton drives
-  loading/success/failed; SimpleVForm is the vertical-stack shortcut;
-  FormEditableItem edits a row in a modal with its own Form. errorToMessage is
-  required (i18n); FormValidationError separates invalid fields from onSubmit
-  failures. Load when building inputs, radio groups, a color-mode picker or a
-  validated form.
+  Collect and validate user input. Inputs: InputText and TextArea for text,
+  Switch for a toggle, InputTextAutocomplete to narrow a known list by typing.
+  Single-select groups, each composing its children rather than taking an
+  options array: RadioGroup, RadioButtonGroup (which the light/dark
+  ColorModePicker is built on) and RadioCardGroup. Validated forms over
+  react-hook-form: Form owns the instance and passes its control down, so the
+  form type is written once and every field's value type is inferred; FormField
+  labels one field and reports its error; FormFieldArray repeats a group of
+  fields; FormSubmitButton drives the submit lifecycle; SimpleVForm is the
+  vertical-stack shortcut; FormEditableItem and FormEditableSurface edit a row
+  or a section in a modal owning its own Form. Load when building inputs, radio
+  groups, a color-mode picker or a validated form.
 type: core
 library: alouette
 library_version: "22.11.0"
@@ -46,10 +43,13 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormSubmitButton.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableSurface.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/useFormEditorModal.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormFieldArray.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableItem.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableSurface.stories.tsx"
 ---
 
 This skill builds on alouette-theming (token model) and alouette-actions (the
@@ -79,14 +79,12 @@ union of every field, and never a per-field type argument.
 ## Inputs
 
 ```tsx
-import { InputText } from "alouette";
-
 <InputText
   mode="email"
   value={email}
   onChangeText={setEmail}
   placeholder="you@example.com"
-/>;
+/>
 ```
 
 ### Input modes
@@ -256,9 +254,11 @@ only lives there — but `control` is what carries the types.
 `FormFieldArray` wraps `useFieldArray` and owns the array label, add/remove
 buttons and `minSize` padding; `render` gets the item's path prefix (typed
 `` `${name}.${number}` ``) and composes its own `FormField`s from it.
-`FormEditableItem` is an `EditableItem` row whose editor is a modal owning **its
-own** `Form`, mounted per open — so cancelling is an unmount, not a restore. Both
-are detailed in
+`FormEditableItem` (an `EditableItem` row) and `FormEditableSurface` (an
+`EditableSurface` section, for a value of several lines) share one editor: a
+modal owning **its own** `Form`, mounted per open — so cancelling is an unmount,
+not a restore — and one editor prop set, exported as `FormEditorProps`. All
+three are detailed in
 [references/field-arrays-and-editable-rows.md](references/field-arrays-and-editable-rows.md).
 
 ### Submit lifecycle
@@ -476,9 +476,10 @@ Binding the modal's fields to the surrounding form mutates shared state on every
 keystroke, which is why the value then has to be snapshotted on open and restored
 on cancel. `FormEditableItem` mounts a **separate** `Form` per open, seeded from
 `defaultValues`: cancel is an unmount, and the row keeps showing the last saved
-value with no restore logic.
+value with no restore logic. `FormEditableSurface` is the same mechanism for a
+whole section.
 
-Source: packages/alouette/src/ui/forms/FormEditableItem.tsx
+Source: packages/alouette/src/ui/forms/useFormEditorModal.tsx
 
 ### MEDIUM Picking the wrong single-select family
 

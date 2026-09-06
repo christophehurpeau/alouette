@@ -1,20 +1,18 @@
 ---
 name: alouette-dialogs
 description: >
-  Overlays: Modal (controlled by visible/onClose, required title, optional
-  icon/footer/role, size sm/md/lg, dismissed via backdrop/close/Escape/Android-
-  back; footer pinned below the scrolling body) and AlertDialog for
-  confirmations. AlertDialog variant is confirm (cancel+confirm) | alert (single
-  acknowledge) | required (single action, non-dismissible); accent defaults to
-  danger. Prefer the icon-fixed presets
-  Question/Warning/Info/SuccessAlertDialog. onConfirm may return a promise: the
-  dialog then shows a loading state, locks dismissal until it settles, and
-  renders a rejection with errorToMessage. Popover is the chrome-less escape
-  hatch, rendering children above everything, outside any overflow-hidden
-  ancestor: anchored under anchorRef on web (align start|end, width
-  anchor|content), a top/center overlay on native. For actions off a trigger use
-  Menu + MenuItem, not a hand-built Popover. Load when adding a modal,
-  confirmation, alert dialog, or a dropdown escaping a clipping container.
+  Content above the screen. Modal is the general dialog: the caller controls
+  whether it is open, and it is dismissed by the backdrop, its close button,
+  Escape or the Android back gesture, with its footer pinned below a scrolling
+  body. AlertDialog is the confirmation built on it — ask, acknowledge, or
+  demand a decision that cannot be dismissed — with icon-fixed presets
+  (QuestionAlertDialog, WarningAlertDialog, InfoAlertDialog,
+  SuccessAlertDialog); confirming may be async, and the dialog stays open,
+  locked, until it settles, rendering a failure in place. Popover is the
+  chrome-less escape hatch for content that must escape a clipping ancestor —
+  but a set of actions off a trigger is Menu + MenuItem, never a hand-built
+  Popover. Load when adding a modal, confirmation, alert dialog, or a dropdown
+  escaping a clipping container.
 type: core
 library: alouette
 library_version: "22.11.0"

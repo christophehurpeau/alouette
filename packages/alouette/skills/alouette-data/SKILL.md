@@ -1,20 +1,15 @@
 ---
 name: alouette-data
 description: >
-  Data-display components, all display-only: never wrap one in a Link or
-  Pressable. Badge: a small pill for status, counts or categories — accent
-  defaults to brand, size sm/md, variant solid (tinted) / solid.enabled (filled)
-  / outlined, optional auto-sized icon, no className prop. Avatar: an accent
-  disc for a person or account — up to two initials from name, or an icon; size
-  sm/md/lg. EditableItem: a labelled row (bold label + summary node + optional
-  details) with a pencil IconButton; it owns no editor and calls onEdit,
-  editAriaLabel required. Bullet: an icon + text list row tinted with the
-  current accent. Code: an inline mono fragment. CodeBlock: a lowered,
-  horizontally scrolling block with an optional title. Blockquote: a quoted
-  excerpt with an accent rule and an optional citation. Citation: an em dash
-  plus the source, optionally linked. Load when showing a status chip, an icon
-  list row, an avatar, a value with an edit affordance, code, a quote or its
-  attribution.
+  Show a value the app already holds. Badge labels something with a status,
+  count or category pill; Avatar stands for a person or account; EditableItem
+  shows one labelled value behind an edit affordance and EditableSurface a whole
+  titled section behind one; Bullet is an icon + text list row; Code and
+  CodeBlock render source inline and as a block; Blockquote and Citation render
+  a quoted excerpt and its attribution. All are display-only — they own no
+  editor and no press handling, and are never wrapped in a Link or Pressable to
+  gain one. Load when showing a status chip, a list row, an avatar, a value or
+  section with an edit affordance, code, a quote or its attribution.
 type: core
 library: alouette
 library_version: "22.11.0"
@@ -26,6 +21,8 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/EditableSurface.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/EditableSurface.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Code.tsx"
@@ -198,48 +195,36 @@ import { Blockquote, Citation } from "alouette";
 without it, plain muted text. It stands alone under any excerpt, not only under a
 `Blockquote`.
 
-## EditableItem
+## EditableItem and EditableSurface
 
-`EditableItem` is the labelled row that shows a saved value and offers to edit
-it: a bold `label`, a `summary` node beside it, and a pencil `IconButton` on the
-right. It owns **no** editor and no state — it calls `onEdit`.
+Two read-only displays carrying an edit affordance: `EditableItem` for one
+labelled value (a bold label, a summary beside it), `EditableSurface` for a
+titled section whose value spans several lines. Both own **no** editor and no
+state — they call `onEdit`, and the pencil `IconButton` is the only pressable.
 
 ```tsx
-import { EditableItem, Badge } from "alouette";
-
 <EditableItem
   label="Display name"
   summary={<Badge accent="brand">Ada Lovelace</Badge>}
   editAriaLabel="Edit display name"
   onEdit={openEditor}
 />;
-```
 
-`summary` is any node — a `Badge` is only the most compact option; a `Text`
-(sharp, muted or mono) reads better for a plain value, and omitting it leaves
-the label alone. `details` adds muted helper text under the label, and
-`children` render **below** the row for a value too large for `summary`.
-
-```tsx
-<EditableItem
-  label="Biography"
-  details="Shown on your public profile."
-  editAriaLabel="Edit biography"
+<EditableSurface
+  title="Event details"
+  titleBadge={<Badge accent="brand">12 August 2026</Badge>}
+  editAriaLabel="Edit event details"
   onEdit={openEditor}
 >
-  <Paragraph>Mathematician and writer…</Paragraph>
-</EditableItem>
+  <Paragraph className="text-sm">An evening of readings…</Paragraph>
+</EditableSurface>;
 ```
 
-`editAriaLabel` is required — the button has no visible text. `editIcon`
-defaults to `PencilSimpleRegularIcon`; `variant` (`contained` / `outlined` /
-`ghost`), `accent` and `disabled` are forwarded to the `IconButton`.
-
-For the usual case — the editor is a modal form — use `FormEditableItem` from
-alouette-forms/SKILL.md, which adds the open state, the `Modal` and its own
-`Form` — its fields come through `render`, which hands them that inner `Form`'s
-`control`. Reach for `EditableItem` directly only when the editor is not a form
-(navigating to a screen, opening a picker).
+When the editor is a modal form, use `FormEditableItem` /
+`FormEditableSurface` (alouette-forms/SKILL.md) rather than wiring `onEdit`
+yourself. Props, which ones belong to the Surface rather than the button, and
+how to choose between the two:
+[references/editable-displays.md](references/editable-displays.md).
 
 ## Common Mistakes
 
@@ -422,12 +407,14 @@ routinely drop `shrink` on the `Text`, which stops long text from wrapping.
 
 Source: packages/alouette/src/ui/data/Bullet.tsx
 
-### MEDIUM Expecting EditableItem to open an editor
+### MEDIUM Expecting EditableItem or EditableSurface to open an editor
 
-`EditableItem` renders no modal and holds no state — `onEdit` is yours to wire.
-Nothing happens on press until you open something from it.
+Neither renders a modal nor holds state — `onEdit` is yours to wire. Nothing
+happens on press until you open something from it; the form-modal versions are
+`FormEditableItem` / `FormEditableSurface`.
 
-Source: packages/alouette/src/ui/data/EditableItem.tsx; ui/forms/FormEditableItem.tsx
+Source: packages/alouette/src/ui/data/EditableItem.tsx;
+ui/containers/EditableSurface.tsx; ui/forms/FormEditableItem.tsx
 
 ### MEDIUM Pinning a size on inline Code
 

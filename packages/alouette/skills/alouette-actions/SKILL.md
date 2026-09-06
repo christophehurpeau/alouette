@@ -1,18 +1,16 @@
 ---
 name: alouette-actions
 description: >
-  Buttons (Button, IconButton, ExternalLinkButton, InternalLinkButton), the
-  inline text links (LinkText, ExternalLinkText), the Menu + MenuItem dropdown
-  of secondary actions, and pressable surfaces (PressableBox,
-  PressableListItem). variant is
-  contained|outlined|ghost|soft, size is sm|md, accent defaults to brand. Button
-  label is the required text prop (not children); IconButton
-  requires aria-label. Interactive hover/focus/active/disabled states are built
-  in. For async onPress use ActionButton (runs the promise, shows spinner +
-  inline error, errorMessageVariant flat when inside a surface); Button state ('loading'|'success'|'failed') is the manual
-  escape hatch that overlays a spinner/terminal icon and disables the button.
-  Load when adding buttons, text links, a menu of actions, or custom pressable
-  elements.
+  Everything the user presses. Button and IconButton are the primary actions;
+  ActionButton is the one to reach for when pressing starts an async operation —
+  it runs the promise and shows the spinner, the success state and the failure
+  message itself. ExternalLinkButton and InternalLinkButton are the
+  link-shaped buttons, LinkText and ExternalLinkText the inline links inside a
+  sentence, and Menu + MenuItem the dropdown that collects secondary actions
+  behind one trigger. PressableBox and PressableListItem are the bases for a
+  custom pressable surface: they carry the hover, focus, press and disabled
+  affordance so it never has to be rebuilt by hand. Load when adding buttons,
+  text links, a menu of actions, or custom pressable elements.
 type: core
 library: alouette
 library_version: "22.11.0"

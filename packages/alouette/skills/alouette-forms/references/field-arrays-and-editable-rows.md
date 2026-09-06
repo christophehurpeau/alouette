@@ -1,7 +1,8 @@
-# alouette — Field arrays & edit-in-a-modal rows
+# alouette — Field arrays & edit-in-a-modal rows and sections
 
-The two composed form patterns, in full. Both take `control` from the enclosing
-`Form`'s `render` params (see alouette-forms/SKILL.md).
+The composed form patterns, in full. `FormFieldArray` takes `control` from the
+enclosing `Form`'s `render` params (see alouette-forms/SKILL.md); the two
+editable displays own their form and take none.
 
 ## Repeatable item lists with FormFieldArray
 
@@ -75,10 +76,50 @@ plain unmount — the screen's state is never touched by an abandoned edit.
 `control` — they are not children, precisely because they must bind to that form
 and not to the screen's. The Cancel / Save footer is built for you. It takes the
 row props (`label`, `summary`, `details`, `editAriaLabel`, `editIcon`, `variant`,
-`accent`, `disabled` — see alouette-data/SKILL.md) plus `Form`'s `defaultValues` /
-`mode` / `onSubmit`, and the modal's `title` (defaults to `label`), `size` and
-`closeButtonAriaLabel`. The modal closes only once `onSubmit` resolves: a
-rejection (or a `FormValidationError` from invalid fields) keeps it open with the
-error on the submit button.
+`accent`, `disabled` — see alouette-data/SKILL.md) plus the editor props
+(`FormEditorProps`, exported): `Form`'s `defaultValues` / `mode` / `onSubmit`,
+the required `cancelLabel` / `submitLabel` / `submitErrorToMessage`, and the
+modal's `title` (defaults to `label`), `size` and `closeButtonAriaLabel`. The
+modal closes only once `onSubmit` resolves: a rejection (or a
+`FormValidationError` from invalid fields) keeps it open with the error on the
+submit button.
 
 Source: packages/alouette/src/ui/forms/FormEditableItem.tsx
+
+## Edit-in-a-modal sections with FormEditableSurface
+
+`FormEditableSurface` is the same editor over an `EditableSurface` (see
+alouette-data/SKILL.md): use it when the value is a titled section of several
+lines rather than a summary that fits beside a label. The read-only body stays
+`children` — only the fields go through `render`.
+
+```tsx
+<FormEditableSurface<Values>
+  title="Event details"
+  titleBadge={<Badge accent="brand">{date}</Badge>}
+  details="The date, and what guests see before coming."
+  editAriaLabel="Edit event details"
+  cancelLabel="Cancel"
+  submitLabel="Save"
+  submitErrorToMessage={submitErrorToMessage}
+  defaultValues={{ date, notes }}
+  onSubmit={async (values) => saveToServer(values)}
+  render={({ control }) => (
+    <VStack className="gap-m">
+      <FormField control={control} name="date" label="Date"
+        required="A date is required." render={...} />
+      <FormField control={control} name="notes" label="Before you come" render={...} />
+    </VStack>
+  )}
+>
+  <Paragraph className="text-muted text-sm">{notes}</Paragraph>
+</FormEditableSurface>
+```
+
+Two names collide between the section and its modal, so the modal's are
+prefixed: `size` / `title` are the `Surface`'s, `modalSize` / `modalTitle` (which
+defaults to `title`) are the `Modal`'s. Everything else is as above — the same
+`FormEditorProps`, the same per-open `Form`, the same close-on-resolve.
+
+Source: packages/alouette/src/ui/forms/FormEditableSurface.tsx;
+ui/forms/useFormEditorModal.tsx
