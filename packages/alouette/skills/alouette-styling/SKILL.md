@@ -166,7 +166,7 @@ Correct:
 const itemVariants = tv({
   slots: { chip: "…", segment: "…", label: "…" },
   variants: {
-    selected: { true: { chip: "opacity-100", label: "text-on-accent" } },
+    selected: { true: { chip: "opacity-100", label: "text-on-emphasis" } },
   },
 });
 const styles = itemVariants({ selected, disabled });

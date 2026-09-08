@@ -1,6 +1,6 @@
 import { type ReactNode, type Ref } from "react";
 import type { PressableProps, TextInput as RNTextInput, View as RNView } from "react-native";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { type ViewProps } from "../primitives/View";
 import type { InputTextMode, InputTextProps } from "./InputText";
 import type { SelectOption } from "./Select.shared";
@@ -52,7 +52,7 @@ export interface InputTextAutocompleteProps {
     emptyLabel?: string;
     placeholder?: string;
     disabled?: boolean;
-    accent?: Accent;
+    accent?: AccentOrNeutral;
     mode?: InputTextMode;
     className?: string;
     testID?: string;

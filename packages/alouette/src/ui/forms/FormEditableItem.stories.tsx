@@ -6,7 +6,7 @@ import { Badge } from "../data/Badge";
 import type { EditableItemProps } from "../data/EditableItem";
 import { InputText } from "../inputs/InputText";
 import { Text } from "../primitives/Text";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { FormValidationError } from "./Form";
 import {
   FormEditableItem,
@@ -122,7 +122,7 @@ export default {
     title: { control: "text" },
     details: { control: "text" },
     size: { control: "select", options: ["sm", "md", "lg"] },
-    accent: { control: "select", options: accents },
+    accent: { control: "select", options: accentsWithoutNeutral },
     variant: { control: "select", options: ["contained", "outlined", "ghost"] },
     summaryVariant: {
       control: "select",
@@ -210,7 +210,7 @@ export const FormEditableItemVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Accents">
-        {accents.map((accent) => (
+        {accentsWithoutNeutral.map((accent) => (
           <ProfileItem
             key={accent}
             accent={accent}

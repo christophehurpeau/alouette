@@ -22,7 +22,7 @@ export function PortalAccentScope({
 
   const theme = ((): AlouetteTheme => {
     if (!accent) return inheritedTheme;
-    if (accent === "none") return mode;
+    if (accent === "neutral") return mode;
     return `${mode}_${accent}`;
   })();
   return (

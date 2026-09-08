@@ -1,6 +1,10 @@
 import { Fragment, type ReactNode } from "react";
 import { Platform } from "react-native";
-import type { Accent, AlouetteModeTheme } from "../../core/AlouetteConfig";
+import type {
+  Accent,
+  AccentOrNeutral,
+  AlouetteModeTheme,
+} from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
 import { ScopedTheme } from "../containers/ScopedTheme";
 import { Surface } from "../containers/Surface";
@@ -15,7 +19,7 @@ export interface StorySectionProps {
   children: ReactNode;
   level?: 1 | 2;
   modeTheme?: AlouetteModeTheme;
-  accent?: Accent;
+  accent?: AccentOrNeutral;
   withSurface?: boolean;
 }
 
@@ -123,10 +127,15 @@ export function Story({
 Story.Section = StorySection;
 Story.SubSection = StorySubSection;
 
-export const accents: Accent[] = [
+export const accentsWithoutNeutral: Accent[] = [
   "brand",
   "danger",
   "info",
   "success",
   "warning",
+];
+
+export const neutralAndAccents: AccentOrNeutral[] = [
+  "neutral",
+  ...accentsWithoutNeutral,
 ];

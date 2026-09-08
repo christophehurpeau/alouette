@@ -1,7 +1,7 @@
 import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons/CaretRightRegularIcon";
 import { Children, type ReactNode, useMemo } from "react";
 import { tv } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import {
@@ -49,7 +49,7 @@ export interface BreadcrumbsProps {
    * item `onPress` — the `<a>` navigates on web and native does nothing.
    */
   onNavigate?: (href: string) => void;
-  accent?: Accent;
+  accent?: AccentOrNeutral;
   disabled?: boolean;
   /** `BreadcrumbItem`s, from the root down to the page being viewed. */
   children: ReactNode;

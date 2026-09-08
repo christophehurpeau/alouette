@@ -5,7 +5,7 @@ import { UserRegularIcon } from "alouette-icons/phosphor-icons/UserRegularIcon";
 import type { ReactNode } from "react";
 import type { SVGIconElement } from "../primitives/Icon";
 import { HStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Avatar } from "./Avatar";
 
 type ThisStory = StoryObj<typeof Avatar>;
@@ -20,7 +20,7 @@ export default {
   argTypes: {
     name: { control: "text" },
     size: { control: "inline-radio", options: ["sm", "md", "lg"] },
-    accent: { control: "select", options: accents },
+    accent: { control: "select", options: accentsWithoutNeutral },
   },
 } satisfies Meta<typeof Avatar>;
 
@@ -56,7 +56,7 @@ export const VariantsAvatarStory: ThisStory = {
 
       <Story.Section withSurface title="Accents">
         <HStack className="gap-xs items-center flex-wrap">
-          {accents.map((accent) => (
+          {accentsWithoutNeutral.map((accent) => (
             <Avatar key={accent} accent={accent} name="Camille Hurel" />
           ))}
         </HStack>

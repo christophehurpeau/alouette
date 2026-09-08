@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 import { Text } from "../primitives/Text";
 import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { InputTextAutocomplete } from "./InputTextAutocomplete";
 import type { InputTextAutocompleteProps } from "./InputTextAutocomplete.shared";
@@ -65,11 +65,11 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        {([undefined, ...accents] as const).map((accent) => (
+        {neutralAndAccents.map((accent) => (
           <Story.SubSection
-            key={accent || "default"}
+            key={accent}
             withSurface
-            title={accent ?? "Default"}
+            title={accent}
             accent={accent}
           >
             <StoryGrid.Row flexWrap>

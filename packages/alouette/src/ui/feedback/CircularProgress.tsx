@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
-import { AccentScope } from "../containers/AccentScope";
+import { AccentScope, type AccentScopeProps } from "../containers/AccentScope";
 import { Icon } from "../primitives/Icon";
 import { View } from "../primitives/View";
 import { RingCircle } from "./RingCircle";
@@ -39,7 +38,7 @@ export interface CircularProgressProps {
    * reconnecting, page transitions), use `IndeterminateCircularProgress` instead. */
   progress: number;
   hidden?: boolean;
-  accent?: Accent;
+  accent?: AccentScopeProps["accent"];
   size?: CircularProgressSize;
 }
 
@@ -96,7 +95,7 @@ export interface IndeterminateCircularProgressProps {
   /** Whether an operation is in progress. The ring creeps toward 100% while
    * `true`, then completes and fades out once `false`. */
   loading: boolean;
-  accent?: Accent;
+  accent?: AccentScopeProps["accent"];
   size?: CircularProgressSize;
 }
 

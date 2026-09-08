@@ -1,5 +1,4 @@
 import type { StoryObj } from "@storybook/react-vite";
-import type { Accent } from "../../core/AlouetteConfig";
 import { ExternalLinkText } from "./ExternalLinkText";
 type ThisStory = StoryObj<typeof ExternalLinkText>;
 declare const _default: {
@@ -20,7 +19,7 @@ declare const _default: {
         };
         accent: {
             control: "select";
-            options: (Accent | undefined)[];
+            options: import("../../core/AlouetteConfig").AccentOrNeutral[];
         };
         disabled: {
             control: "boolean";

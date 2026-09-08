@@ -47,8 +47,8 @@ const segmentedItemVariants = tv({
     selected: {
       true: {
         chip: "opacity-100",
-        foreground: "text-on-accent",
-        indicator: "bg-interactive-contained-pressable",
+        foreground: "text-on-emphasis",
+        indicator: "bg-emphasis",
       },
       false: {
         chip: "opacity-0",
@@ -64,7 +64,7 @@ const segmentedItemVariants = tv({
         foreground: "text-disabled-muted group-hover:text-disabled-muted",
         indicator: "bg-interactive-contained-disabled",
       },
-      false: { chip: "bg-interactive-contained-pressable shadow-s" },
+      false: { chip: "bg-emphasis shadow-s" },
     },
     compact: { true: { segment: "px-xs" }, false: { segment: "px-m" } },
     orientation: {

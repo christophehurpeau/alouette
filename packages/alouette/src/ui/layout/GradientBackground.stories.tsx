@@ -33,7 +33,7 @@ function Content() {
         <Box className="bg-highlight shadow-s p-xl rounded-sm">
           <VStack className="gap-m">
             <Text>Highlight</Text>
-            <Button variant="outlined" text="Button" />
+            <Button text="Button" />
           </VStack>
         </Box>
       </VStack>

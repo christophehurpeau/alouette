@@ -5,7 +5,7 @@ import { type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
 import { Modal } from "../containers/Modal";
 import { Paragraph, Text } from "../primitives/Text";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Badge } from "./Badge";
 import { EditableItem, type EditableItemProps } from "./EditableItem";
 
@@ -43,7 +43,7 @@ function EditableItemDemo({
         visible={editing}
         title={label}
         closeButtonAriaLabel="Close editor"
-        footer={<Button variant="outlined" text="Close" onPress={close} />}
+        footer={<Button accent="neutral" text="Close" onPress={close} />}
         onClose={close}
       >
         <Paragraph>Your editor goes here.</Paragraph>
@@ -64,7 +64,7 @@ export default {
     details: { control: "text" },
     editAriaLabel: { control: "text" },
     variant: { control: "select", options: ["contained", "outlined", "ghost"] },
-    accent: { control: "select", options: accents },
+    accent: { control: "select", options: accentsWithoutNeutral },
     disabled: { control: "boolean" },
   },
 } satisfies Meta<typeof EditableItem>;
@@ -130,7 +130,7 @@ export const EditableItemVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Accents">
-        {accents.map((accent) => (
+        {accentsWithoutNeutral.map((accent) => (
           <EditableItemDemo
             key={accent}
             accent={accent}

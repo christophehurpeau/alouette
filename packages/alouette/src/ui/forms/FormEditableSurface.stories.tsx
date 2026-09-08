@@ -6,7 +6,7 @@ import { Badge } from "../data/Badge";
 import { InputText } from "../inputs/InputText";
 import { Paragraph, Text } from "../primitives/Text";
 import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { FormValidationError } from "./Form";
 import {
   FormEditableSurface,
@@ -138,7 +138,7 @@ export default {
     details: { control: "text" },
     size: { control: "select", options: ["xxs", "xs", "sm", "md", "lg"] },
     modalSize: { control: "select", options: ["sm", "md", "lg"] },
-    accent: { control: "select", options: accents },
+    accent: { control: "select", options: accentsWithoutNeutral },
     editIconVariant: {
       control: "select",
       options: ["contained", "outlined", "ghost", "soft"],
@@ -181,7 +181,7 @@ export const FormEditableSurfaceVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Accents">
-        {accents.map((accent) => (
+        {accentsWithoutNeutral.map((accent) => (
           <EventSection
             key={accent}
             accent={accent}

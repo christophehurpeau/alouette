@@ -73,7 +73,7 @@ is where session actions belong rather than in the bar itself.
 Signed out, the session is `AppHeaderSignIn` instead: a `Button` with the bar's
 sizing, in the bar itself, because a visitor has exactly one action and it must
 stay one press away. Pass it straight as `actions`, or beside a secondary
-`variant="outlined"` "Sign up" inside an `AppHeaderActions`. It takes the `Button`
+`accent="neutral"` "Sign up" inside an `AppHeaderActions`. It takes the `Button`
 props (`label` in place of `text`, `icon`, `accent`, `variant`, `disabled`) plus
 `href`, the in-app destination — a real `<a>` on web, ignored on native, where
 expo Router's `<Link asChild>` supplies the `onPress`. A destination outside the

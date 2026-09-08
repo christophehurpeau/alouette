@@ -3,7 +3,7 @@ import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/WarningDuotone
 import { type ReactNode, type Ref, useEffect, useState } from "react";
 import type { View as RNView } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { Accent, AccentOrNeutral } from "../../core/AlouetteConfig";
 import { ExternalLink } from "../../expo/ExternalLink";
 import {
   type ExternalOpenLinkBehavior,
@@ -45,6 +45,7 @@ const buttonVariants = tv(
       },
       variant: {
         contained: { text: "text-on-accent" },
+        list: { text: "text-sharp" },
         outlined: { text: "text-sharp" },
         ghost: { text: "text-sharp" },
         soft: { text: "text-sharp" },
@@ -71,10 +72,16 @@ const buttonVariants = tv(
           icon: "text-sharp hover:text-on-accent",
         },
       },
+      { variant: "list", disabled: false, class: { icon: "text-sharp" } },
       { variant: "outlined", disabled: false, class: { icon: "text-sharp" } },
       { variant: "soft", disabled: false, class: { icon: "text-sharp" } },
       {
         variant: "contained",
+        disabled: true,
+        class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
+      },
+      {
+        variant: "list",
         disabled: true,
         class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
       },
@@ -124,7 +131,9 @@ export interface ButtonProps
   icon?: SVGIconElement;
   /** Replaces `icon` while the button is hovered, focused or pressed. */
   activeIcon?: SVGIconElement;
-  accent?: Accent;
+  /** `"neutral"` is the neutral button: the same contained material without an
+   * accent, for the secondary action beside an accented one. */
+  accent?: AccentOrNeutral;
   text: ReactNode;
   state?: ButtonState;
   /**

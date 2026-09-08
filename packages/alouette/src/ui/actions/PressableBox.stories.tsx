@@ -2,7 +2,7 @@ import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "../primitives/Text";
 import { HStack, VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { PressableBox } from "./PressableBox";
 
 type ThisStory = StoryObj<typeof PressableBox>;
@@ -50,7 +50,7 @@ export const Variants: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Accent themes">
-        {accents.map((accent) => (
+        {neutralAndAccents.map((accent) => (
           <Story.SubSection
             key={accent}
             withSurface

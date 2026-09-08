@@ -4,7 +4,7 @@ import type {
   View as RNView,
 } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBox, interactiveBoxVariants } from "../containers/Box";
 
@@ -24,6 +24,24 @@ const pressableBoxVariants = tv(
           "hover:bg-interactive-contained-hover",
           "focus:bg-interactive-contained-focus",
           "active:bg-interactive-contained-active",
+          "disabled:bg-interactive-contained-disabled disabled:shadow-none",
+          "aria-disabled:bg-interactive-contained-disabled aria-disabled:shadow-none",
+          "focus-visible:outline-border-muted",
+        ].join(" "),
+        // A card row lifted off the surface it sits on (PressableListItem): the
+        // ground is a tone of the theme — the lightest step when neutral, a
+        // tone of the accent when accented — so the row keeps the ambient
+        // `text-sharp` label whatever its accent. That is what `contained`
+        // cannot do: its neutral fill is the grayscale accent, a dark ground
+        // carrying white ink.
+        list: [
+          "rounded-sm",
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+            ? ""
+            : "shadow-s bg-interactive-list-pressable",
+          "hover:bg-interactive-list-hover",
+          "focus:bg-interactive-list-focus",
+          "active:bg-interactive-list-active",
           "disabled:bg-interactive-contained-disabled disabled:shadow-none",
           "aria-disabled:bg-interactive-contained-disabled aria-disabled:shadow-none",
           "focus-visible:outline-border-muted",
@@ -67,7 +85,7 @@ const pressableBoxVariants = tv(
       forceStyle: {
         hover: "",
         focus: "",
-        press: "scale-[0.975]",
+        press: "translate-y-px",
       },
     },
     compoundVariants: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
@@ -93,6 +111,28 @@ const pressableBoxVariants = tv(
             variant: "contained",
             forceStyle: "press",
             className: "shadow-s bg-interactive-contained-active",
+          },
+          /* list */
+          {
+            variant: "list",
+            forceStyle: undefined,
+            ghost: false,
+            className: "shadow-s bg-interactive-list-pressable",
+          },
+          {
+            variant: "list",
+            forceStyle: "hover",
+            className: "shadow-s bg-interactive-list-hover",
+          },
+          {
+            variant: "list",
+            forceStyle: "focus",
+            className: "shadow-s bg-interactive-list-focus",
+          },
+          {
+            variant: "list",
+            forceStyle: "press",
+            className: "shadow-s bg-interactive-list-active",
           },
           /* outlined */
           {
@@ -171,7 +211,9 @@ type PressableBoxVariantProps = VariantProps<typeof pressableBoxVariants>;
 
 export interface PressableBoxProps
   extends RNPressableProps, PressableBoxVariantProps {
-  accent?: Accent;
+  /** `"neutral"` drops an accent inherited from an ancestor and renders the
+   * neutral interactive tokens — a `contained` secondary action. */
+  accent?: AccentOrNeutral;
   className?: string;
   /**
    * Destination. react-native's Pressable types have no `href`, while

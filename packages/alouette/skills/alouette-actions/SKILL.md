@@ -33,8 +33,14 @@ This skill builds on alouette-theming. Read it first for the accent model.
 
 Buttons and pressables carry interactive token states (hover/focus/active/
 disabled) automatically. `variant` is
-`"contained" | "outlined" | "ghost" | "soft"`; `size` is `"sm" | "md"`; `accent`
-defaults to `"brand"`.
+`"contained" | "list" | "outlined" | "ghost" | "soft"`; `size` is
+`"sm" | "md"`; `accent`
+is `"brand"` (default) `| "danger" | "info" | "success" | "warning" | "neutral"`.
+
+**Differentiate buttons by `accent`, not by `variant`.** `contained` is the
+material an action button is made of; the accent says how loud it is. The
+secondary action beside a call to action is `accent="neutral"` — the same raised
+ground and shadow on the neutral tokens — never a lighter `variant`.
 
 ## Setup
 
@@ -47,15 +53,29 @@ import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon
 
 ## Core Patterns
 
-### Button variants and accents
+### Button accents
 
 ```tsx
 <Button text="Save" />                                 {/* contained, brand */}
-<Button variant="outlined" text="Cancel" />
-<Button variant="ghost" text="Dismiss" />
-<Button variant="soft" text="Docs" />
+<Button accent="neutral" text="Cancel" />                 {/* contained, neutral */}
 <Button accent="danger" text="Delete" />
 <Button size="sm" text="Small" />
+```
+
+`accent="neutral"` resolves to the plain mode theme (alouette-theming/SKILL.md), so
+the button keeps the contained material — ground, shadow, hover/focus/press
+states — on the grayscale palette. The neutral theme is an accent, not the
+absence of one: the fill takes the same scale steps a colored accent does, so it
+is a dark gray ground under the same white `text-on-accent` label. That is the Cancel of a
+confirmation, the Close of a modal, the Add of a field array, the "Sign up"
+beside a "Log in": a real button that does not compete with the accented one.
+`AlertDialog` and the form editor modals already build their footers this way.
+
+### The other variants are chrome, not secondary buttons
+
+```tsx
+<Button variant="soft" text="Docs" />
+<IconButton variant="ghost" icon={<XRegularIcon />} aria-label="Close" />
 ```
 
 `soft` has no ground and no border at rest: the affordance is a fill arriving on
@@ -63,6 +83,15 @@ hover/focus/press, and that fill is a tone of the surrounding surface rather tha
 the accent, so the label keeps its own color (never flip it to `text-on-accent`).
 It is what a header pressable or a menu row wants, where a border tint reads as
 noise.
+
+`ghost` is the icon-only affordance inside a component's own frame — the modal
+close, the message dismiss, the remove button of a field-array row — where a
+second ground inside the frame would read as a nested card.
+
+`outlined` has no default use. Reach for it only for a pressable that must not
+carry a ground and is not chrome — a row of equal-weight actions in a dense
+toolbar. A secondary or destructive-but-secondary action is `accent="neutral"` (or
+`accent="danger"`), not `outlined`.
 
 ### Async action — prefer ActionButton
 
@@ -159,7 +188,11 @@ import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftReg
 ### Pressable surfaces
 
 `PressableBox` is a themed, pressable container (`variant`, `accent`,
-`forceStyle`). `PressableListItem` is a row with a trailing caret. These, and the
+`forceStyle`). `PressableListItem` is a row with a trailing caret, on the
+`list` variant: a card lifted off the surface whose ground is a tone of the
+theme — the card steps when neutral, the accent's pale tints in light mode and its
+own dark ground in dark mode, never the accent's fill. Its label and caret are
+`text-on-list`, the ink that carries the accent where the ground cannot. These, and the
 link components below, are how something becomes interactive — never by wrapping
 a display-only component (`Badge`, `Bullet`, `Text`) in a `Link` or `Pressable`
 (alouette-styling/SKILL.md).
@@ -276,6 +309,30 @@ prop); children are ignored, so `<Button>Save</Button>` shows no label.
 
 Source: packages/alouette/src/ui/actions/Button.tsx
 
+### HIGH `outlined` / `ghost` as the secondary button
+
+Wrong:
+
+```tsx
+<Button variant="outlined" text="Cancel" onPress={close} />
+<Button text="Save" onPress={save} />
+```
+
+Correct:
+
+```tsx
+<Button accent="neutral" text="Cancel" onPress={close} />
+<Button text="Save" onPress={save} />
+```
+
+Both actions are buttons and must be made of the same material; what separates
+them is the accent, not the amount of button they get. `outlined` and `ghost`
+trade the ground and the shadow away, so the pair reads as one button and one
+half-drawn thing — and on a `Surface` an outlined button's `bg-highlight` fights
+the card it sits on. `accent="neutral"` keeps the material and drops only the color.
+
+Source: packages/alouette/src/ui/containers/AlertDialog.tsx, ui/actions/Button.tsx
+
 ### HIGH Using non-existent variant names
 
 Wrong:
@@ -292,9 +349,10 @@ Correct:
 <Button accent="brand" text="Save" />
 ```
 
-`variant` is only `"contained" | "outlined" | "ghost" | "soft"`; the accent is
-chosen via the `accent` prop. (`ghost` is a variant value, not a separate boolean
-prop.)
+`variant` is only `"contained" | "list" | "outlined" | "ghost" | "soft"`; the
+accent is
+chosen via the `accent` prop — `"brand" | "danger" | "info" | "success" |
+"warning" | "neutral"`. (`ghost` is a variant value, not a separate boolean prop.)
 
 Source: packages/alouette/src/ui/actions/PressableBox.tsx, ui/actions/Button.tsx
 

@@ -2,7 +2,7 @@ import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Surface } from "../containers/Surface";
 import { Paragraph } from "../primitives/Text";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Citation } from "./Citation";
 
 type ThisStory = StoryObj<typeof Citation>;
@@ -18,7 +18,7 @@ export default {
     accent: {
       description: "The accent of the linked source",
       control: "select",
-      options: accents,
+      options: accentsWithoutNeutral,
     },
     size: {
       description: "The size of the attribution",
@@ -59,7 +59,7 @@ export const CitationVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Accents">
-        {accents.map((accent) => (
+        {accentsWithoutNeutral.map((accent) => (
           <Citation
             key={accent}
             accent={accent}

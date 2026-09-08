@@ -1,9 +1,10 @@
 import type { PressableProps as RNPressableProps, View as RNView } from "react-native";
 import { type VariantProps } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 declare const pressableBoxVariants: import("tailwind-variants").TVReturnType<{
     variant: {
         contained: string;
+        list: string;
         outlined: string;
         ghost: string;
         soft: string;
@@ -36,7 +37,9 @@ declare const pressableBoxVariants: import("tailwind-variants").TVReturnType<{
 }, undefined, string, unknown, unknown, undefined>>>;
 type PressableBoxVariantProps = VariantProps<typeof pressableBoxVariants>;
 export interface PressableBoxProps extends RNPressableProps, PressableBoxVariantProps {
-    accent?: Accent;
+    /** `"neutral"` drops an accent inherited from an ancestor and renders the
+     * neutral interactive tokens — a `contained` secondary action. */
+    accent?: AccentOrNeutral;
     className?: string;
     /**
      * Destination. react-native's Pressable types have no `href`, while

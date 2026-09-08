@@ -1,3 +1,4 @@
+import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Box } from "../containers/Box";
 import { Text } from "../primitives/Text";
@@ -51,12 +52,20 @@ export const Variants: ThisStory = {
             <Text>Third Item</Text>
           </PressableListItem>
           <PressableListItem
+            accent="warning"
+            onPress={() => {
+              console.log("Warning pressed");
+            }}
+          >
+            <Text className="text-on-list">Warning</Text>
+          </PressableListItem>
+          <PressableListItem
             accent="danger"
             onPress={() => {
               console.log("Danger pressed");
             }}
           >
-            <Text className="text-on-accent">Danger</Text>
+            <Text className="text-on-list">Danger</Text>
           </PressableListItem>
         </VStack>
       </Story.Section>
@@ -104,7 +113,6 @@ export const Variants: ThisStory = {
         <Box className="rounded-md overflow-hidden">
           <VStack>
             <PressableListItem
-              variant="contained"
               onPress={() => {
                 console.log("Profile");
               }}
@@ -112,7 +120,6 @@ export const Variants: ThisStory = {
               <Text>View Profile</Text>
             </PressableListItem>
             <PressableListItem
-              variant="contained"
               onPress={() => {
                 console.log("Edit");
               }}
@@ -120,7 +127,6 @@ export const Variants: ThisStory = {
               <Text>Edit Profile</Text>
             </PressableListItem>
             <PressableListItem
-              variant="contained"
               onPress={() => {
                 console.log("Share");
               }}
@@ -129,16 +135,60 @@ export const Variants: ThisStory = {
             </PressableListItem>
             <PressableListItem
               accent="danger"
-              variant="contained"
               onPress={() => {
                 console.log("Logout");
               }}
             >
-              <Text className="text-on-accent">Logout</Text>
+              <Text className="text-on-list">Logout</Text>
             </PressableListItem>
           </VStack>
         </Box>
       </Story.Section>
     </Story>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const row = canvas.getAllByRole("button", { name: "First Item" })[0]!;
+    const style = getComputedStyle(row);
+    // Tokens resolve per scope, so an accented row reads its own values.
+    const tokenOf = (scope: CSSStyleDeclaration, name: string): string => {
+      const hex = scope.getPropertyValue(name).trim();
+      const channels = [1, 3, 5].map((i) =>
+        Number.parseInt(hex.slice(i, i + 2), 16),
+      );
+      return `rgb(${channels.join(", ")})`;
+    };
+    const token = (name: string): string => tokenOf(style, name);
+
+    // A list row is the `list` material, not the contained button one: its
+    // ground is a tone of the theme and its label keeps the sharp ink, so an
+    // un-accented row never renders dark text on the neutral accent's fill.
+    await expect(style.backgroundColor).toBe(
+      token("--color-interactive-list-pressable"),
+    );
+    await expect(style.backgroundColor).not.toBe(
+      token("--color-interactive-contained-pressable"),
+    );
+    await expect(
+      getComputedStyle(within(row).getByText("First Item")).color,
+    ).toBe(token("--color-sharp"));
+
+    // An accented row tints its card instead of taking the accent's fill — the
+    // ground stays light enough for dark ink — and states the accent in its ink
+    // (`text-on-list`, the accent itself in light mode), which no light tint of
+    // a red can do on its own.
+    const danger = canvas.getAllByRole("button", { name: "Danger" })[0]!;
+    const dangerStyle = getComputedStyle(danger);
+    const dangerChannels = [...dangerStyle.backgroundColor.matchAll(/[\d.]+/g)]
+      .slice(0, 3)
+      .map(Number);
+    await expect(new Set(dangerChannels).size).not.toBe(1);
+    await expect(Math.min(...dangerChannels)).toBeGreaterThan(200);
+    await expect(
+      getComputedStyle(within(danger).getByText("Danger")).color,
+    ).toBe(tokenOf(dangerStyle, "--color-on-list"));
+    await expect(tokenOf(dangerStyle, "--color-on-list")).not.toBe(
+      tokenOf(dangerStyle, "--color-sharp"),
+    );
+  },
 };

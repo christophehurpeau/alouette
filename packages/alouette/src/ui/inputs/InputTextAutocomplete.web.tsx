@@ -59,7 +59,7 @@ export function InputTextAutocomplete({
       <Popover
         open={isOpen}
         anchorRef={anchorRef}
-        accent="none"
+        accent="neutral"
         onClose={closeMenu}
       >
         <View className="pt-xxs">

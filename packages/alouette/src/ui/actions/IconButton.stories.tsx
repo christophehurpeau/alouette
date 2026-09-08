@@ -4,7 +4,7 @@ import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftReg
 import type { ReactNode } from "react";
 import { Text } from "../primitives/Text";
 import { HStack, VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { IconButton, type IconButtonProps } from "./IconButton";
 
@@ -121,12 +121,8 @@ export const Variants: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Variants">
-        {[undefined, ...accents].map((accent) => (
-          <Story.SubSection
-            key={accent || "default"}
-            title={accent ?? "default"}
-            accent={accent}
-          >
+        {neutralAndAccents.map((accent) => (
+          <Story.SubSection key={accent} title={accent} accent={accent}>
             <StoryGrid.Row>
               {(
                 [
@@ -138,10 +134,7 @@ export const Variants: ThisStory = {
                   "disabled",
                 ] as const
               ).map((state) => (
-                <StoryGrid.Col
-                  key={state || "default"}
-                  title={state || "default"}
-                >
+                <StoryGrid.Col key={state} title={state}>
                   <VStack className="gap-xs">
                     {(["contained", "outlined", "ghost", "soft"] as const).map(
                       (variant) => (

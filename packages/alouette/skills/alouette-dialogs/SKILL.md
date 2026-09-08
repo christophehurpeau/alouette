@@ -212,7 +212,7 @@ The two platforms present it differently, and that is deliberate:
   row stays put while the content resizes. Web falls back to the same overlay
   when no `anchorRef` is given.
 
-`accent` themes the content through `PortalAccentScope`; pass `accent="none"` to
+`accent` themes the content through `PortalAccentScope`; pass `accent="neutral"` to
 render it on the neutral mode tokens under an accented ancestor. `aria-label`
 names the overlay.
 

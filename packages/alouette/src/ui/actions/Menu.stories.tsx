@@ -144,7 +144,7 @@ export const VariantsMenuStory: ThisStory = {
         <Menu
           label="Single weight"
           render={(trigger) => (
-            <Button size="sm" variant="outlined" text="Edit" {...trigger} />
+            <Button size="sm" accent="neutral" text="Edit" {...trigger} />
           )}
         >
           <MenuItem
@@ -164,7 +164,7 @@ export const VariantsMenuStory: ThisStory = {
         <Menu
           label="Sort"
           render={(trigger) => (
-            <Button size="sm" variant="outlined" text="Sort" {...trigger} />
+            <Button size="sm" accent="neutral" text="Sort" {...trigger} />
           )}
         >
           <MenuItem label="Newest first" onPress={fn()} />

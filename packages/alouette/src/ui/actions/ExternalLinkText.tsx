@@ -1,6 +1,6 @@
 import { ArrowSquareOutRegularIcon } from "alouette-icons/phosphor-icons/ArrowSquareOutRegularIcon";
 import type { ReactNode } from "react";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { ExternalLink } from "../../expo/ExternalLink";
 import {
   type ExternalOpenLinkBehavior,
@@ -24,7 +24,7 @@ export interface ExternalLinkTextProps
   text: ReactNode;
   /** Leading affordance icon. Defaults to the external-link arrow. */
   icon?: SVGIconElement;
-  accent?: Accent;
+  accent?: AccentOrNeutral;
 }
 
 /**

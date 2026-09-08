@@ -10,8 +10,8 @@ export interface AppHeaderSignInProps extends Omit<ButtonProps, "text"> {
  * not have yet has exactly one action, so it must stay one press away, never
  * folded into a "Guest" avatar menu that hides it behind a second one.
  *
- * Pass it straight as the header's `actions`, or beside a second one (a
- * `variant="outlined"` "Sign up") inside an `AppHeaderActions`. `href` links it
+ * Pass it straight as the header's `actions`, or beside a second one (an
+ * `accent="neutral"` "Sign up") inside an `AppHeaderActions`. `href` links it
  * in-app; a destination outside the app on native takes an `ExternalLinkButton`
  * in the slot instead.
  */

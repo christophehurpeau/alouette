@@ -35,7 +35,7 @@ export interface InteractiveIconProps extends IconProps {
   activeIcon?: SVGIconElement;
   /**
    * Accent tinting `activeIcon`, so the glyph changes color as well as weight.
-   * `none` resets to the base mode's accent under an accented ancestor.
+   * `neutral` resets to the base mode's accent under an accented ancestor.
    */
   activeAccent?: AccentScopeProps["accent"];
   /** Persistent active state: the current page, the selected segment. */

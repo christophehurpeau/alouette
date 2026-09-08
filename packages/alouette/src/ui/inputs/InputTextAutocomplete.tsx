@@ -68,7 +68,7 @@ export function InputTextAutocomplete({
       <Popover
         open={isOpen}
         placement="top"
-        accent="none"
+        accent="neutral"
         aria-label={rest["aria-label"]}
         onClose={closeMenu}
       >

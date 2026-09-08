@@ -7,7 +7,7 @@ import { AccentScope } from "../ui/containers/AccentScope";
 import { Text } from "../ui/primitives/Text";
 import { View } from "../ui/primitives/View";
 import { VStack } from "../ui/stacks/stacks";
-import { Story, accents } from "../ui/story-components/Story";
+import { Story, accentsWithoutNeutral } from "../ui/story-components/Story";
 import { StoryGrid } from "../ui/story-components/StoryGrid";
 
 const tokenSwatchVariants = tv({
@@ -19,6 +19,7 @@ const tokenSwatchVariants = tv({
       highlight: "bg-(--color-highlight)",
       "highlight-accent": "bg-(--color-highlight-accent)",
       lowered: "bg-(--color-lowered)",
+      emphasis: "bg-(--color-emphasis)",
       "screen-gradient-start": "bg-(--color-screen-gradient-start)",
       "screen-gradient-middle": "bg-(--color-screen-gradient-middle)",
       "screen-gradient-end": "bg-(--color-screen-gradient-end)",
@@ -26,6 +27,8 @@ const tokenSwatchVariants = tv({
       accent: "bg-(--color-accent)",
       "on-accent": "bg-(--color-on-accent)",
       "on-accent-muted": "bg-(--color-on-accent-muted)",
+      "on-emphasis": "bg-(--color-on-emphasis)",
+      "on-list": "bg-(--color-on-list)",
       "border-sharp": "bg-(--color-border-sharp)",
       "border-muted": "bg-(--color-border-muted)",
       selection: "bg-(--color-selection)",
@@ -35,6 +38,10 @@ const tokenSwatchVariants = tv({
       "interactive-contained-focus": "bg-(--color-interactive-contained-focus)",
       "interactive-contained-active":
         "bg-(--color-interactive-contained-active)",
+      "interactive-list-pressable": "bg-(--color-interactive-list-pressable)",
+      "interactive-list-hover": "bg-(--color-interactive-list-hover)",
+      "interactive-list-focus": "bg-(--color-interactive-list-focus)",
+      "interactive-list-active": "bg-(--color-interactive-list-active)",
       "interactive-soft-hover": "bg-(--color-interactive-soft-hover)",
       "interactive-soft-focus": "bg-(--color-interactive-soft-focus)",
       "interactive-soft-active": "bg-(--color-interactive-soft-active)",
@@ -73,6 +80,7 @@ interface TokenSwatchProps {
     | "border-sharp"
     | "disabled-muted"
     | "disabled-sharp"
+    | "emphasis"
     | "form-border-disabled"
     | "form-disabled-text"
     | "form-placeholder"
@@ -87,6 +95,10 @@ interface TokenSwatchProps {
     | "interactive-contained-pressable"
     | "interactive-hover"
     | "interactive-link-disabled"
+    | "interactive-list-active"
+    | "interactive-list-focus"
+    | "interactive-list-hover"
+    | "interactive-list-pressable"
     | "interactive-outlined-active"
     | "interactive-outlined-disabled"
     | "interactive-outlined-focus"
@@ -101,6 +113,8 @@ interface TokenSwatchProps {
     | "muted"
     | "on-accent-muted"
     | "on-accent"
+    | "on-emphasis"
+    | "on-list"
     | "screen-gradient-end"
     | "screen-gradient-middle"
     | "screen-gradient-start"
@@ -153,6 +167,7 @@ function AccentTokens({ accent }: AccentTokensProps): ReactNode {
         <TokenSwatch token="highlight" />
         <TokenSwatch token="highlight-accent" />
         <TokenSwatch token="lowered" />
+        <TokenSwatch token="emphasis" />
         <TokenSwatch token="screen-gradient-start" />
         <TokenSwatch token="screen-gradient-middle" />
         <TokenSwatch token="screen-gradient-end" />
@@ -162,6 +177,8 @@ function AccentTokens({ accent }: AccentTokensProps): ReactNode {
         <TokenSwatch token="accent" />
         <TokenSwatch token="on-accent" />
         <TokenSwatch token="on-accent-muted" />
+        <TokenSwatch token="on-emphasis" />
+        <TokenSwatch token="on-list" />
       </TokenGroup>
       <TokenGroup group="Borders">
         <TokenSwatch token="border-sharp" />
@@ -175,6 +192,10 @@ function AccentTokens({ accent }: AccentTokensProps): ReactNode {
         <TokenSwatch token="interactive-contained-hover" />
         <TokenSwatch token="interactive-contained-focus" />
         <TokenSwatch token="interactive-contained-active" />
+        <TokenSwatch token="interactive-list-pressable" />
+        <TokenSwatch token="interactive-list-hover" />
+        <TokenSwatch token="interactive-list-focus" />
+        <TokenSwatch token="interactive-list-active" />
         <TokenSwatch token="interactive-soft-hover" />
         <TokenSwatch token="interactive-soft-focus" />
         <TokenSwatch token="interactive-soft-active" />
@@ -220,7 +241,7 @@ function ThemeTokens({ themeMode }: ThemeTokensProps): ReactNode {
         </TokenGroup>
       </Story.SubSection>
       <AccentTokens />
-      {accents.map((accent) => (
+      {accentsWithoutNeutral.map((accent) => (
         <AccentTokens key={accent} accent={accent} />
       ))}
     </Story.Section>

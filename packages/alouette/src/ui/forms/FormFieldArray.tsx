@@ -209,7 +209,7 @@ export function FormFieldArray<
           ))}
           <Button
             size="sm"
-            variant="outlined"
+            accent="neutral"
             icon={<PlusRegularIcon />}
             text={addLabel}
             className="self-start"

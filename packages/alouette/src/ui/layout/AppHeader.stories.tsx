@@ -76,7 +76,7 @@ export default {
 - \`AppHeaderBrand\` is a pressable when given \`href\`/\`onPress\` (expo Router's \`<Link asChild>\` injects both), a display-only row otherwise; its leading padding is pulled back with a negative margin, so the hover fill bleeds into the header's gutter while the mark stays flush with the content edge in both cases
 - Every pressable in the bar uses \`variant="soft"\`: nothing at rest, a background fill on hover/focus/press (as on a listbox row), rather than a border tint too thin to read in a header
 - A signed-in session is one \`AppHeaderAccount\` — an avatar trigger opening a \`Menu\` — not a row of buttons: logging out is the rarest thing the bar offers and the only destructive one, so it belongs behind the avatar with a \`danger\` accent, and confirming it is the app's call (the tests story wires it to a \`QuestionAlertDialog\`)
-- A signed-out session is the mirror image: one action, so it stays in the bar as an \`AppHeaderSignIn\` — never an \`AppHeaderAccount\` named "Guest" wrapping a single "Log in" item, which puts a menu between the visitor and the only thing they came to press. It is a \`Button\` with the bar's sizing: pass it straight as \`actions\`, or beside a secondary \`variant="outlined"\` "Sign up" inside an \`AppHeaderActions\`. \`href\` is the in-app destination — a real \`<a>\` on web, ignored on native, where expo Router's \`<Link asChild>\` supplies the \`onPress\` (a destination outside the app on native takes an \`ExternalLinkButton\` in the slot instead)
+- A signed-out session is the mirror image: one action, so it stays in the bar as an \`AppHeaderSignIn\` — never an \`AppHeaderAccount\` named "Guest" wrapping a single "Log in" item, which puts a menu between the visitor and the only thing they came to press. It is a \`Button\` with the bar's sizing: pass it straight as \`actions\`, or beside a secondary \`accent="neutral"\` "Sign up" inside an \`AppHeaderActions\`. \`href\` is the in-app destination — a real \`<a>\` on web, ignored on native, where expo Router's \`<Link asChild>\` supplies the \`onPress\` (a destination outside the app on native takes an \`ExternalLinkButton\` in the slot instead)
 - A light/dark switch belongs in the actions slot as a \`ColorModePicker\` — a pill of icon-only chips reading as one control, rather than two loose \`IconButton\`s. \`variant="system-lock"\` is the two-chip one used here: the chip the OS currently supplies keeps its sun or moon and adds the system badge, and pressing it toggles the lock. The app owns the preference — it applies it with \`useResolvedColorMode\` + \`ScopedTheme\` and persists it
 - \`variant="bar"\` (default) is the application bar: its own background plus \`shadow-bar\`, a downward-only shadow cast on the page below. \`variant="transparent"\` is a header integrated into the page it heads (a landing hero): no background, no border, no shadow
 - The frame takes the device's top inset unless an ancestor \`SafeAreaScope\` consumed it; wrap the screen below in \`<SafeAreaScope consumedEdges={["top"]}>\``,
@@ -126,7 +126,7 @@ function DemoBrand(): ReactNode {
 function LoggedOutActions(): ReactNode {
   return (
     <AppHeaderActions>
-      <AppHeaderSignIn variant="outlined" label="Sign up" onPress={fn()} />
+      <AppHeaderSignIn accent="neutral" label="Sign up" onPress={fn()} />
       <AppHeaderSignIn label="Log in" onPress={fn()} />
     </AppHeaderActions>
   );

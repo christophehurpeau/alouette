@@ -146,7 +146,7 @@ function AccentScope({
     return children;
   }
   const mode = forcedMode ?? currentMode;
-  return /* @__PURE__ */ jsxRuntime.jsx(ScopedTheme, { theme: accent === "none" ? mode : `${mode}_${accent}`, children });
+  return /* @__PURE__ */ jsxRuntime.jsx(ScopedTheme, { theme: accent === "neutral" ? mode : `${mode}_${accent}`, children });
 }
 
 const twMerge = tailwindMerge.extendTailwindMerge({
@@ -282,9 +282,18 @@ const interactiveBoxVariants = tailwindVariants.tv({
   base: [
     boxBaseClasses,
     "cursor-pointer",
-    "transition-[transform,background-color,border-color] duration-fast ease-in",
+    // `translate` is deliberately outside the transition: the press is one
+    // whole pixel, so it lands instantly while the ground fades, and it never
+    // animates its way onto a compositing layer — which is what would redraw
+    // the label (grayscale antialiasing, baseline re-snapped) and jump it.
+    "transition-[background-color,border-color] duration-fast ease-in",
     "disabled:cursor-not-allowed disabled:opacity-70 aria-disabled:cursor-not-allowed aria-disabled:opacity-70",
-    "active:scale-[0.975]"
+    // A constant displacement, not a proportional one: a scale moves every
+    // point in proportion to its distance from the centre, so it grew from a
+    // press on a button (~1.6px per edge) into a squeeze on a full-width row
+    // (~14px). Rigid, so a row's icon and its label keep their positions, and a
+    // whole pixel, so the label is re-hinted on the same subpixel phase.
+    "active:translate-y-px"
   ].join(" "),
   variants: {
     withFocusVisibleOutline: {
@@ -598,7 +607,7 @@ function StableAccentScope({
   const currentMode = useCurrentMode();
   const theme = (() => {
     if (!accent) return currentTheme;
-    if (accent === "none") return forcedMode ?? currentMode;
+    if (accent === "neutral") return forcedMode ?? currentMode;
     return `${forcedMode ?? currentMode}_${accent}`;
   })();
   return /* @__PURE__ */ jsxRuntime.jsx(ScopedTheme, { theme, children });
@@ -1155,6 +1164,22 @@ const pressableBoxVariants = tailwindVariants.tv(
           "aria-disabled:bg-interactive-contained-disabled aria-disabled:shadow-none",
           "focus-visible:outline-border-muted"
         ].join(" "),
+        // A card row lifted off the surface it sits on (PressableListItem): the
+        // ground is a tone of the theme — the lightest step when neutral, a
+        // tone of the accent when accented — so the row keeps the ambient
+        // `text-sharp` label whatever its accent. That is what `contained`
+        // cannot do: its neutral fill is the grayscale accent, a dark ground
+        // carrying white ink.
+        list: [
+          "rounded-sm",
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "shadow-s bg-interactive-list-pressable",
+          "hover:bg-interactive-list-hover",
+          "focus:bg-interactive-list-focus",
+          "active:bg-interactive-list-active",
+          "disabled:bg-interactive-contained-disabled disabled:shadow-none",
+          "aria-disabled:bg-interactive-contained-disabled aria-disabled:shadow-none",
+          "focus-visible:outline-border-muted"
+        ].join(" "),
         outlined: [
           "border bg-highlight",
           process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "border-interactive-outlined-pressable",
@@ -1192,7 +1217,7 @@ const pressableBoxVariants = tailwindVariants.tv(
       forceStyle: {
         hover: "",
         focus: "",
-        press: "scale-[0.975]"
+        press: "translate-y-px"
       }
     },
     compoundVariants: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? [
@@ -1217,6 +1242,28 @@ const pressableBoxVariants = tailwindVariants.tv(
         variant: "contained",
         forceStyle: "press",
         className: "shadow-s bg-interactive-contained-active"
+      },
+      /* list */
+      {
+        variant: "list",
+        forceStyle: void 0,
+        ghost: false,
+        className: "shadow-s bg-interactive-list-pressable"
+      },
+      {
+        variant: "list",
+        forceStyle: "hover",
+        className: "shadow-s bg-interactive-list-hover"
+      },
+      {
+        variant: "list",
+        forceStyle: "focus",
+        className: "shadow-s bg-interactive-list-focus"
+      },
+      {
+        variant: "list",
+        forceStyle: "press",
+        className: "shadow-s bg-interactive-list-active"
       },
       /* outlined */
       {
@@ -1343,6 +1390,7 @@ const buttonVariants = tailwindVariants.tv(
       },
       variant: {
         contained: { text: "text-on-accent" },
+        list: { text: "text-sharp" },
         outlined: { text: "text-sharp" },
         ghost: { text: "text-sharp" },
         soft: { text: "text-sharp" }
@@ -1369,10 +1417,16 @@ const buttonVariants = tailwindVariants.tv(
           icon: "text-sharp hover:text-on-accent"
         }
       },
+      { variant: "list", disabled: false, class: { icon: "text-sharp" } },
       { variant: "outlined", disabled: false, class: { icon: "text-sharp" } },
       { variant: "soft", disabled: false, class: { icon: "text-sharp" } },
       {
         variant: "contained",
+        disabled: true,
+        class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" }
+      },
+      {
+        variant: "list",
         disabled: true,
         class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" }
       },
@@ -1523,6 +1577,7 @@ const iconButtonVariants = tailwindVariants.tv(
     variants: {
       variant: {
         contained: {},
+        list: {},
         outlined: {},
         ghost: {},
         soft: {}
@@ -1537,6 +1592,11 @@ const iconButtonVariants = tailwindVariants.tv(
         variant: "contained",
         disabled: false,
         class: { icon: "text-on-accent" }
+      },
+      {
+        variant: "list",
+        disabled: false,
+        class: { icon: "text-sharp" }
       },
       {
         variant: "outlined",
@@ -1555,6 +1615,11 @@ const iconButtonVariants = tailwindVariants.tv(
       },
       {
         variant: "contained",
+        disabled: true,
+        class: { icon: "text-disabled-sharp" }
+      },
+      {
+        variant: "list",
         disabled: true,
         class: { icon: "text-disabled-sharp" }
       },
@@ -2076,7 +2141,7 @@ function resolveVariant(props, {
           /* @__PURE__ */ jsxRuntime.jsx(
             Button,
             {
-              variant: "outlined",
+              accent: "neutral",
               text: cancelText ?? "Cancel",
               disabled: isPending,
               onPress: onCancel
@@ -2335,7 +2400,7 @@ function Menu({
         align: "end",
         width: "content",
         placement: "top",
-        accent: accent ?? "none",
+        accent: accent ?? "neutral",
         onClose: close,
         children: /* @__PURE__ */ jsxRuntime.jsx(View, { className: "pt-xxs", children: /* @__PURE__ */ jsxRuntime.jsxs(
           Surface,
@@ -2801,7 +2866,7 @@ function InputTextAutocomplete({
       {
         open: isOpen,
         placement: "top",
-        accent: "none",
+        accent: "neutral",
         "aria-label": rest["aria-label"],
         onClose: closeMenu,
         children: /* @__PURE__ */ jsxRuntime.jsxs(View, { className: "gap-xs", children: [
@@ -3283,8 +3348,8 @@ const segmentedItemVariants = tailwindVariants.tv({
     selected: {
       true: {
         chip: "opacity-100",
-        foreground: "text-on-accent",
-        indicator: "bg-interactive-contained-pressable"
+        foreground: "text-on-emphasis",
+        indicator: "bg-emphasis"
       },
       false: {
         chip: "opacity-0",
@@ -3300,7 +3365,7 @@ const segmentedItemVariants = tailwindVariants.tv({
         foreground: "text-disabled-muted group-hover:text-disabled-muted",
         indicator: "bg-interactive-contained-disabled"
       },
-      false: { chip: "bg-interactive-contained-pressable shadow-s" }
+      false: { chip: "bg-emphasis shadow-s" }
     },
     compact: { true: { segment: "px-xs" }, false: { segment: "px-m" } },
     orientation: {
@@ -4277,7 +4342,7 @@ function FormFieldArray({
           Button,
           {
             size: "sm",
-            variant: "outlined",
+            accent: "neutral",
             icon: /* @__PURE__ */ jsxRuntime.jsx(PlusRegularIcon.PlusRegularIcon, {}),
             text: addLabel,
             className: "self-start",
@@ -4411,7 +4476,7 @@ function useFormEditorModal({
             size,
             closeButtonAriaLabel,
             footer: /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntime.jsx(Button, { variant: "outlined", text: cancelLabel, onPress: close }),
+              /* @__PURE__ */ jsxRuntime.jsx(Button, { accent: "neutral", text: cancelLabel, onPress: close }),
               /* @__PURE__ */ jsxRuntime.jsx(
                 FormSubmitButton,
                 {
@@ -4757,8 +4822,8 @@ function ConnectionState({
   return /* @__PURE__ */ jsxRuntime.jsx(AccentScope, { accent, children: /* @__PURE__ */ jsxRuntime.jsx(
     View,
     {
-      className: `absolute inset-x-0 top-0 z-9 h-0.5 bg-interactive-contained-pressable shadow-m transition-transform duration-slide ease-in-out ${hidden ? "-translate-y-6" : "translate-y-0"}`,
-      children: state ? /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "absolute left-1/2 top-0.5 h-5.5 w-50 -translate-x-1/2 rounded-b-sm bg-interactive-contained-pressable text-center leading-5.5 text-on-accent transition-colors duration-fast", children }) : null
+      className: `absolute inset-x-0 top-0 z-9 h-0.5 bg-emphasis shadow-m transition-transform duration-slide ease-in-out ${hidden ? "-translate-y-6" : "translate-y-0"}`,
+      children: state ? /* @__PURE__ */ jsxRuntime.jsx(Text, { className: "absolute left-1/2 top-0.5 h-5.5 w-50 -translate-x-1/2 rounded-b-sm bg-emphasis text-center leading-5.5 text-on-emphasis transition-colors duration-fast", children }) : null
     }
   ) });
 }
@@ -4795,7 +4860,7 @@ function LinearProgress({
 }
 
 function PressableListItem({
-  variant = "contained",
+  variant = "list",
   role = "button",
   accent,
   children,
@@ -4814,7 +4879,11 @@ function PressableListItem({
         /* @__PURE__ */ jsxRuntime.jsx(reactNative.View, { className: "justify-center", children: /* @__PURE__ */ jsxRuntime.jsx(
           Icon,
           {
-            className: variant === "contained" ? "text-on-accent-muted" : "text-muted",
+            className: (() => {
+              if (variant === "contained") return "text-on-accent-muted";
+              if (variant === "list") return "text-on-list";
+              return "text-muted";
+            })(),
             icon: /* @__PURE__ */ jsxRuntime.jsx(CaretRightRegularIcon.CaretRightRegularIcon, {}),
             size: 18
           }

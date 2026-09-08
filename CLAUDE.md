@@ -206,6 +206,39 @@ are the fills.
 Never make a display-only component interactive by wrapping it: see
 "Interactivity is a component, never a wrapper" in the `alouette-styling` skill.
 
+## Differentiate buttons by `accent`, not by `variant`
+
+Two buttons side by side differ by **accent**, and both stay `contained`. The
+variant is the material — dropping the secondary action to `outlined` (or
+`ghost`) trades away its ground and its shadow, so it reads as chrome rather than
+as the other half of a pair. `accent="neutral"` is the neutral contained button:
+the same material on the grayscale palette, which is what a confirmation footer,
+a form's Cancel, or a second header action wants.
+
+The neutral theme is **an accent, not the absence of one**: the contained tokens
+take the same scale steps in grayscale as in a colored accent (light 9 → 8 → 7,
+dark 6 → 7), so the button is a dark gray fill carrying the same white
+`text-on-accent` label. A pale neutral fill is not available and must not be
+reinvented — the light steps above `interactive-contained-pressable` are
+`surface` (2), `screen` (3) and `lowered` (4) themselves, so a white or near-white
+button dissolves into whatever it is placed on.
+
+```tsx
+<Button accent="neutral" text="Cancel" onPress={close} />
+<Button text="Save" onPress={save} />
+```
+
+`accent="neutral"` is accepted by `Button`, `IconButton`, `PressableBox`,
+`PressableListItem` and `CircularProgress`, on top of the scope components. It
+resolves to the plain mode theme, so it also drops an accent inherited from an
+ancestor.
+
+The remaining variants have narrow roles, and none of them is "the secondary
+button": `soft` is for rows and bars that must not carry a border (`AppHeader`
+pressables, `MenuItem`); `ghost` is for an icon-only control inside a component's
+own frame (`Modal`'s close, `Message`'s dismiss); `outlined` has no default use —
+reach for it only when a design explicitly calls for an outline.
+
 ## `activeIcon`: the glyph may change weight on interaction
 
 `Button`, `IconButton`, `MenuItem` and the `SegmentedItem` family (`NavBarItem`,
@@ -234,13 +267,42 @@ assertions are untouched. The opacity classes live on the wrapping `View`s and
 never on `Icon`, which drops its `className` on native and reads only the `text-*`
 tint from it.
 
-## Depth: inset track + raised element
+## Depth: inset track + emphasis element
 
 Build depth by pairing a lowered container with a raised child, as `Switch` does:
 track = `bg-lowered` + `shadow-lowered`; raised element (thumb / selected segment)
-= `bg-surface` or `contained` + `shadow-s`. Reach for this material for segmented
+= `bg-surface` or `bg-emphasis` + `shadow-s`. Reach for this material for segmented
 controls, toggles and selection surfaces instead of a bordered box with a flat
 fill.
+
+`emphasis` is the accent-aware fill for that child (`SegmentedItem`'s selected
+chip, `ConnectionState`'s bar), and its label is `text-on-emphasis`. It is **not**
+the contained button fill: an element standing out of a track has to be lighter
+than the track under it, so the neutral `emphasis` stays the palette's lightest
+step while the neutral contained button goes dark. That is why the two are
+separate tokens — and why `text-on-emphasis` (dark ink on a neutral chip, white on
+an accented one) is the one ink that still flips with the accent. The token is
+named for the emphasis it carries, not for elevation: `surface` and `highlight`
+are raised too, so "raised" would say nothing.
+
+A pressable card row takes `PressableBox`'s **`list` variant** — `shadow-s` over
+`bg-interactive-list-{pressable,hover,focus,active}`. That is
+`PressableListItem`'s default, not a button, and its ground is a **tone** of the
+theme rather than the accent's fill: the card steps when neutral (light
+1 → 2 → 3, dark 6 → 7), the accent's own pale steps in light mode (2 → 3 → 4,
+starting at its `surface`) and its own dark ground one notch under the contained
+fill in dark mode (6 → 7), since dark has no pale end to tint. `contained` cannot
+do that — its neutral fill is the grayscale accent — and `emphasis` cannot either: a
+`SegmentedBar` chip has to win against its track, so it stays the accent's fill
+with `text-on-emphasis` ink.
+
+The row's ink is **`text-on-list`** (label and caret alike), because a light tint
+carries the hue poorly: any red pale enough to take dark ink reads as pink. So in
+light mode `on-list` is the accent itself (`#92091A` on a danger row) and the
+ambient sharp ink when neutral; in dark mode, where the ground already _is_ the
+accent, it stays sharp — an accent ink there would be a tint of the color under
+it (~4:1). `muted` is too dim for either ground, so secondary `text-muted` copy in
+a row belongs on a neutral one only.
 
 ## Touch targets: 44px accessible height, not the named spacing scale
 

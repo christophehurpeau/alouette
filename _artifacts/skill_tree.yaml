@@ -49,7 +49,7 @@ skills:
     domain: "theming"
     path: "packages/alouette/skills/alouette-theming/SKILL.md"
     package: "packages/alouette"
-    description: 'Re-theme a subtree with accents (brand, danger, info, success, warning) and light/dark modes. Use the accent prop, AccentScope, or ScopedTheme; children always consume base tokens (bg-surface, text-accent, text-sharp, text-muted, border-muted). Tokens are className-only: alouette exports no JS token-read hook. Read the current mode with useCurrentMode. For an accent that toggles at runtime (e.g. on hover) without remounting the subtree, use StableAccentScope instead of AccentScope; inside a portal (a modal or any other overlay), where the scope escapes the themed subtree, use PortalAccentScope. All three also take accent="none", which resolves to the plain mode theme and so drops an accent inherited from an ancestor. A stored light/dark choice is a ColorModePreference ("light" | "dark" | "system") resolved by useResolvedColorMode and applied by the app through ScopedTheme. Load when applying colors, accents or dark mode, or when shipping a custom palette.'
+    description: 'Re-theme a subtree with accents (brand, danger, info, success, warning) and light/dark modes. Use the accent prop, AccentScope, or ScopedTheme; children always consume base tokens (bg-surface, text-accent, text-sharp, text-muted, border-muted). Tokens are className-only: alouette exports no JS token-read hook. Read the current mode with useCurrentMode. For an accent that toggles at runtime without remounting, use StableAccentScope; inside a portal (a modal or any other overlay), where the scope escapes the themed subtree, use PortalAccentScope. All three, and the pressables, take accent="neutral": the plain mode theme, which drops an inherited accent and makes a Button the neutral contained secondary beside an accented one. A stored light/dark choice is a ColorModePreference ("light" | "dark" | "system") resolved by useResolvedColorMode and applied by the app through ScopedTheme. Load when applying colors, accents or dark mode, or when shipping a custom palette.'
     requires: []
     sources:
       - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
@@ -112,8 +112,8 @@ skills:
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/BrandLogo.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/config/tokens.stories.tsx"
     references:
-      - "references/spacing-radius-shadow.md"
       - "references/app-shell.md"
+      - "references/spacing-radius-shadow.md"
 
   - name: "alouette-actions"
     slug: "alouette-actions"
@@ -175,6 +175,9 @@ skills:
       - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormFieldArray.stories.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableItem.stories.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableSurface.stories.tsx"
+    references:
+      - "references/choice-inputs.md"
+      - "references/field-arrays-and-editable-rows.md"
 
   - name: "alouette-data"
     slug: "alouette-data"
@@ -200,6 +203,8 @@ skills:
       - "christophehurpeau/alouette:packages/alouette/src/ui/data/Blockquote.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/data/Citation.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/data/Avatar.tsx"
+    references:
+      - "references/editable-displays.md"
 
   - name: "alouette-navigation"
     slug: "alouette-navigation"
@@ -307,7 +312,7 @@ skills:
     domain: "layout"
     path: "packages/alouette/skills/alouette-icons/SKILL.md"
     package: "packages/alouette"
-    description: "Use Phosphor icons with alouette. Import each icon from alouette-icons/phosphor-icons/IconName, then render via the Icon component or pass it to Button / IconButton / Message icon props. Tint with a text-* className (resolved to a color token); size with the numeric size prop. Load when adding icons to alouette UI."
+    description: "Use Phosphor icons with alouette. Each icon is imported from its own module (alouette-icons/phosphor-icons/IconName) so only what is used is bundled, and is then either rendered through the Icon component or handed as an element to a component that takes one (Button, IconButton, Message). Its color comes from a text-* token class rather than from the SVG, so an icon follows the theme and the accent around it. Load when adding icons to alouette UI."
     requires:
       - "alouette-theming"
     sources:

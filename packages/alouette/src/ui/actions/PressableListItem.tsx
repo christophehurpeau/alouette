@@ -13,7 +13,7 @@ export interface PressableListItemProps {
 }
 
 export function PressableListItem({
-  variant = "contained",
+  variant = "list",
   role = "button",
   accent,
   children,
@@ -30,9 +30,11 @@ export function PressableListItem({
       <View className="flex-1">{children}</View>
       <View className="justify-center">
         <Icon
-          className={
-            variant === "contained" ? "text-on-accent-muted" : "text-muted"
-          }
+          className={(() => {
+            if (variant === "contained") return "text-on-accent-muted";
+            if (variant === "list") return "text-on-list";
+            return "text-muted";
+          })()}
           icon={<CaretRightRegularIcon />}
           size={18}
         />

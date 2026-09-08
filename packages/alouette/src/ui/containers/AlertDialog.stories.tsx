@@ -5,7 +5,7 @@ import { TrashRegularIcon } from "alouette-icons/phosphor-icons/TrashRegularIcon
 import { type ReactNode, useState } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Button } from "../actions/Button";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import {
   AlertDialog,
@@ -215,7 +215,7 @@ export default {
       options: ["confirm", "alert", "required"],
     },
     size: { control: "select", options: ["sm", "md", "lg"] },
-    accent: { control: "select", options: accents },
+    accent: { control: "select", options: accentsWithoutNeutral },
   },
 } satisfies Meta<typeof AlertDialog>;
 
@@ -376,7 +376,7 @@ export const Variants: ThisStory = {
 
       <Story.Section title="Accents">
         <StoryGrid.Row flexWrap>
-          {accents.map((accent) => (
+          {accentsWithoutNeutral.map((accent) => (
             <StoryGrid.Col key={accent} title={accent}>
               <AlertDialogDemo
                 accent={accent}

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 export interface SelectOption {
     label: string;
     value: string;
@@ -14,7 +14,7 @@ export interface SelectProps {
     onValueChange?: (value: string) => void;
     placeholder?: string;
     disabled?: boolean;
-    accent?: Accent;
+    accent?: AccentOrNeutral;
     "aria-label"?: string;
     "aria-labelledby"?: string;
     testID?: string;

@@ -1,7 +1,7 @@
 import { expect, fn, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import { Story, accents } from "../story-components/Story";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Select } from "./Select";
 import type { SelectProps } from "./Select.shared";
@@ -47,11 +47,11 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        {([undefined, ...accents] as const).map((accent) => (
+        {neutralAndAccents.map((accent) => (
           <Story.SubSection
-            key={accent || "default"}
+            key={accent}
             withSurface
-            title={accent ?? "Default"}
+            title={accent}
             accent={accent}
           >
             <StoryGrid.Row flexWrap>

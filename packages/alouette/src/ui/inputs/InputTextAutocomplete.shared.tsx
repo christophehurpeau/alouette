@@ -4,7 +4,7 @@ import type {
   TextInput as RNTextInput,
   View as RNView,
 } from "react-native";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { useControllableValue } from "../../core/useControllableValue";
 import { Surface } from "../containers/Surface";
 import { ScrollView } from "../primitives/ScrollView";
@@ -81,7 +81,7 @@ export interface InputTextAutocompleteProps {
   emptyLabel?: string;
   placeholder?: string;
   disabled?: boolean;
-  accent?: Accent;
+  accent?: AccentOrNeutral;
   mode?: InputTextMode;
   className?: string;
   testID?: string;

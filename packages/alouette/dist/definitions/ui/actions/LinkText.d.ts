@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { type VariantProps } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { type InteractiveBoxProps } from "../containers/Box";
 import { type SVGIconElement } from "../primitives/Icon";
 export declare const linkTextVariants: import("tailwind-variants").TVReturnType<{
@@ -87,7 +87,7 @@ export interface LinkTextProps extends Omit<InteractiveBoxProps, "children">, Li
     text: ReactNode;
     /** Leading icon, tinted with the label. */
     icon?: SVGIconElement;
-    accent?: Accent;
+    accent?: AccentOrNeutral;
 }
 /**
  * Text link to an in-app destination — the lightweight alternative to a Button

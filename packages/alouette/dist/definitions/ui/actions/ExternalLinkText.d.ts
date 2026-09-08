@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { type ExternalOpenLinkBehavior } from "../../expo/ExternalLink.shared";
 import { type InteractiveBoxProps } from "../containers/Box";
 import { type SVGIconElement } from "../primitives/Icon";
@@ -11,7 +11,7 @@ export interface ExternalLinkTextProps extends Omit<InteractiveBoxProps, "childr
     text: ReactNode;
     /** Leading affordance icon. Defaults to the external-link arrow. */
     icon?: SVGIconElement;
-    accent?: Accent;
+    accent?: AccentOrNeutral;
 }
 /**
  * Inline text link to an external destination — the lightweight alternative to

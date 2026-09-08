@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
 import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
 import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Bullet } from "./Bullet";
 
 type ThisStory = StoryObj<typeof Bullet>;
@@ -57,7 +57,7 @@ export const BulletVariantsStory: ThisStory = {
         <Bullet icon={<CheckCircleRegularIcon />} />
       </Story.Section>
 
-      {accents.map((accent) => (
+      {accentsWithoutNeutral.map((accent) => (
         <Story.Section
           key={accent}
           withSurface

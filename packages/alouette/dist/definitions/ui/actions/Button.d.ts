@@ -1,7 +1,7 @@
 import { type ReactNode, type Ref } from "react";
 import type { View as RNView } from "react-native";
 import { type VariantProps } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { type ExternalOpenLinkBehavior } from "../../expo/ExternalLink.shared";
 import { type SVGIconElement } from "../primitives/Icon";
 import { type PressableBoxProps } from "./PressableBox";
@@ -22,6 +22,9 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
     };
     variant: {
         contained: {
+            text: string;
+        };
+        list: {
             text: string;
         };
         outlined: {
@@ -66,6 +69,9 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
         contained: {
             text: string;
         };
+        list: {
+            text: string;
+        };
         outlined: {
             text: string;
         };
@@ -108,6 +114,9 @@ declare const buttonVariants: import("tailwind-variants").TVReturnType<{
         contained: {
             text: string;
         };
+        list: {
+            text: string;
+        };
         outlined: {
             text: string;
         };
@@ -142,7 +151,9 @@ export interface ButtonProps extends Omit<PressableBoxProps, "children">, Button
     icon?: SVGIconElement;
     /** Replaces `icon` while the button is hovered, focused or pressed. */
     activeIcon?: SVGIconElement;
-    accent?: Accent;
+    /** `"neutral"` is the neutral button: the same contained material without an
+     * accent, for the secondary action beside an accented one. */
+    accent?: AccentOrNeutral;
     text: ReactNode;
     state?: ButtonState;
     /**

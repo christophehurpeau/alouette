@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
 import { HStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Badge } from "./Badge";
 
 type ThisStory = StoryObj<typeof Badge>;
@@ -19,7 +19,7 @@ export default {
     accent: {
       description: "The accent of the badge",
       control: "select",
-      options: accents,
+      options: accentsWithoutNeutral,
       table: { defaultValue: { summary: "brand" } },
     },
     variant: {
@@ -59,7 +59,7 @@ export const BadgeVariantsStory: ThisStory = {
       <Story.Section withSurface title="Accents">
         {VARIANTS.map((variant) => (
           <HStack key={variant} className="gap-xs flex-wrap">
-            {accents.map((accent) => (
+            {accentsWithoutNeutral.map((accent) => (
               <Badge key={accent} accent={accent} variant={variant}>
                 {accent}
               </Badge>

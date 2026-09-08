@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import type { VariantProps } from "tailwind-variants";
 import { tv } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { useSafeAreaInsets } from "../../core/useSafeAreaInsets";
 import { AccentScope } from "./AccentScope";
 // Allow Box to shrink when used inside HStack/VStack (matches the original
@@ -17,7 +17,7 @@ import { AccentScope } from "./AccentScope";
 export const boxBaseClasses = "shrink";
 
 export interface BoxProps extends RNViewProps {
-  accent?: Accent;
+  accent?: AccentOrNeutral;
 }
 
 export const Box = forwardRef<RNView, BoxProps>(
@@ -38,9 +38,18 @@ export const interactiveBoxVariants = tv({
   base: [
     boxBaseClasses,
     "cursor-pointer",
-    "transition-[transform,background-color,border-color] duration-fast ease-in",
+    // `translate` is deliberately outside the transition: the press is one
+    // whole pixel, so it lands instantly while the ground fades, and it never
+    // animates its way onto a compositing layer — which is what would redraw
+    // the label (grayscale antialiasing, baseline re-snapped) and jump it.
+    "transition-[background-color,border-color] duration-fast ease-in",
     "disabled:cursor-not-allowed disabled:opacity-70 aria-disabled:cursor-not-allowed aria-disabled:opacity-70",
-    "active:scale-[0.975]",
+    // A constant displacement, not a proportional one: a scale moves every
+    // point in proportion to its distance from the centre, so it grew from a
+    // press on a button (~1.6px per edge) into a squeeze on a full-width row
+    // (~14px). Rigid, so a row's icon and its label keep their positions, and a
+    // whole pixel, so the label is re-hinted on the same subpixel phase.
+    "active:translate-y-px",
   ].join(" "),
   variants: {
     withFocusVisibleOutline: {

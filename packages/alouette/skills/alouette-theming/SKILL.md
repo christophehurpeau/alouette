@@ -6,11 +6,11 @@ description: >
   always consume base tokens (bg-surface, text-accent, text-sharp, text-muted,
   border-muted). Tokens are className-only: alouette exports no JS token-read
   hook. Read the current mode with useCurrentMode. For an accent that toggles at
-  runtime (e.g. on hover) without remounting the subtree, use StableAccentScope
-  instead of AccentScope; inside a portal (a modal or any other overlay), where
-  the scope escapes the themed subtree, use PortalAccentScope. All three also
-  take accent="none", which resolves to the plain mode theme and so drops an
-  accent inherited from an ancestor. A stored light/dark choice is a
+  runtime without remounting, use StableAccentScope; inside a portal (a modal or
+  any other overlay), where the scope escapes the themed subtree, use
+  PortalAccentScope. All three, and the pressables, take accent="neutral": the plain
+  mode theme, which drops an inherited accent and makes a Button the neutral
+  contained secondary beside an accented one. A stored light/dark choice is a
   ColorModePreference ("light" | "dark" | "system") resolved by
   useResolvedColorMode and applied by the app through ScopedTheme. Load when
   applying colors, accents or dark mode, or when shipping a custom palette.
@@ -102,7 +102,7 @@ import { AccentScope } from "alouette";
 
 ### Drop an inherited accent
 
-`accent` takes `"none"` alongside the five accents — on `AccentScope`,
+`accent` takes `"neutral"` alongside the five accents — on `AccentScope`,
 `StableAccentScope` and `PortalAccentScope` alike. It resolves to the plain mode
 theme (`light` / `dark`), so the subtree falls back to the neutral tokens even
 under an accented ancestor. This is not the same as omitting `accent`: omitting
@@ -111,7 +111,7 @@ it renders no scope at all and the ancestor's accent keeps cascading.
 ```tsx
 <AccentScope accent="danger">
   <Text className="text-accent">Delete</Text> {/* danger */}
-  <AccentScope accent="none">
+  <AccentScope accent="neutral">
     <Text className="text-accent">Details</Text>{" "}
     {/* back to the mode's accent */}
   </AccentScope>
@@ -120,6 +120,19 @@ it renders no scope at all and the ancestor's accent keeps cascading.
 
 `InputTextAutocomplete` uses it for its menu: the field is accented, the listbox
 that opens next to it is not.
+
+The pressables take it too — `Button`, `IconButton`, `PressableBox`,
+`PressableListItem` — where it is more than an escape hatch: `accent="neutral"` is
+the **neutral button**, the contained material (ground, shadow, hover/focus/press)
+on the grayscale palette — an accent like any other, taking the same scale steps
+and the same white `text-on-accent` label, not a pale button. It is how a
+secondary action is written beside an accented one, instead of dropping it to
+`variant="outlined"` (alouette-actions/SKILL.md).
+
+```tsx
+<Button accent="neutral" text="Cancel" onPress={close} />
+<Button text="Save" onPress={save} />
+```
 
 ### Read the active mode / theme
 

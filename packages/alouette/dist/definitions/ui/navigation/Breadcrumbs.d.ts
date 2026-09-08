@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { type SVGIconElement } from "../primitives/Icon";
 export interface BreadcrumbsProps {
     "aria-label"?: string;
@@ -11,7 +11,7 @@ export interface BreadcrumbsProps {
      * item `onPress` — the `<a>` navigates on web and native does nothing.
      */
     onNavigate?: (href: string) => void;
-    accent?: Accent;
+    accent?: AccentOrNeutral;
     disabled?: boolean;
     /** `BreadcrumbItem`s, from the root down to the page being viewed. */
     children: ReactNode;

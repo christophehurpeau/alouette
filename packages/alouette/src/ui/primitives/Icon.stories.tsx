@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
 import type { ReactNode } from "react";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
 import { HStack, VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Icon } from "./Icon";
 import { Text } from "./Text";
@@ -52,9 +52,9 @@ function TintRow({ className }: TintRowProps): ReactNode {
   );
 }
 
-function AccentColumn({ accent }: { accent?: Accent }): ReactNode {
+function AccentColumn({ accent }: { accent: AccentOrNeutral }): ReactNode {
   return (
-    <StoryGrid.Col title={accent ?? "default"}>
+    <StoryGrid.Col title={accent}>
       <AccentScope accent={accent}>
         <VStack className="gap-xs rounded-sm bg-surface p-xs">
           <TintRow className="text-sharp" />
@@ -78,8 +78,8 @@ export const VariantsStory: ThisStory = {
     <Story>
       <Story.Section title="Tints across accents">
         <StoryGrid.Row flexWrap>
-          {[undefined, ...accents].map((accent) => (
-            <AccentColumn key={accent ?? "default"} accent={accent} />
+          {neutralAndAccents.map((accent) => (
+            <AccentColumn key={accent} accent={accent} />
           ))}
         </StoryGrid.Row>
       </Story.Section>

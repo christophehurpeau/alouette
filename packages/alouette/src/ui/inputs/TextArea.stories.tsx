@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Story, accents } from "../story-components/Story";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { TextArea } from "./TextArea";
 
@@ -27,21 +27,18 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        {([undefined, ...accents] as const).map((accent) => (
+        {neutralAndAccents.map((accent) => (
           <Story.SubSection
-            key={accent || "default"}
+            key={accent}
             withSurface
-            title={accent ?? "Default"}
+            title={accent}
             accent={accent}
           >
             <StoryGrid.Row flexWrap>
               {(
                 [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col
-                  key={state || "default"}
-                  title={state || "default"}
-                >
+                <StoryGrid.Col key={state} title={state}>
                   <TextArea
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
@@ -53,10 +50,7 @@ export const Variants: ThisStory = {
               {(
                 [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col
-                  key={state || "default"}
-                  title={state || "default"}
-                >
+                <StoryGrid.Col key={state} title={state}>
                   <TextArea
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
@@ -69,10 +63,7 @@ export const Variants: ThisStory = {
               {(
                 [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col
-                  key={state || "default"}
-                  title={state || "default"}
-                >
+                <StoryGrid.Col key={state} title={state}>
                   <TextArea
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}

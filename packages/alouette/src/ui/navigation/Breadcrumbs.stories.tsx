@@ -4,10 +4,10 @@ import { CaretDoubleRightRegularIcon } from "alouette-icons/phosphor-icons/Caret
 import { FolderRegularIcon } from "alouette-icons/phosphor-icons/FolderRegularIcon";
 import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
 import { type ReactNode, useState } from "react";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { Text } from "../primitives/Text";
 import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { BreadcrumbItem } from "./BreadcrumbItem";
 import { Breadcrumbs } from "./Breadcrumbs";
 
@@ -22,7 +22,7 @@ export default {
   },
   argTypes: {
     disabled: { control: "boolean" },
-    accent: { control: "select", options: [undefined, ...accents] },
+    accent: { control: "select", options: neutralAndAccents },
     "aria-label": {
       control: "text",
       table: { defaultValue: { summary: "Breadcrumb" } },
@@ -41,10 +41,10 @@ export const BreadcrumbsPreviewStory: ThisStory = {
   ),
 };
 
-function AccentBreadcrumbs({ accent }: { accent?: Accent }): ReactNode {
+function AccentBreadcrumbs({ accent }: { accent: AccentOrNeutral }): ReactNode {
   return (
-    <Story.SubSection withSurface title={accent ?? "Default"}>
-      <Breadcrumbs accent={accent} aria-label={`Accent ${accent ?? "default"}`}>
+    <Story.SubSection withSurface title={accent}>
+      <Breadcrumbs accent={accent} aria-label={`Accent ${accent}`}>
         <BreadcrumbItem href="/" label="Home" icon={<HouseRegularIcon />} />
         <BreadcrumbItem href="/library" label="Library" />
         <BreadcrumbItem href="/library/reports" label="Business Reports" />
@@ -132,8 +132,7 @@ export const BreadcrumbsVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Accents">
-        <AccentBreadcrumbs />
-        {accents.map((accent) => (
+        {neutralAndAccents.map((accent) => (
           <AccentBreadcrumbs key={accent} accent={accent} />
         ))}
       </Story.Section>

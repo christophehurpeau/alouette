@@ -6,7 +6,7 @@ import { Button } from "../actions/Button";
 import { Badge } from "../data/Badge";
 import { Paragraph, Text } from "../primitives/Text";
 import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { EditableSurface, type EditableSurfaceProps } from "./EditableSurface";
 import { Modal } from "./Modal";
 
@@ -61,7 +61,7 @@ function EventSection({
         visible={editing}
         title={title}
         closeButtonAriaLabel="Close editor"
-        footer={<Button variant="outlined" text="Close" onPress={close} />}
+        footer={<Button accent="neutral" text="Close" onPress={close} />}
         onClose={close}
       >
         <Paragraph>Your editor goes here.</Paragraph>
@@ -95,7 +95,7 @@ export default {
       control: "select",
       options: ["contained", "outlined", "ghost", "soft"],
     },
-    accent: { control: "select", options: accents },
+    accent: { control: "select", options: accentsWithoutNeutral },
     disabled: { control: "boolean" },
   },
 } satisfies Meta<typeof EditableSurface>;
@@ -171,7 +171,7 @@ export const EditableSurfaceVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Accents">
-        {accents.map((accent) => (
+        {accentsWithoutNeutral.map((accent) => (
           <EventSection
             key={accent}
             accent={accent}

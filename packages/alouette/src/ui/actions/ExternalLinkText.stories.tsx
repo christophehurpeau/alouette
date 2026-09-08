@@ -5,7 +5,11 @@ import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Paragraph } from "../primitives/Text";
 import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import {
+  Story,
+  accentsWithoutNeutral,
+  neutralAndAccents,
+} from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { ExternalLinkText } from "./ExternalLinkText";
 
@@ -42,7 +46,7 @@ same-tab web navigation or the native \`Linking\` app switch.
     size: { control: "select", options: ["sm", "md"] },
     accent: {
       control: "select",
-      options: [undefined, ...accents],
+      options: neutralAndAccents,
     },
     disabled: { control: "boolean" },
   },
@@ -97,7 +101,7 @@ export const VariantsExternalLinkTextStory: ThisStory = {
       <Story.Section withSurface title="Accents">
         <StoryGrid.Row flexWrap>
           <AccentVariant />
-          {accents.map((accent) => (
+          {accentsWithoutNeutral.map((accent) => (
             <AccentVariant key={accent} accent={accent} />
           ))}
         </StoryGrid.Row>

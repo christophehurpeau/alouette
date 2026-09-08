@@ -5,7 +5,7 @@ import { type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
 import { Paragraph } from "../primitives/Text";
 import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Modal, type ModalProps } from "./Modal";
 
@@ -55,7 +55,7 @@ export default {
   argTypes: {
     title: { control: "text" },
     size: { control: "select", options: ["sm", "md", "lg"] },
-    accent: { control: "select", options: accents },
+    accent: { control: "select", options: accentsWithoutNeutral },
     hideCloseButton: { control: "boolean" },
   },
 } satisfies Meta<typeof Modal>;
@@ -70,7 +70,7 @@ export const PreviewModalStory: ThisStory = {
       {...args}
       footer={
         <>
-          <Button variant="outlined" text="Cancel" onPress={fn()} />
+          <Button accent="neutral" text="Cancel" onPress={fn()} />
           <Button accent="danger" text="Delete" onPress={fn()} />
         </>
       }
@@ -132,11 +132,7 @@ export const Variants: ThisStory = {
                   triggerLabel={size}
                   footer={
                     <>
-                      <Button
-                        variant="outlined"
-                        text="Discard"
-                        onPress={fn()}
-                      />
+                      <Button accent="neutral" text="Discard" onPress={fn()} />
                       <Button text="Save" onPress={fn()} />
                     </>
                   }
@@ -189,7 +185,7 @@ export const Variants: ThisStory = {
 
       <Story.Section title="Accents">
         <StoryGrid.Row flexWrap>
-          {accents.map((accent) => (
+          {accentsWithoutNeutral.map((accent) => (
             <StoryGrid.Col key={accent} title={accent}>
               <ModalDemo
                 accent={accent}
@@ -312,7 +308,7 @@ export const ScrollingBodyWithFooterStory: ThisStory = {
       triggerLabel="Long content"
       footer={
         <>
-          <Button variant="outlined" text="Decline" onPress={fn()} />
+          <Button accent="neutral" text="Decline" onPress={fn()} />
           <Button text="Accept" onPress={fn()} />
         </>
       }

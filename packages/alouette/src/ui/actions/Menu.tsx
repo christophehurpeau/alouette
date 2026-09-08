@@ -88,7 +88,7 @@ export function Menu({
         align="end"
         width="content"
         placement="top"
-        accent={accent ?? "none"}
+        accent={accent ?? "neutral"}
         onClose={close}
       >
         <View className="pt-xxs">

@@ -1,6 +1,6 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Story } from "../story-components/Story";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Switch } from "./Switch";
 
@@ -27,11 +27,11 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        {([undefined, "brand", "danger", "success"] as const).map((accent) => (
+        {neutralAndAccents.map((accent) => (
           <Story.SubSection
-            key={accent || "default"}
+            key={accent}
             withSurface
-            title={accent ?? "Default"}
+            title={accent}
             accent={accent}
           >
             <StoryGrid.Row flexWrap>
@@ -45,10 +45,7 @@ export const Variants: ThisStory = {
                   "checked",
                 ] as const
               ).map((state) => (
-                <StoryGrid.Col
-                  key={state || "default"}
-                  title={state || "default"}
-                >
+                <StoryGrid.Col key={state} title={state}>
                   <Switch
                     disabled={state === "disabled"}
                     {...(process.env.EXPO_OS === "web"

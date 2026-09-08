@@ -172,6 +172,34 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
     fg: "on-accent",
     bg: "interactive-contained-hover",
   },
+  // A SegmentedBar's selected chip and ConnectionState's bar: `emphasis` keeps a
+  // light chip in the neutral theme, so its ink flips with the accent.
+  { label: "on-emphasis on emphasis", fg: "on-emphasis", bg: "emphasis" },
+  // PressableBox's `list` variant keeps the ambient ink over a tone of the
+  // theme, so the row is measured with `sharp`, not with `on-emphasis`. Its
+  // caret and label are `on-list`, the ink that carries the accent in light
+  // mode and stays sharp on the dark accented ground; `muted` is too dim for
+  // that ground, so secondary `text-muted` copy belongs on a neutral row only.
+  {
+    label: "sharp on list:pressable",
+    fg: "sharp",
+    bg: "interactive-list-pressable",
+  },
+  {
+    label: "on-list on list:pressable",
+    fg: "on-list",
+    bg: "interactive-list-pressable",
+  },
+  {
+    label: "on-list on list:hover",
+    fg: "on-list",
+    bg: "interactive-list-hover",
+  },
+  {
+    label: "sharp on list:hover",
+    fg: "sharp",
+    bg: "interactive-list-hover",
+  },
   // The soft variant keeps the label's own color over its fill.
   { label: "sharp on soft:hover", fg: "sharp", bg: "interactive-soft-hover" },
   { label: "accent on soft:hover", fg: "accent", bg: "interactive-soft-hover" },

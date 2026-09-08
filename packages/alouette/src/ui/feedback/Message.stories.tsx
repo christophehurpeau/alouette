@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SwatchesRegularIcon } from "alouette-icons/phosphor-icons/SwatchesRegularIcon";
 import { Text } from "../primitives/Text";
 import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import {
   ConfirmationMessage,
   ErrorMessage,
@@ -26,7 +26,7 @@ export default {
     accent: {
       description: "The accent of the message",
       control: "select",
-      options: accents,
+      options: accentsWithoutNeutral,
       table: { defaultValue: { summary: "info" } },
     },
     onDismiss: {
@@ -67,7 +67,7 @@ export const Variants: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Accents">
-        {accents.map((accent) => (
+        {accentsWithoutNeutral.map((accent) => (
           <Message key={accent} icon={<SwatchesRegularIcon />} accent={accent}>
             {`${accent} message`}
           </Message>

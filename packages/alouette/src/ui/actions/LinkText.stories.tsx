@@ -5,7 +5,11 @@ import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Paragraph } from "../primitives/Text";
 import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import {
+  Story,
+  accentsWithoutNeutral,
+  neutralAndAccents,
+} from "../story-components/Story";
 import { LinkText } from "./LinkText";
 
 type ThisStory = StoryObj<typeof LinkText>;
@@ -38,7 +42,7 @@ the primary navigation between screens.
   },
   argTypes: {
     size: { control: "inline-radio", options: ["sm", "md"] },
-    accent: { control: "select", options: [undefined, ...accents] },
+    accent: { control: "select", options: neutralAndAccents },
     disabled: { control: "boolean" },
     text: { control: "text" },
   },
@@ -122,7 +126,7 @@ export const LinkTextVariantsStory: ThisStory = {
 
       <Story.Section title="Accents">
         <AccentLinkText />
-        {accents.map((accent) => (
+        {accentsWithoutNeutral.map((accent) => (
           <AccentLinkText key={accent} accent={accent} />
         ))}
       </Story.Section>

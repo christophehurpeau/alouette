@@ -210,7 +210,7 @@ function resolveVariant(
         footer: (
           <ActionFooter error={error} errorToMessage={errorToMessage}>
             <Button
-              variant="outlined"
+              accent="neutral"
               text={cancelText ?? "Cancel"}
               disabled={isPending}
               onPress={onCancel}

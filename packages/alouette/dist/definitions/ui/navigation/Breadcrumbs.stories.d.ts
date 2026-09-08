@@ -1,5 +1,5 @@
 import type { StoryObj } from "@storybook/react-vite";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { Breadcrumbs } from "./Breadcrumbs";
 type ThisStory = StoryObj<typeof Breadcrumbs>;
 declare const _default: {
@@ -14,7 +14,7 @@ declare const _default: {
         };
         accent: {
             control: "select";
-            options: (Accent | undefined)[];
+            options: AccentOrNeutral[];
         };
         "aria-label": {
             control: "text";
