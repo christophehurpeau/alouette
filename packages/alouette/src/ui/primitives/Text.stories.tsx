@@ -24,6 +24,14 @@ All styling via \`className\`. \`<Text>\` defaults to \`font-body\` (regular bod
 <Text className="font-body-bold text-base text-sharp">Bold body text</Text>
 <Text className="font-heading-extrabold text-4xl">Extrabold heading</Text>
 <Text className="font-mono text-sm text-muted">Muted monospace</Text>
+~~~
+
+### Text vs Paragraph
+\`<Paragraph>\` is \`<Text>\` with \`role="paragraph"\` (a real \`<p>\` on web) and selectable content — use it for prose, one or more sentences. Everything else stays \`<Text>\`: a label, a heading, a stat, a URL, a single value, even alone on its line. A value with its own component keeps it (\`Code\`, \`CodeBlock\`, \`ExternalLinkText\`). A \`<p>\` holds inline children only — never a nested \`Paragraph\`, \`View\` or \`Surface\`.
+
+~~~tsx
+<Paragraph>Run <Code>pnpm build</Code> before deploying.</Paragraph>
+<Text className="font-mono text-sm text-muted">https://api.example.com/v1</Text>
 ~~~`,
       },
     },

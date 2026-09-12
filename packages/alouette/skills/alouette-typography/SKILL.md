@@ -24,7 +24,8 @@ This skill builds on alouette-theming. Read it first for the color token model.
 `Text` and `Paragraph` have no variant props — style them entirely with
 `className`. `Text` defaults to `font-body` + `text-sharp`, so plain body text
 needs no family or color class. `Paragraph` is `Text` with `role="paragraph"`
-(renders a `<p>` on web) and selectable text.
+(renders a `<p>` on web) and selectable text — a block of prose, not a generic
+text wrapper (see "Text vs Paragraph").
 
 ## Setup
 
@@ -36,6 +37,28 @@ import { Text, Paragraph } from "alouette";
 ```
 
 ## Core Patterns
+
+### Text vs Paragraph
+
+`Paragraph` means "this is prose": one or more sentences, in a `<p>`, selectable
+so the reader can copy them. Everything else is `Text` — a label, a heading, a
+stat, a table cell, a single value — even when it stands alone on its own line.
+
+A value with its own component keeps that component: a code fragment is `Code`,
+a code listing `CodeBlock`, a link `ExternalLinkText` / `LinkText`, a quotation
+`Blockquote` (which already wraps its text in a `Paragraph`).
+
+A `<p>` takes no block content, so a `Paragraph`'s children are inline only —
+`Text`, `Code`, `ExternalLinkText`. Nesting a `Paragraph`, a `View` or a
+`Surface` inside one is invalid DOM on web.
+
+```tsx
+<Paragraph>
+  Point the client at <Code>{endpointUrl}</Code>, then{" "}
+  <ExternalLinkText size="sm" href={docsUrl} text="read the guide" />.
+</Paragraph>
+<Text className="text-sm text-muted">{endpointUrl}</Text>
+```
 
 ### Family + weight (one combined utility)
 
@@ -71,6 +94,16 @@ tuned for display sizes. For smaller emphasis, use `font-body-bold`.
 ```
 
 ## Common Mistakes
+
+### MEDIUM Using Paragraph as a generic text wrapper
+
+A URL, a label, a stat or a heading is not prose: `role="paragraph"` announces a
+paragraph to a screen reader and emits a `<p>` that cannot legally hold the
+`View`/`Surface` such a value usually sits next to. Keep `Paragraph` for
+sentences; a value with its own component (`Code`, `CodeBlock`,
+`ExternalLinkText`) keeps that component.
+
+Source: packages/alouette/src/ui/primitives/Text.tsx
 
 ### HIGH Using font-bold instead of font-body-bold
 

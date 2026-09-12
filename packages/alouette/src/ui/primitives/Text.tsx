@@ -42,6 +42,20 @@ export const Text = forwardRef<RNText, TextProps>(
 
 export type ParagraphProps = TextProps;
 
+/**
+ * A block of prose — `Text` with `role="paragraph"` (a real `<p>` on web) and
+ * selectable content (`select-auto`, which native Text is not by default).
+ *
+ * It is the wrapper for sentences, never for a single value: a URL, a code
+ * fragment, a label, a stat or a heading is a `Text` (or `Code` /
+ * `ExternalLinkText` / `CodeBlock`), even when it stands alone on its line.
+ * Reach for `Paragraph` when the content is one or more sentences the reader
+ * may want to select and copy.
+ *
+ * Its children are inline only — `Text`, `Code`, `ExternalLinkText`. A `<p>`
+ * takes no block content, so nesting another `Paragraph`, a `View` or a
+ * `Surface` inside one is invalid DOM on web.
+ */
 export const Paragraph = forwardRef<RNText, ParagraphProps>(
   ({ className, ...props }, ref) => {
     return (

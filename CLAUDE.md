@@ -114,6 +114,12 @@ Import icons from `alouette-icons/phosphor-icons/IconName`. The package is auto-
 
 `<Text>` has no variant props — style entirely via `className`.
 
+`<Paragraph>` is `<Text>` with `role="paragraph"` (a `<p>` on web) and selectable
+content: prose only, one or more sentences whose children are inline. A label, a
+heading, a stat, a URL or any single value stays a `<Text>` even alone on its
+line, and a value with its own component keeps it (`Code`, `CodeBlock`,
+`ExternalLinkText`).
+
 - **Family + weight** (one combined utility — do NOT use standalone `font-bold` / `font-extrabold` / `font-normal`):
   - `font-body`, `font-body-bold`, `font-body-extrabold`
   - `font-heading`, `font-heading-bold`, `font-heading-extrabold`
