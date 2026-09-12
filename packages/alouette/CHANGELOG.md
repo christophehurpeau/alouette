@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.13.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.12.0...alouette@22.13.0) (2026-09-12)
+
+### Features
+
+* add neutral variant
+* enhance PressableListItem with role and aria-label props
+* export AccentOrNeutral
+
 ## [22.12.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.11.0...alouette@22.12.0) (2026-09-06)
 
 ### Features
