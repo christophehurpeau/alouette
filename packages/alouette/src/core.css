@@ -160,11 +160,19 @@
   /* scrollbar-width/-color have no native equivalent, so this sits behind the
      @supports guard the native compiler cannot evaluate and therefore drops.
      Global rather than a utility: ScrollView maps className to the style prop,
-     so a raw CSS class would not reach the DOM node that scrolls. */
+     so a raw CSS class would not reach the DOM node that scrolls.
+     The track is opaque: a scroll container's background paints across its whole
+     padding box, gutter included, while its content container stops at the
+     gutter's inner edge — so a transparent track bares the scroller's own ground
+     (AppShell's frame is a two-tone gradient, and showed half of each color in
+     the gutter). `lowered` is the inset ground a track should have. The *
+     selector re-declares the property on every element, so a nested scroller
+     resolves its own theme's `lowered` rather than inheriting an ancestor's
+     track. */
   @supports (display: contents) {
     * {
       scrollbar-width: thin;
-      scrollbar-color: var(--color-border-sharp) transparent;
+      scrollbar-color: var(--color-border-sharp) var(--color-lowered);
     }
   }
 }

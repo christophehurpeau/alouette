@@ -287,6 +287,12 @@ export const TestsAppShellStory: ThisStory = {
       shellBox.bottom,
     );
 
+    // The frame's two-tone ground stops at the gutter: the scrollbar track is
+    // opaque, so it reads the same beside the header and beside the screen.
+    const { scrollbarColor } = getComputedStyle(shell);
+    await expect(scrollbarColor).not.toContain("transparent");
+    await expect(scrollbarColor.match(/rgba?\(/g)).toHaveLength(2);
+
     // The rail belongs to the route, not to the shell: leaving the section
     // takes it away, and the screen then spans the whole shell.
     await userEvent.click(shellCanvas.getByRole("link", { name: "Home" }));
