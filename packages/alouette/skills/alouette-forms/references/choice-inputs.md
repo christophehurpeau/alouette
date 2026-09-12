@@ -1,10 +1,47 @@
-# Choice inputs — autocomplete and single-select groups
+# Choice inputs — select, autocomplete and single-select groups
+
+## Select
+
+One value picked from a list, without typing. Options are data here (`options`,
+an array of `{ label, value, disabled? }`) rather than composed children — that
+is what separates it from the radio families below, whose children are JSX.
+
+```tsx
+import { Select } from "alouette";
+
+<Select
+  aria-label="Fruit"
+  placeholder="Pick a fruit"
+  options={[
+    { label: "Apple", value: "apple" },
+    { label: "Durian (sold out)", value: "durian", disabled: true },
+  ]}
+  defaultValue="apple"
+  onValueChange={setFruit}
+/>;
+```
+
+The value is controllable (`value` / `defaultValue` / `onValueChange`), and it
+also takes `accent`, `disabled` and `placeholder` (shown until something is
+selected). It renders no label element, so `aria-label` or `aria-labelledby` is
+required — that is the accessible name of the `combobox` it exposes on both
+platforms.
+
+The trigger is the `InputText` outlined material at the 44px touch height and
+needs no styling. Its presentation is per platform and needs no handling either:
+web renders a real `<select>` (the OS picker and its keyboard handling), native
+opens a `Popover` listbox over an `InteractiveBox` trigger.
+
+Inside a `FormField`, bind it as `value={field.value}`
+`onValueChange={field.onChange}` `aria-labelledby={labelId}`. It takes no `ref`
+and no `onBlur`, so those two `field` bindings have nowhere to go — pressing the
+label does not focus it.
 
 ## InputTextAutocomplete
 
 A text field backed by a filtered listbox — use it when the user types to narrow
-a known list. `Select` stays the right choice when the value is picked from the
-list without typing.
+a known list. `Select` above stays the right choice when the value is picked from
+the list without typing.
 
 ```tsx
 import { InputTextAutocomplete } from "alouette";

@@ -2,7 +2,8 @@
 name: alouette-forms
 description: >
   Collect and validate user input. Inputs: InputText and TextArea for text,
-  Switch for a toggle, InputTextAutocomplete to narrow a known list by typing.
+  Switch for a toggle, Select to pick one value from a known list and
+  InputTextAutocomplete to narrow that list by typing.
   Single-select groups, each composing its children rather than taking an
   options array: RadioGroup, RadioButtonGroup (which the light/dark
   ColorModePicker is built on) and RadioCardGroup. Validated forms over
@@ -15,12 +16,15 @@ description: >
   groups, a color-mode picker or a validated form.
 type: core
 library: alouette
-library_version: "22.11.0"
+library_version: "22.12.0"
 requires:
   - alouette-theming
   - alouette-actions
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputText.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.shared.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.web.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.shared.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.web.tsx"
@@ -109,13 +113,13 @@ union of every field, and never a per-field type argument.
 <Switch disabled checked={on} />
 ```
 
-### Autocomplete and single-select groups
+### Select, autocomplete and single-select groups
 
-`InputTextAutocomplete` is a text field backed by a filtered listbox, for
-narrowing a known list by typing. Three single-select families share one
-group-owns-the-value API and compose their children rather than take an options
-array: `RadioGroup` + `Radio` (circle-dot list),
-`RadioButtonGroup` + `RadioButton` (segmented pill bar) and
+`Select` picks one value from a list without typing; `InputTextAutocomplete` is a
+text field backed by a filtered listbox, for narrowing that list by typing. Three
+single-select families share one group-owns-the-value API and compose their
+children rather than take an options array: `RadioGroup` + `Radio` (circle-dot
+list), `RadioButtonGroup` + `RadioButton` (segmented pill bar) and
 `RadioCardGroup` + `RadioCard` (icon/label/description cards).
 
 `RadioButtonGroup` also takes `variant="icon"` — a pill of square icon-only
@@ -195,25 +199,11 @@ message; any other `ReactNode` is the message shown once the field is left empty
 `validate` takes a react-hook-form validator (returns an error string or
 `undefined`). For rich/non-string error content, use `renderError`.
 
+`validate` sits beside `required` on the same `FormField`, with the render body
+unchanged:
+
 ```tsx
-<FormField
-  control={control}
-  name="email"
-  label="Email"
-  validate={(v) =>
-    /^[^@]+@[^@]+$/.test(v) ? undefined : "Enter a valid email."
-  }
-  render={({ field, labelId }) => (
-    <InputText
-      ref={field.ref}
-      mode="email"
-      value={field.value}
-      aria-labelledby={labelId}
-      onChangeText={field.onChange}
-      onBlur={field.onBlur}
-    />
-  )}
-/>
+validate={(v) => (/^[^@]+@[^@]+$/.test(v) ? undefined : "Enter a valid email.")}
 ```
 
 `validate`'s `v` is that field's value type, so a `number` field's validator takes

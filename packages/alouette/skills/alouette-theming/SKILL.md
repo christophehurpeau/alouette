@@ -16,7 +16,7 @@ description: >
   applying colors, accents or dark mode, or when shipping a custom palette.
 type: core
 library: alouette
-library_version: "22.11.0"
+library_version: "22.12.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx"
@@ -29,6 +29,7 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/core/NativeThemeVariablesContext.ts"
   - "christophehurpeau/alouette:packages/alouette/src/core/useColorMode.ts"
   - "christophehurpeau/alouette:packages/alouette/src/theme-generator/generateTheme.ts"
+  - "christophehurpeau/alouette:packages/alouette/src/theme-generator/tokenScaleMap.ts"
   - "christophehurpeau/alouette:packages/alouette/src/theme-generator/writeTheme.ts"
   - "christophehurpeau/alouette:CLAUDE.md"
 ---
@@ -41,7 +42,9 @@ tree: components use **base tokens** (`bg-surface`, `text-accent`, `text-sharp`,
 `text-muted`, `border-muted`) and inherit the resolved value from the nearest
 scope. Setting an accent re-themes a whole subtree.
 
-`Accent` = `"brand" | "danger" | "info" | "success" | "warning"`.
+`Accent` = `"brand" | "danger" | "info" | "success" | "warning"`, and
+`AccentOrNeutral` adds `"neutral"` — both exported, and `AccentOrNeutral` is what
+every public `accent` prop takes.
 
 ## Setup
 

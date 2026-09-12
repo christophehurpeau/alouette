@@ -7,7 +7,7 @@
 
 library:
   name: "alouette"
-  version: "22.11.0"
+  version: "22.12.0"
   repository: "https://github.com/christophehurpeau/alouette"
   description: "Multi-platform (web + React Native iOS/Android) React design system built on NativeWind v5 and Tailwind CSS v4, styled entirely via className with semantic theme tokens and CSS-driven animations."
   primary_framework: "React / React Native"
@@ -46,7 +46,7 @@ domains:
     description: "Semantic message banners with optional dismiss, a top-pinned network connection status banner, and determinate progress indicators."
   - name: "Dialogs and overlays"
     slug: "dialogs"
-    description: "Modal overlays and AlertDialog confirmations (confirm/alert/required variants) with accessible labelling and dismiss handling."
+    description: "Content rendered above the screen through a portal: Modal, the AlertDialog confirmations built on it (confirm/alert/required variants, plus the icon-fixed presets), and the chrome-less Popover, with accessible labelling, dismiss handling and PortalAccentScope theming."
   - name: "Animating presence"
     slug: "animation"
     description: "CSS-keyframe enter/exit animations run on native via Reanimated, orchestrated with PresenceOne/PresenceList."
@@ -62,7 +62,7 @@ skills:
   - name: "Set up alouette in an app"
     slug: "alouette-setup"
     domain: "setup"
-    description: "Install and wire alouette into an Expo app: withAlouetteConfig metro plugin, import alouette/global.css, @source globs, AlouetteProvider, SafeAreaProvider, loading Sora/Chivo Mono fonts. Covers ios/android/web support."
+    description: "Wire alouette into an Expo / React Native app: the metro plugin that compiles its styles, the CSS entry point and the source globs that decide which classes survive, AlouetteProvider and the theme variables it needs to render colors on native, the safe-area provider, and loading the Sora and Chivo Mono weights so bold text is the right typeface. Load when bootstrapping a project, when alouette classes render unstyled, or when fonts/bold weights look wrong. Covers ios, android and web."
     type: "lifecycle"
     packages: ["alouette"]
     covers:
@@ -153,7 +153,7 @@ skills:
   - name: "Theme with modes and accents"
     slug: "alouette-theming"
     domain: "theming"
-    description: "Re-theme a subtree with accents (brand/danger/info/success/warning) and light/dark modes. Use the accent prop or AccentScope/ScopedTheme; children always consume base tokens (bg-surface, text-accent, border-muted). For an accent that toggles at runtime without remounting the subtree, use StableAccentScope. Tokens are className-only (no JS token-read hook); read mode with useCurrentMode."
+    description: 'Re-theme a subtree with accents (brand, danger, info, success, warning) and light/dark modes. Use the accent prop, AccentScope, or ScopedTheme; children always consume base tokens (bg-surface, text-accent, text-sharp, text-muted, border-muted). Tokens are className-only: alouette exports no JS token-read hook. Read the current mode with useCurrentMode. For an accent that toggles at runtime without remounting, use StableAccentScope; inside a portal (a modal or any other overlay), where the scope escapes the themed subtree, use PortalAccentScope. All three, and the pressables, take accent="neutral": the plain mode theme, which drops an inherited accent and makes a Button the neutral contained secondary beside an accented one. A stored light/dark choice is a ColorModePreference ("light" | "dark" | "system") resolved by useResolvedColorMode and applied by the app through ScopedTheme. Load when applying colors, accents or dark mode, or when shipping a custom palette.'
     type: "core"
     packages: ["alouette"]
     covers:
@@ -247,7 +247,7 @@ skills:
   - name: "Style text"
     slug: "alouette-typography"
     domain: "typography"
-    description: "Style Text and Paragraph entirely via className: combined font family+weight utilities (font-body, font-body-bold, font-heading-extrabold, font-mono*), Tailwind text-* sizes, and semantic color tokens (text-sharp, text-muted, text-accent, text-on-accent). No variant props."
+    description: "Style alouette Text and Paragraph entirely via className: combined font family+weight utilities (font-body, font-body-bold, font-body-extrabold, font-heading*, font-mono*), Tailwind text-* sizes, and semantic color tokens (text-sharp, text-muted, text-accent, text-on-accent). No variant props. Load when rendering any text; avoids font-bold and raw color classes."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -303,7 +303,7 @@ skills:
   - name: "Lay out screens, surfaces and stacks"
     slug: "alouette-layout"
     domain: "layout"
-    description: "Compose layout with Box/InteractiveBox/SafeAreaBox, Surface (variant/size/shadow), Stack/HStack/VStack, Separator, ScreenCenterLayout, and gradients (GradientBackground/GradientScrollView). Use the alouette spacing (xxs..4xl), radius (xs..lg) and shadow (s/m/l/lowered) token scale."
+    description: "Build screen structure: Box / InteractiveBox / SafeAreaBox and Surface for containers, Stack / HStack / VStack and Separator to arrange them, ScreenCenterLayout and the screen scroll containers (ScreenScrollView / ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through SafeAreaScope) for the page itself, the application shell around every screen (AppLayout + AppHeader and its brand / actions / account slots, or AppShell + AppShellSidebar + AppShellMain when the shell is composed per route), and GradientBackground / GradientScrollView for a tinted ground. Space, round and raise everything with the alouette spacing, radius and shadow scale rather than raw Tailwind numbers. Load when building screen structure, an app header or shell, cards, spacing, or backgrounds."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -361,7 +361,7 @@ skills:
   - name: "Build buttons and pressable surfaces"
     slug: "alouette-actions"
     domain: "actions"
-    description: 'Buttons (Button, IconButton, ExternalLinkButton, InternalLinkButton) and pressable surfaces (PressableBox, PressableListItem). variant is "contained"|"outlined"; size is "sm"|"md"; accent defaults to "brand". Interactive token states (hover/focus/active/disabled) are built in.'
+    description: "Everything the user presses. Button and IconButton are the primary actions; ActionButton is the one to reach for when pressing starts an async operation — it runs the promise and shows the spinner, the success state and the failure message itself. ExternalLinkButton and InternalLinkButton are the link-shaped buttons, LinkText and ExternalLinkText the inline links inside a sentence, and Menu + MenuItem the dropdown that collects secondary actions behind one trigger. PressableBox and PressableListItem are the bases for a custom pressable surface: they carry the hover, focus, press and disabled affordance so it never has to be rebuilt by hand. Load when adding buttons, text links, a menu of actions, or custom pressable elements."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -405,7 +405,7 @@ skills:
   - name: "Build forms and inputs"
     slug: "alouette-forms"
     domain: "forms"
-    description: "Inputs — InputText (mode: password/email/number/tel/url/search), TextArea (multiline InputText), Switch (controlled or uncontrolled); use the disabled prop (not editable); Switch takes checked + onValueChange. Single-select: RadioGroup + Radio (circle-dot vertical list) and RadioButtonGroup + RadioButton (segmented pill bar); both are controlled/uncontrolled via value/defaultValue/onValueChange + accent/disabled. Validation/composition on react-hook-form — Form owns the instance and exposes submit() via a render prop (no control passing); FormField binds a Controller to FormItem label/error/required and renders any input via render; FormFieldArray wraps useFieldArray for repeatable lists; FormSubmitButton (ActionButton) drives loading/success/failed; SimpleVForm is the vertical-stack shortcut. errorToMessage is required; FormValidationError distinguishes invalid fields from an onSubmit failure."
+    description: "Collect and validate user input. Inputs: InputText and TextArea for text, Switch for a toggle, Select to pick one value from a known list and InputTextAutocomplete to narrow that list by typing. Single-select groups, each composing its children rather than taking an options array: RadioGroup, RadioButtonGroup (which the light/dark ColorModePicker is built on) and RadioCardGroup. Validated forms over react-hook-form: Form owns the instance and passes its control down, so the form type is written once and every field's value type is inferred; FormField labels one field and reports its error; FormFieldArray repeats a group of fields; FormSubmitButton drives the submit lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and FormEditableSurface edit a row or a section in a modal owning its own Form. Load when building inputs, radio groups, a color-mode picker or a validated form."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -516,7 +516,7 @@ skills:
   - name: "Display data annotations"
     slug: "alouette-data"
     domain: "data"
-    description: 'Badge, a small display-only pill for status, counts or categories. accent defaults to "brand"; size is "sm"|"md"; variant is "solid"|"solid.enabled"|"outlined". An optional icon prop takes a rendered icon element and is sized from size. No className and no press handling.'
+    description: "Show a value the app already holds. Badge labels something with a status, count or category pill; Avatar stands for a person or account; EditableItem shows one labelled value behind an edit affordance and EditableSurface a whole titled section behind one; Bullet is an icon + text list row; Code and CodeBlock render source inline and as a block; Blockquote and Citation render a quoted excerpt and its attribution. All are display-only — they own no editor and no press handling, and are never wrapped in a Link or Pressable to gain one. Load when showing a status chip, a list row, an avatar, a value or section with an edit affordance, code, a quote or its attribution."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -574,7 +574,7 @@ skills:
   - name: "Navigate between destinations and views"
     slug: "alouette-navigation"
     domain: "navigation"
-    description: 'NavBar + NavBarItem (role="navigation" / role="link" / aria-current="page") and Tabs + Tab (role="tablist" / role="tab" / aria-selected). Compose-children groups over the shared segmented base (SegmentedBar/SegmentedItem, SelectionContext): lowered 44px bar, raised chip, optional leading icon, accent + disabled, value/defaultValue/onValueChange, and a per-item href + onPress (an anchor on web, and what expo Router <Link asChild> injects) that replaces the group callback.'
+    description: "Move the user between places. NavBar and NavBarItem navigate between destinations — each item is a real link announced as the current page, and composes with expo Router; Tabs and Tab switch between views of one screen, announced as a tab list. Both are built by composing their items, over the same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar can also stand vertically as a sidebar rail. Breadcrumbs and BreadcrumbItem render the trail back through the ancestors of the current page. Pick by meaning, not by looks: navigation is never a RadioButtonGroup, which announces a form value, and never a Link wrapped around a Text, which has no interactive state. Load when building a tab bar, a section switcher, a breadcrumb trail, or navigation between routes."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -642,7 +642,7 @@ skills:
   - name: "Show feedback messages"
     slug: "alouette-feedback"
     domain: "feedback"
-    description: "Semantic banners: Message (requires accent + icon) and the preset InfoMessage/ConfirmationMessage/WarningMessage. Optional dismiss requires both onDismiss and dismissIconAriaLabel. size is sm/md/lg. Also ConnectionState, a top-pinned network-status banner driven by a state prop."
+    description: "Tell the user what happened, in place. Message is the semantic banner — InfoMessage, ConfirmationMessage, WarningMessage and ErrorMessage are its ready-made meanings — optionally dismissible, and flattened when it sits inside an already-raised surface. ConnectionState is the banner pinned at the top of the screen reporting the network, and LinearProgress and CircularProgress show how far a determinate operation has got. A failure coming out of a button or a form is already rendered by that component, so reach for these for status the screen itself has to state. Load when showing inline status, alerts, dismissible notices, connection status, or progress."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -704,10 +704,96 @@ skills:
         priority: "LOW"
         status: "active"
   # ---------------------------------------------------------------------------
+  - name: "Show dialogs and overlays"
+    slug: "alouette-dialogs"
+    domain: "dialogs"
+    description: "Content above the screen. Modal is the general dialog: the caller controls whether it is open, and it is dismissed by the backdrop, its close button, Escape or the Android back gesture, with its footer pinned below a scrolling body. AlertDialog is the confirmation built on it — ask, acknowledge, or demand a decision that cannot be dismissed — with icon-fixed presets (QuestionAlertDialog, WarningAlertDialog, InfoAlertDialog, SuccessAlertDialog); confirming may be async, and the dialog stays open, locked, until it settles, rendering a failure in place. Popover is the chrome-less escape hatch for content that must escape a clipping ancestor — but a set of actions off a trigger is Menu + MenuItem, never a hand-built Popover. Load when adding a modal, confirmation, alert dialog, or a dropdown escaping a clipping container."
+    type: "core"
+    packages: ["alouette"]
+    covers:
+      - "Modal (visible, onClose, title, footer, accent)"
+      - "AlertDialog (variant: confirm | alert | required)"
+      - "QuestionAlertDialog / WarningAlertDialog / InfoAlertDialog / SuccessAlertDialog"
+      - "Async onConfirm (the dialog stays open and locked until it settles)"
+      - "Popover (open, anchorRef, align, width, placement)"
+      - "PortalAccentScope"
+    tasks:
+      - "Open a modal with a pinned footer"
+      - "Ask the user to confirm or acknowledge something"
+      - "Await an async confirmation before closing"
+      - "Show content that must escape a clipping ancestor"
+    failure_modes:
+      - mistake: "Labelling a Modal with aria-label instead of title"
+        mechanism: "title is a required ModalProps prop and doubles as the accessible name via aria-labelledby; there is no aria-label, so every modal carries a visible heading."
+        wrong_pattern: |
+          <Modal visible={open} onClose={close} aria-label="Image preview">…</Modal>
+        correct_pattern: |
+          <Modal visible={open} onClose={close} title="Image preview">…</Modal>
+        source: "packages/alouette/src/ui/containers/Modal.tsx"
+        priority: "HIGH"
+        status: "active"
+      - mistake: "Building a confirmation out of a raw Modal"
+        mechanism: 'AlertDialog sets role="alertdialog", wires the description to aria-describedby, hides the close button and builds the footer for the chosen variant; a hand-assembled Modal reimplements all of it and loses the async lock.'
+        wrong_pattern: |
+          <Modal visible={open} onClose={close} title="Discard changes?" footer={<><Button text="Cancel" /><Button text="Discard" /></>} />
+        correct_pattern: |
+          <QuestionAlertDialog visible={open} title="Discard changes?" onConfirm={discard} onCancel={close} />
+        source: "packages/alouette/src/ui/containers/AlertDialog.tsx"
+        priority: "HIGH"
+        status: "active"
+        skills: ["alouette-dialogs", "alouette-actions"]
+      - mistake: "Putting the action buttons in children instead of footer"
+        mechanism: "A row placed in children scrolls away with the body; footer stays pinned at the bottom of the scroll box on both platforms, right-aligns its buttons and takes on the separator border while content scrolls under it."
+        wrong_pattern: |
+          <Modal visible={open} onClose={close} title="Details"><Text>…</Text><HStack><Button text="Done" /></HStack></Modal>
+        correct_pattern: |
+          <Modal visible={open} onClose={close} title="Details" footer={<Button text="Done" onPress={close} />}><Text>…</Text></Modal>
+        source: "packages/alouette/src/ui/containers/Modal.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Wrapping the Modal element in AccentScope"
+        mechanism: "The panel renders through a portal, outside the themed subtree, so a surrounding scope never reaches it; Modal rebuilds the theme inside with PortalAccentScope from its own accent prop."
+        wrong_pattern: |
+          <AccentScope accent="danger"><Modal visible={open} title="Delete project">…</Modal></AccentScope>
+        correct_pattern: |
+          <Modal accent="danger" visible={open} title="Delete project">…</Modal>
+        source: "packages/alouette/src/ui/containers/PortalAccentScope.tsx"
+        priority: "MEDIUM"
+        status: "active"
+        skills: ["alouette-dialogs", "alouette-theming"]
+      - mistake: "Hand-building a menu out of a Popover"
+        mechanism: "Popover brings no chrome and no roles. Menu + MenuItem is this Popover plus the menu/menuitem roles, the trigger's aria-haspopup/aria-expanded, arrow-key roving focus and close-on-select."
+        wrong_pattern: |
+          <Popover open={open} anchorRef={ref}><Surface>{actions}</Surface></Popover>
+        correct_pattern: |
+          <Menu trigger={…}><MenuItem text="Rename" onPress={rename} /></Menu>
+        source: "packages/alouette/src/ui/actions/Menu.tsx"
+        priority: "MEDIUM"
+        status: "active"
+        skills: ["alouette-dialogs", "alouette-actions"]
+      - mistake: "Expecting a required dialog to close on backdrop/Escape"
+        mechanism: 'variant="required" intentionally ignores the backdrop, Escape and the Android back button — only its explicit action closes it. Ordinary dialogs should stay dismissible (confirm / alert).'
+        wrong_pattern: |
+          <AlertDialog variant="required" visible={open} onClose={close} title="Details" />
+        correct_pattern: |
+          <AlertDialog variant="confirm" visible={open} onCancel={close} onConfirm={save} title="Save changes?" />
+        source: "packages/alouette/src/ui/containers/AlertDialog.tsx"
+        priority: "MEDIUM"
+        status: "active"
+      - mistake: "Passing icon to a preset dialog"
+        mechanism: "The presets fix the icon; their props are AlertDialogUsageProps = every AlertDialog prop except icon. Use the base AlertDialog for a custom icon."
+        wrong_pattern: |
+          <WarningAlertDialog icon={<TrashRegularIcon />} visible={open} title="Delete?" />
+        correct_pattern: |
+          <AlertDialog icon={<TrashRegularIcon />} variant="confirm" visible={open} title="Delete?" />
+        source: "packages/alouette/src/ui/containers/AlertDialog.tsx"
+        priority: "LOW"
+        status: "active"
+  # ---------------------------------------------------------------------------
   - name: "Animate enter/exit presence"
     slug: "alouette-animation"
     domain: "animation"
-    description: "Animate mount/unmount with PresenceOne (swap one keyed child) and PresenceList (add/remove across a keyed list) using CSS keyframe classes (animate-slide-in/out, animate-collapse-in/out). exitDurationMs must come from animationDurationsMs so the unmount timer matches the CSS animation. Animations run on native via react-native-reanimated."
+    description: "Animate alouette UI two ways: NativeWind transition utilities for a change of state (hover, focus, press), and PresenceOne / PresenceList for content entering and leaving, which keep an element mounted long enough to play its exit keyframes. Their exit timing is read from the library's animationDurationsMs rather than hardcoded, so it stays in step with the keyframes. Both run on native through react-native-reanimated. Load when adding transitions or enter/exit animations."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -767,7 +853,7 @@ skills:
   - name: "Respond to breakpoints"
     slug: "alouette-responsive"
     domain: "responsive"
-    description: "Build adaptive layouts. Prefer Tailwind responsive variant classes (sm:/md:/lg:/xl:) — they work on web and native; alouette customizes the widths (sm 480 / md 768 / lg 1024 / xl 1280). Fall back to SwitchBreakpointsUsingDisplayNone / SwitchBreakpointsUsingNull and useCurrentBreakpointName only when a class cannot express the change (different component tree per size, or unmounting a heavy off-screen variant)."
+    description: "Build adaptive layouts. Prefer Tailwind responsive variant classes (sm:, md:, lg:, xl:) for responsive styling — they work on web and native. alouette customizes the widths: sm 480, md 768, lg 1024, xl 1280. Fall back to SwitchBreakpointsUsingDisplayNone / SwitchBreakpointsUsingNull (and useCurrentBreakpointName) only when a class can't express the change — a different component tree per size, or unmounting a heavy off-screen variant."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -825,7 +911,7 @@ skills:
   - name: "Apply styling conventions"
     slug: "alouette-styling"
     domain: "styling"
-    description: "Declare a component's classes with tailwind-variants: enum-like props (variant/size/shadow/selected/disabled) are tv() variants, and a component that styles several elements uses one tv() with slots. Style through className, never inline style for a static value. Write pixel dimensions as arbitrary values (w-[380px], min-h-[44px]) instead of the canonical spacing-scale class. Carries the alouette design principles."
+    description: "Styling conventions for writing components with alouette: express enum-like props (variant/size/shadow/state) as tailwind-variants tv() variants instead of a Record lookup, give one component a single tv() with slots instead of several tv objects, style through className instead of inline style, and write pixel sizes as arbitrary values (w-[380px]) rather than the canonical spacing-scale class. States the alouette design principles every component must satisfy, including that interactivity is a component and never a wrapper. Load when writing, restyling or reviewing a component."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -886,7 +972,7 @@ skills:
   - name: "Use Phosphor icons with alouette"
     slug: "alouette-icons"
     domain: "layout"
-    description: "Import icons from alouette-icons/phosphor-icons/IconName and render via the Icon component or pass them to Button/IconButton/Message. Tint via a text-* className (resolved to a color token); size in px."
+    description: "Use Phosphor icons with alouette. Each icon is imported from its own module (alouette-icons/phosphor-icons/IconName) so only what is used is bundled, and is then either rendered through the Icon component or handed as an element to a component that takes one (Button, IconButton, Message). Its color comes from a text-* token class rather than from the SVG, so an icon follows the theme and the accent around it. Load when adding icons to alouette UI."
     type: "composition"
     packages: ["alouette"]
     compositions:
@@ -931,7 +1017,7 @@ skills:
   - name: "Open external links"
     slug: "alouette-external-links"
     domain: "actions"
-    description: "Open external URLs with ExternalLink (wraps expo-web-browser / Linking) or ExternalLinkButton. Configure openLinkBehavior per platform (native: linking|webBrowser; web: targetBlank|targetSelf)."
+    description: "Send the user to a URL outside the app. ExternalLink is the primitive over expo-web-browser and Linking; ExternalLinkButton is the call-to-action shaped call site and ExternalLinkText the inline one inside a sentence. How the link opens is decided per platform — an in-app browser or the system one on native, a new tab or the same one on web — and the two wrappers already pick the usual answer. Load when linking out to external URLs from alouette UI."
     type: "composition"
     packages: ["alouette"]
     compositions:

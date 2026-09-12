@@ -9,11 +9,12 @@ description: >
   and the accent around it. Load when adding icons to alouette UI.
 type: composition
 library: alouette
-library_version: "22.11.0"
+library_version: "22.12.0"
 requires:
   - alouette-theming
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/Icon.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/InteractiveIcon.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Button.stories.tsx"
   - "christophehurpeau/alouette:CLAUDE.md"
 ---

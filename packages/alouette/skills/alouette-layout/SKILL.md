@@ -14,7 +14,7 @@ description: >
   or shell, cards, spacing, or backgrounds.
 type: core
 library: alouette
-library_version: "22.11.0"
+library_version: "22.12.0"
 requires:
   - alouette-theming
 sources:

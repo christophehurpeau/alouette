@@ -12,7 +12,7 @@ description: >
   section with an edit affordance, code, a quote or its attribution.
 type: core
 library: alouette
-library_version: "22.11.0"
+library_version: "22.12.0"
 requires:
   - alouette-theming
   - alouette-actions

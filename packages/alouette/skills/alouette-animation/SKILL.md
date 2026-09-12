@@ -10,8 +10,9 @@ description: >
   adding transitions or enter/exit animations.
 type: core
 library: alouette
-library_version: "22.11.0"
+library_version: "22.12.0"
 sources:
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/animationDurationsMs.ts"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.stories.tsx"
@@ -34,8 +35,15 @@ mechanisms:
 State-change transitions (`transition-*` + `duration-*` + `ease-*`) are already
 built into alouette's interactive components. Use `InteractiveBox` (or
 `PressableBox`, `Button`, `IconButton`) — they animate press/hover/focus
-coherently (e.g. press scale plus background/border color) with the system's
-duration and easing. Don't reach for a raw react-native `Pressable`.
+coherently with the system's duration and easing. Don't reach for a raw
+react-native `Pressable`.
+
+The press is a rigid one-pixel drop (`active:translate-y-px`), and it is
+deliberately left out of the transition so it lands instantly while the ground
+fades. Don't restore a `transition-transform`, and don't reach for
+`active:scale-*`: a scale displaces every point in proportion to its distance
+from the center, so the same class that nudges a button squeezes a full-width
+row.
 
 ```tsx
 import { InteractiveBox, Text } from "alouette";
@@ -134,7 +142,7 @@ with consistent duration and easing, plus disabled and focus-visible handling.
 Re-implementing them on a bare `Pressable` drifts from the system and misses
 that behavior.
 
-Source: packages/alouette/src/ui/containers/Box.tsx (InteractiveBox); ui/data/PressableBox.tsx
+Source: packages/alouette/src/ui/containers/Box.tsx (InteractiveBox); ui/actions/PressableBox.tsx
 
 ### HIGH Hardcoding exitDurationMs instead of animationDurationsMs
 
