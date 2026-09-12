@@ -223,6 +223,10 @@ export interface PressableBoxProps
    * component that needs another one (a `menuitem`) still passes its own.
    */
   href?: string;
+  /**
+   * Defaults to `"link"` when `href` is set and `"button"` otherwise.
+   */
+  role?: RNPressableProps["role"];
   forceStyle?: "focus" | "hover" | "press";
   /**
    * Set it to `false` on a row of a list that already paints its cursor (a
@@ -241,6 +245,7 @@ export const PressableBox = forwardRef<RNView, PressableBoxProps>(
       forceStyle,
       accent,
       href,
+      role,
       withFocusVisibleOutline = true,
       ...props
     },
@@ -251,7 +256,7 @@ export const PressableBox = forwardRef<RNView, PressableBoxProps>(
         <InteractiveBox
           ref={ref}
           withFocusVisibleOutline={withFocusVisibleOutline}
-          role="button"
+          role={role ?? (href === undefined ? "button" : "link")}
           className={pressableBoxVariants({
             variant,
 
@@ -259,8 +264,8 @@ export const PressableBox = forwardRef<RNView, PressableBoxProps>(
             forceStyle,
           })}
           // Spread because `href` is not part of the underlying Pressable's
-          // types, and before `props` so a caller's own `role` still wins.
-          {...(href === undefined ? {} : { href, role: "link" })}
+          // types.
+          {...(href === undefined ? {} : { href })}
           {...props}
         />
       </AccentScope>

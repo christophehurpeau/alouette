@@ -1328,6 +1328,7 @@ const PressableBox = forwardRef(
     forceStyle,
     accent,
     href,
+    role,
     withFocusVisibleOutline = true,
     ...props
   }, ref) => {
@@ -1336,13 +1337,13 @@ const PressableBox = forwardRef(
       {
         ref,
         withFocusVisibleOutline,
-        role: "button",
+        role: role ?? (href === void 0 ? "button" : "link"),
         className: pressableBoxVariants({
           variant,
           className,
           forceStyle
         }),
-        ...href === void 0 ? {} : { href, role: "link" },
+        ...href === void 0 ? {} : { href },
         ...props
       }
     ) });
@@ -4844,31 +4845,58 @@ function LinearProgress({
   ) }) });
 }
 
+const pressableListItemVariants = tv(
+  {
+    slots: {
+      row: "flex-row items-center justify-between rounded-sm mx-xs my-xxs px-m py-m",
+      content: "flex-1",
+      actions: "flex-row items-center flex-wrap gap-xs mt-xs",
+      caretContainer: "justify-center",
+      caret: ""
+    },
+    variants: {
+      variant: {
+        contained: { caret: "text-on-accent-muted" },
+        list: { caret: "text-on-list" },
+        outlined: { caret: "text-muted" },
+        ghost: { caret: "text-muted" }
+      }
+    },
+    defaultVariants: { variant: "list" }
+  },
+  { twMerge: false }
+);
 function PressableListItem({
   variant = "list",
-  role = "button",
+  role,
   accent,
+  className,
+  "aria-label": ariaLabel,
+  href,
   children,
+  actions,
   onPress
 }) {
+  const styles = pressableListItemVariants({ variant });
   return /* @__PURE__ */ jsxs(
     PressableBox,
     {
       variant,
       role,
       accent,
-      className: "flex-row items-center justify-between mx-xs my-xxs px-m py-m",
+      "aria-label": ariaLabel,
+      href,
+      className: styles.row({ className }),
       onPress,
       children: [
-        /* @__PURE__ */ jsx(View$1, { className: "flex-1", children }),
-        /* @__PURE__ */ jsx(View$1, { className: "justify-center", children: /* @__PURE__ */ jsx(
+        /* @__PURE__ */ jsxs(View$1, { className: styles.content(), children: [
+          children,
+          actions ? /* @__PURE__ */ jsx(View$1, { className: styles.actions(), children: actions }) : null
+        ] }),
+        /* @__PURE__ */ jsx(View$1, { className: styles.caretContainer(), children: /* @__PURE__ */ jsx(
           Icon,
           {
-            className: (() => {
-              if (variant === "contained") return "text-on-accent-muted";
-              if (variant === "list") return "text-on-list";
-              return "text-muted";
-            })(),
+            className: styles.caret(),
             icon: /* @__PURE__ */ jsx(CaretRightRegularIcon, {}),
             size: 18
           }

@@ -19,7 +19,7 @@ declare const _default: {
         };
         accent: {
             control: "select";
-            options: import("../../core/AlouetteConfig").AccentOrNeutral[];
+            options: import("../..").AccentOrNeutral[];
         };
         disabled: {
             control: "boolean";

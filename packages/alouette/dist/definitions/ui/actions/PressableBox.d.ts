@@ -49,6 +49,10 @@ export interface PressableBoxProps extends RNPressableProps, PressableBoxVariant
      * component that needs another one (a `menuitem`) still passes its own.
      */
     href?: string;
+    /**
+     * Defaults to `"link"` when `href` is set and `"button"` otherwise.
+     */
+    role?: RNPressableProps["role"];
     forceStyle?: "focus" | "hover" | "press";
     /**
      * Set it to `false` on a row of a list that already paints its cursor (a
