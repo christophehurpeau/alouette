@@ -17,6 +17,7 @@ export type {
   AlouetteModeTheme,
   AlouetteTheme,
   Accent,
+  AccentOrNeutral,
 } from "./core/AlouetteConfig";
 export { useCurrentMode, useCurrentTheme } from "./core/ThemeContext";
 export type { ColorModePreference } from "./core/useColorMode";

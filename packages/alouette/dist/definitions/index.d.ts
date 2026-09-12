@@ -7,7 +7,7 @@ export { useSafeAreaInsets } from "./core/useSafeAreaInsets";
 export type { SafeAreaEdge, SafeAreaScopeProps, } from "./core/SafeAreaEdgesContext";
 export { SafeAreaScope, useConsumedSafeAreaEdges, } from "./core/SafeAreaEdgesContext";
 export { useScreenSafeAreaPadding } from "./core/useScreenSafeAreaPadding";
-export type { AlouetteModeTheme, AlouetteTheme, Accent, } from "./core/AlouetteConfig";
+export type { AlouetteModeTheme, AlouetteTheme, Accent, AccentOrNeutral, } from "./core/AlouetteConfig";
 export { useCurrentMode, useCurrentTheme } from "./core/ThemeContext";
 export type { ColorModePreference } from "./core/useColorMode";
 export { useResolvedColorMode, useSystemColorMode } from "./core/useColorMode";
