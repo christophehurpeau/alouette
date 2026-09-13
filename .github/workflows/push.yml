@@ -30,7 +30,6 @@ jobs:
 
       - name: Build
         run: pnpm run build
-        if: startsWith(matrix.node-version, '24.')
 
       - name: Format
         run: pnpm run format:check

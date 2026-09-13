@@ -28,6 +28,7 @@
     "test:coverage:generate": "TZ=UTC POB_VITEST_COVERAGE=json vitest run --coverage",
     "test:watch": "TZ=UTC vitest --watch",
     "tsc": "tsc -b",
+    "upgrade-expo": "pnpm -r --sequential run upgrade-expo",
     "watch": "pnpm run clean:build && rollup --config rollup.config.mjs --watch"
   },
   "devDependencies": {
