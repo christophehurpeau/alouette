@@ -87,7 +87,7 @@ export function FormItem({
 
   return (
     <VStack className="gap-xxs">
-      <Pressable onPress={onLabelPress}>
+      <Pressable tabIndex={-1} onPress={onLabelPress}>
         <VStack>
           <HStack className="gap-xxs items-center">
             <Text

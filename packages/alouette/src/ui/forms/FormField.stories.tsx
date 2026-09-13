@@ -98,6 +98,8 @@ export const FormFieldStory: ThisStory = {
     await userEvent.click(usernameInput);
     await userEvent.tab();
     await expect(canvas.getByText("Username is required.")).toBeVisible();
+    // The label is not a tab stop: Tab goes straight to the next input.
+    await expect(passwordInput).toHaveFocus();
 
     // Pressing the label focuses the input, like a native <label for>.
     await userEvent.click(canvas.getByText("Username"));
