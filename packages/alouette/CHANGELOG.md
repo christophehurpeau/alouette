@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.14.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.13.0...alouette@22.14.0) (2026-09-13)
+
+### Features
+
+* add checkbox group/card and improve radio with contained/outlined variants
+
+### Bug Fixes
+
+* scrollback background color
+
 ## [22.13.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.12.0...alouette@22.13.0) (2026-09-12)
 
 ### Features
