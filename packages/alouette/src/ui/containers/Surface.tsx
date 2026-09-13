@@ -2,64 +2,72 @@ import { forwardRef } from "react";
 import type { View as RNView } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
-import { AccentScope } from "./AccentScope";
+import { twMergeConfig } from "../../core/twMerge";
 import { Box, type BoxProps } from "./Box";
 
-const surfaceVariants = tv({
-  // overflow-hidden so the multi-layer shadow respects the rounded corners.
-  base: "overflow-hidden transition-background duration-fast",
-  variants: {
-    size: {
-      xxs: "p-xs rounded-xs",
-      xs: "p-sm rounded-xs",
-      sm: "p-m rounded-sm",
-      md: "p-xl rounded-sm",
-      lg: "p-xxl rounded-md",
-    },
-    variant: {
-      surface: "bg-surface",
-      highlight: "bg-highlight",
-      "highlight-accent": "bg-highlight-accent",
-      lowered: "bg-lowered",
-      translucent: "bg-translucent",
-    },
-    shadow: {
-      none: "shadow-none",
-      s: "shadow-s",
-      m: "shadow-m",
-      l: "shadow-l",
-      lowered: "shadow-lowered",
+const surfaceVariants = tv(
+  {
+    base: "surface",
+    variants: {
+      size: {
+        xxs: "surface-xxs",
+        xs: "surface-xs",
+        sm: "surface-sm",
+        md: "surface-md",
+        lg: "surface-lg",
+      },
+      variant: {
+        surface: "bg-surface",
+        highlight: "bg-highlight",
+        "highlight-accent": "bg-highlight-accent",
+        lowered: "lowered",
+        translucent: "bg-translucent",
+      },
+      shadow: {
+        none: "shadow-none",
+        s: "shadow-s",
+        m: "shadow-m",
+        l: "shadow-l",
+        lowered: "shadow-lowered",
+      },
     },
   },
-  defaultVariants: {
-    size: "md",
-    variant: "surface",
-  },
-});
+  { twMergeConfig },
+);
 
 type SurfaceVariantProps = VariantProps<typeof surfaceVariants>;
 
-export interface SurfaceProps extends BoxProps, SurfaceVariantProps {
+export interface SurfaceProps extends BoxProps {
   accent?: Accent;
+  /**
+   * @deprecated Write the size utility, which takes a breakpoint prefix:
+   * `size="sm"` is `surface-sm` (`surface-xxs` … `surface-lg`).
+   */
+  size?: SurfaceVariantProps["size"];
+  /**
+   * @deprecated Write the ground class: `variant="highlight"` is
+   * `bg-highlight`, and `variant="lowered"` is the `lowered` utility (ground and
+   * inset shadow together).
+   */
+  variant?: SurfaceVariantProps["variant"];
+  /** @deprecated Write the shadow class: `shadow="l"` is `shadow-l`. */
+  shadow?: SurfaceVariantProps["shadow"];
 }
 
+/**
+ * @deprecated Write `<Box className="surface">`: the `surface` utility is this
+ * component's defaults (ground, shadow, padding, radius, overflow-hidden), and
+ * every class after it — `lowered`, `bg-highlight`, `shadow-m`, `surface-sm`,
+ * `md:surface-lg` — overrides its own part.
+ */
 export const Surface = forwardRef<RNView, SurfaceProps>(
-  ({ className, size, variant, shadow, accent, ...props }, ref) => {
-    // shadow defaults to "s", or "lowered" when variant="lowered".
-    const resolvedShadow = shadow ?? (variant === "lowered" ? "lowered" : "s");
-    return (
-      <AccentScope accent={accent}>
-        <Box
-          ref={ref}
-          className={surfaceVariants({
-            size,
-            variant,
-            shadow: resolvedShadow,
-            className,
-          })}
-          {...props}
-        />
-      </AccentScope>
-    );
-  },
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- still honoured until removal
+  ({ className, size, variant, shadow, accent, ...props }, ref) => (
+    <Box
+      ref={ref}
+      accent={accent}
+      className={surfaceVariants({ size, variant, shadow, className })}
+      {...props}
+    />
+  ),
 );

@@ -8,8 +8,8 @@ import {
 } from "react";
 import type { View as RNView } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
+import { Box } from "../containers/Box";
 import { Popover } from "../containers/Popover";
-import { Surface } from "../containers/Surface";
 import { View } from "../primitives/View";
 import { MenuContextProvider } from "./MenuContext";
 import { useMenuKeyboard } from "./useMenuKeyboard";
@@ -92,12 +92,7 @@ export function Menu({
         onClose={close}
       >
         <View className="pt-xxs">
-          <Surface
-            variant="highlight"
-            shadow="l"
-            size="sm"
-            className="p-xs min-w-[220px]"
-          >
+          <Box className="surface-popover min-w-[220px]">
             {header === undefined ? null : (
               <View className="px-m py-xs">{header}</View>
             )}
@@ -106,7 +101,7 @@ export function Menu({
                 {children}
               </View>
             </MenuContextProvider>
-          </Surface>
+          </Box>
         </View>
       </Popover>
     </>

@@ -1,6 +1,6 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Story } from "../story-components/Story";
 import { Paragraph, Text } from "./Text";
 
@@ -87,11 +87,11 @@ function Colors() {
       <Text className="text-lg text-muted">text-muted — Secondary text</Text>
       <Story.SubSection title="Accent Colors - brand" accent="brand">
         <Text className="text-lg text-accent">text-accent — Accented text</Text>
-        <Surface className="bg-highlight-accent">
+        <Box className="surface bg-highlight-accent">
           <Text className="text-lg text-on-accent">
             text-on-accent — Text on accent background
           </Text>
-        </Surface>
+        </Box>
       </Story.SubSection>
     </Story.Section>
   );

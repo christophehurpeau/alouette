@@ -1,6 +1,6 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Paragraph, Text } from "../primitives/Text";
 import { Story } from "../story-components/Story";
 import { Code } from "./Code";
@@ -61,12 +61,12 @@ export const CodeVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="On a raised surface">
-        <Surface>
+        <Box className="surface">
           <Text>
             The highlight layer keeps the fragment readable on a Surface:{" "}
             <Code>useCurrentTheme()</Code>
           </Text>
-        </Surface>
+        </Box>
       </Story.Section>
     </Story>
   ),

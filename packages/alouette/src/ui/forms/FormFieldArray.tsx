@@ -14,7 +14,6 @@ import { Button } from "../actions/Button";
 import { IconButton } from "../actions/IconButton";
 import { StableAccentScope } from "../containers/StableAccentScope";
 import { View } from "../primitives/View";
-import { HStack, VStack } from "../stacks/stacks";
 import { FormItem } from "./FormItem";
 
 /**
@@ -109,7 +108,7 @@ function FormFieldArrayItem<
 
   return (
     <StableAccentScope accent={pendingRemoval ? "danger" : undefined}>
-      <HStack className="gap-sm items-center p-xxs">
+      <View className="flex-row gap-sm items-center p-xxs">
         <View className="grow shrink basis-0">
           {render({ control, name, index, label: itemLabel })}
         </View>
@@ -127,7 +126,7 @@ function FormFieldArrayItem<
             onPress={onRemove}
           />
         ) : null}
-      </HStack>
+      </View>
     </StableAccentScope>
   );
 }
@@ -191,7 +190,7 @@ export function FormFieldArray<
       label={label}
       details={details}
       render={() => (
-        <VStack className="gap-xs">
+        <View className="gap-xs">
           {fields.map((field, index) => (
             <FormFieldArrayItem<TFieldValues, TName>
               key={field.id}
@@ -218,7 +217,7 @@ export function FormFieldArray<
               append(appendedItem);
             }}
           />
-        </VStack>
+        </View>
       )}
     />
   );

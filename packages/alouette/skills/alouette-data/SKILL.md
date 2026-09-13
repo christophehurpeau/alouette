@@ -3,7 +3,7 @@ name: alouette-data
 description: >
   Show a value the app already holds. Badge labels something with a status,
   count or category pill; Avatar stands for a person or account; EditableItem
-  shows one labelled value behind an edit affordance and EditableSurface a whole
+  shows one labelled value behind an edit affordance and EditableSection a whole
   titled section behind one; Bullet is an icon + text list row; Code and
   CodeBlock render source inline and as a block; Blockquote and Citation render
   a quoted excerpt and its attribution. All are display-only — they own no
@@ -20,8 +20,8 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/EditableSurface.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/EditableSurface.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/EditableSection.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/EditableSection.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/data/Code.tsx"
@@ -96,12 +96,12 @@ The badge is `self-start`, so it never stretches to fill a stack. Position it
 with a wrapper — it takes no `className`.
 
 ```tsx
-<HStack className="gap-xs items-center">
+<View className="flex-row gap-xs items-center">
   <Text className="text-base">Invoice #128</Text>
   <Badge accent="success" size="sm">
     Paid
   </Badge>
-</HStack>
+</View>
 ```
 
 ## Avatar
@@ -125,16 +125,16 @@ import { Avatar } from "alouette";
 `Bullet` is one row of an icon-led list: a leading `icon` tinted `text-accent`
 and the text as `children`. It takes no `accent` of its own — it reads the
 nearest scope, so accent a whole list by accenting its container. Stack rows in a
-`VStack` and choose the gap yourself.
+`View` and choose the gap yourself.
 
 ```tsx
-import { Bullet, VStack } from "alouette";
+import { Bullet, View } from "alouette";
 import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
 
-<VStack className="gap-xs">
+<View className="gap-xs">
   <Bullet icon={<CheckCircleRegularIcon />}>Consistent UI</Bullet>
   <Bullet icon={<CheckCircleRegularIcon />}>Accessible</Bullet>
-</VStack>;
+</View>;
 ```
 
 The icon stays aligned with the **first** line (`items-start`) and the text
@@ -154,7 +154,7 @@ import { Code, CodeBlock, Paragraph } from "alouette";
 </Paragraph>;
 ```
 
-`CodeBlock` is the block form: a lowered `Surface` holding mono text that scrolls
+`CodeBlock` is the block form: a lowered surface holding mono text that scrolls
 horizontally instead of wrapping, with an optional `title` (a file name or a
 language) above it and `size` `"sm" | "md"` (default `"md"`) for the code text.
 
@@ -194,10 +194,10 @@ import { Blockquote, Citation } from "alouette";
 without it, plain muted text. It stands alone under any excerpt, not only under a
 `Blockquote`.
 
-## EditableItem and EditableSurface
+## EditableItem and EditableSection
 
 Two read-only displays carrying an edit affordance: `EditableItem` for one
-labelled value (a bold label, a summary beside it), `EditableSurface` for a
+labelled value (a bold label, a summary beside it), `EditableSection` for a
 titled section whose value spans several lines. Both own **no** editor and no
 state — they call `onEdit`, and the pencil `IconButton` is the only pressable.
 
@@ -209,19 +209,20 @@ state — they call `onEdit`, and the pencil `IconButton` is the only pressable.
   onEdit={openEditor}
 />;
 
-<EditableSurface
+<EditableSection
+  className="surface"
   title="Event details"
   titleBadge={<Badge accent="brand">12 August 2026</Badge>}
   editAriaLabel="Edit event details"
   onEdit={openEditor}
 >
   <Paragraph className="text-sm">An evening of readings…</Paragraph>
-</EditableSurface>;
+</EditableSection>;
 ```
 
 When the editor is a modal form, use `FormEditableItem` /
-`FormEditableSurface` (alouette-forms/SKILL.md) rather than wiring `onEdit`
-yourself. Props, which ones belong to the Surface rather than the button, and
+`FormEditableSection` (alouette-forms/SKILL.md) rather than wiring `onEdit`
+yourself. Props, which ones belong to the section rather than the button, and
 how to choose between the two:
 [references/editable-displays.md](references/editable-displays.md).
 
@@ -333,10 +334,10 @@ Wrong:
 Correct — the link beside the badge it labels, or inside the `Bullet` text:
 
 ```tsx
-<HStack className="gap-xs items-center">
+<View className="flex-row gap-xs items-center">
   <ExternalLinkText size="sm" href={ticket.url} text={ticket.key} />
   {ticket.status ? <Badge size="sm">{ticket.status}</Badge> : null}
-</HStack>
+</View>
 
 <Bullet icon={<FileRegularIcon />}>
   <ExternalLinkText href={doc.url} text={doc.title} />
@@ -354,17 +355,17 @@ ui/actions/PressableBox.tsx
 Wrong:
 
 ```tsx
-<HStack className="items-center justify-between">
-  <HStack className="items-center gap-sm">
+<View className="flex-row items-center justify-between">
+  <View className="flex-row items-center gap-sm">
     <Text className="font-body-bold text-md">Display name</Text>
     <Badge>{name}</Badge>
-  </HStack>
+  </View>
   <IconButton
     size="sm"
     icon={<PencilSimpleRegularIcon />}
     onPress={openEditor}
   />
-</HStack>
+</View>
 ```
 
 Correct:
@@ -389,10 +390,10 @@ Source: packages/alouette/src/ui/data/EditableItem.tsx
 Wrong:
 
 ```tsx
-<HStack className="gap-sm items-start">
+<View className="flex-row gap-sm items-start">
   <Icon icon={<CheckCircleRegularIcon />} className="text-accent" />
   <Text className="shrink">Accessible</Text>
-</HStack>
+</View>
 ```
 
 Correct:
@@ -406,14 +407,14 @@ routinely drop `shrink` on the `Text`, which stops long text from wrapping.
 
 Source: packages/alouette/src/ui/data/Bullet.tsx
 
-### MEDIUM Expecting EditableItem or EditableSurface to open an editor
+### MEDIUM Expecting EditableItem or EditableSection to open an editor
 
 Neither renders a modal nor holds state — `onEdit` is yours to wire. Nothing
 happens on press until you open something from it; the form-modal versions are
-`FormEditableItem` / `FormEditableSurface`.
+`FormEditableItem` / `FormEditableSection`.
 
 Source: packages/alouette/src/ui/data/EditableItem.tsx;
-ui/containers/EditableSurface.tsx; ui/forms/FormEditableItem.tsx
+ui/containers/EditableSection.tsx; ui/forms/FormEditableItem.tsx
 
 ### MEDIUM Pinning a size on inline Code
 
@@ -438,14 +439,14 @@ fixed size makes the fragment jump out of the line on both platforms.
 
 Source: packages/alouette/src/ui/data/Code.tsx
 
-### MEDIUM Hand-rolling a code block with Surface + Text
+### MEDIUM Hand-rolling a code block with a lowered surface + Text
 
 Wrong:
 
 ```tsx
-<Surface variant="lowered">
+<Box className="surface lowered">
   <Text className="font-mono text-sm">{snippet}</Text>
-</Surface>
+</Box>
 ```
 
 Correct:

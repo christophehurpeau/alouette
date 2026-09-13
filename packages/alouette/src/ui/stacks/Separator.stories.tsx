@@ -1,9 +1,9 @@
+import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { Separator } from "./Separator";
-import { HStack } from "./stacks";
 
 export default {
   title: "alouette/Layout/Separator",
@@ -24,11 +24,11 @@ export default {
 ~~~tsx
 <Separator />
 
-<HStack className="h-24">
+<View className="flex-row h-24">
   <View>Left</View>
   <Separator vertical />
   <View>Right</View>
-</HStack>
+</View>
 ~~~`,
       },
     },
@@ -52,7 +52,7 @@ export const Variants: StoryObj = {
         </Story.SubSection>
       </Story.Section>
       <Story.Section title="Vertical">
-        <HStack className="h-24">
+        <View className="flex-row h-24">
           <View className="grow flex-center">
             <Text>Left</Text>
           </View>
@@ -60,8 +60,25 @@ export const Variants: StoryObj = {
           <View className="grow flex-center">
             <Text>Right</Text>
           </View>
-        </HStack>
+        </View>
       </Story.Section>
     </Story>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Every divider is announced as a separator with its orientation, without
+    // the caller passing a role.
+    const orientations = canvas
+      .getAllByRole("separator")
+      .map((separator) => separator.getAttribute("aria-orientation"));
+    await expect(orientations).toContain("horizontal");
+    await expect(orientations).toContain("vertical");
+    await expect(
+      orientations.every(
+        (orientation) =>
+          orientation === "horizontal" || orientation === "vertical",
+      ),
+    ).toBe(true);
+  },
 };

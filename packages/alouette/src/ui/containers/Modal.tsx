@@ -15,7 +15,6 @@ import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { ScrollView } from "../primitives/ScrollView";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
-import { HStack } from "../stacks/stacks";
 import { PortalAccentScope } from "./PortalAccentScope";
 
 // Yoga only knows `relative` and `absolute` — `position: sticky` is a web-only
@@ -35,12 +34,12 @@ const modalVariants = tv({
     // margin); max-w caps it on wide viewports.
     panel: "w-full max-h-full",
     inset: "bg-highlight shadow-l",
-    header: "items-center gap-xs",
+    header: "flex-row items-center gap-xs",
     scrollContent: "",
     // `sticky` pins it to the bottom of the scroll box on web. The border is
     // transparent at rest so toggling it can't shift the layout.
     footer:
-      "items-center justify-end gap-m sticky bottom-0 bg-highlight border-t border-transparent",
+      "flex-row items-center justify-end gap-m sticky bottom-0 bg-highlight border-t border-transparent",
   },
   variants: {
     size: {
@@ -153,7 +152,7 @@ export function Modal({
   });
   const footerElement =
     footer === undefined ? null : (
-      <HStack className={styles.footer()}>{footer}</HStack>
+      <View className={styles.footer()}>{footer}</View>
     );
 
   return (
@@ -186,7 +185,7 @@ export function Modal({
             <View className={styles.inset()}>
               {/* Header sits outside the scroll box: the title and the close
                   button stay put while the body scrolls under them. */}
-              <HStack
+              <View
                 className={styles.header()}
                 style={{ minHeight: buttonHeight[iconSize] }}
               >
@@ -208,7 +207,7 @@ export function Modal({
                     onPress={onClose}
                   />
                 )}
-              </HStack>
+              </View>
 
               {/* Pixel maxHeight (not a %) so the ScrollView sizes to its
                   content and only scrolls once it exceeds ~70% of the screen;

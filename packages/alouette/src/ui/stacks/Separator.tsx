@@ -24,6 +24,8 @@ export const Separator = forwardRef<RNView, SeparatorProps>(
     return (
       <RNView
         ref={ref}
+        role="separator"
+        aria-orientation={vertical ? "vertical" : "horizontal"}
         className={separatorVariants({ vertical, className })}
         {...props}
       />

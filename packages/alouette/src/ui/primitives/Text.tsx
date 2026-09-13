@@ -1,26 +1,8 @@
 import { forwardRef } from "react";
 import { Text as RNText, type TextProps as RNTextProps } from "react-native";
-import { extendTailwindMerge } from "tailwind-merge";
 import type { Accent } from "../../core/AlouetteConfig";
+import { twMerge } from "../../core/twMerge";
 import { AccentScope } from "../containers/AccentScope";
-
-const twMerge = extendTailwindMerge({
-  extend: {
-    classGroups: {
-      "font-family": [
-        "font-body",
-        "font-body-bold",
-        "font-body-extrabold",
-        "font-heading",
-        "font-heading-bold",
-        "font-heading-extrabold",
-        "font-mono",
-        "font-mono-bold",
-        "font-mono-extrabold",
-      ],
-    },
-  },
-});
 
 export interface TextProps extends RNTextProps {
   accent?: Accent;
@@ -62,7 +44,7 @@ export const Paragraph = forwardRef<RNText, ParagraphProps>(
       <Text
         ref={ref}
         role="paragraph"
-        className={`select-auto ${className ?? ""}`}
+        className={twMerge("select-auto", className)}
         {...props}
       />
     );

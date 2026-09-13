@@ -1,15 +1,16 @@
 import type { ReactNode } from "react";
 import type { FieldValues } from "react-hook-form";
+import { twMerge } from "../../core/twMerge";
 import {
-  EditableSurface,
-  type EditableSurfaceProps,
-} from "../containers/EditableSurface";
+  EditableSection,
+  type EditableSectionProps,
+} from "../containers/EditableSection";
 import { type FormEditorProps, useFormEditorModal } from "./useFormEditorModal";
 
-export interface FormEditableSurfaceProps<TFieldValues extends FieldValues>
+export interface FormEditableSectionProps<TFieldValues extends FieldValues>
   extends
     Pick<
-      EditableSurfaceProps,
+      EditableSectionProps,
       | "accent"
       | "children"
       | "className"
@@ -18,25 +19,22 @@ export interface FormEditableSurfaceProps<TFieldValues extends FieldValues>
       | "editAriaLabel"
       | "editIcon"
       | "editIconVariant"
-      | "shadow"
       | "title"
       | "titleBadge"
-      | "variant"
     >,
     Omit<FormEditorProps<TFieldValues>, "size" | "title"> {
-  /** Size of the editor modal — `size` belongs to the Surface. */
+  /** Size of the editor modal. */
   modalSize?: FormEditorProps<TFieldValues>["size"];
   /** Heading of the editor modal. Defaults to `title`. */
   modalTitle?: string;
-  size?: EditableSurfaceProps["size"];
 }
 
 /**
- * An EditableSurface whose editor is a modal owning its own Form — see
+ * An EditableSection whose editor is a modal owning its own Form — see
  * useFormEditorModal for how the edit is kept out of the screen's state. The
  * body stays `children`, so the read-only content is written as plain JSX.
  */
-export function FormEditableSurface<TFieldValues extends FieldValues>({
+export function FormEditableSection<TFieldValues extends FieldValues>({
   title,
   titleBadge,
   details,
@@ -45,15 +43,12 @@ export function FormEditableSurface<TFieldValues extends FieldValues>({
   editIconVariant,
   accent,
   className,
-  shadow,
-  size,
-  variant,
   disabled,
   modalSize,
   modalTitle,
   children,
   ...editorProps
-}: FormEditableSurfaceProps<TFieldValues>): ReactNode {
+}: FormEditableSectionProps<TFieldValues>): ReactNode {
   const { open, editor } = useFormEditorModal<TFieldValues>({
     ...editorProps,
     title: modalTitle ?? title,
@@ -62,7 +57,7 @@ export function FormEditableSurface<TFieldValues extends FieldValues>({
   });
 
   return (
-    <EditableSurface
+    <EditableSection
       title={title}
       titleBadge={titleBadge}
       details={details}
@@ -71,14 +66,31 @@ export function FormEditableSurface<TFieldValues extends FieldValues>({
       editIconVariant={editIconVariant}
       accent={accent}
       className={className}
-      shadow={shadow}
-      size={size}
-      variant={variant}
       disabled={disabled}
       onEdit={open}
     >
       {children}
       {editor}
-    </EditableSurface>
+    </EditableSection>
   );
 }
+
+/**
+ * @deprecated Renamed `FormEditableSection`, which applies no material itself:
+ * write `<FormEditableSection className="surface">`.
+ */
+export function FormEditableSurface<TFieldValues extends FieldValues>({
+  className,
+  ...props
+}: FormEditableSectionProps<TFieldValues>): ReactNode {
+  return (
+    <FormEditableSection<TFieldValues>
+      className={twMerge("surface", className)}
+      {...props}
+    />
+  );
+}
+
+/** @deprecated Renamed `FormEditableSectionProps`. */
+export type FormEditableSurfaceProps<TFieldValues extends FieldValues> =
+  FormEditableSectionProps<TFieldValues>;

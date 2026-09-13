@@ -6,7 +6,6 @@ import type { Accent } from "../core/AlouetteConfig";
 import { AccentScope } from "../ui/containers/AccentScope";
 import { Text } from "../ui/primitives/Text";
 import { View } from "../ui/primitives/View";
-import { VStack } from "../ui/stacks/stacks";
 import { Story, accentsWithoutNeutral } from "../ui/story-components/Story";
 import { StoryGrid } from "../ui/story-components/StoryGrid";
 
@@ -127,10 +126,10 @@ interface TokenSwatchProps {
 
 function TokenSwatch({ token }: TokenSwatchProps): ReactNode {
   return (
-    <VStack className="min-w-20 gap-0.5">
+    <View className="min-w-20 gap-0.5">
       <Text className="text-xs text-muted leading-tight">{token}</Text>
       <View className={tokenSwatchVariants({ token })} />
-    </VStack>
+    </View>
   );
 }
 
@@ -141,12 +140,12 @@ interface TokenGroupProps {
 
 function TokenGroup({ group, children }: TokenGroupProps): ReactNode {
   return (
-    <VStack className="gap-xxs">
+    <View className="gap-xxs">
       <Text className="font-body-bold text-xs text-muted">{group}</Text>
       <StoryGrid.Row flexWrap loose>
         {children}
       </StoryGrid.Row>
-    </VStack>
+    </View>
   );
 }
 
@@ -270,10 +269,10 @@ interface ThemeProbeProps {
 
 function ThemeProbe({ label }: ThemeProbeProps): ReactNode {
   return (
-    <VStack className="min-w-20 gap-0.5">
+    <View className="min-w-20 gap-0.5">
       <Text className="text-xs text-muted leading-tight">{label}</Text>
       <View aria-label={label} className="h-3 bg-(--color-accent)" />
-    </VStack>
+    </View>
   );
 }
 

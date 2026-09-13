@@ -1,17 +1,16 @@
 import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimpleRegularIcon";
 import { type ReactNode, useId } from "react";
+import type { Accent } from "../../core/AlouetteConfig";
+import { twMerge } from "../../core/twMerge";
 import { IconButton } from "../actions/IconButton";
 import type { PressableBoxProps } from "../actions/PressableBox";
 import type { SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
-import { HStack, VStack } from "../stacks/stacks";
-import { Surface, type SurfaceProps } from "./Surface";
+import { Box, type BoxProps } from "./Box";
 
-export interface EditableSurfaceProps extends Pick<
-  SurfaceProps,
-  "accent" | "className" | "shadow" | "size" | "variant"
-> {
+export interface EditableSectionProps extends Pick<BoxProps, "className"> {
+  accent?: Accent;
   /** Heading of the section, and the label of the region for assistive tech. */
   title: string;
   /**
@@ -24,7 +23,7 @@ export interface EditableSurfaceProps extends Pick<
   /** Names the edit button for assistive tech — it has no visible text. */
   editAriaLabel: string;
   editIcon?: SVGIconElement;
-  /** Variant of the edit IconButton — `variant` belongs to the Surface. */
+  /** Variant of the edit IconButton. */
   editIconVariant?: PressableBoxProps["variant"];
   disabled?: boolean;
   onEdit: () => void;
@@ -33,13 +32,17 @@ export interface EditableSurfaceProps extends Pick<
 }
 
 /**
- * A Surface holding a block of read-only content behind a single edit
+ * A titled section holding a block of read-only content behind a single edit
  * affordance. Where EditableItem is one label with a summary that fits beside
- * it, this is a titled section whose value spans several lines. Owns no
- * editor: pair it with FormEditableSurface for a react-hook-form modal, or
- * compose your own Modal from `onEdit`.
+ * it, this is a section whose value spans several lines. Owns no editor: pair
+ * it with FormEditableSection for a react-hook-form modal, or compose your own
+ * Modal from `onEdit`.
+ *
+ * It brings no material of its own — the caller picks it through `className`:
+ * `surface` for a card, `surface lowered`, an outline, or nothing inside a
+ * container that already has one.
  */
-export function EditableSurface({
+export function EditableSection({
   title,
   titleBadge,
   details,
@@ -48,33 +51,27 @@ export function EditableSurface({
   editIconVariant,
   accent,
   className,
-  shadow,
-  size,
-  variant,
   disabled,
   onEdit,
   children,
-}: EditableSurfaceProps): ReactNode {
+}: EditableSectionProps): ReactNode {
   const titleId = useId();
 
   return (
-    <Surface
+    <Box
       role="region"
       aria-labelledby={titleId}
       accent={accent}
-      shadow={shadow}
-      size={size}
-      variant={variant}
       className={className}
     >
-      <VStack className="gap-sm">
+      <View className="gap-sm">
         {/* The title is sized to the edit button's own height, so the row it
             shares with the button adds no dead space above and below it — at
             text-lg it would be 13px shorter than the button, which no amount
             of alignment can absorb. */}
-        <HStack className="items-start justify-between gap-sm">
-          <VStack className="shrink items-start">
-            <HStack className="items-center gap-sm">
+        <View className="flex-row items-start justify-between gap-sm">
+          <View className="shrink items-start">
+            <View className="flex-row items-center gap-sm">
               <Text nativeID={titleId} className="font-heading-bold text-xl">
                 {title}
               </Text>
@@ -82,11 +79,11 @@ export function EditableSurface({
                   column; in this row that pins it 3px above the title's
                   center, so it is wrapped in a View the row can align. */}
               {titleBadge ? <View>{titleBadge}</View> : null}
-            </HStack>
+            </View>
             {details ? (
               <Text className="text-muted text-sm">{details}</Text>
             ) : null}
-          </VStack>
+          </View>
           <IconButton
             size="sm"
             icon={editIcon}
@@ -95,9 +92,25 @@ export function EditableSurface({
             aria-label={editAriaLabel}
             onPress={onEdit}
           />
-        </HStack>
+        </View>
         {children}
-      </VStack>
-    </Surface>
+      </View>
+    </Box>
   );
 }
+
+/**
+ * @deprecated Renamed `EditableSection`, which applies no material itself:
+ * write `<EditableSection className="surface">`.
+ */
+export function EditableSurface({
+  className,
+  ...props
+}: EditableSectionProps): ReactNode {
+  return (
+    <EditableSection className={twMerge("surface", className)} {...props} />
+  );
+}
+
+/** @deprecated Renamed `EditableSectionProps`. */
+export type EditableSurfaceProps = EditableSectionProps;

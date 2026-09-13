@@ -1,5 +1,4 @@
 import {
-  HStack,
   NavBar,
   NavBarItem,
   RadioButton,
@@ -11,7 +10,6 @@ import {
   Separator,
   Switch,
   Text,
-  VStack,
   View,
   useSafeAreaInsets,
   useScreenSafeAreaPadding,
@@ -64,19 +62,19 @@ function InsetsReadout({
   const padding = useScreenSafeAreaPadding();
 
   return (
-    <VStack className="bg-lowered gap-m p-m">
+    <View className="bg-lowered gap-m p-m">
       <Text className="font-heading-bold text-xl">
         {withHeader ? "With header" : "No header"}
       </Text>
 
-      <VStack className="gap-xxs">
+      <View className="gap-xxs">
         <Text className="font-mono text-xs">
           {`insets  top ${insets.top} · bottom ${insets.bottom} · left ${insets.left} · right ${insets.right}`}
         </Text>
         <Text className="font-mono text-xs">
           {`padding top ${formatPadding(padding?.paddingTop)} · bottom ${formatPadding(padding?.paddingBottom)} · left ${formatPadding(padding?.paddingLeft)} · right ${formatPadding(padding?.paddingRight)}`}
         </Text>
-      </VStack>
+      </View>
 
       <Separator />
 
@@ -92,12 +90,12 @@ function InsetsReadout({
         <RadioButton value="empty" label="Empty" />
       </RadioButtonGroup>
 
-      <HStack className="items-center gap-sm">
+      <View className="flex-row items-center gap-sm">
         <Switch checked={consumeTop} onValueChange={onConsumeTopChange} />
         <Text className="text-sm">
           SafeAreaScope consumedEdges=[&quot;top&quot;]
         </Text>
-      </HStack>
+      </View>
 
       <NavBar
         aria-label="Demo pages"
@@ -111,7 +109,7 @@ function InsetsReadout({
           <NavBarItem label="Without header" />
         </Link>
       </NavBar>
-    </VStack>
+    </View>
   );
 }
 

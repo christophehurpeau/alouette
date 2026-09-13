@@ -23,8 +23,8 @@ import { ColorModePicker } from "../inputs/ColorModePicker";
 import { NavBar } from "../navigation/NavBar";
 import { NavBarItem } from "../navigation/NavBarItem";
 import { Text } from "../primitives/Text";
+import { View } from "../primitives/View";
 import { Separator } from "../stacks/Separator";
-import { VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
 import { AppHeader } from "./AppHeader";
 import { AppHeaderAccount } from "./AppHeaderAccount";
@@ -58,7 +58,7 @@ export default {
       <IconButton aria-label="Notifications" icon={<BellRegularIcon />} size="sm" variant="soft" />
       <AppHeaderAccount name="Camille Hurel" header={<Text className="text-sm text-muted">camille@example.com</Text>}>
         <MenuItem label="Profile" icon={<UserCircleRegularIcon />} href="/me" />
-        <Separator role="separator" className="my-xxs" />
+        <Separator className="my-xxs" />
         <MenuItem label="Log out" icon={<SignOutRegularIcon />} accent="danger" onPress={confirmLogOut} />
       </AppHeaderAccount>
     </AppHeaderActions>
@@ -156,7 +156,7 @@ function LoggedInActions({ onLogOut }: LoggedInActionsProps): ReactNode {
           icon={<GearRegularIcon />}
           href="/settings"
         />
-        <Separator role="separator" className="my-xxs" />
+        <Separator className="my-xxs" />
         <MenuItem
           label="Log out"
           icon={<SignOutRegularIcon />}
@@ -179,7 +179,7 @@ function ThemedAppHeader(): ReactNode {
 
   return (
     <ScopedTheme theme={mode}>
-      <VStack className="bg-screen">
+      <View className="bg-screen">
         <AppHeader
           aria-label="Themed header"
           brand={<DemoBrand />}
@@ -204,11 +204,11 @@ function ThemedAppHeader(): ReactNode {
         >
           <DemoNav label="Themed navigation" />
         </AppHeader>
-        <VStack className="gap-xs px-l py-xl">
+        <View className="gap-xs px-l py-xl">
           <Text className="font-heading-bold text-xl">Page content</Text>
           <Text className="text-muted text-base">{`Rendered in ${mode} mode.`}</Text>
-        </VStack>
-      </VStack>
+        </View>
+      </View>
     </ScopedTheme>
   );
 }
@@ -224,12 +224,12 @@ function LandingHero(): ReactNode {
       >
         <DemoNav label="Landing navigation" />
       </AppHeader>
-      <VStack className="items-center gap-xs px-l py-xxl">
+      <View className="items-center gap-xs px-l py-xxl">
         <Text className="font-heading-extrabold text-3xl">Sing it once</Text>
         <Text className="text-muted text-base">
           The header has no ground of its own — the hero shows through.
         </Text>
-      </VStack>
+      </View>
     </Box>
   );
 }

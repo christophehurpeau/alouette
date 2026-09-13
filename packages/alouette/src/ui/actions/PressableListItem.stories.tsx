@@ -5,7 +5,6 @@ import { Box } from "../containers/Box";
 import { Badge } from "../data/Badge";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
-import { HStack, VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
 import { Button } from "./Button";
 import { PressableListItem } from "./PressableListItem";
@@ -36,7 +35,7 @@ function PressLog({ value }: { value: string }): ReactNode {
 function PullRequestRow(): ReactNode {
   const [pressed, setPressed] = useState("nothing");
   return (
-    <VStack className="gap-xs">
+    <View className="gap-xs">
       <PressableListItem
         // Without it the row is announced as "Add dark mode #42 opened 3 days
         // ago Approve Merge" — the whole card read out as one name.
@@ -65,16 +64,16 @@ function PullRequestRow(): ReactNode {
           setPressed("pressed:row");
         }}
       >
-        <VStack className="gap-xxs">
+        <View className="gap-xxs">
           <Text className="font-body-bold">Add dark mode</Text>
-          <HStack className="items-center gap-xs">
+          <View className="flex-row items-center gap-xs">
             <Badge>#42</Badge>
             <Text className="text-sm text-muted">opened 3 days ago</Text>
-          </HStack>
-        </VStack>
+          </View>
+        </View>
       </PressableListItem>
       <PressLog value={pressed} />
-    </VStack>
+    </View>
   );
 }
 
@@ -111,7 +110,7 @@ function ListItemRow(): ReactNode {
 function RouterRow(): ReactNode {
   const [navigation, setNavigation] = useState("nothing");
   return (
-    <VStack className="gap-xs">
+    <View className="gap-xs">
       <PressableListItem
         href="/pull/42"
         aria-label="Open Ship it"
@@ -122,13 +121,13 @@ function RouterRow(): ReactNode {
           setNavigation(`prevented:${String(event.defaultPrevented)}`);
         }}
       >
-        <VStack className="gap-xxs">
+        <View className="gap-xxs">
           <Text className="font-body-bold">Ship it</Text>
           <Text className="text-sm text-muted">opened 3 days ago</Text>
-        </VStack>
+        </View>
       </PressableListItem>
       <PressLog value={navigation} />
-    </VStack>
+    </View>
   );
 }
 
@@ -145,7 +144,7 @@ export const Variants: ThisStory = {
       }
     >
       <Story.Section title="Variants">
-        <VStack>
+        <View>
           <PressableListItem variant="contained" onPress={() => {}}>
             <Text className="text-on-accent">contained</Text>
           </PressableListItem>
@@ -158,10 +157,10 @@ export const Variants: ThisStory = {
           <PressableListItem variant="ghost" onPress={() => {}}>
             <Text>ghost</Text>
           </PressableListItem>
-        </VStack>
+        </View>
       </Story.Section>
       <Story.Section title="Basic List">
-        <VStack>
+        <View>
           <PressableListItem
             onPress={() => {
               console.log("Item 1 pressed");
@@ -199,51 +198,51 @@ export const Variants: ThisStory = {
           >
             <Text className="text-on-list">Danger</Text>
           </PressableListItem>
-        </VStack>
+        </View>
       </Story.Section>
       <Story.Section title="Multi-line Content">
-        <VStack>
+        <View>
           <PressableListItem
             onPress={() => {
               console.log("Notifications");
             }}
           >
-            <VStack className="gap-xxs">
+            <View className="gap-xxs">
               <Text className="font-body-bold">Notifications</Text>
               <Text className="text-sm text-muted">
                 Manage your notification preferences
               </Text>
-            </VStack>
+            </View>
           </PressableListItem>
           <PressableListItem
             onPress={() => {
               console.log("Privacy");
             }}
           >
-            <VStack className="gap-xxs">
+            <View className="gap-xxs">
               <Text className="font-body-bold">Privacy & Security</Text>
               <Text className="text-sm text-muted">
                 Control your privacy settings
               </Text>
-            </VStack>
+            </View>
           </PressableListItem>
           <PressableListItem
             onPress={() => {
               console.log("Account");
             }}
           >
-            <VStack className="gap-xxs">
+            <View className="gap-xxs">
               <Text className="font-body-bold">Account Settings</Text>
               <Text className="text-sm text-muted">
                 Update your account information
               </Text>
-            </VStack>
+            </View>
           </PressableListItem>
-        </VStack>
+        </View>
       </Story.Section>
       <Story.Section title="Menu Example">
         <Box className="rounded-md overflow-hidden">
-          <VStack>
+          <View>
             <PressableListItem
               onPress={() => {
                 console.log("Profile");
@@ -273,7 +272,7 @@ export const Variants: ThisStory = {
             >
               <Text className="text-on-list">Logout</Text>
             </PressableListItem>
-          </VStack>
+          </View>
         </Box>
       </Story.Section>
       <Story.Section title="Row with actions">

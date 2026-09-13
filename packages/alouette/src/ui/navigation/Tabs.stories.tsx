@@ -8,9 +8,9 @@ import { ChartBarDuotoneIcon } from "alouette-icons/phosphor-icons/ChartBarDuoto
 import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
 import { type ReactNode, useState } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { Tab, type TabProps } from "./Tab";
 import { Tabs } from "./Tabs";
@@ -161,7 +161,7 @@ function TabsWithPanels(): ReactNode {
   const [value, setValue] = useState("week");
 
   return (
-    <VStack className="gap-m items-start">
+    <View className="gap-m items-start">
       <Tabs aria-label="Ranges" value={value} onValueChange={setValue}>
         <Tab
           id="tab-week"
@@ -176,14 +176,15 @@ function TabsWithPanels(): ReactNode {
           label="Quarter"
         />
       </Tabs>
-      <Surface
+      <Box
+        className="surface"
         role="tabpanel"
         id={value === "week" ? "panel-week" : "panel-quarter"}
         aria-labelledby={value === "week" ? "tab-week" : "tab-quarter"}
       >
         <TabPanel value={value} />
-      </Surface>
-    </VStack>
+      </Box>
+    </View>
   );
 }
 

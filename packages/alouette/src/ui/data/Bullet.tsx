@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
-import { HStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 
 export interface BulletProps {
   /** Leading icon, tinted with the current accent. */
@@ -11,9 +11,9 @@ export interface BulletProps {
 
 export function Bullet({ icon, children }: BulletProps): ReactNode {
   return (
-    <HStack className="gap-sm items-start">
+    <View className="flex-row gap-sm items-start">
       <Icon icon={icon} className="text-accent" />
       <Text className="shrink">{children}</Text>
-    </HStack>
+    </View>
   );
 }

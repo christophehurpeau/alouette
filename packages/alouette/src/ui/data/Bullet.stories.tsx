@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
 import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Bullet } from "./Bullet";
 
@@ -33,11 +33,11 @@ export const BulletVariantsStory: ThisStory = {
   render: () => (
     <Story>
       <Story.Section withSurface title="List">
-        <VStack className="gap-xs">
+        <View className="gap-xs">
           <Bullet icon={<CheckCircleRegularIcon />}>Consistent UI</Bullet>
           <Bullet icon={<CheckCircleRegularIcon />}>Accessible</Bullet>
           <Bullet icon={<CheckCircleRegularIcon />}>Animated</Bullet>
-        </VStack>
+        </View>
       </Story.Section>
 
       <Story.Section withSurface title="Icons">

@@ -2,7 +2,7 @@ import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { InputTextAutocomplete } from "./InputTextAutocomplete";
@@ -31,14 +31,14 @@ function FruitAutocomplete(
 function ControlledFruitAutocomplete(): ReactNode {
   const [value, setValue] = useState("banana");
   return (
-    <VStack className="gap-xs">
+    <View className="gap-xs">
       <FruitAutocomplete
         aria-label="Controlled fruit"
         value={value}
         onValueChange={setValue}
       />
       <Text className="font-mono text-xs text-muted">value: {value}</Text>
-    </VStack>
+    </View>
   );
 }
 

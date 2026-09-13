@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 import { ConfirmationMessage } from "../feedback/Message";
 import { InputText } from "../inputs/InputText";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { Form, FormValidationError } from "./Form";
 import { FormField } from "./FormField";
@@ -34,7 +34,7 @@ function FormSubmitButtonDemo(): ReactNode {
       <Form<NewsletterValues>
         defaultValues={{ email: "" }}
         render={({ control, submit }) => (
-          <VStack className="gap-l">
+          <View className="gap-l">
             <FormField
               control={control}
               name="email"
@@ -56,7 +56,7 @@ function FormSubmitButtonDemo(): ReactNode {
               errorToMessage={errorToMessage}
               onPress={submit}
             />
-          </VStack>
+          </View>
         )}
         onSubmit={async () => {
           await delay(300);

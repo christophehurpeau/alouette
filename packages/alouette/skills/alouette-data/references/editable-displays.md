@@ -1,4 +1,4 @@
-# alouette — EditableItem & EditableSurface
+# alouette — EditableItem & EditableSection
 
 The two read-only displays that carry an edit affordance. Both show a saved
 value behind a single pencil `IconButton` and own **no** editor and no state:
@@ -36,15 +36,16 @@ import { EditableItem, Badge } from "alouette";
 label alone. `variant` (`contained` / `outlined` / `ghost`), `accent` and
 `disabled` are forwarded to the `IconButton`.
 
-## EditableSurface — a titled section
+## EditableSection — a titled section
 
-A `Surface` with a `title` heading, an optional `titleBadge` beside it,
+A titled section: a `title` heading, an optional `titleBadge` beside it,
 `details` under it, and `children` as the read-only body. It renders
 `role="region"` labelled by the `title` alone — the badge stays out of the
 accessible name.
 
 ```tsx
-<EditableSurface
+<EditableSection
+  className="surface"
   title="Event details"
   titleBadge={<Badge accent="brand">12 August 2026</Badge>}
   details="The date, and what guests see before coming."
@@ -55,30 +56,32 @@ accessible name.
   <Paragraph className="text-muted text-sm">
     The gate closes at 19:00.
   </Paragraph>
-</EditableSurface>
+</EditableSection>
 ```
 
-`accent`, `className`, `shadow`, `size` and `variant` are the **`Surface`'s**
-(alouette-layout/SKILL.md), so the edit button's own
-`contained` / `outlined` / `ghost` / `soft` goes through `editIconVariant`:
+The section brings no material of its own, so the caller picks it with
+`className` (alouette-layout/SKILL.md): `surface` for a card, `surface lowered`,
+an outline (`border border-muted rounded-sm p-m`), or nothing inside a container
+that already has one. The edit button's own `contained` / `outlined` /
+`ghost` / `soft` goes through `editIconVariant`:
 
 ```tsx
-// Wrong — `ghost` is not a Surface variant
-<EditableSurface variant="ghost" … />
+// Wrong — the section has no variant prop
+<EditableSection variant="ghost" … />
 // Correct
-<EditableSurface variant="lowered" editIconVariant="ghost" … />
+<EditableSection className="surface lowered surface-sm" editIconVariant="ghost" … />
 ```
 
 ## Choosing between them, and wiring the editor
 
 Choose by shape, not by size: one value with a short summary is an
-`EditableItem`; a titled section of several blocks is an `EditableSurface`.
+`EditableItem`; a titled section of several blocks is an `EditableSection`.
 
-When the editor is a modal form, use `FormEditableItem` / `FormEditableSurface`
+When the editor is a modal form, use `FormEditableItem` / `FormEditableSection`
 (alouette-forms/SKILL.md) instead of wiring `onEdit` yourself — they add the open
 state, the `Modal` and its own `Form`, whose fields come through `render` bound
 to that inner form's `control`. Reach for the plain components only when the
 editor is not a form: navigating to a screen, opening a picker.
 
 Source: packages/alouette/src/ui/data/EditableItem.tsx;
-ui/containers/EditableSurface.tsx
+ui/containers/EditableSection.tsx

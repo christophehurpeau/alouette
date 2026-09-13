@@ -86,15 +86,16 @@ submit button.
 
 Source: packages/alouette/src/ui/forms/FormEditableItem.tsx
 
-## Edit-in-a-modal sections with FormEditableSurface
+## Edit-in-a-modal sections with FormEditableSection
 
-`FormEditableSurface` is the same editor over an `EditableSurface` (see
+`FormEditableSection` is the same editor over an `EditableSection` (see
 alouette-data/SKILL.md): use it when the value is a titled section of several
 lines rather than a summary that fits beside a label. The read-only body stays
 `children` — only the fields go through `render`.
 
 ```tsx
-<FormEditableSurface<Values>
+<FormEditableSection<Values>
+  className="surface"
   title="Event details"
   titleBadge={<Badge accent="brand">{date}</Badge>}
   details="The date, and what guests see before coming."
@@ -105,21 +106,22 @@ lines rather than a summary that fits beside a label. The read-only body stays
   defaultValues={{ date, notes }}
   onSubmit={async (values) => saveToServer(values)}
   render={({ control }) => (
-    <VStack className="gap-m">
+    <View className="gap-m">
       <FormField control={control} name="date" label="Date"
         required="A date is required." render={...} />
       <FormField control={control} name="notes" label="Before you come" render={...} />
-    </VStack>
+    </View>
   )}
 >
   <Paragraph className="text-muted text-sm">{notes}</Paragraph>
-</FormEditableSurface>
+</FormEditableSection>
 ```
 
 Two names collide between the section and its modal, so the modal's are
-prefixed: `size` / `title` are the `Surface`'s, `modalSize` / `modalTitle` (which
-defaults to `title`) are the `Modal`'s. Everything else is as above — the same
+prefixed: `title` is the section's and `modalSize` / `modalTitle` (which
+defaults to `title`) are the `Modal`'s; the section is sized with a `className`
+(`surface-sm`). Everything else is as above — the same
 `FormEditorProps`, the same per-open `Form`, the same close-on-resolve.
 
-Source: packages/alouette/src/ui/forms/FormEditableSurface.tsx;
+Source: packages/alouette/src/ui/forms/FormEditableSection.tsx;
 ui/forms/useFormEditorModal.tsx

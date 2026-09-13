@@ -3,7 +3,7 @@ import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuo
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
 import type { ReactNode } from "react";
 import { Text } from "../primitives/Text";
-import { HStack, VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { IconButton, type IconButtonProps } from "./IconButton";
@@ -135,10 +135,13 @@ export const Variants: ThisStory = {
                 ] as const
               ).map((state) => (
                 <StoryGrid.Col key={state} title={state}>
-                  <VStack className="gap-xs">
+                  <View className="gap-xs">
                     {(["contained", "outlined", "ghost", "soft"] as const).map(
                       (variant) => (
-                        <HStack key={variant} className="gap-xs items-center">
+                        <View
+                          key={variant}
+                          className="flex-row gap-xs items-center"
+                        >
                           <IconButton
                             variant={variant}
                             disabled={state === "disabled"}
@@ -154,10 +157,10 @@ export const Variants: ThisStory = {
                           <Text className="text-xs">
                             {variant} {state === "ghost" ? "ghost" : ""}
                           </Text>
-                        </HStack>
+                        </View>
                       ),
                     )}
-                  </VStack>
+                  </View>
                 </StoryGrid.Col>
               ))}
             </StoryGrid.Row>

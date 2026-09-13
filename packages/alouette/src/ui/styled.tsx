@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { twMerge } from "tailwind-merge";
+import { twMerge } from "../core/twMerge";
 
 export function styled<P extends { className?: string }>(
   Component: ComponentType<P>,

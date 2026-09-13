@@ -117,18 +117,18 @@ import { ActionButton } from "alouette";
 itself — don't pass `state` to it.
 
 The failure message is a raised `ErrorMessage`. When the button already sits
-inside a raised surface (a `Surface` card, a modal panel), pass
+inside a raised surface (a `surface` card, a modal panel), pass
 `errorMessageVariant="flat"` so the message doesn't read as a card on a card:
 
 ```tsx
-<Surface>
+<Box className="surface">
   <ActionButton
     text="Delete"
     errorMessageVariant="flat"
     onPress={remove}
     errorToMessage={toMessage}
   />
-</Surface>
+</Box>
 ```
 
 Leave it unset everywhere else — see alouette-feedback for when `flat` is
@@ -348,7 +348,7 @@ Correct:
 Both actions are buttons and must be made of the same material; what separates
 them is the accent, not the amount of button they get. `outlined` and `ghost`
 trade the ground and the shadow away, so the pair reads as one button and one
-half-drawn thing — and on a `Surface` an outlined button's `bg-highlight` fights
+half-drawn thing — and on a `surface` card an outlined button's `bg-highlight` fights
 the card it sits on. `accent="neutral"` keeps the material and drops only the color.
 
 Source: packages/alouette/src/ui/containers/AlertDialog.tsx, ui/actions/Button.tsx

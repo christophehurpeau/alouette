@@ -4,7 +4,7 @@ import { FolderRegularIcon } from "alouette-icons/phosphor-icons/FolderRegularIc
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Paragraph } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import {
   Story,
   accentsWithoutNeutral,
@@ -111,7 +111,7 @@ export const LinkTextVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Under a paragraph">
-        <VStack className="gap-xs items-start">
+        <View className="gap-xs items-start">
           <Paragraph>
             The report you are looking for moved to the shared library.
           </Paragraph>
@@ -121,7 +121,7 @@ export const LinkTextVariantsStory: ThisStory = {
             size="sm"
             text="Open the library"
           />
-        </VStack>
+        </View>
       </Story.Section>
 
       <Story.Section title="Accents">

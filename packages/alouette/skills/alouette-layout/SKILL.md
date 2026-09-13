@@ -1,8 +1,9 @@
 ---
 name: alouette-layout
 description: >
-  Build screen structure: Box / InteractiveBox / SafeAreaBox and Surface for
-  containers, Stack / HStack / VStack and Separator to arrange them,
+  Build screen structure: Box / InteractiveBox / SafeAreaBox for containers,
+  raised with the surface utilities (surface, surface-{size}, lowered,
+  surface-popover), View with flex classes and Separator to arrange them,
   ScreenCenterLayout and the screen scroll containers (ScreenScrollView /
   ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through
   SafeAreaScope) for the page itself, the application shell around every screen
@@ -18,7 +19,7 @@ requires:
   - alouette-theming
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Surface.tsx"
+  - "christophehurpeau/alouette:packages/alouette/scripts/build-css.ts"
   - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/stacks.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/Separator.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientBackground.tsx"
@@ -42,49 +43,71 @@ This skill builds on alouette-theming. Read it first for the token model.
 
 # alouette — Layout
 
-Compose structure from `View`/`Box`, `Surface`, stacks and `Separator`, sized
-with the alouette spacing/radius/shadow scale (not the raw Tailwind numeric
-scale).
+Compose structure from `View`/`Box`, stacks and `Separator`, raised with the
+`surface` utilities and sized with the alouette spacing/radius/shadow scale (not
+the raw Tailwind numeric scale).
 
 ## Setup
 
 ```tsx
-import { Surface, VStack, Text } from "alouette";
+import { Box, View, Text } from "alouette";
 
-<Surface>
-  <VStack className="gap-m">
+<Box className="surface">
+  <View className="gap-m">
     <Text className="font-heading-bold text-xl">Card title</Text>
     <Text>Body</Text>
-  </VStack>
-</Surface>;
+  </View>
+</Box>;
 ```
 
 ## Core Patterns
 
-### Stacks
+### Rows and columns
 
-`Stack` is `flex-row flex-wrap`; `HStack` is `flex-row`; `VStack` is `flex-col`.
-They are thin `View` wrappers — add `gap-*` for spacing.
-
-```tsx
-<VStack className="gap-xs">…</VStack>
-<HStack className="gap-m items-center">…</HStack>
-```
-
-### Surface (elevated container)
-
-`variant`: `surface` (default) · `lowered` · `translucent` · `highlight` ·
-`highlight-accent`. `size`: `xxs` · `xs` · `sm` · `md` (default) · `lg` (padding + radius).
-`shadow`: `s` (default) · `m` · `l` · `lowered`; defaults to `lowered` when
-`variant="lowered"`.
+Arrange children with a `View` and flex classes. A `View` is already a column
+on React Native and react-native-web, so a column needs no direction class; a
+row is `flex-row`, a wrapping row `flex-row flex-wrap`. Add `gap-*` for spacing,
+and switch direction at a breakpoint with a prefix.
 
 ```tsx
-<Surface size="lg" shadow="m">Elevated</Surface>
-<Surface variant="lowered">Sunken</Surface>
+<View className="gap-xs">…</View>
+<View className="flex-row items-center gap-m">…</View>
+<View className="flex-col md:flex-row gap-m">…</View>
 ```
 
-A read-only section behind one edit button is `EditableSurface`
-(alouette-data/SKILL.md), not a hand-built heading row on a bare `Surface`.
+`HStack`, `VStack` and `Stack` are deprecated aliases of those classes;
+`npx alouette-codemod surface-and-stacks src` rewrites them.
+
+### Surfaces (raised containers)
+
+A raised card is a `Box` with the `surface` utility —
+`overflow-hidden bg-surface shadow-s surface-md transition-colors duration-fast` — plus `accent` on the `Box`
+when it takes one. Every class written after `surface` overrides its own part
+(the utility sorts ahead of them), and every class takes a breakpoint prefix:
+
+- size (padding + radius, one class): `surface-xxs` (8px / 8px) · `surface-xs`
+  (12 / 8) · `surface-sm` (16 / 16) · `surface-md` (32 / 16, default) ·
+  `surface-lg` (48 / 32)
+- ground: `bg-surface` · `bg-highlight` · `bg-highlight-accent` · `bg-translucent`
+  · `lowered` (utility: the lowered ground **and** its inset shadow, never split)
+- elevation: `shadow-s` · `shadow-m` · `shadow-l`
+- role: `surface-popover` — the panel a popover list opens in (overflow, ground,
+  shadow, padding and radius together), used **instead of** `surface`
+
+```tsx
+<Box className="surface shadow-m surface-sm md:surface-lg">Elevated</Box>
+<Box className="surface lowered surface-sm">Sunken</Box>
+<Box accent="info" className="surface">Info card</Box>
+<Box className="surface-popover">{menuRows}</Box>
+```
+
+Size a surface with a `surface-*` class, not a hand-picked `p-*` + `rounded-*`,
+so every surface of a size matches. Override one side after it when a layout
+needs it (`surface-sm py-0`). The `Surface` component is deprecated: it is this
+utility behind props that cannot take a breakpoint prefix.
+
+A read-only section behind one edit button is `EditableSection`
+(alouette-data/SKILL.md), not a hand-built heading row on a bare surface.
 
 ### Boxes
 
@@ -185,37 +208,42 @@ Slots, breakpoints, the signed-out header and the per-route shell:
 
 ## Common Mistakes
 
-### HIGH Surface lowered/shadow passed as the wrong prop shape
+### HIGH Reaching for the deprecated Surface component
 
 Wrong:
 
 ```tsx
-<Surface lowered>Sunken</Surface>
+<Surface variant="lowered">Sunken</Surface>
+<Surface variant="highlight" shadow="l" size="sm" className="py-xs">…</Surface>
 ```
 
 Correct:
 
 ```tsx
-<Surface variant="lowered">Sunken</Surface>
+<Box className="surface lowered">Sunken</Box>
+<Box className="surface bg-highlight shadow-l surface-sm py-xs">…</Box>
 ```
 
-`Surface` takes `variant` and `shadow` enum props; there is no boolean `lowered`
-prop. `shadow` defaults to `"s"`, or `"lowered"` when `variant="lowered"`.
+`Surface` is deprecated, and its `variant` / `shadow` / `size` props cannot take
+a breakpoint prefix. Write the utilities on a `Box`: `surface` is the card,
+`lowered` carries the lowered ground with its inset shadow (`bg-lowered` alone
+loses the shadow), and `surface-sm` is the old `size="sm"` padding + radius as
+one class. A popover list panel is `surface-popover`, not the classes rebuilt.
 
-Source: packages/alouette/src/ui/containers/Surface.tsx
+Source: packages/alouette/scripts/build-css.ts
 
 ### MEDIUM Using the raw Tailwind numeric scale instead of tokens
 
 Wrong:
 
 ```tsx
-<VStack className="gap-2 p-4 rounded-lg">…</VStack>
+<View className="gap-2 p-4 rounded-lg">…</View>
 ```
 
 Correct:
 
 ```tsx
-<VStack className="gap-xs p-m rounded-sm">…</VStack>
+<View className="gap-xs p-m rounded-sm">…</View>
 ```
 
 `p-4` / `gap-2` use the default Tailwind scale, not the alouette spacing/radius
@@ -271,22 +299,26 @@ dependency.
 
 Source: packages/alouette/src/ui/layout/GradientBackground.tsx
 
-### MEDIUM Treating Stack as a column / a navigation Stack
+### MEDIUM Reaching for the deprecated stacks
 
 Wrong:
 
 ```tsx
-<Stack className="flex-col">…</Stack>
+<VStack className="gap-m">…</VStack>
+<HStack className="items-center">…</HStack>
+<Stack className="gap-m">…</Stack>
 ```
 
 Correct:
 
 ```tsx
-<VStack className="gap-m">…</VStack>
+<View className="gap-m">…</View>
+<View className="flex-row items-center">…</View>
+<View className="flex-row flex-wrap gap-m">…</View>
 ```
 
-alouette `Stack` is `flex-row flex-wrap`. For a column use `VStack`; for a row
-use `HStack`. It is unrelated to navigation stacks.
+`HStack`, `VStack` and `Stack` are deprecated wrappers around those classes.
+alouette's `Stack` is unrelated to navigation stacks.
 
 Source: packages/alouette/src/ui/stacks/stacks.tsx
 
@@ -304,7 +336,7 @@ Correct:
 
 ```tsx
 <AppLayout header={<AppHeader … />}>
-  <VStack className="p-m gap-m">{content}</VStack>
+  <View className="p-m gap-m">{content}</View>
 </AppLayout>
 ```
 

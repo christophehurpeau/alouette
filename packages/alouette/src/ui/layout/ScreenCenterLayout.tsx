@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { View } from "react-native";
-import { VStack } from "../stacks/stacks";
 
 export interface ScreenCenterLayoutProps {
   header: ReactNode;
@@ -14,10 +13,10 @@ export function ScreenCenterLayout({
   footer,
 }: ScreenCenterLayoutProps): ReactNode {
   return (
-    <VStack className="grow gap-xl min-h-screen">
+    <View className="grow gap-xl min-h-screen">
       {header}
       <View className="grow flex-center">{content}</View>
       {footer}
-    </VStack>
+    </View>
   );
 }

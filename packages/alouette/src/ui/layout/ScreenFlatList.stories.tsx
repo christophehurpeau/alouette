@@ -4,7 +4,7 @@ import {
   type SafeAreaEdge,
   SafeAreaScope,
 } from "../../core/SafeAreaEdgesContext";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
@@ -44,9 +44,9 @@ interface Contact {
 
 function ContactRow({ name }: Contact): ReactNode {
   return (
-    <Surface className="p-sm">
+    <Box className="surface p-sm">
       <Text className="text-base">{name}</Text>
-    </Surface>
+    </Box>
   );
 }
 

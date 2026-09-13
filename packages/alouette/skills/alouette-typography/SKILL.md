@@ -49,7 +49,7 @@ a code listing `CodeBlock`, a link `ExternalLinkText` / `LinkText`, a quotation
 
 A `<p>` takes no block content, so a `Paragraph`'s children are inline only —
 `Text`, `Code`, `ExternalLinkText`. Nesting a `Paragraph`, a `View` or a
-`Surface` inside one is invalid DOM on web.
+`Box` inside one is invalid DOM on web.
 
 ```tsx
 <Paragraph>
@@ -98,7 +98,7 @@ tuned for display sizes. For smaller emphasis, use `font-body-bold`.
 
 A URL, a label, a stat or a heading is not prose: `role="paragraph"` announces a
 paragraph to a screen reader and emits a `<p>` that cannot legally hold the
-`View`/`Surface` such a value usually sits next to. Keep `Paragraph` for
+`View`/`Box` such a value usually sits next to. Keep `Paragraph` for
 sentences; a value with its own component (`Code`, `CodeBlock`,
 `ExternalLinkText`) keeps that component.
 

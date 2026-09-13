@@ -6,7 +6,7 @@ import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon
 import { type ReactNode, useState } from "react";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { BreadcrumbItem } from "./BreadcrumbItem";
 import { Breadcrumbs } from "./Breadcrumbs";
@@ -118,7 +118,7 @@ export const BreadcrumbsVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Wrapping">
-        <VStack className="w-[320px]">
+        <View className="w-[320px]">
           <Breadcrumbs aria-label="Wrapping">
             <BreadcrumbItem href="/" label="Home" icon={<HouseRegularIcon />} />
             <BreadcrumbItem href="/library" label="Library" />
@@ -128,7 +128,7 @@ export const BreadcrumbsVariantsStory: ThisStory = {
               label="Fiscal year 2026"
             />
           </Breadcrumbs>
-        </VStack>
+        </View>
       </Story.Section>
 
       <Story.Section title="Accents">
@@ -144,7 +144,7 @@ function BreadcrumbsRouterDemo(): ReactNode {
   const [route, setRoute] = useState("/library/reports");
 
   return (
-    <VStack className="gap-m items-start">
+    <View className="gap-m items-start">
       <Breadcrumbs aria-label="Router" onNavigate={setRoute}>
         <BreadcrumbItem href="/" label="Home" icon={<HouseRegularIcon />} />
         <BreadcrumbItem href="/library" label="Library" />
@@ -159,7 +159,7 @@ function BreadcrumbsRouterDemo(): ReactNode {
         <BreadcrumbItem href="/library/reports/2026" label="2026" />
       </Breadcrumbs>
       <Text>{`route: ${route}`}</Text>
-    </VStack>
+    </View>
   );
 }
 

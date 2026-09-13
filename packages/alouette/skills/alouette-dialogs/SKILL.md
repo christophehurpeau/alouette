@@ -168,12 +168,12 @@ itself on success.
 
 `Popover` is the low-level overlay behind `Select` and `InputTextAutocomplete`:
 it renders `children` above everything, outside the clipping of any
-`overflow-hidden` ancestor (`Surface` is one by design). It brings **no** panel
+`overflow-hidden` ancestor (a `surface` is one by design). It brings **no** panel
 chrome — no title, no close button, no padding — so wrap the content in a
-`Surface` yourself.
+`surface-popover` `Box` yourself.
 
 ```tsx
-import { Popover, Surface, IconButton } from "alouette";
+import { Box, IconButton, Popover } from "alouette";
 
 const anchorRef = useRef<View>(null);
 const [open, setOpen] = useState(false);
@@ -187,7 +187,7 @@ const [open, setOpen] = useState(false);
   aria-label="Actions"
   onClose={() => setOpen(false)}
 >
-  <Surface variant="highlight" shadow="l" size="sm">{menu}</Surface>
+  <Box className="surface-popover">{menu}</Box>
 </Popover>;
 ```
 
@@ -249,9 +249,9 @@ Wrong:
 ```tsx
 <Modal visible={open} onClose={close} title="Details">
   <Text>…</Text>
-  <HStack className="justify-end gap-m">
+  <View className="flex-row justify-end gap-m">
     <Button text="Done" onPress={close} />
-  </HStack>
+  </View>
 </Modal>
 ```
 

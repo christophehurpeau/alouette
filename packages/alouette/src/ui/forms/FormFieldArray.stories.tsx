@@ -2,11 +2,10 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 import { type Control, Controller, useWatch } from "react-hook-form";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { ConfirmationMessage } from "../feedback/Message";
 import { InputText } from "../inputs/InputText";
 import { View } from "../primitives/View";
-import { HStack, VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
 import { Form } from "./Form";
 import { FormField } from "./FormField";
@@ -37,7 +36,7 @@ function GuestListForm({
           guests: defaultGuests.map((value) => ({ value })),
         }}
         render={({ control, submit }) => (
-          <VStack className="gap-l">
+          <View className="gap-l">
             <FormFieldArray
               control={control}
               name="guests"
@@ -70,7 +69,7 @@ function GuestListForm({
               errorToMessage={() => "Please fix the errors above."}
               onPress={submit}
             />
-          </VStack>
+          </View>
         )}
         onSubmit={(values) => {
           setSubmitted(values.guests.map((guest) => guest.value));
@@ -106,8 +105,8 @@ function PeopleForm({ defaultPeople = [] }: PeopleFormProps): ReactNode {
           emptyValue={{ firstName: "", lastName: "" }}
           addLabel="Add person"
           render={({ name, label }) => (
-            <Surface variant="surface" size="xs">
-              <HStack className="gap-xs">
+            <Box className="surface surface-xs">
+              <View className="flex-row gap-xs">
                 <View className="grow shrink basis-0">
                   <FormField
                     control={control}
@@ -141,8 +140,8 @@ function PeopleForm({ defaultPeople = [] }: PeopleFormProps): ReactNode {
                     )}
                   />
                 </View>
-              </HStack>
-            </Surface>
+              </View>
+            </Box>
           )}
         />
       )}

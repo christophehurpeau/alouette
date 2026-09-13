@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Story } from "../story-components/Story";
 import { FlatList } from "./FlatList";
 import { Text } from "./Text";
@@ -46,9 +46,9 @@ function ContactRow({ name }: Contact): ReactNode {
 
 function ContactCard({ name }: Contact): ReactNode {
   return (
-    <Surface className="flex-1">
+    <Box className="surface flex-1">
       <Text className="text-base">{name}</Text>
-    </Surface>
+    </Box>
   );
 }
 

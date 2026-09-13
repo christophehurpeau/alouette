@@ -4,7 +4,7 @@ import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegular
 import { type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
 import { Paragraph } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Modal, type ModalProps } from "./Modal";
@@ -93,11 +93,11 @@ interface SizeTriggersProps {
 
 function SizeTriggers({ render }: SizeTriggersProps): ReactNode {
   return (
-    <VStack className="items-start gap-xs">
+    <View className="items-start gap-xs">
       {render("sm")}
       {render("md")}
       {render("lg")}
-    </VStack>
+    </View>
   );
 }
 

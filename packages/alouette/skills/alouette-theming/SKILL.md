@@ -47,15 +47,15 @@ every public `accent` prop takes.
 
 ## Setup
 
-Most alouette components — `Text`, `Surface`, `Box`, `Button`, `Message`, … —
-take an `accent` prop that re-themes their subtree. Prefer the prop:
+Most alouette components — `Text`, `Box`, `Button`, `Message`, … — take an
+`accent` prop that re-themes their subtree. Prefer the prop:
 
 ```tsx
-import { Surface, Text } from "alouette";
+import { Box, Text } from "alouette";
 
-<Surface accent="danger">
+<Box accent="danger" className="surface">
   <Text className="text-accent">Something went wrong</Text>
-</Surface>
+</Box>
 
 <Text accent="brand" className="text-accent">Brand-accented text</Text>;
 ```
@@ -319,9 +319,9 @@ Wrong:
 Correct:
 
 ```tsx
-<Surface accent="brand">
+<Box accent="brand" className="surface">
   <Text className="text-accent">Hi</Text>
-</Surface>
+</Box>
 ```
 
 Raw palette classes (`bg-blue-500`, `text-gray-600`) ignore the alouette theme,
@@ -371,7 +371,7 @@ Correct:
 </Text>
 ```
 
-`Text`, `Surface`, `Box`, `Button`, `Message` and others accept `accent`
+`Text`, `Box`, `Button`, `Message` and others accept `accent`
 directly. Reserve `AccentScope` for grouping several children or wrapping ones
 that don't take the prop.
 

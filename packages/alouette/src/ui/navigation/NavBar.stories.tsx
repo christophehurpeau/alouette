@@ -9,8 +9,8 @@ import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon
 import { type ReactNode, useState } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Text } from "../primitives/Text";
+import { View } from "../primitives/View";
 import type { SegmentedOrientation } from "../selection/SelectionContext";
-import { VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
 import { NavBar } from "./NavBar";
 import { NavBarItem, type NavBarItemProps } from "./NavBarItem";
@@ -278,7 +278,7 @@ function NavBarRouterDemo(): ReactNode {
   const [lastGroupChange, setLastGroupChange] = useState("none");
 
   return (
-    <VStack className="gap-m items-start">
+    <View className="gap-m items-start">
       <NavBar
         aria-label="Router"
         value={route}
@@ -312,7 +312,7 @@ function NavBarRouterDemo(): ReactNode {
       </NavBar>
       <Text>{`route: ${route}`}</Text>
       <Text>{`group change: ${lastGroupChange}`}</Text>
-    </VStack>
+    </View>
   );
 }
 
@@ -350,13 +350,13 @@ export const TestsNavBarStory: ThisStory = {
         <NavBarRouterDemo />
       </Story.Section>
       <Story.Section title="Stretched">
-        <VStack className="w-[600px]">
+        <View className="w-[600px]">
           <NavBar stretch aria-label="Stretched" defaultValue="/home">
             <NavBarItem href="/home" label="Home" />
             <NavBarItem href="/reports" label="Business Reports" />
             <NavBarItem href="/settings" label="Settings" />
           </NavBar>
-        </VStack>
+        </View>
       </Story.Section>
       <Story.Section title="Icon">
         <IconNavBar />

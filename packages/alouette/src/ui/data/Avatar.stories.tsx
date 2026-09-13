@@ -4,7 +4,7 @@ import { RobotRegularIcon } from "alouette-icons/phosphor-icons/RobotRegularIcon
 import { UserRegularIcon } from "alouette-icons/phosphor-icons/UserRegularIcon";
 import type { ReactNode } from "react";
 import type { SVGIconElement } from "../primitives/Icon";
-import { HStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Avatar } from "./Avatar";
 
@@ -37,11 +37,11 @@ interface SizeRowProps {
 
 function SizeRow({ name, icon }: SizeRowProps): ReactNode {
   return (
-    <HStack className="gap-xs items-center">
+    <View className="flex-row gap-xs items-center">
       <Avatar name={name} icon={icon} size="sm" />
       <Avatar name={name} icon={icon} size="md" />
       <Avatar name={name} icon={icon} size="lg" />
-    </HStack>
+    </View>
   );
 }
 
@@ -55,20 +55,20 @@ export const VariantsAvatarStory: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Accents">
-        <HStack className="gap-xs items-center flex-wrap">
+        <View className="flex-row gap-xs items-center flex-wrap">
           {accentsWithoutNeutral.map((accent) => (
             <Avatar key={accent} accent={accent} name="Camille Hurel" />
           ))}
-        </HStack>
+        </View>
       </Story.Section>
 
       <Story.Section withSurface title="Initials">
-        <HStack className="gap-xs items-center flex-wrap">
+        <View className="flex-row gap-xs items-center flex-wrap">
           <Avatar name="Camille Hurel" />
           <Avatar name="Camille Anne Hurel" />
           <Avatar name="Camille" />
           <Avatar icon={<RobotRegularIcon />} />
-        </HStack>
+        </View>
       </Story.Section>
     </Story>
   ),

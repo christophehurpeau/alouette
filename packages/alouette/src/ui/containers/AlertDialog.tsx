@@ -10,7 +10,7 @@ import { CollapsibleErrorMessage } from "../actions/CollapsibleErrorMessage";
 import { usePressAsync } from "../actions/usePressAsync";
 import type { SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
-import { HStack, VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Modal, type ModalProps } from "./Modal";
 
 function noop(): void {
@@ -139,10 +139,12 @@ function ActionFooter({
       />
     );
   return (
-    <VStack className="w-full gap-sm">
-      <HStack className="items-center justify-end gap-m">{children}</HStack>
+    <View className="w-full gap-sm">
+      <View className="flex-row items-center justify-end gap-m">
+        {children}
+      </View>
       {errorMessage}
-    </VStack>
+    </View>
   );
 }
 

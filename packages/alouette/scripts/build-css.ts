@@ -308,6 +308,50 @@ ${Object.entries(animationDurationsMs)
   font-size: var(--text-base);
 }
 
+/* lowered — the inset material: the recessed ground and its inset shadow always
+   travel together, so they are one class rather than a pair to keep in sync. */
+@utility lowered {
+  @apply bg-lowered shadow-lowered;
+}
+
+/* surface — the raised card: \`<Box className="surface">\`. overflow-hidden so the
+   multi-layer shadow respects the rounded corners (and so children are clipped
+   to them). Any class written after it wins — it sorts ahead of bg-*, shadow-*,
+   p-*, rounded-*, lowered and the surface-{size} utilities below. The ground
+   fades when the accent or the mode changes, since both swap the theme
+   variables under it. */
+@utility surface {
+  @apply overflow-hidden bg-surface shadow-s surface-md transition-colors duration-fast;
+}
+
+/* surface-{size} — a surface's padding and its radius as one class, so the
+   pair cannot drift apart between call sites. A single p-* / rounded-* written
+   after it still overrides one side (the utilities sort ahead of them), and it
+   takes a breakpoint prefix like any class (surface-sm md:surface-lg). */
+@utility surface-xxs {
+  @apply p-xs rounded-xs;
+}
+@utility surface-xs {
+  @apply p-sm rounded-xs;
+}
+@utility surface-sm {
+  @apply p-m rounded-sm;
+}
+@utility surface-md {
+  @apply p-xl rounded-sm;
+}
+@utility surface-lg {
+  @apply p-xxl rounded-md;
+}
+
+/* surface-popover — the panel every popover list opens in (Menu, Select,
+   InputTextAutocomplete). Its rows carry their own px-m and rounded-xs, so the
+   panel pads them by p-xs and rounds by rounded-sm: the row's corners stay
+   concentric with the panel's. */
+@utility surface-popover {
+  @apply overflow-hidden bg-highlight shadow-l rounded-sm p-xs;
+}
+
 /* flex-center — center children on both axes. Replaces the old Box \`center\`
    variant. Named flex-center (not \`center\`) to avoid clashing with any future
    text-align / place-* shorthand. */

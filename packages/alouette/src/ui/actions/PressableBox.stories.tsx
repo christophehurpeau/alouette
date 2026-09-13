@@ -1,7 +1,7 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "../primitives/Text";
-import { HStack, VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { PressableBox } from "./PressableBox";
 
@@ -30,7 +30,7 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        <HStack className="gap-m flex-wrap">
+        <View className="flex-row gap-m flex-wrap">
           {VARIANTS.map((variant) => (
             <PressableBox
               key={variant}
@@ -46,7 +46,7 @@ export const Variants: ThisStory = {
               </Text>
             </PressableBox>
           ))}
-        </HStack>
+        </View>
       </Story.Section>
 
       <Story.Section title="Accent themes">
@@ -57,7 +57,7 @@ export const Variants: ThisStory = {
             title={accent}
             accent={accent}
           >
-            <VStack className="gap-xs">
+            <View className="gap-xs">
               {VARIANTS.map((variant) => (
                 <PressableBox
                   key={variant}
@@ -73,7 +73,7 @@ export const Variants: ThisStory = {
                   </Text>
                 </PressableBox>
               ))}
-            </VStack>
+            </View>
           </Story.SubSection>
         ))}
       </Story.Section>

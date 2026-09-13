@@ -2,7 +2,7 @@ import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Blockquote } from "./Blockquote";
 import { Citation } from "./Citation";
@@ -88,12 +88,12 @@ export const BlockquoteVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="On a raised surface">
-        <Surface>
+        <Box className="surface">
           <Quote
             accent="brand"
             citation={<Citation>Ursula K. Le Guin</Citation>}
           />
-        </Surface>
+        </Box>
       </Story.Section>
     </Story>
   ),

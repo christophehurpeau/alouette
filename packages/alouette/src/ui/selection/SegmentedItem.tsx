@@ -41,7 +41,7 @@ const segmentedItemVariants = tv({
     // its painted circle inside the chip in both sizes the icon variant takes
     // (36px in a row, 40px stacked or stretched): 1.1px and 0.3px of clearance.
     indicator:
-      "absolute right-[4px] top-[4px] z-1 flex-center size-[14px] rounded-full transition-[background-color] duration-fast ease-in",
+      "absolute right-[4px] top-[4px] z-1 flex-center size-[14px] rounded-full transition-colors duration-fast ease-in",
   },
   variants: {
     selected: {

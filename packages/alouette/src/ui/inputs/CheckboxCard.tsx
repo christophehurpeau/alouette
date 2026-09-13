@@ -4,9 +4,9 @@ import { PressableBox } from "../actions/PressableBox";
 import { DefaultAccentScope } from "../containers/DefaultAccentScope";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
+import { View } from "../primitives/View";
 import { CheckboxIndicator } from "../selection/CheckboxIndicator";
 import { SelectionAccentScope } from "../selection/SelectionAccentScope";
-import { VStack } from "../stacks/stacks";
 import { useCheckboxCardGroupAppearance } from "./CheckboxCardGroup";
 import { useCheckboxContext } from "./CheckboxContext";
 
@@ -106,12 +106,12 @@ export function CheckboxCard({
           {icon ? (
             <Icon icon={icon} size={24} className={styles.icon()} />
           ) : null}
-          <VStack className="flex-1 gap-xxs">
+          <View className="flex-1 gap-xxs">
             <Text className={styles.label()}>{label}</Text>
             {description ? (
               <Text className={styles.description()}>{description}</Text>
             ) : null}
-          </VStack>
+          </View>
           <CheckboxIndicator
             selected={selected}
             disabled={isDisabled}

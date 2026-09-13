@@ -17,6 +17,7 @@
     "directory": "packages/alouette"
   },
   "bin": {
+    "alouette-codemod": "./bin/alouette-codemod.mjs",
     "alouette-install-skills": "./bin/install-skills.mjs"
   },
   "files": [

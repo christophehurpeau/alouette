@@ -6,7 +6,7 @@ import type {
 } from "react-native";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { useControllableValue } from "../../core/useControllableValue";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { ScrollView } from "../primitives/ScrollView";
 import { Text } from "../primitives/Text";
 import { View, type ViewProps } from "../primitives/View";
@@ -258,7 +258,7 @@ export function AutocompleteMenu({
 }: AutocompleteMenuProps): ReactNode {
   const { ref: menuRef, ...restMenuProps } = menuProps;
   return (
-    <Surface variant="highlight" shadow="l" size="sm" className="p-xs pl-md">
+    <Box className="surface-popover">
       {/* Sibling of the listbox, not a child of it: a listbox owns options
           only, so a bare text node in there is announced as "0 items" and the
           message itself is skipped. */}
@@ -307,6 +307,6 @@ export function AutocompleteMenu({
           })}
         </ScrollView>
       </View>
-    </Surface>
+    </Box>
   );
 }

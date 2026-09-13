@@ -1,17 +1,17 @@
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
-import type { EditableSurfaceProps } from "../containers/EditableSurface";
+import type { EditableSectionProps } from "../containers/EditableSection";
 import { Badge } from "../data/Badge";
 import { InputText } from "../inputs/InputText";
 import { Paragraph, Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { FormValidationError } from "./Form";
 import {
-  FormEditableSurface,
-  type FormEditableSurfaceProps,
-} from "./FormEditableSurface";
+  FormEditableSection,
+  type FormEditableSectionProps,
+} from "./FormEditableSection";
 import { FormField } from "./FormField";
 
 function submitErrorToMessage(error: unknown): string {
@@ -28,20 +28,19 @@ interface EventFormValues {
 
 interface EventSectionProps extends Partial<
   Pick<
-    FormEditableSurfaceProps<EventFormValues>,
+    FormEditableSectionProps<EventFormValues>,
     | "accent"
+    | "className"
     | "details"
     | "disabled"
     | "editIconVariant"
     | "modalSize"
     | "modalTitle"
-    | "size"
     | "title"
-    | "variant"
   >
 > {
   editAriaLabel?: string;
-  editIcon?: EditableSurfaceProps["editIcon"];
+  editIcon?: EditableSectionProps["editIcon"];
   initialDate?: string;
   initialNotes?: string;
   /** Makes onSubmit reject, so the modal stays open on the error. */
@@ -58,14 +57,17 @@ function EventSection({
   initialDate = "12 August 2026",
   initialNotes = "The gate closes at 19:00.",
   failing = false,
+  // The section brings no material of its own; most stories show it as a card.
+  className = "surface",
   ...surfaceProps
 }: EventSectionProps): ReactNode {
   const [date, setDate] = useState(initialDate);
   const [notes, setNotes] = useState(initialNotes);
 
   return (
-    <FormEditableSurface<EventFormValues>
+    <FormEditableSection<EventFormValues>
       {...surfaceProps}
+      className={className}
       title={title}
       titleBadge={<Badge accent="brand">{date}</Badge>}
       editAriaLabel={editAriaLabel}
@@ -75,7 +77,7 @@ function EventSection({
       submitErrorToMessage={submitErrorToMessage}
       defaultValues={{ date, notes }}
       render={({ control }) => (
-        <VStack className="gap-m">
+        <View className="gap-m">
           <FormField
             control={control}
             name="date"
@@ -105,7 +107,7 @@ function EventSection({
               />
             )}
           />
-        </VStack>
+        </View>
       )}
       onSubmit={(values) => {
         if (failing) throw new Error("The server rejected the change.");
@@ -113,30 +115,30 @@ function EventSection({
         setNotes(values.notes);
       }}
     >
-      <VStack className="gap-xs">
-        <VStack className="gap-xxs">
+      <View className="gap-xs">
+        <View className="gap-xxs">
           <Text className="font-body-bold text-sm">Before you come</Text>
           <Paragraph className="text-muted text-sm">{notes}</Paragraph>
-        </VStack>
-      </VStack>
-    </FormEditableSurface>
+        </View>
+      </View>
+    </FormEditableSection>
   );
 }
 
 type ThisStory = StoryObj<typeof EventSection>;
 
 export default {
-  title: "alouette/Forms/FormEditableSurface",
+  title: "alouette/Forms/FormEditableSection",
   component: EventSection,
   parameters: {
     componentSubtitle:
-      "An EditableSurface whose editor is a modal owning its own Form — for a section whose value is a block of several lines rather than a summary beside a label.",
+      "An EditableSection whose editor is a modal owning its own Form — for a section whose value is a block of several lines rather than a summary beside a label.",
   },
   argTypes: {
     title: { control: "text" },
     modalTitle: { control: "text" },
     details: { control: "text" },
-    size: { control: "select", options: ["xxs", "xs", "sm", "md", "lg"] },
+    className: { control: "text" },
     modalSize: { control: "select", options: ["sm", "md", "lg"] },
     accent: { control: "select", options: accentsWithoutNeutral },
     editIconVariant: {
@@ -147,14 +149,14 @@ export default {
   },
 } satisfies Meta<typeof EventSection>;
 
-export const FormEditableSurfacePreviewStory: ThisStory = {
-  name: "FormEditableSurface Preview",
+export const FormEditableSectionPreviewStory: ThisStory = {
+  name: "FormEditableSection Preview",
   args: { title: "Event details" },
   render: (args) => <EventSection {...args} />,
 };
 
-export const FormEditableSurfaceVariantsStory: ThisStory = {
-  name: "FormEditableSurface Variants",
+export const FormEditableSectionVariantsStory: ThisStory = {
+  name: "FormEditableSection Variants",
   render: () => (
     <Story>
       <Story.Section title="Default">
@@ -169,10 +171,28 @@ export const FormEditableSurfaceVariantsStory: ThisStory = {
         <EventSection modalTitle="Edit the event details" />
       </Story.Section>
 
-      <Story.Section title="Surface variants">
-        <EventSection variant="surface" />
-        <EventSection variant="highlight" />
-        <EventSection variant="lowered" />
+      <Story.Section title="Materials">
+        <EventSection title="surface" editAriaLabel="Edit surface" />
+        <EventSection
+          className="surface bg-highlight"
+          title="bg-highlight"
+          editAriaLabel="Edit bg-highlight"
+        />
+        <EventSection
+          className="surface lowered"
+          title="lowered"
+          editAriaLabel="Edit lowered"
+        />
+        <EventSection
+          className="border border-muted rounded-sm p-m"
+          title="outlined"
+          editAriaLabel="Edit outlined"
+        />
+        <EventSection
+          className=""
+          title="no material"
+          editAriaLabel="Edit no material"
+        />
       </Story.Section>
 
       <Story.Section title="Modal sizes">
@@ -206,8 +226,8 @@ export const FormEditableSurfaceVariantsStory: ThisStory = {
   ),
 };
 
-export const FormEditableSurfaceTestsStory: ThisStory = {
-  name: "FormEditableSurface Tests",
+export const FormEditableSectionTestsStory: ThisStory = {
+  name: "FormEditableSection Tests",
   render: () => (
     <Story noDarkMode>
       <Story.Section title="Edit lifecycle">

@@ -11,8 +11,8 @@ Applies to `p-*`, `px-*`, `py-*`, `pt-*`/`pb-*`/`pl-*`/`pr-*`, `m-*`, `gap-*`,
 `xxs` · `xs` · `sm` · `m` · `l` · `xl` · `xxl` · `3xl` · `4xl`
 
 ```tsx
-<VStack className="gap-xs p-m" />
-<HStack className="gap-l px-xl" />
+<View className="gap-xs p-m" />
+<View className="flex-row gap-l px-xl" />
 ```
 
 Note the single-letter middle steps (`m` 16px, `l` 24px). `md` and `lg` exist as
@@ -27,9 +27,13 @@ Applies to `rounded-*`:
 `xs` · `sm` · `md` · `lg`
 
 ```tsx
-<Surface className="rounded-sm" />
 <Box className="rounded-md" />
+<Box className="surface surface-sm" />   {/* a surface: padding + radius as one class */}
 ```
+
+Surface sizes pair the two scales: `surface-xxs` (`p-xs rounded-xs`) ·
+`surface-xs` (`p-sm rounded-xs`) · `surface-sm` (`p-m rounded-sm`) ·
+`surface-md` (`p-xl rounded-sm`) · `surface-lg` (`p-xxl rounded-md`).
 
 ## Shadow / elevation
 
@@ -38,12 +42,13 @@ Applies to `shadow-*`:
 `s` · `m` · `l` · `lowered`
 
 ```tsx
-<Surface shadow="m" />          {/* via Surface prop */}
-<Box className="shadow-l" />    {/* or directly */}
+<Box className="surface shadow-m" />
+<Box className="shadow-l" />
 ```
 
-`shadow-lowered` is the inset/sunken elevation paired with `variant="lowered"`
-on `Surface`.
+`shadow-lowered` is the inset/sunken elevation. It always travels with the
+lowered ground, so write the `lowered` utility (`bg-lowered shadow-lowered`)
+rather than the shadow alone.
 
 ## Quick mapping from raw Tailwind
 

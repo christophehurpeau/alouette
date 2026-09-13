@@ -79,6 +79,27 @@ A `tv()`'s `base` holds only what every variant keeps. A property one variant
 cancels (`gap`, padding, border) goes on each variant instead — never in `base`
 with a neutralizing `gap-0` / `p-0` in the variant that opts out.
 
+A `tv()` variant is only for a class set the **caller cannot write**: one keyed
+on internal state (`selected`, `disabled`, `loading`) or one that fans out across
+`slots` / interaction states (`PressableBox`'s `variant`). A variant whose
+branches are classes the caller could type verbatim is an alias — expose it
+through `className` instead, because a prop cannot take a breakpoint prefix.
+A component whose only job is default classes is an alias too, which is why
+`Surface` is deprecated in favour of `<Box className="surface">`. Surfaces are
+styled with `bg-*` / `shadow-*` and the `@utility` classes in `build-css.ts`:
+`surface` (the card: `overflow-hidden bg-surface shadow-s surface-md transition-colors duration-fast`), `lowered`
+(ground + inset shadow), `surface-{xxs,xs,sm,md,lg}` (padding + radius as one
+class, so surfaces of a size match) and `surface-popover` (the panel of `Menu`,
+`Select`, `InputTextAutocomplete`, used instead of `surface`). A pairing that
+must stay consistent is a utility, and a role repeated across components gets
+one utility for the role. Each new utility gets a class group in
+`core/twMerge.ts` listing what it replaces when written after — never listed as
+a conflict of the single classes, which override it by stylesheet order (the
+multi-declaration utilities sort first). Components
+that accept a `className` merge it with the shared `core/twMerge.ts` (or pass its
+`twMergeConfig` to `tv()`), never by string concatenation — tailwind-merge does
+not know the named spacing scale or the custom utilities without it.
+
 This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define **structural** tokens/keyframes (type/radius/shadow/spacing/animation, fonts, utilities) in `packages/alouette/scripts/build-css.ts`; define **color** palettes in `packages/alouette/src/theme-generator/paletteSpecs.ts`. Regenerate with `pnpm --filter alouette build:css` — never edit the generated CSS (`global.css`, `core.css`, `default-palette.css`, `default-palette-oklch.css`) directly.
 
 `build:css` writes a split output: `core.css` (structural, color-free), `default-palette.css` (the default palette in sRGB hex — `@theme` color defaults + the twelve `.<theme>` blocks, the latter behind a web-only `@supports` so native never compiles them), `default-palette-oklch.css` (the optional wide-gamut overlay: the same tokens as `oklch()` behind `@supports`), `global.css` (aggregator `@import`ing core + the sRGB palette, **not** the oklch overlay — that stays an explicit extra import), plus `defaultThemeVariablesSrgb.ts`, `animationDurationsMs.ts`. Color generation lives in the shipped, exported `src/theme-generator/` module (`generateTheme`, `writeTheme`, `createColorScale`, `tokenScaleMap`, `paletteSpecs`); `build-css.ts` is a thin driver that calls `generateTheme()` for the default palette. An app generates its own palette the same way, from its own build script: `writeTheme({ outDir, overrides })` (node-only, from `alouette/theme-generator`) writes `palette.css` + `themeVariables.ts` (hex) and `palette-oklch.css` (the opt-in wide-gamut overlay, skipped by `srgbOnly`; CSS only — the map has no oklch counterpart since web never reads it); the app then imports `alouette/core.css` + its palette CSS and passes the generated map to `<AlouetteProvider themeVariables={...}>`. `generateTheme(overrides)` → `{ css, oklchCss, themeVariables, oklchThemeVariables }` is the in-memory form for an app that writes the files itself.
@@ -94,12 +115,13 @@ The web Storybook has a `colorFormat` toolbar global (sRGB / OKLCH, default sRGB
 Components live in `packages/alouette/src/ui/` organized by category:
 
 - `actions/` — buttons, clickable elements
-- `containers/` — layout containers (Box, Surface)
+- `containers/` — layout containers (Box, Popover, Modal)
 - `feedback/` — messages, alerts
 - `inputs/` — form controls
 - `layout/` — page-level layout
-- `primitives/` — base components (View, Text, Icon, ScrollView, stacks)
-- `stacks/` — HStack, VStack, Separator
+- `primitives/` — base components (View, Text, Icon, ScrollView)
+- `stacks/` — Separator (and the deprecated HStack / VStack / Stack: arrange with
+  `<View className="flex-row …">`)
 - `story-components/` — Story, StoryGrid helpers for Storybook only
 
 ### Platform handling
@@ -174,7 +196,7 @@ function MyComponent({ accent }: MyComponentProps) {
 }
 ```
 
-Existing roots: `Button`, `Message`, `Surface` (when `accent` prop is set), `GradientScrollView`.
+Existing roots: `Button`, `Message`, `Box` (when `accent` prop is set), `GradientScrollView`.
 
 ## Native constraint: no CSS variable chains
 
@@ -325,11 +347,11 @@ explicit px keeps the intent legible.)
 When a control's segment should _look_ shorter than 44px, keep the full 44px on
 the tap target and shrink only the visible chip inside it — don't shrink the
 pressable. `SegmentedBar` / `SegmentedItem` (`src/ui/selection/`) implement this
-with the design-system `Surface` as the in-flow flex container: the lowered
-`Surface` is a real 44px bar with **zero vertical padding** (`py-0` overriding the
-`size` padding, `min-h-[44px]`), so each item pressable (`min-h-[44px]`) fills the
+with a `surface lowered` `Box` as the in-flow flex container: the lowered surface
+is a real 44px bar with **zero vertical padding** (`py-0` overriding the
+`surface` padding, `min-h-[44px]`), so each item pressable (`min-h-[44px]`) fills the
 full height as the tap target, and centers a shorter visible chip (`min-h-[32px]`)
-— leaving ~6px of the lowered Surface showing above/below each chip as the inset
+— leaving ~6px of the lowered surface showing above/below each chip as the inset
 frame. No absolute track, no z-order tricks, no inline `style`. `RadioButtonGroup`,
 `NavBar` and `Tabs` all build on it, and each one's `play` test measures both the
 container (== 44) and each item (>= 44) so the geometry can't regress.
@@ -372,7 +394,7 @@ unselected — the chip is transparent there and the lowered bar shows through) 
 it punches out of what it covers.
 
 The focus ring belongs on the **visible chip**, not on the oversized pressable:
-the pressable fills the bar's content box and `Surface` is `overflow-hidden`, so
+the pressable fills the bar's content box and `surface` is `overflow-hidden`, so
 an `outline-offset-2` drawn there is painted outside the bar and clipped away.
 `SegmentedItem` therefore passes `withFocusVisibleOutline={false}` to its
 `InteractiveBox` and rings the chip with `group-focus-visible:outline-2
@@ -420,7 +442,7 @@ When building stories that render groups of items, use React components with chi
 ```tsx
 // Preferred
 function TokenGroup({ group, children }: { group: string; children: ReactNode }) {
-  return <VStack><Text>{group}</Text><StoryGrid.Row>{children}</StoryGrid.Row></VStack>;
+  return <View><Text>{group}</Text><StoryGrid.Row>{children}</StoryGrid.Row></View>;
 }
 // then: <TokenGroup group="bg"><TokenSwatch token="bg-screen" />...</TokenGroup>
 

@@ -2,7 +2,7 @@ import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SwatchesRegularIcon } from "alouette-icons/phosphor-icons/SwatchesRegularIcon";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import {
   ConfirmationMessage,
@@ -76,7 +76,7 @@ export const Variants: ThisStory = {
 
       <Story.Section withSurface title="Sizes">
         {SIZES.map((size) => (
-          <VStack key={size} className="gap-xs">
+          <View key={size} className="gap-xs">
             <Message icon={<SwatchesRegularIcon />} accent="info" size={size}>
               {`Example ${size} Message`}
             </Message>
@@ -89,7 +89,7 @@ export const Variants: ThisStory = {
             >
               {`Example ${size} Message with dismiss`}
             </Message>
-          </VStack>
+          </View>
         ))}
       </Story.Section>
 
@@ -115,7 +115,7 @@ export const Variants: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Narrow container">
-        <VStack className="w-55 gap-xs" aria-label="Narrow messages">
+        <View className="w-55 gap-xs" aria-label="Narrow messages">
           {SIZES.map((size) => (
             <Message
               key={size}
@@ -128,7 +128,7 @@ export const Variants: ThisStory = {
               {`Narrow ${size} message with a long enough text to wrap`}
             </Message>
           ))}
-        </VStack>
+        </View>
       </Story.Section>
 
       <Story.Section withSurface title="Edge Cases">

@@ -9,10 +9,11 @@ import {
 import type { VariantProps } from "tailwind-variants";
 import { tv } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
+import { twMerge } from "../../core/twMerge";
 import { useSafeAreaInsets } from "../../core/useSafeAreaInsets";
 import { AccentScope } from "./AccentScope";
-// Allow Box to shrink when used inside HStack/VStack (matches the original
-// BoxFrame default). overflow is intentionally left off so multi-layer
+// Allow Box to shrink inside a flex row or column (react-native-web's View
+// defaults to flex-shrink: 0). overflow is intentionally left off so multi-layer
 // box-shadows are not clipped.
 export const boxBaseClasses = "shrink";
 
@@ -26,7 +27,7 @@ export const Box = forwardRef<RNView, BoxProps>(
       <AccentScope accent={accent}>
         <RNView
           ref={ref}
-          className={`${boxBaseClasses} ${className ?? ""}`}
+          className={twMerge(boxBaseClasses, className)}
           {...props}
         />
       </AccentScope>

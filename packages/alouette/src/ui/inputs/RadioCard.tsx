@@ -4,9 +4,9 @@ import { PressableBox } from "../actions/PressableBox";
 import { DefaultAccentScope } from "../containers/DefaultAccentScope";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
+import { View } from "../primitives/View";
 import { RadioIndicator } from "../selection/RadioIndicator";
 import { SelectionAccentScope } from "../selection/SelectionAccentScope";
-import { VStack } from "../stacks/stacks";
 import { useRadioCardGroupAppearance } from "./RadioCardGroup";
 import { useRadioContext } from "./RadioContext";
 
@@ -111,12 +111,12 @@ export function RadioCard({
           {icon ? (
             <Icon icon={icon} size={24} className={styles.icon()} />
           ) : null}
-          <VStack className="flex-1 gap-xxs">
+          <View className="flex-1 gap-xxs">
             <Text className={styles.label()}>{label}</Text>
             {description ? (
               <Text className={styles.description()}>{description}</Text>
             ) : null}
-          </VStack>
+          </View>
           <RadioIndicator
             selected={selected}
             disabled={isDisabled}

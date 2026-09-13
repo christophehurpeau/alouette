@@ -69,7 +69,7 @@ banner is its own raised layer above the screen background, which is what you
 want almost everywhere.
 
 `flat` only drops the shadow. Reach for it **only** when the message is already
-inside a raised surface — a `Modal`/`AlertDialog` panel, a `Surface` card, a
+inside a raised surface — a `Modal`/`AlertDialog` panel, a `surface` card, a
 `PressableListItem` row — where a second elevation reads as a card stacked on a
 card. Even there, prefer laying the message out on the screen background (its own
 `surface` banner above or below the card) when the layout allows it; `flat` is
@@ -78,10 +78,10 @@ the allowance for when it cannot.
 ```tsx
 <ErrorMessage>Payment failed.</ErrorMessage>              {/* on the page */}
 
-<Surface>
+<Box className="surface">
   <Text>Billing</Text>
   <ErrorMessage variant="flat">Payment failed.</ErrorMessage> {/* inside a card */}
-</Surface>
+</Box>
 ```
 
 `AlertDialog` already renders its `errorToMessage` failure flat, and
@@ -196,23 +196,23 @@ Source: packages/alouette/src/ui/feedback/Message.tsx
 Wrong:
 
 ```tsx
-<VStack>
+<View>
   <ErrorMessage variant="flat">Payment failed.</ErrorMessage>
-</VStack>
+</View>
 ```
 
 Correct:
 
 ```tsx
-<VStack>
+<View>
   <ErrorMessage>Payment failed.</ErrorMessage>
-</VStack>
+</View>
 ```
 
 `flat` is not "the quiet look" — it is the fix for a banner nested in a raised
 surface. On the screen background it loses the elevation that separates the
 banner from the page. Default to `surface`; use `flat` only inside a Modal /
-AlertDialog panel or a `Surface`, and prefer restructuring so the message can sit
+AlertDialog panel or a `surface` card, and prefer restructuring so the message can sit
 on the page instead.
 
 Source: packages/alouette/src/ui/feedback/Message.tsx

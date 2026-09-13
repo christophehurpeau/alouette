@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuotoneIcon";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
 import type { ReactNode } from "react";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Button, type ButtonProps, ExternalLinkButton } from "./Button";
@@ -131,7 +131,7 @@ export const Variants: ThisStory = {
                   key={state ?? "default"}
                   title={state ?? "Default"}
                 >
-                  <VStack className="gap-xs p-xxs">
+                  <View className="gap-xs p-xxs">
                     {(["contained", "outlined", "ghost", "soft"] as const).map(
                       (variant) => (
                         <Button
@@ -146,7 +146,7 @@ export const Variants: ThisStory = {
                         />
                       ),
                     )}
-                  </VStack>
+                  </View>
                 </StoryGrid.Col>
               ))}
             </StoryGrid.Row>
@@ -227,7 +227,7 @@ export const Variants: ThisStory = {
           <StoryGrid.Row flexWrap>
             {(["sm", "md"] as const).map((size) => (
               <StoryGrid.Col key={size} title={size}>
-                <VStack className="gap-xs">
+                <View className="gap-xs">
                   <Button
                     size={size}
                     icon={<ArrowLeftRegularIcon />}
@@ -237,7 +237,7 @@ export const Variants: ThisStory = {
                     size={size}
                     text="Very very very very very very very very very very very very very very very very very very long text without icon"
                   />
-                </VStack>
+                </View>
               </StoryGrid.Col>
             ))}
           </StoryGrid.Row>

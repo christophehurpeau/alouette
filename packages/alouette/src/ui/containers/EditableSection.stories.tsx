@@ -5,41 +5,43 @@ import { type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
 import { Badge } from "../data/Badge";
 import { Paragraph, Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
-import { EditableSurface, type EditableSurfaceProps } from "./EditableSurface";
+import { EditableSection, type EditableSectionProps } from "./EditableSection";
 import { Modal } from "./Modal";
 
-type ThisStory = StoryObj<typeof EditableSurface>;
+type ThisStory = StoryObj<typeof EditableSection>;
 
 /** The body is plain JSX — as many blocks as the section needs. */
 function EventSummary(): ReactNode {
   return (
-    <VStack className="gap-xs">
+    <View className="gap-xs">
       <Paragraph className="text-sm">
         An evening of readings in the old library.
       </Paragraph>
-      <VStack className="gap-xxs">
+      <View className="gap-xxs">
         <Text className="font-body-bold text-sm">Before you come</Text>
         <Paragraph className="text-muted text-sm">
           The gate closes at 19:00 — ring the bell after that.
         </Paragraph>
-      </VStack>
-    </VStack>
+      </View>
+    </View>
   );
 }
 
 /**
- * EditableSurface owns no editor, so the stories supply one: `onEdit` opens a
- * plain Modal. FormEditableSurface packages this same composition for a form.
+ * EditableSection owns no editor, so the stories supply one: `onEdit` opens a
+ * plain Modal. FormEditableSection packages this same composition for a form.
  */
 function EventSection({
   title = "Event details",
   editAriaLabel = "Edit event details",
   titleBadge = <Badge accent="brand">12 August 2026</Badge>,
   children = <EventSummary />,
+  // The section brings no material of its own; most stories show it as a card.
+  className = "surface",
   ...surfaceProps
-}: Partial<EditableSurfaceProps>): ReactNode {
+}: Partial<EditableSectionProps>): ReactNode {
   const [editing, setEditing] = useState(false);
 
   function close(): void {
@@ -47,8 +49,9 @@ function EventSection({
   }
 
   return (
-    <EditableSurface
+    <EditableSection
       {...surfaceProps}
+      className={className}
       title={title}
       titleBadge={titleBadge}
       editAriaLabel={editAriaLabel}
@@ -66,13 +69,13 @@ function EventSection({
       >
         <Paragraph>Your editor goes here.</Paragraph>
       </Modal>
-    </EditableSurface>
+    </EditableSection>
   );
 }
 
 export default {
-  title: "alouette/Containers/EditableSurface",
-  component: EditableSurface,
+  title: "alouette/Containers/EditableSection",
+  component: EditableSection,
   parameters: {
     componentSubtitle:
       "A Surface holding a block of read-only content behind a single edit affordance — the multi-line counterpart of EditableItem.",
@@ -80,17 +83,7 @@ export default {
   argTypes: {
     title: { control: "text" },
     details: { control: "text" },
-    size: { control: "select", options: ["xxs", "xs", "sm", "md", "lg"] },
-    variant: {
-      control: "select",
-      options: [
-        "surface",
-        "highlight",
-        "highlight-accent",
-        "lowered",
-        "translucent",
-      ],
-    },
+    className: { control: "text" },
     editIconVariant: {
       control: "select",
       options: ["contained", "outlined", "ghost", "soft"],
@@ -98,16 +91,16 @@ export default {
     accent: { control: "select", options: accentsWithoutNeutral },
     disabled: { control: "boolean" },
   },
-} satisfies Meta<typeof EditableSurface>;
+} satisfies Meta<typeof EditableSection>;
 
-export const EditableSurfacePreviewStory: ThisStory = {
-  name: "EditableSurface Preview",
+export const EditableSectionPreviewStory: ThisStory = {
+  name: "EditableSection Preview",
   args: { title: "Event details" },
   render: (args) => <EventSection {...args} />,
 };
 
-export const EditableSurfaceVariantsStory: ThisStory = {
-  name: "EditableSurface Variants",
+export const EditableSectionVariantsStory: ThisStory = {
+  name: "EditableSection Variants",
   render: () => (
     <Story>
       <Story.Section title="Default">
@@ -134,27 +127,69 @@ export const EditableSurfaceVariantsStory: ThisStory = {
         </EventSection>
       </Story.Section>
 
-      <Story.Section title="Surface variants">
-        <EventSection variant="surface" />
-        <EventSection variant="highlight" />
-        <EventSection variant="lowered" />
+      <Story.Section title="Materials">
+        <EventSection title="surface" editAriaLabel="Edit surface" />
+        <EventSection
+          className="surface bg-highlight"
+          title="bg-highlight"
+          editAriaLabel="Edit bg-highlight"
+        />
+        <EventSection
+          className="surface lowered"
+          title="lowered"
+          editAriaLabel="Edit lowered"
+        />
+        <EventSection
+          className="bg-highlight border border-muted rounded-sm p-m"
+          title="outlined"
+          editAriaLabel="Edit outlined"
+        />
+        <EventSection
+          className=""
+          title="no material"
+          editAriaLabel="Edit no material"
+        />
       </Story.Section>
 
       <Story.Section title="Surface sizes">
-        <EventSection size="xxs" title="xxs" editAriaLabel="Edit xxs" />
-        <EventSection size="xs" title="xs" editAriaLabel="Edit xs" />
-        <EventSection size="sm" title="sm" editAriaLabel="Edit sm" />
-        <EventSection size="md" title="md" editAriaLabel="Edit md" />
-        <EventSection size="lg" title="lg" editAriaLabel="Edit lg" />
+        <EventSection
+          className="surface surface-xxs"
+          title="surface-xxs"
+          editAriaLabel="Edit surface-xxs"
+        />
+        <EventSection
+          className="surface surface-xs"
+          title="surface-xs"
+          editAriaLabel="Edit surface-xs"
+        />
+        <EventSection
+          className="surface surface-sm"
+          title="surface-sm"
+          editAriaLabel="Edit surface-sm"
+        />
+        <EventSection title="surface-md" editAriaLabel="Edit surface-md" />
+        <EventSection
+          className="surface surface-lg"
+          title="surface-lg"
+          editAriaLabel="Edit surface-lg"
+        />
       </Story.Section>
 
       {/* The tightest case for the edit button's negative margin: a
           single-line title, so the row is shorter than the 38px button. */}
       <Story.Section title="Surface sizes, single-line title">
-        <EventSection size="xxs" title="Smallest" editAriaLabel="Edit smallest">
+        <EventSection
+          className="surface surface-xxs"
+          title="Smallest"
+          editAriaLabel="Edit smallest"
+        >
           <Paragraph className="text-sm">One line of body.</Paragraph>
         </EventSection>
-        <EventSection size="lg" title="Largest" editAriaLabel="Edit largest">
+        <EventSection
+          className="surface surface-lg"
+          title="Largest"
+          editAriaLabel="Edit largest"
+        >
           <Paragraph className="text-sm">One line of body.</Paragraph>
         </EventSection>
       </Story.Section>
@@ -188,8 +223,8 @@ export const EditableSurfaceVariantsStory: ThisStory = {
   ),
 };
 
-export const EditableSurfaceTestsStory: ThisStory = {
-  name: "EditableSurface Tests",
+export const EditableSectionTestsStory: ThisStory = {
+  name: "EditableSection Tests",
   render: () => (
     <Story noDarkMode>
       <Story.Section title="Edit affordance">
@@ -202,14 +237,30 @@ export const EditableSurfaceTestsStory: ThisStory = {
           editAriaLabel="Edit locked section"
         />
       </Story.Section>
-      {/* `size` only moves the Surface's padding — from p-xs (8px) at xxs to
-          p-xxl (48px) at lg — so the header must hold at either end. */}
+      {/* The size only moves the Surface's padding — from 8px at surface-xxs
+          to 48px at surface-lg — so the header must hold at either end. */}
       <Story.Section title="Every surface size">
-        <EventSection size="xxs" title="xxs" editAriaLabel="Edit xxs" />
-        <EventSection size="xs" title="xs" editAriaLabel="Edit xs" />
-        <EventSection size="sm" title="sm" editAriaLabel="Edit sm" />
-        <EventSection size="md" title="md" editAriaLabel="Edit md" />
-        <EventSection size="lg" title="lg" editAriaLabel="Edit lg" />
+        <EventSection
+          className="surface surface-xxs"
+          title="surface-xxs"
+          editAriaLabel="Edit surface-xxs"
+        />
+        <EventSection
+          className="surface surface-xs"
+          title="surface-xs"
+          editAriaLabel="Edit surface-xs"
+        />
+        <EventSection
+          className="surface surface-sm"
+          title="surface-sm"
+          editAriaLabel="Edit surface-sm"
+        />
+        <EventSection title="surface-md" editAriaLabel="Edit surface-md" />
+        <EventSection
+          className="surface surface-lg"
+          title="surface-lg"
+          editAriaLabel="Edit surface-lg"
+        />
       </Story.Section>
     </Story>
   ),
@@ -245,7 +296,7 @@ export const EditableSurfaceTestsStory: ThisStory = {
 
     // The title is sized to the 38px edit button, so the header row leaves no
     // dead space around it and the button sits inside the Surface's padding —
-    // whatever that padding is, since `size` is the only thing that moves it.
+    // whatever that padding is.
     async function expectHeaderFitsTheButton(title: string): Promise<void> {
       const surface = canvas.getByRole("region", { name: title });
       const button = canvas.getByRole("button", { name: `Edit ${title}` });
@@ -266,11 +317,11 @@ export const EditableSurfaceTestsStory: ThisStory = {
       );
     }
 
-    await expectHeaderFitsTheButton("xxs");
-    await expectHeaderFitsTheButton("xs");
-    await expectHeaderFitsTheButton("sm");
-    await expectHeaderFitsTheButton("md");
-    await expectHeaderFitsTheButton("lg");
+    await expectHeaderFitsTheButton("surface-xxs");
+    await expectHeaderFitsTheButton("surface-xs");
+    await expectHeaderFitsTheButton("surface-sm");
+    await expectHeaderFitsTheButton("surface-md");
+    await expectHeaderFitsTheButton("surface-lg");
 
     // The edit affordance is the button, not the surface: pressing the body
     // must not open anything.

@@ -3,25 +3,25 @@ import type { GestureResponderEvent } from "react-native";
 import { tv } from "tailwind-variants";
 import { PressableBox } from "../actions/PressableBox";
 import { Text } from "../primitives/Text";
-import { HStack, VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 
 const appHeaderBrandVariants = tv({
   slots: {
     // The header slot aligns the brand.
-    frame: "items-center gap-xs",
+    frame: "flex-row items-center gap-xs",
     title: "font-heading-bold text-xl",
     subtitle: "text-muted text-sm",
   },
   variants: {
     interactive: {
-      // A Pressable is not an HStack, hence the explicit row; it also needs
-      // room for its hover fill and focus outline. `-ml-xs` pulls that leading
+      // A pressable needs room for its hover fill and focus outline. `-ml-xs`
+      // pulls that leading
       // padding back out, so the fill bleeds into the header's gutter and the
       // mark stays flush with the content edge — a linked brand lands exactly
       // where a display-only one does. The trailing padding is kept: it only
       // extends the hit area towards the navigation, where nothing lines up.
       true: {
-        frame: "flex-row rounded-sm  py-xxs px-xs md:px-sm -ml-xs md:-ml-sm",
+        frame: "rounded-sm py-xxs px-xs md:px-sm -ml-xs md:-ml-sm",
       },
       false: {},
     },
@@ -63,20 +63,20 @@ export function AppHeaderBrand({
   const content = (
     <>
       {brandLogo}
-      <VStack>
+      <View>
         <Text className={styles.title()}>{title}</Text>
         {subtitle ? (
           <Text className={styles.subtitle()}>{subtitle}</Text>
         ) : null}
-      </VStack>
+      </View>
     </>
   );
 
   if (!interactive) {
     return (
-      <HStack className={styles.frame()} {...props}>
+      <View className={styles.frame()} {...props}>
         {content}
-      </HStack>
+      </View>
     );
   }
 

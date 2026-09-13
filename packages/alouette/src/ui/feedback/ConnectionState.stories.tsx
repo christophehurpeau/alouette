@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "../actions/Button";
 import { Box } from "../containers/Box";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { ConnectionState, type ConnectionStateStatus } from "./ConnectionState";
 
@@ -16,7 +16,7 @@ function InteractiveDemo(): ReactNode {
   const [state, setState] = useState<ConnectionStateStatus>("disconnected");
   const connected = state === "connected";
   return (
-    <VStack className="gap-s">
+    <View className="gap-s">
       <Box className="relative h-16 overflow-hidden rounded-sm bg-lowered">
         <ConnectionState state={state}>
           {connected ? "Connected" : "Disconnected"}
@@ -29,7 +29,7 @@ function InteractiveDemo(): ReactNode {
           setState(connected ? "disconnected" : "connected");
         }}
       />
-    </VStack>
+    </View>
   );
 }
 
@@ -45,14 +45,14 @@ function Frame({
   children: NonNullable<ReactNode>;
 }): ReactNode {
   return (
-    <VStack className="gap-xs">
+    <View className="gap-xs">
       <Text className="text-muted text-sm">{state ?? "null"}</Text>
       <Box className="relative h-16 overflow-hidden rounded-sm bg-lowered">
         <ConnectionState state={state} forceVisible={forceVisible}>
           {children}
         </ConnectionState>
       </Box>
-    </VStack>
+    </View>
   );
 }
 

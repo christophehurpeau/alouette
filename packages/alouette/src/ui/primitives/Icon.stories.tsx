@@ -3,11 +3,11 @@ import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
 import type { ReactNode } from "react";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
-import { HStack, VStack } from "../stacks/stacks";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { Icon } from "./Icon";
 import { Text } from "./Text";
+import { View } from "./View";
 
 type ThisStory = StoryObj<typeof Icon>;
 
@@ -45,10 +45,10 @@ interface TintRowProps {
 
 function TintRow({ className }: TintRowProps): ReactNode {
   return (
-    <HStack className="gap-sm items-center">
+    <View className="flex-row gap-sm items-center">
       <Icon icon={<StarRegularIcon />} className={className} size={24} />
       <Text className={`font-mono text-xs ${className}`}>{className}</Text>
-    </HStack>
+    </View>
   );
 }
 
@@ -56,17 +56,17 @@ function AccentColumn({ accent }: { accent: AccentOrNeutral }): ReactNode {
   return (
     <StoryGrid.Col title={accent}>
       <AccentScope accent={accent}>
-        <VStack className="gap-xs rounded-sm bg-surface p-xs">
+        <View className="gap-xs rounded-sm bg-surface p-xs">
           <TintRow className="text-sharp" />
           <TintRow className="text-muted" />
           <TintRow className="text-accent" />
           <TintRow className="text-disabled-sharp" />
           <TintRow className="text-disabled-muted" />
-        </VStack>
-        <VStack className="gap-xs rounded-sm bg-highlight-accent p-xs mt-xs">
+        </View>
+        <View className="gap-xs rounded-sm bg-highlight-accent p-xs mt-xs">
           <TintRow className="text-on-accent" />
           <TintRow className="text-on-accent-muted" />
-        </VStack>
+        </View>
       </AccentScope>
     </StoryGrid.Col>
   );
@@ -85,14 +85,14 @@ export const VariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Sizes">
-        <HStack className="gap-m items-end">
+        <View className="flex-row gap-m items-end">
           {([16, 20, 24, 32, 48] as const).map((size) => (
-            <VStack key={size} className="gap-xs items-center">
+            <View key={size} className="gap-xs items-center">
               <Icon icon={<StarRegularIcon />} size={size} />
               <Text className="font-mono text-xs text-muted">{size}</Text>
-            </VStack>
+            </View>
           ))}
-        </HStack>
+        </View>
       </Story.Section>
     </Story>
   ),

@@ -1,6 +1,6 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Paragraph } from "../primitives/Text";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Citation } from "./Citation";
@@ -71,7 +71,7 @@ export const CitationVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Under an excerpt">
-        <Surface>
+        <Box className="surface">
           <Paragraph>
             Light is the left hand of darkness, and darkness the right hand of
             light.
@@ -79,7 +79,7 @@ export const CitationVariantsStory: ThisStory = {
           <Citation href="https://example.com/the-left-hand-of-darkness">
             The Left Hand of Darkness
           </Citation>
-        </Surface>
+        </Box>
       </Story.Section>
     </Story>
   ),

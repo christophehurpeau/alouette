@@ -202,7 +202,7 @@ point it back at the tab. `Tabs` renders no panel.
 <Tabs aria-label="Ranges" value={range} onValueChange={setRange}>
   <Tab id="tab-week" aria-controls="panel-week" value="week" label="Week" />
 </Tabs>
-<Surface role="tabpanel" id="panel-week" aria-labelledby="tab-week">…</Surface>
+<Box className="surface" role="tabpanel" id="panel-week" aria-labelledby="tab-week">…</Box>
 ```
 
 ### Breadcrumbs — the trail to the current page
@@ -368,9 +368,9 @@ Source: packages/alouette/src/ui/navigation/NavBarItem.tsx
 Wrong:
 
 ```tsx
-<Surface variant="lowered" className="flex-row">
+<Box className="surface lowered flex-row">
   <PressableBox variant="ghost">…</PressableBox>
-</Surface>
+</Box>
 ```
 
 Correct: use `NavBar` / `Tabs`. The shared `SegmentedBar` / `SegmentedItem`

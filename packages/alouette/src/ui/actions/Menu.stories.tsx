@@ -14,8 +14,8 @@ import { UserCircleDuotoneIcon } from "alouette-icons/phosphor-icons/UserCircleD
 import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircleRegularIcon";
 import { type ReactNode, useState } from "react";
 import { Text } from "../primitives/Text";
+import { View } from "../primitives/View";
 import { Separator } from "../stacks/Separator";
-import { VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
 import { Button } from "./Button";
 import { IconButton } from "./IconButton";
@@ -40,7 +40,7 @@ export default {
   render={(trigger) => <Button {...trigger} text="Account" />}
 >
   <MenuItem label="Profile" icon={<UserCircleRegularIcon />} onPress={openProfile} />
-  <Separator role="separator" className="my-xxs" />
+  <Separator className="my-xxs" />
   <MenuItem label="Log out" icon={<SignOutRegularIcon />} accent="danger" onPress={logOut} />
 </Menu>
 ~~~
@@ -74,7 +74,7 @@ function AccountMenu(): ReactNode {
         activeIcon={<GearDuotoneIcon />}
         href="/settings"
       />
-      <Separator role="separator" className="my-xxs" />
+      <Separator className="my-xxs" />
       <MenuItem
         label="Log out"
         icon={<SignOutRegularIcon />}
@@ -125,7 +125,7 @@ export const VariantsMenuStory: ThisStory = {
             onPress={fn()}
           />
           <MenuItem disabled label="Archive" onPress={fn()} />
-          <Separator role="separator" className="my-xxs" />
+          <Separator className="my-xxs" />
           <MenuItem
             label="Delete"
             icon={<TrashRegularIcon />}
@@ -180,7 +180,7 @@ function MenuDemo(): ReactNode {
   const [lastAction, setLastAction] = useState("none");
 
   return (
-    <VStack className="gap-m items-start">
+    <View className="gap-m items-start">
       <Menu
         label="Document actions"
         header={<Text className="text-sm text-muted">report.pdf</Text>}
@@ -202,7 +202,7 @@ function MenuDemo(): ReactNode {
           }}
         />
         <MenuItem label="Open" href="/open" />
-        <Separator role="separator" className="my-xxs" />
+        <Separator className="my-xxs" />
         <MenuItem
           label="Delete"
           icon={<TrashRegularIcon />}
@@ -214,7 +214,7 @@ function MenuDemo(): ReactNode {
         />
       </Menu>
       <Text>{`last action: ${lastAction}`}</Text>
-    </VStack>
+    </View>
   );
 }
 

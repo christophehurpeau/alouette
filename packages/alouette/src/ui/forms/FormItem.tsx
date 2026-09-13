@@ -6,7 +6,6 @@ import { AccentScope } from "../containers/AccentScope";
 import { Icon } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
-import { HStack, VStack } from "../stacks/stacks";
 
 export interface FormItemProps {
   label: string;
@@ -58,7 +57,7 @@ export function FormItem({
   const marker = ((): ReactNode => {
     if (required === true) {
       return (
-        <HStack className="gap-xxs items-center">
+        <View className="flex-row gap-xxs items-center">
           <Icon
             icon={<AsteriskSimpleRegularIcon />}
             size={12}
@@ -71,7 +70,7 @@ export function FormItem({
               className="text-accent"
             />
           ) : null}
-        </HStack>
+        </View>
       );
     }
     if (required) {
@@ -86,14 +85,14 @@ export function FormItem({
   })();
 
   return (
-    <VStack className="gap-xxs">
+    <View className="gap-xxs">
       <Pressable tabIndex={-1} onPress={onLabelPress}>
-        <VStack>
-          <HStack className="gap-xxs items-center">
+        <View>
+          <View className="flex-row gap-xxs items-center">
             <Text
               nativeID={labelId}
               accent={hasError ? "danger" : undefined}
-              className={`font-body-bold text-md ${hasError ? "text-accent" : ""}`}
+              className={`font-body-bold text-base ${hasError ? "text-accent" : ""}`}
             >
               {label}
             </Text>
@@ -106,11 +105,11 @@ export function FormItem({
                 )}
               </View>
             ) : null}
-          </HStack>
+          </View>
           {details ? (
             <Text className="text-muted text-sm">{details}</Text>
           ) : null}
-        </VStack>
+        </View>
       </Pressable>
       {indented ? (
         <View className="border-l border-border-muted pl-m">
@@ -126,6 +125,6 @@ export function FormItem({
           </Text>
         </View>
       ) : null}
-    </VStack>
+    </View>
   );
 }

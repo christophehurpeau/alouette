@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
-import { HStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Badge } from "./Badge";
 
@@ -58,24 +58,24 @@ export const BadgeVariantsStory: ThisStory = {
 
       <Story.Section withSurface title="Accents">
         {VARIANTS.map((variant) => (
-          <HStack key={variant} className="gap-xs flex-wrap">
+          <View key={variant} className="flex-row gap-xs flex-wrap">
             {accentsWithoutNeutral.map((accent) => (
               <Badge key={accent} accent={accent} variant={variant}>
                 {accent}
               </Badge>
             ))}
-          </HStack>
+          </View>
         ))}
       </Story.Section>
 
       <Story.Section withSurface title="Sizes">
         {SIZES.map((size) => (
-          <HStack key={size} className="gap-xs items-center">
+          <View key={size} className="flex-row gap-xs items-center">
             <Badge size={size}>{size}</Badge>
             <Badge size={size} icon={<StarRegularIcon />}>
               {size} with icon
             </Badge>
-          </HStack>
+          </View>
         ))}
       </Story.Section>
     </Story>

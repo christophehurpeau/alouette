@@ -6,12 +6,10 @@ import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
 import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
 import { type ReactNode, useState } from "react";
 import { Box } from "../containers/Box";
-import { Surface } from "../containers/Surface";
 import { NavBar } from "../navigation/NavBar";
 import { NavBarItem } from "../navigation/NavBarItem";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
-import { HStack, VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
 import { AppHeader } from "./AppHeader";
 import { AppHeaderBrand } from "./AppHeaderBrand";
@@ -102,9 +100,9 @@ function DemoHeader({ route, onRouteChange }: DemoHeaderProps): ReactNode {
 function DemoFooter(): ReactNode {
   return (
     <Box role="contentinfo" className="px-m py-sm">
-      <HStack className="items-center justify-between gap-m">
+      <View className="flex-row items-center justify-between gap-m">
         <Text className="text-sm text-muted">© 2026 Alouette</Text>
-      </HStack>
+      </View>
     </Box>
   );
 }
@@ -116,14 +114,14 @@ interface DemoScreenProps {
 
 function DemoScreen({ title, rows }: DemoScreenProps): ReactNode {
   return (
-    <VStack className="gap-xxs p-m">
+    <View className="gap-xxs p-m">
       <Text className="font-heading-bold text-xl">{title}</Text>
       {Array.from({ length: rows }, (_, index) => (
-        <Surface key={index} size="xs">
+        <Box key={index} className="surface surface-xs">
           <Text className="text-base">{`Row ${index + 1}`}</Text>
-        </Surface>
+        </Box>
       ))}
-    </VStack>
+    </View>
   );
 }
 

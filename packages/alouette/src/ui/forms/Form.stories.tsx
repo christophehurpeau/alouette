@@ -2,7 +2,7 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "../actions/Button";
 import { InputText } from "../inputs/InputText";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { Form } from "./Form";
 import { FormField } from "./FormField";
@@ -22,7 +22,7 @@ export default {
   component: Form,
   parameters: {
     componentSubtitle:
-      "Owns the react-hook-form instance and hands its control to render, so each field infers the form type from the control and its own value type from name. Renders whatever layout you pass to render — SimpleVForm standardizes the common VStack + submit button case.",
+      "Owns the react-hook-form instance and hands its control to render, so each field infers the form type from the control and its own value type from name. Renders whatever layout you pass to render — SimpleVForm standardizes the common column of fields + submit button case.",
   },
 } satisfies Meta<typeof Form>;
 
@@ -34,7 +34,7 @@ export const FormStory: ThisStory = {
         <Form<SignInValues>
           defaultValues={{ email: "" }}
           render={({ control, submit }) => (
-            <VStack className="gap-l">
+            <View className="gap-l">
               <FormField
                 control={control}
                 name="email"
@@ -57,7 +57,7 @@ export const FormStory: ThisStory = {
                   submit().catch(() => {});
                 }}
               />
-            </VStack>
+            </View>
           )}
           onSubmit={() => {}}
         />

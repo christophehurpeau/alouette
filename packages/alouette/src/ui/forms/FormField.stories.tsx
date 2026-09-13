@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
 import { InputText } from "../inputs/InputText";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { Form } from "./Form";
 import { FormField } from "./FormField";
@@ -24,7 +24,7 @@ function FormFieldDemo(): ReactNode {
     <Form<SignUpValues>
       defaultValues={{ username: "", password: "" }}
       render={({ control }) => (
-        <VStack className="gap-l">
+        <View className="gap-l">
           <FormField
             control={control}
             name="username"
@@ -64,7 +64,7 @@ function FormFieldDemo(): ReactNode {
               />
             )}
           />
-        </VStack>
+        </View>
       )}
       onSubmit={() => {}}
     />

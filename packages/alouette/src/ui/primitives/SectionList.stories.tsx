@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Story } from "../story-components/Story";
 import { SectionList } from "./SectionList";
 import { Text } from "./Text";
@@ -107,12 +107,12 @@ export const VariantsStory: StoryObj = {
       </Story.Section>
 
       <Story.Section title="Sticky headers in a Surface">
-        <Surface>
+        <Box className="surface">
           <ContactSectionList
             stickySectionHeadersEnabled
             contentContainerClassName="gap-xxs"
           />
-        </Surface>
+        </Box>
       </Story.Section>
     </Story>
   ),

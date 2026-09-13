@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
-import { Surface, type SurfaceProps } from "../containers/Surface";
+import { Box, type BoxProps } from "../containers/Box";
 import type {
   SegmentedOrientation,
   SegmentedVariant,
@@ -16,7 +16,7 @@ import type {
 // (the stacked line of an AppHeader). Where the container is content-sized
 // anyway — the `md` line of that same header — stretching changes nothing.
 const segmentedBarVariants = tv({
-  base: "items-stretch px-xs py-0",
+  base: "surface lowered items-stretch px-xs py-0",
   variants: {
     orientation: {
       horizontal: "flex-row min-h-[44px]",
@@ -43,10 +43,7 @@ const segmentedBarVariants = tv({
   },
 });
 
-export interface SegmentedBarProps extends Omit<
-  SurfaceProps,
-  "role" | "shadow" | "size" | "variant"
-> {
+export interface SegmentedBarProps extends Omit<BoxProps, "role"> {
   role: "group" | "navigation" | "radiogroup" | "tablist";
   orientation?: SegmentedOrientation;
   stretch?: boolean;
@@ -55,8 +52,9 @@ export interface SegmentedBarProps extends Omit<
 
 /**
  * Lowered track shared by every segmented group (RadioButtonGroup, NavBar, Tabs).
- * It is a 44px Surface with no vertical padding, so each item pressable fills the
- * full height (a 44px tap target) while rendering a shorter visible chip inside it.
+ * It is a 44px lowered surface with no vertical padding, so each item pressable
+ * fills the full height (a 44px tap target) while rendering a shorter visible chip
+ * inside it.
  */
 export function SegmentedBar({
   orientation,
@@ -66,9 +64,7 @@ export function SegmentedBar({
   ...props
 }: SegmentedBarProps): ReactNode {
   return (
-    <Surface
-      variant="lowered"
-      size="sm"
+    <Box
       className={segmentedBarVariants({
         orientation,
         stretch,

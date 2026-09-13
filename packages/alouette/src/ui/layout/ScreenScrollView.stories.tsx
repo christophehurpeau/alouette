@@ -2,7 +2,7 @@ import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
 import { SafeAreaScope } from "../../core/SafeAreaEdgesContext";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
@@ -49,9 +49,9 @@ function Rows({ count }: RowsProps): ReactNode {
   return (
     <>
       {Array.from({ length: count }, (_, index) => (
-        <Surface key={index} className="p-sm">
+        <Box key={index} className="surface p-sm">
           <Text className="text-base">{`Item ${index + 1}`}</Text>
-        </Surface>
+        </Box>
       ))}
     </>
   );

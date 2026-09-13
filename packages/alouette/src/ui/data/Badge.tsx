@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
-import { AccentScope } from "../containers/AccentScope";
 import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
@@ -63,13 +62,11 @@ export function Badge({
 }: BadgeProps): ReactNode {
   const styles = badgeVariants({ size, variant });
   return (
-    <AccentScope accent={accent}>
-      <Box className={styles.frame()}>
-        {icon ? (
-          <Icon icon={icon} size={ICON_SIZE[size]} className={styles.icon()} />
-        ) : null}
-        <Text className={styles.text()}>{children}</Text>
-      </Box>
-    </AccentScope>
+    <Box accent={accent} className={styles.frame()}>
+      {icon ? (
+        <Icon icon={icon} size={ICON_SIZE[size]} className={styles.icon()} />
+      ) : null}
+      <Text className={styles.text()}>{children}</Text>
+    </Box>
   );
 }

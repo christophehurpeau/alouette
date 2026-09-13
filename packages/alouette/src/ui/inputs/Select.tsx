@@ -3,9 +3,8 @@ import { useWindowDimensions } from "react-native";
 import { tv } from "tailwind-variants";
 import { useControllableValue } from "../../core/useControllableValue";
 import { AccentScope } from "../containers/AccentScope";
-import { InteractiveBox } from "../containers/Box";
+import { Box, InteractiveBox } from "../containers/Box";
 import { Popover } from "../containers/Popover";
-import { Surface } from "../containers/Surface";
 import { ScrollView } from "../primitives/ScrollView";
 import { ListboxOption } from "./ListboxOption";
 import {
@@ -90,7 +89,7 @@ function SelectInner({
           setOpen(false);
         }}
       >
-        <Surface variant="highlight" shadow="l" size="sm" className="py-xs">
+        <Box className="surface-popover">
           {/* Pixel maxHeight (not a %) so the ScrollView sizes to its
               content and only scrolls once it exceeds ~70% of the screen. */}
           <ScrollView
@@ -108,7 +107,7 @@ function SelectInner({
               />
             ))}
           </ScrollView>
-        </Surface>
+        </Box>
       </Popover>
     </>
   );

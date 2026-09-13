@@ -1,7 +1,7 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Story } from "../story-components/Story";
 import { CodeBlock } from "./CodeBlock";
 
@@ -82,9 +82,9 @@ export const CodeBlockVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="On a raised surface">
-        <Surface>
+        <Box className="surface">
           <ThemeSnippet title="build-css.ts" />
-        </Surface>
+        </Box>
       </Story.Section>
     </Story>
   ),

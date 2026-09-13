@@ -1,9 +1,11 @@
 ---
 name: alouette-styling
 description: >
-  Styling conventions for writing components with alouette: express enum-like
-  props (variant/size/shadow/state) as tailwind-variants tv() variants instead of
-  a Record lookup, give one component a single tv() with slots instead of several
+  Styling conventions for writing components with alouette: express props keyed
+  on internal state (selected/disabled/loading) or fanning out across slots as
+  tailwind-variants tv() variants instead of a Record lookup, expose a class set
+  the caller could write verbatim through className rather than as an alias
+  variant prop, give one component a single tv() with slots instead of several
   tv objects, style through className instead of inline style, and write pixel
   sizes as arbitrary values (w-[380px]) rather than the canonical spacing-scale
   class. States the alouette design principles every component must satisfy,
@@ -40,33 +42,47 @@ Every component is measured against these:
 
 ## Core patterns
 
-### Enum-like props are `tv()` variants
+### State-keyed props are `tv()` variants; aliases are `className`
 
-A prop that selects between a fixed set of classes (`variant`, `size`, `shadow`,
-`selected`, `disabled`) is a `tv()` variant. The keys become the prop's type via
-`VariantProps`, and `defaultVariants` supplies the default. Resolve a value in
-component code only when one variant's default depends on another prop
-(`Surface`: `shadow` defaults to `lowered` when `variant="lowered"`).
+A `tv()` variant is for a class set the **caller cannot write**: one keyed on
+internal state (`selected`, `disabled`, `loading`), or one that fans out across
+`slots` or interaction states (`PressableBox`'s `variant` spreads over
+`interactive-*` on hover/focus/active). The keys become the prop's type via
+`VariantProps`, and `defaultVariants` supplies the default.
 
 ```tsx
 import { type VariantProps, tv } from "tailwind-variants";
 
-const surfaceVariants = tv({
-  base: "overflow-hidden",
+const chipVariants = tv({
+  base: "rounded-xs min-h-[32px]",
   variants: {
-    variant: { surface: "bg-surface", lowered: "bg-lowered" },
-    size: { sm: "p-m rounded-sm", md: "p-xl rounded-sm" },
+    selected: { true: "bg-emphasis shadow-s", false: "bg-transparent" },
+    disabled: { true: "opacity-70" },
   },
-  defaultVariants: { variant: "surface", size: "md" },
+  defaultVariants: { selected: false },
 });
 
-type SurfaceVariantProps = VariantProps<typeof surfaceVariants>;
-
-export interface SurfaceProps extends BoxProps, SurfaceVariantProps {}
+type ChipVariantProps = VariantProps<typeof chipVariants>;
 ```
 
-Pass the incoming `className` through the call (`surfaceVariants({ size, className })`)
-so callers can extend it.
+A variant whose branches are classes the caller could type verbatim
+(`variant: { highlight: "bg-highlight" }`, `size: { sm: "p-m rounded-sm" }`) is
+an alias: leave it out and let the caller write the class. A prop cannot take a
+breakpoint prefix, a class can (`surface-sm md:surface-lg`). A pairing that must
+never be split becomes a `@utility` in `build-css.ts` instead — `lowered` (the
+lowered ground + its inset shadow), `surface-{xxs…lg}` (padding + radius) — and
+so does a role several components share (`surface-popover` for the Menu, Select
+and InputTextAutocomplete panel), so they match by construction rather than by
+each call site repeating the same classes. Give each new utility a class group
+and its conflicts in `src/core/twMerge.ts`.
+
+Pass the incoming `className` through the call (`chipVariants({ selected, className })`)
+so callers can extend it. Outside a `tv()`, merge with the shared
+`twMerge` from `src/core/twMerge.ts`, never by string concatenation
+(`` `flex-row ${className}` `` emits both `flex-row` and a caller's `flex-col`
+and lets stylesheet order pick). A `tv()` that takes a caller's `className` over
+defaults on the named scale passes `{ twMergeConfig }` from the same module:
+stock tailwind-merge does not know `p-m` and `p-xl` conflict.
 
 ### One component, one `tv()` — use `slots`
 
@@ -130,22 +146,56 @@ element inside or beside it.
 Wrong:
 
 ```tsx
-const LAYER_CLASS = { surface: "bg-surface", lowered: "bg-lowered" } as const;
-<Box className={LAYER_CLASS[variant]} />;
+const STATE_CLASS = {
+  on: "bg-emphasis shadow-s",
+  off: "bg-transparent",
+} as const;
+<Box className={STATE_CLASS[selected ? "on" : "off"]} />;
 ```
 
 Correct:
 
 ```tsx
-const boxVariants = tv({
-  variants: { variant: { surface: "bg-surface", lowered: "bg-lowered" } },
-  defaultVariants: { variant: "surface" },
+const chipVariants = tv({
+  variants: {
+    selected: { true: "bg-emphasis shadow-s", false: "bg-transparent" },
+  },
+  defaultVariants: { selected: false },
 });
-<Box className={boxVariants({ variant })} />;
+<Box className={chipVariants({ selected })} />;
 ```
 
 The lookup map duplicates the prop's union type by hand, has no default handling,
 no compound variants and no `className` merge.
+
+Source: packages/alouette/src/ui/selection/SegmentedItem.tsx
+
+### HIGH An alias variant for a class the caller could write
+
+Wrong:
+
+```tsx
+const surfaceVariants = tv({
+  variants: {
+    variant: { surface: "bg-surface", highlight: "bg-highlight" },
+    size: { sm: "p-m rounded-sm", md: "p-xl rounded-sm" },
+  },
+});
+<Surface variant="highlight" size="sm" className="py-xs" />;
+```
+
+Correct:
+
+```tsx
+<Box className="surface bg-highlight surface-sm py-xs md:surface-md" />
+```
+
+Each branch is a class the caller could type, so the prop only hides it: the
+bundle comes with padding the call site then has to fight, and no branch can be
+switched at a breakpoint. A bundle worth keeping (padding + radius) is a
+`@utility`, which a single class after it still overrides. A component whose
+only job is those defaults is the same alias one level up — `Surface` is
+deprecated for `<Box className="surface">` for this reason.
 
 Source: packages/alouette/src/ui/containers/Surface.tsx
 

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Story } from "../story-components/Story";
 import { ScrollView } from "./ScrollView";
 import { Text } from "./Text";
@@ -36,9 +36,9 @@ interface RowProps {
 
 function Row({ label }: RowProps): ReactNode {
   return (
-    <Surface className="p-sm">
+    <Box className="surface p-sm">
       <Text className="text-base">{label}</Text>
-    </Surface>
+    </Box>
   );
 }
 

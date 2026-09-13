@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
-import { HStack, type HStackProps } from "../stacks/stacks";
+import { View, type ViewProps } from "../primitives/View";
 
 const appHeaderActionsVariants = tv({
-  base: "items-center gap-xs",
+  base: "flex-row items-center gap-xs",
 });
 
-export interface AppHeaderActionsProps extends HStackProps {
+export interface AppHeaderActionsProps extends ViewProps {
   children: ReactNode;
 }
 
@@ -19,6 +19,6 @@ export function AppHeaderActions({
   ...props
 }: AppHeaderActionsProps): ReactNode {
   return (
-    <HStack className={appHeaderActionsVariants({ className })} {...props} />
+    <View className={appHeaderActionsVariants({ className })} {...props} />
   );
 }

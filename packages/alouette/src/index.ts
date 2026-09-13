@@ -35,6 +35,7 @@ export { FlatList } from "./ui/primitives/FlatList";
 export type { SectionListProps } from "./ui/primitives/SectionList";
 export { SectionList } from "./ui/primitives/SectionList";
 export type { HStackProps, VStackProps, StackProps } from "./ui/stacks/stacks";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export { Stack, HStack, VStack } from "./ui/stacks/stacks";
 export type { SeparatorProps } from "./ui/stacks/Separator";
 export { Separator } from "./ui/stacks/Separator";
@@ -71,9 +72,14 @@ export { animationDurationsMs } from "./animationDurationsMs";
 export type { PopoverProps } from "./ui/containers/Popover";
 export { Popover } from "./ui/containers/Popover";
 export type { SurfaceProps } from "./ui/containers/Surface";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export { Surface } from "./ui/containers/Surface";
-export type { EditableSurfaceProps } from "./ui/containers/EditableSurface";
-export { EditableSurface } from "./ui/containers/EditableSurface";
+export type { EditableSectionProps } from "./ui/containers/EditableSection";
+export { EditableSection } from "./ui/containers/EditableSection";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+export type { EditableSurfaceProps } from "./ui/containers/EditableSection";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+export { EditableSurface } from "./ui/containers/EditableSection";
 export type { ModalProps } from "./ui/containers/Modal";
 export { Modal } from "./ui/containers/Modal";
 export type {
@@ -192,8 +198,12 @@ export type { SimpleVFormProps } from "./ui/forms/SimpleVForm";
 export { SimpleVForm } from "./ui/forms/SimpleVForm";
 export type { FormEditableItemProps } from "./ui/forms/FormEditableItem";
 export { FormEditableItem } from "./ui/forms/FormEditableItem";
-export type { FormEditableSurfaceProps } from "./ui/forms/FormEditableSurface";
-export { FormEditableSurface } from "./ui/forms/FormEditableSurface";
+export type { FormEditableSectionProps } from "./ui/forms/FormEditableSection";
+export { FormEditableSection } from "./ui/forms/FormEditableSection";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+export type { FormEditableSurfaceProps } from "./ui/forms/FormEditableSection";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+export { FormEditableSurface } from "./ui/forms/FormEditableSection";
 export type { FormEditorProps } from "./ui/forms/useFormEditorModal";
 export type { AvatarProps } from "./ui/data/Avatar";
 export { Avatar } from "./ui/data/Avatar";

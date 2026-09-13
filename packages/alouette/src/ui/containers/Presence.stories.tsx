@@ -4,7 +4,7 @@ import { animationDurationsMs } from "../../animationDurationsMs";
 import { Button } from "../actions/Button";
 import { InfoMessage } from "../feedback/Message";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { Box } from "./Box";
 import { PresenceList, PresenceOne } from "./Presence";
@@ -22,7 +22,7 @@ import { PresenceList, PresenceOne } from "./Presence";
 function PresenceOneDemo(): ReactNode {
   const [gameNumber, setGameNumber] = useState(1);
   return (
-    <VStack className="items-start gap-m">
+    <View className="items-start gap-m">
       <Box className="relative h-24 w-64  rounded-md">
         <PresenceOne
           activeKey={gameNumber}
@@ -45,7 +45,7 @@ function PresenceOneDemo(): ReactNode {
           setGameNumber((n) => n + 1);
         }}
       />
-    </VStack>
+    </View>
   );
 }
 
@@ -58,7 +58,7 @@ function PresenceListDemo(): ReactNode {
   const nextIdRef = useRef(4);
   const [ids, setIds] = useState([1, 2, 3]);
   return (
-    <VStack className="items-start gap-m">
+    <View className="items-start gap-m">
       <Box className="bg-lowered w-80 rounded-md p-m">
         <PresenceList
           exitDurationMs={animationDurationsMs.collapse}
@@ -88,7 +88,7 @@ function PresenceListDemo(): ReactNode {
           setIds((current) => [...current, id]);
         }}
       />
-    </VStack>
+    </View>
   );
 }
 
