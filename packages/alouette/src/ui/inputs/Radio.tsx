@@ -33,6 +33,7 @@ export function Radio({ value, label, disabled }: RadioProps): ReactNode {
   return (
     <InteractiveBox
       withFocusVisibleOutline
+      withPressEffect={false}
       role="radio"
       aria-checked={selected}
       aria-disabled={isDisabled}
@@ -43,7 +44,11 @@ export function Radio({ value, label, disabled }: RadioProps): ReactNode {
         onSelect(value);
       }}
     >
-      <RadioIndicator selected={selected} disabled={isDisabled} />
+      <RadioIndicator
+        withPressEffect
+        selected={selected}
+        disabled={isDisabled}
+      />
       <Text className={labelVariants({ disabled: isDisabled })}>{label}</Text>
     </InteractiveBox>
   );

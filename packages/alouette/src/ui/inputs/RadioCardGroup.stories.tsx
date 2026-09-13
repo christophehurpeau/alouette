@@ -8,7 +8,7 @@ import type { Accent } from "../../core/AlouetteConfig";
 import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { RadioCard } from "./RadioCard";
-import { RadioCardGroup } from "./RadioCardGroup";
+import { RadioCardGroup, type RadioCardGroupVariant } from "./RadioCardGroup";
 
 type ThisStory = StoryObj<typeof RadioCardGroup>;
 
@@ -21,7 +21,8 @@ export default {
   },
   argTypes: {
     disabled: { control: "boolean" },
-    variant: { control: "inline-radio", options: ["list", "stack"] },
+    variant: { control: "inline-radio", options: ["contained", "outlined"] },
+    layout: { control: "inline-radio", options: ["list", "stack"] },
     accent: {
       control: "select",
       options: [undefined, "brand", "danger", "info", "success", "warning"],
@@ -66,23 +67,29 @@ export const PreviewRadioCardGroupStory: ThisStory = {
 export const StackRadioCardGroupStory: ThisStory = {
   name: "RadioCardGroup Stack",
   render: (args) => (
-    <RadioCardGroup variant="stack" defaultValue="public" {...args}>
+    <RadioCardGroup layout="stack" defaultValue="public" {...args}>
       <VisibilityCards />
     </RadioCardGroup>
   ),
 };
 
-function RadioCardGroupVariant({ accent }: { accent?: Accent }): ReactNode {
+function RadioCardGroupVariant({
+  accent,
+  variant,
+}: {
+  accent?: Accent;
+  variant: RadioCardGroupVariant;
+}): ReactNode {
   return (
-    <Story.Section withSurface title={accent ?? "Default"}>
+    <Story.Section withSurface title={`${accent ?? "Default"} — ${variant}`}>
       <Story.SubSection title="Demo">
-        <RadioCardGroup accent={accent} defaultValue="public">
+        <RadioCardGroup accent={accent} variant={variant} defaultValue="public">
           <VisibilityCards />
         </RadioCardGroup>
       </Story.SubSection>
 
       <Story.SubSection title="Edge cases">
-        <RadioCardGroup accent={accent} defaultValue="public">
+        <RadioCardGroup accent={accent} variant={variant} defaultValue="public">
           <RadioCard
             value="public"
             icon={<GlobeRegularIcon />}
@@ -99,8 +106,13 @@ function RadioCardGroupVariant({ accent }: { accent?: Accent }): ReactNode {
         </RadioCardGroup>
       </Story.SubSection>
 
-      <Story.SubSection title="Stack variant">
-        <RadioCardGroup variant="stack" accent={accent} defaultValue="public">
+      <Story.SubSection title="Stack layout">
+        <RadioCardGroup
+          layout="stack"
+          accent={accent}
+          variant={variant}
+          defaultValue="public"
+        >
           <RadioCard
             value="public"
             icon={<GlobeRegularIcon />}
@@ -123,7 +135,12 @@ function RadioCardGroupVariant({ accent }: { accent?: Accent }): ReactNode {
       </Story.SubSection>
 
       <Story.SubSection title="Disabled group">
-        <RadioCardGroup disabled accent={accent} defaultValue="private">
+        <RadioCardGroup
+          disabled
+          accent={accent}
+          variant={variant}
+          defaultValue="private"
+        >
           <RadioCard
             value="public"
             icon={<GlobeRegularIcon />}
@@ -146,10 +163,14 @@ export const VariantsRadioCardGroupStory: ThisStory = {
   name: "RadioCardGroup Variants",
   render: () => (
     <Story>
-      <RadioCardGroupVariant />
-      <RadioCardGroupVariant accent="brand" />
-      <RadioCardGroupVariant accent="danger" />
-      <RadioCardGroupVariant accent="success" />
+      <RadioCardGroupVariant variant="contained" />
+      <RadioCardGroupVariant variant="outlined" />
+      <RadioCardGroupVariant accent="brand" variant="contained" />
+      <RadioCardGroupVariant accent="brand" variant="outlined" />
+      <RadioCardGroupVariant accent="danger" variant="contained" />
+      <RadioCardGroupVariant accent="danger" variant="outlined" />
+      <RadioCardGroupVariant accent="success" variant="contained" />
+      <RadioCardGroupVariant accent="success" variant="outlined" />
     </Story>
   ),
 };
@@ -194,7 +215,7 @@ export const TestsStackRadioCardGroupStory: ThisStory = {
     <Story noDarkMode>
       <Story.Section title="Stack">
         <View className="w-[560px]">
-          <RadioCardGroup variant="stack" defaultValue="public">
+          <RadioCardGroup layout="stack" defaultValue="public">
             <VisibilityCards />
           </RadioCardGroup>
         </View>

@@ -47,7 +47,7 @@ export interface SegmentedBarProps extends Omit<
   SurfaceProps,
   "role" | "shadow" | "size" | "variant"
 > {
-  role: "navigation" | "radiogroup" | "tablist";
+  role: "group" | "navigation" | "radiogroup" | "tablist";
   orientation?: SegmentedOrientation;
   stretch?: boolean;
   variant?: SegmentedVariant;

@@ -259,7 +259,7 @@ export const PressableBox = forwardRef<RNView, PressableBoxProps>(
           role={role ?? (href === undefined ? "button" : "link")}
           className={pressableBoxVariants({
             variant,
-
+            withPressEffect: !props.disabled,
             className,
             forceStyle,
           })}

@@ -99,11 +99,13 @@ option. Label the group via `aria-labelledby`.
   which replaces the group's `onValueChange` and therefore requires a controlled
   group.
 - `RadioCardGroup` + `RadioCard` — cards with `icon`, `label`, `description` and
-  a radio indicator, for options that need explaining. The selected card is
-  `PressableBox`'s `contained` fill, the rest its `outlined` surface. Group
-  `variant` is `"list"` (default, one per row) or `"stack"` (cards wrap and share
-  a row from a 240px basis); both the group and each card take a `className` for
-  layout (widths, wrapping), not for restyling the card material.
+  a radio indicator, for options that need explaining. Group `variant` is the
+  card material, `PressableBox`'s `"contained"` (default) or `"outlined"`: every
+  card shares it, the selected card takes the accent and the others
+  `accent="neutral"`. Group `layout` is `"list"` (default, one per row) or
+  `"stack"` (cards wrap and share a row from a 240px basis); both the group and
+  each card take a `className` for layout (widths, wrapping), not for restyling
+  the card material.
 
 ```tsx
 <RadioGroup defaultValue="week" onValueChange={setRange} aria-labelledby={labelId}>
@@ -116,7 +118,7 @@ option. Label the group via `aria-labelledby`.
   <RadioButton value="week" label="Week" />
 </RadioButtonGroup>
 
-<RadioCardGroup variant="stack" defaultValue="public" onValueChange={setVisibility}>
+<RadioCardGroup layout="stack" defaultValue="public" onValueChange={setVisibility}>
   <RadioCard value="public" icon={<GlobeRegularIcon />} label="Public"
     description="Anyone with the link" />
   <RadioCard value="private" icon={<LockRegularIcon />} label="Private" />
@@ -127,6 +129,39 @@ option. Label the group via `aria-labelledby`.
     activeIcon={<ListDuotoneIcon />} />
   <RadioButton value="grid" label="Grid" icon={<SquaresFourRegularIcon />} />
 </RadioButtonGroup>
+```
+
+## Multi-select groups
+
+The same three families with checkboxes: the group owns `values` (`string[]`),
+`defaultValues` and `onValuesChange(values)`, and each child toggles its `value`
+in or out. Roles are `group` + `checkbox`/`aria-checked`; label the group with
+`aria-label` or `aria-labelledby`.
+
+- `CheckboxGroup` + `Checkbox` — square-check list.
+- `CheckboxButtonGroup` + `CheckboxButton` — the segmented bar, several chips
+  raised at once. Same `compact`, `variant="icon"`, `activeIcon`, `activeAccent`
+  and `indicator` as `RadioButton`; no per-item `onPress`.
+- `CheckboxCardGroup` + `CheckboxCard` — the cards, same `layout` and `variant`
+  as `RadioCardGroup`: every checked card takes the accent.
+
+A `Checkbox` rendered outside a `CheckboxGroup` is a standalone boolean:
+`checked`, `defaultChecked`, `onValueChange(checked)` and its own `accent`. Inside
+a group it requires `value` and ignores those. `CheckboxButton` and
+`CheckboxCard` throw outside their groups.
+
+```tsx
+<CheckboxGroup defaultValues={["email"]} onValuesChange={setChannels} aria-labelledby={labelId}>
+  <Checkbox value="email" label="Email" />
+  <Checkbox value="sms" label="SMS" />
+</CheckboxGroup>
+
+<Checkbox label="I accept the terms" checked={accepted} onValueChange={setAccepted} />
+
+<CheckboxButtonGroup compact defaultValues={["mon", "fri"]}>
+  <CheckboxButton value="mon" label="Mon" />
+  <CheckboxButton value="fri" label="Fri" />
+</CheckboxButtonGroup>
 ```
 
 ## ColorModePicker

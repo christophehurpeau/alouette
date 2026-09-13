@@ -1,7 +1,8 @@
-import { type ReactNode, useCallback, useState } from "react";
+import type { ReactNode } from "react";
 import { View } from "react-native";
 import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { useControllableChecked } from "../../core/useControllableChecked";
 import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBoxHitSlop } from "../containers/Box";
 
@@ -57,26 +58,6 @@ export interface SwitchProps {
   testID?: string;
 }
 
-function useControllableChecked(
-  controlled: boolean | undefined,
-  onValueChange?: (value: boolean) => void,
-): readonly [boolean, (next: boolean) => void] {
-  const [internal, setInternal] = useState(controlled ?? false);
-  const value = controlled ?? internal;
-  const onChange = useCallback(
-    (next: boolean) => {
-      if (controlled === undefined) {
-        setInternal(next);
-      }
-      if (next !== value) {
-        onValueChange?.(next);
-      }
-    },
-    [controlled, onValueChange, value],
-  );
-  return [value, onChange] as const;
-}
-
 function SwitchInner({
   checked,
   disabled,
@@ -84,7 +65,7 @@ function SwitchInner({
   onValueChange,
   ...props
 }: Omit<SwitchProps, "accent">): ReactNode {
-  const [value, setValue] = useControllableChecked(checked, onValueChange);
+  const [value, setValue] = useControllableChecked({ checked, onValueChange });
 
   return (
     <InteractiveBoxHitSlop

@@ -44,14 +44,19 @@ export const interactiveBoxVariants = tv({
     // the label (grayscale antialiasing, baseline re-snapped) and jump it.
     "transition-[background-color,border-color] duration-fast ease-in",
     "disabled:cursor-not-allowed disabled:opacity-70 aria-disabled:cursor-not-allowed aria-disabled:opacity-70",
+  ].join(" "),
+  variants: {
     // A constant displacement, not a proportional one: a scale moves every
     // point in proportion to its distance from the centre, so it grew from a
     // press on a button (~1.6px per edge) into a squeeze on a full-width row
     // (~14px). Rigid, so a row's icon and its label keep their positions, and a
     // whole pixel, so the label is re-hinted on the same subpixel phase.
-    "active:translate-y-px",
-  ].join(" "),
-  variants: {
+    // Off for a bare label row (Radio, Checkbox): its indicator takes the press
+    // through `group-active:` instead, so the text never moves.
+    withPressEffect: {
+      true: "active:translate-y-px",
+      false: "",
+    },
     withFocusVisibleOutline: {
       true: "focus-visible:outline-2 focus-visible:outline-offset-2",
       // `outline-none` cannot express this: react-native-css keeps solid,
@@ -60,25 +65,33 @@ export const interactiveBoxVariants = tv({
       false: "outline-solid outline-0",
     },
   },
+  defaultVariants: { withPressEffect: true },
 });
 
 export interface InteractiveBoxProps
   extends VariantProps<typeof interactiveBoxVariants>, PressableProps {}
 
 export const InteractiveBox = forwardRef<RNView, InteractiveBoxProps>(
-  ({ withFocusVisibleOutline, className, ...rest }, ref) => (
+  ({ withFocusVisibleOutline, withPressEffect, className, ...rest }, ref) => (
     <Pressable
       ref={ref}
       // override default behavior of Pressable which sets pointerEvents to "none" on disabled state. However this prevents cursor to display as
       pointerEvents="auto"
       {...rest}
-      className={interactiveBoxVariants({ withFocusVisibleOutline, className })}
+      className={interactiveBoxVariants({
+        withFocusVisibleOutline,
+        withPressEffect: rest.disabled ? false : withPressEffect,
+        className,
+      })}
     />
   ),
 );
 
 export const InteractiveBoxHitSlop = forwardRef<RNView, InteractiveBoxProps>(
-  ({ withFocusVisibleOutline, children, className, ...rest }, ref) => {
+  (
+    { withFocusVisibleOutline, withPressEffect, children, className, ...rest },
+    ref,
+  ) => {
     const child = Children.only(children) as ReactElement<RNViewProps>;
     return (
       <Pressable
@@ -91,6 +104,7 @@ export const InteractiveBoxHitSlop = forwardRef<RNView, InteractiveBoxProps>(
         {cloneElement(child, {
           className: interactiveBoxVariants({
             withFocusVisibleOutline,
+            withPressEffect: rest.disabled ? false : withPressEffect,
             className: child.props.className,
           }),
         })}

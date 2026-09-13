@@ -6,7 +6,9 @@ description: >
   InputTextAutocomplete to narrow that list by typing.
   Single-select groups, each composing its children rather than taking an
   options array: RadioGroup, RadioButtonGroup (which the light/dark
-  ColorModePicker is built on) and RadioCardGroup. Validated forms over
+  ColorModePicker is built on) and RadioCardGroup; multi-select counterparts
+  CheckboxGroup, CheckboxButtonGroup and CheckboxCardGroup, and a standalone
+  Checkbox. Validated forms over
   react-hook-form: Form owns the instance and passes its control down, so the
   form type is written once and every field's value type is inferred; FormField
   labels one field and reports its error; FormFieldArray repeats a group of
@@ -38,6 +40,12 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCard.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxGroup.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Checkbox.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxButtonGroup.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxButton.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxCardGroup.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxCard.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/ColorModePicker.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/ColorModePicker.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/Form.tsx"
@@ -121,6 +129,7 @@ single-select families share one group-owns-the-value API and compose their
 children rather than take an options array: `RadioGroup` + `Radio` (circle-dot
 list), `RadioButtonGroup` + `RadioButton` (segmented pill bar) and
 `RadioCardGroup` + `RadioCard` (icon/label/description cards).
+Multi-select: `CheckboxGroup`, `CheckboxButtonGroup`, `CheckboxCardGroup` (`values: string[]`) and a standalone boolean `Checkbox` for form opt-ins (an immediate setting stays a `Switch`).
 
 `RadioButtonGroup` also takes `variant="icon"` — a pill of square icon-only
 chips, each option's `label` staying its accessible name. `ColorModePicker` is

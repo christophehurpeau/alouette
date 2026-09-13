@@ -4,17 +4,15 @@ import { PressableBox } from "../actions/PressableBox";
 import { DefaultAccentScope } from "../containers/DefaultAccentScope";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
-import { RadioIndicator } from "../selection/RadioIndicator";
+import { CheckboxIndicator } from "../selection/CheckboxIndicator";
 import { SelectionAccentScope } from "../selection/SelectionAccentScope";
 import { VStack } from "../stacks/stacks";
-import { useRadioCardGroupAppearance } from "./RadioCardGroup";
-import { useRadioContext } from "./RadioContext";
+import { useCheckboxCardGroupAppearance } from "./CheckboxCardGroup";
+import { useCheckboxContext } from "./CheckboxContext";
 
-// Every card is the group's PressableBox material (`contained` or `outlined`)
-// and selection only swaps the accent: the selected card keeps it, the others
-// take the neutral theme. Every rest/hover/focus/press color comes from the
-// shared interactive tokens — only the foreground follows the material.
-const radioCardVariants = tv(
+// Same material as RadioCard: every card is the group's PressableBox variant,
+// a checked card keeps the accent and an unchecked one takes the neutral theme.
+const checkboxCardVariants = tv(
   {
     slots: {
       frame: "flex-row gap-m rounded-sm p-m min-h-[44px]",
@@ -23,8 +21,6 @@ const radioCardVariants = tv(
       description: "text-sm",
     },
     variants: {
-      // In a wrapping group the cards share each row instead of sizing to text,
-      // and the icon and the indicator hold the card's top corners.
       layout: {
         list: { frame: "items-center" },
         stack: { frame: "items-start grow shrink basis-[240px]" },
@@ -50,8 +46,7 @@ const radioCardVariants = tv(
         false: {},
       },
     },
-    // `on-accent-muted` falls under 4.5:1 on the lighter hover/press fill, so
-    // the description takes the label's ink there.
+    // Same as RadioCard: `on-accent-muted` falls under 4.5:1 on the hover fill.
     compoundVariants: [
       {
         variant: "contained",
@@ -66,7 +61,7 @@ const radioCardVariants = tv(
   { twMerge: false },
 );
 
-export interface RadioCardProps {
+export interface CheckboxCardProps {
   value: string;
   label: string;
   description?: string;
@@ -75,37 +70,37 @@ export interface RadioCardProps {
   className?: string;
 }
 
-export function RadioCard({
+export function CheckboxCard({
   value,
   label,
   description,
   icon,
   disabled,
   className,
-}: RadioCardProps): ReactNode {
-  const {
-    value: selectedValue,
-    onSelect,
-    disabled: groupDisabled,
-  } = useRadioContext();
-  const { layout, variant } = useRadioCardGroupAppearance();
-  const selected = selectedValue === value;
+}: CheckboxCardProps): ReactNode {
+  const { values, onToggle, disabled: groupDisabled } = useCheckboxContext();
+  const { layout, variant } = useCheckboxCardGroupAppearance();
+  const selected = values.includes(value);
   const isDisabled = disabled === true || groupDisabled === true;
-  const styles = radioCardVariants({ layout, variant, disabled: isDisabled });
+  const styles = checkboxCardVariants({
+    layout,
+    variant,
+    disabled: isDisabled,
+  });
 
   return (
     <DefaultAccentScope>
       <SelectionAccentScope selected={selected}>
         <PressableBox
           variant={variant}
-          role="radio"
+          role="checkbox"
           aria-checked={selected}
           aria-disabled={isDisabled}
           aria-label={label}
           disabled={isDisabled}
           className={styles.frame({ className })}
           onPress={() => {
-            onSelect(value);
+            onToggle(value);
           }}
         >
           {icon ? (
@@ -117,7 +112,7 @@ export function RadioCard({
               <Text className={styles.description()}>{description}</Text>
             ) : null}
           </VStack>
-          <RadioIndicator
+          <CheckboxIndicator
             selected={selected}
             disabled={isDisabled}
             onAccent={variant === "contained"}

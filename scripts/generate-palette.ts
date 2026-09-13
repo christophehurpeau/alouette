@@ -172,6 +172,13 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
     fg: "on-accent",
     bg: "interactive-contained-hover",
   },
+  // A contained card's description (RadioCard, CheckboxCard): it flips to
+  // `on-accent` on hover, so only the rest pair has to hold AA.
+  {
+    label: "on-accent-muted on contained",
+    fg: "on-accent-muted",
+    bg: "interactive-contained-pressable",
+  },
   // A SegmentedBar's selected chip and ConnectionState's bar: `emphasis` keeps a
   // light chip in the neutral theme, so its ink flips with the accent.
   { label: "on-emphasis on emphasis", fg: "on-emphasis", bg: "emphasis" },

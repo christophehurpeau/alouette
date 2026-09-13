@@ -598,6 +598,15 @@ looks: anything that moves between routes is a `NavBar` — never a
 `RadioButtonGroup` (it announces a form value) and never a `Link` wrapped around
 a `Text` (no interactive state, no focus outline, no 44px target).
 
+The multi-select counterparts mirror this on `MultiSelectionContext.tsx`
+(`createMultiSelectionContext`, `useMultiSelectionValue` over
+`useControllableValues`, `values` / `defaultValues` / `onValuesChange`): `group` +
+`checkbox`/`aria-checked` for `CheckboxGroup`/`Checkbox`,
+`CheckboxButtonGroup`/`CheckboxButton` and `CheckboxCardGroup`/`CheckboxCard`. A
+`Checkbox` outside a group is a standalone boolean (`checked` /
+`defaultChecked` / `onValueChange`, via `useControllableChecked`, shared with
+`Switch`).
+
 `NavBarItem` is the exception to `value`: its identity is `href`, which
 react-native-web turns into a real `<a>` (native ignores it) — so expo Router's
 `<Link asChild>`, which injects `href` + an `onPress`, composes with it directly.
