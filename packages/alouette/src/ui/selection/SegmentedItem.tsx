@@ -66,7 +66,10 @@ const segmentedItemVariants = tv({
       },
       false: { chip: "bg-emphasis shadow-s" },
     },
-    compact: { true: { segment: "px-xs" }, false: { segment: "px-m" } },
+    compact: {
+      true: { segment: "px-xs" },
+      false: { segment: "px-sm md:px-m" },
+    },
     orientation: {
       horizontal: {},
       // A stacked item spans the bar's width, so the chip stretches with it
