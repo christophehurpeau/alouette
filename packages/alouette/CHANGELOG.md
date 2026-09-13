@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.14.2](https://github.com/christophehurpeau/alouette/compare/alouette@22.14.1...alouette@22.14.2) (2026-09-13)
+
+### Bug Fixes
+
+* ensure label does not receive focus on tab press
+
 ## [22.14.1](https://github.com/christophehurpeau/alouette/compare/alouette@22.14.0...alouette@22.14.1) (2026-09-13)
 
 ### Bug Fixes
