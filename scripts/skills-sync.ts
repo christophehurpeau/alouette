@@ -1,11 +1,11 @@
 // Push SKILL.md frontmatter into _artifacts/skill_tree.yaml (description,
 // sources, references, requires, type) and _artifacts/domain_map.yaml
-// (description, type), optionally bump the library version everywhere, and
+// (description, type), optionally bump the artifacts' library version, and
 // record the commit the skills were reconciled at.
 //
 //   node scripts/skills-sync.ts              # sync both artifacts
 //   node scripts/skills-sync.ts --check      # report only, exit 1 on drift (CI)
-//   node scripts/skills-sync.ts --version    # + set every version to package.json's
+//   node scripts/skills-sync.ts --version    # + set library.version to package.json's
 //   node scripts/skills-sync.ts --record     # + stamp _artifacts/skills_state.json
 //
 // Workflow: .claude/skills/update-skills/SKILL.md
@@ -132,17 +132,6 @@ for (const skill of skills) {
 }
 
 if (withVersion) {
-  for (const skill of skills) {
-    if (skill.frontmatter.library_version === version) continue;
-    write(
-      skill.file,
-      read(skill.file).replace(
-        /^library_version: .*$/m,
-        `library_version: "${version}"`,
-      ),
-    );
-    changes.push(`${skill.name}: library_version → ${version}`);
-  }
   const treeLibrary = tree.get("library");
   if (isMap(treeLibrary) && treeLibrary.get("version") !== version) {
     treeLibrary.set("version", quoted(version));

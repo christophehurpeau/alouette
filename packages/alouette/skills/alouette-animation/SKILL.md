@@ -10,7 +10,6 @@ description: >
   adding transitions or enter/exit animations.
 type: core
 library: alouette
-library_version: "22.12.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.tsx"
@@ -43,7 +42,11 @@ deliberately left out of the transition so it lands instantly while the ground
 fades. Don't restore a `transition-transform`, and don't reach for
 `active:scale-*`: a scale displaces every point in proportion to its distance
 from the center, so the same class that nudges a button squeezes a full-width
-row.
+row. A disabled box drops it, and `withPressEffect={false}` turns it off for a
+bare label row whose indicator takes the press through `group-active:` instead
+(`Radio`, `Checkbox`), so the text never moves.
+
+Source: packages/alouette/src/ui/containers/Box.tsx
 
 ```tsx
 import { InteractiveBox, Text } from "alouette";

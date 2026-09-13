@@ -9,7 +9,6 @@ description: >
   and the accent around it. Load when adding icons to alouette UI.
 type: composition
 library: alouette
-library_version: "22.12.0"
 requires:
   - alouette-theming
 sources:

@@ -122,14 +122,10 @@ const drift = skills
   .map((skill) => ({ name: skill.name, fields: driftOf(skill) }))
   .filter(({ fields }) => fields.length > 0);
 
-const recordedVersion = skills[0]?.frontmatter.library_version ?? "none";
 const versions = {
   package: packageVersion(),
-  skills: recordedVersion,
   skillTree: tree.library?.version,
-  mismatched:
-    new Set([packageVersion(), recordedVersion, tree.library?.version]).size >
-    1,
+  mismatched: packageVersion() !== tree.library?.version,
 };
 
 if (asJson) {
@@ -157,7 +153,7 @@ if (asJson) {
 
 console.log(`base       ${base.commit.slice(0, 8)}  from ${base.origin}`);
 console.log(
-  `versions   package ${versions.package} · skills ${versions.skills} · skill_tree ${versions.skillTree}` +
+  `versions   package ${versions.package} · skill_tree ${versions.skillTree}` +
     (versions.mismatched ? "   ← bump needed" : ""),
 );
 

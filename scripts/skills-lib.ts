@@ -25,7 +25,6 @@ export interface SkillFrontmatter {
   description: string;
   type: string;
   library: string;
-  library_version: string;
   requires?: string[];
   sources: string[];
 }
@@ -85,6 +84,11 @@ export const packageVersion = (): string =>
 export const readState = (): SkillsState | undefined =>
   exists(statePath) ? JSON.parse(read(statePath)) : undefined;
 
+/** The library version the skills were last reconciled for. */
+export const readTreeVersion = (): string | undefined =>
+  (parse(read(treePath)) as { library?: { version?: string } }).library
+    ?.version;
+
 export const readSkills = (): Skill[] => {
   const dir = path.join(repoRoot, skillsDir);
   return fs
@@ -130,12 +134,11 @@ export const resolveBase = (
       origin: `${statePath} (${state.reconciledAt}, alouette@${state.libraryVersion})`,
     });
   }
-  const skills = readSkills();
-  const recordedVersion = skills[0]?.frontmatter.library_version;
+  const recordedVersion = readTreeVersion();
   if (recordedVersion) {
     candidates.push({
       ref: `alouette@${recordedVersion}`,
-      origin: "library_version tag (no state file)",
+      origin: `${treePath} library.version tag (no state file)`,
     });
   }
   for (const candidate of candidates) {

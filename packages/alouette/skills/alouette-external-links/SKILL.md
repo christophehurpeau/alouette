@@ -9,7 +9,6 @@ description: >
   usual answer. Load when linking out to external URLs from alouette UI.
 type: composition
 library: alouette
-library_version: "22.12.0"
 requires:
   - alouette-actions
 sources:

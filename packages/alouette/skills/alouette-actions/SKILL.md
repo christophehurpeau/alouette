@@ -13,7 +13,6 @@ description: >
   text links, a menu of actions, or custom pressable elements.
 type: core
 library: alouette
-library_version: "22.12.0"
 requires:
   - alouette-theming
 sources:
@@ -208,6 +207,27 @@ import { PressableBox, PressableListItem, Text } from "alouette";
   <Text>Row label</Text>
 </PressableListItem>;
 ```
+
+A `PressableListItem` holding more than a title needs `aria-label` ("Open Add
+dark mode"), else the row is announced as every label, badge and date it holds.
+`actions` pins buttons to the row's bottom end; each is a nested pressable that
+takes its own press (the row's `onPress` does not fire), so give each its own
+handler. On web a `role="button"` row is a `<button>`, so actions nest a button
+in a button: pass `role="listitem"` (inside a `role="list"`) or `"menuitem"` for
+valid markup. `href` makes the row a real `<a>` — only on a row with no
+`actions` and no link in its children, which would nest inside the anchor.
+
+```tsx
+<PressableListItem
+  aria-label="Open Add dark mode"
+  actions={<Button size="sm" text="Merge" onPress={merge} />}
+  onPress={open}
+>
+  <Text className="font-body-bold">Add dark mode</Text>
+</PressableListItem>
+```
+
+Source: packages/alouette/src/ui/actions/PressableListItem.tsx
 
 `PressableBox` carries `group`, so a child can style itself from the pressable's
 state (`group-hover:`, `group-active:`) — that is how `InteractiveIcon` swaps a

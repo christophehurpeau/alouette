@@ -14,7 +14,6 @@ description: >
   or navigation between routes.
 type: core
 library: alouette
-library_version: "22.12.0"
 requires:
   - alouette-theming
   - alouette-actions

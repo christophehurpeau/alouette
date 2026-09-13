@@ -18,7 +18,6 @@ description: >
   groups, a color-mode picker or a validated form.
 type: core
 library: alouette
-library_version: "22.12.0"
 requires:
   - alouette-theming
   - alouette-actions

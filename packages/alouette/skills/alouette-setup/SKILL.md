@@ -10,7 +10,6 @@ description: >
   Covers ios, android and web.
 type: lifecycle
 library: alouette
-library_version: "22.12.0"
 sources:
   - "christophehurpeau/alouette:packages/storybook-native-app/metro.config.cjs"
   - "christophehurpeau/alouette:packages/storybook-native-app/postcss.config.mjs"
