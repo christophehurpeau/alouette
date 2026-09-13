@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.14.1](https://github.com/christophehurpeau/alouette/compare/alouette@22.14.0...alouette@22.14.1) (2026-09-13)
+
+### Bug Fixes
+
+* adjust padding for non-compact segmented items
+
 ## [22.14.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.13.0...alouette@22.14.0) (2026-09-13)
 
 ### Features

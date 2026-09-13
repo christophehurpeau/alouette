@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.14.1](///compare/storybook-native-app@12.14.0...storybook-native-app@12.14.1) (2026-09-13)
+
+Version bump for dependency: alouette
+
+
 ## [12.14.0](///compare/storybook-native-app@12.13.0...storybook-native-app@12.14.0) (2026-09-13)
 
 Version bump for dependency: alouette
