@@ -1,3 +1,30 @@
+# NativeWind 5.0.0-rc.0
+
+Alouette's `nativewind` peer moves from `5.0.0-preview.4` to `5.0.0-rc.0`. Bump
+it in your app, and bump `react-native-css` with it:
+
+| Package            | Before            | After        |
+| ------------------ | ----------------- | ------------ |
+| `nativewind`       | `5.0.0-preview.4` | `5.0.0-rc.0` |
+| `react-native-css` | `3.0.7`           | `3.1.0-rc.0` |
+
+`react-native-css` is not optional to pin. The preview accepted any `^3.0.1`;
+the rc declares it as the exact version `3.1.0-rc.0`, so any other version is an
+unmet peer.
+
+Nothing else changes. The rc alters none of the API surface Alouette builds on
+(`styled`, `VariableContextProvider`, `useUnstableNativeVariable`), and the
+generated CSS is byte-identical, so the Metro, PostCSS, Babel and Tailwind setup
+in the README stays as it is and no regenerated theme is needed.
+
+## Keep the lightningcss pin
+
+If you pin `lightningcss` to `1.30.x` (react-native-css breaks at runtime on
+`>=1.31` with `failed to deserialize Specifier`), keep that pin — this upgrade
+does not lift it. The pin has to be a direct dependency of the app so the copy
+react-native-css resolves is the pinned one; a bundler elsewhere in the tree
+(Vite wants `^1.33.0`) keeps its own newer copy, which is fine.
+
 # Deprecated: Surface, HStack, VStack, Stack, EditableSurface, FormEditableSurface
 
 `Surface` and the stacks are aliases of classes and will be removed in the next

@@ -41,7 +41,7 @@ yarn add alouette
 Install the peer dependencies if your app does not already provide them:
 
 ```bash
-npm install nativewind@5.0.0-preview.4 tailwindcss@^4 \
+npm install nativewind@5.0.0-rc.0 tailwindcss@^4 \
   react-native-reanimated react-native-svg
 ```
 
