@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [22.15.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.14.2...alouette@22.15.0) (2026-09-19)
+
+### Features
+
+* add appheadernav and improve layout
+* class-first surfaces and layout
+* update to nativewind rc0
+
 ## [22.14.2](https://github.com/christophehurpeau/alouette/compare/alouette@22.14.1...alouette@22.14.2) (2026-09-13)
 
 ### Bug Fixes

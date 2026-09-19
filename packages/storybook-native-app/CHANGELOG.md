@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.15.0](///compare/storybook-native-app@12.14.2...storybook-native-app@12.15.0) (2026-09-19)
+
+### Features
+
+* update to nativewind rc0
+
+Version bump for dependency: alouette
+
+
 ## [12.14.2](///compare/storybook-native-app@12.14.1...storybook-native-app@12.14.2) (2026-09-13)
 
 Version bump for dependency: alouette
