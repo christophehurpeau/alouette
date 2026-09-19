@@ -1,6 +1,6 @@
 {
   "comment": "Commit the alouette skills were last reconciled against. Written by scripts/skills-sync.ts --record, read by scripts/skills-status.ts.",
-  "commit": "974d4ed5d0495cf1f659dc904ec8c901bdefc492",
-  "libraryVersion": "22.13.0",
-  "reconciledAt": "2026-09-13"
+  "commit": "44e70a691325f30c993ee5369aa3dfbc79b8680a",
+  "libraryVersion": "22.14.2",
+  "reconciledAt": "2026-09-19"
 }

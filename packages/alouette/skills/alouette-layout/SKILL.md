@@ -25,6 +25,7 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/Separator.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientBackground.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientScrollView.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenCenterLayout.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenScrollView.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenFlatList.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenSectionList.tsx"
@@ -190,6 +191,25 @@ container. Insets are native-only — `useSafeAreaInsets` is stubbed to zeros on
 web — and are only passed as `contentContainerStyle` when non-zero, because on
 native an inline style wins over the className, so an inset edge would override a
 same-edge padding class.
+
+### Centered single-purpose screens
+
+`ScreenCenterLayout` is the sign-in / splash / empty-state frame: three slots in
+a full-height column, `content` centered in the space the other two leave.
+
+```tsx
+import { ScreenCenterLayout } from "alouette";
+
+<ScreenCenterLayout
+  header={<BrandLogo />}
+  content={<SignInForm />}
+  footer={<Text className="text-sm text-muted">v2.4.0</Text>}
+/>;
+```
+
+All three slots are required — pass `null` for one that has nothing in it. It
+scrolls nothing and applies no insets, so put it inside a screen scroll
+container or a `SafeAreaBox` when it has to clear the system bars.
 
 ### Application shell
 

@@ -18,6 +18,7 @@ requires:
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Surface.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/core/twMerge.ts"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
 ---
 
@@ -77,12 +78,16 @@ each call site repeating the same classes. Give each new utility a class group
 and its conflicts in `src/core/twMerge.ts`.
 
 Pass the incoming `className` through the call (`chipVariants({ selected, className })`)
-so callers can extend it. Outside a `tv()`, merge with the shared
-`twMerge` from `src/core/twMerge.ts`, never by string concatenation
+so callers can extend it. Outside a `tv()`, merge with a tailwind-merge
+configured for the alouette scale, never by string concatenation
 (`` `flex-row ${className}` `` emits both `flex-row` and a caller's `flex-col`
 and lets stylesheet order pick). A `tv()` that takes a caller's `className` over
-defaults on the named scale passes `{ twMergeConfig }` from the same module:
-stock tailwind-merge does not know `p-m` and `p-xl` conflict.
+defaults on the named scale passes that same config as `{ twMergeConfig }`:
+stock tailwind-merge does not know `p-m` and `p-xl` conflict, nor that `surface`
+carries a padding and a radius. Inside the library that config is
+`src/core/twMerge.ts`; it is **not** exported from `alouette`, so an app
+component builds its own with `extendTailwindMerge` over the same named spacing
+values and utility class groups.
 
 ### One component, one `tv()` — use `slots`
 

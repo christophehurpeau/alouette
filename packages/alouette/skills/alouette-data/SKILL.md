@@ -222,7 +222,10 @@ state — they call `onEdit`, and the pencil `IconButton` is the only pressable.
 
 When the editor is a modal form, use `FormEditableItem` /
 `FormEditableSection` (alouette-forms/SKILL.md) rather than wiring `onEdit`
-yourself. Props, which ones belong to the section rather than the button, and
+yourself. `EditableSurface` / `FormEditableSurface` are the former names, still
+exported as deprecated aliases;
+`npx alouette-codemod surface-and-stacks --only=editable src` renames them.
+Props, which ones belong to the section rather than the button, and
 how to choose between the two:
 [references/editable-displays.md](references/editable-displays.md).
 
