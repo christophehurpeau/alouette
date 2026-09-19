@@ -48,7 +48,7 @@
     "react-dom": "19.2.3",
     "storybook": "10.5.7",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "vite": "8.2.1",
+    "vite": "8.3.0",
     "vitest": "4.1.10"
   },
   "resolutions": {
