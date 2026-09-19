@@ -7,7 +7,8 @@ description: >
   ScreenCenterLayout and the screen scroll containers (ScreenScrollView /
   ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through
   SafeAreaScope) for the page itself, the application shell around every screen
-  (AppLayout + AppHeader and its brand / actions / account slots, or AppShell +
+  (AppLayout + AppHeader and its brand / navigation / actions / account slots,
+  or AppShell +
   AppShellSidebar + AppShellMain when the shell is composed per route), and
   GradientBackground / GradientScrollView for a tinted ground. Space, round and
   raise everything with the alouette spacing, radius and shadow scale rather
@@ -32,6 +33,8 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppShell.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeader.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderNav.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderNavItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderActions.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderAccount.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderSignIn.tsx"
@@ -198,6 +201,11 @@ the screen inside needs **no scroll container and no insets of its own**.
 `AppHeaderBrand` (+ `BrandLogo`) at the start, the navigation as children, and
 `AppHeaderActions` at the end — a `ColorModePicker`, an `IconButton`, and the
 session, which is `AppHeaderAccount` signed in and `AppHeaderSignIn` signed out.
+The navigation sits next to the brand by default; `AppHeaderNav` +
+`AppHeaderNavItem` is the material made for that spot — text destinations on the
+bar itself, the current one underlined — while a segmented `NavBar`
+(alouette-navigation/SKILL.md) is the alternative, and always takes
+`navAlign="center"`.
 
 When the shell is rendered **once** for a whole app but the sidebar belongs to
 one section of it, compose the same shell from `AppShell` + a per-route

@@ -55,13 +55,51 @@ import {
 
 `AppHeader` is the `banner`: `brand` in the start slot, `actions` in the end
 slot, and its children are the navigation slot. From `md` on web the three sit on
-one boxed line with the navigation centered; below that — and on native at every
-width — brand and actions share the first line and the navigation spans the
-second (hence `stretch` on the bar). `size` is `"xs" | "sm" | "md"`, `variant` is
-`"bar"` (default, its own ground plus a downward shadow) or `"transparent"` (for
-a landing hero), `contentWidth` is `"boxed"` (default, max 1200px) or `"full"`. It
-pads its own top safe-area inset unless an ancestor `SafeAreaScope` already
-consumed the edge (`withSafeAreaTop={false}` opts out).
+one boxed line in reading order, the navigation packed against the brand and the
+free space left on the actions side; below that — and on native at every width —
+brand and actions share the first line and the navigation spans the second (hence
+`stretch` on a `NavBar`). `navAlign="center"` is the alternative single-line
+layout: the start slot grows too, so the navigation lands in the middle, and it
+stays centered even without `actions` (the end slot is rendered empty to balance
+it). `size` is `"xs" | "sm" | "md"`, `variant` is `"bar"` (default, its own ground
+plus a downward shadow) or `"transparent"` (for a landing hero), `contentWidth` is
+`"boxed"` (default, max 1200px) or `"full"`. It pads its own top safe-area inset
+unless an ancestor `SafeAreaScope` already consumed the edge
+(`withSafeAreaTop={false}` opts out).
+
+The navigation slot takes either material. `AppHeaderNav` + `AppHeaderNavItem`
+is the bar's own: text destinations sitting directly on it, the current one
+underlined in the group's accent, so it fits beside the brand — which is what
+the default `navAlign="start"` is for. `NavBar` (alouette-navigation/SKILL.md) is
+the segmented bar, a control of its own, so a header carrying one takes
+`navAlign="center"` — the alignment follows the material, never the design's
+mood.
+
+```tsx
+<AppHeader
+  brand={<AppHeaderBrand title="Alouette" href="/" />}
+  actions={<AppHeaderSignIn label="Log in" href="/login" />}
+>
+  <AppHeaderNav aria-label="Main" value={pathname} onValueChange={router.push}>
+    <AppHeaderNavItem href="/home" label="Home" />
+    <AppHeaderNavItem
+      href="/inbox"
+      label="Inbox"
+      aria-label="Inbox, 3 unread"
+      badge={<Badge size="sm">3</Badge>}
+    />
+  </AppHeaderNav>
+</AppHeader>
+```
+
+`AppHeaderNav` owns the value like every other selection group (`value` +
+`onValueChange`, or `defaultValue`) and its items match it against their own
+`href` — the same `link` + `aria-current="page"` semantics as `NavBarItem`, with
+the same `icon` / `activeIcon` / `activeAccent`, plus a `badge` rendered after
+the label. A badge is not part of the accessible name, so name the item with
+`aria-label` when the label alone no longer does. Every item is a 44px tap target
+whose affordance is the bar's `soft` fill; the underline is state, never the
+affordance.
 
 The slot components: `AppHeaderBrand` (`title`, optional `subtitle` and
 `brandLogo`; given `href` or `onPress` it becomes a real pressable instead of a

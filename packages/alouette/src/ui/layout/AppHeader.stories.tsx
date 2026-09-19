@@ -26,10 +26,12 @@ import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Separator } from "../stacks/Separator";
 import { Story } from "../story-components/Story";
-import { AppHeader } from "./AppHeader";
+import { AppHeader, type AppHeaderProps } from "./AppHeader";
 import { AppHeaderAccount } from "./AppHeaderAccount";
 import { AppHeaderActions } from "./AppHeaderActions";
 import { AppHeaderBrand } from "./AppHeaderBrand";
+import { AppHeaderNav } from "./AppHeaderNav";
+import { AppHeaderNavItem } from "./AppHeaderNavItem";
 import { AppHeaderSignIn } from "./AppHeaderSignIn";
 import { BrandLogo } from "./BrandLogo";
 
@@ -64,21 +66,22 @@ export default {
     </AppHeaderActions>
   }
 >
-  <NavBar stretch aria-label="Main" value={pathname}>
-    <NavBarItem href="/home" label="Home" />
-  </NavBar>
+  <AppHeaderNav aria-label="Main" value={pathname}>
+    <AppHeaderNavItem href="/home" label="Home" />
+  </AppHeaderNav>
 </AppHeader>
 ~~~
 
-- From \`md\` on web the three slots share one line: the two outer ones grow from a zero basis, which centers the navigation between them; the end slot is rendered even when \`actions\` is omitted, so the centering survives
-- Below \`md\` — and on native at every width, since React Native has no \`order\` to put the navigation back in the middle — the brand and the actions share the first line and the navigation spans the second; give the \`NavBar\` \`stretch\` so it fills that line
-- \`children\` is the navigation slot — omit it for a header without navigation
+- From \`md\` on web the three slots share one line, in reading order: the navigation sits next to the brand and the end slot takes the free space, so the actions stay at the far edge. A grown slot is floored at its content width (\`min-w-fit\`, undoing react-native-web's \`min-width: 0\` reset), so a crowded header wraps instead of letting a slot shrink under its child
+- \`navAlign\` follows the navigation's material, it is not a mood: a text \`AppHeaderNav\` continues the brand and keeps the default \`start\`, while a segmented \`NavBar\` reads as a control of its own and takes \`navAlign="center"\`. Centering grows the start slot too, so the free space is split between the two outer slots; the end slot is rendered even when \`actions\` is omitted, so the centering survives a header without actions
+- Below \`md\` — and on native at every width, since React Native has no \`order\` to put the navigation back on the line — the brand and the actions share the first line and the navigation spans the second; give a \`NavBar\` \`stretch\` so it fills that line
+- \`children\` is the navigation slot — omit it for a header without navigation. \`AppHeaderNav\` is the bar's own material (text destinations, the current one underlined, no track); \`NavBar\` is the segmented alternative, for a navigation that is the screen's main control
 - \`AppHeaderBrand\` is a pressable when given \`href\`/\`onPress\` (expo Router's \`<Link asChild>\` injects both), a display-only row otherwise; its leading padding is pulled back with a negative margin, so the hover fill bleeds into the header's gutter while the mark stays flush with the content edge in both cases
-- Every pressable in the bar uses \`variant="soft"\`: nothing at rest, a background fill on hover/focus/press (as on a listbox row), rather than a border tint too thin to read in a header
+- Every pressable in the bar uses \`variant="soft"\`: nothing at rest, a background fill on hover/focus/press (as on a listbox row), rather than a border tint too thin to read in a header. That includes \`AppHeaderNavItem\`, whose accent underline is the current-page state on top of the fill, never the affordance
 - A signed-in session is one \`AppHeaderAccount\` — an avatar trigger opening a \`Menu\` — not a row of buttons: logging out is the rarest thing the bar offers and the only destructive one, so it belongs behind the avatar with a \`danger\` accent, and confirming it is the app's call (the tests story wires it to a \`QuestionAlertDialog\`)
 - A signed-out session is the mirror image: one action, so it stays in the bar as an \`AppHeaderSignIn\` — never an \`AppHeaderAccount\` named "Guest" wrapping a single "Log in" item, which puts a menu between the visitor and the only thing they came to press. It is a \`Button\` with the bar's sizing: pass it straight as \`actions\`, or beside a secondary \`accent="neutral"\` "Sign up" inside an \`AppHeaderActions\`. \`href\` is the in-app destination — a real \`<a>\` on web, ignored on native, where expo Router's \`<Link asChild>\` supplies the \`onPress\` (a destination outside the app on native takes an \`ExternalLinkButton\` in the slot instead)
 - A light/dark switch belongs in the actions slot as a \`ColorModePicker\` — a pill of icon-only chips reading as one control, rather than two loose \`IconButton\`s. \`variant="system-lock"\` is the two-chip one used here: the chip the OS currently supplies keeps its sun or moon and adds the system badge, and pressing it toggles the lock. The app owns the preference — it applies it with \`useResolvedColorMode\` + \`ScopedTheme\` and persists it
-- \`variant="bar"\` (default) is the application bar: its own background plus \`shadow-bar\`, a downward-only shadow cast on the page below. \`variant="transparent"\` is a header integrated into the page it heads (a landing hero): no background, no border, no shadow
+- \`variant="bar"\` (default) is the application bar: its own background plus \`shadow-bar\`, a downward-only shadow cast on the page below. \`variant="transparent"\` is a header integrated into the page it heads (a landing hero) — a brand and the way in, no navigation: the destinations are behind the sign-in, not on the hero
 - The frame takes the device's top inset unless an ancestor \`SafeAreaScope\` consumed it; wrap the screen below in \`<SafeAreaScope consumedEdges={["top"]}>\``,
       },
     },
@@ -87,6 +90,7 @@ export default {
     size: { control: "inline-radio", options: ["xs", "sm", "md"] },
     variant: { control: "inline-radio", options: ["bar", "transparent"] },
     contentWidth: { control: "inline-radio", options: ["boxed", "full"] },
+    navAlign: { control: "inline-radio", options: ["start", "center"] },
     withSafeAreaTop: { control: "boolean" },
   },
 } satisfies Meta<typeof AppHeader>;
@@ -109,7 +113,35 @@ function DemoNav({ label }: DemoNavProps): ReactNode {
         label="Saved"
         icon={<BookmarkSimpleRegularIcon />}
       />
+      <NavBarItem
+        href="/profile"
+        label="Profile"
+        icon={<UserCircleRegularIcon />}
+      />
     </NavBar>
+  );
+}
+
+function DemoTextNav({ label }: DemoNavProps): ReactNode {
+  return (
+    <AppHeaderNav aria-label={label} defaultValue="/home">
+      <AppHeaderNavItem href="/home" label="Home" icon={<HouseRegularIcon />} />
+      <AppHeaderNavItem
+        href="/reports"
+        label="Reports"
+        icon={<ChartBarRegularIcon />}
+      />
+      <AppHeaderNavItem
+        href="/saved"
+        label="Saved"
+        icon={<BookmarkSimpleRegularIcon />}
+      />
+      <AppHeaderNavItem
+        href="/profile"
+        label="Profile"
+        icon={<UserCircleRegularIcon />}
+      />
+    </AppHeaderNav>
   );
 }
 
@@ -123,9 +155,45 @@ function DemoBrand(): ReactNode {
   );
 }
 
+interface DemoHeaderProps extends Omit<AppHeaderProps, "children"> {
+  navLabel: string;
+}
+
+// A segmented NavBar is a control of its own, so a header carrying one centers
+// it — `navAlign` comes after the spread because the pairing is the rule here,
+// not a caller's choice.
+function SegmentedNavHeader({
+  navLabel,
+  brand = <DemoBrand />,
+  ...props
+}: DemoHeaderProps): ReactNode {
+  return (
+    <AppHeader brand={brand} contentWidth="full" {...props} navAlign="center">
+      <DemoNav label={navLabel} />
+    </AppHeader>
+  );
+}
+
+// Text destinations continue the brand, which is what the default alignment is
+// for.
+function TextNavHeader({
+  navLabel,
+  brand = <DemoBrand />,
+  ...props
+}: DemoHeaderProps): ReactNode {
+  return (
+    <AppHeader brand={brand} contentWidth="full" {...props}>
+      <DemoTextNav label={navLabel} />
+    </AppHeader>
+  );
+}
+
+// The mode picker is bar furniture, like the notifications button and the
+// account menu: it belongs in the actions slot of a signed-out header too.
 function LoggedOutActions(): ReactNode {
   return (
     <AppHeaderActions>
+      <ColorModePicker />
       <AppHeaderSignIn accent="neutral" label="Sign up" onPress={fn()} />
       <AppHeaderSignIn label="Log in" onPress={fn()} />
     </AppHeaderActions>
@@ -139,6 +207,7 @@ interface LoggedInActionsProps {
 function LoggedInActions({ onLogOut }: LoggedInActionsProps): ReactNode {
   return (
     <AppHeaderActions>
+      <ColorModePicker />
       <IconButton
         aria-label="Notifications"
         icon={<BellRegularIcon />}
@@ -180,9 +249,9 @@ function ThemedAppHeader(): ReactNode {
   return (
     <ScopedTheme theme={mode}>
       <View className="bg-screen">
-        <AppHeader
+        <SegmentedNavHeader
           aria-label="Themed header"
-          brand={<DemoBrand />}
+          navLabel="Themed navigation"
           actions={
             <AppHeaderActions>
               <ColorModePicker
@@ -200,10 +269,7 @@ function ThemedAppHeader(): ReactNode {
               />
             </AppHeaderActions>
           }
-          contentWidth="full"
-        >
-          <DemoNav label="Themed navigation" />
-        </AppHeader>
+        />
         <View className="gap-xs px-l py-xl">
           <Text className="font-heading-bold text-xl">Page content</Text>
           <Text className="text-muted text-base">{`Rendered in ${mode} mode.`}</Text>
@@ -213,6 +279,8 @@ function ThemedAppHeader(): ReactNode {
   );
 }
 
+// The hero's header is the brand and the way in: the app's destinations live
+// behind the sign-in, not on the landing page.
 function LandingHero(): ReactNode {
   return (
     <Box accent="brand" className="bg-highlight-accent">
@@ -221,9 +289,7 @@ function LandingHero(): ReactNode {
         actions={<LoggedOutActions />}
         contentWidth="full"
         variant="transparent"
-      >
-        <DemoNav label="Landing navigation" />
-      </AppHeader>
+      />
       <View className="items-center gap-xs px-l py-xxl">
         <Text className="font-heading-extrabold text-3xl">Sing it once</Text>
         <Text className="text-muted text-base">
@@ -238,7 +304,7 @@ export const PreviewAppHeaderStory: ThisStory = {
   name: "AppHeader Preview",
   render: (args) => (
     <AppHeader brand={<DemoBrand />} actions={<LoggedInActions />} {...args}>
-      <DemoNav label="Preview navigation" />
+      <DemoTextNav label="Preview navigation" />
     </AppHeader>
   ),
 };
@@ -249,19 +315,12 @@ export const VariantsAppHeaderStory: ThisStory = {
     <Story>
       <Story.Section title="Composition">
         <Text className="text-sm text-muted">Brand + navigation + session</Text>
-        <AppHeader
-          brand={<DemoBrand />}
+        <TextNavHeader
+          navLabel="Full composition"
           actions={<LoggedInActions />}
-          contentWidth="full"
-        >
-          <DemoNav label="Full composition" />
-        </AppHeader>
-        <Text className="text-sm text-muted">
-          Without actions — the empty end slot keeps the navigation centered
-        </Text>
-        <AppHeader brand={<DemoBrand />} contentWidth="full">
-          <DemoNav label="No actions" />
-        </AppHeader>
+        />
+        <Text className="text-sm text-muted">Without actions</Text>
+        <TextNavHeader navLabel="No actions" />
         <Text className="text-sm text-muted">Without navigation</Text>
         <AppHeader
           brand={<DemoBrand />}
@@ -272,25 +331,43 @@ export const VariantsAppHeaderStory: ThisStory = {
         <AppHeader brand={<DemoBrand />} contentWidth="full" />
         <Text className="text-sm text-muted">Navigation only</Text>
         <AppHeader contentWidth="full">
-          <DemoNav label="Navigation only" />
+          <DemoTextNav label="Navigation only" />
         </AppHeader>
+      </Story.Section>
+
+      <Story.Section title="Navigation">
+        <Text className="text-sm text-muted">
+          AppHeaderNav — text destinations on the bar itself, the current one
+          underlined, packed against the brand (the default navAlign="start")
+        </Text>
+        <TextNavHeader
+          navLabel="Text navigation"
+          actions={<LoggedInActions />}
+        />
+        <Text className="text-sm text-muted">
+          NavBar — the segmented bar, a control of its own, so it takes
+          navAlign="center" and the free space is split
+        </Text>
+        <SegmentedNavHeader
+          navLabel="Segmented navigation"
+          actions={<LoggedInActions />}
+        />
+        <Text className="text-sm text-muted">
+          Centered without actions — the empty end slot keeps the navigation in
+          the middle
+        </Text>
+        <SegmentedNavHeader navLabel="Centered, no actions" />
       </Story.Section>
 
       <Story.Section title="Session">
         <Text className="text-sm text-muted">Logged out</Text>
-        <AppHeader
-          brand={<DemoBrand />}
-          actions={<LoggedOutActions />}
-          contentWidth="full"
-        >
-          <DemoNav label="Logged out" />
-        </AppHeader>
+        <TextNavHeader navLabel="Logged out" actions={<LoggedOutActions />} />
         <Text className="text-sm text-muted">
           Logged out, one action — passed straight as actions, linking to the
           sign-in screen
         </Text>
-        <AppHeader
-          brand={<DemoBrand />}
+        <TextNavHeader
+          navLabel="Logged out, single action"
           actions={
             <AppHeaderSignIn
               label="Log in"
@@ -298,25 +375,9 @@ export const VariantsAppHeaderStory: ThisStory = {
               href="/login"
             />
           }
-          contentWidth="full"
-        >
-          <DemoNav label="Logged out, single action" />
-        </AppHeader>
+        />
         <Text className="text-sm text-muted">Logged in</Text>
-        <AppHeader
-          brand={<DemoBrand />}
-          actions={<LoggedInActions />}
-          contentWidth="full"
-        >
-          <DemoNav label="Logged in" />
-        </AppHeader>
-      </Story.Section>
-
-      <Story.Section title="Color mode">
-        <Text className="text-sm text-muted">
-          An icon RadioButtonGroup in the actions slot, themed live
-        </Text>
-        <ThemedAppHeader />
+        <TextNavHeader navLabel="Logged in" actions={<LoggedInActions />} />
       </Story.Section>
 
       <Story.Section title="Variant">
@@ -327,9 +388,7 @@ export const VariantsAppHeaderStory: ThisStory = {
           brand={<DemoBrand />}
           actions={<LoggedOutActions />}
           contentWidth="full"
-        >
-          <DemoNav label="Bar variant" />
-        </AppHeader>
+        />
         <Text className="text-sm text-muted">
           transparent — integrated in the page it heads
         </Text>
@@ -337,47 +396,34 @@ export const VariantsAppHeaderStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Size">
-        <AppHeader
-          brand={<DemoBrand />}
+        <SegmentedNavHeader
+          navLabel="Extra small"
           actions={<LoggedInActions />}
-          contentWidth="full"
           size="xs"
-        >
-          <DemoNav label="Extra small" />
-        </AppHeader>
-        <AppHeader
-          brand={<DemoBrand />}
+        />
+        <SegmentedNavHeader
+          navLabel="Small"
           actions={<LoggedInActions />}
-          contentWidth="full"
           size="sm"
-        >
-          <DemoNav label="Small" />
-        </AppHeader>
-        <AppHeader
-          brand={<DemoBrand />}
+        />
+        <SegmentedNavHeader
+          navLabel="Medium"
           actions={<LoggedInActions />}
-          contentWidth="full"
           size="md"
-        >
-          <DemoNav label="Medium" />
-        </AppHeader>
+        />
       </Story.Section>
 
       <Story.Section title="Content width">
-        <AppHeader
-          brand={<DemoBrand />}
+        <SegmentedNavHeader
+          navLabel="Boxed"
           actions={<LoggedInActions />}
           contentWidth="boxed"
-        >
-          <DemoNav label="Boxed" />
-        </AppHeader>
-        <AppHeader
-          brand={<DemoBrand />}
+        />
+        <SegmentedNavHeader
+          navLabel="Full width"
           actions={<LoggedInActions />}
           contentWidth="full"
-        >
-          <DemoNav label="Full width" />
-        </AppHeader>
+        />
       </Story.Section>
 
       <Story.Section title="Brand">
@@ -421,24 +467,12 @@ export const VariantsAppHeaderStory: ThisStory = {
           }
           contentWidth="full"
         />
-        <Text className="text-sm text-muted">Logo accents</Text>
+        <Text className="text-sm text-muted">Accented logo</Text>
         <AppHeader
           brand={
             <AppHeaderBrand
               href="/"
               brandLogo={<BrandLogo accent="info" icon={<BirdRegularIcon />} />}
-              title="Alouette"
-            />
-          }
-          contentWidth="full"
-        />
-        <AppHeader
-          brand={
-            <AppHeaderBrand
-              href="/"
-              brandLogo={
-                <BrandLogo accent="success" icon={<BirdRegularIcon />} />
-              }
               title="Alouette"
             />
           }
@@ -469,9 +503,9 @@ function SessionHeader(): ReactNode {
 
   return (
     <>
-      <AppHeader
+      <SegmentedNavHeader
         aria-label="Full header"
-        brand={<DemoBrand />}
+        navLabel="Header navigation"
         actions={
           loggedIn ? (
             <LoggedInActions
@@ -488,10 +522,7 @@ function SessionHeader(): ReactNode {
             />
           )
         }
-        contentWidth="full"
-      >
-        <DemoNav label="Header navigation" />
-      </AppHeader>
+      />
       <QuestionAlertDialog
         visible={confirmingLogOut}
         title="Log out?"
@@ -518,13 +549,17 @@ export const TestsAppHeaderStory: ThisStory = {
         <SessionHeader />
       </Story.Section>
       <Story.Section title="Without actions">
-        <AppHeader
+        <SegmentedNavHeader
           aria-label="Header without actions"
-          brand={<DemoBrand />}
-          contentWidth="full"
-        >
-          <DemoNav label="Centered navigation" />
-        </AppHeader>
+          navLabel="Centered navigation"
+        />
+      </Story.Section>
+      <Story.Section title="Navigation alignment">
+        <TextNavHeader
+          aria-label="Start aligned header"
+          navLabel="Start aligned navigation"
+          actions={<LoggedInActions />}
+        />
       </Story.Section>
       <Story.Section title="Brand alignment">
         <AppHeader
@@ -550,6 +585,22 @@ export const TestsAppHeaderStory: ThisStory = {
           actions={<AppHeaderSignIn label="Log in" href="/login" />}
           contentWidth="full"
         />
+      </Story.Section>
+      <Story.Section title="Crowded">
+        <View className="w-[1200px]">
+          <SegmentedNavHeader
+            aria-label="Crowded header"
+            navLabel="Crowded navigation"
+            brand={
+              <AppHeaderBrand
+                href="/"
+                brandLogo={<BrandLogo icon={<BirdRegularIcon />} />}
+                title="Alouette Design System"
+              />
+            }
+            actions={<LoggedInActions />}
+          />
+        </View>
       </Story.Section>
       <Story.Section title="Color mode">
         <ThemedAppHeader />
@@ -649,8 +700,8 @@ export const TestsAppHeaderStory: ThisStory = {
     const bareNavBox = bareNav.getBoundingClientRect();
 
     if (window.innerWidth >= 768) {
-      // The empty end slot is what balances the brand slot, so the navigation
-      // stays centered in a header carrying no actions.
+      // `navAlign="center"`: the empty end slot is what balances the brand slot,
+      // so the navigation stays centered in a header carrying no actions.
       const offset =
         bareNavBox.left +
         bareNavBox.width / 2 -
@@ -660,6 +711,73 @@ export const TestsAppHeaderStory: ThisStory = {
       // Below md the row stacks: navigation sits under the brand.
       await expect(bareNavBox.top).toBeGreaterThanOrEqual(
         bareBrand.getBoundingClientRect().bottom,
+      );
+    }
+
+    // The default alignment is the opposite: only the end slot grows, so the
+    // navigation is packed against the brand and all the free space is on the
+    // actions side. It is the text navigation's alignment, so the header here
+    // carries an AppHeaderNav.
+    const startAligned = canvas.getByRole("banner", {
+      name: "Start aligned header",
+    });
+    const startAlignedCanvas = within(startAligned);
+    const startNav = startAlignedCanvas.getByRole("navigation", {
+      name: "Start aligned navigation",
+    });
+    const startBrand = startAlignedCanvas.getByRole("link", {
+      name: /Alouette/,
+    });
+
+    if (window.innerWidth >= 768) {
+      const startHeaderBox = startAligned.getBoundingClientRect();
+      const startNavBox = startNav.getBoundingClientRect();
+      const startBrandBox = startBrand.getBoundingClientRect();
+
+      await expect(startBrandBox.right).toBeLessThanOrEqual(startNavBox.left);
+      // The gap to the brand is the row's own gap, not a share of the free
+      // space — which is what a centered navigation would take instead.
+      await expect(startNavBox.left - startBrandBox.right).toBeLessThan(32);
+      await expect(startNavBox.left - startHeaderBox.left).toBeLessThan(
+        startHeaderBox.right - startNavBox.right,
+      );
+      await expect(
+        startAlignedCanvas
+          .getByRole("button", { name: "Camille Hurel" })
+          .getBoundingClientRect().left,
+      ).toBeGreaterThanOrEqual(startNavBox.right);
+    }
+
+    // A slot grown from a zero basis has no content floor — react-native-web's
+    // reset sets `min-width: 0` — so on a crowded single line it is handed half
+    // the free space whatever its child measures, and the child (which never
+    // shrinks in RNW) spills over the navigation. The `min-w-fit` floor is what
+    // keeps each slot at least as wide as what it holds.
+    const crowded = canvas.getByRole("banner", { name: "Crowded header" });
+    const crowdedCanvas = within(crowded);
+    const crowdedBrand = crowdedCanvas.getByRole("link", { name: /Alouette/ });
+    const crowdedNav = crowdedCanvas.getByRole("navigation", {
+      name: "Crowded navigation",
+    });
+    const crowdedActions = crowdedCanvas.getByRole("button", {
+      name: "Camille Hurel",
+    });
+
+    if (window.innerWidth >= 768) {
+      const crowdedNavBox = crowdedNav.getBoundingClientRect();
+
+      // The title is what spills first: the slot clips the brand's own box, but
+      // the text keeps its intrinsic width and runs under the navigation.
+      await expect(
+        crowdedCanvas
+          .getByText("Alouette Design System")
+          .getBoundingClientRect().right,
+      ).toBeLessThanOrEqual(crowdedNavBox.left);
+      await expect(
+        crowdedBrand.getBoundingClientRect().right,
+      ).toBeLessThanOrEqual(crowdedNavBox.left);
+      await expect(crowdedNavBox.right).toBeLessThanOrEqual(
+        crowdedActions.getBoundingClientRect().left,
       );
     }
 

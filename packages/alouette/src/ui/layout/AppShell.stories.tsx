@@ -79,6 +79,7 @@ function DemoHeader({ route, onRouteChange }: DemoHeaderProps): ReactNode {
         />
       }
       contentWidth="full"
+      navAlign="center"
     >
       <NavBar
         stretch

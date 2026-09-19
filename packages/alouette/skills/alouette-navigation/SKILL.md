@@ -6,7 +6,8 @@ description: >
   composes with expo Router; Tabs and Tab switch between views of one screen,
   announced as a tab list. Both are built by composing their items, over the
   same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar
-  can also stand vertically as a sidebar rail. Breadcrumbs and BreadcrumbItem
+  can also stand vertically as a sidebar rail, and AppHeaderNav carries the same
+  semantics as text links on an application bar. Breadcrumbs and BreadcrumbItem
   render the trail back through the ancestors of the current page. Pick by
   meaning, not by looks: navigation is never a RadioButtonGroup, which announces
   a form value, and never a Link wrapped around a Text, which has no interactive
@@ -20,6 +21,8 @@ requires:
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBarItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderNav.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderNavItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tabs.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tab.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SelectionContext.tsx"
@@ -128,6 +131,30 @@ for a fixed rail. `Tabs` and `RadioButtonGroup` stay horizontal.
 `stretch` is the horizontal counterpart: the bar fills the width it is given and
 its items share it equally, instead of hugging its destinations. That is what the
 stacked line of an `AppHeader` wants (alouette-layout/SKILL.md).
+
+### Navigation on an application bar
+
+A header that has to fit brand, navigation and session on one line takes
+`AppHeaderNav` + `AppHeaderNavItem` (alouette-layout/SKILL.md) instead: the same
+`navigation` / `link` / `aria-current="page"` semantics and the same
+`href`-as-identity, over a lighter material — text destinations on the bar
+itself, the current one underlined in the group's accent, no track and no chip.
+It also takes a `badge` after the label, which the segmented item has no room
+for. Reach for `NavBar` when the navigation is the screen's main control (the
+stacked line of a header, a sidebar rail), and for `AppHeaderNav` when it shares
+the bar with everything else.
+
+```tsx
+<AppHeaderNav aria-label="Main" value={pathname} onValueChange={router.push}>
+  <AppHeaderNavItem href="/home" label="Home" icon={<HouseRegularIcon />} />
+  <AppHeaderNavItem
+    href="/inbox"
+    label="Inbox"
+    aria-label="Inbox, 3 unread"
+    badge={<Badge size="sm">3</Badge>}
+  />
+</AppHeaderNav>
+```
 
 ### Icon-only pill
 
