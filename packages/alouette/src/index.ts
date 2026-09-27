@@ -231,13 +231,19 @@ export type {
   LinearProgressProps,
   LinearProgressSize,
 } from "./ui/feedback/LinearProgress";
-export { LinearProgress } from "./ui/feedback/LinearProgress";
+export {
+  IndeterminateLinearProgress,
+  LinearProgress,
+} from "./ui/feedback/LinearProgress";
 export type {
   CircularProgressProps,
   CircularProgressSize,
   IndeterminateCircularProgressProps,
 } from "./ui/feedback/CircularProgress";
-export { CircularProgress } from "./ui/feedback/CircularProgress";
+export {
+  CircularProgress,
+  IndeterminateCircularProgress,
+} from "./ui/feedback/CircularProgress";
 export type { MessageProps } from "./ui/feedback/Message";
 export {
   ErrorMessage,
