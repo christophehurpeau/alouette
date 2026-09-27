@@ -45,7 +45,7 @@ const modalVariants = tv({
     size: {
       sm: {
         panel: "max-w-[360px]",
-        inset: "rounded-sm p-xs",
+        inset: "rounded-sm p-sm",
         header: "pl-xs",
         scrollContent: "p-xs",
         footer: "py-xs",
