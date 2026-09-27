@@ -50,6 +50,11 @@ Applies to `shadow-*`:
 lowered ground, so write the `lowered` utility (`bg-lowered shadow-lowered`)
 rather than the shadow alone.
 
+The shadows adapt to the mode: their layer colors are the `--color-*shadow*`
+palette tokens (deeper drop layers and a dimmer inset rim in dark mode), so the
+same `shadow-*` class reads on both grounds. Never hardcode a shadow color in an
+arbitrary `shadow-[…]` value — it would stay light-mode on a dark ground.
+
 ## Quick mapping from raw Tailwind
 
 | Don't write  | Write                        |

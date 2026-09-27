@@ -74,7 +74,12 @@ export const PreviewModalStory: ThisStory = {
       {...args}
       footer={
         <>
-          <Button accent="neutral" text="Cancel" onPress={fn()} />
+          <Button
+            accent="neutral"
+            variant="soft"
+            text="Cancel"
+            onPress={fn()}
+          />
           <Button accent="danger" text="Delete" onPress={fn()} />
         </>
       }
@@ -131,7 +136,12 @@ export const Variants: ThisStory = {
               title="Save changes?"
               footer={
                 <>
-                  <Button accent="neutral" text="Discard" onPress={fn()} />
+                  <Button
+                    accent="neutral"
+                    variant="soft"
+                    text="Discard"
+                    onPress={fn()}
+                  />
                   <Button text="Save" onPress={fn()} />
                 </>
               }
@@ -184,7 +194,12 @@ export const Variants: ThisStory = {
           title="Terms of service"
           footer={
             <>
-              <Button accent="neutral" text="Decline" onPress={fn()} />
+              <Button
+                accent="neutral"
+                variant="soft"
+                text="Decline"
+                onPress={fn()}
+              />
               <Button text="Accept" onPress={fn()} />
             </>
           }
@@ -209,7 +224,12 @@ export const Variants: ThisStory = {
                 icon={<WarningRegularIcon />}
                 footer={
                   <>
-                    <Button variant="outlined" text="Cancel" onPress={fn()} />
+                    <Button
+                      accent="neutral"
+                      variant="soft"
+                      text="Cancel"
+                      onPress={fn()}
+                    />
                     <Button text="Confirm" onPress={fn()} />
                   </>
                 }
@@ -321,7 +341,12 @@ export const ScrollingBodyWithFooterStory: ThisStory = {
       triggerLabel="Long content"
       footer={
         <>
-          <Button accent="neutral" text="Decline" onPress={fn()} />
+          <Button
+            accent="neutral"
+            variant="soft"
+            text="Decline"
+            onPress={fn()}
+          />
           <Button text="Accept" onPress={fn()} />
         </>
       }

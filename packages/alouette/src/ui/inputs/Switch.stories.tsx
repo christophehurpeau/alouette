@@ -31,39 +31,51 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        {neutralAndAccents.map((accent) => (
-          <Story.SubSection
-            key={accent}
-            withSurface
-            title={accent}
-            accent={accent}
-          >
-            <StoryGrid.Row flexWrap>
-              {(
-                [
-                  undefined,
-                  "hover",
-                  "focus",
-                  "press",
-                  "disabled",
-                  "checked",
-                ] as const
-              ).map((state) => (
-                <StoryGrid.Col key={state} title={state}>
-                  <Switch
-                    disabled={state === "disabled"}
-                    {...(process.env.EXPO_OS === "web"
-                      ? ({
-                          forceStyle: state === "disabled" ? undefined : state,
-                        } as any)
-                      : {})}
-                    {...(state === "checked" ? { checked: true } : {})}
-                  />
-                </StoryGrid.Col>
-              ))}
-            </StoryGrid.Row>
-          </Story.SubSection>
-        ))}
+        {neutralAndAccents.map((accent) =>
+          [false, true].map((onAccentSurface) => (
+            <Story.SubSection
+              key={accent}
+              withSurface
+              title={accent + (onAccentSurface ? " (on accent surface)" : "")}
+              accent={onAccentSurface ? accent : undefined}
+            >
+              <StoryGrid.Row flexWrap>
+                {(
+                  [
+                    undefined,
+                    "hover",
+                    "focus",
+                    "press",
+                    "disabled",
+                    "checked",
+                    "disabled:checked",
+                  ] as const
+                ).map((state) => (
+                  <StoryGrid.Col key={state} title={state ?? "Default"}>
+                    <Switch
+                      accent={accent}
+                      disabled={
+                        state === "disabled" || state === "disabled:checked"
+                      }
+                      {...(process.env.EXPO_OS === "web"
+                        ? ({
+                            forceStyle:
+                              state === "disabled" ||
+                              state === "disabled:checked"
+                                ? undefined
+                                : state,
+                          } as any)
+                        : {})}
+                      {...(state === "checked" || state === "disabled:checked"
+                        ? { checked: true }
+                        : {})}
+                    />
+                  </StoryGrid.Col>
+                ))}
+              </StoryGrid.Row>
+            </Story.SubSection>
+          )),
+        )}
       </Story.Section>
     </Story>
   ),

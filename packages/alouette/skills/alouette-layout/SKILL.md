@@ -34,8 +34,8 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppShell.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeader.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderNav.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderNavItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNav.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNavItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderActions.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderAccount.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderSignIn.tsx"
@@ -221,8 +221,8 @@ the screen inside needs **no scroll container and no insets of its own**.
 `AppHeaderBrand` (+ `BrandLogo`) at the start, the navigation as children, and
 `AppHeaderActions` at the end — a `ColorModePicker`, an `IconButton`, and the
 session, which is `AppHeaderAccount` signed in and `AppHeaderSignIn` signed out.
-The navigation sits next to the brand by default; `AppHeaderNav` +
-`AppHeaderNavItem` is the material made for that spot — text destinations on the
+The navigation sits next to the brand by default; `HeaderNav` +
+`HeaderNavItem` is the material made for that spot — text destinations on the
 bar itself, the current one underlined — while a segmented `NavBar`
 (alouette-navigation/SKILL.md) is the alternative, and always takes
 `navAlign="center"`.

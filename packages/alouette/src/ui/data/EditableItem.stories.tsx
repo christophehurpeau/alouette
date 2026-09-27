@@ -63,7 +63,10 @@ export default {
     label: { control: "text" },
     details: { control: "text" },
     editAriaLabel: { control: "text" },
-    variant: { control: "select", options: ["contained", "outlined", "ghost"] },
+    variant: {
+      control: "select",
+      options: ["tonal", "filled", "soft"],
+    },
     accent: { control: "select", options: accentsWithoutNeutral },
     disabled: { control: "boolean" },
   },
@@ -119,9 +122,8 @@ export const EditableItemVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Edit button variants">
-        <EditableItemDemo variant="contained" />
-        <EditableItemDemo variant="outlined" />
-        <EditableItemDemo variant="ghost" />
+        <EditableItemDemo variant="filled" />
+        <EditableItemDemo variant="soft" />
       </Story.Section>
 
       <Story.Section withSurface title="Custom edit icon">
@@ -147,8 +149,7 @@ export const EditableItemVariantsStory: ThisStory = {
 
       <Story.Section withSurface title="Disabled">
         <EditableItemDemo disabled />
-        <EditableItemDemo disabled variant="outlined" />
-        <EditableItemDemo disabled variant="ghost" />
+        <EditableItemDemo disabled variant="soft" />
       </Story.Section>
     </Story>
   ),

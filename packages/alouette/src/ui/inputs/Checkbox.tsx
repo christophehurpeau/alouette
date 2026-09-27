@@ -1,22 +1,12 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useControllableChecked } from "../../core/useControllableChecked";
 import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBox } from "../containers/Box";
 import { Text } from "../primitives/Text";
 import { CheckboxIndicator } from "../selection/CheckboxIndicator";
+import { selectionRowVariants } from "../selection/selectionRowVariants";
 import { useOptionalCheckboxContext } from "./CheckboxContext";
-
-const labelVariants = tv({
-  base: "text-base",
-  variants: {
-    disabled: {
-      true: "text-disabled-sharp",
-      false: "text-sharp",
-    },
-  },
-});
 
 export interface CheckboxProps {
   label: string;
@@ -58,6 +48,7 @@ export function Checkbox({
       ? group.values.includes(value)
       : standaloneChecked;
   const isDisabled = disabled === true || group?.disabled === true;
+  const styles = selectionRowVariants({ disabled: isDisabled });
 
   return (
     <AccentScope accent={group ? undefined : accent}>
@@ -69,7 +60,7 @@ export function Checkbox({
         aria-disabled={isDisabled}
         aria-label={label}
         disabled={isDisabled}
-        className="group flex-row items-center gap-xs self-start rounded-xs px-xs min-h-11 focus-visible:outline-interactive-outlined-outline-focus"
+        className={styles.row()}
         onPress={() => {
           if (group && value !== undefined) {
             group.onToggle(value);
@@ -83,7 +74,7 @@ export function Checkbox({
           selected={selected}
           disabled={isDisabled}
         />
-        <Text className={labelVariants({ disabled: isDisabled })}>{label}</Text>
+        <Text className={styles.label()}>{label}</Text>
       </InteractiveBox>
     </AccentScope>
   );

@@ -111,7 +111,7 @@ export const VariantsMenuStory: ThisStory = {
               aria-label="Row actions"
               icon={<PencilSimpleRegularIcon />}
               size="sm"
-              variant="ghost"
+              variant="soft"
               {...trigger}
             />
           )}

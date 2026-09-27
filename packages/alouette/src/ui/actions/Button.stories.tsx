@@ -19,11 +19,13 @@ export default {
     docs: {
       description: {
         component: `### Variants
-- \`variant\`: contained | outlined | ghost | soft
+- \`variant\`: tonal | filled | outlined | soft
 - \`size\`: sm (38px) | md (44px)
 - \`accent\`: brand (default) | danger | info | success | warning | neutral
 
-Differentiate a button by its \`accent\`, not by dropping to a lighter \`variant\`: \`accent="neutral"\` is the secondary action beside an accented one — the same contained material, on the neutral tokens.
+\`tonal\` (default) is a ground lighter than the page, lifted by a shadow, whose ink carries the accent. \`filled\` is the accent's own flat fill under white ink, for the one action that must dominate.
+
+Differentiate a button by its \`accent\`, not by dropping to a lighter \`variant\`: \`accent="neutral"\` is the secondary action beside an accented one — the same material, on the neutral tokens.
 
 ### Usage
 ~~~tsx
@@ -113,7 +115,7 @@ export const Variants: ThisStory = {
           {(["sm", "md"] as const).map((size) => (
             <StoryGrid.Col key={size} title={size}>
               <Button
-                variant="contained"
+                variant="tonal"
                 size={size}
                 icon={<ArrowLeftRegularIcon />}
                 activeIcon={<ArrowLeftDuotoneIcon />}
@@ -136,7 +138,7 @@ export const Variants: ThisStory = {
                   title={state ?? "Default"}
                 >
                   <View className="gap-xs p-xxs">
-                    {(["contained", "outlined", "ghost", "soft"] as const).map(
+                    {(["tonal", "filled", "outlined", "soft"] as const).map(
                       (variant) => (
                         <Button
                           key={variant}
@@ -147,6 +149,7 @@ export const Variants: ThisStory = {
                           icon={<ArrowLeftRegularIcon />}
                           activeIcon={<ArrowLeftDuotoneIcon />}
                           text={variant}
+                          className="justify-between"
                         />
                       ),
                     )}
@@ -177,7 +180,7 @@ export const Variants: ThisStory = {
       <Story.Section title="States">
         <Story.SubSection title="Loading">
           <StoryGrid.Row flexWrap>
-            {(["contained", "outlined", "ghost", "soft"] as const).map(
+            {(["tonal", "filled", "outlined", "soft"] as const).map(
               (variant) => (
                 <Button
                   key={variant}
@@ -193,7 +196,7 @@ export const Variants: ThisStory = {
 
         <Story.SubSection title="Failed">
           <StoryGrid.Row flexWrap>
-            {(["contained", "outlined", "ghost", "soft"] as const).map(
+            {(["tonal", "filled", "outlined", "soft"] as const).map(
               (variant) => (
                 <Button
                   key={variant}
@@ -209,7 +212,7 @@ export const Variants: ThisStory = {
 
         <Story.SubSection title="Success">
           <StoryGrid.Row flexWrap>
-            {(["contained", "outlined", "ghost", "soft"] as const).map(
+            {(["tonal", "filled", "outlined", "soft"] as const).map(
               (variant) => (
                 <Button
                   key={variant}
@@ -276,7 +279,7 @@ function ConfirmationFooter({
 const isAchromatic = (color: string): boolean =>
   new Set([...color.matchAll(/[\d.]+/g)].slice(0, 3).map(Number)).size === 1;
 
-interface ContainedGrounds {
+interface TonalGrounds {
   rest: string;
   hover: string;
   press: string;
@@ -284,23 +287,23 @@ interface ContainedGrounds {
   screen: string;
 }
 
-const containedGroundsOf = (element: HTMLElement): ContainedGrounds => {
+const tonalGroundsOf = (element: HTMLElement): TonalGrounds => {
   const style = getComputedStyle(element);
   const token = (name: string): string => style.getPropertyValue(name).trim();
   return {
-    rest: token("--color-interactive-contained-pressable"),
-    hover: token("--color-interactive-contained-hover"),
-    press: token("--color-interactive-contained-active"),
+    rest: token("--color-interactive-tonal-pressable"),
+    hover: token("--color-interactive-tonal-hover"),
+    press: token("--color-interactive-tonal-active"),
     surface: token("--color-surface"),
     screen: token("--color-screen"),
   };
 };
 
 /**
- * `accent="neutral"` renders the contained material on the grayscale palette:
- * the same fill steps and the same white label a colored accent gets, so the
- * secondary action of a confirmation is a real button rather than a pale one. It
- * is never an `outlined` or `ghost` button, which trade the material away.
+ * `accent="neutral"` renders the tonal material on the grayscale palette:
+ * the same ground, shadow and states a colored accent gets, with the sharp ink
+ * where an accented button carries its hue. It is never an `outlined` button,
+ * which trades the material away.
  */
 export const NeutralAccent: ThisStory = {
   render: () => (
@@ -344,33 +347,38 @@ export const NeutralAccent: ThisStory = {
     const neutralStyle = getComputedStyle(neutral);
     const accentedStyle = getComputedStyle(accented);
 
-    // Same contained material — a ground and the raised shadow, not the
-    // borrowed page background an outlined or ghost button sits on.
+    // Same tonal material — a ground and the raised shadow, not the
+    // borrowed page background an outlined button sits on.
     await expect(neutralStyle.backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
     await expect(neutralStyle.boxShadow).toBe(accentedStyle.boxShadow);
     await expect(neutralStyle.boxShadow).not.toBe("none");
 
-    // The ground is the only difference: the neutral one is achromatic, the
-    // accented one is not, and both carry the same on-accent label ink.
+    // The accent is the only difference, carried by the ground and the ink:
+    // the neutral ones are achromatic, the accented ones are not.
     await expect(isAchromatic(neutralStyle.backgroundColor)).toBe(true);
     await expect(isAchromatic(accentedStyle.backgroundColor)).toBe(false);
     await expect(
-      getComputedStyle(within(neutral).getByText("Cancel")).color,
-    ).toBe(getComputedStyle(within(accented).getByText("Save")).color);
+      isAchromatic(getComputedStyle(within(neutral).getByText("Cancel")).color),
+    ).toBe(true);
+    await expect(
+      isAchromatic(getComputedStyle(within(accented).getByText("Save")).color),
+    ).toBe(false);
 
-    // The grounds a neutral button moves through must differ from the two
-    // surfaces it is placed on, or it dissolves into them. Light has a step for
-    // every state; dark has none above hover (the scale runs into its text
-    // tones), so its press holds at hover's value.
+    // The ground a neutral button rests on must differ from the two surfaces
+    // it is placed on, or it dissolves into them. Light hovers onto the
+    // surface step itself, the shadow keeping it lifted there; dark has no
+    // step above hover (the scale runs into its text tones), so its press
+    // holds at hover's value.
     for (const element of [neutral, darkNeutral]) {
-      const { rest, hover, surface, screen } = containedGroundsOf(element);
+      const { rest, hover, surface, screen } = tonalGroundsOf(element);
       await expect(rest).not.toBe(hover);
       await expect(rest).not.toBe(surface);
       await expect(rest).not.toBe(screen);
-      await expect(hover).not.toBe(surface);
-      await expect(hover).not.toBe(screen);
     }
-    const light = containedGroundsOf(neutral);
+    const dark = tonalGroundsOf(darkNeutral);
+    await expect(dark.hover).not.toBe(dark.surface);
+    await expect(dark.hover).not.toBe(dark.screen);
+    const light = tonalGroundsOf(neutral);
     await expect(light.press).not.toBe(light.hover);
   },
 };

@@ -1,3 +1,4 @@
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuotoneIcon";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
@@ -21,7 +22,7 @@ export default {
         component: `### Variants
 - \`size\`: \`sm\` | \`md\` | any number (custom diameter px)
 - \`iconSize\`: \`"fill"\` makes the icon fill 80% of the button (default 50%)
-- \`variant\`: contained | outlined | ghost | soft
+- \`variant\`: tonal | filled | outlined | soft (the glyph takes the accent on hover/focus)
 - \`activeIcon\`: replaces \`icon\` while the button is hovered, focused or pressed — usually the duotone twin
 - Wrap in \`<AccentTheme accent="brand"/>\` (or any accent: brand|info|success|warning|danger) to switch the interactive token set; it composes with current light/dark mode`,
       },
@@ -126,44 +127,30 @@ export const Variants: ThisStory = {
 
       <Story.Section withSurface title="Variants">
         {neutralAndAccents.map((accent) => (
-          <Story.SubSection key={accent} title={accent} accent={accent}>
+          <Story.SubSection key={accent} title={accent}>
             <StoryGrid.Row>
               {(
-                [
-                  undefined,
-                  "ghost",
-                  "hover",
-                  "focus",
-                  "press",
-                  "disabled",
-                ] as const
+                [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col key={state} title={state}>
+                <StoryGrid.Col key={state} title={state ?? "Default"}>
                   <View className="gap-xs">
-                    {(["contained", "outlined", "ghost", "soft"] as const).map(
-                      (variant) => (
-                        <View
-                          key={variant}
-                          className="flex-row gap-xs items-center"
-                        >
-                          <IconButton
-                            variant={variant}
-                            disabled={state === "disabled"}
-                            forceStyle={
-                              state === "disabled" || state === "ghost"
-                                ? undefined
-                                : state
-                            }
-                            icon={<ArrowLeftRegularIcon />}
-                            activeIcon={<ArrowLeftDuotoneIcon />}
-                            aria-label="Go back"
-                          />
-                          <Text className="text-xs">
-                            {variant} {state === "ghost" ? "ghost" : ""}
-                          </Text>
-                        </View>
-                      ),
-                    )}
+                    {(["tonal", "filled", "soft"] as const).map((variant) => (
+                      <View
+                        key={variant}
+                        className="flex-row gap-xs items-center"
+                      >
+                        <IconButton
+                          accent={accent}
+                          variant={variant}
+                          disabled={state === "disabled"}
+                          forceStyle={state === "disabled" ? undefined : state}
+                          icon={<ArrowLeftRegularIcon />}
+                          activeIcon={<ArrowLeftDuotoneIcon />}
+                          aria-label="Go back"
+                        />
+                        <Text className="text-xs">{variant}</Text>
+                      </View>
+                    ))}
                   </View>
                 </StoryGrid.Col>
               ))}
@@ -173,4 +160,57 @@ export const Variants: ThisStory = {
       </Story.Section>
     </Story>
   ),
+};
+
+/**
+ * A soft icon button has no ground to carry its accent at rest, so the glyph
+ * takes `text-accent` on hover and focus.
+ */
+export const SoftAccentOnInteraction: ThisStory = {
+  render: () => (
+    <Story noDarkMode>
+      <Story.Section withSurface title="Soft, danger">
+        <StoryGrid.Row>
+          <StoryGrid.Col title="Interactive">
+            <IconButton
+              accent="danger"
+              variant="soft"
+              icon={<ArrowLeftRegularIcon />}
+              aria-label="Go back"
+            />
+          </StoryGrid.Col>
+          <StoryGrid.Col title="hover">
+            <IconButton
+              accent="danger"
+              variant="soft"
+              forceStyle="hover"
+              icon={<ArrowLeftRegularIcon />}
+              aria-label="Go back (hover)"
+            />
+          </StoryGrid.Col>
+        </StoryGrid.Row>
+      </Story.Section>
+    </Story>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole("button", { name: "Go back" });
+    const glyph = button.querySelector("svg")!;
+    const accentColor = getComputedStyle(
+      canvas
+        .getByRole("button", { name: "Go back (hover)" })
+        .querySelector("svg")!,
+    ).color;
+    const restColor = getComputedStyle(glyph).color;
+
+    await expect(restColor).not.toBe(accentColor);
+
+    // user-event's hover never sets CSS `:hover`, so only focus is asserted;
+    // the forced `hover` button covers the hover appearance.
+    await userEvent.tab();
+    await expect(button).toHaveFocus();
+    await waitFor(() =>
+      expect(getComputedStyle(glyph).color).toBe(accentColor),
+    );
+  },
 };

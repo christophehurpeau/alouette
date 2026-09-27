@@ -135,10 +135,10 @@ const analyzeColorScale = (name: string, scale: ColorScale) => {
 const getUsageDescription = (step: number) => {
   const descriptions = {
     1: "Interactive outlined hover/focus",
-    2: "Interactive contained press",
+    2: "Interactive filled press",
     3: "Interactive outlined press",
-    4: "Interactive contained hover/focus",
-    5: "Interactive contained background",
+    4: "Interactive filled hover/focus",
+    5: "Interactive filled background",
     6: "Main color",
     7: "Border hover/focus",
     8: "Border color",

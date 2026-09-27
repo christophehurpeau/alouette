@@ -1,5 +1,10 @@
 import type { ReactNode } from "react";
-import type { AccentOrNeutral, AlouetteTheme } from "../../core/AlouetteConfig";
+import type {
+  Accent,
+  AccentOrNeutral,
+  AlouetteModeTheme,
+  AlouetteTheme,
+} from "../../core/AlouetteConfig";
 import { useCurrentMode, useCurrentTheme } from "../../core/ThemeContext";
 import { ScopedTheme } from "./ScopedTheme";
 
@@ -7,6 +12,27 @@ export interface StableAccentScopeProps {
   mode?: "dark" | "light";
   accent?: AccentOrNeutral;
   children?: ReactNode;
+}
+
+export interface ResolveStableThemeParams {
+  currentTheme: AlouetteTheme;
+  mode: AlouetteModeTheme;
+  accent: AccentOrNeutral | undefined;
+}
+
+/** Without an `accent`, the inherited accent is kept, in `mode`. */
+export function resolveStableTheme({
+  currentTheme,
+  mode,
+  accent,
+}: ResolveStableThemeParams): AlouetteTheme {
+  if (accent === "neutral") return mode;
+  const [, inheritedAccent] = currentTheme.split("_") as [
+    string,
+    Accent | undefined,
+  ];
+  const resolvedAccent = accent ?? inheritedAccent;
+  return resolvedAccent ? `${mode}_${resolvedAccent}` : mode;
 }
 
 /**
@@ -24,10 +50,10 @@ export function StableAccentScope({
   const currentTheme = useCurrentTheme();
   const currentMode = useCurrentMode();
 
-  const theme = ((): AlouetteTheme => {
-    if (!accent) return currentTheme;
-    if (accent === "neutral") return forcedMode ?? currentMode;
-    return `${forcedMode ?? currentMode}_${accent}`;
-  })();
+  const theme = resolveStableTheme({
+    currentTheme,
+    mode: forcedMode ?? currentMode,
+    accent,
+  });
   return <ScopedTheme theme={theme}>{children}</ScopedTheme>;
 }

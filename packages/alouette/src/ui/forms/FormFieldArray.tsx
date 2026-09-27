@@ -114,7 +114,7 @@ function FormFieldArrayItem<
         </View>
         {removable ? (
           <IconButton
-            variant="ghost"
+            variant="soft"
             icon={<TrashRegularIcon />}
             aria-label={removeLabel}
             onHoverIn={() => {

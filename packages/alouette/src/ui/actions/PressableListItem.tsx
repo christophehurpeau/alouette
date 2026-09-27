@@ -17,13 +17,12 @@ const pressableListItemVariants = tv(
     },
     variants: {
       variant: {
-        contained: { caret: "text-on-accent-muted" },
-        list: { caret: "text-on-list" },
+        tonal: { caret: "text-on-tonal" },
+        filled: { caret: "text-on-accent-muted" },
         outlined: { caret: "text-muted" },
-        ghost: { caret: "text-muted" },
       },
     },
-    defaultVariants: { variant: "list" },
+    defaultVariants: { variant: "tonal" },
   },
   { twMerge: false },
 );
@@ -66,7 +65,7 @@ export interface PressableListItemProps {
 }
 
 export function PressableListItem({
-  variant = "list",
+  variant = "tonal",
   role,
   accent,
   className,

@@ -60,9 +60,9 @@ const segmentedItemVariants = tv({
     },
     disabled: {
       true: {
-        chip: "bg-interactive-contained-disabled",
+        chip: "bg-interactive-filled-disabled",
         foreground: "text-disabled-muted group-hover:text-disabled-muted",
-        indicator: "bg-interactive-contained-disabled",
+        indicator: "bg-interactive-filled-disabled",
       },
       false: { chip: "bg-emphasis shadow-s" },
     },

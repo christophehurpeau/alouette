@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
@@ -8,7 +8,7 @@ import { Text } from "../primitives/Text";
 const badgeVariants = tv(
   {
     slots: {
-      frame: "flex-row items-center self-start rounded-full",
+      frame: "border flex-row items-center self-start rounded-full",
       text: "font-body-bold",
       icon: "",
     },
@@ -19,17 +19,17 @@ const badgeVariants = tv(
       },
       variant: {
         solid: {
-          frame: "bg-highlight-accent",
-          text: "text-sharp",
-          icon: "text-sharp",
+          frame: "bg-emphasis border-emphasis",
+          text: "text-on-emphasis",
+          icon: "text-on-emphasis",
         },
         "solid.enabled": {
-          frame: "bg-enabled",
+          frame: "bg-enabled border-enabled",
           text: "text-on-accent",
           icon: "text-on-accent",
         },
         outlined: {
-          frame: "border border-accent",
+          frame: "bg-highlight-accent border-accent",
           text: "text-accent",
           icon: "text-accent",
         },
@@ -46,9 +46,9 @@ type BadgeSize = NonNullable<BadgeVariantProps["size"]>;
 const ICON_SIZE: Record<BadgeSize, number> = { sm: 12, md: 16 };
 
 export interface BadgeProps {
-  accent?: Accent;
+  accent?: AccentOrNeutral;
   size?: BadgeSize;
-  variant?: NonNullable<BadgeVariantProps["variant"]>;
+  variant?: BadgeVariantProps["variant"];
   icon?: SVGIconElement;
   children?: ReactNode;
 }

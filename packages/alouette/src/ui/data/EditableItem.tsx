@@ -1,8 +1,8 @@
 import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimpleRegularIcon";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
+import type { IconButtonProps } from "../actions/IconButton";
 import { IconButton } from "../actions/IconButton";
-import type { PressableBoxProps } from "../actions/PressableBox";
 import type { SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
@@ -16,7 +16,7 @@ export interface EditableItemProps {
   /** Names the edit button for assistive tech — it has no visible text. */
   editAriaLabel: string;
   editIcon?: SVGIconElement;
-  variant?: PressableBoxProps["variant"];
+  variant?: IconButtonProps["variant"];
   accent?: Accent;
   disabled?: boolean;
   onEdit: () => void;

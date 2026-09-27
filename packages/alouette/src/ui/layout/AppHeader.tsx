@@ -47,7 +47,7 @@ const appHeaderVariants = tv({
     },
     navAlign: {
       // The navigation reads as a continuation of the brand, which is what a
-      // text `AppHeaderNav` wants: nothing between the two but the row's gap.
+      // text `HeaderNav` wants: nothing between the two but the row's gap.
       start: {},
       // A second grown slot on the other side of the navigation, so the free
       // space is split evenly and the navigation lands in the middle.
@@ -94,7 +94,7 @@ export interface AppHeaderProps
   /** End slot — typically an `AppHeaderActions`. */
   actions?: ReactNode;
   /**
-   * Navigation slot — an `AppHeaderNav` or a `NavBar`. It owns the second line
+   * Navigation slot — an `HeaderNav` or a `NavBar`. It owns the second line
    * while the header is stacked, so give a `NavBar` `stretch` to fill that line.
    */
   children?: ReactNode;

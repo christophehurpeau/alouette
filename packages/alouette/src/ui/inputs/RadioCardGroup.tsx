@@ -26,7 +26,7 @@ export type RadioCardGroupLayout = NonNullable<
   RadioCardGroupVariantProps["layout"]
 >;
 
-export type RadioCardGroupVariant = "contained" | "outlined";
+export type RadioCardGroupVariant = "outlined" | "tonal";
 
 interface RadioCardGroupAppearance {
   layout: RadioCardGroupLayout;
@@ -34,7 +34,7 @@ interface RadioCardGroupAppearance {
 }
 
 const RadioCardGroupAppearanceContext = createContext<RadioCardGroupAppearance>(
-  { layout: "list", variant: "contained" },
+  { layout: "list", variant: "tonal" },
 );
 
 /** Lets a card size itself for the row it flows in and take the group's material. */
@@ -69,7 +69,7 @@ export function RadioCardGroup({
     disabled,
   });
   const appearance = useMemo(
-    () => ({ layout: layout ?? "list", variant: variant ?? "contained" }),
+    () => ({ layout: layout ?? "list", variant: variant ?? "tonal" }),
     [layout, variant],
   );
 

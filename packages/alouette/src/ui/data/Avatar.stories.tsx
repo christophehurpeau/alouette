@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import type { SVGIconElement } from "../primitives/Icon";
 import { View } from "../primitives/View";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
-import { Avatar } from "./Avatar";
+import { Avatar, type AvatarProps } from "./Avatar";
 
 type ThisStory = StoryObj<typeof Avatar>;
 
@@ -20,6 +20,11 @@ export default {
   argTypes: {
     name: { control: "text" },
     size: { control: "inline-radio", options: ["sm", "md", "lg"] },
+    variant: {
+      control: "inline-radio",
+      options: ["solid", "enabled"],
+      table: { defaultValue: { summary: "solid" } },
+    },
     accent: { control: "select", options: accentsWithoutNeutral },
   },
 } satisfies Meta<typeof Avatar>;
@@ -37,14 +42,35 @@ export const PreviewAvatarStory: ThisStory = {
 interface SizeRowProps {
   name?: string;
   icon?: SVGIconElement;
+  variant?: AvatarProps["variant"];
 }
 
-function SizeRow({ name, icon }: SizeRowProps): ReactNode {
+function SizeRow({ name, icon, variant }: SizeRowProps): ReactNode {
   return (
     <View className="flex-row gap-xs items-center">
-      <Avatar name={name} icon={icon} size="sm" />
-      <Avatar name={name} icon={icon} size="md" />
-      <Avatar name={name} icon={icon} size="lg" />
+      <Avatar name={name} icon={icon} variant={variant} size="sm" />
+      <Avatar name={name} icon={icon} variant={variant} size="md" />
+      <Avatar name={name} icon={icon} variant={variant} size="lg" />
+    </View>
+  );
+}
+
+interface AccentRowProps {
+  variant: AvatarProps["variant"];
+}
+
+function AccentRow({ variant }: AccentRowProps): ReactNode {
+  return (
+    <View className="flex-row gap-xs items-center flex-wrap">
+      {accentsWithoutNeutral.map((accent) => (
+        <Avatar
+          key={accent}
+          accent={accent}
+          variant={variant}
+          name="Camille Hurel"
+        />
+      ))}
+      <Avatar variant={variant} icon={<UserRegularIcon />} />
     </View>
   );
 }
@@ -54,16 +80,23 @@ export const VariantsAvatarStory: ThisStory = {
   render: () => (
     <Story>
       <Story.Section withSurface title="Sizes">
-        <SizeRow name="Camille Hurel" />
-        <SizeRow icon={<UserRegularIcon />} />
+        <Story.SubSection title="variant=solid (default)">
+          <SizeRow name="Camille Hurel" />
+          <SizeRow icon={<UserRegularIcon />} />
+        </Story.SubSection>
+        <Story.SubSection title="variant=enabled">
+          <SizeRow name="Camille Hurel" variant="enabled" />
+          <SizeRow icon={<UserRegularIcon />} variant="enabled" />
+        </Story.SubSection>
       </Story.Section>
 
       <Story.Section withSurface title="Accents">
-        <View className="flex-row gap-xs items-center flex-wrap">
-          {accentsWithoutNeutral.map((accent) => (
-            <Avatar key={accent} accent={accent} name="Camille Hurel" />
-          ))}
-        </View>
+        <Story.SubSection title="variant=solid (default)">
+          <AccentRow variant="solid" />
+        </Story.SubSection>
+        <Story.SubSection title="variant=enabled">
+          <AccentRow variant="enabled" />
+        </Story.SubSection>
       </Story.Section>
 
       <Story.Section withSurface title="Initials">

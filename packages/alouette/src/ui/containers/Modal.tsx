@@ -194,7 +194,8 @@ export function ModalPanel({
           {hideCloseButton ? null : (
             <IconButton
               icon={<XRegularIcon />}
-              variant="ghost"
+              accent="neutral"
+              variant="soft"
               size={iconSize}
               aria-label={closeButtonAriaLabel}
               onPress={onClose}

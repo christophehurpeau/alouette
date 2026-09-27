@@ -45,7 +45,7 @@ export const Variants: ThisStory = {
               {(
                 [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col key={state} title={state}>
+                <StoryGrid.Col key={state} title={state ?? "Default"}>
                   <InputText
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
@@ -57,7 +57,7 @@ export const Variants: ThisStory = {
               {(
                 [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col key={state} title={state}>
+                <StoryGrid.Col key={state} title={state ?? "Default"}>
                   <InputText
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
@@ -70,7 +70,7 @@ export const Variants: ThisStory = {
               {(
                 [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col key={state} title={state}>
+                <StoryGrid.Col key={state} title={state ?? "Default"}>
                   <InputText
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}

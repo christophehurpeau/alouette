@@ -7,8 +7,9 @@ import { Text } from "../primitives/Text";
 
 const avatarVariants = tv({
   slots: {
-    frame: "flex-center shrink-0 rounded-full bg-enabled",
-    label: "font-body-bold text-on-accent",
+    frame: "flex-center shrink-0 rounded-full",
+    label: "font-body-bold",
+    icon: "",
   },
   variants: {
     size: {
@@ -16,8 +17,23 @@ const avatarVariants = tv({
       md: { frame: "size-[32px]", label: "text-sm" },
       lg: { frame: "size-[40px]", label: "text-base" },
     },
+    variant: {
+      solid: {
+        frame: "bg-emphasis",
+        label: "text-on-emphasis",
+        icon: "text-on-emphasis",
+      },
+      enabled: {
+        frame: "bg-enabled",
+        label: "text-on-accent",
+        icon: "text-on-accent",
+      },
+    },
   },
-  defaultVariants: { size: "md" },
+  defaultVariants: {
+    size: "md",
+    variant: "solid",
+  },
 });
 
 type AvatarVariantProps = VariantProps<typeof avatarVariants>;
@@ -52,9 +68,10 @@ export function Avatar({
   icon,
   accent = "brand",
   size,
+  variant,
   className,
 }: AvatarProps): ReactNode {
-  const styles = avatarVariants({ size });
+  const styles = avatarVariants({ size, variant });
 
   return (
     <Box accent={accent} className={styles.frame({ className })}>
@@ -62,7 +79,7 @@ export function Avatar({
         <Icon
           icon={icon}
           size={avatarIconSize[size ?? "md"]}
-          className="text-on-accent"
+          className={styles.icon()}
         />
       ) : (
         <Text className={styles.label()}>

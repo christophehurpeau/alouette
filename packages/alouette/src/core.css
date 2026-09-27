@@ -41,17 +41,33 @@
   --radius-lg: 3rem;
 
   /* box-shadows — multi-layer with inset highlight, matches original
-     containers/variants.ts. Names map to Tailwind's shadow-{name} utilities. */
+     containers/variants.ts. Names map to Tailwind's shadow-{name} utilities.
+     The geometry is structural; the layer colors are shadow palette
+     tokens, so each mode tunes them. They have to be: Tailwind inlines this
+     value into the utility (only its colors stay var()s), so a theme block
+     redeclaring --shadow-* would change nothing. Each var() falls back to the
+     fixed color it replaced, so a palette generated before the shadow tokens
+     existed keeps its shadows instead of an invalid box-shadow. */
   --shadow-s:
-    inset 0 1px 2px #ffffff40, 0 1px 2px #00000040, 0 2px 4px #00000025;
+    inset 0 1px 2px var(--color-shadow-highlight, #ffffff40),
+    0 1px 2px var(--color-dark-shadow, #00000040),
+    0 2px 4px var(--color-soft-shadow, #00000025);
   --shadow-m:
-    inset 0 1px 2px #ffffff40, 0 2px 4px #00000040, 0 4px 8px #00000025;
+    inset 0 1px 2px var(--color-shadow-highlight, #ffffff40),
+    0 2px 4px var(--color-dark-shadow, #00000040),
+    0 4px 8px var(--color-soft-shadow, #00000025);
   --shadow-l:
-    inset 0 1px 2px #ffffff40, 0 4px 6px #00000040, 0 6px 10px #00000025;
-  --shadow-lowered: inset 0 1px 2px #00000040, inset 0 -2px 2px #ffffff15;
+    inset 0 1px 2px var(--color-shadow-highlight, #ffffff40),
+    0 4px 6px var(--color-dark-shadow, #00000040),
+    0 6px 10px var(--color-soft-shadow, #00000025);
+  --shadow-lowered:
+    inset 0 1px 2px var(--color-shadow-lowered-dark, #00000040),
+    inset 0 -2px 2px var(--color-shadow-lowered-highlight, #ffffff15);
   /* screen-spanning bar (app header): downward-only and no inset highlight —
      a bar casts a shadow on the page below it, it is not a raised control. */
-  --shadow-bar: 0 1px 2px #00000020, 0 6px 16px #00000018;
+  --shadow-bar:
+    0 1px 2px var(--color-bar-dark-shadow, #00000020),
+    0 6px 16px var(--color-bar-soft-shadow, #00000018);
 
   /* spacing — named scale matching the old $N.N token names */
   --spacing-xxs: 4px;

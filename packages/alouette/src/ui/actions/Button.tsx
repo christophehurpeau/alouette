@@ -44,11 +44,10 @@ const buttonVariants = tv(
         },
       },
       variant: {
-        contained: { text: "text-on-accent" },
-        list: { text: "text-sharp" },
-        outlined: { text: "text-sharp" },
-        ghost: { text: "text-sharp" },
-        soft: { text: "text-sharp" },
+        tonal: {},
+        filled: {},
+        outlined: {},
+        soft: {},
       },
       disabled: { true: {}, false: {} },
       dimmed: {
@@ -58,30 +57,32 @@ const buttonVariants = tv(
     },
     compoundVariants: [
       {
-        variant: "contained",
+        variant: "tonal",
         disabled: false,
-        ghost: false,
-        class: { icon: "text-on-accent" },
+        class: { text: "text-on-tonal", icon: "text-on-tonal" },
       },
       {
-        variant: "contained",
+        variant: "filled",
         disabled: false,
-        ghost: true,
-        class: {
-          text: "text-sharp hover:text-on-accent",
-          icon: "text-sharp hover:text-on-accent",
-        },
+        class: { text: "text-on-accent", icon: "text-on-accent" },
       },
-      { variant: "list", disabled: false, class: { icon: "text-sharp" } },
-      { variant: "outlined", disabled: false, class: { icon: "text-sharp" } },
-      { variant: "soft", disabled: false, class: { icon: "text-sharp" } },
       {
-        variant: "contained",
+        variant: "outlined",
+        disabled: false,
+        class: { text: "text-sharp", icon: "text-sharp" },
+      },
+      {
+        variant: "soft",
+        disabled: false,
+        class: { text: "text-accent underline", icon: "text-accent" },
+      },
+      {
+        variant: "tonal",
         disabled: true,
         class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
       },
       {
-        variant: "list",
+        variant: "filled",
         disabled: true,
         class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
       },
@@ -96,7 +97,7 @@ const buttonVariants = tv(
         class: { icon: "text-disabled-muted", text: "text-disabled-muted" },
       },
     ],
-    defaultVariants: { size: "md", variant: "contained" },
+    defaultVariants: { size: "md", variant: "tonal" },
   },
   { twMerge: false },
 );
@@ -127,12 +128,13 @@ function resolveTerminalIcon(state: ButtonState | undefined): {
 }
 
 export interface ButtonProps
-  extends Omit<PressableBoxProps, "children">, ButtonSizeProps {
+  extends Omit<PressableBoxProps, "children" | "variant">, ButtonSizeProps {
+  variant?: VariantProps<typeof buttonVariants>["variant"];
   icon?: SVGIconElement;
   /** Replaces `icon` while the button is hovered, focused or pressed. */
   activeIcon?: SVGIconElement;
-  /** `"neutral"` is the neutral button: the same contained material without an
-   * accent, for the secondary action beside an accented one. */
+  /** `"neutral"` is the neutral button: the same material on the grayscale
+   * palette, for the secondary action beside an accented one. */
   accent?: AccentOrNeutral;
   text: ReactNode;
   state?: ButtonState;
@@ -162,7 +164,7 @@ export function Button({
   disabled,
   state,
   accent = "brand",
-  variant = "contained",
+  variant,
   size = "md",
   className,
   forceStyle,

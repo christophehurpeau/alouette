@@ -1,3 +1,4 @@
+import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
 import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
@@ -30,6 +31,50 @@ export const BulletPreviewStory: ThisStory = {
     children: "Works on web, iOS and Android",
   },
   render: (args) => <Bullet {...args} />,
+  play: async ({ canvasElement }) => {
+    const text = within(canvasElement).getByText(
+      "Works on web, iOS and Android",
+    );
+    const svg = canvasElement.querySelector("svg");
+    if (!svg) throw new Error("Bullet icon not rendered");
+    const icon: SVGSVGElement = svg;
+
+    function measure(): {
+      iconRect: DOMRect;
+      lineTop: number;
+      lineHeight: number;
+    } {
+      return {
+        iconRect: icon.getBoundingClientRect(),
+        lineTop: text.getBoundingClientRect().top,
+        lineHeight: Number.parseFloat(getComputedStyle(text).lineHeight),
+      };
+    }
+
+    const root = document.documentElement;
+    try {
+      root.style.fontSize = "16px";
+      const fits = measure();
+      await expect(
+        Math.abs(
+          fits.iconRect.top +
+            fits.iconRect.height / 2 -
+            (fits.lineTop + fits.lineHeight / 2),
+        ),
+      ).toBeLessThan(0.1);
+
+      root.style.fontSize = "14px";
+      const overflows = measure();
+      await expect(
+        Math.abs(
+          overflows.iconRect.bottom -
+            (overflows.lineTop + overflows.lineHeight),
+        ),
+      ).toBeLessThan(0.1);
+    } finally {
+      root.style.fontSize = "";
+    }
+  },
 };
 
 export const BulletVariantsStory: ThisStory = {

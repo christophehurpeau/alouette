@@ -77,24 +77,41 @@ const grayscaleOnly =
   (ctx) =>
     ctx.isGrayscale ? resolver(ctx) : null;
 
-const translucent: Record<Mode, string> = {
-  dark: "#1f1e1e55",
-  light: "#ffffff66",
-};
+// A fixed value per mode, emitted only in the grayscale theme.
+const perMode = (values: Record<Mode, string>): TokenResolver =>
+  grayscaleOnly(({ mode }) => ({ literal: values[mode] }));
 
 // Insertion order is significant: it is the order tokens are emitted into
 // the palette CSS / themeVariables, with the grayscale-only block first.
 export const tokenScaleMap: Record<string, TokenResolver> = {
   /* grayscale-only base tokens */
-  translucent: grayscaleOnly(({ mode }) => ({ literal: translucent[mode] })),
+  translucent: perMode({ dark: "#1f1e1e55", light: "#ffffff66" }),
+
+  /* grayscale-only shadow colors — the layers of the `--shadow-*` tokens in
+     core.css. A dark ground swallows a drop shadow that reads on a light one,
+     and makes the white inset rim that disappears on a light one glare, so dark
+     mode deepens the drop layers and dims the rims. The lowered inset is not
+     deepened: it falls on the element's own ground, not on the page, and in
+     dark mode that ground can be light (a pressed neutral `filled` button, an
+     `enabled` Switch track), where a half-black inset reads as a smear. */
+  "shadow-highlight": perMode({ dark: "#ffffff40", light: "#ffffff33" }),
+  "dark-shadow": perMode({ dark: "#00000080", light: "#00000030" }),
+  "soft-shadow": perMode({ dark: "#00000066", light: "#00000025" }),
+  "shadow-lowered-dark": perMode({ dark: "#000000", light: "#00000030" }),
+  "shadow-lowered-highlight": perMode({
+    dark: "#ffffff12",
+    light: "#ffffff15",
+  }),
+  "bar-dark-shadow": perMode({ dark: "#00000066", light: "#00000020" }),
+  "bar-soft-shadow": perMode({ dark: "#0000004d", light: "#00000018" }),
 
   /* grayscale-only backgrounds */
   screen: grayscaleOnly(self(2, 3)),
   highlight: grayscaleOnly(self(4, 1)),
 
   /* grayscale-only texts */
-  "disabled-sharp": grayscaleOnly(gray(9, 9)),
-  "disabled-muted": grayscaleOnly(gray(9, 7)),
+  "disabled-sharp": grayscaleOnly(gray(8, 9)),
+  "disabled-muted": grayscaleOnly(gray(7, 7)),
   "disabled-interactive": grayscaleOnly(gray(7, 6)),
   "disabled-interactive-muted": grayscaleOnly(gray(4, 4)),
   sharp: grayscaleOnly(gray(10, 11)),
@@ -104,22 +121,26 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
   "form-border-disabled": grayscaleOnly(gray(7, 6)),
   "form-placeholder": grayscaleOnly(gray(8, 9)),
   "form-disabled-text": grayscaleOnly(gray(9, 10)),
-  "interactive-contained-disabled": grayscaleOnly(gray(5, 6)),
+  "interactive-filled-disabled": grayscaleOnly(gray(5, 6)),
+  "interactive-tonal-disabled": grayscaleOnly(gray(5, 4)),
   "interactive-outlined-disabled": grayscaleOnly(gray(6, 6)),
   "interactive-accent-outlined-disabled": grayscaleOnly(gray(6, 6)),
 
   /* backgrounds */
   surface: self(3, 2),
-  enabled: self(7, 9),
-  "highlight-accent": self(4),
+  // The accent's solid fill under `on-accent` ink (Avatar, Badge, BrandLogo,
+  // the web Switch track). Neutral, it is the `filled` button's ground: the
+  // sharp ink turned into a ground, black in light mode and white in dark.
+  enabled: selfAdaptive(10, 6, 11, 8),
+  "highlight-accent": self(4, 3),
   lowered: self(1, 4),
   // The counterpart of `lowered`: the fill of an element standing out of an
   // inset track — a SegmentedBar's selected chip, ConnectionState's bar.
   // Accented it is the accent's fill; in the neutral theme it stays the lightest
   // step, because that element has to be lighter than the track under it. That
-  // is the opposite of what a neutral contained *button* needs (darker than the
+  // is the opposite of what a neutral filled *button* needs (darker than the
   // surface it sits on), which is why the two are separate tokens.
-  emphasis: selfAdaptive(6, 6, 1, 9),
+  emphasis: selfAdaptive(6, 5, 1, 9),
   "screen-gradient-start": self(3, 4),
   "screen-gradient-middle": self(2, 5),
   "screen-gradient-end": self(1, 6),
@@ -129,38 +150,38 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
   "border-sharp": self(8, 9),
 
   /* interactive */
-  // The contained fill, the same steps in every theme: the neutral one is the
-  // grayscale accent, not the absence of one, so `accent="neutral"` takes a
-  // fill as dark as a colored accent's and the same white label. A pale
-  // neutral fill cannot work here — the light steps just above it are
-  // `surface` (2), `screen` (3) and `lowered` (4) themselves, so the button
-  // dissolves into whatever it is placed on.
-  // Press has no step of its own in dark mode: the scale jumps from 7 (#555555)
-  // to 8 (#BCBCBC, where the text tones start), and white ink on #BCBCBC is
-  // 1.9:1 — so a dark press holds at hover's value rather than climbing into
-  // the text tones or receding to a darker step.
-  "interactive-contained-pressable": self(6, 9),
-  "interactive-contained-hover": self(7, 8),
-  "interactive-contained-focus": self(7, 8),
-  "interactive-contained-active": self(7),
-
-  // PressableBox's `list` variant — a card row lifted off the surface
-  // (PressableListItem). Its ground is a *tone*, not the accent's fill, and it
-  // keeps the ambient `text-sharp` label. That is what separates it from
+  // PressableBox's `tonal` variant, the default material of Button,
+  // IconButton and PressableListItem: a ground lighter than the page it sits
+  // on, lifted by `shadow-s`. Its ground is a *tone*, not the accent's fill, so
+  // the hue is carried by the `on-tonal` ink. That is what separates it from
   // `emphasis`, which is the accent's fill — a SegmentedBar chip has to win
-  // against its track, a list row does not.
+  // against its track, a tonal pressable does not.
   // The two modes get there from opposite ends. Light starts at the accent's
   // own `surface` step and walks down (2 → 3 → 4): the deeper tints read more
-  // of the hue but turn salmon rather than red, and the hue is `on-list`'s job
-  // anyway. Dark has no pale end, so a row takes the accent's own dark ground
-  // (6 → 7), one notch under the contained fill. Neutral walks the card steps
-  // in both (1 → 2 → 3 light — a row is never placed on a `surface`, so a hover
-  // at step 2 has nothing to collide with — and 6 → 7 dark, which has nothing
-  // above 7 to press into).
-  "interactive-list-pressable": selfAdaptive(6, 6, 1, 2),
-  "interactive-list-hover": selfAdaptive(7, 7, 2, 3),
-  "interactive-list-focus": selfAdaptive(7, 7, 2, 3),
-  "interactive-list-active": selfAdaptive(7, 7, 3, 4),
+  // of the hue but turn salmon rather than red, and the hue is `on-tonal`'s
+  // job anyway. Dark has no pale end, so it takes the accent's own dark ground
+  // (6 → 7), one notch under the filled fill. Neutral walks the card steps in
+  // both (1 → 2 → 3 light, 6 → 7 dark, which has nothing above 7 to press
+  // into).
+  "interactive-tonal-pressable": selfAdaptive(6, 6, 1, 2),
+  "interactive-tonal-hover": selfAdaptive(7, 7, 2, 3),
+  "interactive-tonal-focus": selfAdaptive(7, 7, 2, 3),
+  "interactive-tonal-active": selfAdaptive(7, 7, 3, 4),
+
+  // PressableBox's `filled` variant: the accent's fill. Colored, it takes the
+  // same steps in every accent. Neutral, it is the sharp ink turned into a
+  // ground — near black in light mode (11 → 10 → 9), near white in dark
+  // (10 → 11 → 9) — so the neutral filled button reads as the strongest action
+  // rather than a dull gray, and its `on-accent` label flips to dark in dark
+  // mode.
+  // Colored dark press has no step of its own: the scale jumps from 7
+  // (#555555) to 8 (#BCBCBC, where the text tones start), and white ink on
+  // #BCBCBC is 1.9:1 — so it holds at hover's value rather than climbing into
+  // the text tones or receding to a darker step.
+  "interactive-filled-pressable": selfAdaptive(10, 6, 11, 9),
+  "interactive-filled-hover": selfAdaptive(11, 7, 10, 8),
+  "interactive-filled-focus": selfAdaptive(11, 7, 10, 8),
+  "interactive-filled-active": selfAdaptive(9, 7, 9, 7),
 
   // A ground-only state set for a control that has no rest ground at all
   // (PressableBox's `soft`): the fill stays a tone of the surrounding surface —
@@ -182,9 +203,17 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
 
   /* texts */
   accent: selfAdaptive(11, 10),
-  // Every contained fill, neutral included, is dark enough for white ink.
-  "on-accent": gray(11, 1),
-  "on-accent-muted": self(10, 4),
+  // The ink of the `filled` and `enabled` grounds: white on every colored fill
+  // and on the near-black neutral one in light mode; dark on the near-white
+  // neutral fill in dark mode.
+  "on-accent": ({ isGrayscale, mode }) => ({
+    source: "grayscale",
+    step: ((): ScaleNum => {
+      if (mode === "light") return 1;
+      return isGrayscale ? 1 : 11;
+    })(),
+  }),
+  "on-accent-muted": selfAdaptive(7, 10, 4, 4),
   // `emphasis` is a light chip in the neutral theme and the accent's fill when
   // accented, so its ink is the only one that flips with the accent.
   "on-emphasis": ({ isGrayscale, mode }) => ({
@@ -194,12 +223,12 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
       return isGrayscale ? 11 : 1;
     })(),
   }),
-  // The ink of a `list` row — its label and its caret. A light row can only
-  // tint its ground (a red light enough for dark ink is a pink), so the accent
-  // is carried by the ink there: `accent` when accented, and the ambient sharp
-  // when neutral. A dark row already *is* the accent's ground, where an accent
-  // ink would be a tint of the color under it (4:1), so it keeps the sharp ink.
-  "on-list": ({ isGrayscale, mode }) => {
+  // The ink of a `tonal` pressable — label, icon and caret. A light ground
+  // can only tint (a red light enough for dark ink is a pink), so the accent is
+  // carried by the ink there: `accent` when accented, and the ambient sharp
+  // when neutral. A dark ground already *is* the accent's, where an accent ink
+  // would be a tint of the color under it (4:1), so it keeps the sharp ink.
+  "on-tonal": ({ isGrayscale, mode }) => {
     if (mode === "dark") return { source: "grayscale", step: 10 };
     return isGrayscale
       ? { source: "grayscale", step: 11 }

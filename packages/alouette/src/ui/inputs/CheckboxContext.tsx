@@ -5,5 +5,5 @@ export const {
   useMultiSelection: useCheckboxContext,
   useOptionalMultiSelection: useOptionalCheckboxContext,
 } = createMultiSelectionContext(
-  "CheckboxButton and CheckboxCard must be rendered inside a CheckboxGroup, CheckboxButtonGroup or CheckboxCardGroup.",
+  "CheckboxCard must be rendered inside a CheckboxGroup or CheckboxCardGroup.",
 );

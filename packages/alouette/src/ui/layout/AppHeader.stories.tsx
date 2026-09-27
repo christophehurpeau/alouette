@@ -20,6 +20,8 @@ import { QuestionAlertDialog } from "../containers/AlertDialog";
 import { Box } from "../containers/Box";
 import { ScopedTheme } from "../containers/ScopedTheme";
 import { ColorModePicker } from "../inputs/ColorModePicker";
+import { HeaderNav } from "../navigation/HeaderNav";
+import { HeaderNavItem } from "../navigation/HeaderNavItem";
 import { NavBar } from "../navigation/NavBar";
 import { NavBarItem } from "../navigation/NavBarItem";
 import { Text } from "../primitives/Text";
@@ -30,8 +32,6 @@ import { AppHeader, type AppHeaderProps } from "./AppHeader";
 import { AppHeaderAccount } from "./AppHeaderAccount";
 import { AppHeaderActions } from "./AppHeaderActions";
 import { AppHeaderBrand } from "./AppHeaderBrand";
-import { AppHeaderNav } from "./AppHeaderNav";
-import { AppHeaderNavItem } from "./AppHeaderNavItem";
 import { AppHeaderSignIn } from "./AppHeaderSignIn";
 import { BrandLogo } from "./BrandLogo";
 
@@ -66,18 +66,18 @@ export default {
     </AppHeaderActions>
   }
 >
-  <AppHeaderNav aria-label="Main" value={pathname}>
-    <AppHeaderNavItem href="/home" label="Home" />
-  </AppHeaderNav>
+  <HeaderNav aria-label="Main" value={pathname}>
+    <HeaderNavItem href="/home" label="Home" />
+  </HeaderNav>
 </AppHeader>
 ~~~
 
 - From \`md\` on web the three slots share one line, in reading order: the navigation sits next to the brand and the end slot takes the free space, so the actions stay at the far edge. A grown slot is floored at its content width (\`min-w-fit\`, undoing react-native-web's \`min-width: 0\` reset), so a crowded header wraps instead of letting a slot shrink under its child
-- \`navAlign\` follows the navigation's material, it is not a mood: a text \`AppHeaderNav\` continues the brand and keeps the default \`start\`, while a segmented \`NavBar\` reads as a control of its own and takes \`navAlign="center"\`. Centering grows the start slot too, so the free space is split between the two outer slots; the end slot is rendered even when \`actions\` is omitted, so the centering survives a header without actions
+- \`navAlign\` follows the navigation's material, it is not a mood: a text \`HeaderNav\` continues the brand and keeps the default \`start\`, while a segmented \`NavBar\` reads as a control of its own and takes \`navAlign="center"\`. Centering grows the start slot too, so the free space is split between the two outer slots; the end slot is rendered even when \`actions\` is omitted, so the centering survives a header without actions
 - Below \`md\` — and on native at every width, since React Native has no \`order\` to put the navigation back on the line — the brand and the actions share the first line and the navigation spans the second; give a \`NavBar\` \`stretch\` so it fills that line
-- \`children\` is the navigation slot — omit it for a header without navigation. \`AppHeaderNav\` is the bar's own material (text destinations, the current one underlined, no track); \`NavBar\` is the segmented alternative, for a navigation that is the screen's main control
+- \`children\` is the navigation slot — omit it for a header without navigation. \`HeaderNav\` is the bar's own material (text destinations, the current one underlined, no track); \`NavBar\` is the segmented alternative, for a navigation that is the screen's main control
 - \`AppHeaderBrand\` is a pressable when given \`href\`/\`onPress\` (expo Router's \`<Link asChild>\` injects both), a display-only row otherwise; its leading padding is pulled back with a negative margin, so the hover fill bleeds into the header's gutter while the mark stays flush with the content edge in both cases
-- Every pressable in the bar uses \`variant="soft"\`: nothing at rest, a background fill on hover/focus/press (as on a listbox row), rather than a border tint too thin to read in a header. That includes \`AppHeaderNavItem\`, whose accent underline is the current-page state on top of the fill, never the affordance
+- Every pressable in the bar uses \`variant="soft"\`: nothing at rest, a background fill on hover/focus/press (as on a listbox row), rather than a border tint too thin to read in a header. That includes \`HeaderNavItem\`, whose accent underline is the current-page state on top of the fill, never the affordance
 - A signed-in session is one \`AppHeaderAccount\` — an avatar trigger opening a \`Menu\` — not a row of buttons: logging out is the rarest thing the bar offers and the only destructive one, so it belongs behind the avatar with a \`danger\` accent, and confirming it is the app's call (the tests story wires it to a \`QuestionAlertDialog\`)
 - A signed-out session is the mirror image: one action, so it stays in the bar as an \`AppHeaderSignIn\` — never an \`AppHeaderAccount\` named "Guest" wrapping a single "Log in" item, which puts a menu between the visitor and the only thing they came to press. It is a \`Button\` with the bar's sizing: pass it straight as \`actions\`, or beside a secondary \`accent="neutral"\` "Sign up" inside an \`AppHeaderActions\`. \`href\` is the in-app destination — a real \`<a>\` on web, ignored on native, where expo Router's \`<Link asChild>\` supplies the \`onPress\` (a destination outside the app on native takes an \`ExternalLinkButton\` in the slot instead)
 - A light/dark switch belongs in the actions slot as a \`ColorModePicker\` — a pill of icon-only chips reading as one control, rather than two loose \`IconButton\`s. \`variant="system-lock"\` is the two-chip one used here: the chip the OS currently supplies keeps its sun or moon and adds the system badge, and pressing it toggles the lock. The app owns the preference — it applies it with \`useResolvedColorMode\` + \`ScopedTheme\` and persists it
@@ -124,24 +124,24 @@ function DemoNav({ label }: DemoNavProps): ReactNode {
 
 function DemoTextNav({ label }: DemoNavProps): ReactNode {
   return (
-    <AppHeaderNav aria-label={label} defaultValue="/home">
-      <AppHeaderNavItem href="/home" label="Home" icon={<HouseRegularIcon />} />
-      <AppHeaderNavItem
+    <HeaderNav aria-label={label} defaultValue="/home">
+      <HeaderNavItem href="/home" label="Home" icon={<HouseRegularIcon />} />
+      <HeaderNavItem
         href="/reports"
         label="Reports"
         icon={<ChartBarRegularIcon />}
       />
-      <AppHeaderNavItem
+      <HeaderNavItem
         href="/saved"
         label="Saved"
         icon={<BookmarkSimpleRegularIcon />}
       />
-      <AppHeaderNavItem
+      <HeaderNavItem
         href="/profile"
         label="Profile"
         icon={<UserCircleRegularIcon />}
       />
-    </AppHeaderNav>
+    </HeaderNav>
   );
 }
 
@@ -194,7 +194,12 @@ function LoggedOutActions(): ReactNode {
   return (
     <AppHeaderActions>
       <ColorModePicker />
-      <AppHeaderSignIn accent="neutral" label="Sign up" onPress={fn()} />
+      <AppHeaderSignIn
+        accent="neutral"
+        variant="soft"
+        label="Sign up"
+        onPress={fn()}
+      />
       <AppHeaderSignIn label="Log in" onPress={fn()} />
     </AppHeaderActions>
   );
@@ -338,7 +343,7 @@ export const VariantsAppHeaderStory: ThisStory = {
 
       <Story.Section title="Navigation">
         <Text className="text-sm text-muted">
-          AppHeaderNav — text destinations on the bar itself, the current one
+          HeaderNav — text destinations on the bar itself, the current one
           underlined, packed against the brand (the default navAlign="start")
         </Text>
         <TextNavHeader
@@ -718,7 +723,7 @@ export const TestsAppHeaderStory: ThisStory = {
     // The default alignment is the opposite: only the end slot grows, so the
     // navigation is packed against the brand and all the free space is on the
     // actions side. It is the text navigation's alignment, so the header here
-    // carries an AppHeaderNav.
+    // carries an HeaderNav.
     const startAligned = canvas.getByRole("banner", {
       name: "Start aligned header",
     });

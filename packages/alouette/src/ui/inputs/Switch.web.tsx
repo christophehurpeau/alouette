@@ -42,7 +42,7 @@ const thumbVariants = tv(
     base: [
       "absolute rounded-full shadow-s aria-disabled:shadow-none",
       "transition-transform duration-fast ease-in",
-      "bg-surface aria-disabled:bg-disabled-interactive",
+      "bg-highlight aria-disabled:bg-disabled-interactive",
     ].join(" "),
   },
   { twMerge: false },
@@ -87,7 +87,7 @@ function SwitchInner({
       >
         <View
           aria-disabled={disabled === true}
-          className={thumbVariants({})}
+          className={thumbVariants()}
           style={{
             width: THUMB_SIZE,
             height: THUMB_SIZE,

@@ -95,6 +95,21 @@ describe("generateTheme", () => {
     }
   });
 
+  it("tunes the shadow colors per mode, and accents keep their mode's", () => {
+    const { themeVariables } = generateTheme();
+    const shadowVars = (theme: AlouetteTheme): Record<string, string> =>
+      Object.fromEntries(
+        Object.entries(themeVariables[theme]).filter(([name]) =>
+          name.includes("shadow"),
+        ),
+      );
+
+    expect(Object.keys(shadowVars("light"))).not.toHaveLength(0);
+    expect(shadowVars("dark")).not.toStrictEqual(shadowVars("light"));
+    expect(shadowVars("light_danger")).toStrictEqual(shadowVars("light"));
+    expect(shadowVars("dark_danger")).toStrictEqual(shadowVars("dark"));
+  });
+
   it("leaves grayscale base tokens untouched when an accent is overridden", () => {
     const { themeVariables } = generateTheme({
       brand: { type: "accent", hue: 300 },

@@ -115,7 +115,7 @@ export const ActionButtonVariantsStory: ThisStory = {
           onPress={() => delay(1500)}
         />
         <ActionButton
-          variant="ghost"
+          variant="soft"
           text="Save"
           errorToMessage={(error) =>
             error instanceof Error ? error.message : "Unknown error"

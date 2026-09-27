@@ -64,7 +64,7 @@ function EventSection({
         visible={editing}
         title={title}
         closeButtonAriaLabel="Close editor"
-        footer={<Button accent="neutral" text="Close" onPress={close} />}
+        footer={<Button text="Close" onPress={close} />}
         onClose={close}
       >
         <Paragraph>Your editor goes here.</Paragraph>
@@ -86,7 +86,7 @@ export default {
     className: { control: "text" },
     editIconVariant: {
       control: "select",
-      options: ["contained", "outlined", "ghost", "soft"],
+      options: ["tonal", "filled", "outlined", "soft"],
     },
     accent: { control: "select", options: accentsWithoutNeutral },
     disabled: { control: "boolean" },
@@ -137,6 +137,7 @@ export const EditableSectionVariantsStory: ThisStory = {
           className="surface bg-highlight"
           title="bg-highlight"
           editAriaLabel="Edit bg-highlight"
+          editIconVariant="soft"
         />
         <EventSection
           className="surface lowered"
@@ -145,6 +146,7 @@ export const EditableSectionVariantsStory: ThisStory = {
         />
         <EventSection
           className="bg-highlight border border-muted rounded-sm p-m"
+          editIconVariant="soft"
           title="outlined"
           editAriaLabel="Edit outlined"
         />
@@ -199,9 +201,7 @@ export const EditableSectionVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Edit button variants">
-        <EventSection editIconVariant="contained" />
-        <EventSection editIconVariant="outlined" />
-        <EventSection editIconVariant="ghost" />
+        <EventSection editIconVariant="filled" />
         <EventSection editIconVariant="soft" />
       </Story.Section>
 

@@ -163,58 +163,59 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
   { label: "accent on surface", fg: "accent", bg: "surface" },
   { label: "accent on highlight", fg: "accent", bg: "highlight" },
   {
-    label: "on-accent on contained",
+    label: "on-accent on filled",
     fg: "on-accent",
-    bg: "interactive-contained-pressable",
+    bg: "interactive-filled-pressable",
   },
   {
-    label: "on-accent on contained:hover",
+    label: "on-accent on filled:hover",
     fg: "on-accent",
-    bg: "interactive-contained-hover",
+    bg: "interactive-filled-hover",
   },
-  // A contained card's description (RadioCard, CheckboxCard): it flips to
+  // A filled card's description (RadioCard, CheckboxCard): it flips to
   // `on-accent` on hover, so only the rest pair has to hold AA.
   {
-    label: "on-accent-muted on contained",
+    label: "on-accent-muted on filled",
     fg: "on-accent-muted",
-    bg: "interactive-contained-pressable",
+    bg: "interactive-filled-pressable",
   },
   // A SegmentedBar's selected chip and ConnectionState's bar: `emphasis` keeps a
   // light chip in the neutral theme, so its ink flips with the accent.
   { label: "on-emphasis on emphasis", fg: "on-emphasis", bg: "emphasis" },
-  // PressableBox's `list` variant keeps the ambient ink over a tone of the
-  // theme, so the row is measured with `sharp`, not with `on-emphasis`. Its
-  // caret and label are `on-list`, the ink that carries the accent in light
-  // mode and stays sharp on the dark accented ground; `muted` is too dim for
-  // that ground, so secondary `text-muted` copy belongs on a neutral row only.
+  // PressableBox's `tonal` variant keeps the ambient ink over a tone of the
+  // theme, so a row's own copy is measured with `sharp`, not with
+  // `on-emphasis`. Its label, icon and caret are `on-tonal`, the ink that
+  // carries the accent in light mode and stays sharp on the dark accented
+  // ground; `muted` is too dim for that ground, so secondary `text-muted` copy
+  // belongs on a neutral one only.
   {
-    label: "sharp on list:pressable",
+    label: "sharp on tonal:pressable",
     fg: "sharp",
-    bg: "interactive-list-pressable",
+    bg: "interactive-tonal-pressable",
   },
   {
-    label: "on-list on list:pressable",
-    fg: "on-list",
-    bg: "interactive-list-pressable",
+    label: "on-tonal on tonal:pressable",
+    fg: "on-tonal",
+    bg: "interactive-tonal-pressable",
   },
   {
-    label: "on-list on list:hover",
-    fg: "on-list",
-    bg: "interactive-list-hover",
+    label: "on-tonal on tonal:hover",
+    fg: "on-tonal",
+    bg: "interactive-tonal-hover",
   },
   {
-    label: "sharp on list:hover",
+    label: "sharp on tonal:hover",
     fg: "sharp",
-    bg: "interactive-list-hover",
+    bg: "interactive-tonal-hover",
   },
   // The soft variant keeps the label's own color over its fill.
   { label: "sharp on soft:hover", fg: "sharp", bg: "interactive-soft-hover" },
   { label: "accent on soft:hover", fg: "accent", bg: "interactive-soft-hover" },
   // ok if this fails.
   // {
-  //   label: "on-accent on contained:active",
+  //   label: "on-accent on filled:active",
   //   fg: "on-accent",
-  //   bg: "interactive-contained-active",
+  //   bg: "interactive-filled-active",
   // },
 ];
 

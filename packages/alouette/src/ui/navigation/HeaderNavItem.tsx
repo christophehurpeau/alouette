@@ -7,7 +7,7 @@ import type { SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
-import { useAppHeaderNavContext } from "./AppHeaderNavContext";
+import { useHeaderNavContext } from "./HeaderNavContext";
 
 // The affordance is `PressableBox`'s `soft` fill, the same one every other
 // pressable of the bar carries; the underline is the *state* on top of it — the
@@ -18,7 +18,7 @@ import { useAppHeaderNavContext } from "./AppHeaderNavContext";
 // hooks, and is inset by the pressable's own padding so it spans the label
 // rather than the hover fill. It cross-fades on opacity, as the SegmentedItem
 // chip does, so an unselected item reserves its space and the row never shifts.
-const appHeaderNavItemVariants = tv({
+const headerNavItemVariants = tv({
   slots: {
     pressable:
       "relative flex-row items-center gap-xs min-h-[44px] rounded-xs px-xs md:px-sm",
@@ -55,9 +55,9 @@ const appHeaderNavItemVariants = tv({
   defaultVariants: { disabled: false },
 });
 
-export interface AppHeaderNavItemProps {
+export interface HeaderNavItemProps {
   /**
-   * Destination, matched against the AppHeaderNav's value to mark the item
+   * Destination, matched against the HeaderNav's value to mark the item
    * current. Renders a real `<a href>` on web (native ignores it); expo Router's
    * `<Link asChild>` injects it, so it does not have to be written twice.
    */
@@ -81,14 +81,14 @@ export interface AppHeaderNavItemProps {
   disabled?: boolean;
   /**
    * Handles the press instead of the group's `onValueChange` — this is what
-   * `<Link asChild>` injects. An AppHeaderNav whose items carry `onPress` must
+   * `<Link asChild>` injects. An HeaderNav whose items carry `onPress` must
    * be controlled: its internal value never updates. A handler that navigates on
    * web must call `event.preventDefault()`, as routers do.
    */
   onPress?: (event: GestureResponderEvent) => void;
 }
 
-export function AppHeaderNavItem({
+export function HeaderNavItem({
   href,
   label,
   icon,
@@ -98,15 +98,15 @@ export function AppHeaderNavItem({
   "aria-label": ariaLabel,
   disabled,
   onPress,
-}: AppHeaderNavItemProps): ReactNode {
+}: HeaderNavItemProps): ReactNode {
   const {
     value: currentValue,
     onSelect,
     disabled: navDisabled,
-  } = useAppHeaderNavContext();
+  } = useHeaderNavContext();
   const selected = href !== undefined && currentValue === href;
   const isDisabled = disabled === true || navDisabled === true;
-  const styles = appHeaderNavItemVariants({ selected, disabled: isDisabled });
+  const styles = headerNavItemVariants({ selected, disabled: isDisabled });
 
   // Routing is the app's job, through the group's onValueChange or an item
   // onPress, so the anchor must not navigate on its own.

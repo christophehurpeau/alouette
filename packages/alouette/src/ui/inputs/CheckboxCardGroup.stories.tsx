@@ -24,7 +24,10 @@ export default {
   },
   argTypes: {
     disabled: { control: "boolean" },
-    variant: { control: "inline-radio", options: ["contained", "outlined"] },
+    variant: {
+      control: "inline-radio",
+      options: ["tonal", "outlined"],
+    },
     layout: { control: "inline-radio", options: ["list", "stack"] },
     accent: {
       control: "select",
@@ -164,9 +167,9 @@ export const VariantsCheckboxCardGroupStory: ThisStory = {
   name: "CheckboxCardGroup Variants",
   render: () => (
     <Story>
-      <CheckboxCardGroupVariant variant="contained" />
+      <CheckboxCardGroupVariant variant="tonal" />
       <CheckboxCardGroupVariant variant="outlined" />
-      <CheckboxCardGroupVariant accent="brand" variant="contained" />
+      <CheckboxCardGroupVariant accent="brand" variant="tonal" />
       <CheckboxCardGroupVariant accent="brand" variant="outlined" />
     </Story>
   ),
@@ -178,13 +181,25 @@ export const AccentVariantsCheckboxCardGroupStory: ThisStory = {
   name: "CheckboxCardGroup Accent Variants",
   render: () => (
     <Story>
-      <CheckboxCardGroupVariant accent="danger" variant="contained" />
+      <CheckboxCardGroupVariant accent="danger" variant="tonal" />
       <CheckboxCardGroupVariant accent="danger" variant="outlined" />
-      <CheckboxCardGroupVariant accent="success" variant="contained" />
+      <CheckboxCardGroupVariant accent="success" variant="tonal" />
       <CheckboxCardGroupVariant accent="success" variant="outlined" />
     </Story>
   ),
 };
+
+function getBox(card: HTMLElement): HTMLElement {
+  const box = [...card.querySelectorAll("div")].find(
+    (element) => getComputedStyle(element).borderTopWidth === "2px",
+  );
+  if (!box) throw new Error("No checkbox box in the card");
+  return box;
+}
+
+function getBoxBorderColor(card: HTMLElement): string {
+  return getComputedStyle(getBox(card)).borderTopColor;
+}
 
 export const TestsCheckboxCardGroupStory: ThisStory = {
   name: "CheckboxCardGroup Tests",
@@ -194,6 +209,11 @@ export const TestsCheckboxCardGroupStory: ThisStory = {
         <CheckboxCardGroup aria-label="Channels" defaultValues={["email"]}>
           <ChannelCards />
           <CheckboxCard disabled value="fax" label="Fax" />
+        </CheckboxCardGroup>
+      </Story.Section>
+      <Story.Section title="Danger">
+        <CheckboxCardGroup accent="danger">
+          <CheckboxCard value="danger" label="Danger unchecked" />
         </CheckboxCardGroup>
       </Story.Section>
     </Story>
@@ -212,6 +232,24 @@ export const TestsCheckboxCardGroupStory: ThisStory = {
       44,
     );
 
+    // The box is the accent's interactive foreground, checked or not: the
+    // unchecked card drops to the neutral theme, its box keeps the accent.
+    const restBoxColor = getBoxBorderColor(push);
+    await expect(getBoxBorderColor(email)).toBe(restBoxColor);
+    await expect(getComputedStyle(getBox(email)).backgroundColor).toBe(
+      restBoxColor,
+    );
+    await expect(
+      getBoxBorderColor(
+        canvas.getByRole("checkbox", { name: "Danger unchecked" }),
+      ),
+    ).not.toBe(restBoxColor);
+
+    // It reacts to the card's state.
+    push.focus();
+    await waitFor(() => expect(getBoxBorderColor(push)).not.toBe(restBoxColor));
+    push.blur();
+
     push.click();
 
     await waitFor(() => expect(push).toHaveAttribute("aria-checked", "true"));
@@ -223,6 +261,42 @@ export const TestsCheckboxCardGroupStory: ThisStory = {
     await expect(fax).toHaveAttribute("aria-disabled", "true");
     fax.click();
     await expect(fax).toHaveAttribute("aria-checked", "false");
+  },
+};
+
+export const TestsDisabledCheckboxCardGroupStory: ThisStory = {
+  name: "CheckboxCardGroup Disabled Tests",
+  render: () => (
+    <Story noDarkMode>
+      <Story.Section title="Disabled group">
+        <CheckboxCardGroup disabled defaultValues={["push"]}>
+          <ChannelCards />
+        </CheckboxCardGroup>
+      </Story.Section>
+    </Story>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const email = canvas.getByRole("checkbox", { name: "Email" });
+    const push = canvas.getByRole("checkbox", { name: "Push" });
+
+    await expect(email).toHaveAttribute("aria-checked", "false");
+    await expect(push).toHaveAttribute("aria-checked", "true");
+
+    // The disabled box must not take the disabled card's own ground.
+    const emailBox = getComputedStyle(getBox(email));
+    await expect(emailBox.borderTopColor).not.toBe(
+      getComputedStyle(email).backgroundColor,
+    );
+    await expect(emailBox.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+
+    // A checked disabled box stays filled, like an enabled one.
+    const pushBox = getComputedStyle(getBox(push));
+    await expect(pushBox.borderTopColor).not.toBe(
+      getComputedStyle(push).backgroundColor,
+    );
+    await expect(pushBox.backgroundColor).toBe(pushBox.borderTopColor);
   },
 };
 

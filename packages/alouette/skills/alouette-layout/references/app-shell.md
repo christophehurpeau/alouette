@@ -67,7 +67,7 @@ plus a downward shadow) or `"transparent"` (for a landing hero), `contentWidth` 
 unless an ancestor `SafeAreaScope` already consumed the edge
 (`withSafeAreaTop={false}` opts out).
 
-The navigation slot takes either material. `AppHeaderNav` + `AppHeaderNavItem`
+The navigation slot takes either material. `HeaderNav` + `HeaderNavItem`
 is the bar's own: text destinations sitting directly on it, the current one
 underlined in the group's accent, so it fits beside the brand — which is what
 the default `navAlign="start"` is for. `NavBar` (alouette-navigation/SKILL.md) is
@@ -80,19 +80,19 @@ mood.
   brand={<AppHeaderBrand title="Alouette" href="/" />}
   actions={<AppHeaderSignIn label="Log in" href="/login" />}
 >
-  <AppHeaderNav aria-label="Main" value={pathname} onValueChange={router.push}>
-    <AppHeaderNavItem href="/home" label="Home" />
-    <AppHeaderNavItem
+  <HeaderNav aria-label="Main" value={pathname} onValueChange={router.push}>
+    <HeaderNavItem href="/home" label="Home" />
+    <HeaderNavItem
       href="/inbox"
       label="Inbox"
       aria-label="Inbox, 3 unread"
       badge={<Badge size="sm">3</Badge>}
     />
-  </AppHeaderNav>
+  </HeaderNav>
 </AppHeader>
 ```
 
-`AppHeaderNav` owns the value like every other selection group (`value` +
+`HeaderNav` owns the value like every other selection group (`value` +
 `onValueChange`, or `defaultValue`) and its items match it against their own
 `href` — the same `link` + `aria-current="page"` semantics as `NavBarItem`, with
 the same `icon` / `activeIcon` / `activeAccent`, plus a `badge` rendered after
@@ -148,7 +148,7 @@ persists it.
       <IconButton
         icon={<BellRegularIcon />}
         aria-label="Notifications"
-        variant="ghost"
+        variant="soft"
       />
       <AppHeaderAccount name="Ada Lovelace">
         <MenuItem label="Profile" onPress={openProfile} />

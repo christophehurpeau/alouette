@@ -126,6 +126,27 @@ export const TestsCheckboxGroupStory: ThisStory = {
     await expect(month).toHaveAttribute("aria-disabled", "true");
     await expect(day.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
 
+    // Focus grounds the row in the soft material and moves the box to the
+    // interactive hover foreground.
+    const dayBox = [...day.querySelectorAll("div")].find(
+      (element) => getComputedStyle(element).borderTopWidth === "2px",
+    );
+    if (!dayBox) throw new Error("No checkbox box in the row");
+    const restBoxColor = getComputedStyle(dayBox).backgroundColor;
+    await expect(getComputedStyle(day).backgroundColor).toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+    day.focus();
+    await waitFor(() =>
+      expect(getComputedStyle(day).backgroundColor).not.toBe(
+        "rgba(0, 0, 0, 0)",
+      ),
+    );
+    await waitFor(() =>
+      expect(getComputedStyle(dayBox).backgroundColor).not.toBe(restBoxColor),
+    );
+    day.blur();
+
     week.click();
 
     await waitFor(() => expect(week).toHaveAttribute("aria-checked", "true"));
@@ -149,6 +170,7 @@ export const TestsStandaloneCheckboxStory: ThisStory = {
       <Story.Section title="Standalone">
         <Checkbox label="Accept terms" />
         <Checkbox defaultChecked disabled label="Locked" />
+        <Checkbox accent="danger" label="Delete my data" />
       </Story.Section>
     </Story>
   ),
@@ -157,8 +179,18 @@ export const TestsStandaloneCheckboxStory: ThisStory = {
 
     const terms = canvas.getByRole("checkbox", { name: "Accept terms" });
     const locked = canvas.getByRole("checkbox", { name: "Locked" });
+    const danger = canvas.getByRole("checkbox", { name: "Delete my data" });
 
     await expect(terms).toHaveAttribute("aria-checked", "false");
+
+    // An unchecked box already carries its accent.
+    const getBoxBorderColor = (row: HTMLElement): string | undefined => {
+      const box = [...row.querySelectorAll("div")].find(
+        (element) => getComputedStyle(element).borderTopWidth === "2px",
+      );
+      return box && getComputedStyle(box).borderTopColor;
+    };
+    await expect(getBoxBorderColor(danger)).not.toBe(getBoxBorderColor(terms));
 
     terms.click();
     await waitFor(() => expect(terms).toHaveAttribute("aria-checked", "true"));

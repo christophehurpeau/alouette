@@ -143,7 +143,7 @@ export default {
     accent: { control: "select", options: accentsWithoutNeutral },
     editIconVariant: {
       control: "select",
-      options: ["contained", "outlined", "ghost", "soft"],
+      options: ["tonal", "filled", "outlined", "soft"],
     },
     disabled: { control: "boolean" },
   },
@@ -181,6 +181,7 @@ export const FormEditableSectionVariantsStory: ThisStory = {
           className="surface bg-highlight"
           title="bg-highlight"
           editAriaLabel="Edit bg-highlight"
+          editIconVariant="soft"
         />
         <EventSection
           className="surface lowered"

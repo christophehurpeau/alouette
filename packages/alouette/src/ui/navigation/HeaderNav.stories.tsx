@@ -10,23 +10,20 @@ import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon
 import { type ReactNode, useState } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Badge } from "../data/Badge";
+import { AppHeader } from "../layout/AppHeader";
+import { AppHeaderBrand } from "../layout/AppHeaderBrand";
+import { BrandLogo } from "../layout/BrandLogo";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
-import { AppHeader } from "./AppHeader";
-import { AppHeaderBrand } from "./AppHeaderBrand";
-import { AppHeaderNav } from "./AppHeaderNav";
-import {
-  AppHeaderNavItem,
-  type AppHeaderNavItemProps,
-} from "./AppHeaderNavItem";
-import { BrandLogo } from "./BrandLogo";
+import { HeaderNav } from "./HeaderNav";
+import { HeaderNavItem, type HeaderNavItemProps } from "./HeaderNavItem";
 
-type ThisStory = StoryObj<typeof AppHeaderNav>;
+type ThisStory = StoryObj<typeof HeaderNav>;
 
 export default {
-  title: "alouette/Layout/AppHeaderNav",
-  component: AppHeaderNav,
+  title: "alouette/Navigation/HeaderNav",
+  component: HeaderNav,
   parameters: {
     componentSubtitle:
       "Text navigation for an AppHeader: destinations sitting directly on the bar, next to the brand, the current one underlined.",
@@ -35,15 +32,15 @@ export default {
         component: `### Composition
 ~~~tsx
 <AppHeader brand={<AppHeaderBrand href="/" title="Alouette" />}>
-  <AppHeaderNav aria-label="Main" value={pathname} onValueChange={router.push}>
-    <AppHeaderNavItem href="/home" label="Home" />
-    <AppHeaderNavItem href="/inbox" label="Inbox" badge={<Badge size="sm">3</Badge>} aria-label="Inbox, 3 unread" />
-  </AppHeaderNav>
+  <HeaderNav aria-label="Main" value={pathname} onValueChange={router.push}>
+    <HeaderNavItem href="/home" label="Home" />
+    <HeaderNavItem href="/inbox" label="Inbox" badge={<Badge size="sm">3</Badge>} aria-label="Inbox, 3 unread" />
+  </HeaderNav>
 </AppHeader>
 ~~~
 
 - Same semantics as \`NavBar\` — \`navigation\` landmark, \`link\` items, \`aria-current="page"\` on the current one — over a lighter material: no lowered track, no chip, so it fits the header's single line beside the brand and the session actions. Reach for \`NavBar\` when the navigation is the screen's main control (a stacked line, a sidebar rail), and for this one when it shares the bar
-- The group owns the value (\`value\` + \`onValueChange\`, or \`defaultValue\`); each item matches it against its own \`href\`. There is no \`options\` prop — compose \`AppHeaderNavItem\` children
+- The group owns the value (\`value\` + \`onValueChange\`, or \`defaultValue\`); each item matches it against its own \`href\`. There is no \`options\` prop — compose \`HeaderNavItem\` children
 - The affordance is \`PressableBox\`'s \`soft\` fill, the same one the brand and the actions carry, so the whole bar reacts alike. The underline is the *state* on top of it: it takes the group's accent, marks the current destination only, and never reacts to hover
 - Each item is a 44px tap target; the underline is inset by the item's own padding, so it spans the label rather than the hover fill
 - \`icon\` / \`activeIcon\` / \`activeAccent\` behave as on \`NavBarItem\`: the duotone twin swaps in on hover, focus, press, and permanently on the current destination
@@ -59,27 +56,27 @@ export default {
       options: [undefined, "brand", "danger", "info", "success", "warning"],
     },
   },
-} satisfies Meta<typeof AppHeaderNav>;
+} satisfies Meta<typeof HeaderNav>;
 
-export const PreviewAppHeaderNavStory: ThisStory = {
-  name: "AppHeaderNav Preview",
+export const PreviewHeaderNavStory: ThisStory = {
+  name: "HeaderNav Preview",
   parameters: {
     layout: "padded",
     chromatic: { disableSnapshot: true },
   },
   render: (args) => (
-    <AppHeaderNav aria-label="Main" defaultValue="/home" {...args}>
-      <AppHeaderNavItem href="/home" label="Home" />
-      <AppHeaderNavItem href="/reports" label="Business Reports" />
-      <AppHeaderNavItem href="/settings" label="Settings" />
-    </AppHeaderNav>
+    <HeaderNav aria-label="Main" defaultValue="/home" {...args}>
+      <HeaderNavItem href="/home" label="Home" />
+      <HeaderNavItem href="/reports" label="Business Reports" />
+      <HeaderNavItem href="/settings" label="Settings" />
+    </HeaderNav>
   ),
 };
 
 interface DestinationsNavProps {
   label: string;
   accent?: Accent;
-  activeAccent?: AppHeaderNavItemProps["activeAccent"];
+  activeAccent?: HeaderNavItemProps["activeAccent"];
   /** Renders `icon` alone, so the glyph keeps one weight throughout. */
   withoutActiveIcon?: boolean;
 }
@@ -91,22 +88,22 @@ function DestinationsNav({
   withoutActiveIcon,
 }: DestinationsNavProps): ReactNode {
   return (
-    <AppHeaderNav aria-label={label} accent={accent} defaultValue="/home">
-      <AppHeaderNavItem
+    <HeaderNav aria-label={label} accent={accent} defaultValue="/home">
+      <HeaderNavItem
         href="/home"
         label="Home"
         icon={<HouseRegularIcon />}
         activeIcon={withoutActiveIcon ? undefined : <HouseDuotoneIcon />}
         activeAccent={activeAccent}
       />
-      <AppHeaderNavItem
+      <HeaderNavItem
         href="/reports"
         label="Business Reports"
         icon={<ChartBarRegularIcon />}
         activeIcon={withoutActiveIcon ? undefined : <ChartBarDuotoneIcon />}
         activeAccent={activeAccent}
       />
-      <AppHeaderNavItem
+      <HeaderNavItem
         disabled
         href="/settings"
         label="Settings"
@@ -114,7 +111,7 @@ function DestinationsNav({
         activeIcon={withoutActiveIcon ? undefined : <GearDuotoneIcon />}
         activeAccent={activeAccent}
       />
-    </AppHeaderNav>
+    </HeaderNav>
   );
 }
 
@@ -122,23 +119,19 @@ function NavVariant({ accent }: { accent?: Accent }): ReactNode {
   return (
     <Story.SubSection withSurface title={accent ?? "Default"}>
       <DestinationsNav accent={accent} label="With icons" />
-      <AppHeaderNav
-        aria-label="Labels only"
-        accent={accent}
-        defaultValue="/home"
-      >
-        <AppHeaderNavItem href="/home" label="Home" />
-        <AppHeaderNavItem href="/reports" label="Business Reports" />
-      </AppHeaderNav>
-      <AppHeaderNav
+      <HeaderNav aria-label="Labels only" accent={accent} defaultValue="/home">
+        <HeaderNavItem href="/home" label="Home" />
+        <HeaderNavItem href="/reports" label="Business Reports" />
+      </HeaderNav>
+      <HeaderNav
         disabled
         aria-label="Disabled group"
         accent={accent}
         defaultValue="/home"
       >
-        <AppHeaderNavItem href="/home" label="Home" />
-        <AppHeaderNavItem href="/reports" label="Business Reports" />
-      </AppHeaderNav>
+        <HeaderNavItem href="/home" label="Home" />
+        <HeaderNavItem href="/reports" label="Business Reports" />
+      </HeaderNav>
       <DestinationsNav activeAccent={accent} label="Active accent" />
     </Story.SubSection>
   );
@@ -146,9 +139,9 @@ function NavVariant({ accent }: { accent?: Accent }): ReactNode {
 
 function BadgedNav({ label }: { label: string }): ReactNode {
   return (
-    <AppHeaderNav aria-label={label} defaultValue="/home">
-      <AppHeaderNavItem href="/home" label="Home" />
-      <AppHeaderNavItem
+    <HeaderNav aria-label={label} defaultValue="/home">
+      <HeaderNavItem href="/home" label="Home" />
+      <HeaderNavItem
         aria-label="Inbox, 3 unread"
         href="/inbox"
         label="Inbox"
@@ -158,7 +151,7 @@ function BadgedNav({ label }: { label: string }): ReactNode {
           </Badge>
         }
       />
-      <AppHeaderNavItem
+      <HeaderNavItem
         aria-label="Reports, beta"
         href="/reports"
         label="Reports"
@@ -168,7 +161,7 @@ function BadgedNav({ label }: { label: string }): ReactNode {
           </Badge>
         }
       />
-    </AppHeaderNav>
+    </HeaderNav>
   );
 }
 
@@ -194,18 +187,18 @@ function HeaderedNav({ label, withBadges }: HeaderedNavProps): ReactNode {
       {withBadges ? (
         <BadgedNav label={`${label} navigation`} />
       ) : (
-        <AppHeaderNav aria-label={`${label} navigation`} defaultValue="/home">
-          <AppHeaderNavItem href="/home" label="Home" />
-          <AppHeaderNavItem href="/reports" label="Business Reports" />
-          <AppHeaderNavItem href="/settings" label="Settings" />
-        </AppHeaderNav>
+        <HeaderNav aria-label={`${label} navigation`} defaultValue="/home">
+          <HeaderNavItem href="/home" label="Home" />
+          <HeaderNavItem href="/reports" label="Business Reports" />
+          <HeaderNavItem href="/settings" label="Settings" />
+        </HeaderNav>
       )}
     </AppHeader>
   );
 }
 
-export const VariantsAppHeaderNavStory: ThisStory = {
-  name: "AppHeaderNav Variants",
+export const VariantsHeaderNavStory: ThisStory = {
+  name: "HeaderNav Variants",
   render: () => (
     <Story>
       <Story.Section title="Variants">
@@ -241,12 +234,12 @@ export const VariantsAppHeaderNavStory: ThisStory = {
           The row wraps rather than overflowing the bar it sits on.
         </Text>
         <View className="w-[320px]">
-          <AppHeaderNav aria-label="Wrapping" defaultValue="/home">
-            <AppHeaderNavItem href="/home" label="Home" />
-            <AppHeaderNavItem href="/reports" label="Business Reports" />
-            <AppHeaderNavItem href="/settings" label="Settings" />
-            <AppHeaderNavItem href="/billing" label="Billing" />
-          </AppHeaderNav>
+          <HeaderNav aria-label="Wrapping" defaultValue="/home">
+            <HeaderNavItem href="/home" label="Home" />
+            <HeaderNavItem href="/reports" label="Business Reports" />
+            <HeaderNavItem href="/settings" label="Settings" />
+            <HeaderNavItem href="/billing" label="Billing" />
+          </HeaderNav>
         </View>
       </Story.Section>
 
@@ -272,7 +265,7 @@ function RouterDemo(): ReactNode {
 
   return (
     <View className="gap-m items-start">
-      <AppHeaderNav
+      <HeaderNav
         aria-label="Router"
         value={route}
         onValueChange={(next) => {
@@ -280,14 +273,14 @@ function RouterDemo(): ReactNode {
           setRoute(next);
         }}
       >
-        <AppHeaderNavItem
+        <HeaderNavItem
           href="/home"
           label="Home"
           icon={<HouseRegularIcon />}
           activeIcon={<HouseDuotoneIcon />}
         />
-        <AppHeaderNavItem href="/reports" label="Business Reports" />
-        <AppHeaderNavItem
+        <HeaderNavItem href="/reports" label="Business Reports" />
+        <HeaderNavItem
           href="/settings"
           label="Settings"
           onPress={(event) => {
@@ -295,28 +288,28 @@ function RouterDemo(): ReactNode {
             setRoute("/settings");
           }}
         />
-      </AppHeaderNav>
+      </HeaderNav>
       <Text>{`route: ${route}`}</Text>
       <Text>{`group change: ${lastGroupChange}`}</Text>
     </View>
   );
 }
 
-export const TestsAppHeaderNavStory: ThisStory = {
-  name: "AppHeaderNav Tests",
+export const TestsHeaderNavStory: ThisStory = {
+  name: "HeaderNav Tests",
   render: () => (
     <Story noDarkMode>
       <Story.Section title="Uncontrolled">
-        <AppHeaderNav aria-label="Uncontrolled" defaultValue="/home">
-          <AppHeaderNavItem
+        <HeaderNav aria-label="Uncontrolled" defaultValue="/home">
+          <HeaderNavItem
             href="/home"
             label="Home"
             icon={<HouseRegularIcon />}
             activeIcon={<HouseDuotoneIcon />}
           />
-          <AppHeaderNavItem href="/reports" label="Business Reports" />
-          <AppHeaderNavItem disabled href="/settings" label="Settings" />
-        </AppHeaderNav>
+          <HeaderNavItem href="/reports" label="Business Reports" />
+          <HeaderNavItem disabled href="/settings" label="Settings" />
+        </HeaderNav>
       </Story.Section>
       <Story.Section title="Controlled">
         <RouterDemo />

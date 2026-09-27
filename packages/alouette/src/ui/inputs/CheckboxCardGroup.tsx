@@ -28,7 +28,7 @@ export type CheckboxCardGroupLayout = NonNullable<
   CheckboxCardGroupVariantProps["layout"]
 >;
 
-export type CheckboxCardGroupVariant = "contained" | "outlined";
+export type CheckboxCardGroupVariant = "outlined" | "tonal";
 
 interface CheckboxCardGroupAppearance {
   layout: CheckboxCardGroupLayout;
@@ -38,7 +38,7 @@ interface CheckboxCardGroupAppearance {
 const CheckboxCardGroupAppearanceContext =
   createContext<CheckboxCardGroupAppearance>({
     layout: "list",
-    variant: "contained",
+    variant: "tonal",
   });
 
 /** Lets a card size itself for the row it flows in and take the group's material. */
@@ -73,7 +73,7 @@ export function CheckboxCardGroup({
     disabled,
   });
   const appearance = useMemo(
-    () => ({ layout: layout ?? "list", variant: variant ?? "contained" }),
+    () => ({ layout: layout ?? "list", variant: variant ?? "tonal" }),
     [layout, variant],
   );
 

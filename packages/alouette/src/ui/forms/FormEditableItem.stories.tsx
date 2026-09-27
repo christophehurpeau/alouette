@@ -123,7 +123,10 @@ export default {
     details: { control: "text" },
     size: { control: "select", options: ["sm", "md", "lg"] },
     accent: { control: "select", options: accentsWithoutNeutral },
-    variant: { control: "select", options: ["contained", "outlined", "ghost"] },
+    variant: {
+      control: "select",
+      options: ["tonal", "filled", "soft"],
+    },
     summaryVariant: {
       control: "select",
       options: ["badge", "text", "muted", "mono", "none"],
@@ -204,9 +207,8 @@ export const FormEditableItemVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Edit button variants">
-        <ProfileItem variant="contained" />
-        <ProfileItem variant="outlined" />
-        <ProfileItem variant="ghost" />
+        <ProfileItem variant="filled" />
+        <ProfileItem variant="soft" />
       </Story.Section>
 
       <Story.Section withSurface title="Custom edit icon">

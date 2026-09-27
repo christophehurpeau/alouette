@@ -18,9 +18,9 @@ export function BrandLogo({
     <Box
       accent={accent}
       // `shrink-0` cancels `Box`'s own `shrink`, so the disc keeps its size.
-      className="flex-center shrink-0 size-[32px] rounded-full bg-enabled"
+      className="flex-center shrink-0 size-[32px] rounded-full bg-emphasis"
     >
-      <Icon icon={icon} size={22} className="text-on-accent" />
+      <Icon icon={icon} size={22} className="text-on-emphasis" />
     </Box>
   );
 }

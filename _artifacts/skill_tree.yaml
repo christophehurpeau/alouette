@@ -49,7 +49,7 @@ skills:
     domain: "theming"
     path: "packages/alouette/skills/alouette-theming/SKILL.md"
     package: "packages/alouette"
-    description: 'Re-theme a subtree with accents (brand, danger, info, success, warning) and light/dark modes. Use the accent prop, AccentScope, or ScopedTheme; children always consume base tokens (bg-surface, text-accent, text-sharp, text-muted, border-muted). Tokens are className-only: alouette exports no JS token-read hook. Read the current mode with useCurrentMode. For an accent that toggles at runtime without remounting, use StableAccentScope; inside a portal (a modal or any other overlay), where the scope escapes the themed subtree, use PortalAccentScope. All three, and the pressables, take accent="neutral": the plain mode theme, which drops an inherited accent and makes a Button the neutral contained secondary beside an accented one. A stored light/dark choice is a ColorModePreference ("light" | "dark" | "system") resolved by useResolvedColorMode and applied by the app through ScopedTheme. Load when applying colors, accents or dark mode, or when shipping a custom palette.'
+    description: 'Re-theme a subtree with accents (brand, danger, info, success, warning) and light/dark modes. Use the accent prop, AccentScope, or ScopedTheme; children always consume base tokens (bg-surface, text-accent, text-sharp, text-muted, border-muted). Tokens are className-only: alouette exports no JS token-read hook. Read the current mode with useCurrentMode. For an accent that toggles at runtime without remounting, use StableAccentScope; inside a portal (a modal or any other overlay), where the scope escapes the themed subtree, use PortalAccentScope. All three, and the pressables, take accent="neutral": the plain mode theme, which drops an inherited accent and makes a Button the neutral secondary beside an accented one. A stored light/dark choice is a ColorModePreference ("light" | "dark" | "system") resolved by useResolvedColorMode and applied by the app through ScopedTheme. Load when applying colors, accents or dark mode, or when shipping a custom palette.'
     requires: []
     sources:
       - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
@@ -108,8 +108,8 @@ skills:
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppShell.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeader.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
-      - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderNav.tsx"
-      - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderNavItem.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNav.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNavItem.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderActions.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderAccount.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderSignIn.tsx"
@@ -144,7 +144,7 @@ skills:
     domain: "forms"
     path: "packages/alouette/skills/alouette-forms/SKILL.md"
     package: "packages/alouette"
-    description: "Collect and validate user input. Inputs: InputText and TextArea for text, Switch for a toggle, Select to pick one value from a known list and InputTextAutocomplete to narrow that list by typing. Single-select groups, each composing its children rather than taking an options array: RadioGroup, RadioButtonGroup (which the light/dark ColorModePicker is built on) and RadioCardGroup; multi-select counterparts CheckboxGroup, CheckboxButtonGroup and CheckboxCardGroup, and a standalone Checkbox. Validated forms over react-hook-form: Form owns the instance and passes its control down, so the form type is written once and every field's value type is inferred; FormField labels one field and reports its error; FormFieldArray repeats a group of fields; FormSubmitButton drives the submit lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and FormEditableSection edit a row or a section in a modal owning its own Form. Load when building inputs, radio groups, a color-mode picker or a validated form."
+    description: "Collect and validate user input. Inputs: InputText and TextArea for text, Switch for a toggle, Select to pick one value from a known list and InputTextAutocomplete to narrow that list by typing. Single-select groups, each composing its children rather than taking an options array: RadioGroup, RadioButtonGroup (which the light/dark ColorModePicker is built on) and RadioCardGroup; multi-select counterparts CheckboxGroup and CheckboxCardGroup, and a standalone Checkbox. Validated forms over react-hook-form: Form owns the instance and passes its control down, so the form type is written once and every field's value type is inferred; FormField labels one field and reports its error; FormFieldArray repeats a group of fields; FormSubmitButton drives the submit lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and FormEditableSection edit a row or a section in a modal owning its own Form. Load when building inputs, radio groups, a color-mode picker or a validated form."
     requires:
       - "alouette-theming"
       - "alouette-actions"
@@ -168,8 +168,6 @@ skills:
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.stories.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxGroup.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Checkbox.tsx"
-      - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxButtonGroup.tsx"
-      - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxButton.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxCardGroup.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxCard.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/ColorModePicker.tsx"
@@ -225,15 +223,15 @@ skills:
     domain: "navigation"
     path: "packages/alouette/skills/alouette-navigation/SKILL.md"
     package: "packages/alouette"
-    description: "Move the user between places. NavBar and NavBarItem navigate between destinations — each item is a real link announced as the current page, and composes with expo Router; Tabs and Tab switch between views of one screen, announced as a tab list. Both are built by composing their items, over the same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar can also stand vertically as a sidebar rail, and AppHeaderNav carries the same semantics as text links on an application bar. Breadcrumbs and BreadcrumbItem render the trail back through the ancestors of the current page. Pick by meaning, not by looks: navigation is never a RadioButtonGroup, which announces a form value, and never a Link wrapped around a Text, which has no interactive state. Load when building a tab bar, a section switcher, a breadcrumb trail, or navigation between routes."
+    description: "Move the user between places. NavBar and NavBarItem navigate between destinations — each item is a real link announced as the current page, and composes with expo Router; Tabs and Tab switch between views of one screen, announced as a tab list. Both are built by composing their items, over the same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar can also stand vertically as a sidebar rail, and HeaderNav carries the same semantics as text links on an application bar. Breadcrumbs and BreadcrumbItem render the trail back through the ancestors of the current page. Pick by meaning, not by looks: navigation is never a RadioButtonGroup, which announces a form value, and never a Link wrapped around a Text, which has no interactive state. Load when building a tab bar, a section switcher, a breadcrumb trail, or navigation between routes."
     requires:
       - "alouette-theming"
       - "alouette-actions"
     sources:
       - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBarItem.tsx"
-      - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderNav.tsx"
-      - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderNavItem.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNav.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNavItem.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tabs.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tab.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SelectionContext.tsx"

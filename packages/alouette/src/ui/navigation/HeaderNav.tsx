@@ -5,17 +5,17 @@ import {
   type SelectionGroupProps,
   useSelectionValue,
 } from "../selection/SelectionContext";
-import { AppHeaderNavContextProvider } from "./AppHeaderNavContext";
+import { HeaderNavContextProvider } from "./HeaderNavContext";
 
 // No ground of its own: the destinations are text links on the bar itself, so
 // the row only spaces them. It wraps because the header hands it a whole line
 // below `md` — a bar of links is allowed to take two of them rather than
 // overflow the screen.
-const appHeaderNavVariants = tv({
+const headerNavVariants = tv({
   base: "flex-row flex-wrap items-center gap-xxs",
 });
 
-export interface AppHeaderNavProps extends SelectionGroupProps {
+export interface HeaderNavProps extends SelectionGroupProps {
   "aria-label"?: string;
   className?: string;
 }
@@ -31,7 +31,7 @@ export interface AppHeaderNavProps extends SelectionGroupProps {
  * is the screen's main control (a stacked header line, a sidebar rail), and for
  * this one when it has to share a single line with the brand and the session.
  */
-export function AppHeaderNav({
+export function HeaderNav({
   value,
   defaultValue,
   onValueChange,
@@ -40,7 +40,7 @@ export function AppHeaderNav({
   className,
   children,
   ...props
-}: AppHeaderNavProps): ReactNode {
+}: HeaderNavProps): ReactNode {
   const context = useSelectionValue({
     value,
     defaultValue,
@@ -49,15 +49,15 @@ export function AppHeaderNav({
   });
 
   return (
-    <AppHeaderNavContextProvider value={context}>
+    <HeaderNavContextProvider value={context}>
       <Box
         role="navigation"
         accent={accent}
-        className={appHeaderNavVariants({ className })}
+        className={headerNavVariants({ className })}
         {...props}
       >
         {children}
       </Box>
-    </AppHeaderNavContextProvider>
+    </HeaderNavContextProvider>
   );
 }

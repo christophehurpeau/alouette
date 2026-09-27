@@ -102,7 +102,7 @@ not know the named spacing scale or the custom utilities without it.
 
 This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define **structural** tokens/keyframes (type/radius/shadow/spacing/animation, fonts, utilities) in `packages/alouette/scripts/build-css.ts`; define **color** palettes in `packages/alouette/src/theme-generator/paletteSpecs.ts`. Regenerate with `pnpm --filter alouette build:css` — never edit the generated CSS (`global.css`, `core.css`, `default-palette.css`, `default-palette-oklch.css`) directly.
 
-`build:css` writes a split output: `core.css` (structural, color-free), `default-palette.css` (the default palette in sRGB hex — `@theme` color defaults + the twelve `.<theme>` blocks, the latter behind a web-only `@supports` so native never compiles them), `default-palette-oklch.css` (the optional wide-gamut overlay: the same tokens as `oklch()` behind `@supports`), `global.css` (aggregator `@import`ing core + the sRGB palette, **not** the oklch overlay — that stays an explicit extra import), plus `defaultThemeVariablesSrgb.ts`, `animationDurationsMs.ts`. Color generation lives in the shipped, exported `src/theme-generator/` module (`generateTheme`, `writeTheme`, `createColorScale`, `tokenScaleMap`, `paletteSpecs`); `build-css.ts` is a thin driver that calls `generateTheme()` for the default palette. An app generates its own palette the same way, from its own build script: `writeTheme({ outDir, overrides })` (node-only, from `alouette/theme-generator`) writes `palette.css` + `themeVariables.ts` (hex) and `palette-oklch.css` (the opt-in wide-gamut overlay, skipped by `srgbOnly`; CSS only — the map has no oklch counterpart since web never reads it); the app then imports `alouette/core.css` + its palette CSS and passes the generated map to `<AlouetteProvider themeVariables={...}>`. `generateTheme(overrides)` → `{ css, oklchCss, themeVariables, oklchThemeVariables }` is the in-memory form for an app that writes the files itself.
+`build:css` writes a split output: `core.css` (structural; its only colors are the `--shadow-*` layers, as `var()`s of the palette's shadow tokens with the legacy hex as fallback, so an older generated palette keeps its shadows), `default-palette.css` (the default palette in sRGB hex — `@theme` color defaults + the twelve `.<theme>` blocks, the latter behind a web-only `@supports` so native never compiles them), `default-palette-oklch.css` (the optional wide-gamut overlay: the same tokens as `oklch()` behind `@supports`), `global.css` (aggregator `@import`ing core + the sRGB palette, **not** the oklch overlay — that stays an explicit extra import), plus `defaultThemeVariablesSrgb.ts`, `animationDurationsMs.ts`. Color generation lives in the shipped, exported `src/theme-generator/` module (`generateTheme`, `writeTheme`, `createColorScale`, `tokenScaleMap`, `paletteSpecs`); `build-css.ts` is a thin driver that calls `generateTheme()` for the default palette. An app generates its own palette the same way, from its own build script: `writeTheme({ outDir, overrides })` (node-only, from `alouette/theme-generator`) writes `palette.css` + `themeVariables.ts` (hex) and `palette-oklch.css` (the opt-in wide-gamut overlay, skipped by `srgbOnly`; CSS only — the map has no oklch counterpart since web never reads it); the app then imports `alouette/core.css` + its palette CSS and passes the generated map to `<AlouetteProvider themeVariables={...}>`. `generateTheme(overrides)` → `{ css, oklchCss, themeVariables, oklchThemeVariables }` is the in-memory form for an app that writes the files itself.
 
 ### Color format: OKLCH on web, hex on native
 
@@ -217,44 +217,90 @@ appearance from the `interactive-*` token families, never from static tokens lik
 a colored `focus-visible` outline and `AccentScope`. This is how `Button` and
 `IconButton` are built, so use its `variant`:
 
-- `contained` → `bg-interactive-contained-{pressable,hover,focus,active,disabled}` + `shadow-s`, text `text-on-accent`.
-- `outlined` / `ghost` → `border-interactive-outlined-{pressable,hover,focus,active,disabled}`, text `text-sharp`.
-- `soft` → no border, no ground at rest, filling on `hover`/`focus`/`active` with `bg-interactive-soft-*`. That family is a **surface tone**, not the accent, so the label keeps its own color — never add a `group-hover:text-on-accent` flip to it. Used where a border tint reads as noise: the `AppHeader` pressables and `MenuItem` rows.
+- `tonal` (default) → `bg-interactive-tonal-{pressable,hover,focus,active,disabled}` + `shadow-s`, text `text-on-tonal`.
+- `filled` → `bg-interactive-filled-{pressable,hover,focus,active,disabled}`, flat (no shadow), text `text-on-accent`.
+- `outlined` → `border-interactive-outlined-{pressable,hover,focus,active,disabled}`, text `text-sharp`.
+- `soft` → no border, no ground at rest, filling on `hover`/`focus`/`active` with `bg-interactive-soft-*`. That family is a **surface tone**, not the accent, so a `PressableBox` composed on it keeps its label's own color — never add a `group-hover:text-on-accent` flip to it. Used where a border tint reads as noise: the `AppHeader` pressables and `MenuItem` rows. `Button` and `IconButton` are the exceptions, having no ground to carry the accent: the soft `Button` is a text button whose label is `text-accent` and underlined, and the soft `IconButton` glyph turns `text-accent` on `group-hover`/`group-focus`/`group-active` (and under a forced state).
 
 Pass `role`/`aria-*` through `PressableBox` (they override its default
-`role="button"`). When a child indicator must react to the row's state and can't
-be a `PressableBox` (e.g. the ring inside a labeled radio row), apply the same
-`border-interactive-outlined-*` classes to the child and drive them with a `group`
-on the pressable (`group-hover:` / `group-active:` on the child).
+`role="button"`). A selection indicator inside a pressable (the radio ring, the
+checkbox box) is a **foreground**: it takes the accent's
+`interactive-{pressable,hover,active}` family, selected or not, driven by the
+`group` on the pressable (`group-hover:` / `group-focus:` / `group-active:`).
+Never the `interactive-filled-*` grounds — in dark mode the filled hover is the
+tonal hover ground itself, so the ring vanishes. It keeps the option's accent
+even in an unselected card that has dropped to the neutral theme
+(`SelectionIndicatorAccentScope`). A bare `Radio` / `Checkbox` row wears the
+`soft` grounds (`selection/selectionRowVariants.ts`), and its indicator alone
+takes the press (`group-active:translate-y-px`), so the label never moves.
 
 The neutral `interactive-{hover,active,pressable,muted}` tokens are **foreground**
-(icon/text) colors, not backgrounds; the accent `interactive-contained-*` tokens
-are the fills.
+(icon/text) colors, not backgrounds; the `interactive-tonal-*` and
+`interactive-filled-*` tokens are the grounds.
 
 Never make a display-only component interactive by wrapping it: see
 "Interactivity is a component, never a wrapper" in the `alouette-styling` skill.
 
 ## Differentiate buttons by `accent`, not by `variant`
 
-Two buttons side by side differ by **accent**, and both stay `contained`. The
-variant is the material — dropping the secondary action to `outlined` (or
-`ghost`) trades away its ground and its shadow, so it reads as chrome rather than
-as the other half of a pair. `accent="neutral"` is the neutral contained button:
+Two buttons side by side differ by **accent**, and both stay `tonal`. The
+variant is the material — dropping the secondary action to `outlined` trades
+away its ground and its shadow, so it reads as chrome rather than
+as the other half of a pair. `accent="neutral"` is the neutral tonal button:
 the same material on the grayscale palette, which is what a confirmation footer,
 a form's Cancel, or a second header action wants.
 
-The neutral theme is **an accent, not the absence of one**: the contained tokens
-take the same scale steps in grayscale as in a colored accent (light 9 → 8 → 7,
-dark 6 → 7), so the button is a dark gray fill carrying the same white
-`text-on-accent` label. A pale neutral fill is not available and must not be
-reinvented — the light steps above `interactive-contained-pressable` are
-`surface` (2), `screen` (3) and `lowered` (4) themselves, so a white or near-white
-button dissolves into whatever it is placed on.
+`tonal` works because the button is **lighter than the page it sits on**: its
+ground is a **tone** of the theme rather than the accent's fill — the card steps
+when neutral (light 1 → 2 → 3, dark 6 → 7), the accent's own pale steps in light
+mode (2 → 3 → 4, starting at its `surface`) and its own dark ground one notch
+under the filled ground in dark mode (6 → 7), since dark has no pale end to tint.
+The hue is therefore carried by the ink, **`text-on-tonal`** (label, icon and
+caret alike), because a light tint carries the hue poorly: any red pale enough to
+take dark ink reads as pink. So in light mode `on-tonal` is the accent itself
+(`#92091A` on a danger button) and the ambient sharp ink when neutral; in dark
+mode, where the ground already _is_ the accent, it stays sharp — an accent ink
+there would be a tint of the color under it (~4:1). `muted` is too dim for either
+ground, so secondary `text-muted` copy on it belongs on a neutral one only.
+
+`filled` is the accent's own fill, flat, under the `text-on-accent` label —
+for the one action that must dominate; the other action beside it stays
+`tonal` and neutral. The neutral theme is **an accent, not the absence of
+one**, and its fill is the sharp ink turned into a ground: `#262626` in light
+mode (11 → 10 → 9) and `#F2F2F2` in dark (10 → 11 → 9), so a neutral `filled`
+button is black with a white label in light mode and white with a dark label in
+dark. `on-accent` therefore flips in the neutral dark theme only (colored
+fills keep white ink), and the neutral `enabled` ground (`Avatar`, `Badge`
+`solid.enabled`, `BrandLogo`, the web `Switch` track) follows the same pair.
+The pale neutral ground is `tonal`'s — do not reinvent it on the filled tokens.
 
 ```tsx
 <Button accent="neutral" text="Cancel" onPress={close} />
 <Button text="Save" onPress={save} />
+
+<Button accent="neutral" text="Dismiss" onPress={close} />
+<Button variant="filled" text="Save and close" onPress={saveAndClose} />
 ```
+
+**On an accented surface** (`<Box accent className="surface">`, a
+`GradientBackground`) a `tonal` pressable is always `accent="neutral"`: in light
+mode an accented `tonal` ground is the accented `surface` step itself, so it
+dissolves into it. An accented action there is `filled` or `soft` —
+`EditableSection` with an `accent` defaults its edit button to `soft`. What
+counts is the ground, not the theme: a neutral ground inside an accented theme
+(`bg-highlight`, which is grayscale-only — the `Modal`/`AlertDialog` panel) keeps
+an accented `tonal` button, which is why `AlertDialog`'s confirm stays `tonal`
+(its Cancel is neutral `soft`). A neutral `soft` footer button is only ever the
+secondary action beside a primary one: a `Modal` footer never holds a lone
+`soft` button — a single "Close" is a plain `tonal` `<Button>`.
+
+`PressableBox` checks exactly that, on web and outside production
+(`useTonalGroundWarningRef`): an accented `tonal` pressable at rest — its own
+`accent`, or one inherited from an accented theme — whose computed ground equals
+the first opaque ground behind it logs a warning. Native has no computed style,
+so the hook is a no-op there. `PressableBox.stories.tsx`'s `TonalGroundWarning`
+asserts it fires on an accented surface and not on a neutral pressable or a
+`bg-highlight` ground.
 
 `accent="neutral"` is accepted by `Button`, `IconButton`, `PressableBox`,
 `PressableListItem` and `CircularProgress`, on top of the scope components. It
@@ -263,8 +309,9 @@ ancestor.
 
 The remaining variants have narrow roles, and none of them is "the secondary
 button": `soft` is for rows and bars that must not carry a border (`AppHeader`
-pressables, `MenuItem`); `ghost` is for an icon-only control inside a component's
-own frame (`Modal`'s close, `Message`'s dismiss); `outlined` has no default use —
+pressables, `MenuItem`) and for an icon-only control inside a component's own
+frame (`Modal`'s close, `Message`'s dismiss, `FormFieldArray`'s remove);
+`outlined` has no default use —
 reach for it only when a design explicitly calls for an outline.
 
 ## `activeIcon`: the glyph may change weight on interaction
@@ -305,32 +352,20 @@ fill.
 
 `emphasis` is the accent-aware fill for that child (`SegmentedItem`'s selected
 chip, `ConnectionState`'s bar), and its label is `text-on-emphasis`. It is **not**
-the contained button fill: an element standing out of a track has to be lighter
-than the track under it, so the neutral `emphasis` stays the palette's lightest
-step while the neutral contained button goes dark. That is why the two are
-separate tokens — and why `text-on-emphasis` (dark ink on a neutral chip, white on
-an accented one) is the one ink that still flips with the accent. The token is
+the filled button ground: an element standing out of a track has to be lighter
+than the track under it, so the neutral `emphasis` stays a card step in both
+modes while the neutral filled button takes the sharp extreme (black in light,
+white in dark). That is why the two are separate tokens, each with its own
+ink: `text-on-emphasis` (dark ink on a neutral chip, white on an accented one)
+and `text-on-accent`. The token is
 named for the emphasis it carries, not for elevation: `surface` and `highlight`
 are raised too, so "raised" would say nothing.
 
-A pressable card row takes `PressableBox`'s **`list` variant** — `shadow-s` over
-`bg-interactive-list-{pressable,hover,focus,active}`. That is
-`PressableListItem`'s default, not a button, and its ground is a **tone** of the
-theme rather than the accent's fill: the card steps when neutral (light
-1 → 2 → 3, dark 6 → 7), the accent's own pale steps in light mode (2 → 3 → 4,
-starting at its `surface`) and its own dark ground one notch under the contained
-fill in dark mode (6 → 7), since dark has no pale end to tint. `contained` cannot
-do that — its neutral fill is the grayscale accent — and `emphasis` cannot either: a
-`SegmentedBar` chip has to win against its track, so it stays the accent's fill
-with `text-on-emphasis` ink.
-
-The row's ink is **`text-on-list`** (label and caret alike), because a light tint
-carries the hue poorly: any red pale enough to take dark ink reads as pink. So in
-light mode `on-list` is the accent itself (`#92091A` on a danger row) and the
-ambient sharp ink when neutral; in dark mode, where the ground already _is_ the
-accent, it stays sharp — an accent ink there would be a tint of the color under
-it (~4:1). `muted` is too dim for either ground, so secondary `text-muted` copy in
-a row belongs on a neutral one only.
+A pressable card row (`PressableListItem`) wears the same `tonal` material as
+a button — `shadow-s` over `bg-interactive-tonal-*`, with `text-on-tonal`
+for its label and caret. `emphasis` cannot stand in for it: a `SegmentedBar` chip
+has to win against its track, so it stays the accent's fill with
+`text-on-emphasis` ink.
 
 ## Touch targets: 44px accessible height, not the named spacing scale
 
@@ -389,7 +424,7 @@ That badge is `SegmentedItem`'s `indicator` prop (mirrored on `RadioButton`): an
 top-right. It **adds** to `icon` and never replaces it, and only
 `variant="icon"` renders it — the icon chip is a circle whose corner lunes are
 ~4px wide, so the badge has to overlap the glyph, and the halo takes the chip's
-own fill (`bg-interactive-contained-pressable` selected, `bg-lowered`
+own fill (`bg-emphasis` selected, `bg-lowered`
 unselected — the chip is transparent there and the lowered bar shows through) so
 it punches out of what it covers.
 
@@ -623,8 +658,8 @@ a `Text` (no interactive state, no focus outline, no 44px target).
 The multi-select counterparts mirror this on `MultiSelectionContext.tsx`
 (`createMultiSelectionContext`, `useMultiSelectionValue` over
 `useControllableValues`, `values` / `defaultValues` / `onValuesChange`): `group` +
-`checkbox`/`aria-checked` for `CheckboxGroup`/`Checkbox`,
-`CheckboxButtonGroup`/`CheckboxButton` and `CheckboxCardGroup`/`CheckboxCard`. A
+`checkbox`/`aria-checked` for `CheckboxGroup`/`Checkbox` and
+`CheckboxCardGroup`/`CheckboxCard`. A
 `Checkbox` outside a group is a standalone boolean (`checked` /
 `defaultChecked` / `onValueChange`, via `useControllableChecked`, shared with
 `Switch`).

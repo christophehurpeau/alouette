@@ -100,9 +100,10 @@ option. Label the group via `aria-labelledby`.
   group.
 - `RadioCardGroup` + `RadioCard` — cards with `icon`, `label`, `description` and
   a radio indicator, for options that need explaining. Group `variant` is the
-  card material, `PressableBox`'s `"contained"` (default) or `"outlined"`: every
-  card shares it, the selected card takes the accent and the others
-  `accent="neutral"`. Group `layout` is `"list"` (default, one per row) or
+  card material, `PressableBox`'s `"tonal"` (default) or `"outlined"`: every
+  card shares it, the selected card takes the accent and
+  the others `accent="neutral"` — with `tonal`, white cards around a pale
+  accented one carrying the accent in its ink. Group `layout` is `"list"` (default, one per row) or
   `"stack"` (cards wrap and share a row from a 240px basis); both the group and
   each card take a `className` for layout (widths, wrapping), not for restyling
   the card material.
@@ -133,22 +134,19 @@ option. Label the group via `aria-labelledby`.
 
 ## Multi-select groups
 
-The same three families with checkboxes: the group owns `values` (`string[]`),
+Two of those families with checkboxes: the group owns `values` (`string[]`),
 `defaultValues` and `onValuesChange(values)`, and each child toggles its `value`
 in or out. Roles are `group` + `checkbox`/`aria-checked`; label the group with
 `aria-label` or `aria-labelledby`.
 
 - `CheckboxGroup` + `Checkbox` — square-check list.
-- `CheckboxButtonGroup` + `CheckboxButton` — the segmented bar, several chips
-  raised at once. Same `compact`, `variant="icon"`, `activeIcon`, `activeAccent`
-  and `indicator` as `RadioButton`; no per-item `onPress`.
 - `CheckboxCardGroup` + `CheckboxCard` — the cards, same `layout` and `variant`
   as `RadioCardGroup`: every checked card takes the accent.
 
 A `Checkbox` rendered outside a `CheckboxGroup` is a standalone boolean:
 `checked`, `defaultChecked`, `onValueChange(checked)` and its own `accent`. Inside
-a group it requires `value` and ignores those. `CheckboxButton` and
-`CheckboxCard` throw outside their groups.
+a group it requires `value` and ignores those. `CheckboxCard` throws outside a
+group.
 
 ```tsx
 <CheckboxGroup defaultValues={["email"]} onValuesChange={setChannels} aria-labelledby={labelId}>
@@ -157,11 +155,6 @@ a group it requires `value` and ignores those. `CheckboxButton` and
 </CheckboxGroup>
 
 <Checkbox label="I accept the terms" checked={accepted} onValueChange={setAccepted} />
-
-<CheckboxButtonGroup compact defaultValues={["mon", "fri"]}>
-  <CheckboxButton value="mon" label="Mon" />
-  <CheckboxButton value="fri" label="Fri" />
-</CheckboxButtonGroup>
 ```
 
 ## ColorModePicker

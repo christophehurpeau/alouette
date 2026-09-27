@@ -10,10 +10,10 @@ import { SelectionAccentScope } from "../selection/SelectionAccentScope";
 import { useRadioCardGroupAppearance } from "./RadioCardGroup";
 import { useRadioContext } from "./RadioContext";
 
-// Every card is the group's PressableBox material (`contained` or `outlined`)
-// and selection only swaps the accent: the selected card keeps it, the others
-// take the neutral theme. Every rest/hover/focus/press color comes from the
-// shared interactive tokens — only the foreground follows the material.
+// Every card is the group's PressableBox material (`tonal` or `outlined`) and
+// selection only swaps the accent: the selected card keeps it, the others take
+// the neutral theme. Every rest/hover/focus/press color comes from the shared
+// interactive tokens — only the foreground follows the material.
 const radioCardVariants = tv(
   {
     slots: {
@@ -29,18 +29,8 @@ const radioCardVariants = tv(
         list: { frame: "items-center" },
         stack: { frame: "items-start grow shrink basis-[240px]" },
       },
-      variant: {
-        contained: {
-          icon: "text-on-accent",
-          label: "text-on-accent",
-          description: "text-on-accent-muted",
-        },
-        outlined: {
-          icon: "text-muted",
-          label: "text-sharp",
-          description: "text-muted",
-        },
-      },
+      variant: { tonal: {}, outlined: {} },
+      selected: { true: {}, false: {} },
       disabled: {
         true: {
           icon: "text-disabled-muted",
@@ -50,15 +40,36 @@ const radioCardVariants = tv(
         false: {},
       },
     },
-    // `on-accent-muted` falls under 4.5:1 on the lighter hover/press fill, so
-    // the description takes the label's ink there.
+    // The material's inks are enabled-only: without tailwind-merge, the
+    // stylesheet order would let them win over the disabled ones, and a disabled
+    // selected card would keep the accent's.
     compoundVariants: [
       {
-        variant: "contained",
+        variant: "tonal",
+        disabled: false,
+        class: { icon: "text-on-tonal", label: "text-on-tonal" },
+      },
+      // `muted` is too dim for an accented tonal ground: the selected card's
+      // description takes the label's ink.
+      {
+        variant: "tonal",
+        selected: true,
+        disabled: false,
+        class: { description: "text-on-tonal" },
+      },
+      {
+        variant: "tonal",
+        selected: false,
+        disabled: false,
+        class: { description: "text-muted" },
+      },
+      {
+        variant: "outlined",
         disabled: false,
         class: {
-          description:
-            "group-hover:text-on-accent group-focus:text-on-accent group-active:text-on-accent",
+          icon: "text-muted",
+          label: "text-sharp",
+          description: "text-muted",
         },
       },
     ],
@@ -91,7 +102,12 @@ export function RadioCard({
   const { layout, variant } = useRadioCardGroupAppearance();
   const selected = selectedValue === value;
   const isDisabled = disabled === true || groupDisabled === true;
-  const styles = radioCardVariants({ layout, variant, disabled: isDisabled });
+  const styles = radioCardVariants({
+    layout,
+    variant,
+    selected,
+    disabled: isDisabled,
+  });
 
   return (
     <DefaultAccentScope>
@@ -117,11 +133,7 @@ export function RadioCard({
               <Text className={styles.description()}>{description}</Text>
             ) : null}
           </View>
-          <RadioIndicator
-            selected={selected}
-            disabled={isDisabled}
-            onAccent={variant === "contained"}
-          />
+          <RadioIndicator selected={selected} disabled={isDisabled} />
         </PressableBox>
       </SelectionAccentScope>
     </DefaultAccentScope>

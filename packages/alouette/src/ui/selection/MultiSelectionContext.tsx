@@ -2,15 +2,11 @@ import type { Provider, ReactNode } from "react";
 import { createContext, useContext, useMemo } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useControllableValues } from "../../core/useControllableValues";
-import type { SegmentedVariant } from "./SelectionContext";
 
 export interface MultiSelectionContextValue {
   values: readonly string[];
   onToggle: (value: string) => void;
   disabled?: boolean;
-  /** Tighter horizontal padding, for a group holding many options. */
-  compact?: boolean;
-  variant?: SegmentedVariant;
 }
 
 export interface MultiSelectionGroupProps {
@@ -55,21 +51,16 @@ export function createMultiSelectionContext(
   };
 }
 
-export interface MultiSelectionValueProps extends Pick<
+export type MultiSelectionValueProps = Pick<
   MultiSelectionGroupProps,
   "defaultValues" | "disabled" | "onValuesChange" | "values"
-> {
-  compact?: boolean;
-  variant?: SegmentedVariant;
-}
+>;
 
 export function useMultiSelectionValue({
   values: controlledValues,
   defaultValues,
   onValuesChange,
   disabled,
-  compact,
-  variant,
 }: MultiSelectionValueProps): MultiSelectionContextValue {
   const [values, onToggle] = useControllableValues({
     values: controlledValues,
@@ -77,7 +68,7 @@ export function useMultiSelectionValue({
     onValuesChange,
   });
   return useMemo(
-    () => ({ values, onToggle, disabled, compact, variant }),
-    [values, onToggle, disabled, compact, variant],
+    () => ({ values, onToggle, disabled }),
+    [values, onToggle, disabled],
   );
 }

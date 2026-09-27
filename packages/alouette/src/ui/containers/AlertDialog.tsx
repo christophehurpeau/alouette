@@ -68,6 +68,15 @@ interface ConfirmAlertDialogProps
   cancelText?: ReactNode;
   /** Disables the confirm button (e.g. while a form is invalid). */
   confirmDisabled?: boolean;
+  /**
+   * Which action carries the button material. "confirm" (default) is an
+   * accented tonal confirm beside a soft Cancel. "cancel" is a neutral filled
+   * Cancel beside a soft confirm — for an irreversible action where backing out
+   * is the expected answer. Filled, not tonal: a neutral tonal ground is the
+   * white of the panel and would dissolve into it. The order stays Cancel then
+   * confirm, so the buttons never trade places.
+   */
+  primaryAction?: "cancel" | "confirm";
 }
 
 interface AcknowledgeAlertDialogProps extends AlertDialogBaseProps {
@@ -206,19 +215,23 @@ function resolveVariant(
         cancelText,
         confirmDisabled,
         errorToMessage,
+        primaryAction = "confirm",
       } = props;
+      const isCancelPrimary = primaryAction === "cancel";
       return {
         onDismiss: isPending ? noop : onCancel,
         footer: (
           <ActionFooter error={error} errorToMessage={errorToMessage}>
             <Button
               accent="neutral"
+              variant={isCancelPrimary ? "filled" : "soft"}
               text={cancelText ?? "Cancel"}
               disabled={isPending}
               onPress={onCancel}
             />
             <Button
               accent={accent}
+              variant={isCancelPrimary ? "soft" : "tonal"}
               text={confirmText ?? "Confirm"}
               state={buttonState}
               disabled={confirmDisabled}

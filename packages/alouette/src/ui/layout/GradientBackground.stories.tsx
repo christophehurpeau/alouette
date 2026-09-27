@@ -19,19 +19,19 @@ function Content() {
         <Text>Text</Text>
         <Box className="surface bg-translucent">
           <View className="gap-m">
-            <Text>Surface translucent</Text>
-            <Button text="Button" />
+            <Text className="text-sharp">Surface translucent</Text>
+            <Button accent="neutral" text="Button" />
           </View>
         </Box>
         <Box className="surface">
           <View className="gap-m">
-            <Text>Surface</Text>
-            <Button text="Button" />
+            <Text className="text-sharp">Surface</Text>
+            <Button accent="neutral" text="Button" />
           </View>
         </Box>
         <Box className="bg-highlight shadow-s p-xl rounded-sm">
           <View className="gap-m">
-            <Text>Highlight</Text>
+            <Text className="text-sharp">Highlight</Text>
             <Button text="Button" />
           </View>
         </Box>

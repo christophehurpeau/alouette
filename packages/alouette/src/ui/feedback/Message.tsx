@@ -85,7 +85,7 @@ export function Message({
         {/* React Native defaults flexShrink to 0: without `shrink` the text
             keeps its content width and pushes the dismiss button out of the
             frame instead of wrapping. */}
-        <Text className="text-sharp shrink grow">{children}</Text>
+        <Text className="text-base text-sharp shrink grow">{children}</Text>
         {onDismiss ? (
           <Box
             style={{ width: dismissDiameter, height: dismissDiameter }}
@@ -95,7 +95,7 @@ export function Message({
               icon={<XRegularIcon />}
               iconSize={size === "sm" ? "fill" : undefined}
               size={dismissDiameter}
-              variant="ghost"
+              variant="soft"
               aria-label={dismissIconAriaLabel}
               onPress={onDismiss}
             />

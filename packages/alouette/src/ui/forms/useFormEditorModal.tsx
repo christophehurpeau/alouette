@@ -96,7 +96,12 @@ export function useFormEditorModal<TFieldValues extends FieldValues>({
             closeButtonAriaLabel={closeButtonAriaLabel}
             footer={
               <>
-                <Button accent="neutral" text={cancelLabel} onPress={close} />
+                <Button
+                  accent="neutral"
+                  variant="soft"
+                  text={cancelLabel}
+                  onPress={close}
+                />
                 <FormSubmitButton
                   label={submitLabel}
                   errorToMessage={submitErrorToMessage}
