@@ -54,7 +54,7 @@ export function AppHeaderAccount({
           className={appHeaderAccountVariants()}
           {...triggerProps}
         >
-          <Avatar name={name} icon={icon} accent={accent} />
+          <Avatar name={name} icon={icon} accent={accent} variant="enabled" />
           <Icon
             icon={<CaretDownRegularIcon />}
             size={14}
