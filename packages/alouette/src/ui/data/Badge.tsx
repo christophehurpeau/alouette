@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
+import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
 import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
@@ -46,6 +47,7 @@ type BadgeSize = NonNullable<BadgeVariantProps["size"]>;
 const ICON_SIZE: Record<BadgeSize, number> = { sm: 12, md: 16 };
 
 export interface BadgeProps {
+  /** Defaults to the inherited accent, or `brand` outside an accent scope. */
   accent?: AccentOrNeutral;
   size?: BadgeSize;
   variant?: BadgeVariantProps["variant"];
@@ -54,12 +56,13 @@ export interface BadgeProps {
 }
 
 export function Badge({
-  accent = "brand",
+  accent: accentProp,
   size = "md",
   variant = "solid",
   icon,
   children,
 }: BadgeProps): ReactNode {
+  const accent = useAccentOrInheritedOrBrand(accentProp);
   const styles = badgeVariants({ size, variant });
   return (
     <Box accent={accent} className={styles.frame()}>

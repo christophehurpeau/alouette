@@ -34,7 +34,9 @@ Buttons and pressables carry interactive token states (hover/focus/active/
 disabled) automatically. `variant` is
 `"tonal" | "filled" | "outlined" | "soft"`; `size` is
 `"sm" | "md"`; `accent`
-is `"brand"` (default) `| "danger" | "info" | "success" | "warning" | "neutral"`.
+is `"brand" | "danger" | "info" | "success" | "warning" | "neutral"`. Unset,
+a `Button` takes the accent of the nearest accent scope (a `Modal`, `Message`,
+`Box` or `AccentScope` with an `accent`), and `"brand"` outside one.
 
 **Differentiate buttons by `accent`, not by `variant`.** `tonal` (the
 default) is the material an action button is made of; the accent says how loud

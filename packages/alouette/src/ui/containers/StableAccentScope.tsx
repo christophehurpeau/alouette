@@ -1,11 +1,14 @@
 import type { ReactNode } from "react";
 import type {
-  Accent,
   AccentOrNeutral,
   AlouetteModeTheme,
   AlouetteTheme,
 } from "../../core/AlouetteConfig";
-import { useCurrentMode, useCurrentTheme } from "../../core/ThemeContext";
+import {
+  getThemeAccent,
+  useCurrentMode,
+  useCurrentTheme,
+} from "../../core/ThemeContext";
 import { ScopedTheme } from "./ScopedTheme";
 
 export interface StableAccentScopeProps {
@@ -27,11 +30,7 @@ export function resolveStableTheme({
   accent,
 }: ResolveStableThemeParams): AlouetteTheme {
   if (accent === "neutral") return mode;
-  const [, inheritedAccent] = currentTheme.split("_") as [
-    string,
-    Accent | undefined,
-  ];
-  const resolvedAccent = accent ?? inheritedAccent;
+  const resolvedAccent = accent ?? getThemeAccent(currentTheme);
   return resolvedAccent ? `${mode}_${resolvedAccent}` : mode;
 }
 

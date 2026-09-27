@@ -52,7 +52,8 @@ import { Badge } from "alouette";
 
 ### Accent
 
-`accent` defaults to `"brand"` and drives the whole badge — it wraps its content
+`accent` defaults to the inherited accent (`"brand"` outside an accent scope)
+and drives the whole badge — it wraps its content
 in `AccentScope`, so the background, border and text all resolve from the accent
 theme in the current light/dark mode. `"neutral"` is accepted: a grayscale badge
 under an accented ancestor.
@@ -111,7 +112,8 @@ with a wrapper — it takes no `className`.
 
 `Avatar` is the accent disc standing for a person or an account: up to two
 initials derived from `name`, or an `icon` in their place. `size` is
-`"sm" | "md" | "lg"` (28/32/40px), `accent` defaults to `"brand"`, and
+`"sm" | "md" | "lg"` (28/32/40px), `accent` defaults to the inherited accent (`"brand"` outside an accent
+scope), and
 `className` is for layout only. `variant` is `"solid"` (default, the accent's
 `emphasis` fill under `text-on-emphasis`) or `"enabled"` (the `enabled` fill
 under `text-on-accent`, as `Badge`'s `solid.enabled`). Display-only like

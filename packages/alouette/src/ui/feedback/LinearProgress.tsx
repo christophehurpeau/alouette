@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
 import { AccentScope } from "../containers/AccentScope";
 import { View } from "../primitives/View";
 import { useSimulatedProgress } from "./useSimulatedProgress";
@@ -36,9 +37,10 @@ export interface LinearProgressProps {
 export function LinearProgress({
   progress,
   hidden = false,
-  accent = "brand",
+  accent: accentProp,
   size = "md",
 }: LinearProgressProps): ReactNode {
+  const accent = useAccentOrInheritedOrBrand(accentProp);
   return (
     <AccentScope accent={accent}>
       <View pointerEvents="none" className={track({ size, hidden })}>

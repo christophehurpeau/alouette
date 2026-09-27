@@ -198,6 +198,12 @@ function MyComponent({ accent }: MyComponentProps) {
 
 Existing roots: `Button`, `Message`, `Box` (when `accent` prop is set), `GradientScrollView`.
 
+A component that must always render accented (`Button`, `Badge`, `Avatar`,
+`CircularProgress`, `LinearProgress`) never defaults `accent = "brand"` — that
+re-scopes to brand and overrides an ancestor's accent (a `Modal`'s footer
+buttons). It resolves the prop with `useAccentOrInheritedOrBrand(accent)`
+(`core/ThemeContext.ts`): the nearest scope's accent, brand only outside one.
+
 ## Native constraint: no CSS variable chains
 
 On native, NativeWind resolves CSS variables at render time from a lookup table — it cannot follow `var(--color-x)` references inside another variable's value. Sub-theme classes therefore use **hardcoded hex values** (not `var()` references). This is why sub-themes are `light_info`/`dark_info` (two separate entries per mode) rather than a single `accent-info` theme with `var()` indirections. `theme-generator/buildTheme.ts` enforces this — it resolves every token to a concrete color before emitting.

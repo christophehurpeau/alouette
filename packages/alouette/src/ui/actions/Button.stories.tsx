@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuotoneIcon";
 import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
 import type { ReactNode } from "react";
+import { AccentScope } from "../containers/AccentScope";
 import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
@@ -21,7 +22,7 @@ export default {
         component: `### Variants
 - \`variant\`: tonal | filled | outlined | soft
 - \`size\`: sm (38px) | md (44px)
-- \`accent\`: brand (default) | danger | info | success | warning | neutral
+- \`accent\`: brand | danger | info | success | warning | neutral — unset, the accent of the nearest accent scope, brand outside one
 
 \`tonal\` (default) is a ground lighter than the page, lifted by a shadow, whose ink carries the accent. \`filled\` is the accent's own flat fill under white ink, for the one action that must dominate.
 
@@ -107,6 +108,29 @@ function IconWeightRow({
   );
 }
 
+function InheritedAccentRow(): ReactNode {
+  return (
+    <StoryGrid.Row flexWrap>
+      <StoryGrid.Col title="No scope">
+        <Button text="Default" />
+      </StoryGrid.Col>
+      <StoryGrid.Col title="accent=danger">
+        <Button accent="danger" text="Explicit danger" />
+      </StoryGrid.Col>
+      <StoryGrid.Col title="AccentScope danger">
+        <AccentScope accent="danger">
+          <Button text="Inherited danger" />
+        </AccentScope>
+      </StoryGrid.Col>
+      <StoryGrid.Col title="AccentScope danger, accent=info">
+        <AccentScope accent="danger">
+          <Button accent="info" text="Overridden info" />
+        </AccentScope>
+      </StoryGrid.Col>
+    </StoryGrid.Row>
+  );
+}
+
 export const Variants: ThisStory = {
   render: () => (
     <Story>
@@ -159,6 +183,10 @@ export const Variants: ThisStory = {
             </StoryGrid.Row>
           </Story.SubSection>
         ))}
+      </Story.Section>
+
+      <Story.Section withSurface title="Inherited accent">
+        <InheritedAccentRow />
       </Story.Section>
 
       <Story.Section withSurface title="Icon weight">
@@ -252,6 +280,40 @@ export const Variants: ThisStory = {
       </Story.Section>
     </Story>
   ),
+};
+
+interface ButtonColors {
+  ground: string;
+  ink: string;
+}
+
+const buttonColorsOf = (button: HTMLElement, text: string): ButtonColors => ({
+  ground: getComputedStyle(button).backgroundColor,
+  ink: getComputedStyle(within(button).getByText(text)).color,
+});
+
+export const InheritedAccent: ThisStory = {
+  render: () => (
+    <Story noDarkMode>
+      <Story.Section withSurface title="Inherited accent">
+        <InheritedAccentRow />
+      </Story.Section>
+    </Story>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const colorsOf = (name: string): ButtonColors =>
+      buttonColorsOf(canvas.getByRole("button", { name }), name);
+
+    const brand = colorsOf("Default");
+    const danger = colorsOf("Explicit danger");
+    await expect(danger.ink).not.toBe(brand.ink);
+    await expect(colorsOf("Inherited danger")).toEqual(danger);
+
+    const overridden = colorsOf("Overridden info");
+    await expect(overridden.ink).not.toBe(danger.ink);
+    await expect(overridden.ink).not.toBe(brand.ink);
+  },
 };
 
 interface ConfirmationFooterProps {

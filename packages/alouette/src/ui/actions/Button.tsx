@@ -4,6 +4,7 @@ import { type ReactNode, type Ref, useEffect, useState } from "react";
 import type { View as RNView } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent, AccentOrNeutral } from "../../core/AlouetteConfig";
+import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
 import { ExternalLink } from "../../expo/ExternalLink";
 import {
   type ExternalOpenLinkBehavior,
@@ -133,8 +134,7 @@ export interface ButtonProps
   icon?: SVGIconElement;
   /** Replaces `icon` while the button is hovered, focused or pressed. */
   activeIcon?: SVGIconElement;
-  /** `"neutral"` is the neutral button: the same material on the grayscale
-   * palette, for the secondary action beside an accented one. */
+  /** Defaults to the inherited accent, or `brand` outside an accent scope. */
   accent?: AccentOrNeutral;
   text: ReactNode;
   state?: ButtonState;
@@ -163,13 +163,14 @@ export function Button({
   text,
   disabled,
   state,
-  accent = "brand",
+  accent: accentProp,
   variant,
   size = "md",
   className,
   forceStyle,
   ...pressableProps
 }: ButtonProps): ReactNode {
+  const accent = useAccentOrInheritedOrBrand(accentProp);
   const isLoading = state === "loading";
 
   // Keep the spinner (and the disabled look) mounted past `state` leaving

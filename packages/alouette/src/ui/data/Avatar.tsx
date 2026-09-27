@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
 import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
@@ -54,7 +55,8 @@ export interface AvatarProps extends AvatarVariantProps {
   /** Rendered as up to two initials, unless {@link icon} replaces them. */
   name?: string;
   icon?: SVGIconElement;
-  /** Accent of the disc. Defaults to `brand`. */
+  /** Accent of the disc. Defaults to the inherited accent, or `brand` outside
+   * an accent scope. */
   accent?: Accent;
   className?: string;
 }
@@ -66,11 +68,12 @@ export interface AvatarProps extends AvatarVariantProps {
 export function Avatar({
   name,
   icon,
-  accent = "brand",
+  accent: accentProp,
   size,
   variant,
   className,
 }: AvatarProps): ReactNode {
+  const accent = useAccentOrInheritedOrBrand(accentProp);
   const styles = avatarVariants({ size, variant });
 
   return (
