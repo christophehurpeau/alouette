@@ -116,7 +116,7 @@ export const ActionButtonVariantsStory: ThisStory = {
         />
         <ActionButton
           variant="soft"
-          text="Save"
+          text="Cancel"
           errorToMessage={(error) =>
             error instanceof Error ? error.message : "Unknown error"
           }
