@@ -129,5 +129,12 @@ export const TestsAvatarStory: ThisStory = {
     await expect(canvas.getByText("CH")).toBeTruthy();
     await expect(canvas.getByText("CA")).toBeTruthy();
     await expect(canvas.getByText("C")).toBeTruthy();
+
+    // Trimmed to the caps, the initials center on their ink rather than on
+    // ascender + descender. tailwind-merge reads `text-trim-cap` as a text
+    // color unless alouette's config registers it.
+    await expect(getComputedStyle(canvas.getByText("CH")).textBoxTrim).toBe(
+      "trim-both",
+    );
   },
 };
