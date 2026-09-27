@@ -70,10 +70,10 @@ neutral one included — `accent="neutral"` is the grayscale accent, whose fill 
 the sharp ink turned into a ground: near black in light mode, near white in dark.
 `text-on-accent` is white on every colored fill and on the neutral light one,
 and dark on the neutral dark one; `enabled` (Avatar `enabled`, Badge
-`solid.enabled`, the web Switch track) takes the same ground in the neutral
-theme. `emphasis` is the separate, lighter fill for an element sitting on a
-`lowered` track (a `SegmentedBar` chip) and for the default `Avatar`, `Badge`
-and `BrandLogo` discs, whose ink is `text-on-emphasis`.
+`solid.enabled`, `BrandLogo`, the web Switch track) takes the same ground in the
+neutral theme. `emphasis` is the separate, lighter fill for an element sitting
+on a `lowered` track (a `SegmentedBar` chip) and for the default `Avatar` and
+`Badge` discs, whose ink is `text-on-emphasis`.
 
 ## Spacing scale
 

@@ -67,7 +67,7 @@ function AccentColumn({ accent }: { accent: AccentOrNeutral }): ReactNode {
           <TintRow className="text-disabled-sharp" />
           <TintRow className="text-disabled-muted" />
         </View>
-        <View className="gap-xs rounded-sm bg-highlight-accent p-xs mt-xs">
+        <View className="gap-xs rounded-sm bg-interactive-filled-pressable p-xs mt-xs">
           <TintRow className="text-on-accent" />
           <TintRow className="text-on-accent-muted" />
         </View>

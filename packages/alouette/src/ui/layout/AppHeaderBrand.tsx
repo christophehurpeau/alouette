@@ -8,7 +8,7 @@ import { View } from "../primitives/View";
 const appHeaderBrandVariants = tv({
   slots: {
     // The header slot aligns the brand.
-    frame: "flex-row items-center gap-xs",
+    frame: "flex-row items-center gap-sm",
     title: "font-heading-bold text-xl",
     subtitle: "text-muted text-sm",
   },

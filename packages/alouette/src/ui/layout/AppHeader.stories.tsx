@@ -81,7 +81,7 @@ export default {
 - A signed-in session is one \`AppHeaderAccount\` — an avatar trigger opening a \`Menu\` — not a row of buttons: logging out is the rarest thing the bar offers and the only destructive one, so it belongs behind the avatar with a \`danger\` accent, and confirming it is the app's call (the tests story wires it to a \`QuestionAlertDialog\`)
 - A signed-out session is the mirror image: one action, so it stays in the bar as an \`AppHeaderSignIn\` — never an \`AppHeaderAccount\` named "Guest" wrapping a single "Log in" item, which puts a menu between the visitor and the only thing they came to press. It is a \`Button\` with the bar's sizing: pass it straight as \`actions\`, or beside a secondary neutral \`soft\` "Sign up" inside an \`AppHeaderActions\`. \`href\` is the in-app destination — a real \`<a>\` on web, ignored on native, where expo Router's \`<Link asChild>\` supplies the \`onPress\` (a destination outside the app on native takes an \`ExternalLinkButton\` in the slot instead)
 - A light/dark switch belongs in the actions slot as a \`ColorModePicker\` — a pill of icon-only chips reading as one control, rather than two loose \`IconButton\`s. \`variant="system-lock"\` is the two-chip one used here: the chip the OS currently supplies keeps its sun or moon and adds the system badge, and pressing it toggles the lock. The app owns the preference — it applies it with \`useResolvedColorMode\` + \`ScopedTheme\` and persists it
-- \`variant="bar"\` (default) is the application bar: its own background plus \`shadow-bar\`, a downward-only shadow cast on the page below. \`variant="transparent"\` is a header integrated into the page it heads (a landing hero) — a brand and the way in, no navigation: the destinations are behind the sign-in, not on the hero
+- \`variant="bar"\` (default) is the application bar: its own background plus \`shadow-bar\`, a downward-only shadow cast on the page below. \`variant="transparent"\` is a header integrated into the page it heads (a landing hero) — a brand and the way in, no navigation: the destinations are behind the sign-in, not on the hero. Over a hero of the brand accent, give its \`BrandLogo\` \`accent="neutral"\`: the brand disc is two steps off the hero's ground in dark mode, while the neutral one is black in light mode and white in dark
 - The frame takes the device's top inset unless an ancestor \`SafeAreaScope\` consumed it; wrap the screen below in \`<SafeAreaScope consumedEdges={["top"]}>\``,
       },
     },
@@ -150,6 +150,16 @@ function DemoBrand(): ReactNode {
     <AppHeaderBrand
       href="/"
       brandLogo={<BrandLogo icon={<BirdRegularIcon />} />}
+      title="Alouette"
+    />
+  );
+}
+
+function HeroBrand(): ReactNode {
+  return (
+    <AppHeaderBrand
+      href="/"
+      brandLogo={<BrandLogo accent="neutral" icon={<BirdRegularIcon />} />}
       title="Alouette"
     />
   );
@@ -290,7 +300,7 @@ function LandingHero(): ReactNode {
   return (
     <Box accent="brand" className="bg-highlight-accent">
       <AppHeader
-        brand={<DemoBrand />}
+        brand={<HeroBrand />}
         actions={<LoggedOutActions />}
         contentWidth="full"
         variant="transparent"
@@ -484,6 +494,16 @@ export const VariantsAppHeaderStory: ThisStory = {
           }
           contentWidth="full"
         />
+        <Text className="text-sm text-muted">
+          Neutral logo — on a ground of the brand accent
+        </Text>
+        <Box accent="brand" className="bg-highlight-accent">
+          <AppHeader
+            brand={<HeroBrand />}
+            contentWidth="full"
+            variant="transparent"
+          />
+        </Box>
       </Story.Section>
 
       <Story.Section title="Safe area">

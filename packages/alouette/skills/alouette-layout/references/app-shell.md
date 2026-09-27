@@ -103,7 +103,9 @@ affordance.
 
 The slot components: `AppHeaderBrand` (`title`, optional `subtitle` and
 `brandLogo`; given `href` or `onPress` it becomes a real pressable instead of a
-row wrapped in a link), `BrandLogo` (an icon on an accent disc),
+row wrapped in a link), `BrandLogo` (an icon on an accent disc;
+`accent="neutral"` over a ground of its own accent, such as a `transparent`
+header's hero, where the accented disc fades in dark mode),
 `AppHeaderActions` (spaces the end-slot controls) and `AppHeaderAccount` — the
 signed-in account as one `Avatar` trigger opening a `Menu` of `MenuItem`s, which
 is where session actions belong rather than in the bar itself.

@@ -100,9 +100,8 @@ mode) move by one or two steps.
 
 No code change is needed. Review these screens:
 
-- `Avatar` and `BrandLogo` are `bg-emphasis` + `text-on-emphasis` instead of
-  `bg-enabled` + `text-on-accent`. `<Avatar variant="enabled">` restores the old
-  fill; `BrandLogo` has no option.
+- `Avatar` is `bg-emphasis` + `text-on-emphasis` instead of `bg-enabled` +
+  `text-on-accent`. `<Avatar variant="enabled">` restores the old fill.
 - `Badge` `solid` is `bg-emphasis` + `text-on-emphasis` instead of
   `bg-highlight-accent` + `text-sharp`. `outlined` gains a `bg-highlight-accent`
   ground. `solid` and `solid.enabled` gain a 1px border in their fill color, so
