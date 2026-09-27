@@ -227,14 +227,14 @@ export const PreviewAlertDialogStory: ThisStory = {
     chromatic: { disableSnapshot: true },
   },
   args: {
-    title: "Delete project",
+    title: "Start project",
     variant: "confirm",
-    confirmText: "Delete",
+    confirmText: "Start",
   },
   render: (args) => (
     <AlertDialogDemo
       {...args}
-      triggerLabel="Delete project"
+      triggerLabel="Start project"
       onConfirm={fn()}
       onCancel={fn()}
     >
