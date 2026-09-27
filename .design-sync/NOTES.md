@@ -90,7 +90,7 @@ Tests`) all carry a `play:` interaction function (opens a dialog, types
 - `[GENERAL]` **Chromium needs the sandbox off.** Claude Code's macOS sandbox
   denies `~/Library/Caches/ms-playwright`, so `resync.mjs` validate fails
   `[RENDER_SKIPPED] browserType.launch: Target page, context or browser has been
-  closed`. Installing a second copy into `.ds-sync/` does not work either (the
+closed`. Installing a second copy into `.ds-sync/` does not work either (the
   proxy cuts the 93 MB download). Run the driver, `compare.mjs` and any
   playwright probe outside the sandbox; builds and greps stay sandboxed.
 - `pnpm --filter alouette build` (`clean:build` then `tsc -p tsconfig.json`)
@@ -164,10 +164,10 @@ Tests`) all carry a `play:` interaction function (opens a dialog, types
   context identity).
 - `cfg.provider` = `SafeAreaProvider > AlouetteProvider > ScopedTheme(theme=light)
   > View`, the same chain as `.storybook`'s `AlouetteDecorator` plus a layout
-  root. Set explicitly (not via the bundled decorator) so the providers come from
-  the SAME global bundle as the components — the bundled decorator's NativeWind
-  variable context is a different instance and its theme vars never reach the
-  global components.
+  > root. Set explicitly (not via the bundled decorator) so the providers come from
+  > the SAME global bundle as the components — the bundled decorator's NativeWind
+  > variable context is a different instance and its theme vars never reach the
+  > global components.
 - `[GENERAL]` **The innermost `View` recreates the React Native root.** The
   preview mount (`#r0`) is `display:block`, while Storybook's root is a flex
   column. Without the `View`, layout diverged both ways: a `Button` (a `<button>`

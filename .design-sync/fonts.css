@@ -2,9 +2,45 @@
    registrations of storybook-native-app/src/App.tsx). Google Fonts, which the
    bundle @imports from preview-head.html, only serves "Sora"/"Chivo Mono", so
    these ship as files via cfg.extraFonts. */
-@font-face { font-family: "SoraRegular"; font-weight: 400; font-display: swap; src: url("../node_modules/@expo-google-fonts/sora/400Regular/Sora_400Regular.ttf") format("truetype"); }
-@font-face { font-family: "SoraBold"; font-weight: 700; font-display: swap; src: url("../node_modules/@expo-google-fonts/sora/700Bold/Sora_700Bold.ttf") format("truetype"); }
-@font-face { font-family: "SoraExtraBold"; font-weight: 800; font-display: swap; src: url("../node_modules/@expo-google-fonts/sora/800ExtraBold/Sora_800ExtraBold.ttf") format("truetype"); }
-@font-face { font-family: "ChivoMonoRegular"; font-weight: 400; font-display: swap; src: url("../node_modules/@expo-google-fonts/chivo-mono/400Regular/ChivoMono_400Regular.ttf") format("truetype"); }
-@font-face { font-family: "ChivoMonoBold"; font-weight: 700; font-display: swap; src: url("../node_modules/@expo-google-fonts/chivo-mono/700Bold/ChivoMono_700Bold.ttf") format("truetype"); }
-@font-face { font-family: "ChivoMonoExtraBold"; font-weight: 800; font-display: swap; src: url("../node_modules/@expo-google-fonts/chivo-mono/800ExtraBold/ChivoMono_800ExtraBold.ttf") format("truetype"); }
+@font-face {
+  font-family: "SoraRegular";
+  font-weight: 400;
+  font-display: swap;
+  src: url("../node_modules/@expo-google-fonts/sora/400Regular/Sora_400Regular.ttf")
+    format("truetype");
+}
+@font-face {
+  font-family: "SoraBold";
+  font-weight: 700;
+  font-display: swap;
+  src: url("../node_modules/@expo-google-fonts/sora/700Bold/Sora_700Bold.ttf")
+    format("truetype");
+}
+@font-face {
+  font-family: "SoraExtraBold";
+  font-weight: 800;
+  font-display: swap;
+  src: url("../node_modules/@expo-google-fonts/sora/800ExtraBold/Sora_800ExtraBold.ttf")
+    format("truetype");
+}
+@font-face {
+  font-family: "ChivoMonoRegular";
+  font-weight: 400;
+  font-display: swap;
+  src: url("../node_modules/@expo-google-fonts/chivo-mono/400Regular/ChivoMono_400Regular.ttf")
+    format("truetype");
+}
+@font-face {
+  font-family: "ChivoMonoBold";
+  font-weight: 700;
+  font-display: swap;
+  src: url("../node_modules/@expo-google-fonts/chivo-mono/700Bold/ChivoMono_700Bold.ttf")
+    format("truetype");
+}
+@font-face {
+  font-family: "ChivoMonoExtraBold";
+  font-weight: 800;
+  font-display: swap;
+  src: url("../node_modules/@expo-google-fonts/chivo-mono/800ExtraBold/ChivoMono_800ExtraBold.ttf")
+    format("truetype");
+}

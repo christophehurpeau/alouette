@@ -13,7 +13,12 @@ nothing and components render unstyled. Wrap the tree once, with a `View` as the
 layout root:
 
 ```tsx
-import { SafeAreaProvider, AlouetteProvider, ScopedTheme, View } from "alouette";
+import {
+  SafeAreaProvider,
+  AlouetteProvider,
+  ScopedTheme,
+  View,
+} from "alouette";
 
 <SafeAreaProvider>
   <AlouetteProvider>
