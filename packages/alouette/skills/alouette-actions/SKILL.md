@@ -38,10 +38,11 @@ is `"brand" | "danger" | "info" | "success" | "warning" | "neutral"`. Unset,
 a `Button` takes the accent of the nearest accent scope (a `Modal`, `Message`,
 `Box` or `AccentScope` with an `accent`), and `"brand"` outside one.
 
-**Differentiate buttons by `accent`, not by `variant`.** `tonal` (the
-default) is the material an action button is made of; the accent says how loud
-it is. The secondary action beside a call to action is `accent="neutral"` — the
-same raised ground and shadow on the neutral tokens — never a lighter `variant`.
+**The secondary action is neutral `soft`.** `tonal` (the default) is the
+material an action button is made of; the accent says how loud it is. The
+secondary action beside a call to action is `accent="neutral" variant="soft"` —
+a neutral text button that gives way to the primary — never a neutral `tonal`
+twin of it, and never `outlined`.
 
 ## Setup
 
@@ -58,7 +59,8 @@ import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon
 
 ```tsx
 <Button text="Save" />                                 {/* tonal, brand */}
-<Button accent="neutral" text="Cancel" />                 {/* tonal, neutral */}
+<Button accent="neutral" text="Menu" />                   {/* tonal, neutral */}
+<Button accent="neutral" variant="soft" text="Cancel" />  {/* the secondary action */}
 <Button accent="danger" text="Delete" />
 <Button variant="filled" text="Publish" />              {/* the accent's fill */}
 <Button size="sm" text="Small" />
@@ -73,23 +75,23 @@ carry it (a pale red reads as pink).
 
 `accent="neutral"` resolves to the plain mode theme (alouette-theming/SKILL.md), so
 the button keeps the tonal material — ground, shadow, hover/focus/press
-states — on the grayscale palette: a white card with sharp ink. That is the
-Cancel of a form on the page, the Add of a field array: a real button that does
-not compete with the accented one. On a white `bg-highlight` ground — a `Modal`
-or `AlertDialog` panel, the `AppHeader` bar — that neutral tonal ground is the
-ground itself and dissolves, so the secondary action there is a neutral `soft`
-button: the form editor modals' Cancel, the header's "Sign up" beside
-"Log in".
+states — on the grayscale palette: a white card with sharp ink. That is a lone
+action that must not carry the accent: a `Menu` trigger, the Add of a field
+array, a `Modal` footer's single "Close". Beside a primary action it becomes
+`variant="soft"`: a neutral `tonal` twin reads as a second equal choice, and on
+a white `bg-highlight` ground — a `Modal` or `AlertDialog` panel, the `AppHeader`
+bar — its ground is the ground itself and dissolves. The form editor modals'
+Cancel and the header's "Sign up" beside "Log in" are neutral `soft`.
 
 `filled` is the accent's own fill, flat, under the `text-on-accent` label —
 for the one action that must dominate its neighbours. The neutral theme is an
 accent, not the absence of one: its fill is the sharp ink turned into a ground,
 so a neutral `filled` button is black with a white label in light mode and
 white with a dark label in dark mode. Beside a `filled` call to action, the
-other action stays `tonal` and neutral.
+other action is neutral `soft`.
 
 **On an accented surface** (`<Box accent className="surface">`, a
-`GradientBackground`), a `tonal` button is always `accent="neutral"`: in light
+`GradientBackground`), a lone `tonal` button is always `accent="neutral"`: in light
 mode an accented `tonal` ground is the accented surface's own step, so it
 dissolves into it. The accented action there is `filled`, or `soft` for chrome.
 What counts is the ground, not the theme: a `bg-highlight` panel stays neutral
@@ -100,12 +102,12 @@ surface behind it.
 
 ```tsx
 <Box accent="danger" className="surface">
-  <Button accent="neutral" text="Keep" onPress={keep} />
+  <Button accent="neutral" variant="soft" text="Keep" onPress={keep} />
   <Button variant="filled" accent="danger" text="Delete" onPress={remove} />
 </Box>
 ```
 
-### The other variants are chrome, not secondary buttons
+### `soft` beyond the secondary action, and `outlined`
 
 ```tsx
 <Button variant="soft" text="Docs" />
@@ -126,8 +128,8 @@ hover/focus/press.
 
 `outlined` has no default use. Reach for it only for a pressable that must not
 carry a ground and is not chrome — a row of equal-weight actions in a dense
-toolbar. A secondary or destructive-but-secondary action is `accent="neutral"` (or
-`accent="danger"`), not `outlined`.
+toolbar. A secondary action is `accent="neutral" variant="soft"`, not
+`outlined`.
 
 ### Async action — prefer ActionButton
 
@@ -367,11 +369,14 @@ prop); children are ignored, so `<Button>Save</Button>` shows no label.
 
 Source: packages/alouette/src/ui/actions/Button.tsx
 
-### HIGH `outlined` / `soft` as the secondary button
+### HIGH A tonal or `outlined` secondary button
 
 Wrong:
 
 ```tsx
+<Button accent="neutral" text="Cancel" onPress={close} />
+<Button text="Save" onPress={save} />
+
 <Button variant="outlined" text="Cancel" onPress={close} />
 <Button text="Save" onPress={save} />
 ```
@@ -379,15 +384,16 @@ Wrong:
 Correct:
 
 ```tsx
-<Button accent="neutral" text="Cancel" onPress={close} />
+<Button accent="neutral" variant="soft" text="Cancel" onPress={close} />
 <Button text="Save" onPress={save} />
 ```
 
-Both actions are buttons and must be made of the same material; what separates
-them is the accent, not the amount of button they get. `outlined` and `soft`
-trade the ground and the shadow away, so the pair reads as one button and one
-half-drawn thing — and on a `surface` card an outlined button's `bg-highlight` fights
-the card it sits on. `accent="neutral"` keeps the material and drops only the color.
+The secondary action gives way to the primary one. A neutral `tonal` Cancel keeps
+the ground and the shadow, so the pair reads as two equal choices — and on a
+white `bg-highlight` panel (a `Modal` footer) its ground is the panel's white and
+dissolves. An `outlined` one draws a frame that competes, and on a `surface`
+card its `bg-highlight` fights the card it sits on. Neutral `soft` is a text
+button in the ambient ink: present, and plainly second.
 
 Source: packages/alouette/src/ui/containers/AlertDialog.tsx, ui/actions/Button.tsx
 
@@ -403,7 +409,7 @@ Wrong:
 Correct:
 
 ```tsx
-<Button accent="neutral" text="Cancel" />
+<Button accent="neutral" variant="soft" text="Cancel" />
 <Button accent="brand" text="Save" />
 ```
 

@@ -9,8 +9,8 @@ description: >
   runtime without remounting, use StableAccentScope; inside a portal (a modal or
   any other overlay), where the scope escapes the themed subtree, use
   PortalAccentScope. All three, and the pressables, take accent="neutral": the plain
-  mode theme, which drops an inherited accent and makes a Button the neutral
-  secondary beside an accented one. A stored light/dark choice is a
+  mode theme, which drops an inherited accent; with variant="soft" it makes a
+  Button the secondary beside an accented one. A stored light/dark choice is a
   ColorModePreference ("light" | "dark" | "system") resolved by
   useResolvedColorMode and applied by the app through ScopedTheme. Load when
   applying colors, accents or dark mode, or when shipping a custom palette.
@@ -130,11 +130,11 @@ the grayscale palette — an accent like any other: a white card with sharp ink
 for the default `tonal` variant, and for `filled` the sharp ink turned into a
 ground (black under a white label in light mode, white under a dark label in
 dark).
-It is how a secondary action is written beside an accented one, instead of
-dropping it to `variant="outlined"` (alouette-actions/SKILL.md).
+Beside an accented action, the secondary one is neutral **and** `soft` — a
+neutral text button — never `variant="outlined"` (alouette-actions/SKILL.md).
 
 ```tsx
-<Button accent="neutral" text="Cancel" onPress={close} />
+<Button accent="neutral" variant="soft" text="Cancel" onPress={close} />
 <Button text="Save" onPress={save} />
 ```
 

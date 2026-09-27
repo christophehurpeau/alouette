@@ -26,14 +26,14 @@ export default {
 
 \`tonal\` (default) is a ground lighter than the page, lifted by a shadow, whose ink carries the accent. \`filled\` is the accent's own flat fill under white ink, for the one action that must dominate.
 
-Differentiate a button by its \`accent\`, not by dropping to a lighter \`variant\`: \`accent="neutral"\` is the secondary action beside an accented one — the same material, on the neutral tokens.
+The secondary action beside a primary one is \`accent="neutral" variant="soft"\`: a neutral text button, with no ground to compete with the primary. \`accent="neutral"\` alone is the neutral tonal button — the same material on the neutral tokens — for a lone action that must not carry the accent.
 
 ### Usage
 ~~~tsx
 <Button text="Save" icon={<CheckIcon />} />
 
 {/* the secondary action of a confirmation */}
-<Button accent="neutral" text="Cancel" />
+<Button accent="neutral" variant="soft" text="Cancel" />
 ~~~
 
 ### Active icon
@@ -316,25 +316,30 @@ export const InheritedAccent: ThisStory = {
   },
 };
 
-interface ConfirmationFooterProps {
+function ConfirmationFooter(): ReactNode {
+  return (
+    <StoryGrid.Row flexWrap>
+      <Button accent="neutral" variant="soft" text="Cancel" />
+      <Button text="Save" />
+    </StoryGrid.Row>
+  );
+}
+
+interface TonalPairProps {
   forceStyle?: ButtonProps["forceStyle"];
   disabled?: boolean;
 }
 
-function ConfirmationFooter({
-  forceStyle,
-  disabled,
-}: ConfirmationFooterProps): ReactNode {
+function TonalPair({ forceStyle, disabled }: TonalPairProps): ReactNode {
   return (
     <StoryGrid.Row flexWrap>
       <Button
         accent="neutral"
-        variant="soft"
         disabled={disabled}
         forceStyle={forceStyle}
-        text="Cancel"
+        text="Neutral"
       />
-      <Button disabled={disabled} forceStyle={forceStyle} text="Save" />
+      <Button disabled={disabled} forceStyle={forceStyle} text="Accented" />
     </StoryGrid.Row>
   );
 }
@@ -365,8 +370,8 @@ const tonalGroundsOf = (element: HTMLElement): TonalGrounds => {
 /**
  * `accent="neutral"` renders the tonal material on the grayscale palette:
  * the same ground, shadow and states a colored accent gets, with the sharp ink
- * where an accented button carries its hue. It is never an `outlined` button,
- * which trades the material away.
+ * where an accented button carries its hue. Beside a primary action, the
+ * secondary one adds `variant="soft"`: a neutral text button.
  */
 export const NeutralAccent: ThisStory = {
   render: () => (
@@ -375,38 +380,50 @@ export const NeutralAccent: ThisStory = {
         <ConfirmationFooter />
       </Story.Section>
 
-      <Story.Section withSurface title="States">
+      <Story.Section withSurface title="Tonal states">
         <StoryGrid.Row flexWrap>
           <StoryGrid.Col title="Default">
-            <ConfirmationFooter />
+            <TonalPair />
           </StoryGrid.Col>
           <StoryGrid.Col title="hover">
-            <ConfirmationFooter forceStyle="hover" />
+            <TonalPair forceStyle="hover" />
           </StoryGrid.Col>
           <StoryGrid.Col title="focus">
-            <ConfirmationFooter forceStyle="focus" />
+            <TonalPair forceStyle="focus" />
           </StoryGrid.Col>
           <StoryGrid.Col title="press">
-            <ConfirmationFooter forceStyle="press" />
+            <TonalPair forceStyle="press" />
           </StoryGrid.Col>
           <StoryGrid.Col title="disabled">
-            <ConfirmationFooter disabled />
+            <TonalPair disabled />
           </StoryGrid.Col>
         </StoryGrid.Row>
       </Story.Section>
 
       <Story.Section withSurface modeTheme="dark" title="Dark mode">
-        <ConfirmationFooter />
+        <TonalPair />
       </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    // The story repeats the footer: first in light mode, last in dark mode.
-    const neutrals = canvas.getAllByRole("button", { name: "Cancel" });
+
+    // The secondary action of the pair is a text button: no ground, no shadow,
+    // and achromatic ink.
+    const cancel = canvas.getByRole("button", { name: "Cancel" });
+    await expect(getComputedStyle(cancel).backgroundColor).toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+    await expect(getComputedStyle(cancel).boxShadow).toBe("none");
+    await expect(
+      isAchromatic(getComputedStyle(within(cancel).getByText("Cancel")).color),
+    ).toBe(true);
+
+    // The tonal pair repeats: first in light mode, last in dark mode.
+    const neutrals = canvas.getAllByRole("button", { name: "Neutral" });
     const neutral = neutrals[0]!;
     const darkNeutral = neutrals.at(-1)!;
-    const accented = canvas.getAllByRole("button", { name: "Save" })[0]!;
+    const accented = canvas.getAllByRole("button", { name: "Accented" })[0]!;
     const neutralStyle = getComputedStyle(neutral);
     const accentedStyle = getComputedStyle(accented);
 
@@ -421,10 +438,14 @@ export const NeutralAccent: ThisStory = {
     await expect(isAchromatic(neutralStyle.backgroundColor)).toBe(true);
     await expect(isAchromatic(accentedStyle.backgroundColor)).toBe(false);
     await expect(
-      isAchromatic(getComputedStyle(within(neutral).getByText("Cancel")).color),
+      isAchromatic(
+        getComputedStyle(within(neutral).getByText("Neutral")).color,
+      ),
     ).toBe(true);
     await expect(
-      isAchromatic(getComputedStyle(within(accented).getByText("Save")).color),
+      isAchromatic(
+        getComputedStyle(within(accented).getByText("Accented")).color,
+      ),
     ).toBe(false);
 
     // The ground a neutral button rests on must differ from the two surfaces

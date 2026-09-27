@@ -246,14 +246,21 @@ The neutral `interactive-{hover,active,pressable,muted}` tokens are **foreground
 Never make a display-only component interactive by wrapping it: see
 "Interactivity is a component, never a wrapper" in the `alouette-styling` skill.
 
-## Differentiate buttons by `accent`, not by `variant`
+## The secondary action is neutral `soft`
 
-Two buttons side by side differ by **accent**, and both stay `tonal`. The
-variant is the material — dropping the secondary action to `outlined` trades
-away its ground and its shadow, so it reads as chrome rather than
-as the other half of a pair. `accent="neutral"` is the neutral tonal button:
-the same material on the grayscale palette, which is what a confirmation footer,
-a form's Cancel, or a second header action wants.
+Beside a primary action, the secondary one (Cancel, Dismiss, Discard) is
+**`accent="neutral" variant="soft"`**: a neutral text button, with no ground and
+no shadow to compete with the primary. `accent="neutral"` alone is not enough —
+a neutral `tonal` button keeps its ground and shadow, so the pair reads as two
+equal choices, and on a white `bg-highlight` ground (the `Modal`/`AlertDialog`
+panel, the `AppHeader` bar) that ground is the same white and dissolves. Never
+`outlined` either: it draws a frame that competes with the primary.
+`AlertDialog`, `useFormEditorModal` and the header "Sign up" all follow this.
+
+`accent="neutral"` on its own is the neutral tonal button — the same material
+as an accented one, on the grayscale palette — for a lone action that must not
+carry the accent: a `Menu` trigger, a `Modal` footer's single "Close", a button
+on an accented surface.
 
 `tonal` works because the button is **lighter than the page it sits on**: its
 ground is a **tone** of the theme rather than the accent's fill — the card steps
@@ -269,8 +276,8 @@ there would be a tint of the color under it (~4:1). `muted` is too dim for eithe
 ground, so secondary `text-muted` copy on it belongs on a neutral one only.
 
 `filled` is the accent's own fill, flat, under the `text-on-accent` label —
-for the one action that must dominate; the other action beside it stays
-`tonal` and neutral. The neutral theme is **an accent, not the absence of
+for the one action that must dominate; the other action beside it is
+neutral `soft`. The neutral theme is **an accent, not the absence of
 one**, and its fill is the sharp ink turned into a ground: `#262626` in light
 mode (11 → 10 → 9) and `#F2F2F2` in dark (10 → 11 → 9), so a neutral `filled`
 button is black with a white label in light mode and white with a dark label in
@@ -280,10 +287,10 @@ fills keep white ink), and the neutral `enabled` ground (`Avatar`, `Badge`
 The pale neutral ground is `tonal`'s — do not reinvent it on the filled tokens.
 
 ```tsx
-<Button accent="neutral" text="Cancel" onPress={close} />
+<Button accent="neutral" variant="soft" text="Cancel" onPress={close} />
 <Button text="Save" onPress={save} />
 
-<Button accent="neutral" text="Dismiss" onPress={close} />
+<Button accent="neutral" variant="soft" text="Dismiss" onPress={close} />
 <Button variant="filled" text="Save and close" onPress={saveAndClose} />
 ```
 
@@ -312,11 +319,10 @@ asserts it fires on an accented surface and not on a neutral pressable or a
 resolves to the plain mode theme, so it also drops an accent inherited from an
 ancestor.
 
-The remaining variants have narrow roles, and none of them is "the secondary
-button": `soft` is for rows and bars that must not carry a border (`AppHeader`
-pressables, `MenuItem`) and for an icon-only control inside a component's own
-frame (`Modal`'s close, `Message`'s dismiss, `FormFieldArray`'s remove);
-`outlined` has no default use —
+Besides the neutral secondary action, `soft` is for rows and bars that must not
+carry a border (`AppHeader` pressables, `MenuItem`) and for an icon-only control
+inside a component's own frame (`Modal`'s close, `Message`'s dismiss,
+`FormFieldArray`'s remove); `outlined` has no default use —
 reach for it only when a design explicitly calls for an outline.
 
 ## `activeIcon`: the glyph may change weight on interaction

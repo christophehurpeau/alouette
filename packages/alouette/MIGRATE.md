@@ -3,8 +3,8 @@
 The button material is reworked. The default is now `tonal`: a ground lighter
 than the page, a pale tone of the accent in light mode, with the accent carried
 by the label's ink (`text-on-tonal`). The old accent-filled `contained` button
-becomes `filled`, and is flat (no shadow). Two buttons side by side differ by
-`accent`, not by `variant`: the secondary one is `accent="neutral"`.
+becomes `filled`, and is flat (no shadow). The secondary action beside a
+primary one is `accent="neutral" variant="soft"`: a neutral text button.
 
 ## Custom palette: regenerate it
 
@@ -36,30 +36,32 @@ no ground for any button. Apps on alouette's default palette have nothing to do.
 `Button` is now a text button: its label is `text-accent` and underlined.
 
 Do not map every `contained` to `filled`. `filled` is for the one action that
-must dominate; everything else takes the `tonal` default:
+must dominate; everything else takes the `tonal` default. The secondary action
+of a pair (Cancel, Dismiss, Discard) is `accent="neutral" variant="soft"`, not
+`accent="neutral"` alone: a neutral `tonal` button keeps its ground and shadow,
+so the pair reads as two equal choices, and on a white `bg-highlight` ground (a
+`Modal` footer, the `AppHeader` bar) that ground is the same white and
+dissolves.
 
 ```tsx
-// A pair: both on the default, told apart by accent
-<Button accent="neutral" text="Cancel" onPress={close} />
+// A pair: the primary on the default, the secondary neutral and soft
+<Button accent="neutral" variant="soft" text="Cancel" onPress={close} />
 <Button text="Save" onPress={save} />
 
-// The one action that must dominate: filled; the other stays tonal and neutral
-<Button accent="neutral" text="Dismiss" onPress={close} />
+// The one action that must dominate: filled; the other stays neutral and soft
+<Button accent="neutral" variant="soft" text="Dismiss" onPress={close} />
 <Button variant="filled" text="Save and close" onPress={saveAndClose} />
 ```
 
-Two cases need a change:
+alouette's own footers (`AlertDialog`, `useFormEditorModal`) and the header
+"Sign up" now do this.
 
-- **An accented surface** (`<Box accent="…" className="surface">`, a
-  `GradientBackground`): an accented `tonal` ground is the surface's own color
-  in light mode and dissolves. Make the buttons there `accent="neutral"`, or
-  `variant="filled"` / `variant="soft"` for the accented action. On web, outside
-  production, `PressableBox` logs `[Alouette] A tonal pressable rests on its own
-ground` when this happens.
-- **A white `bg-highlight` ground** (a `Modal` footer, the `AppHeader` bar): a
-  neutral `tonal` ground is the same white. A neutral secondary action there is
-  `variant="soft"`; alouette's own footers (`AlertDialog`, `useFormEditorModal`)
-  and the header "Sign up" now do this.
+**An accented surface** (`<Box accent="…" className="surface">`, a
+`GradientBackground`) needs a change too: an accented `tonal` ground is the
+surface's own color in light mode and dissolves. Make a lone button there
+`accent="neutral"`, and the accented action `variant="filled"` or
+`variant="soft"`. On web, outside production, `PressableBox` logs
+`[Alouette] A tonal pressable rests on its own ground` when this happens.
 
 ## Removed and renamed components
 
