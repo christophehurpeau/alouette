@@ -78,7 +78,7 @@ export const ActionButtonVariantsStory: ThisStory = {
 
       <Story.Section title="Rejects">
         <ActionButton
-          text="Delete"
+          text="Save"
           errorToMessage={(error) =>
             error instanceof Error ? error.message : "Unknown error"
           }
@@ -126,7 +126,7 @@ export const ActionButtonVariantsStory: ThisStory = {
 
       <Story.Section withSurface title="Flat error message inside a surface">
         <ActionButton
-          text="Delete"
+          text="Save"
           errorMessageVariant="flat"
           errorToMessage={(error) =>
             error instanceof Error ? error.message : "Unknown error"
