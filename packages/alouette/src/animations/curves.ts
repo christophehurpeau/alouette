@@ -1,6 +1,5 @@
-// Replaces the Tamagui named-animation registry. Four named curves used by
-// alouette's interactive primitives. Web reads these via Tailwind's duration-*
-// utilities; native reads them via useTransition.
+// Native only, through useTransition: web animates with Tailwind's transition
+// utilities instead.
 export const TRANSITION_DURATION = {
   fast: 150,
   formElement: 200,

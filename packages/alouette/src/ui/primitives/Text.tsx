@@ -35,8 +35,8 @@ export type ParagraphProps = TextProps;
  * may want to select and copy.
  *
  * Its children are inline only — `Text`, `Code`, `ExternalLinkText`. A `<p>`
- * takes no block content, so nesting another `Paragraph`, a `View` or a
- * `Surface` inside one is invalid DOM on web.
+ * takes no block content, so nesting another `Paragraph` or a `View` inside
+ * one is invalid DOM on web.
  */
 export const Paragraph = forwardRef<RNText, ParagraphProps>(
   ({ className, ...props }, ref) => {

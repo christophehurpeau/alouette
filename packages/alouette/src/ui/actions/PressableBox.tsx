@@ -206,7 +206,10 @@ export interface PressableBoxProps
   withFocusVisibleOutline?: boolean;
 }
 
-// TODO what is the diff between <Box interactive> and PressableBox ?
+/**
+ * `InteractiveBox` with a material: the `variant`'s `interactive-*` states, an
+ * accent scope, and a `link` role when it has an `href`.
+ */
 export const PressableBox = forwardRef<RNView, PressableBoxProps>(
   (
     {

@@ -6,7 +6,7 @@ import type { AlouetteTheme } from "./core/AlouetteConfig";
 /**
  * Resolved CSS-variable maps for every theme in sRGB hex, shared with
  * default-palette.css. Feeds `ScopedTheme` (NativeWind's
- * `VariableContextProvider`) and `useThemeToken` on every platform but web.
+ * `VariableContextProvider`) on every platform but web.
  */
 export const themeVariables: Record<
   AlouetteTheme,

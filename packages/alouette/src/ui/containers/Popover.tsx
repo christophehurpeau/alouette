@@ -95,7 +95,7 @@ function PopoverOverlay({
 
 /**
  * Renders `children` above everything, outside the clipping of any
- * `overflow-hidden` ancestor (`Surface` is one by design). Web portals into
+ * `overflow-hidden` ancestor (`surface` is one by design). Web portals into
  * `document.body` and anchors to `anchorRef`; native uses a transparent `Modal`.
  */
 export function Popover({

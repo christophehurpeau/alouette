@@ -51,7 +51,7 @@ interface MessageBaseProps {
   size?: MessageSize;
   /**
    * "surface" (default) is a raised banner. Use "flat" only when the message
-   * already sits inside a raised surface (a Modal footer, a Surface card).
+   * already sits inside a raised surface (a Modal footer, a `surface` card).
    */
   variant?: MessageVariant;
   icon: SVGIconElement;

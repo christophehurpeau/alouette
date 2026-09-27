@@ -3,9 +3,7 @@
 // per mode and accent. Shared by `buildTheme.ts` (emits the CSS variables /
 // themeVariables) and the repo-root `scripts/generate-palette.ts` contrast
 // audit (resolves the steps a token pair actually uses), so the two can never
-// drift. A token resolves to a `{ source, step }` (which palette + which scale
-// step for this mode), a `{ literal }` (a fixed value), or `null` when the
-// token is not emitted for the given accent.
+// drift. A token resolves to `null` when it is not emitted for the given accent.
 
 import type { AccentName } from "./paletteSpecs.ts";
 
@@ -54,7 +52,6 @@ const self = (dark: ScaleNum, light: ScaleNum = dark, alpha?: string) =>
   step("self", dark, light, alpha);
 const gray = (dark: ScaleNum, light: ScaleNum = dark) =>
   step("grayscale", dark, light);
-// Branches on both grayscale/colored and dark/light mode.
 const selfAdaptive =
   (
     grayscaleDark: ScaleNum,
@@ -77,7 +74,6 @@ const grayscaleOnly =
   (ctx) =>
     ctx.isGrayscale ? resolver(ctx) : null;
 
-// A fixed value per mode, emitted only in the grayscale theme.
 const perMode = (values: Record<Mode, string>): TokenResolver =>
   grayscaleOnly(({ mode }) => ({ literal: values[mode] }));
 

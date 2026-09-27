@@ -15,9 +15,9 @@ const TRAVEL_X = TRACK_WIDTH - THUMB_SIZE - THUMB_PADDING * 2;
 
 const trackVariants = tv(
   {
-    // TODO if we can fix web to use proper button, change aria-disabled to disabled
+    // react-native-web renders role="switch" as a div, which has no `:disabled`.
     base: [
-      "height-[36px] w-[58px]", // Must be identical to TRACK_HEIGHT and TRACK_WIDTH constants above
+      "h-[36px] w-[58px]", // TRACK_HEIGHT x TRACK_WIDTH
       "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
       "transition-[background-color] duration-fast ease-in",
       "outline-interactive-outlined-outline-focus",
@@ -28,7 +28,6 @@ const trackVariants = tv(
         false: "bg-lowered",
         true: "bg-enabled",
       },
-      // Storybook-only static stand-in for the :hover/:active states above.
       forceStyle: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
         ? { hover: "", focus: "", press: "" }
         : { hover: "", focus: "", press: "" },

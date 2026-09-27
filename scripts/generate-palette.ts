@@ -5,9 +5,9 @@
 // `alouette/theme-generator` module (createColorScale) so the audit can never
 // drift from what apps and build-css.ts actually emit.
 //
-//   node --experimental-strip-types scripts/generate-palette.ts             # failures only
-//   node --experimental-strip-types scripts/generate-palette.ts --all       # every pair
-//   node --experimental-strip-types scripts/generate-palette.ts --gamut=p3  # the web palette
+//   node scripts/generate-palette.ts             # failures only
+//   node scripts/generate-palette.ts --all       # every pair
+//   node scripts/generate-palette.ts --gamut=p3  # the web palette
 
 import Color from "colorjs.io";
 import type {
@@ -172,8 +172,7 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
     fg: "on-accent",
     bg: "interactive-filled-hover",
   },
-  // A filled card's description (RadioCard, CheckboxCard): it flips to
-  // `on-accent` on hover, so only the rest pair has to hold AA.
+  // A `filled` PressableListItem's caret.
   {
     label: "on-accent-muted on filled",
     fg: "on-accent-muted",
@@ -211,12 +210,6 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
   // The soft variant keeps the label's own color over its fill.
   { label: "sharp on soft:hover", fg: "sharp", bg: "interactive-soft-hover" },
   { label: "accent on soft:hover", fg: "accent", bg: "interactive-soft-hover" },
-  // ok if this fails.
-  // {
-  //   label: "on-accent on filled:active",
-  //   fg: "on-accent",
-  //   bg: "interactive-filled-active",
-  // },
 ];
 
 const grouped: Record<

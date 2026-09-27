@@ -34,7 +34,6 @@ interface AsyncActionProps {
 }
 
 interface AlertDialogBaseProps extends Pick<ModalProps, "size" | "testID"> {
-  /** Whether the dialog is shown. */
   visible: boolean;
   /** Heading; also labels the dialog for assistive tech. */
   title: string;
@@ -66,7 +65,6 @@ interface ConfirmAlertDialogProps
   confirmText?: ReactNode;
   /** Cancel button label. Defaults to "Cancel". */
   cancelText?: ReactNode;
-  /** Disables the confirm button (e.g. while a form is invalid). */
   confirmDisabled?: boolean;
   /**
    * Which action carries the button material. "confirm" (default) is an
@@ -104,7 +102,6 @@ interface RequiredAlertDialogProps
   variant: "required";
   /** Action button label. Defaults to "OK". */
   confirmText?: ReactNode;
-  /** Disables the action button (e.g. while a form is invalid). */
   confirmDisabled?: boolean;
 }
 
@@ -114,7 +111,6 @@ export type AlertDialogProps =
   | RequiredAlertDialogProps;
 
 interface ResolvedVariant {
-  /** Footer buttons for the variant. */
   footer: ReactNode;
   /**
    * Handler for the dialog's dismiss affordances (backdrop / Escape / Android
@@ -124,7 +120,6 @@ interface ResolvedVariant {
 }
 
 interface ActionFooterProps {
-  /** The variant's buttons, in reading order. */
   children: ReactNode;
   errorToMessage: AsyncActionProps["errorToMessage"];
   error: Error | null;
@@ -159,7 +154,6 @@ function ActionFooter({
 
 interface ResolveVariantParams {
   accent: Accent;
-  /** State of the confirm action, driven by `usePressAsync`. */
   buttonState: ButtonState | undefined;
   error: Error | null;
   isPending: boolean;
@@ -191,7 +185,6 @@ function resolveVariant(
     case "required": {
       const { confirmText, confirmDisabled, errorToMessage } = props;
       return {
-        // Non-dismissible: only the explicit action closes it.
         onDismiss: noop,
         footer: (
           <ActionFooter error={error} errorToMessage={errorToMessage}>
@@ -296,12 +289,10 @@ export function AlertDialog(props: AlertDialogProps): ReactNode {
   );
 }
 
-// Omit that distributes over the union so each variant keeps its own props.
 type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
   ? Omit<T, K>
   : never;
 
-// Icon is fixed by the usage component; the accent stays the caller's choice.
 export type AlertDialogUsageProps = DistributiveOmit<AlertDialogProps, "icon">;
 
 export function QuestionAlertDialog(props: AlertDialogUsageProps): ReactNode {

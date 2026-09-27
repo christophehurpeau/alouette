@@ -1,6 +1,5 @@
 /* eslint-disable import-x/extensions */
-// Build-script driver: turn palette params into the two files an app imports.
-// Node-only — call it from a script, never from app code.
+// Node-only — call it from a build script, never from app code.
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";

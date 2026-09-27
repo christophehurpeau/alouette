@@ -7,7 +7,6 @@ import { defaultPaletteSpecs } from "../packages/alouette/src/theme-generator/pa
 const WCAG_AA_NORMAL = 4.5; // Normal text
 const WCAG_AA_LARGE = 3.0; // Large text (18pt+ or 14pt+ bold)
 const WCAG_AAA_NORMAL = 7.0; // Enhanced contrast
-// const WCAG_AAA_LARGE = 4.5; // Enhanced contrast large text
 
 type ColorScale = Record<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10, string>;
 
@@ -156,7 +155,7 @@ const analyzeBackgroundTextCombinations = (name: string, scale: ColorScale) => {
   console.log("Background | Text Color | Ratio | Grade | Status | Description");
   console.log("-----------|------------|-------|-------|--------|------------");
 
-  // Test realistic combinations based on new sequential usage patterns
+  // Realistic combinations, following the sequential usage patterns
   const combinations = [
     // Light mode combinations - sequential usage patterns
     {

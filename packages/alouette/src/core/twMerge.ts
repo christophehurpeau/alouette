@@ -10,7 +10,8 @@ type AlouetteClassGroupIds =
   | "lowered"
   | "surface-popover"
   | "surface-size"
-  | "surface";
+  | "surface"
+  | "text-trim";
 
 const paddingAndRadiusGroups = [
   "p",
@@ -83,6 +84,7 @@ export const twMergeConfig: ConfigExtension<
       surface: ["surface"],
       "surface-size": [{ surface: ["xxs", "xs", "sm", "md", "lg"] }],
       "surface-popover": ["surface-popover"],
+      "text-trim": ["text-trim-cap"],
     },
     // A group lists what it replaces when written after it. A single class
     // written after one of these utilities never lists them back: it only

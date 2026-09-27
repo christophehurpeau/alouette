@@ -19,7 +19,7 @@ import type {
 // 44px. Its border is permanently transparent and only animates color on the
 // row's hover/active, driven by the `group` on the pressable. The focus ring
 // lives here too: the pressable fills the bar's content box, and the bar clips
-// (Surface is overflow-hidden), so an outline drawn on the pressable is cut
+// (`surface` is overflow-hidden), so an outline drawn on the pressable is cut
 // away — the chip's slack holds the 2px offset + 2px ring instead (6px a side
 // on a row, 2px on a stacked item, which the bar's own `py-xs` completes).
 // foreground — label and icon share one color set, and the icon's optional
@@ -87,12 +87,10 @@ const segmentedItemVariants = tv({
     // `orientation` set, and win the merge.
     variant: {
       segmented: {},
-      // The chip is a 40px square with no label, so the pressable carries the
-      // tap target's width the way it already carries its height — the chip
-      // alone is 8px short of the 44px minimum. 40 and not 32: the 4px of slack
-      // that leaves on every side is exactly the focus ring (2px offset + 2px
-      // width), and it is the whole frame around the chip, the bar having
-      // dropped its own horizontal padding.
+      // The chip is a square with no label, so the pressable carries the tap
+      // target's width the way it already carries its height. 36px in a row
+      // leaves 4px on every side: exactly the focus ring (2px offset + 2px
+      // width).
       icon: {
         pressable: "min-w-[44px]",
         segment: "rounded-md self-center w-[36px] min-h-[36px] px-0",
@@ -183,7 +181,7 @@ export interface SegmentedItemProps extends Omit<
   compact?: boolean;
   /** Set by a vertical group: the item stretches to the bar's width. */
   orientation?: SegmentedOrientation;
-  /** Set by a stretched group: the item takes an equal share of the bar. */
+  /** Set by a stretched group: the item grows into the bar's spare width. */
   stretch?: boolean;
   /**
    * Set by the group. `icon` hides the label — it stays the accessible name —

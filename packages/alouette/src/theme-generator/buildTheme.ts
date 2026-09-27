@@ -1,17 +1,8 @@
 /* eslint-disable import-x/extensions */
-// Assembles resolved color scales + the semantic tokenScaleMap into the coupled
-// outputs of a theme: the base palette CSS (the `@theme` color defaults that
-// generate bg-*/text-*/border-* utilities plus the twelve `.<theme>`
-// blocks in hex), the optional oklch overlay CSS (the same twelve blocks
-// re-emitted as `oklch()` behind `@supports`) and the resolved `themeVariables`
-// maps (fully merged per theme so a theme can be applied at any depth in JS).
-// Shared by the internal default build (`scripts/build-css.ts`) and the exposed
-// `generateTheme`.
-//
-// The two outputs feed the two halves of `ScopedTheme`: the CSS blocks are what
-// web applies (a `className={theme}` element, resolved by custom-property
-// inheritance), the maps are what native applies (NativeWind's
-// `VariableContextProvider`).
+// The CSS blocks and the `themeVariables` maps feed the two halves of
+// `ScopedTheme`: web applies a `className={theme}` element, resolved by
+// custom-property inheritance, native applies the maps through NativeWind's
+// `VariableContextProvider`.
 //
 // Two serializations of the same ramp: sRGB hex is the only format native can
 // consume (`@react-native/normalize-colors` has no oklch parser, and the JS map
@@ -31,9 +22,8 @@ export type ThemeScales = Record<`${AccentName}.${Mode}`, OklchScale>;
 
 export type ColorFormatName = "oklch" | "srgb";
 
-// Emit order (grayscale first, then accents) — the order tokens/blocks appear in
-// the generated CSS and themeVariables. Kept explicit so the output is stable
-// regardless of the palette-specs insertion order.
+// Explicit so the generated output does not depend on the insertion order of
+// the palette specs.
 const accentEmitOrder: AccentName[] = [
   "grayscale",
   "brand",
@@ -111,9 +101,8 @@ interface BuildThemeVarsParams {
   format: ColorFormat;
 }
 
-// Resolve every token's scale step to a concrete color for this mode/accent.
-// Grayscale-only tokens resolve to null on colored accents and are skipped
-// (they inherit through the CSS cascade / the merged themeVariables map).
+// Grayscale-only tokens resolve to null on colored accents and are skipped:
+// they inherit through the CSS cascade / the merged themeVariables map.
 const buildThemeVars = ({
   scales,
   mode,
@@ -168,8 +157,6 @@ interface ThemeTarget {
   accentName: AccentName;
 }
 
-// Base modes first, then the accent sub-themes — the order the blocks appear in
-// the CSS and the keys in themeVariables.
 const themeTargets: ThemeTarget[] = [
   ...(["light", "dark"] as const).map(
     (mode): ThemeTarget => ({
@@ -195,11 +182,8 @@ interface EmitThemeBlocksParams {
   indent: string;
 }
 
-// The twelve `.<theme>` blocks — a web-only mechanism. `ScopedTheme.web.tsx`
-// applies a theme as a className and lets CSS resolve it; native pushes the
-// resolved `themeVariables` map through NativeWind's `VariableContextProvider`
-// and never sets a className, so these blocks are dead weight there. Both
-// callers therefore keep them behind a feature query the native compiler cannot
+// Native never sets a theme className, so these blocks are dead weight there:
+// both callers keep them behind a feature query the native compiler cannot
 // evaluate — {@link webOnly} here, the `oklch()` query in the overlay.
 //
 // Each block declares its variables on the themed element *only*: descendants
@@ -267,11 +251,9 @@ export const buildPaletteCss = (srgbScales: ThemeScales): string => {
   });
 
   return `@theme {
-  /* color tokens — light theme as defaults, enabling bg-*, text-*, border-*
-     color utilities. This block is the whole palette on native, where ScopedTheme
-     overrides it at runtime with the themeVariables map fed to NativeWind's
-     VariableContextProvider. Web instead resolves the .<theme> blocks below,
-     applied as a className (the closest theme class wins, through inheritance). */
+  /* The light theme as defaults. The whole palette on native, where ScopedTheme
+     overrides it at runtime with the themeVariables map; web resolves the
+     .<theme> blocks below. */
 ${emit(lightVars, "  ")}
 }
 
@@ -317,7 +299,7 @@ ${emitThemeBlocks({ scales: p3Scales, format: oklch, indent: "    " })}
 
 /**
  * The fully-resolved CSS-variable map for every theme (base mode tokens + accent
- * overrides merged), keyed `--color-*`. Feeds `ScopedTheme` and `useThemeToken`.
+ * overrides merged), keyed `--color-*`. Feeds the native `ScopedTheme`.
  * Pair `srgb` with sRGB scales (the native-safe map) and `oklch` with p3 scales.
  */
 export const buildThemeVariables = (

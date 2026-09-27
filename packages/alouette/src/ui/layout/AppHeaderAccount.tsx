@@ -18,7 +18,8 @@ export interface AppHeaderAccountProps {
   name: string;
   /** Replaces the initials in the disc. */
   icon?: SVGIconElement;
-  /** Accent of the disc. Defaults to `brand`. */
+  /** Accent of the disc. Defaults to the inherited accent, or `brand` outside
+   * an accent scope. */
   accent?: Accent;
   /** Rendered above the items — typically the signed-in identity. */
   header?: ReactNode;

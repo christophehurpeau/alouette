@@ -4,11 +4,9 @@
    'alouette/default-palette-oklch.css' after it to opt web into the wide-gamut
    ramp. A BYO app imports its own generateTheme() palette CSS instead. */
 @theme {
-  /* color tokens — light theme as defaults, enabling bg-*, text-*, border-*
-     color utilities. This block is the whole palette on native, where ScopedTheme
-     overrides it at runtime with the themeVariables map fed to NativeWind's
-     VariableContextProvider. Web instead resolves the .<theme> blocks below,
-     applied as a className (the closest theme class wins, through inheritance). */
+  /* The light theme as defaults. The whole palette on native, where ScopedTheme
+     overrides it at runtime with the themeVariables map; web resolves the
+     .<theme> blocks below. */
   --color-translucent: #ffffff66;
   --color-shadow-highlight: #ffffff33;
   --color-dark-shadow: #00000030;

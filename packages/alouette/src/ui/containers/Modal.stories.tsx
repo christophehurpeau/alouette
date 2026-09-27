@@ -407,7 +407,6 @@ export const Tests: StoryObj<typeof Modal> = {
 
     const dialog = await screen.findByRole("dialog");
     await expect(dialog).toHaveAttribute("aria-modal", "true");
-    // Labelled by its title.
     await expect(dialog).toHaveAccessibleName("Confirm deletion");
     // The dialog container is not an interactive control: it must not be a tab
     // stop (only the close button and body controls should be focusable).

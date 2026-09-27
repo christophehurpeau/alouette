@@ -92,7 +92,6 @@ const modalVariants = tv({
 type ModalVariantProps = VariantProps<typeof modalVariants>;
 
 export interface ModalProps {
-  /** Whether the modal is shown. */
   visible: boolean;
   /**
    * Called when the user dismisses the modal — backdrop press, close button, the

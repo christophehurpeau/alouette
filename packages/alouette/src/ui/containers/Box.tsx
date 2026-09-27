@@ -48,8 +48,8 @@ export const interactiveBoxVariants = tv({
   ].join(" "),
   variants: {
     // A constant displacement, not a proportional one: a scale moves every
-    // point in proportion to its distance from the centre, so it grew from a
-    // press on a button (~1.6px per edge) into a squeeze on a full-width row
+    // point in proportion to its distance from the centre, so it would grow from
+    // a press on a button (~1.6px per edge) into a squeeze on a full-width row
     // (~14px). Rigid, so a row's icon and its label keep their positions, and a
     // whole pixel, so the label is re-hinted on the same subpixel phase.
     // Off for a bare label row (Radio, Checkbox): its indicator takes the press
@@ -76,7 +76,8 @@ export const InteractiveBox = forwardRef<RNView, InteractiveBoxProps>(
   ({ withFocusVisibleOutline, withPressEffect, className, ...rest }, ref) => (
     <Pressable
       ref={ref}
-      // override default behavior of Pressable which sets pointerEvents to "none" on disabled state. However this prevents cursor to display as
+      // Pressable sets pointerEvents to "none" while disabled, which would hide
+      // the not-allowed cursor.
       pointerEvents="auto"
       {...rest}
       className={interactiveBoxVariants({
@@ -97,7 +98,8 @@ export const InteractiveBoxHitSlop = forwardRef<RNView, InteractiveBoxProps>(
     return (
       <Pressable
         ref={ref}
-        // override default behavior of Pressable which sets pointerEvents to "none" on disabled state. However this prevents cursor to display as
+        // Pressable sets pointerEvents to "none" while disabled, which would hide
+        // the not-allowed cursor.
         pointerEvents="auto"
         className={`flex-center ${className ?? ""}`}
         {...rest}

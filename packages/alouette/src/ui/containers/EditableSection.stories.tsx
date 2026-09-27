@@ -241,7 +241,7 @@ export const EditableSectionTestsStory: ThisStory = {
           editAriaLabel="Edit locked section"
         />
       </Story.Section>
-      {/* The size only moves the Surface's padding — from 8px at surface-xxs
+      {/* The size only moves the surface's padding — from 8px at surface-xxs
           to 48px at surface-lg — so the header must hold at either end. */}
       <Story.Section title="Every surface size">
         <EventSection
@@ -299,7 +299,7 @@ export const EditableSectionTestsStory: ThisStory = {
     ).toBeDisabled();
 
     // The title is sized to the 38px edit button, so the header row leaves no
-    // dead space around it and the button sits inside the Surface's padding —
+    // dead space around it and the button sits inside the surface's padding —
     // whatever that padding is.
     async function expectHeaderFitsTheButton(title: string): Promise<void> {
       const surface = canvas.getByRole("region", { name: title });

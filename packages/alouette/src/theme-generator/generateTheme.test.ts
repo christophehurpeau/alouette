@@ -34,7 +34,7 @@ describe("generateTheme", () => {
 
   it("keeps the theme blocks behind a web-only feature query", () => {
     // The blocks are a className mechanism native never uses; the query is what
-    // drops them from the native bundle (see nativeCompile.test.ts).
+    // drops them from the native bundle (see nativeCompile.test-skip.ts).
     const { css } = generateTheme();
     const [beforeSupports, insideSupports] = css.split(
       "@supports (display: contents) {",

@@ -107,8 +107,6 @@ type ButtonSizeProps = Pick<VariantProps<typeof buttonVariants>, "size">;
 
 export type ButtonState = "failed" | "loading" | "success";
 
-/** Icon shown above the text for a terminal `state`, once the spinner's
- * finish animation has played out. */
 function resolveTerminalIcon(state: ButtonState | undefined): {
   terminalIcon: SVGIconElement | undefined;
   terminalIconAccent: Accent | undefined;
