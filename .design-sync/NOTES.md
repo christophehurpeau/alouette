@@ -99,6 +99,15 @@ Tests`) all carry a `play:` interaction function (opens a dialog, types
   `04954409`). The `git checkout -- packages/alouette/dist/definitions`
   workaround below is no longer needed; left here only in case a future
   branch reintroduces a tsc failure.
+- `[GENERAL]` **Fonts ship as files, not only via Google Fonts.** The `--font-*`
+  tokens name the expo-font families first (`SoraRegular`, `SoraBold`,
+  `ChivoMonoBold`, ...), but the Google Fonts `@import` scraped from
+  `preview-head.html` only serves `Sora` / `Chivo Mono`, so Claude Design
+  reported the fonts missing (the validator only printed `[FONT_REMOTE]`).
+  `.design-sync/fonts.css` (`cfg.extraFonts`) declares those six families over
+  the `@expo-google-fonts` TTFs; the build copies them to `ds-bundle/fonts/` and
+  `styles.css` imports `fonts/fonts.css` first. `SystemAndroid` in the same
+  warning is NativeWind's `@media android` `--font-sans`, never matched on web.
 - Entry: `./packages/alouette/dist/index-browser.es.js` (the `browser` export).
 - `--node-modules ./node_modules` (repo root): pnpm's node-modules linker keeps
   `react`/`react-dom` only at the root; the package's own node_modules is sparse.

@@ -7,6 +7,7 @@
   "storybookConfigDir": "packages/storybook-native-app/.storybook",
   "buildCmd": "pnpm --filter alouette build",
   "tsconfig": "../../.design-sync/tsconfig.bundle.json",
+  "extraFonts": ["../../.design-sync/fonts.css"],
   "readmeHeader": ".design-sync/conventions.md",
   "extraEntries": [
     "../../.design-sync/process-shim.mjs",
