@@ -69,11 +69,11 @@ The `interactive-filled-*` family is the accent's own fill in every theme, the
 neutral one included — `accent="neutral"` is the grayscale accent, whose fill is
 the sharp ink turned into a ground: near black in light mode, near white in dark.
 `text-on-accent` is white on every colored fill and on the neutral light one,
-and dark on the neutral dark one; `enabled` (Avatar, Badge `solid.enabled`,
-BrandLogo, the web Switch track) takes the same ground in the neutral theme.
-`emphasis` is the separate, lighter fill for an element
-sitting on a `lowered` track (a `SegmentedBar` chip), whose ink is
-`text-on-emphasis`.
+and dark on the neutral dark one; `enabled` (Avatar `enabled`, Badge
+`solid.enabled`, the web Switch track) takes the same ground in the neutral
+theme. `emphasis` is the separate, lighter fill for an element sitting on a
+`lowered` track (a `SegmentedBar` chip) and for the default `Avatar`, `Badge`
+and `BrandLogo` discs, whose ink is `text-on-emphasis`.
 
 ## Spacing scale
 
@@ -92,7 +92,13 @@ Use as `rounded-*` (`--radius-*`): `xs` · `sm` · `md` · `lg`.
 
 ## Shadow / elevation
 
-Use as `shadow-*`: `s` · `m` · `l` · `lowered`.
+Use as `shadow-*`: `s` · `m` · `l` · `lowered` (and `bar`, the `AppHeader`'s
+downward-only shadow). The geometry is fixed; the layer colors are palette tokens
+(`--color-shadow-highlight`, `--color-dark-shadow`, `--color-soft-shadow`,
+`--color-shadow-lowered-{dark,highlight}`, `--color-bar-{dark,soft}-shadow`), so
+dark mode deepens the drop layers. A palette generated before they existed falls
+back to the former fixed colors in both modes — regenerate it to get the
+per-mode ones.
 
 ## Theme names (ScopedTheme)
 

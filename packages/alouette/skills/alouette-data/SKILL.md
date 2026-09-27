@@ -54,12 +54,13 @@ import { Badge } from "alouette";
 
 `accent` defaults to `"brand"` and drives the whole badge — it wraps its content
 in `AccentScope`, so the background, border and text all resolve from the accent
-theme in the current light/dark mode.
+theme in the current light/dark mode. `"neutral"` is accepted: a grayscale badge
+under an accented ancestor.
 
 ```tsx
 <Badge accent="success">Paid</Badge>
 <Badge accent="danger">Overdue</Badge>
-<Badge accent="info">Beta</Badge>
+<Badge accent="neutral">Draft</Badge>
 ```
 
 ### Variants
@@ -67,14 +68,16 @@ theme in the current light/dark mode.
 `variant` is `"solid" | "solid.enabled" | "outlined"`, default `"solid"`.
 
 ```tsx
-<Badge variant="solid">Draft</Badge>          {/* tinted fill, sharp text */}
-<Badge variant="solid.enabled">Active</Badge> {/* full accent fill, on-accent text */}
-<Badge variant="outlined">Archived</Badge>    {/* accent border + accent text */}
+<Badge variant="solid">Draft</Badge>          {/* emphasis fill, on-emphasis text */}
+<Badge variant="solid.enabled">Active</Badge> {/* enabled fill, on-accent text */}
+<Badge variant="outlined">Archived</Badge>    {/* pale accent tint, accent border + text */}
 ```
 
-`solid` is the quiet default (a tinted highlight background). Use
-`solid.enabled` for the one badge that must read as switched-on, and `outlined`
-where a fill would compete with the surface behind it.
+`solid` is the default: the accent's `emphasis` fill, the same chip as a
+selected `SegmentedBar` item (a light chip when neutral). Use `solid.enabled`
+for the one badge that must read as switched-on, and `outlined` for the quietest
+one — a pale tint of the accent (`bg-highlight-accent`) under an accent border
+and ink.
 
 ### Size and icon
 
@@ -109,15 +112,19 @@ with a wrapper — it takes no `className`.
 `Avatar` is the accent disc standing for a person or an account: up to two
 initials derived from `name`, or an `icon` in their place. `size` is
 `"sm" | "md" | "lg"` (28/32/40px), `accent` defaults to `"brand"`, and
-`className` is for layout only. Display-only like `Badge` — a pressable avatar is
-a `PressableBox` (or an `AppHeaderAccount`, alouette-layout/SKILL.md) wrapped
-around one, never the disc given a role of its own.
+`className` is for layout only. `variant` is `"solid"` (default, the accent's
+`emphasis` fill under `text-on-emphasis`) or `"enabled"` (the `enabled` fill
+under `text-on-accent`, as `Badge`'s `solid.enabled`). Display-only like
+`Badge` — a pressable avatar is a `PressableBox` (or an `AppHeaderAccount`,
+alouette-layout/SKILL.md) wrapped around one, never the disc given a role of its
+own.
 
 ```tsx
 import { Avatar } from "alouette";
 
 <Avatar name="Ada Lovelace" />          {/* AL */}
 <Avatar size="lg" accent="info" icon={<UserRegularIcon />} />
+<Avatar variant="enabled" name="Ada Lovelace" />
 ```
 
 ## Bullet
@@ -137,7 +144,7 @@ import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircl
 </View>;
 ```
 
-The icon stays aligned with the **first** line (`items-start`) and the text
+The text is `text-base`; the icon is centered on its **first** line and the text
 shrinks, so long content wraps under itself rather than pushing the icon down.
 
 ## Code and CodeBlock

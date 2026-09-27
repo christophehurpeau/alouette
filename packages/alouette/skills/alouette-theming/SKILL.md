@@ -210,6 +210,11 @@ problem (`ScopedTheme` pushes merged variables through React context, which
 crosses wherever the host renders the tree), so there it is a single
 `StableAccentScope`.
 
+Both `StableAccentScope` and `PortalAccentScope` take `mode` to force light or
+dark, as `AccentScope` does. Without an `accent` they keep the inherited accent
+and re-apply it in that mode: `<PortalAccentScope mode="dark">` under
+`light_danger` renders `dark_danger`.
+
 ### Ship a custom palette for the existing accents
 
 An app can re-color the existing accents (`brand`, `danger`, `info`, `success`,

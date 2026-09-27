@@ -72,9 +72,12 @@ carry it (a pale red reads as pink).
 `accent="neutral"` resolves to the plain mode theme (alouette-theming/SKILL.md), so
 the button keeps the tonal material — ground, shadow, hover/focus/press
 states — on the grayscale palette: a white card with sharp ink. That is the
-Cancel of a form, the Close of a modal, the Add of a field array, the
-"Sign up" beside a "Log in": a real button that does not compete with the
-accented one. The form editor modals already build their footers this way.
+Cancel of a form on the page, the Add of a field array: a real button that does
+not compete with the accented one. On a white `bg-highlight` ground — a `Modal`
+or `AlertDialog` panel, the `AppHeader` bar — that neutral tonal ground is the
+ground itself and dissolves, so the secondary action there is a neutral `soft`
+button: the form editor modals' Cancel, the header's "Sign up" beside
+"Log in".
 
 `filled` is the accent's own fill, flat, under the `text-on-accent` label —
 for the one action that must dominate its neighbours. The neutral theme is an
@@ -194,7 +197,8 @@ import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
 ```
 
 `size` is `"sm" | "md"` or a number (custom diameter in px); `iconSize="fill"`
-makes the icon take 80% of the button.
+makes the icon take 80% of the button. `variant` is `"tonal" | "filled" |
+"soft"` — an icon-only button has no `outlined`.
 
 ### Icon weight on interaction
 
@@ -390,7 +394,7 @@ Source: packages/alouette/src/ui/containers/AlertDialog.tsx, ui/actions/Button.t
 Wrong:
 
 ```tsx
-<Button variant="ghost-contained" text="Cancel" />
+<Button variant="contained" text="Cancel" />
 <Button variant="primary" text="Save" />
 ```
 
@@ -401,9 +405,10 @@ Correct:
 <Button accent="brand" text="Save" />
 ```
 
-`variant` is only `"tonal" | "filled" | "outlined" | "soft"` (`ghost` was
-removed: use `soft`); the accent is chosen via the `accent` prop — `"brand" |
-"danger" | "info" | "success" | "warning" | "neutral"`.
+`variant` is only `"tonal" | "filled" | "outlined" | "soft"` (`IconButton`:
+no `outlined`); `contained`, `list` and `ghost` no longer exist. The accent is
+chosen via the `accent` prop — `"brand" | "danger" | "info" | "success" |
+"warning" | "neutral"`.
 
 Source: packages/alouette/src/ui/actions/PressableBox.tsx, ui/actions/Button.tsx
 
