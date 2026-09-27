@@ -17,7 +17,7 @@ requires:
   - alouette-theming
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Surface.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/twMerge.ts"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
 ---
@@ -199,10 +199,10 @@ Each branch is a class the caller could type, so the prop only hides it: the
 bundle comes with padding the call site then has to fight, and no branch can be
 switched at a breakpoint. A bundle worth keeping (padding + radius) is a
 `@utility`, which a single class after it still overrides. A component whose
-only job is those defaults is the same alias one level up — `Surface` is
-deprecated for `<Box className="surface">` for this reason.
+only job is those defaults is the same alias one level up — `Surface` was
+removed for `<Box className="surface">` for this reason.
 
-Source: packages/alouette/src/ui/containers/Surface.tsx
+Source: packages/alouette/scripts/build-css.ts
 
 ### HIGH Several `tv()` objects for one component
 

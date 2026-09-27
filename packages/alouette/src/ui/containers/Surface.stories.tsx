@@ -45,7 +45,6 @@ export default {
 - Grounds: \`bg-surface\` · \`bg-highlight\` · \`bg-highlight-accent\` · \`bg-translucent\` · \`lowered\` (the recessed ground with its inset shadow)
 - Elevation: \`shadow-s\` · \`shadow-m\` · \`shadow-l\`
 - Roles: \`surface-popover\` (the panel of Menu, Select and InputTextAutocomplete), used instead of \`surface\`
-- The \`Surface\` component is deprecated: \`<Surface size="sm" variant="lowered">\` is \`<Box className="surface surface-sm lowered">\`
 
 ### Usage
 ~~~tsx

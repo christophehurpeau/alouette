@@ -85,7 +85,7 @@ on internal state (`selected`, `disabled`, `loading`) or one that fans out acros
 branches are classes the caller could type verbatim is an alias — expose it
 through `className` instead, because a prop cannot take a breakpoint prefix.
 A component whose only job is default classes is an alias too, which is why
-`Surface` is deprecated in favour of `<Box className="surface">`. Surfaces are
+`Surface` was removed in favour of `<Box className="surface">`. Surfaces are
 styled with `bg-*` / `shadow-*` and the `@utility` classes in `build-css.ts`:
 `surface` (the card: `overflow-hidden bg-surface shadow-s surface-md transition-colors duration-fast`), `lowered`
 (ground + inset shadow), `surface-{xxs,xs,sm,md,lg}` (padding + radius as one
@@ -120,8 +120,7 @@ Components live in `packages/alouette/src/ui/` organized by category:
 - `inputs/` — form controls
 - `layout/` — page-level layout
 - `primitives/` — base components (View, Text, Icon, ScrollView)
-- `stacks/` — Separator (and the deprecated HStack / VStack / Stack: arrange with
-  `<View className="flex-row …">`)
+- `stacks/` — Separator (arrange with `<View className="flex-row …">`)
 - `story-components/` — Story, StoryGrid helpers for Storybook only
 
 ### Platform handling

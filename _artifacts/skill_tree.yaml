@@ -96,7 +96,6 @@ skills:
     sources:
       - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
       - "christophehurpeau/alouette:packages/alouette/scripts/build-css.ts"
-      - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/stacks.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/Separator.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientBackground.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientScrollView.tsx"
@@ -318,7 +317,7 @@ skills:
       - "alouette-theming"
     sources:
       - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx"
-      - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Surface.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/core/twMerge.ts"
       - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
 

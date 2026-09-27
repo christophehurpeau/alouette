@@ -21,7 +21,6 @@ requires:
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
   - "christophehurpeau/alouette:packages/alouette/scripts/build-css.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/stacks.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/Separator.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientBackground.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientScrollView.tsx"
@@ -79,7 +78,7 @@ and switch direction at a breakpoint with a prefix.
 <View className="flex-col md:flex-row gap-m">…</View>
 ```
 
-`HStack`, `VStack` and `Stack` are deprecated aliases of those classes;
+`HStack`, `VStack` and `Stack` were removed in 23.0.0;
 `npx alouette-codemod surface-and-stacks src` rewrites them.
 
 ### Surfaces (raised containers)
@@ -107,8 +106,8 @@ when it takes one. Every class written after `surface` overrides its own part
 
 Size a surface with a `surface-*` class, not a hand-picked `p-*` + `rounded-*`,
 so every surface of a size matches. Override one side after it when a layout
-needs it (`surface-sm py-0`). The `Surface` component is deprecated: it is this
-utility behind props that cannot take a breakpoint prefix.
+needs it (`surface-sm py-0`). The `Surface` component was removed in 23.0.0: it
+was this utility behind props that cannot take a breakpoint prefix.
 
 A read-only section behind one edit button is `EditableSection`
 (alouette-data/SKILL.md), not a hand-built heading row on a bare surface.
@@ -236,7 +235,7 @@ Slots, breakpoints, the signed-out header and the per-route shell:
 
 ## Common Mistakes
 
-### HIGH Reaching for the deprecated Surface component
+### HIGH Reaching for the removed Surface component
 
 Wrong:
 
@@ -252,8 +251,8 @@ Correct:
 <Box className="surface bg-highlight shadow-l surface-sm py-xs">…</Box>
 ```
 
-`Surface` is deprecated, and its `variant` / `shadow` / `size` props cannot take
-a breakpoint prefix. Write the utilities on a `Box`: `surface` is the card,
+`Surface` was removed in 23.0.0: its `variant` / `shadow` / `size` props could
+not take a breakpoint prefix. Write the utilities on a `Box`: `surface` is the card,
 `lowered` carries the lowered ground with its inset shadow (`bg-lowered` alone
 loses the shadow), and `surface-sm` is the old `size="sm"` padding + radius as
 one class. A popover list panel is `surface-popover`, not the classes rebuilt.
@@ -327,7 +326,7 @@ dependency.
 
 Source: packages/alouette/src/ui/layout/GradientBackground.tsx
 
-### MEDIUM Reaching for the deprecated stacks
+### MEDIUM Reaching for the removed stacks
 
 Wrong:
 
@@ -345,10 +344,10 @@ Correct:
 <View className="flex-row flex-wrap gap-m">…</View>
 ```
 
-`HStack`, `VStack` and `Stack` are deprecated wrappers around those classes.
-alouette's `Stack` is unrelated to navigation stacks.
+`HStack`, `VStack` and `Stack` were wrappers around those classes, removed in
+23.0.0. A navigation `Stack` (expo-router) is unrelated.
 
-Source: packages/alouette/src/ui/stacks/stacks.tsx
+Source: packages/alouette/src/ui/primitives/View.tsx
 
 ### MEDIUM Putting a screen scroll container inside AppLayout
 

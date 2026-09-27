@@ -72,6 +72,26 @@ ground` when this happens.
 `HeaderNav` and `HeaderNavItem` take the same props as before; only the names
 change.
 
+## Deprecated components removed
+
+The aliases deprecated in 22.x are gone. Migrate with the codemod before
+upgrading (see
+[Deprecated: Surface, HStack, VStack, Stack, EditableSurface, FormEditableSurface](#deprecated-surface-hstack-vstack-stack-editablesurface-formeditablesurface)
+for the full mapping and its warnings):
+
+```sh
+npx alouette-codemod surface-and-stacks src
+```
+
+| Before                                               | After                                                                    |
+| ---------------------------------------------------- | ------------------------------------------------------------------------ |
+| `VStack` / `VStackProps`                             | `<View>` / `ViewProps`                                                   |
+| `HStack` / `HStackProps`                             | `<View className="flex-row">` / `ViewProps`                              |
+| `Stack` / `StackProps`                               | `<View className="flex-row flex-wrap">` / `ViewProps`                    |
+| `Surface` / `SurfaceProps`                           | `<Box className="surface">` / `BoxProps`                                 |
+| `<EditableSurface>` / `EditableSurfaceProps`         | `<EditableSection className="surface">` / `EditableSectionProps`         |
+| `<FormEditableSurface>` / `FormEditableSurfaceProps` | `<FormEditableSection className="surface">` / `FormEditableSectionProps` |
+
 ## Color tokens
 
 Only relevant if the app writes these classes itself:

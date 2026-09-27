@@ -1,7 +1,6 @@
 import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimpleRegularIcon";
 import { type ReactNode, useId } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
-import { twMerge } from "../../core/twMerge";
 import type { IconButtonProps } from "../actions/IconButton";
 import { IconButton } from "../actions/IconButton";
 import type { SVGIconElement } from "../primitives/Icon";
@@ -100,19 +99,3 @@ export function EditableSection({
     </Box>
   );
 }
-
-/**
- * @deprecated Renamed `EditableSection`, which applies no material itself:
- * write `<EditableSection className="surface">`.
- */
-export function EditableSurface({
-  className,
-  ...props
-}: EditableSectionProps): ReactNode {
-  return (
-    <EditableSection className={twMerge("surface", className)} {...props} />
-  );
-}
-
-/** @deprecated Renamed `EditableSectionProps`. */
-export type EditableSurfaceProps = EditableSectionProps;
