@@ -402,15 +402,17 @@ a 44px tap target and its chip stretches to the bar's width and stands taller
 (`min-h-[40px]`), so the frame at the two ends comes from the bar's own `py-xs`
 rather than from the chip's shortfall.
 
-`variant="icon"` (on `RadioButtonGroup`, `NavBar` and `Tabs` alike) turns the bar
-into a pill (`rounded-md` on the track, the chips and the pressable) of square
-icon-only chips — a light/dark/system mode picker is the canonical use. The item
-renders its `icon` alone and its `label` stays the accessible name, so `label` is
-still required and `getByRole(…, { name })` keeps working; an item without an
-`icon` renders an empty chip. Because a 32px chip is 12px short of the touch
-target in the other axis, the icon variant adds `min-w-[44px]` to the pressable —
-the horizontal counterpart of `min-h-[44px]`, asserted by each group's `play`
-test.
+A horizontal bar is a pill: `rounded-full` on the track, the pressable and the
+chip; a vertical one is `rounded-md`. `variant="icon"` (on `RadioButtonGroup`,
+`NavBar` and `Tabs` alike) fills that pill with square icon-only chips (36px,
+`rounded-md`, so a circle) — a light/dark/system mode picker is the canonical
+use. The item renders its `icon` alone and its `label` stays the accessible name,
+so `label` is still required and `getByRole(…, { name })` keeps working; an item
+without an `icon` renders an empty chip. Because a 36px chip is 8px short of the
+touch target in the other axis, the icon variant adds `min-w-[44px]` to the
+pressable — the horizontal counterpart of `min-h-[44px]`, asserted by each
+group's `play` test. The 4px left on every side is exactly the focus ring (2px
+offset + 2px width).
 
 `ColorModePicker` (`src/ui/inputs/ColorModePicker.tsx`, exported) is the
 ready-made light/dark control built on that variant, over the stored
@@ -461,8 +463,11 @@ focus** — `outlineStyle` is not reliable, and the ring only shows on
 
 `rounded-xs` 8px · `rounded-sm` 16px · `rounded-md` 32px · `rounded-lg` 48px
 (`--radius-*` in `build-css.ts`). At control heights (~44px) `rounded-md`/`-lg`
-render as a full pill. Use `rounded-sm` for control containers and `rounded-xs`
-for nested segments (matches `Button`).
+render as a full pill. A pill-shaped control (`Button`, `IconButton`, the
+horizontal `SegmentedBar` and its chips) is `rounded-full`, which stays a pill
+whatever its height; a text field (`InputText`, `Select`) is `rounded-md`. A
+card-like pressable (`PressableBox`, `PressableListItem`) is `rounded-sm`, and a
+segment nested in one is `rounded-xs`.
 
 # React
 

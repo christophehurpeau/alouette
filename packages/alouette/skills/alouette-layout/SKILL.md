@@ -201,7 +201,7 @@ a full-height column, `content` centered in the space the other two leave.
 import { ScreenCenterLayout } from "alouette";
 
 <ScreenCenterLayout
-  header={<BrandLogo />}
+  header={<BrandLogo icon={<BirdRegularIcon />} />}
   content={<SignInForm />}
   footer={<Text className="text-sm text-muted">v2.4.0</Text>}
 />;

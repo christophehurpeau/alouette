@@ -104,7 +104,7 @@ const modalVariants = tv({
   },
   variants: {
     size: {
-      sm: { panel: "max-w-[360px]", inset: "rounded-sm p-xs", footer: "py-xs" },
+      sm: { panel: "max-w-[360px]", inset: "rounded-sm p-sm", footer: "py-xs" },
       md: { panel: "max-w-[520px]", inset: "rounded-sm p-m", footer: "py-m" },
     },
   },
@@ -258,7 +258,7 @@ Wrong:
 ```tsx
 tv({
   base: "px-xs gap-xxs",
-  variants: { variant: { segmented: "", icon: "rounded-md gap-0" } },
+  variants: { variant: { segmented: "", icon: "gap-0" } },
 });
 ```
 
@@ -268,7 +268,7 @@ Correct:
 tv({
   base: "px-xs",
   variants: {
-    variant: { segmented: "gap-xxs", icon: "rounded-md gap-0" },
+    variant: { segmented: "gap-xxs", icon: "gap-0" },
   },
 });
 ```

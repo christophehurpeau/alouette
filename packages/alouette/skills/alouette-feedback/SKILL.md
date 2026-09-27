@@ -130,7 +130,8 @@ context and clip the off-screen pill — wrap it in `relative overflow-hidden`.
 
 `LinearProgress` (a thin bar pinned to the top of its positioned ancestor) and
 `CircularProgress` (a ring) show a **known** completion percentage. Both take
-`progress` (0-100), `accent` (defaults `brand`), `size` (`"xs" | "sm" | "md" |
+`progress` (0-100), `accent` (defaults to the nearest accent scope's, `brand`
+outside one), `size` (`"xs" | "sm" | "md" |
 "lg"`), and `hidden` (fades out without unmounting). The fill animates on
 `progress` change.
 

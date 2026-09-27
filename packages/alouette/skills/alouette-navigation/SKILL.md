@@ -129,7 +129,7 @@ for a fixed rail. `Tabs` and `RadioButtonGroup` stay horizontal.
 ```
 
 `stretch` is the horizontal counterpart: the bar fills the width it is given and
-its items share it equally, instead of hugging its destinations. That is what the
+its items grow into the spare width, instead of hugging its destinations. That is what the
 stacked line of an `AppHeader` wants (alouette-layout/SKILL.md).
 
 ### Navigation on an application bar

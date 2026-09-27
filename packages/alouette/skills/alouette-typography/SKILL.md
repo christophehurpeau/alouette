@@ -13,6 +13,7 @@ requires:
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/Text.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/Text.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/scripts/build-css.ts"
   - "christophehurpeau/alouette:CLAUDE.md"
 ---
 
@@ -80,6 +81,13 @@ Family and weight are a single utility — never a standalone `font-bold`:
 
 Pair `font-heading*` with `text-xl` (24px) or larger — the heading family is
 tuned for display sizes. For smaller emphasis, use `font-body-bold`.
+
+An all-caps label centered in a fixed box (initials in a disc) sits ~1px high:
+the line box keeps room for descenders caps do not have. Add `text-trim-cap`,
+which trims it to cap height over baseline — web only, a no-op on native and in
+browsers without `text-box`. `Avatar`'s initials use it.
+
+Source: packages/alouette/scripts/build-css.ts, ui/data/Avatar.tsx
 
 ### Color (semantic tokens)
 
