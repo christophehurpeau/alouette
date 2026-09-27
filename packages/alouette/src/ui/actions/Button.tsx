@@ -36,11 +36,11 @@ const buttonVariants = tv(
     variants: {
       size: {
         sm: {
-          frame: "rounded-sm px-sm gap-xxs min-h-[38px]",
+          frame: "rounded-full px-sm gap-xxs min-h-[38px]",
           text: "text-sm py-xxs",
         },
         md: {
-          frame: "rounded-sm px-m gap-xs min-h-[44px]",
+          frame: "rounded-full px-m gap-xs min-h-[44px]",
           text: "text-base py-xs",
         },
       },
