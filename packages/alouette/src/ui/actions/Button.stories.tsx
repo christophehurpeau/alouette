@@ -329,6 +329,7 @@ function ConfirmationFooter({
     <StoryGrid.Row flexWrap>
       <Button
         accent="neutral"
+        variant="soft"
         disabled={disabled}
         forceStyle={forceStyle}
         text="Cancel"
