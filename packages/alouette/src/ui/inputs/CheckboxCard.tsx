@@ -115,7 +115,9 @@ export function CheckboxCard({
           }}
         >
           {icon ? (
-            <Icon icon={icon} size={24} className={styles.icon()} />
+            <View className="self-start">
+              <Icon icon={icon} size={24} className={styles.icon()} />
+            </View>
           ) : null}
           <View className="flex-1 gap-xxs">
             <Text className={styles.label()}>{label}</Text>
