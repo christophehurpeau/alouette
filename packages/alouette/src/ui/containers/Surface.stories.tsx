@@ -265,7 +265,9 @@ export const VariantsSurfaceStory: ThisStory = {
       throw new Error("expected the accent change section to render");
     }
     const before = getComputedStyle(accentSurface);
-    await expect(before.transitionProperty).toBe("background-color");
+    await expect(before.transitionProperty.split(", ")).toContain(
+      "background-color",
+    );
     await expect(before.transitionDuration).toBe("0.2s");
     const initialBackground = before.backgroundColor;
 

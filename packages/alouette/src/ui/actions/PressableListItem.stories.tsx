@@ -290,15 +290,18 @@ export const Variants: ThisStory = {
     const canvas = within(canvasElement);
     const row = canvas.getAllByRole("button", { name: "First Item" })[0]!;
     const style = getComputedStyle(row);
-    // Tokens resolve per scope, so an accented row reads its own values.
-    const tokenOf = (scope: CSSStyleDeclaration, name: string): string => {
-      const hex = scope.getPropertyValue(name).trim();
-      const channels = [1, 3, 5].map((i) =>
-        Number.parseInt(hex.slice(i, i + 2), 16),
-      );
-      return `rgb(${channels.join(", ")})`;
+    // Tokens resolve per scope, so an accented row reads its own values. The
+    // browser serializes the color: a production build minifies the raw value
+    // (`#fff`, a named color), so it cannot be parsed as six hex digits.
+    const tokenOf = (scope: Element, name: string): string => {
+      const probe = document.createElement("span");
+      probe.style.color = `var(${name})`;
+      scope.append(probe);
+      const color = getComputedStyle(probe).color;
+      probe.remove();
+      return color;
     };
-    const token = (name: string): string => tokenOf(style, name);
+    const token = (name: string): string => tokenOf(row, name);
 
     // A list row is the `list` material, not the contained button one: its
     // ground is a tone of the theme and its label keeps the sharp ink, so an
@@ -319,24 +322,31 @@ export const Variants: ThisStory = {
     // so every one of them is rounded — PressableBox itself only rounds two.
     const variantRowOf = (
       name: string,
-    ): { caretColor: string; style: CSSStyleDeclaration } => {
+    ): {
+      caretColor: string;
+      element: HTMLElement;
+      style: CSSStyleDeclaration;
+    } => {
       const variantRow = canvas.getAllByRole("button", { name })[0]!;
       return {
         caretColor: getComputedStyle(variantRow.querySelector("svg")!).color,
+        element: variantRow,
         style: getComputedStyle(variantRow),
       };
     };
     const contained = variantRowOf("contained");
     await expect(contained.caretColor).toBe(
-      tokenOf(contained.style, "--color-on-accent-muted"),
+      tokenOf(contained.element, "--color-on-accent-muted"),
     );
     const list = variantRowOf("list");
-    await expect(list.caretColor).toBe(tokenOf(list.style, "--color-on-list"));
+    await expect(list.caretColor).toBe(
+      tokenOf(list.element, "--color-on-list"),
+    );
     const outlined = variantRowOf("outlined");
     const ghost = variantRowOf("ghost");
     for (const muted of [outlined, ghost]) {
       await expect(muted.caretColor).toBe(
-        tokenOf(muted.style, "--color-muted"),
+        tokenOf(muted.element, "--color-muted"),
       );
     }
     for (const { style: variantStyle } of [contained, list, outlined, ghost]) {
@@ -356,9 +366,9 @@ export const Variants: ThisStory = {
     await expect(Math.min(...dangerChannels)).toBeGreaterThan(200);
     await expect(
       getComputedStyle(within(danger).getByText("Danger")).color,
-    ).toBe(tokenOf(dangerStyle, "--color-on-list"));
-    await expect(tokenOf(dangerStyle, "--color-on-list")).not.toBe(
-      tokenOf(dangerStyle, "--color-sharp"),
+    ).toBe(tokenOf(danger, "--color-on-list"));
+    await expect(tokenOf(danger, "--color-on-list")).not.toBe(
+      tokenOf(danger, "--color-sharp"),
     );
 
     // aria-label names the row instead of its contents.
