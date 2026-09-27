@@ -20,6 +20,10 @@ export default {
 } satisfies Meta<typeof Switch>;
 
 export const PreviewSwitchStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => <Switch {...args} />,
 };
 

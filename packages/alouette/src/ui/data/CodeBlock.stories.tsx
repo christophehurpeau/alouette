@@ -31,6 +31,10 @@ export default {
 
 export const CodeBlockPreviewStory: ThisStory = {
   name: "CodeBlock Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     title: "theme.ts",
     children: `export const theme = {

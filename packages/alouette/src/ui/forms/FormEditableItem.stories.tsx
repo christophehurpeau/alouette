@@ -134,6 +134,10 @@ export default {
 
 export const FormEditableItemPreviewStory: ThisStory = {
   name: "FormEditableItem Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { label: "Display name" },
   render: (args) => <ProfileItem {...args} />,
 };

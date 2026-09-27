@@ -105,6 +105,7 @@ export default meta;
 export const PreviewStory: StoryObj<unknown> = {
   name: "Presence Preview",
   parameters: {
+    chromatic: { disableSnapshot: true },
     layout: "padded",
   },
   render: () => <PresenceOneDemo />,

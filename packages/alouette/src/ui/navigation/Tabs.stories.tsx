@@ -36,6 +36,10 @@ export default {
 
 export const PreviewTabsStory: ThisStory = {
   name: "Tabs Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <Tabs aria-label="Period" defaultValue="week" {...args}>
       <Tab value="day" label="Day" />

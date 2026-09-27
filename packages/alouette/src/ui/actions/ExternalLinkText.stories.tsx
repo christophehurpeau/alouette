@@ -54,6 +54,10 @@ same-tab web navigation or the native \`Linking\` app switch.
 
 export const PreviewExternalLinkTextStory: ThisStory = {
   name: "ExternalLinkText Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     href: "https://storybook.js.org/",
     text: "Open Storybook",

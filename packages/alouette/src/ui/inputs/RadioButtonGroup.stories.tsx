@@ -36,6 +36,10 @@ export default {
 
 export const PreviewRadioButtonGroupStory: ThisStory = {
   name: "RadioButtonGroup Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <RadioButtonGroup defaultValue="week" {...args}>
       <RadioButton value="day" label="Day" />

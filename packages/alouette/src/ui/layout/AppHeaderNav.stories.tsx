@@ -63,6 +63,10 @@ export default {
 
 export const PreviewAppHeaderNavStory: ThisStory = {
   name: "AppHeaderNav Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <AppHeaderNav aria-label="Main" defaultValue="/home" {...args}>
       <AppHeaderNavItem href="/home" label="Home" />

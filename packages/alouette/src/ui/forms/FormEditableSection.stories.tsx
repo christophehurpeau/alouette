@@ -151,6 +151,10 @@ export default {
 
 export const FormEditableSectionPreviewStory: ThisStory = {
   name: "FormEditableSection Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { title: "Event details" },
   render: (args) => <EventSection {...args} />,
 };

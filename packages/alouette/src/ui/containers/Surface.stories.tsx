@@ -61,6 +61,7 @@ export default {
 export const PreviewSurfaceStory: ThisStory = {
   name: "Surface Preview",
   parameters: {
+    chromatic: { disableSnapshot: true },
     layout: "padded",
   },
   args: {

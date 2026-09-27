@@ -43,6 +43,10 @@ function rejectAfter(ms: number, message: string): Promise<never> {
 
 export const ActionButtonPreviewStory: ThisStory = {
   name: "ActionButton Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     text: "Save",
   },

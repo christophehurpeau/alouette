@@ -19,6 +19,10 @@ export default {
 } satisfies Meta<typeof PressableBox>;
 
 export const PreviewStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: () => (
     <PressableBox className="px-m py-xs rounded-sm">
       <Text className="text-on-accent">Press me</Text>

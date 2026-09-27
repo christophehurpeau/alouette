@@ -61,6 +61,10 @@ export default {
 } satisfies Meta<typeof SwitchBreakpointsUsingDisplayNone>;
 
 export const PreviewSwitchBreakpointsStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     base: <Text>base</Text>,
     small: <Text>small</Text>,

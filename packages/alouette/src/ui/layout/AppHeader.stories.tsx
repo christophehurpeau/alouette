@@ -302,6 +302,7 @@ function LandingHero(): ReactNode {
 
 export const PreviewAppHeaderStory: ThisStory = {
   name: "AppHeader Preview",
+  parameters: { chromatic: { disableSnapshot: true } },
   render: (args) => (
     <AppHeader brand={<DemoBrand />} actions={<LoggedInActions />} {...args}>
       <DemoTextNav label="Preview navigation" />

@@ -48,6 +48,10 @@ Differentiate a button by its \`accent\`, not by dropping to a lighter \`variant
 } satisfies Meta<typeof Button>;
 
 export const PreviewButtonStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     text: "Example",
   },

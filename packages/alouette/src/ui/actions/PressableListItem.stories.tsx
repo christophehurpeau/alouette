@@ -21,6 +21,10 @@ export default {
 } satisfies Meta<typeof PressableListItem>;
 
 export const PreviewListStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     onPress: () => {},
     children: <Text>List Item</Text>,

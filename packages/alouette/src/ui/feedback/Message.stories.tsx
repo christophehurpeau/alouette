@@ -41,6 +41,10 @@ export default {
 } satisfies Meta<typeof Message>;
 
 export const PreviewMessageStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { accent: "info" },
   render: (args) => (
     <Message {...args} icon={<SwatchesRegularIcon />}>

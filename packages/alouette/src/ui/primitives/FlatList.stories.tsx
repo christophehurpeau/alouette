@@ -93,6 +93,10 @@ function ContactList({
 
 export const PreviewStory: StoryObj = {
   name: "FlatList Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: () => <ContactList />,
 };
 

@@ -26,6 +26,10 @@ export default {
 
 export const PreviewAvatarStory: ThisStory = {
   name: "Avatar Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { name: "Camille Hurel" },
   render: (args) => <Avatar {...args} />,
 };

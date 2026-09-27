@@ -61,6 +61,10 @@ export default {
 } satisfies Meta<typeof Modal>;
 
 export const PreviewModalStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     title: "Delete project",
     size: "md",

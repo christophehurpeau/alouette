@@ -57,6 +57,10 @@ export default {
 } satisfies Meta<typeof InputTextAutocomplete>;
 
 export const PreviewInputTextAutocompleteStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { placeholder: "Search a fruit..." },
   render: (args) => <FruitAutocomplete onValueChange={fn()} {...args} />,
 };

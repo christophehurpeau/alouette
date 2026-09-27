@@ -34,6 +34,10 @@ export default {
 
 export const PreviewStory: ThisStory = {
   name: "Icon Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     icon: <StarRegularIcon />,
   },

@@ -30,6 +30,10 @@ export default {
 } satisfies Meta<typeof IconButton>;
 
 export const PreviewIconButtonStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     size: "md",
     "aria-label": "Go back",

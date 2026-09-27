@@ -40,6 +40,10 @@ export default {
 
 export const PreviewNavBarStory: ThisStory = {
   name: "NavBar Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <NavBar aria-label="Main" defaultValue="/home" {...args}>
       <NavBarItem

@@ -21,6 +21,10 @@ export default {
 
 export const BulletPreviewStory: ThisStory = {
   name: "Bullet Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     icon: <CheckCircleRegularIcon />,
     children: "Works on web, iOS and Android",

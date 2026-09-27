@@ -19,6 +19,10 @@ export default {
 } satisfies Meta<typeof TextArea>;
 
 export const PreviewTextAreaStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { placeholder: "Enter text..." },
   render: (args) => <TextArea {...args} />,
 };

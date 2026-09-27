@@ -220,6 +220,10 @@ export default {
 } satisfies Meta<typeof AlertDialog>;
 
 export const PreviewAlertDialogStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     title: "Delete project",
     variant: "confirm",

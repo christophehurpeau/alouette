@@ -88,6 +88,10 @@ function AccountMenu(): ReactNode {
 
 export const PreviewMenuStory: ThisStory = {
   name: "Menu Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: () => <AccountMenu />,
 };
 

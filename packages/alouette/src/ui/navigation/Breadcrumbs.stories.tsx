@@ -32,6 +32,10 @@ export default {
 
 export const BreadcrumbsPreviewStory: ThisStory = {
   name: "Breadcrumbs Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <Breadcrumbs {...args}>
       <BreadcrumbItem href="/" label="Home" icon={<HouseRegularIcon />} />

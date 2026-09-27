@@ -40,6 +40,10 @@ export default {
 
 export const BadgePreviewStory: ThisStory = {
   name: "Badge Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { accent: "brand", children: "New" },
   render: (args) => <Badge {...args} />,
 };

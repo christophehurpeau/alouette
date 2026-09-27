@@ -22,6 +22,10 @@ export default {
 } satisfies Meta<typeof InputText>;
 
 export const PreviewInputTextStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { placeholder: "Enter text..." },
   render: (args) => <InputText {...args} />,
 };

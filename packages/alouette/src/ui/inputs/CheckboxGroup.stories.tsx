@@ -26,6 +26,10 @@ export default {
 
 export const PreviewCheckboxGroupStory: ThisStory = {
   name: "CheckboxGroup Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <CheckboxGroup defaultValues={["week"]} {...args}>
       <Checkbox value="day" label="Day" />

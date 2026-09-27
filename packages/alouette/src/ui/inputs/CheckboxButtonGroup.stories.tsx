@@ -34,6 +34,10 @@ export default {
 
 export const PreviewCheckboxButtonGroupStory: ThisStory = {
   name: "CheckboxButtonGroup Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <CheckboxButtonGroup defaultValues={["mon", "wed"]} {...args}>
       <CheckboxButton value="mon" label="Mon" />

@@ -221,6 +221,10 @@ export default {
 
 export const FormFieldArrayPreviewStory: ThisStory = {
   name: "FormFieldArray Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: () => (
     <GuestListForm
       minSize={1}

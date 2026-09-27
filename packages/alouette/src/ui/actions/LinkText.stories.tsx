@@ -50,6 +50,10 @@ the primary navigation between screens.
 
 export const LinkTextPreviewStory: ThisStory = {
   name: "LinkText Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { href: "/library", text: "Back to the library" },
 };
 

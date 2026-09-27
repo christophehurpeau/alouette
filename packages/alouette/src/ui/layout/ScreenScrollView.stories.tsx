@@ -59,6 +59,7 @@ function Rows({ count }: RowsProps): ReactNode {
 
 export const PreviewStory: StoryObj = {
   name: "ScreenScrollView Preview",
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
     <View className="h-70">
       <ScreenScrollView contentContainerClassName="p-m gap-xxs">

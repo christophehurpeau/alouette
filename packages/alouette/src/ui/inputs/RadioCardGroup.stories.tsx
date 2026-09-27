@@ -57,6 +57,10 @@ function VisibilityCards(): ReactNode {
 
 export const PreviewRadioCardGroupStory: ThisStory = {
   name: "RadioCardGroup Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <RadioCardGroup defaultValue="public" {...args}>
       <VisibilityCards />

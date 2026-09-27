@@ -71,6 +71,10 @@ export default {
 
 export const EditableItemPreviewStory: ThisStory = {
   name: "EditableItem Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     label: "Display name",
     editAriaLabel: "Edit display name",

@@ -39,6 +39,10 @@ export default {
 } satisfies Meta<typeof Select>;
 
 export const PreviewSelectStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { placeholder: "Pick a fruit..." },
   render: (args) => <FruitSelect onValueChange={fn()} {...args} />,
 };

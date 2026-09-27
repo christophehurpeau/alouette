@@ -34,6 +34,10 @@ export default {
 
 export const BlockquotePreviewStory: ThisStory = {
   name: "Blockquote Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     children:
       "The only thing that makes life possible is permanent, intolerable uncertainty: not knowing what comes next.",

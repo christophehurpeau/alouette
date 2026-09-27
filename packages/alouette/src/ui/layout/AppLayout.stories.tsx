@@ -216,6 +216,7 @@ function DemoEmptyScreen(): ReactNode {
 
 export const PreviewAppLayoutStory: ThisStory = {
   name: "AppLayout Preview",
+  parameters: { chromatic: { disableSnapshot: true } },
   render: (args) => (
     <AppLayout
       header={<DemoHeader />}

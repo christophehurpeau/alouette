@@ -95,6 +95,10 @@ export default {
 
 export const EditableSectionPreviewStory: ThisStory = {
   name: "EditableSection Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { title: "Event details" },
   render: (args) => <EventSection {...args} />,
 };
@@ -329,11 +333,14 @@ export const EditableSectionTestsStory: ThisStory = {
     await expect(screen.queryAllByRole("dialog")).toHaveLength(0);
 
     // The modal portals outside the canvas, so it is queried from `screen`.
+    // Presence, not visibility: the modal fades in from opacity 0, and
+    // Chromatic pauses CSS animations at their first frame.
     await userEvent.click(
       canvas.getByRole("button", { name: "Edit event details" }),
     );
+    const dialog = await screen.findByRole("dialog", { name: "Event details" });
     await expect(
-      await screen.findByText("Your editor goes here."),
-    ).toBeVisible();
+      within(dialog).getByText("Your editor goes here."),
+    ).toBeInTheDocument();
   },
 };

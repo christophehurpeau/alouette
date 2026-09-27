@@ -195,6 +195,7 @@ function DemoFrame({ children }: DemoFrameProps): ReactNode {
 
 export const PreviewAppShellStory: ThisStory = {
   name: "AppShell Preview",
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <DemoApp label="App" initialRoute="/reports" />,
 };
 

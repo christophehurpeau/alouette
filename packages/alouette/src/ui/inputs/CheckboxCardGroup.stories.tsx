@@ -60,6 +60,10 @@ function ChannelCards(): ReactNode {
 
 export const PreviewCheckboxCardGroupStory: ThisStory = {
   name: "CheckboxCardGroup Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <CheckboxCardGroup defaultValues={["email", "push"]} {...args}>
       <ChannelCards />
@@ -164,6 +168,16 @@ export const VariantsCheckboxCardGroupStory: ThisStory = {
       <CheckboxCardGroupVariant variant="outlined" />
       <CheckboxCardGroupVariant accent="brand" variant="contained" />
       <CheckboxCardGroupVariant accent="brand" variant="outlined" />
+    </Story>
+  ),
+};
+
+// Split from the variants above: in a single story the page exceeds
+// Chromatic's 25,000,000px snapshot limit.
+export const AccentVariantsCheckboxCardGroupStory: ThisStory = {
+  name: "CheckboxCardGroup Accent Variants",
+  render: () => (
+    <Story>
       <CheckboxCardGroupVariant accent="danger" variant="contained" />
       <CheckboxCardGroupVariant accent="danger" variant="outlined" />
       <CheckboxCardGroupVariant accent="success" variant="contained" />
