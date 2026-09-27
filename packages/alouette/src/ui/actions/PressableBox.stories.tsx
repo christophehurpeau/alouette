@@ -173,6 +173,9 @@ export const TonalGroundWarning: ThisStory = {
     );
     // "Dissolves" and "Dissolves too"; never the neutral pressable on an
     // accented surface, the accented one on a white panel, or a soft one.
-    await expect(warnings).toHaveLength(2);
+    // A production build (`storybook build`, as Chromatic runs) drops the check.
+    await expect(warnings).toHaveLength(
+      process.env.NODE_ENV === "production" ? 0 : 2,
+    );
   },
 };
