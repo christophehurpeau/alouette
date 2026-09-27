@@ -17,8 +17,8 @@ const segmentedBarVariants = tv({
   base: "surface lowered items-stretch px-xs py-0",
   variants: {
     orientation: {
-      horizontal: "flex-row min-h-[44px]",
-      vertical: "flex-col py-xs",
+      horizontal: "flex-row min-h-[44px] rounded-full",
+      vertical: "flex-col py-xs rounded-md",
     },
     stretch: {
       true: "self-stretch",
@@ -30,7 +30,7 @@ const segmentedBarVariants = tv({
     // slack and leave the icons floating far apart.
     variant: {
       segmented: "gap-xxs",
-      icon: "rounded-md gap-0",
+      icon: "gap-0",
     },
   },
   defaultVariants: {
