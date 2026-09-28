@@ -1,4 +1,4 @@
-import { CheckFatDuotoneIcon } from "alouette-icons/phosphor-icons/CheckFat";
+import { CheckFatFillIcon } from "alouette-icons/phosphor-icons/CheckFat";
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import { Icon } from "../primitives/Icon";
@@ -87,7 +87,7 @@ export function CheckboxIndicator({
       <View className={styles.box()}>
         <View className={styles.check()}>
           <Icon
-            icon={<CheckFatDuotoneIcon />}
+            icon={<CheckFatFillIcon />}
             size={14}
             className={styles.glyph()}
           />
