@@ -160,7 +160,7 @@ import { IndeterminateLinearProgress } from "alouette";
 
 <Box className="relative overflow-hidden">
   <IndeterminateLinearProgress loading={isFetching} size="sm" />
-</Box>
+</Box>;
 ```
 
 A pending **action** needs neither: a `Button` with `state="loading"` (or
