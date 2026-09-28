@@ -1,3 +1,38 @@
+# To 24.0.0
+
+`alouette-icons` 12.0.0 has one module per Phosphor glyph instead of one per
+weight. Each glyph module exports the regular, duotone and fill weights. The
+export names are unchanged; only the import path changes. Upgrade `alouette-icons`
+together with `alouette`.
+
+```tsx
+// Before
+import { HouseDuotoneIcon } from "alouette-icons/phosphor-icons/HouseDuotoneIcon";
+import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+
+// After
+import {
+  HouseDuotoneIcon,
+  HouseRegularIcon,
+} from "alouette-icons/phosphor-icons/House";
+```
+
+Rewrite the paths from the app root:
+
+```sh
+perl -pi -e 's#(alouette-icons/phosphor-icons/)(\w+?)(?:Regular|Duotone|Fill)Icon"#$1$2"#g' $(git grep -l alouette-icons/phosphor-icons)
+```
+
+This leaves one import per weight from the same module. Merge them with
+`eslint --fix` and the `import-x/no-duplicates` rule (or `import/no-duplicates`),
+then run your formatter.
+
+A bundler that tree-shakes keeps only the weights you import. Metro keeps the
+whole glyph module, which is three small components.
+
+The fill weight (`HouseFillIcon`), previously generated for `Star` only, now
+exists for every glyph.
+
 # To 23.0.0
 
 The button material is reworked. The default is now `tonal`: a ground lighter

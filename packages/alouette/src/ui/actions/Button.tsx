@@ -1,5 +1,5 @@
-import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
-import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/WarningDuotoneIcon";
+import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircle";
+import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactNode, type Ref, useEffect, useState } from "react";
 import type { View as RNView } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";

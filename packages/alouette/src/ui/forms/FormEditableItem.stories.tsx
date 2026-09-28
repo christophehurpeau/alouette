@@ -1,6 +1,6 @@
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/CalendarRegularIcon";
+import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/Calendar";
 import { type ReactNode, useState } from "react";
 import { Badge } from "../data/Badge";
 import type { EditableItemProps } from "../data/EditableItem";

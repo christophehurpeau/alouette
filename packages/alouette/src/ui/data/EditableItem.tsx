@@ -1,4 +1,4 @@
-import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimpleRegularIcon";
+import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimple";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import type { IconButtonProps } from "../actions/IconButton";

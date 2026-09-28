@@ -1,6 +1,6 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BookOpenRegularIcon } from "alouette-icons/phosphor-icons/BookOpenRegularIcon";
+import { BookOpenRegularIcon } from "alouette-icons/phosphor-icons/BookOpen";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Paragraph } from "../primitives/Text";

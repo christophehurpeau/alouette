@@ -1,6 +1,6 @@
 import { expect, fn, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { FolderRegularIcon } from "alouette-icons/phosphor-icons/FolderRegularIcon";
+import { FolderRegularIcon } from "alouette-icons/phosphor-icons/Folder";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Paragraph } from "../primitives/Text";

@@ -1,7 +1,7 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
-import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
+import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircle";
+import { StarRegularIcon } from "alouette-icons/phosphor-icons/Star";
 import { View } from "../primitives/View";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Bullet } from "./Bullet";

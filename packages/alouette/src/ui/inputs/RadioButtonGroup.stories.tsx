@@ -1,11 +1,17 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DesktopDuotoneIcon } from "alouette-icons/phosphor-icons/DesktopDuotoneIcon";
-import { DesktopRegularIcon } from "alouette-icons/phosphor-icons/DesktopRegularIcon";
-import { MoonDuotoneIcon } from "alouette-icons/phosphor-icons/MoonDuotoneIcon";
-import { MoonRegularIcon } from "alouette-icons/phosphor-icons/MoonRegularIcon";
-import { SunDuotoneIcon } from "alouette-icons/phosphor-icons/SunDuotoneIcon";
-import { SunRegularIcon } from "alouette-icons/phosphor-icons/SunRegularIcon";
+import {
+  DesktopDuotoneIcon,
+  DesktopRegularIcon,
+} from "alouette-icons/phosphor-icons/Desktop";
+import {
+  MoonDuotoneIcon,
+  MoonRegularIcon,
+} from "alouette-icons/phosphor-icons/Moon";
+import {
+  SunDuotoneIcon,
+  SunRegularIcon,
+} from "alouette-icons/phosphor-icons/Sun";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Text } from "../primitives/Text";

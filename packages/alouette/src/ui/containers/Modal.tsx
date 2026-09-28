@@ -1,4 +1,4 @@
-import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
+import { XRegularIcon } from "alouette-icons/phosphor-icons/X";
 import { type ReactNode, useId } from "react";
 import {
   Platform,

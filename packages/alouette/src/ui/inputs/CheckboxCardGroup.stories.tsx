@@ -1,8 +1,8 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BellRegularIcon } from "alouette-icons/phosphor-icons/BellRegularIcon";
-import { ChatTextRegularIcon } from "alouette-icons/phosphor-icons/ChatTextRegularIcon";
-import { EnvelopeRegularIcon } from "alouette-icons/phosphor-icons/EnvelopeRegularIcon";
+import { BellRegularIcon } from "alouette-icons/phosphor-icons/Bell";
+import { ChatTextRegularIcon } from "alouette-icons/phosphor-icons/ChatText";
+import { EnvelopeRegularIcon } from "alouette-icons/phosphor-icons/Envelope";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { View } from "../primitives/View";

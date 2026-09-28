@@ -1,7 +1,7 @@
-import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
-import { InfoRegularIcon } from "alouette-icons/phosphor-icons/InfoRegularIcon";
-import { QuestionRegularIcon } from "alouette-icons/phosphor-icons/QuestionRegularIcon";
-import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
+import { InfoRegularIcon } from "alouette-icons/phosphor-icons/Info";
+import { QuestionRegularIcon } from "alouette-icons/phosphor-icons/Question";
+import { WarningRegularIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactNode, useId } from "react";
 import type { GestureResponderEvent } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
 import { Story } from "../story-components/Story";
 import { ActionButton } from "./ActionButton";
 

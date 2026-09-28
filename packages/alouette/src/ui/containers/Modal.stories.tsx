@@ -1,6 +1,6 @@
 import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
+import { WarningRegularIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactElement, type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
 import { Paragraph } from "../primitives/Text";

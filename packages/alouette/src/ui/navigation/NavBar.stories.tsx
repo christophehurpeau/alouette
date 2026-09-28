@@ -1,11 +1,17 @@
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ChartBarDuotoneIcon } from "alouette-icons/phosphor-icons/ChartBarDuotoneIcon";
-import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
-import { GearDuotoneIcon } from "alouette-icons/phosphor-icons/GearDuotoneIcon";
-import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
-import { HouseDuotoneIcon } from "alouette-icons/phosphor-icons/HouseDuotoneIcon";
-import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+import {
+  ChartBarDuotoneIcon,
+  ChartBarRegularIcon,
+} from "alouette-icons/phosphor-icons/ChartBar";
+import {
+  GearDuotoneIcon,
+  GearRegularIcon,
+} from "alouette-icons/phosphor-icons/Gear";
+import {
+  HouseDuotoneIcon,
+  HouseRegularIcon,
+} from "alouette-icons/phosphor-icons/House";
 import { type ReactNode, useState } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Text } from "../primitives/Text";

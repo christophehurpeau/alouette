@@ -1,8 +1,10 @@
-import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
-import { InfoRegularIcon } from "alouette-icons/phosphor-icons/InfoRegularIcon";
-import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/WarningDuotoneIcon";
-import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
-import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
+import { InfoRegularIcon } from "alouette-icons/phosphor-icons/Info";
+import {
+  WarningDuotoneIcon,
+  WarningRegularIcon,
+} from "alouette-icons/phosphor-icons/Warning";
+import { XRegularIcon } from "alouette-icons/phosphor-icons/X";
 import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Except } from "type-fest";

@@ -1,4 +1,4 @@
-import { CaretDownRegularIcon } from "alouette-icons/phosphor-icons/CaretDownRegularIcon";
+import { CaretDownRegularIcon } from "alouette-icons/phosphor-icons/CaretDown";
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";

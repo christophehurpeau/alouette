@@ -129,7 +129,7 @@ Files with `.web.ts` / `.web.tsx` override the base file on web. Dual build outp
 
 ### Icons
 
-Import icons from `alouette-icons/phosphor-icons/IconName`. The package is auto-generated via `packages/alouette-icons/scripts/generate-phosphor-icons.mjs` — do not edit generated files manually.
+Import icons from `alouette-icons/phosphor-icons/GlyphName`: one module per glyph exporting its three weights (`GlyphNameRegularIcon`, `GlyphNameDuotoneIcon`, `GlyphNameFillIcon`), each a `/*#__PURE__*/` call to the platform-resolved `alouette-icons/createIcon`, so a bundler that tree-shakes keeps only the weights used (Metro keeps the whole module). The package is auto-generated via `packages/alouette-icons/scripts/generate-phosphor-icons.mjs` — do not edit generated files manually.
 
 # Text styling
 

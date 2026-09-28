@@ -1,7 +1,9 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuotoneIcon";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import {
+  ArrowLeftDuotoneIcon,
+  ArrowLeftRegularIcon,
+} from "alouette-icons/phosphor-icons/ArrowLeft";
 import type { ReactNode } from "react";
 import { AccentScope } from "../containers/AccentScope";
 import { View } from "../primitives/View";

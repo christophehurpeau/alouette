@@ -1,4 +1,4 @@
-import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons/CaretRightRegularIcon";
+import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons/CaretRight";
 import type { ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
 import { View } from "react-native";

@@ -87,7 +87,7 @@ the icon size (12px / 16px). Pass `icon` as a rendered element; do not size it
 yourself.
 
 ```tsx
-import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
+import { StarRegularIcon } from "alouette-icons/phosphor-icons/Star";
 
 <Badge size="sm" icon={<StarRegularIcon />}>
   Featured
@@ -138,7 +138,7 @@ nearest scope, so accent a whole list by accenting its container. Stack rows in 
 
 ```tsx
 import { Bullet, View } from "alouette";
-import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
+import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircle";
 
 <View className="gap-xs">
   <Bullet icon={<CheckCircleRegularIcon />}>Consistent UI</Bullet>

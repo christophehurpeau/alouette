@@ -1,7 +1,7 @@
 import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QuestionRegularIcon } from "alouette-icons/phosphor-icons/QuestionRegularIcon";
-import { TrashRegularIcon } from "alouette-icons/phosphor-icons/TrashRegularIcon";
+import { QuestionRegularIcon } from "alouette-icons/phosphor-icons/Question";
+import { TrashRegularIcon } from "alouette-icons/phosphor-icons/Trash";
 import { type ReactNode, useState } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Button } from "../actions/Button";

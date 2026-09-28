@@ -1,14 +1,14 @@
 import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BellRegularIcon } from "alouette-icons/phosphor-icons/BellRegularIcon";
-import { BirdRegularIcon } from "alouette-icons/phosphor-icons/BirdRegularIcon";
-import { BookmarkSimpleRegularIcon } from "alouette-icons/phosphor-icons/BookmarkSimpleRegularIcon";
-import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
-import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
-import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
-import { SignInRegularIcon } from "alouette-icons/phosphor-icons/SignInRegularIcon";
-import { SignOutRegularIcon } from "alouette-icons/phosphor-icons/SignOutRegularIcon";
-import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircleRegularIcon";
+import { BellRegularIcon } from "alouette-icons/phosphor-icons/Bell";
+import { BirdRegularIcon } from "alouette-icons/phosphor-icons/Bird";
+import { BookmarkSimpleRegularIcon } from "alouette-icons/phosphor-icons/BookmarkSimple";
+import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBar";
+import { GearRegularIcon } from "alouette-icons/phosphor-icons/Gear";
+import { HouseRegularIcon } from "alouette-icons/phosphor-icons/House";
+import { SignInRegularIcon } from "alouette-icons/phosphor-icons/SignIn";
+import { SignOutRegularIcon } from "alouette-icons/phosphor-icons/SignOut";
+import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircle";
 import { type ReactNode, useState } from "react";
 import {
   type ColorModePreference,

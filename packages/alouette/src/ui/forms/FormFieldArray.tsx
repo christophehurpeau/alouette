@@ -1,5 +1,5 @@
-import { PlusRegularIcon } from "alouette-icons/phosphor-icons/PlusRegularIcon";
-import { TrashRegularIcon } from "alouette-icons/phosphor-icons/TrashRegularIcon";
+import { PlusRegularIcon } from "alouette-icons/phosphor-icons/Plus";
+import { TrashRegularIcon } from "alouette-icons/phosphor-icons/Trash";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import {
   type ArrayPath,

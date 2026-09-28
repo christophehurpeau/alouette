@@ -1,5 +1,5 @@
-import { AsteriskSimpleRegularIcon } from "alouette-icons/phosphor-icons/AsteriskSimpleRegularIcon";
-import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
+import { AsteriskSimpleRegularIcon } from "alouette-icons/phosphor-icons/AsteriskSimple";
+import { WarningRegularIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactNode, useId } from "react";
 import { Pressable } from "react-native";
 import { AccentScope } from "../containers/AccentScope";

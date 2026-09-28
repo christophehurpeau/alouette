@@ -373,7 +373,7 @@ reading hex channels, say) can read `alouette/defaultThemeVariables` directly.
 Icons come from the integrated `alouette-icons` package:
 
 ```tsx
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeft";
 
 function MyComponent() {
   return <ArrowLeftRegularIcon />;
@@ -402,7 +402,7 @@ function MyComponent() {
 
 ```tsx
 import { Button } from "alouette";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeft";
 
 function MyComponent() {
   return (

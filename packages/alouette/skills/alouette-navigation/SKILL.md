@@ -180,8 +180,7 @@ as long as the item is selected: the current page in a `NavBar`, the selected
 `Tab`, the checked `RadioButton`. A disabled item never swaps.
 
 ```tsx
-import { HouseDuotoneIcon } from "alouette-icons/phosphor-icons/HouseDuotoneIcon";
-import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+import { HouseDuotoneIcon, HouseRegularIcon } from "alouette-icons/phosphor-icons/House";
 
 <NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
 

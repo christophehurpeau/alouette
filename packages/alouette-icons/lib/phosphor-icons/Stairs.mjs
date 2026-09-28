@@ -1,0 +1,14 @@
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+
+import { createDuotoneIcon, createIcon } from "alouette-icons/createIcon";
+
+export const StairsRegularIcon = /*#__PURE__*/ createIcon(
+  "M200,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V40A16,16,0,0,0,200,24ZM152,144h48v24H112V144Zm8-16V104h40v24Zm40-88V88H152a8,8,0,0,0-8,8v32H104a8,8,0,0,0-8,8v32H56V40Zm0,176H56V184H200v32Z",
+);
+export const StairsDuotoneIcon = /*#__PURE__*/ createDuotoneIcon(
+  "M208,40V96H152v40H104v40H48V40a8,8,0,0,1,8-8H200A8,8,0,0,1,208,40Z",
+  "M200,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V40A16,16,0,0,0,200,24ZM152,144h48v24H112V144Zm8-16V104h40v24Zm40-88V88H152a8,8,0,0,0-8,8v32H104a8,8,0,0,0-8,8v32H56V40Zm0,176H56V184H200v32Z",
+);
+export const StairsFillIcon = /*#__PURE__*/ createIcon(
+  "M200,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V40A16,16,0,0,0,200,24Zm-40,80h40v24H160Zm-48,40h88v24H112Zm88,72H56V184H200v32Z",
+);

@@ -1,4 +1,4 @@
-import { CheckFatDuotoneIcon } from "alouette-icons/phosphor-icons/CheckFatDuotoneIcon";
+import { CheckFatDuotoneIcon } from "alouette-icons/phosphor-icons/CheckFat";
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import { Icon } from "../primitives/Icon";

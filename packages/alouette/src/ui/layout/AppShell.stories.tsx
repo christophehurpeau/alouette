@@ -1,9 +1,9 @@
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BirdRegularIcon } from "alouette-icons/phosphor-icons/BirdRegularIcon";
-import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
-import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
-import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+import { BirdRegularIcon } from "alouette-icons/phosphor-icons/Bird";
+import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBar";
+import { GearRegularIcon } from "alouette-icons/phosphor-icons/Gear";
+import { HouseRegularIcon } from "alouette-icons/phosphor-icons/House";
 import { type ReactNode, useState } from "react";
 import { Box } from "../containers/Box";
 import { NavBar } from "../navigation/NavBar";

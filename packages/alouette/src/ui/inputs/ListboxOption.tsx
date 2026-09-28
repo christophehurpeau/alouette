@@ -1,4 +1,4 @@
-import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
 import { type ReactNode, forwardRef } from "react";
 import {
   Pressable,

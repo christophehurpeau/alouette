@@ -5,11 +5,13 @@ description: >
   InfoMessage, ConfirmationMessage, WarningMessage and ErrorMessage are its
   ready-made meanings — optionally dismissible, and flattened when it sits
   inside an already-raised surface. ConnectionState is the banner pinned at the
-  top of the screen reporting the network, and LinearProgress and
-  CircularProgress show how far a determinate operation has got. A failure
+  top of the screen reporting the network. LinearProgress and CircularProgress
+  show how far an operation with a known percentage has got; their
+  Indeterminate twins show that one is running when no percentage exists. A failure
   coming out of a button or a form is already rendered by that component, so
   reach for these for status the screen itself has to state. Load when showing
-  inline status, alerts, dismissible notices, connection status, or progress.
+  inline status, alerts, dismissible notices, connection status, a progress
+  bar or a loading indicator.
 type: core
 library: alouette
 requires:
@@ -21,6 +23,7 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/ConnectionState.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/LinearProgress.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/CircularProgress.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/useSimulatedProgress.ts"
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -96,7 +99,7 @@ different accent or a custom icon, use the base `Message` with an explicit
 
 ```tsx
 import { Message } from "alouette";
-import { XCircleRegularIcon } from "alouette-icons/phosphor-icons/XCircleRegularIcon";
+import { XCircleRegularIcon } from "alouette-icons/phosphor-icons/XCircle";
 
 <Message accent="brand" icon={<XCircleRegularIcon />} size="lg">
   Custom banner.
@@ -145,9 +148,26 @@ import { LinearProgress, CircularProgress } from "alouette";
 </Box>
 ```
 
-For an **unknown**-duration wait (spinner), don't hand-roll one — a `Button`
-with `state="loading"` already renders the indeterminate spinner (see
-alouette-actions). There is no exported standalone indeterminate component.
+For an **unknown** percentage (reconnecting, a page transition, a background
+fetch), use `IndeterminateLinearProgress` / `IndeterminateCircularProgress`. They
+take `loading` instead of `progress` and `hidden`: while `true` the fill creeps
+toward 100% without reaching it; once `false` it completes, then fades out. Keep
+them mounted and toggle `loading` — unmounting on completion cuts the finish
+animation off.
+
+```tsx
+import { IndeterminateLinearProgress } from "alouette";
+
+<Box className="relative overflow-hidden">
+  <IndeterminateLinearProgress loading={isFetching} size="sm" />
+</Box>
+```
+
+A pending **action** needs neither: a `Button` with `state="loading"` (or
+`ActionButton`, which derives it from the promise) already renders the
+indeterminate ring (see alouette-actions).
+
+Source: packages/alouette/src/ui/feedback/LinearProgress.tsx; ui/feedback/useSimulatedProgress.ts
 
 ## Common Mistakes
 
@@ -276,17 +296,20 @@ Wrong:
 
 ```tsx
 <CircularProgress progress={0} /> {/* as a spinner */}
+{isLoading && <CircularProgress progress={50} />}
 ```
 
 Correct:
 
 ```tsx
-<Button text="Save" state="loading" onPress={save} />
+<IndeterminateCircularProgress loading={isLoading} />
 ```
 
-`LinearProgress` / `CircularProgress` are determinate — they render the `progress`
-value you pass. There is no exported indeterminate variant; a pending, no-percentage
-wait is a `Button` `state="loading"` spinner (or `ActionButton`).
+`LinearProgress` / `CircularProgress` render the `progress` value you pass, so a
+fixed value reads as a stalled operation. The Indeterminate twin owns the creep,
+the completion and the fade-out from a single `loading` flag. When the wait
+belongs to a button press, use `Button` `state="loading"` / `ActionButton`
+instead.
 
 Source: packages/alouette/src/ui/feedback/CircularProgress.tsx; ui/actions/Button.tsx
 

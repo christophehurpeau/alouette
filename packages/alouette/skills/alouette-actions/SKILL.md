@@ -48,7 +48,7 @@ twin of it, and never `outlined`.
 
 ```tsx
 import { Button } from "alouette";
-import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
 
 <Button text="Save" icon={<CheckRegularIcon />} onPress={save} />;
 ```
@@ -195,7 +195,7 @@ Don't drive loading UI yourself (spinner + manual `disabled`) — use
 
 ```tsx
 import { IconButton } from "alouette";
-import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
+import { XRegularIcon } from "alouette-icons/phosphor-icons/X";
 
 <IconButton icon={<XRegularIcon />} aria-label="Close" onPress={close} />;
 ```
@@ -213,8 +213,10 @@ replacement: the background and border still come from the `interactive-*`
 tokens, and a disabled control never swaps.
 
 ```tsx
-import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuotoneIcon";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import {
+  ArrowLeftDuotoneIcon,
+  ArrowLeftRegularIcon,
+} from "alouette-icons/phosphor-icons/ArrowLeft";
 
 <Button
   text="Back"

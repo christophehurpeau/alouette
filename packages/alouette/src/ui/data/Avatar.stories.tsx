@@ -1,7 +1,7 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { RobotRegularIcon } from "alouette-icons/phosphor-icons/RobotRegularIcon";
-import { UserRegularIcon } from "alouette-icons/phosphor-icons/UserRegularIcon";
+import { RobotRegularIcon } from "alouette-icons/phosphor-icons/Robot";
+import { UserRegularIcon } from "alouette-icons/phosphor-icons/User";
 import type { ReactNode } from "react";
 import type { SVGIconElement } from "../primitives/Icon";
 import { View } from "../primitives/View";

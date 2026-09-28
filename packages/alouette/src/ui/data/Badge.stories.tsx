@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
+import { StarRegularIcon } from "alouette-icons/phosphor-icons/Star";
 import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { Badge } from "./Badge";

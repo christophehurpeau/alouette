@@ -1,17 +1,29 @@
 import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CopyDuotoneIcon } from "alouette-icons/phosphor-icons/CopyDuotoneIcon";
-import { CopyRegularIcon } from "alouette-icons/phosphor-icons/CopyRegularIcon";
-import { GearDuotoneIcon } from "alouette-icons/phosphor-icons/GearDuotoneIcon";
-import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
-import { PencilSimpleDuotoneIcon } from "alouette-icons/phosphor-icons/PencilSimpleDuotoneIcon";
-import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimpleRegularIcon";
-import { SignOutDuotoneIcon } from "alouette-icons/phosphor-icons/SignOutDuotoneIcon";
-import { SignOutRegularIcon } from "alouette-icons/phosphor-icons/SignOutRegularIcon";
-import { TrashDuotoneIcon } from "alouette-icons/phosphor-icons/TrashDuotoneIcon";
-import { TrashRegularIcon } from "alouette-icons/phosphor-icons/TrashRegularIcon";
-import { UserCircleDuotoneIcon } from "alouette-icons/phosphor-icons/UserCircleDuotoneIcon";
-import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircleRegularIcon";
+import {
+  CopyDuotoneIcon,
+  CopyRegularIcon,
+} from "alouette-icons/phosphor-icons/Copy";
+import {
+  GearDuotoneIcon,
+  GearRegularIcon,
+} from "alouette-icons/phosphor-icons/Gear";
+import {
+  PencilSimpleDuotoneIcon,
+  PencilSimpleRegularIcon,
+} from "alouette-icons/phosphor-icons/PencilSimple";
+import {
+  SignOutDuotoneIcon,
+  SignOutRegularIcon,
+} from "alouette-icons/phosphor-icons/SignOut";
+import {
+  TrashDuotoneIcon,
+  TrashRegularIcon,
+} from "alouette-icons/phosphor-icons/Trash";
+import {
+  UserCircleDuotoneIcon,
+  UserCircleRegularIcon,
+} from "alouette-icons/phosphor-icons/UserCircle";
 import { type ReactNode, useState } from "react";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
