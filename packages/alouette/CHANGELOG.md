@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [23.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.15.0...alouette@23.0.0) (2026-09-28)
+
+### ⚠ BREAKING CHANGES
+
+* Surface, HStack, VStack, Stack, EditableSurface, FormEditableSurface and their Props types are removed. Run `npx alouette-codemod surface-and-stacks src`; see MIGRATE.md.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+* CheckboxButton and CheckboxButtonGroup are removed.
+AppHeaderNav / AppHeaderNavItem are renamed HeaderNav / HeaderNavItem.
+IconButton no longer accepts variant="outlined".
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+### Features
+
+* enhance Avatar component with text trimming for initials and update styles
+* implement accent inheritance for Button, Badge, Avatar, CircularProgress, and LinearProgress components
+* refactor Modal component to include ModalPanel for improved rendering
+* remove deprecated Surface, stacks and EditableSurface aliases
+* tonal button material and neutral accent
+* update Button component to use rounded-full frames for size variants
+* update exports for LinearProgress and CircularProgress components to include Indeterminate variants
+* update SegmentedBar and SegmentedItem to use rounded-full styling for improved aesthetics
+
+### Bug Fixes
+
+* add variant prop to Avatar in AppHeaderAccount for consistent styling
+* adjust warning expectation for production builds in TonalGroundWarning story
+* update Modal inset padding for small size variant
+* update styling and props for Avatar, BrandLogo, and AppHeader components for consistency and improved aesthetics
+* wrap icon in View component for proper alignment in CheckboxCard and RadioCard
+
 ## [22.15.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.14.2...alouette@22.15.0) (2026-09-19)
 
 ### Features
