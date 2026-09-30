@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import type { ReactNode, Ref } from "react";
 import { Text as RNText, type TextProps as RNTextProps } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
 import { twMerge } from "../../core/twMerge";
@@ -6,21 +6,19 @@ import { AccentScope } from "../containers/AccentScope";
 
 export interface TextProps extends RNTextProps {
   accent?: Accent;
+  ref?: Ref<RNText>;
 }
 
-export const Text = forwardRef<RNText, TextProps>(
-  ({ className, accent, ...props }, ref) => {
-    return (
-      <AccentScope accent={accent}>
-        <RNText
-          ref={ref}
-          className={twMerge("font-body text-sharp", className)}
-          {...props}
-        />
-      </AccentScope>
-    );
-  },
-);
+export function Text({ className, accent, ...props }: TextProps): ReactNode {
+  return (
+    <AccentScope accent={accent}>
+      <RNText
+        className={twMerge("font-body text-sharp", className)}
+        {...props}
+      />
+    </AccentScope>
+  );
+}
 
 export type ParagraphProps = TextProps;
 
@@ -38,15 +36,12 @@ export type ParagraphProps = TextProps;
  * takes no block content, so nesting another `Paragraph` or a `View` inside
  * one is invalid DOM on web.
  */
-export const Paragraph = forwardRef<RNText, ParagraphProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <Text
-        ref={ref}
-        role="paragraph"
-        className={twMerge("select-auto", className)}
-        {...props}
-      />
-    );
-  },
-);
+export function Paragraph({ className, ...props }: ParagraphProps): ReactNode {
+  return (
+    <Text
+      role="paragraph"
+      className={twMerge("select-auto", className)}
+      {...props}
+    />
+  );
+}

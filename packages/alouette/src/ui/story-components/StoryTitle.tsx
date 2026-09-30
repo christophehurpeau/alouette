@@ -1,5 +1,4 @@
-import { forwardRef } from "react";
-import type { Text as RNText } from "react-native";
+import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
 import { Text, type TextProps } from "../primitives/Text";
 
@@ -22,14 +21,12 @@ type StoryTitleVariantProps = VariantProps<typeof storyTitleVariants>;
 
 export interface StoryTitleProps extends TextProps, StoryTitleVariantProps {}
 
-export const StoryTitle = forwardRef<RNText, StoryTitleProps>(
-  ({ className, level, ...props }, ref) => {
-    return (
-      <Text
-        ref={ref}
-        className={storyTitleVariants({ level, className })}
-        {...props}
-      />
-    );
-  },
-);
+export function StoryTitle({
+  className,
+  level,
+  ...props
+}: StoryTitleProps): ReactNode {
+  return (
+    <Text className={storyTitleVariants({ level, className })} {...props} />
+  );
+}

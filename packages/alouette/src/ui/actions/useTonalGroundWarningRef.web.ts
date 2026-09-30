@@ -1,5 +1,5 @@
 import {
-  type ForwardedRef,
+  type Ref,
   type RefCallback,
   useCallback,
   useEffect,
@@ -48,7 +48,7 @@ function warnIfOnOwnGround(element: HTMLElement): void {
  * detaching and re-attaching the caller's ref.
  */
 export function useTonalGroundWarningRef(
-  ref: ForwardedRef<RNView>,
+  ref: Ref<RNView> | undefined,
   { variant, disabled, forced }: TonalGroundWarningParams,
 ): RefCallback<RNView> {
   const elementRef = useRef<HTMLElement | null>(null);

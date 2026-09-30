@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
-import { Children, cloneElement, forwardRef } from "react";
+import type { ReactElement, ReactNode, Ref } from "react";
+import { Children, cloneElement } from "react";
 import {
   Pressable,
   type PressableProps,
@@ -19,21 +19,16 @@ export const boxBaseClasses = "shrink";
 
 export interface BoxProps extends RNViewProps {
   accent?: AccentOrNeutral;
+  ref?: Ref<RNView>;
 }
 
-export const Box = forwardRef<RNView, BoxProps>(
-  ({ className, accent, ...props }, ref) => {
-    return (
-      <AccentScope accent={accent}>
-        <RNView
-          ref={ref}
-          className={twMerge(boxBaseClasses, className)}
-          {...props}
-        />
-      </AccentScope>
-    );
-  },
-);
+export function Box({ className, accent, ...props }: BoxProps): ReactNode {
+  return (
+    <AccentScope accent={accent}>
+      <RNView className={twMerge(boxBaseClasses, className)} {...props} />
+    </AccentScope>
+  );
+}
 
 export const interactiveBoxVariants = tv({
   base: [
@@ -70,12 +65,18 @@ export const interactiveBoxVariants = tv({
 });
 
 export interface InteractiveBoxProps
-  extends VariantProps<typeof interactiveBoxVariants>, PressableProps {}
+  extends VariantProps<typeof interactiveBoxVariants>, PressableProps {
+  ref?: Ref<RNView>;
+}
 
-export const InteractiveBox = forwardRef<RNView, InteractiveBoxProps>(
-  ({ withFocusVisibleOutline, withPressEffect, className, ...rest }, ref) => (
+export function InteractiveBox({
+  withFocusVisibleOutline,
+  withPressEffect,
+  className,
+  ...rest
+}: InteractiveBoxProps): ReactNode {
+  return (
     <Pressable
-      ref={ref}
       // Pressable sets pointerEvents to "none" while disabled, which would hide
       // the not-allowed cursor.
       pointerEvents="auto"
@@ -86,52 +87,49 @@ export const InteractiveBox = forwardRef<RNView, InteractiveBoxProps>(
         className,
       })}
     />
-  ),
-);
+  );
+}
 
-export const InteractiveBoxHitSlop = forwardRef<RNView, InteractiveBoxProps>(
-  (
-    { withFocusVisibleOutline, withPressEffect, children, className, ...rest },
-    ref,
-  ) => {
-    const child = Children.only(children) as ReactElement<RNViewProps>;
-    return (
-      <Pressable
-        ref={ref}
-        // Pressable sets pointerEvents to "none" while disabled, which would hide
-        // the not-allowed cursor.
-        pointerEvents="auto"
-        className={`flex-center ${className ?? ""}`}
-        {...rest}
-      >
-        {cloneElement(child, {
-          className: interactiveBoxVariants({
-            withFocusVisibleOutline,
-            withPressEffect: rest.disabled ? false : withPressEffect,
-            className: child.props.className,
-          }),
-        })}
-      </Pressable>
-    );
-  },
-);
+export function InteractiveBoxHitSlop({
+  withFocusVisibleOutline,
+  withPressEffect,
+  children,
+  className,
+  ...rest
+}: InteractiveBoxProps): ReactNode {
+  const child = Children.only(children) as ReactElement<RNViewProps>;
+  return (
+    <Pressable
+      // Pressable sets pointerEvents to "none" while disabled, which would hide
+      // the not-allowed cursor.
+      pointerEvents="auto"
+      className={`flex-center ${className ?? ""}`}
+      {...rest}
+    >
+      {cloneElement(child, {
+        className: interactiveBoxVariants({
+          withFocusVisibleOutline,
+          withPressEffect: rest.disabled ? false : withPressEffect,
+          className: child.props.className,
+        }),
+      })}
+    </Pressable>
+  );
+}
 
 export type SafeAreaBoxProps = Omit<BoxProps, "style">;
 
-export const SafeAreaBox = forwardRef<RNView, SafeAreaBoxProps>(
-  (props, ref) => {
-    const insets = useSafeAreaInsets();
-    return (
-      <Box
-        ref={ref}
-        style={{
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
-          paddingLeft: insets.left,
-          paddingRight: insets.right,
-        }}
-        {...props}
-      />
-    );
-  },
-);
+export function SafeAreaBox(props: SafeAreaBoxProps): ReactNode {
+  const insets = useSafeAreaInsets();
+  return (
+    <Box
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      }}
+      {...props}
+    />
+  );
+}

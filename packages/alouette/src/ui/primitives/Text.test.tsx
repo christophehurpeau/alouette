@@ -1,24 +1,21 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import type { ReactNode, Ref } from "react";
-import { createElement, forwardRef } from "react";
+import { createElement } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("react-native", () => ({
-  Text: forwardRef(
-    (
-      {
-        className,
-        testID,
-        children,
-      }: { className?: string; testID?: string; children?: ReactNode },
-      ref: Ref<HTMLSpanElement>,
-    ) =>
-      createElement(
-        "span",
-        { ref, className, "data-testid": testID },
-        children,
-      ),
-  ),
+  Text: ({
+    ref,
+    className,
+    testID,
+    children,
+  }: {
+    ref?: Ref<HTMLSpanElement>;
+    className?: string;
+    testID?: string;
+    children?: ReactNode;
+  }) =>
+    createElement("span", { ref, className, "data-testid": testID }, children),
 }));
 
 // AccentScope pulls in the NativeWind runtime (nativewind → react-native

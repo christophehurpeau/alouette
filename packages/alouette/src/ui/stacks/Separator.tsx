@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import type { ReactNode, Ref } from "react";
 import { View as RNView, type ViewProps as RNViewProps } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 
@@ -17,18 +17,21 @@ const separatorVariants = tv({
 
 type SeparatorVariantProps = VariantProps<typeof separatorVariants>;
 
-export interface SeparatorProps extends RNViewProps, SeparatorVariantProps {}
+export interface SeparatorProps extends RNViewProps, SeparatorVariantProps {
+  ref?: Ref<RNView>;
+}
 
-export const Separator = forwardRef<RNView, SeparatorProps>(
-  ({ className, vertical, ...props }, ref) => {
-    return (
-      <RNView
-        ref={ref}
-        role="separator"
-        aria-orientation={vertical ? "vertical" : "horizontal"}
-        className={separatorVariants({ vertical, className })}
-        {...props}
-      />
-    );
-  },
-);
+export function Separator({
+  className,
+  vertical,
+  ...props
+}: SeparatorProps): ReactNode {
+  return (
+    <RNView
+      role="separator"
+      aria-orientation={vertical ? "vertical" : "horizontal"}
+      className={separatorVariants({ vertical, className })}
+      {...props}
+    />
+  );
+}

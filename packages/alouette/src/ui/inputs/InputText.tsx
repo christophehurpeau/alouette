@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import type { ReactNode, Ref } from "react";
 import {
   Platform,
   TextInput as RNTextInput,
@@ -107,28 +107,33 @@ export interface InputTextProps
   className?: string;
   disabled?: boolean;
   mode?: InputTextMode;
+  ref?: Ref<RNTextInput>;
 }
 
-export const InputText = forwardRef<RNTextInput, InputTextProps>(
-  ({ className, disabled, mode, multiline, forceStyle, ...props }, ref) => {
-    const placeholderColor =
-      Platform.OS === "web"
-        ? undefined
-        : // eslint-disable-next-line react-hooks/rules-of-hooks -- native only, web is set via css.
-          useColorVariable("--color-form-placeholder");
-    const modeProps = mode ? MODE_PROPS[mode] : undefined;
-    return (
-      <RNTextInput
-        ref={ref}
-        editable={!disabled}
-        disabled={disabled}
-        aria-disabled={disabled === true}
-        multiline={multiline === true}
-        placeholderTextColor={placeholderColor}
-        className={inputVariants({ multiline, forceStyle, className })}
-        {...modeProps}
-        {...props}
-      />
-    );
-  },
-);
+export function InputText({
+  className,
+  disabled,
+  mode,
+  multiline,
+  forceStyle,
+  ...props
+}: InputTextProps): ReactNode {
+  const placeholderColor =
+    Platform.OS === "web"
+      ? undefined
+      : // eslint-disable-next-line react-hooks/rules-of-hooks -- native only, web is set via css.
+        useColorVariable("--color-form-placeholder");
+  const modeProps = mode ? MODE_PROPS[mode] : undefined;
+  return (
+    <RNTextInput
+      editable={!disabled}
+      disabled={disabled}
+      aria-disabled={disabled === true}
+      multiline={multiline === true}
+      placeholderTextColor={placeholderColor}
+      className={inputVariants({ multiline, forceStyle, className })}
+      {...modeProps}
+      {...props}
+    />
+  );
+}

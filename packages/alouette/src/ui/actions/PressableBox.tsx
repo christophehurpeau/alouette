@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import type { ReactNode, Ref } from "react";
 import type {
   PressableProps as RNPressableProps,
   View as RNView,
@@ -204,48 +204,45 @@ export interface PressableBoxProps
    * the outline would ring whatever the mouse is over.
    */
   withFocusVisibleOutline?: boolean;
+  ref?: Ref<RNView>;
 }
 
 /**
  * `InteractiveBox` with a material: the `variant`'s `interactive-*` states, an
  * accent scope, and a `link` role when it has an `href`.
  */
-export const PressableBox = forwardRef<RNView, PressableBoxProps>(
-  (
-    {
-      className,
-      variant,
-      forceStyle,
-      accent,
-      href,
-      role,
-      withFocusVisibleOutline = true,
-      ...props
-    },
-    ref,
-  ) => {
-    const warningRef = useTonalGroundWarningRef(ref, {
-      variant,
-      disabled: props.disabled === true,
-      forced: forceStyle !== undefined,
-    });
+export function PressableBox({
+  ref,
+  className,
+  variant,
+  forceStyle,
+  accent,
+  href,
+  role,
+  withFocusVisibleOutline = true,
+  ...props
+}: PressableBoxProps): ReactNode {
+  const warningRef = useTonalGroundWarningRef(ref, {
+    variant,
+    disabled: props.disabled === true,
+    forced: forceStyle !== undefined,
+  });
 
-    return (
-      <AccentScope accent={accent}>
-        <InteractiveBox
-          ref={warningRef}
-          withFocusVisibleOutline={withFocusVisibleOutline}
-          role={role ?? (href === undefined ? "button" : "link")}
-          className={pressableBoxVariants({
-            variant,
-            withPressEffect: !props.disabled,
-            className,
-            forceStyle,
-          })}
-          href={href}
-          {...props}
-        />
-      </AccentScope>
-    );
-  },
-);
+  return (
+    <AccentScope accent={accent}>
+      <InteractiveBox
+        ref={warningRef}
+        withFocusVisibleOutline={withFocusVisibleOutline}
+        role={role ?? (href === undefined ? "button" : "link")}
+        className={pressableBoxVariants({
+          variant,
+          withPressEffect: !props.disabled,
+          className,
+          forceStyle,
+        })}
+        href={href}
+        {...props}
+      />
+    </AccentScope>
+  );
+}
