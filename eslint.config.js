@@ -1,9 +1,6 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-
 import pobTypescriptReactConfig, {
   applyTs,
 } from "@pob/eslint-config-typescript-react";
-import storybook from "eslint-plugin-storybook";
 
 const { configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig;
 
@@ -40,9 +37,6 @@ export default [
       },
       ...pobTypescriptReactConfigs.app,
       ...pobTypescriptReactConfigs["react-native-web"],
-      // ...compat.config({
-      //   extends: ["plugin:storybook/recommended"],
-      // }),
     ],
   }),
   {
@@ -92,7 +86,6 @@ export default [
       "import-x/no-unresolved": ["error", { ignore: ["^alouette(/|$)"] }],
     },
   },
-  ...storybook.configs["flat/recommended"],
   // react-native-css (NativeWind v5's native engine) breaks at runtime with
   // lightningcss >=1.31 ("failed to deserialize Specifier"), so the app pins
   // lightningcss to 1.30.x. Vite wants ^1.32.0 and nests its own copy. This

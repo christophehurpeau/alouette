@@ -64,6 +64,7 @@ function SelectInner({
     <>
       <InteractiveBox
         withFocusVisibleOutline
+        // oxlint-disable-next-line jsx-a11y/role-has-required-aria-props -- React Native has no aria-controls (Select.web.tsx renders a native <select>)
         role="combobox"
         aria-expanded={open}
         aria-disabled={disabled === true}

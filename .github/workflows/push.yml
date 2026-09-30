@@ -39,6 +39,10 @@ jobs:
         run: pnpm run tsc
         if: startsWith(matrix.node-version, '24.')
 
+      - name: Oxlint
+        run: pnpm run lint:oxlint
+        if: startsWith(matrix.node-version, '24.')
+
       - name: Eslint
         run: pnpm run lint:eslint
         if: startsWith(matrix.node-version, '24.')

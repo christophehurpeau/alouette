@@ -50,6 +50,7 @@ export function InputTextAutocomplete({
       <AccentScope accent={accent}>
         <InputText
           readOnly
+          // oxlint-disable-next-line jsx-a11y/role-has-required-aria-props -- React Native has no aria-controls (the .web.tsx input gets it from downshift)
           role="combobox"
           aria-expanded={isOpen}
           aria-label={rest["aria-label"]}

@@ -16,8 +16,9 @@
     "#/*": "./src/*"
   },
   "scripts": {
-    "lint": "pnpm run lint:eslint",
-    "lint:eslint": "pnpm run --dir '../..' eslint --quiet 'packages/expo-demo-app'",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
+    "lint:eslint": "pnpm --dir '../..' exec eslint --quiet 'packages/expo-demo-app'",
+    "lint:oxlint": "pnpm --dir '../..' exec oxlint --quiet 'packages/expo-demo-app'",
     "start": "expo start",
     "start:android": "expo start --android",
     "start:ios": "expo start --ios",

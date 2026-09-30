@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
-import Animated, {
+import {
   Easing,
+  createAnimatedComponent,
   useAnimatedProps,
   useSharedValue,
   withTiming,
@@ -23,7 +24,7 @@ export interface RingCircleProps {
   height?: number;
 }
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedCircle = createAnimatedComponent(Circle);
 
 // Matches the web ring's CSS `ease-out` (cubic-bezier(0, 0, 0.58, 1)).
 const easeOut = Easing.bezier(0, 0, 0.58, 1);

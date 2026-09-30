@@ -71,6 +71,7 @@ const selfAdaptive =
 // through the CSS cascade (they never override it).
 const grayscaleOnly =
   (resolver: TokenResolver): TokenResolver =>
+  // oxlint-disable-next-line react/function-component-definition -- a token resolver, not a component
   (ctx) =>
     ctx.isGrayscale ? resolver(ctx) : null;
 
