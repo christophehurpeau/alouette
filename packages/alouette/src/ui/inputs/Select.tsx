@@ -1,9 +1,9 @@
 import { type ReactNode, useState } from "react";
 import { useWindowDimensions } from "react-native";
 import { useControllableValue } from "../../core/useControllableValue";
-import { AccentScope } from "../containers/AccentScope";
 import { Box, InteractiveBox } from "../containers/Box";
 import { Popover } from "../containers/Popover";
+import { StableAccentScope } from "../containers/StableAccentScope";
 import { ScrollView } from "../primitives/ScrollView";
 import { ListboxOption } from "./ListboxOption";
 import {
@@ -21,9 +21,12 @@ function SelectInner({
   icon,
   variant,
   disabled,
+  invalid,
   testID,
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledby,
+  "aria-describedby": ariaDescribedby,
+  "aria-required": ariaRequired,
 }: Omit<SelectProps, "accent">): ReactNode {
   const [current, setValue] = useControllableValue({
     value,
@@ -39,6 +42,14 @@ function SelectInner({
     setOpen(false);
   };
 
+  // Untyped by react-native, which ignores them; declared on SelectProps for
+  // the web build and kept here so both platforms take the same props.
+  const webAriaProps = {
+    "aria-invalid": invalid === true,
+    "aria-describedby": ariaDescribedby,
+    "aria-required": ariaRequired,
+  };
+
   return (
     <>
       <InteractiveBox
@@ -51,6 +62,7 @@ function SelectInner({
         testID={testID}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
+        {...webAriaProps}
         className={selectTriggerVariants({
           variant,
           disabled: disabled === true,
@@ -98,10 +110,12 @@ function SelectInner({
   );
 }
 
+// Stable: `invalid` toggles while the form is edited, and a plain AccentScope
+// would remount the trigger with it.
 export function Select({ accent, ...rest }: SelectProps): ReactNode {
   return (
-    <AccentScope accent={accent}>
+    <StableAccentScope accent={rest.invalid ? "danger" : accent}>
       <SelectInner {...rest} />
-    </AccentScope>
+    </StableAccentScope>
   );
 }

@@ -90,6 +90,14 @@ export const Variants: ThisStory = {
                   onValueChange={fn()}
                 />
               </StoryGrid.Col>
+              <StoryGrid.Col title="invalid">
+                <FruitSelect
+                  invalid
+                  accent={accent}
+                  placeholder="Pick a fruit..."
+                  onValueChange={fn()}
+                />
+              </StoryGrid.Col>
             </StoryGrid.Row>
           </Story.SubSection>
         ))}
@@ -207,6 +215,14 @@ export const Tests: StoryObj<typeof Select> = {
           onValueChange={fn()}
         />
       </Story.Section>
+      <Story.Section title="Invalid">
+        <FruitSelect
+          invalid
+          aria-label="Invalid fruit"
+          placeholder="Pick a fruit..."
+          onValueChange={fn()}
+        />
+      </Story.Section>
     </Story>
   ),
 
@@ -256,6 +272,16 @@ export const Tests: StoryObj<typeof Select> = {
 
     // An outlined select is a field: ringed like InputText while focused.
     await expect(getComputedStyle(select).outlineWidth).toBe("1px");
+    await expect(select).toHaveAttribute("aria-invalid", "false");
+
+    // An invalid one says so and takes the danger border, like InputText.
+    const invalidSelect = canvas.getByRole("combobox", {
+      name: "Invalid fruit",
+    });
+    await expect(invalidSelect).toHaveAttribute("aria-invalid", "true");
+    await expect(getComputedStyle(invalidSelect).borderTopColor).not.toBe(
+      getComputedStyle(select).borderTopColor,
+    );
 
     // A disabled select is out of the tab order and does not open.
     const disabledSelect = canvas.getByRole("combobox", {

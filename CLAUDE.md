@@ -33,6 +33,16 @@ Run a single unit test file:
 pnpm test run packages/alouette/src/config/utils/colorContrast.test.ts
 ```
 
+## Breaking changes
+
+A change that breaks a consumer (a removed or renamed export, prop or token, a
+changed prop signature, a palette that must be regenerated) is documented in
+`packages/alouette/MIGRATE.md` in the same commit, under the next version's
+heading (`# To <next major>`, above the released ones; `package.json` holds the
+last released version), with a before/after example. The commit is marked `!`
+(`feat(alouette)!: …`) and carries a `BREAKING CHANGE:` footer naming what
+breaks and what replaces it, never a plain `feat`.
+
 ## Architecture
 
 pnpm workspaces monorepo with 3 packages:
@@ -620,6 +630,21 @@ for an app rendering a single text field.
 // Avoid — the type argument blocks inference; field.value is string | number | …
 <FormField<Values> name="email" … />
 ```
+
+## A field's error state comes from `FormItem`'s render params
+
+`FormItem` renders the label, `details` and the error message, and hands the
+input what mirrors them: `render({ labelId, describedBy, invalid, required })`
+(`FormField` adds `field`). The input wires all four — `aria-labelledby`,
+`aria-describedby`, `invalid`, `aria-required` — so a red label never sits over
+a neutral border and a screen reader reads the message with the field.
+`invalid` on `InputText` / `TextArea` / `Select` / `InputTextAutocomplete` is a
+danger `AccentScope` around the field (the `interactive-outlined-*` border
+tokens follow it) plus `aria-invalid`, never a hand-written `accent="danger"`
+or a `border-*` class. `aria-invalid`, `aria-describedby` and `aria-required`
+are untyped by react-native and web only in effect: declare them on the
+component's props (as `SegmentedItem` does for `aria-current`) and let them
+flow through.
 
 ## Never silently swallow unexpected errors
 

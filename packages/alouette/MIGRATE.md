@@ -1,5 +1,46 @@
 # To 24.0.0
 
+## FormItem: `render` takes an object, and the input shows the error
+
+`FormItem`'s `render` prop received the label id as a string. It now receives
+`FormItemRenderParams`, `{ labelId, describedBy, invalid, required }`, so the
+input can carry the state the label and the message around it already show.
+`FormField`'s `render` params gain the same fields beside `field` and `labelId`.
+
+Wire all four onto the input. `InputText`, `TextArea`, `Select` and
+`InputTextAutocomplete` take `invalid` (the danger border, through the
+`interactive-outlined-*` tokens, plus `aria-invalid`), `aria-describedby` and
+`aria-required`:
+
+```tsx
+// Before
+<FormItem
+  label="Email"
+  render={(labelId) => <InputText aria-labelledby={labelId} />}
+/>
+
+// After
+<FormItem
+  label="Email"
+  render={({ labelId, describedBy, invalid, required }) => (
+    <InputText
+      aria-labelledby={labelId}
+      aria-describedby={describedBy}
+      aria-required={required}
+      invalid={invalid}
+    />
+  )}
+/>
+```
+
+A `FormField` input adds the same three props next to `ref={field.ref}` and
+`aria-labelledby={labelId}`. `describedBy` holds the ids of `details` and
+`error`, whichever are rendered, and is `undefined` without either. The three
+ARIA attributes are web only in effect: React Native has no equivalent and
+ignores them.
+
+## alouette-icons: one module per glyph
+
 `alouette-icons` 12.0.0 has one module per Phosphor glyph instead of one per
 weight. Each glyph module exports the regular, duotone and fill weights. The
 export names are unchanged; only the import path changes. Upgrade `alouette-icons`

@@ -2,9 +2,9 @@ import { useSelect } from "downshift";
 import { type ReactNode, type Ref, type RefObject, useRef } from "react";
 import type { View as RNView } from "react-native";
 import { useControllableValue } from "../../core/useControllableValue";
-import { AccentScope } from "../containers/AccentScope";
 import { Box } from "../containers/Box";
 import { Popover } from "../containers/Popover";
+import { StableAccentScope } from "../containers/StableAccentScope";
 import { ScrollView } from "../primitives/ScrollView";
 import { View, type ViewProps } from "../primitives/View";
 import { ListboxOption, type ListboxOptionProps } from "./ListboxOption";
@@ -42,10 +42,13 @@ export function Select({
   icon,
   variant,
   disabled,
+  invalid,
   accent,
   testID,
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledby,
+  "aria-describedby": ariaDescribedby,
+  "aria-required": ariaRequired,
 }: SelectProps): ReactNode {
   const [current, setValue] = useControllableValue({
     value,
@@ -109,13 +112,18 @@ export function Select({
     disabled,
     "aria-label": ariaLabel,
     "aria-labelledby": ariaLabelledby,
+    "aria-describedby": ariaDescribedby,
     "aria-disabled": disabled === true,
+    "aria-invalid": invalid === true,
+    "aria-required": ariaRequired,
     tabIndex: disabled === true ? -1 : 0,
   });
 
   return (
     <>
-      <AccentScope accent={accent}>
+      {/* Stable: `invalid` toggles while the form is edited, and a plain
+          AccentScope would remount the trigger (and downshift's ref to it). */}
+      <StableAccentScope accent={invalid ? "danger" : accent}>
         <div
           {...toggleButtonProps}
           data-testid={testID}
@@ -132,7 +140,7 @@ export function Select({
             disabled={disabled}
           />
         </div>
-      </AccentScope>
+      </StableAccentScope>
       <Popover
         open={isOpen}
         anchorRef={triggerRef as unknown as RefObject<RNView | null>}

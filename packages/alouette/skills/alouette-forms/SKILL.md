@@ -170,11 +170,14 @@ function submitErrorToMessage(error: unknown): string {
       name="name"
       label="Name"
       required="Name is required."
-      render={({ field, labelId }) => (
+      render={({ field, labelId, describedBy, invalid, required }) => (
         <InputText
           ref={field.ref}
           value={field.value}
           aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          aria-required={required}
+          invalid={invalid}
           onChangeText={field.onChange}
           onBlur={field.onBlur}
         />
@@ -191,29 +194,27 @@ needs one.
 ### FormField wiring
 
 `FormField` renders any input through `render` — it is not tied to `InputText`.
-The rendered input must spread the three `field` bindings and the label:
+The rendered input must wire the `field` bindings and `FormItem`'s state:
 
 - `control={control}` — from the enclosing `Form`'s `render` params; types `name`
   and `field.value`.
 - `ref={field.ref}` — lets pressing the label focus the input (via
   react-hook-form `setFocus`).
 - `value={field.value}` / `onChangeText={field.onChange}` / `onBlur={field.onBlur}`.
-- `aria-labelledby={labelId}` — ties the input to `FormItem`'s generated label.
+- `aria-labelledby={labelId}`, `aria-describedby={describedBy}`, `invalid={invalid}`
+  and `aria-required={required}` — `FormItem`'s state (label, `details` + error
+  ids, danger border + `aria-invalid`, required); every alouette field takes them.
 
 `required` doubles as the empty-field message: `true` shows the marker with no
 message; any other `ReactNode` is the message shown once the field is left empty.
 `validate` takes a react-hook-form validator (returns an error string or
-`undefined`). For rich/non-string error content, use `renderError`.
-
-`validate` sits beside `required` on the same `FormField`, with the render body
-unchanged:
+`undefined`) and sits beside `required` on the same `FormField`; its `v` is the
+field's value type, so a `number` field's validator takes a number without a
+cast. For rich/non-string error content, use `renderError`.
 
 ```tsx
 validate={(v) => (/^[^@]+@[^@]+$/.test(v) ? undefined : "Enter a valid email.")}
 ```
-
-`validate`'s `v` is that field's value type, so a `number` field's validator takes
-a number without a cast.
 
 ### Custom layout with Form
 
@@ -374,7 +375,7 @@ is ignored.
 
 Source: packages/alouette/src/ui/forms/FormField.tsx
 
-### HIGH Forgetting field.ref / aria-labelledby on the input
+### HIGH Forgetting field.ref or FormItem's render params on the input
 
 Wrong:
 
@@ -385,15 +386,17 @@ render={({ field }) => <InputText value={field.value} onChangeText={field.onChan
 Correct:
 
 ```tsx
-render={({ field, labelId }) => (
+render={({ field, labelId, describedBy, invalid, required }) => (
   <InputText ref={field.ref} value={field.value} aria-labelledby={labelId}
+    aria-describedby={describedBy} aria-required={required} invalid={invalid}
     onChangeText={field.onChange} onBlur={field.onBlur} />
 )}
 ```
 
-Without `field.ref`, pressing the label can't focus the input and
-react-hook-form's `setFocus` no-ops; without `aria-labelledby={labelId}` the
-input has no accessible name.
+Without `field.ref`, pressing the label can't focus the input and `setFocus`
+no-ops; without `aria-labelledby` the input has no accessible name; without
+`invalid` / `describedBy` a field in error keeps a neutral border under its red
+label and a screen reader never links the message to it.
 
 Source: packages/alouette/src/ui/forms/FormField.tsx; ui/forms/FormItem.tsx
 

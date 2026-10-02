@@ -32,9 +32,18 @@ export interface SelectProps {
   /** Defaults to `outlined`. */
   variant?: SelectVariant;
   disabled?: boolean;
+  /**
+   * The field is in error: the trigger takes the danger accent over `accent`
+   * and is `aria-invalid`. From `FormItem`'s render params, next to
+   * `describedBy`.
+   */
+  invalid?: boolean;
   accent?: AccentOrNeutral;
   "aria-label"?: string;
   "aria-labelledby"?: string;
+  /** Web only in effect, like on `InputText`. */
+  "aria-describedby"?: string;
+  "aria-required"?: boolean;
   testID?: string;
 }
 

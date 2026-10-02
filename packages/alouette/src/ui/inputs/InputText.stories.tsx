@@ -1,10 +1,56 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { ReactNode } from "react";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
-import { InputText } from "./InputText";
+import { InputText, type InputTextProps } from "./InputText";
 
 type ThisStory = StoryObj<typeof InputText>;
+
+type ForcedState = NonNullable<InputTextProps["forceStyle"]>;
+type InputState = ForcedState | "disabled" | "invalid";
+
+function StateCol({
+  state,
+  ...props
+}: Pick<InputTextProps, "placeholder" | "value"> & {
+  state: InputState | undefined;
+}): ReactNode {
+  if (state === "disabled") {
+    return (
+      <StoryGrid.Col title="disabled">
+        <InputText disabled {...props} />
+      </StoryGrid.Col>
+    );
+  }
+  if (state === "invalid") {
+    return (
+      <StoryGrid.Col title="invalid">
+        <InputText invalid {...props} />
+      </StoryGrid.Col>
+    );
+  }
+  return (
+    <StoryGrid.Col title={state ?? "Default"}>
+      <InputText forceStyle={state} {...props} />
+    </StoryGrid.Col>
+  );
+}
+
+function StateRow(
+  props: Pick<InputTextProps, "placeholder" | "value">,
+): ReactNode {
+  return (
+    <StoryGrid.Row flexWrap>
+      <StateCol state={undefined} {...props} />
+      <StateCol state="hover" {...props} />
+      <StateCol state="focus" {...props} />
+      <StateCol state="press" {...props} />
+      <StateCol state="disabled" {...props} />
+      <StateCol state="invalid" {...props} />
+    </StoryGrid.Row>
+  );
+}
 
 export default {
   title: "alouette/Inputs/InputText",
@@ -41,44 +87,9 @@ export const Variants: ThisStory = {
             title={accent}
             accent={accent}
           >
-            <StoryGrid.Row flexWrap>
-              {(
-                [undefined, "hover", "focus", "press", "disabled"] as const
-              ).map((state) => (
-                <StoryGrid.Col key={state} title={state ?? "Default"}>
-                  <InputText
-                    disabled={state === "disabled"}
-                    forceStyle={state === "disabled" ? undefined : state}
-                  />
-                </StoryGrid.Col>
-              ))}
-            </StoryGrid.Row>
-            <StoryGrid.Row flexWrap>
-              {(
-                [undefined, "hover", "focus", "press", "disabled"] as const
-              ).map((state) => (
-                <StoryGrid.Col key={state} title={state ?? "Default"}>
-                  <InputText
-                    disabled={state === "disabled"}
-                    forceStyle={state === "disabled" ? undefined : state}
-                    placeholder="Placeholder"
-                  />
-                </StoryGrid.Col>
-              ))}
-            </StoryGrid.Row>
-            <StoryGrid.Row flexWrap>
-              {(
-                [undefined, "hover", "focus", "press", "disabled"] as const
-              ).map((state) => (
-                <StoryGrid.Col key={state} title={state ?? "Default"}>
-                  <InputText
-                    disabled={state === "disabled"}
-                    forceStyle={state === "disabled" ? undefined : state}
-                    value="Value"
-                  />
-                </StoryGrid.Col>
-              ))}
-            </StoryGrid.Row>
+            <StateRow />
+            <StateRow placeholder="Placeholder" />
+            <StateRow value="Value" />
           </Story.SubSection>
         ))}
       </Story.Section>
@@ -138,6 +149,7 @@ export const Tests: StoryObj<typeof InputText> = {
           placeholder="Accessible input"
           aria-label="Accessible input"
         />
+        <InputText invalid aria-label="Invalid input" value="not-an-email" />
       </Story.Section>
       <Story.Section title="Max Length">
         <InputText
@@ -160,6 +172,15 @@ export const Tests: StoryObj<typeof InputText> = {
     // Accessibility
     const input = canvas.getByPlaceholderText("Accessible input");
     await expect(input).toHaveAttribute("aria-label", "Accessible input");
+    await expect(input).toHaveAttribute("aria-invalid", "false");
+
+    // An invalid input says so, and its border leaves the neutral token for
+    // the danger one.
+    const invalidInput = canvas.getByLabelText("Invalid input");
+    await expect(invalidInput).toHaveAttribute("aria-invalid", "true");
+    await expect(getComputedStyle(invalidInput).borderTopColor).not.toBe(
+      getComputedStyle(input).borderTopColor,
+    );
 
     // Max length
     const maxlengthInput = canvas.getByTestId("maxlength-input");

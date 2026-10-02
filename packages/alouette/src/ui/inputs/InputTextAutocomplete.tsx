@@ -21,10 +21,13 @@ export function InputTextAutocomplete({
   emptyLabel = "No result",
   placeholder,
   disabled,
+  invalid,
   accent,
   mode,
   className,
   testID,
+  "aria-describedby": ariaDescribedby,
+  "aria-required": ariaRequired,
   ...rest
 }: InputTextAutocompleteProps): ReactNode {
   const {
@@ -55,10 +58,13 @@ export function InputTextAutocomplete({
           aria-expanded={isOpen}
           aria-label={rest["aria-label"]}
           aria-labelledby={rest["aria-labelledby"]}
+          aria-describedby={ariaDescribedby}
+          aria-required={ariaRequired}
           value={currentInputValue}
           mode={mode}
           placeholder={placeholder}
           disabled={disabled}
+          invalid={invalid}
           testID={testID}
           className={className}
           onPressIn={() => {

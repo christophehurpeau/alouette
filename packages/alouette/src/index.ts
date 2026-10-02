@@ -181,7 +181,7 @@ export type { TabsProps } from "./ui/navigation/Tabs";
 export { Tabs } from "./ui/navigation/Tabs";
 export type { TabProps } from "./ui/navigation/Tab";
 export { Tab } from "./ui/navigation/Tab";
-export type { FormItemProps } from "./ui/forms/FormItem";
+export type { FormItemProps, FormItemRenderParams } from "./ui/forms/FormItem";
 export { FormItem } from "./ui/forms/FormItem";
 export type { FormProps } from "./ui/forms/Form";
 export { Form, FormValidationError } from "./ui/forms/Form";

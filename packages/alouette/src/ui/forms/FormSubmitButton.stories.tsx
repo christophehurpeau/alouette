@@ -40,12 +40,15 @@ function FormSubmitButtonDemo(): ReactNode {
               name="email"
               label="Email"
               required="Email is required."
-              render={({ field, labelId }) => (
+              render={({ field, labelId, describedBy, invalid, required }) => (
                 <InputText
                   ref={field.ref}
                   mode="email"
                   value={field.value}
                   aria-labelledby={labelId}
+                  aria-describedby={describedBy}
+                  aria-required={required}
+                  invalid={invalid}
                   onChangeText={field.onChange}
                   onBlur={field.onBlur}
                 />

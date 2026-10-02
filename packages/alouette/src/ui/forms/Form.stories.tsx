@@ -40,12 +40,21 @@ export const FormStory: ThisStory = {
                 name="email"
                 label="Email"
                 validate={validateEmail}
-                render={({ field, labelId }) => (
+                render={({
+                  field,
+                  labelId,
+                  describedBy,
+                  invalid,
+                  required,
+                }) => (
                   <InputText
                     ref={field.ref}
                     mode="email"
                     value={field.value}
                     aria-labelledby={labelId}
+                    aria-describedby={describedBy}
+                    aria-required={required}
+                    invalid={invalid}
                     onChangeText={field.onChange}
                     onBlur={field.onBlur}
                   />

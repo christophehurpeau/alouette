@@ -83,11 +83,14 @@ function EventSection({
             name="date"
             label="Date"
             required="A date is required."
-            render={({ field, labelId }) => (
+            render={({ field, labelId, describedBy, invalid, required }) => (
               <InputText
                 ref={field.ref}
                 value={field.value}
                 aria-labelledby={labelId}
+                aria-describedby={describedBy}
+                aria-required={required}
+                invalid={invalid}
                 onChangeText={field.onChange}
                 onBlur={field.onBlur}
               />
@@ -97,11 +100,14 @@ function EventSection({
             control={control}
             name="notes"
             label="Before you come"
-            render={({ field, labelId }) => (
+            render={({ field, labelId, describedBy, invalid, required }) => (
               <InputText
                 ref={field.ref}
                 value={field.value}
                 aria-labelledby={labelId}
+                aria-describedby={describedBy}
+                aria-required={required}
+                invalid={invalid}
                 onChangeText={field.onChange}
                 onBlur={field.onBlur}
               />

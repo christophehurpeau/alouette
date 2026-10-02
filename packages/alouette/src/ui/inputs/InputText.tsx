@@ -6,6 +6,7 @@ import {
 } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import { useColorVariable } from "../../core/useColorToken";
+import { StableAccentScope } from "../containers/StableAccentScope";
 
 const inputVariants = tv(
   {
@@ -106,13 +107,27 @@ export interface InputTextProps
   extends Omit<RNTextInputProps, "editable">, InputVariantProps {
   className?: string;
   disabled?: boolean;
+  /**
+   * The field is in error: its border takes the danger accent (through the
+   * `interactive-outlined-*` tokens, so hover and focus stay on it) and it is
+   * `aria-invalid`. From `FormItem`'s render params, next to `describedBy`.
+   */
+  invalid?: boolean;
   mode?: InputTextMode;
   ref?: Ref<RNTextInput>;
+  /**
+   * react-native's types have no `aria-describedby` / `aria-required`, but
+   * react-native-web forwards both and native ignores unknown props. Web only
+   * in effect: neither platform has an equivalent.
+   */
+  "aria-describedby"?: string;
+  "aria-required"?: boolean;
 }
 
 export function InputText({
   className,
   disabled,
+  invalid,
   mode,
   multiline,
   forceStyle,
@@ -124,16 +139,24 @@ export function InputText({
       : // eslint-disable-next-line react-hooks/rules-of-hooks -- native only, web is set via css.
         useColorVariable("--color-form-placeholder");
   const modeProps = mode ? MODE_PROPS[mode] : undefined;
+  // Same forwarding as `aria-describedby`: untyped by react-native, rendered by
+  // react-native-web.
+  const ariaInvalidProps = { "aria-invalid": invalid === true };
+  // Stable: `invalid` toggles while the field is being edited, and a plain
+  // AccentScope would remount the input (and drop its focus) with it.
   return (
-    <RNTextInput
-      editable={!disabled}
-      disabled={disabled}
-      aria-disabled={disabled === true}
-      multiline={multiline === true}
-      placeholderTextColor={placeholderColor}
-      className={inputVariants({ multiline, forceStyle, className })}
-      {...modeProps}
-      {...props}
-    />
+    <StableAccentScope accent={invalid ? "danger" : undefined}>
+      <RNTextInput
+        editable={!disabled}
+        disabled={disabled}
+        aria-disabled={disabled === true}
+        multiline={multiline === true}
+        placeholderTextColor={placeholderColor}
+        className={inputVariants({ multiline, forceStyle, className })}
+        {...ariaInvalidProps}
+        {...modeProps}
+        {...props}
+      />
+    </StableAccentScope>
   );
 }

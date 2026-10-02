@@ -89,11 +89,14 @@ function ProfileItem({
           name="displayName"
           label="Name"
           required="A name is required."
-          render={({ field, labelId }) => (
+          render={({ field, labelId, describedBy, invalid, required }) => (
             <InputText
               ref={field.ref}
               value={field.value}
               aria-labelledby={labelId}
+              aria-describedby={describedBy}
+              aria-required={required}
+              invalid={invalid}
               onChangeText={field.onChange}
               onBlur={field.onBlur}
             />
