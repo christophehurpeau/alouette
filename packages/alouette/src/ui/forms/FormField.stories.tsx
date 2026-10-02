@@ -1,6 +1,7 @@
 import { expect, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
+import { InputPassword } from "../inputs/InputPassword";
 import { InputText } from "../inputs/InputText";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
@@ -57,9 +58,9 @@ function FormFieldDemo(): ReactNode {
               ) : undefined
             }
             render={({ field, labelId, describedBy, invalid, required }) => (
-              <InputText
+              <InputPassword
                 ref={field.ref}
-                mode="password"
+                autoComplete="new-password"
                 value={field.value}
                 aria-labelledby={labelId}
                 aria-describedby={describedBy}

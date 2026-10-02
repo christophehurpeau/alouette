@@ -1,21 +1,20 @@
 ---
 name: alouette-forms
 description: >
-  Collect and validate user input. Inputs: InputText and TextArea for text,
-  Switch for a toggle, Select to pick one value from a known list and
-  InputTextAutocomplete to narrow that list by typing.
-  Single-select groups, each composing its children rather than taking an
-  options array: RadioGroup, RadioButtonGroup (which the light/dark
-  ColorModePicker is built on) and RadioCardGroup; multi-select counterparts
-  CheckboxGroup and CheckboxCardGroup, and a standalone
-  Checkbox. Validated forms over
-  react-hook-form: Form owns the instance and passes its control down, so the
-  form type is written once and every field's value type is inferred; FormField
-  labels one field and reports its error; FormFieldArray repeats a group of
-  fields; FormSubmitButton drives the submit lifecycle; SimpleVForm is the
-  vertical-stack shortcut; FormEditableItem and FormEditableSection edit a row
-  or a section in a modal owning its own Form. Load when building inputs, radio
-  groups, a color-mode picker or a validated form.
+  Collect and validate user input. Inputs: InputText (startSlot / endSlot for
+  a glyph or icon button in the field) and TextArea, InputPassword with its
+  show/hide toggle, Switch, Select to pick one value from a known list and
+  InputTextAutocomplete to narrow that list by typing. Single-select groups
+  composing their children, never an options array: RadioGroup,
+  RadioButtonGroup (behind the light/dark ColorModePicker) and RadioCardGroup;
+  multi-select CheckboxGroup and CheckboxCardGroup, and a standalone Checkbox.
+  Validated forms over react-hook-form: Form owns the instance and passes its
+  control down, so the form type is written once and every field's value type
+  is inferred; FormField labels one field and reports its error;
+  FormFieldArray repeats a group of fields; FormSubmitButton drives the submit
+  lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and
+  FormEditableSection edit a row or a section in a modal owning its own Form.
+  Load when building inputs, radio groups or a validated form.
 type: core
 library: alouette
 requires:
@@ -23,6 +22,7 @@ requires:
   - alouette-actions
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputText.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputPassword.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.shared.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.web.tsx"
@@ -102,8 +102,27 @@ union of every field, and never a per-field type argument.
 `"password" | "email" | "number" | "tel" | "url" | "search" | "webSearch"`.
 
 ```tsx
-<InputText mode="password" value={pw} onChangeText={setPw} />
 <InputText mode="number" value={qty} onChangeText={setQty} />
+```
+
+A password is `InputPassword`, not `mode="password"`: that mode plus an eye
+toggle in the field (`aria-pressed` while the password shows, named by
+`toggleLabel`, default "Show password"), controlled through `visible` /
+`defaultVisible` / `onVisibleChange`. Pass `autoComplete="new-password"` on a
+sign-up form.
+
+### Slots: a glyph or an icon button in the field
+
+`startSlot` / `endSlot` overlay the field's leading / trailing 44px, the text
+padded past them: an `Icon` carrying its own ink (`text-muted`, or
+`text-form-disabled-text` on a disabled field) or a `soft` `sm` `IconButton`.
+Fixed-width content only, never a prefix text. With a slot, `className` lands
+on the frame around the input, the box the parent lays out.
+
+```tsx
+<InputPassword autoComplete="new-password" toggleLabel="Afficher le mot de passe" />
+<InputText placeholder="Search" startSlot={<Icon icon={<MagnifyingGlassRegularIcon />} className="text-muted" />} />
+<InputText endSlot={<IconButton variant="soft" size="sm" icon={<CalendarBlankRegularIcon />} aria-label="Pick a date" onPress={openPicker} />} />
 ```
 
 ### TextArea, Switch, disabled
@@ -218,33 +237,11 @@ validate={(v) => (/^[^@]+@[^@]+$/.test(v) ? undefined : "Enter a valid email.")}
 
 ### Custom layout with Form
 
-When the layout isn't a plain vertical stack, use `Form` directly and place a
-`FormSubmitButton` (or call `submit` yourself). `render` receives
-`{ control, submit }`.
-
-```tsx
-import { Form, FormSubmitButton } from "alouette";
-
-<Form<Values>
-  defaultValues={{ name: "", email: "" }}
-  onSubmit={async (values) => saveToServer(values)}
-  render={({ control, submit }) => (
-    <>
-      {/* fields */}
-      <FormSubmitButton
-        label="Save"
-        errorToMessage={submitErrorToMessage}
-        onPress={submit}
-      />
-    </>
-  )}
-/>;
-```
-
-To split the fields into their own component, give it a
-`control: Control<Values>` prop rather than reaching for `useFormContext`. The
-form instance is still in context — `setFocus` (to move focus between fields)
-only lives there — but `control` is what carries the types.
+When the layout isn't a plain vertical stack, use `Form` directly: `render`
+receives `{ control, submit }`, and a `FormSubmitButton` takes `submit`. Fields
+split into their own component take a `control: Control<Values>` prop, not
+`useFormContext`. Example in
+[references/custom-form-layout.md](references/custom-form-layout.md).
 
 ### Repeatable item lists and edit-in-a-modal rows
 
@@ -298,19 +295,22 @@ Wrong:
 
 ```tsx
 <InputText secureTextEntry autoComplete="current-password" />
+<InputText keyboardType="email-address" inputMode="email" />
 ```
 
 Correct:
 
 ```tsx
-<InputText mode="password" />
+<InputPassword />
+<InputText mode="email" />
 ```
 
 The `mode` prop bundles `inputMode` + `keyboardType` + `autoComplete` +
 `secureTextEntry` consistently across platforms; setting them piecemeal is
-error-prone.
+error-prone. A password also gets its show/hide toggle from `InputPassword`.
 
-Source: packages/alouette/src/ui/inputs/InputText.tsx (MODE_PROPS)
+Source: packages/alouette/src/ui/inputs/InputText.tsx (MODE_PROPS),
+packages/alouette/src/ui/inputs/InputPassword.tsx
 
 ### MEDIUM Wiring Switch like a web checkbox
 

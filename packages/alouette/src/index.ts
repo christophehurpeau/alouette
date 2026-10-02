@@ -115,6 +115,8 @@ export type { MenuItemProps } from "./ui/actions/MenuItem";
 export { MenuItem } from "./ui/actions/MenuItem";
 export type { InputTextMode, InputTextProps } from "./ui/inputs/InputText";
 export { InputText } from "./ui/inputs/InputText";
+export type { InputPasswordProps } from "./ui/inputs/InputPassword";
+export { InputPassword } from "./ui/inputs/InputPassword";
 export type {
   AutocompleteOption,
   InputTextAutocompleteProps,
