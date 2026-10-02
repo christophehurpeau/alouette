@@ -1,4 +1,4 @@
-import { expect, fn, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   BackpackDuotoneIcon,
@@ -47,9 +47,16 @@ import {
   UsersRegularIcon,
 } from "alouette-icons/phosphor-icons/Users";
 import { type ReactNode, useState } from "react";
+import { useCurrentMode } from "../../core/ThemeContext";
+import {
+  type ColorModePreference,
+  useResolvedColorMode,
+} from "../../core/useColorMode";
 import { IconButton } from "../actions/IconButton";
 import { MenuItem } from "../actions/MenuItem";
 import { PressableListItem } from "../actions/PressableListItem";
+import { ScopedTheme } from "../containers/ScopedTheme";
+import { ColorModePicker } from "../inputs/ColorModePicker";
 import { Select } from "../inputs/Select";
 import { NavBar } from "../navigation/NavBar";
 import { NavBarItem } from "../navigation/NavBarItem";
@@ -87,7 +94,19 @@ export default {
       brand={<AppHeaderBrand href="/" title="Alouette" />}
       actions={<IconButton aria-label="Search" icon={…} size="sm" variant="soft" />}
       header={<Select variant="tonal" aria-label="Club" icon={…} options={clubs} value={clubId} onValueChange={…} />}
-      footer={<AppSidebarAccount name={user.name}>…</AppSidebarAccount>}
+      footer={
+        <AppSidebarAccount
+          name={user.name}
+          header={
+            <View className="flex-row items-center justify-between gap-sm">
+              <Text className="text-sm text-muted">Color mode</Text>
+              <ColorModePicker value={preference} onValueChange={setPreference} />
+            </View>
+          }
+        >
+          …
+        </AppSidebarAccount>
+      }
     >
       <SidebarNav aria-label="Main" value={pathname}>
         <SidebarNavSection>
@@ -98,7 +117,15 @@ export default {
     </AppSidebar>
   }
   header={
-    <AppHeader brand={…} actions={…}>
+    <AppHeader
+      brand={…}
+      actions={
+        <AppHeaderActions>
+          <ColorModePicker value={preference} onValueChange={setPreference} />
+          <AppHeaderAccount name={user.name}>…</AppHeaderAccount>
+        </AppHeaderActions>
+      }
+    >
       <NavBar stretch aria-label="Main" value={pathname}>…</NavBar>
     </AppHeader>
   }
@@ -110,6 +137,7 @@ export default {
 - An application rather than a site: from \`md\` the frame is fixed to the viewport. The sidebar sits on its \`lowered\` ground and the screen in a panel inset in it — \`bg-screen\`, \`rounded-sm\`, \`shadow-s\` — which is the one scroll container, so the sidebar never moves. The panel pads the scroll on web, so the scrollbar sits in a gutter clear of its rounded corners rather than along its edge
 - The panel keeps the \`screen\` ground, so a screen written for \`AppLayout\` renders unchanged inside it: its \`surface\` cards are still raised off it
 - Below \`md\` the sidebar is hidden and \`header\` takes over, scrolling with the screen exactly as in an \`AppShell\` — phones keep the layout they have. The two are the **same tree**, switched by \`md:\` classes, so crossing the breakpoint (a tablet rotating, a window resized) keeps the screen mounted. Give the header a \`NavBar\` with the primary destinations: the sidebar's are out of reach there
+- The light/dark switch is a \`ColorModePicker\` in two places, one per tree: from \`md\` in the \`header\` of the \`AppSidebarAccount\` menu — the brand row has no room beside its actions — and below it in the \`AppHeader\` actions, as in an \`AppLayout\`. Only one is ever exposed (the other is hidden with its column), and both report the same stored preference, which the app applies with \`useResolvedColorMode\` + \`ScopedTheme\` and persists. A press inside the menu's header does not close it, so the panel re-themes under the pointer. The switch is behind a click there, and keyboard users reach it with Shift+Tab from the first item, the menu taking the focus as it opens
 - \`children\` is plain content in the \`main\` landmark — no \`ScreenScrollView\` inside, which would nest a second scroll view
 - Safe areas: from \`md\` the frame pads every edge, so both columns clear them; below it the header pads its own top inset and the scrolled page pads the rest. The screen needs none of its own
 - The frame fills its parent (\`flex-1\`). A web app whose root has no height of its own passes \`className="h-screen"\``,
@@ -122,12 +150,16 @@ interface DemoSidebarProps {
   label: string;
   route: string;
   onRouteChange: (route: string) => void;
+  colorMode: ColorModePreference;
+  onColorModeChange: (preference: ColorModePreference) => void;
 }
 
 function DemoSidebar({
   label,
   route,
   onRouteChange,
+  colorMode,
+  onColorModeChange,
 }: DemoSidebarProps): ReactNode {
   return (
     <AppSidebar
@@ -186,6 +218,15 @@ function DemoSidebar({
         <AppSidebarAccount
           name="Camille Hurel"
           description="camille@example.com"
+          header={
+            <View className="flex-row items-center justify-between gap-sm">
+              <Text className="text-sm text-muted">Color mode</Text>
+              <ColorModePicker
+                value={colorMode}
+                onValueChange={onColorModeChange}
+              />
+            </View>
+          }
         >
           <MenuItem
             label="Profile"
@@ -285,10 +326,17 @@ function DemoSidebar({
 interface DemoHeaderProps {
   route: string;
   onRouteChange: (route: string) => void;
+  colorMode: ColorModePreference;
+  onColorModeChange: (preference: ColorModePreference) => void;
 }
 
 /** What a phone keeps: the AppHeader, with the primary destinations. */
-function DemoHeader({ route, onRouteChange }: DemoHeaderProps): ReactNode {
+function DemoHeader({
+  route,
+  onRouteChange,
+  colorMode,
+  onColorModeChange,
+}: DemoHeaderProps): ReactNode {
   return (
     <AppHeader
       brand={
@@ -300,6 +348,10 @@ function DemoHeader({ route, onRouteChange }: DemoHeaderProps): ReactNode {
       }
       actions={
         <AppHeaderActions>
+          <ColorModePicker
+            value={colorMode}
+            onValueChange={onColorModeChange}
+          />
           <AppHeaderAccount name="Camille Hurel">
             <MenuItem
               label="Log out"
@@ -386,23 +438,42 @@ interface DemoAppProps {
   withHeader?: boolean;
 }
 
+// One preference for both pickers — the sidebar's account menu from md, the
+// header's actions below it — applied by a ScopedTheme as an app would. It
+// starts on the mode it is rendered in, so each column of a Story keeps its own.
 function DemoApp({ label, rows, withHeader = true }: DemoAppProps): ReactNode {
   const [route, setRoute] = useState("/");
+  const [colorMode, setColorMode] =
+    useState<ColorModePreference>(useCurrentMode());
+  const resolvedColorMode = useResolvedColorMode(colorMode);
 
   return (
-    <AppSidebarLayout
-      aria-label={label}
-      sidebar={
-        <DemoSidebar label="Main" route={route} onRouteChange={setRoute} />
-      }
-      header={
-        withHeader ? (
-          <DemoHeader route={route} onRouteChange={setRoute} />
-        ) : undefined
-      }
-    >
-      <DemoScreen rows={rows} />
-    </AppSidebarLayout>
+    <ScopedTheme theme={resolvedColorMode}>
+      <AppSidebarLayout
+        aria-label={label}
+        sidebar={
+          <DemoSidebar
+            label="Main"
+            route={route}
+            colorMode={colorMode}
+            onRouteChange={setRoute}
+            onColorModeChange={setColorMode}
+          />
+        }
+        header={
+          withHeader ? (
+            <DemoHeader
+              route={route}
+              colorMode={colorMode}
+              onRouteChange={setRoute}
+              onColorModeChange={setColorMode}
+            />
+          ) : undefined
+        }
+      >
+        <DemoScreen rows={rows} />
+      </AppSidebarLayout>
+    </ScopedTheme>
   );
 }
 
@@ -515,6 +586,34 @@ export const TestsAppSidebarLayoutStory: ThisStory = {
       });
       await userEvent.click(observers);
       await expect(observers).toHaveAttribute("aria-current", "page");
+
+      // The color mode is in the account menu, and the header's picker is
+      // hidden with the header. Switching it re-themes the whole layout and
+      // leaves the menu open.
+      await userEvent.click(
+        layoutCanvas.getByRole("button", { name: "Camille Hurel" }),
+      );
+      const pickers = within(document.body).getAllByRole("radiogroup", {
+        name: "Color mode",
+      });
+      await expect(pickers).toHaveLength(1);
+      const [picker] = pickers;
+      if (!picker) throw new Error("expected the color mode picker");
+      // The menu takes the focus as it opens; the picker is the step before.
+      await waitFor(() =>
+        expect(document.activeElement).toHaveAttribute("role", "menuitem"),
+      );
+      await userEvent.tab({ shift: true });
+      await expect(picker.contains(document.activeElement)).toBe(true);
+      const dark = within(picker).getByRole("radio", { name: "Dark" });
+      const lightFrameBackground = getComputedStyle(layout).backgroundColor;
+      await userEvent.click(dark);
+      await waitFor(() => expect(dark).toHaveAttribute("aria-checked", "true"));
+      await expect(within(document.body).getByRole("menu")).toBeTruthy();
+      await expect(getComputedStyle(layout).backgroundColor).not.toBe(
+        lightFrameBackground,
+      );
+      await userEvent.keyboard("{Escape}");
     } else {
       // A phone keeps the header, and the sidebar is out of the tree.
       const header = layoutCanvas.getByRole("banner");
@@ -542,6 +641,17 @@ export const TestsAppSidebarLayoutStory: ThisStory = {
       ).getByRole("link", { name: "Sightings" });
       await userEvent.click(sightings);
       await expect(sightings).toHaveAttribute("aria-current", "page");
+
+      // The color mode is in the header's actions, as in an AppLayout.
+      const dark = within(
+        within(header).getByRole("radiogroup", { name: "Color mode" }),
+      ).getByRole("radio", { name: "Dark" });
+      const lightHeaderBackground = getComputedStyle(header).backgroundColor;
+      await userEvent.click(dark);
+      await waitFor(() => expect(dark).toHaveAttribute("aria-checked", "true"));
+      await expect(getComputedStyle(header).backgroundColor).not.toBe(
+        lightHeaderBackground,
+      );
     }
 
     // Nothing overflows sideways.

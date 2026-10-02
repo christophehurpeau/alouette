@@ -224,16 +224,20 @@ keeps the screen mounted.
 ```tsx
 import {
   AppHeader,
+  AppHeaderAccount,
+  AppHeaderActions,
   AppHeaderBrand,
   AppSidebar,
   AppSidebarAccount,
   AppSidebarLayout,
+  ColorModePicker,
   IconButton,
   MenuItem,
   NavBar,
   NavBarItem,
   Select,
   SidebarNav,
+  Text,
   View,
 } from "alouette";
 
@@ -254,7 +258,16 @@ import {
         />
       }
       footer={
-        <AppSidebarAccount name={user.name} description={user.email}>
+        <AppSidebarAccount
+          name={user.name}
+          description={user.email}
+          header={
+            <View className="flex-row items-center justify-between gap-sm">
+              <Text className="text-sm text-muted">Color mode</Text>
+              <ColorModePicker value={preference} onValueChange={setPreference} />
+            </View>
+          }
+        >
           <MenuItem label="Log out" accent="danger" onPress={logOut} />
         </AppSidebarAccount>
       }
@@ -265,7 +278,15 @@ import {
     </AppSidebar>
   }
   header={
-    <AppHeader brand={…} actions={…}>
+    <AppHeader
+      brand={…}
+      actions={
+        <AppHeaderActions>
+          <ColorModePicker value={preference} onValueChange={setPreference} />
+          <AppHeaderAccount name={user.name}>…</AppHeaderAccount>
+        </AppHeaderActions>
+      }
+    >
       <NavBar stretch aria-label="Primary" value={pathname} onValueChange={router.push}>
         …
       </NavBar>
@@ -292,5 +313,13 @@ import {
   sidebar rather than a form field (alouette-forms/SKILL.md).
 - `AppSidebarAccount` is the signed-in footer row: avatar, name and a second
   line, opening its `MenuItem`s above it, as wide as the row.
+- The light/dark switch is a `ColorModePicker` in each tree: from `md` in the
+  `header` of the `AppSidebarAccount` menu (the brand row has no room for it
+  beside its actions), below `md` in the `AppHeader` actions as in `AppLayout`.
+  Only the visible one is exposed. Both take the same stored preference, which
+  the app applies with `useResolvedColorMode` + a `ScopedTheme` around the
+  layout (alouette-theming/SKILL.md). A press in the menu's header does not
+  close the menu. Keyboard users reach the picker with Shift+Tab from the first
+  item, since the menu takes the focus as it opens.
 
 Source: packages/alouette/src/ui/layout/AppSidebarLayout.tsx

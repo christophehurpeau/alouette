@@ -61,7 +61,7 @@ export default {
 ~~~
 
 - \`brand\` and \`actions\` share the top row; \`header\` is pinned under it, for the \`Select\`s choosing what the navigation applies to — \`variant="tonal"\`, a pill lifted off the sidebar rather than a form field, with a leading \`icon\`; \`footer\` is pinned at the bottom. Only \`children\` scrolls, so these stay in reach of a long navigation
-- \`AppSidebarAccount\` is a \`soft\` row (avatar, name, a second line) whose menu opens **above** it, since it is pinned at the bottom of the viewport
+- \`AppSidebarAccount\` is a \`soft\` row (avatar, name, a second line) whose menu opens **above** it, since it is pinned at the bottom of the viewport. Its \`header\` holds the \`ColorModePicker\`: the top row has no room for it beside the actions, and a press there leaves the menu open
 - The column is 280px wide; \`className\` overrides it. It has no ground of its own: it sits on the \`AppSidebarLayout\`'s \`lowered\` frame. The navigation's scrollbar sits in the column's right gutter, so with nothing to scroll (or an overlay scrollbar) its rows are exactly as wide as the selects above them; a rule also appears at the top or the bottom edge while rows are hidden past it. Its rows are \`rounded-sm\`, setting the menu apart from the pill controls`,
       },
     },

@@ -30,7 +30,10 @@ export interface AppSidebarAccountProps {
   /** Accent of the disc. Defaults to the inherited accent, or `brand` outside
    * an accent scope. */
   accent?: Accent;
-  /** Rendered above the items — typically the signed-in identity. */
+  /**
+   * Rendered above the items — typically the `ColorModePicker`, the identity
+   * being on the row already. A press there leaves the menu open.
+   */
   header?: ReactNode;
   /** `MenuItem`s, and `Separator`s between groups. */
   children: ReactNode;
