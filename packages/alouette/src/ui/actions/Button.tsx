@@ -11,7 +11,10 @@ import {
   defaultExternalOpenLinkBehavior,
 } from "../../expo/ExternalLink.shared";
 import { AccentScope } from "../containers/AccentScope";
-import { IndeterminateCircularProgress } from "../feedback/CircularProgress";
+import {
+  type CircularProgressSize,
+  IndeterminateCircularProgress,
+} from "../feedback/CircularProgress";
 import { indeterminateExitDurationMs } from "../feedback/useSimulatedProgress";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";
@@ -19,10 +22,26 @@ import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
+/** `lg` is the prominent call to action of a landing page or a hero. */
 export const buttonHeight = {
   sm: 38,
   md: 44,
+  lg: 52,
 } as const;
+
+export type ButtonSize = keyof typeof buttonHeight;
+
+interface ButtonSizeMetrics {
+  iconSize: number;
+  terminalIconSize: number;
+  spinnerSize: CircularProgressSize;
+}
+
+const buttonSizeMetrics: Record<ButtonSize, ButtonSizeMetrics> = {
+  sm: { iconSize: 16, terminalIconSize: 24, spinnerSize: "xs" },
+  md: { iconSize: 20, terminalIconSize: 32, spinnerSize: "sm" },
+  lg: { iconSize: 24, terminalIconSize: 36, spinnerSize: "sm" },
+};
 
 const buttonVariants = tv(
   {
@@ -42,6 +61,10 @@ const buttonVariants = tv(
         md: {
           frame: "rounded-full px-m gap-xs min-h-[44px]",
           text: "text-base py-xs",
+        },
+        lg: {
+          frame: "rounded-full px-l gap-sm min-h-[52px]",
+          text: "text-lg py-xs",
         },
       },
       variant: {
@@ -103,7 +126,10 @@ const buttonVariants = tv(
   { twMerge: false },
 );
 
-type ButtonSizeProps = Pick<VariantProps<typeof buttonVariants>, "size">;
+interface ButtonSizeProps {
+  /** `lg` is for the prominent call to action of a landing page or a hero. */
+  size?: ButtonSize;
+}
 
 export type ButtonState = "failed" | "loading" | "success";
 
@@ -193,6 +219,7 @@ export function Button({
   const hasOverlayIcon = showSpinner || terminalIcon !== undefined;
 
   const isDisabled = isButtonDisabled({ disabled, state });
+  const { iconSize, terminalIconSize, spinnerSize } = buttonSizeMetrics[size];
   const styles = buttonVariants({
     size,
     variant,
@@ -215,14 +242,14 @@ export function Button({
             <IndeterminateCircularProgress
               loading={isLoading}
               accent={accent}
-              size={size === "sm" ? "xs" : "sm"}
+              size={spinnerSize}
             />
           ) : (
             <AccentScope accent={terminalIconAccent}>
               <Icon
                 icon={terminalIcon}
                 className={styles.terminalIcon()}
-                size={size === "sm" ? 24 : 32}
+                size={terminalIconSize}
               />
             </AccentScope>
           )}
@@ -237,7 +264,7 @@ export function Button({
           active={forceStyle !== undefined}
           disabled={isDisabled}
           className={styles.icon()}
-          size={size === "sm" ? 16 : 20}
+          size={iconSize}
         />
       ) : null}
       <Text aria-disabled={isDisabled} className={styles.text()}>

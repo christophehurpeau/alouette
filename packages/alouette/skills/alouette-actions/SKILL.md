@@ -33,7 +33,8 @@ This skill builds on alouette-theming. Read it first for the accent model.
 Buttons and pressables carry interactive token states (hover/active/disabled,
 plus the keyboard focus ring) automatically. `variant` is
 `"tonal" | "filled" | "outlined" | "soft"`; `size` is
-`"sm" | "md"`; `accent`
+`"sm" | "md" | "lg"` (38/44/52px — `lg` is the prominent call to action of a
+landing page or a hero, never a size for an action among others); `accent`
 is `"brand" | "danger" | "info" | "success" | "warning" | "neutral"`. Unset,
 a `Button` takes the accent of the nearest accent scope (a `Modal`, `Message`,
 `Box` or `AccentScope` with an `accent`), and `"brand"` outside one.
@@ -64,6 +65,7 @@ import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
 <Button accent="danger" text="Delete" />
 <Button variant="filled" text="Publish" />              {/* the accent's fill */}
 <Button size="sm" text="Small" />
+<Button size="lg" variant="filled" text="Get started" />  {/* the hero call to action */}
 ```
 
 `tonal` is a ground **lighter than the page it sits on**, lifted by

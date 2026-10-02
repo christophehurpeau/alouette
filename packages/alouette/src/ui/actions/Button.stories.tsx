@@ -23,7 +23,7 @@ export default {
       description: {
         component: `### Variants
 - \`variant\`: tonal | filled | outlined | soft
-- \`size\`: sm (38px) | md (44px)
+- \`size\`: sm (38px) | md (44px) | lg (52px) — \`lg\` is the prominent call to action of a landing page or a hero, not a size for an action among others
 - \`accent\`: brand | danger | info | success | warning | neutral — unset, the accent of the nearest accent scope, brand outside one
 
 \`tonal\` (default) is a ground lighter than the page, lifted by a shadow, whose ink carries the accent. \`filled\` is the accent's own flat fill under white ink, for the one action that must dominate.
@@ -138,7 +138,7 @@ export const Variants: ThisStory = {
     <Story>
       <Story.Section withSurface title="Sizes">
         <StoryGrid.Row flexWrap>
-          {(["sm", "md"] as const).map((size) => (
+          {(["sm", "md", "lg"] as const).map((size) => (
             <StoryGrid.Col key={size} title={size}>
               <Button
                 variant="tonal"
@@ -262,7 +262,7 @@ export const Variants: ThisStory = {
 
         <Story.SubSection title="Very long text">
           <StoryGrid.Row flexWrap>
-            {(["sm", "md"] as const).map((size) => (
+            {(["sm", "md", "lg"] as const).map((size) => (
               <StoryGrid.Col key={size} title={size}>
                 <View className="gap-xs">
                   <Button
