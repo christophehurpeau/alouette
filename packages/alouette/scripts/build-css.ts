@@ -24,6 +24,7 @@ const animationDurationsMs = {
   progress: 600,
   fade: 300,
   fast: 200,
+  caret: 1000,
 } as const;
 
 const animateTokens = {
@@ -31,6 +32,8 @@ const animateTokens = {
   "slide-out": `slide-out ${animationDurationsMs.slide}ms cubic-bezier(0.16, 1, 0.3, 1)`,
   "collapse-in": `collapse-in ${animationDurationsMs.collapse}ms ease-out`,
   "collapse-out": `collapse-out ${animationDurationsMs.collapse}ms ease-out`,
+  // The drawn caret of InputCode: a step, like a real text caret.
+  "caret-blink": `caret-blink ${animationDurationsMs.caret}ms step-end infinite`,
 } as const;
 
 // What prefers-reduced-motion zeroes: one source for the web @media block and
@@ -263,6 +266,15 @@ ${Object.entries(reducedMotionVariables)
   to {
     opacity: 0;
     height: 0;
+  }
+}
+
+@keyframes caret-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
 

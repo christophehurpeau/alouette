@@ -117,6 +117,8 @@ export type { InputTextMode, InputTextProps } from "./ui/inputs/InputText";
 export { InputText } from "./ui/inputs/InputText";
 export type { InputPasswordProps } from "./ui/inputs/InputPassword";
 export { InputPassword } from "./ui/inputs/InputPassword";
+export type { InputCodeMode, InputCodeProps } from "./ui/inputs/InputCode";
+export { InputCode } from "./ui/inputs/InputCode";
 export type {
   AutocompleteOption,
   InputTextAutocompleteProps,

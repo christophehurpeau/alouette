@@ -147,13 +147,15 @@ skills:
     domain: "forms"
     path: "packages/alouette/skills/alouette-forms/SKILL.md"
     package: "packages/alouette"
-    description: "Collect and validate user input. Inputs: InputText (startSlot / endSlot for a glyph or icon button in the field) and TextArea, InputPassword with its show/hide toggle, Switch, Select to pick one value from a known list and InputTextAutocomplete to narrow that list by typing. Single-select groups composing their children, never an options array: RadioGroup, RadioButtonGroup (behind the light/dark ColorModePicker) and RadioCardGroup; multi-select CheckboxGroup and CheckboxCardGroup, and a standalone Checkbox. Validated forms over react-hook-form: Form owns the instance and passes its control down, so the form type is written once and every field's value type is inferred; FormField labels one field and reports its error; FormFieldArray repeats a group of fields; FormSubmitButton drives the submit lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and FormEditableSection edit a row or a section in a modal owning its own Form. Load when building inputs, radio groups or a validated form."
+    description: "Collect and validate user input. Inputs: InputText and TextArea, InputPassword with its show/hide toggle, InputCode for a one-time code (never a row of InputTexts), Switch, Select to pick one value from a known list and InputTextAutocomplete to narrow that list by typing. Single-select groups composing their children, never an options array: RadioGroup, RadioButtonGroup (behind the light/dark ColorModePicker) and RadioCardGroup; multi-select CheckboxGroup and CheckboxCardGroup, and a standalone Checkbox. Validated forms over react-hook-form: Form owns the instance and passes its control down, so the form type is written once and every field's value type is inferred; FormField labels one field and reports its error; FormFieldArray repeats a group of fields; FormSubmitButton drives the submit lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and FormEditableSection edit a row or a section in a modal owning its own Form. Load when building inputs, radio groups or a validated form."
     requires:
       - "alouette-theming"
       - "alouette-actions"
     sources:
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputText.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputPassword.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputCode.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputCode.stories.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.shared.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.web.tsx"
@@ -194,6 +196,7 @@ skills:
       - "references/choice-inputs.md"
       - "references/custom-form-layout.md"
       - "references/field-arrays-and-editable-rows.md"
+      - "references/input-code.md"
 
   - name: "alouette-data"
     slug: "alouette-data"

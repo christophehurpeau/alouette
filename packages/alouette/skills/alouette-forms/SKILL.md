@@ -1,11 +1,11 @@
 ---
 name: alouette-forms
 description: >
-  Collect and validate user input. Inputs: InputText (startSlot / endSlot for
-  a glyph or icon button in the field) and TextArea, InputPassword with its
-  show/hide toggle, Switch, Select to pick one value from a known list and
-  InputTextAutocomplete to narrow that list by typing. Single-select groups
-  composing their children, never an options array: RadioGroup,
+  Collect and validate user input. Inputs: InputText and TextArea,
+  InputPassword with its show/hide toggle, InputCode for a one-time code
+  (never a row of InputTexts), Switch, Select to pick one value
+  from a known list and InputTextAutocomplete to narrow that list by typing.
+  Single-select groups composing their children, never an options array: RadioGroup,
   RadioButtonGroup (behind the light/dark ColorModePicker) and RadioCardGroup;
   multi-select CheckboxGroup and CheckboxCardGroup, and a standalone Checkbox.
   Validated forms over react-hook-form: Form owns the instance and passes its
@@ -23,6 +23,8 @@ requires:
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputText.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputPassword.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputCode.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputCode.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.shared.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.web.tsx"
@@ -101,9 +103,10 @@ union of every field, and never a per-field type argument.
 `mode` bundles the right keyboard, input mode, autocomplete and secure entry:
 `"password" | "email" | "number" | "tel" | "url" | "search" | "webSearch"`.
 
-```tsx
-<InputText mode="number" value={qty} onChangeText={setQty} />
-```
+A one-time code (SMS, e-mail, authenticator) is `InputCode`, never a row of
+`InputText`s: one input holds the code behind its cells, so paste, OS autofill,
+Backspace and the screen reader see a single field. Modes, `onComplete` and the
+form wiring: [references/input-code.md](references/input-code.md).
 
 A password is `InputPassword`, not `mode="password"`: that mode plus an eye
 toggle in the field (`aria-pressed` while the password shows, named by
@@ -206,10 +209,6 @@ function submitErrorToMessage(error: unknown): string {
 />;
 ```
 
-The type argument goes on `SimpleVForm` / `Form` only — `defaultValues` is a
-`DeepPartial`, which infers poorly, so that one stays explicit. Nothing below it
-needs one.
-
 ### FormField wiring
 
 `FormField` renders any input through `render` — it is not tied to `InputText`.
@@ -309,8 +308,7 @@ The `mode` prop bundles `inputMode` + `keyboardType` + `autoComplete` +
 `secureTextEntry` consistently across platforms; setting them piecemeal is
 error-prone. A password also gets its show/hide toggle from `InputPassword`.
 
-Source: packages/alouette/src/ui/inputs/InputText.tsx (MODE_PROPS),
-packages/alouette/src/ui/inputs/InputPassword.tsx
+Source: packages/alouette/src/ui/inputs/InputText.tsx (MODE_PROPS); ui/inputs/InputPassword.tsx
 
 ### MEDIUM Wiring Switch like a web checkbox
 
