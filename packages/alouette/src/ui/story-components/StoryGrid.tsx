@@ -106,6 +106,16 @@ function StoryGridCol({
   );
 }
 
+/**
+ * Column title for a state grid. A forced `focus` is the keyboard focus, so it
+ * reads `focus-visible`: a mouse click never shows that state.
+ */
+export function stateTitle(state: string | undefined): string {
+  if (state === undefined) return "Default";
+  if (state === "focus") return "focus-visible";
+  return state;
+}
+
 export const StoryGrid = {
   Row: StoryGridRow,
   Col: StoryGridCol,

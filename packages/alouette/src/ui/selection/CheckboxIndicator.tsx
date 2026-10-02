@@ -29,7 +29,7 @@ const checkboxIndicatorVariants = tv({
       // in the accent's ground: `on-accent` is white, lost on the pale
       // dark-mode foreground.
       false: {
-        box: "border-interactive-pressable group-hover:border-interactive-hover group-focus:border-interactive-hover group-active:border-interactive-active",
+        box: "border-interactive-pressable group-hover:border-interactive-hover group-focus-visible:border-interactive-hover group-active:border-interactive-active",
         glyph: "text-surface",
       },
     },
@@ -43,7 +43,7 @@ const checkboxIndicatorVariants = tv({
       selected: true,
       disabled: false,
       class: {
-        box: "bg-interactive-pressable group-hover:bg-interactive-hover group-focus:bg-interactive-hover group-active:bg-interactive-active",
+        box: "bg-interactive-pressable group-hover:bg-interactive-hover group-focus-visible:bg-interactive-hover group-active:bg-interactive-active",
       },
     },
     {

@@ -6,9 +6,16 @@ import type {
 import { type VariantProps, tv } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
-import { InteractiveBox, interactiveBoxVariants } from "../containers/Box";
+import {
+  InteractiveBox,
+  type InteractiveBoxProps,
+  interactiveBoxVariants,
+} from "../containers/Box";
 import { useTonalGroundWarningRef } from "./useTonalGroundWarningRef";
 
+// No `focus:` ground in any variant: a mouse click leaves the focus behind, so
+// a focus ground would keep the button lit after the pointer has left. The
+// keyboard focus is the ring `InteractiveBox` draws on `focus-visible`.
 const pressableBoxVariants = tv(
   {
     extend: interactiveBoxVariants,
@@ -26,11 +33,9 @@ const pressableBoxVariants = tv(
             ? ""
             : "shadow-s bg-interactive-tonal-pressable",
           "hover:bg-interactive-tonal-hover",
-          "focus:bg-interactive-tonal-focus",
           "active:shadow-lowered active:bg-interactive-tonal-active",
           "disabled:bg-interactive-tonal-disabled disabled:shadow-none",
           "aria-disabled:bg-interactive-tonal-disabled aria-disabled:shadow-none",
-          "focus-visible:outline-border-muted",
         ].join(" "),
         // The accent's own fill, flat, under `text-on-accent` ink — the neutral
         // one is the grayscale accent, a dark ground carrying white ink.
@@ -40,11 +45,9 @@ const pressableBoxVariants = tv(
             ? ""
             : "bg-interactive-filled-pressable",
           "hover:bg-interactive-filled-hover",
-          "focus:bg-interactive-filled-focus",
           "active:shadow-lowered active:bg-interactive-filled-active",
           "disabled:bg-interactive-filled-disabled",
           "aria-disabled:bg-interactive-filled-disabled",
-          "focus-visible:outline-border-muted",
         ].join(" "),
         outlined: [
           "border bg-highlight",
@@ -52,11 +55,9 @@ const pressableBoxVariants = tv(
             ? ""
             : "border-interactive-outlined-pressable",
           "hover:border-interactive-outlined-hover",
-          "focus:border-interactive-outlined-focus",
           "active:border-interactive-outlined-active",
           "disabled:border-interactive-outlined-disabled",
           "aria-disabled:border-interactive-outlined-disabled",
-          "focus-visible:outline-interactive-outlined-outline-focus",
         ].join(" "),
         // No ground and no border at rest: the affordance is the fill arriving
         // on hover, like a listbox row (ListboxOption). The fill is a tone of
@@ -66,11 +67,9 @@ const pressableBoxVariants = tv(
         soft: [
           process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "bg-transparent",
           "hover:bg-interactive-soft-hover",
-          "focus:bg-interactive-soft-focus",
           "active:bg-interactive-soft-active",
           "disabled:bg-transparent",
           "aria-disabled:bg-transparent",
-          "focus-visible:outline-offset-0 focus-visible:outline-interactive-outlined-outline-focus",
         ].join(" "),
       },
       forceStyle: {
@@ -79,6 +78,8 @@ const pressableBoxVariants = tv(
         press: "translate-y-px",
       },
     },
+    // A forced `focus` is the keyboard focus: the rest ground under the ring,
+    // which `focus-visible` never fires for in a story.
     compoundVariants: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
       ? [
           /* tonal */
@@ -95,7 +96,8 @@ const pressableBoxVariants = tv(
           {
             variant: "tonal",
             forceStyle: "focus",
-            className: "shadow-s bg-interactive-tonal-focus",
+            className:
+              "shadow-s bg-interactive-tonal-pressable focus-ring-inset",
           },
           {
             variant: "tonal",
@@ -116,7 +118,7 @@ const pressableBoxVariants = tv(
           {
             variant: "filled",
             forceStyle: "focus",
-            className: "bg-interactive-filled-focus",
+            className: "bg-interactive-filled-pressable focus-ring",
           },
           {
             variant: "filled",
@@ -137,7 +139,7 @@ const pressableBoxVariants = tv(
           {
             variant: "outlined",
             forceStyle: "focus",
-            className: "border-interactive-outlined-focus",
+            className: "border-interactive-outlined-pressable focus-ring",
           },
           {
             variant: "outlined",
@@ -158,7 +160,7 @@ const pressableBoxVariants = tv(
           {
             variant: "soft",
             forceStyle: "focus",
-            className: "bg-interactive-soft-focus",
+            className: "bg-transparent focus-ring",
           },
           {
             variant: "soft",
@@ -199,11 +201,15 @@ export interface PressableBoxProps
   role?: RNPressableProps["role"];
   forceStyle?: "focus" | "hover" | "press";
   /**
-   * Set it to `false` on a row of a list that already paints its cursor (a
-   * menu item, a listbox option): the focus moves with the pointer there, so
-   * the outline would ring whatever the mouse is over.
+   * The keyboard focus ring. Unset, a `tonal` pressable rings inside its edge
+   * (`"inset"`: the material is raised, and its shadow is where an outer ring
+   * would sit) and the flat variants ring 2px outside it. Pass `"inset"` to a
+   * pressable whose parent clips (a `surface` is `overflow-hidden`), and
+   * `false` on a row of a list that already paints its cursor (a menu item, a
+   * listbox option): the focus moves with the pointer there, so the outline
+   * would ring whatever the mouse is over.
    */
-  withFocusVisibleOutline?: boolean;
+  withFocusVisibleOutline?: InteractiveBoxProps["withFocusVisibleOutline"];
   ref?: Ref<RNView>;
 }
 
@@ -214,12 +220,12 @@ export interface PressableBoxProps
 export function PressableBox({
   ref,
   className,
-  variant,
+  variant = "tonal",
   forceStyle,
   accent,
   href,
   role,
-  withFocusVisibleOutline = true,
+  withFocusVisibleOutline = variant === "tonal" ? "inset" : true,
   ...props
 }: PressableBoxProps): ReactNode {
   const warningRef = useTonalGroundWarningRef(ref, {

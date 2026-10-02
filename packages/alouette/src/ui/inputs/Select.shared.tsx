@@ -40,7 +40,8 @@ export interface SelectProps {
 
 // The trigger, on both platforms. `outlined` is a field and focuses like
 // InputText, ringed as soon as it holds the focus. `tonal` is the material of a
-// tonal PressableBox, ringed on keyboard focus only. The ground lives in each
+// tonal PressableBox: no focus ground, and the inset ring on keyboard focus
+// only, inside the raised edge. The ground lives in each
 // variant × disabled pair rather than in the variant, so the disabled one never
 // competes with the enabled one at equal specificity.
 // `flex` is for web, where the trigger is a plain element rather than a View.
@@ -90,9 +91,8 @@ export const selectTriggerVariants = tv(
         class: [
           "shadow-s bg-interactive-tonal-pressable",
           "hover:bg-interactive-tonal-hover",
-          "focus:bg-interactive-tonal-focus",
           "active:shadow-lowered active:bg-interactive-tonal-active",
-          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-muted",
+          "focus-visible:focus-ring-inset",
         ].join(" "),
       },
     ],

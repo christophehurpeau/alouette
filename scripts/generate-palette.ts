@@ -87,8 +87,12 @@ const getContrastRatio = (color1: string, color2: string) => {
 // WCAG contrast ratio requirements
 const WCAG_AA_NORMAL = 4.5; // Normal text
 const WCAG_AAA_NORMAL = 7.0; // Enhanced contrast
+const WCAG_AA_NON_TEXT = 3.0; // 1.4.11: a focus indicator against its adjacent colors
 
-const getContrastGrade = (ratio: number) => {
+const getContrastGrade = (ratio: number, minRatio: number) => {
+  if (minRatio === WCAG_AA_NON_TEXT) {
+    return ratio >= WCAG_AA_NON_TEXT ? "✅ 3:1" : "❌ FAIL";
+  }
   if (ratio >= WCAG_AAA_NORMAL) return "✅ AAA";
   if (ratio >= WCAG_AA_NORMAL) return "⚠️ AA";
   return "❌ FAIL";
@@ -137,7 +141,13 @@ Object.entries(palettes).forEach(([name, palette]) => {
 const at = (palette: ColorScale, step: number) =>
   palette[step as keyof ColorScale];
 
-const tokenPairs: { label: string; fg: string; bg: string }[] = [
+// A pair is normal text (AA 4.5) unless it names the non-text threshold.
+const tokenPairs: {
+  label: string;
+  fg: string;
+  bg: string;
+  minRatio?: number;
+}[] = [
   {
     label: "sharp on highlight-accent",
     fg: "sharp",
@@ -145,12 +155,12 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
   },
   {
     label: "on-accent on enabled",
-    fg: "on-accent",
+    fg: "sharp",
     bg: "enabled",
   },
   {
     label: "Badge outlined       (accent / surface)",
-    fg: "accent",
+    fg: "sharp",
     bg: "surface",
   },
   { label: "sharp on surface", fg: "sharp", bg: "surface" },
@@ -164,18 +174,18 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
   { label: "accent on highlight", fg: "accent", bg: "highlight" },
   {
     label: "on-accent on filled",
-    fg: "on-accent",
+    fg: "sharp",
     bg: "interactive-filled-pressable",
   },
   {
     label: "on-accent on filled:hover",
-    fg: "on-accent",
+    fg: "sharp",
     bg: "interactive-filled-hover",
   },
   // A `filled` PressableListItem's caret.
   {
     label: "on-accent-muted on filled",
-    fg: "on-accent-muted",
+    fg: "sharp",
     bg: "interactive-filled-pressable",
   },
   // A SegmentedBar's selected chip and ConnectionState's bar: `emphasis` keeps a
@@ -194,12 +204,12 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
   },
   {
     label: "on-tonal on tonal:pressable",
-    fg: "on-tonal",
+    fg: "sharp",
     bg: "interactive-tonal-pressable",
   },
   {
     label: "on-tonal on tonal:hover",
-    fg: "on-tonal",
+    fg: "sharp",
     bg: "interactive-tonal-hover",
   },
   {
@@ -210,6 +220,26 @@ const tokenPairs: { label: string; fg: string; bg: string }[] = [
   // The soft variant keeps the label's own color over its fill.
   { label: "sharp on soft:hover", fg: "sharp", bg: "interactive-soft-hover" },
   { label: "accent on soft:hover", fg: "accent", bg: "interactive-soft-hover" },
+  // The `focus-ring` utility draws the keyboard focus in `accent` (the scope's
+  // ink; the sharp ink when neutral). An outer ring is adjacent to the page
+  // only (the 2px gap shows it on both sides), an inset one to the control's
+  // own ground. A border or ground token fails here: in dark mode their steps
+  // meet the tonal ground.
+  ...(
+    [
+      ["screen", "outer ring"],
+      ["surface", "outer ring"],
+      ["highlight", "outer ring"],
+      ["lowered", "outer ring"],
+      ["interactive-tonal-pressable", "inset ring"],
+      ["highlight-accent", "inset ring (Message dismiss)"],
+    ] as const
+  ).map(([bg, label]) => ({
+    label: `focus-ring: accent on ${bg} (${label})`,
+    fg: "accent",
+    bg,
+    minRatio: WCAG_AA_NON_TEXT,
+  })),
 ];
 
 const grouped: Record<
@@ -245,7 +275,7 @@ const displayTokenPairs = (accent: AccentName, mode: "light" | "dark") => {
   const isGrayscale = accent === "grayscale";
   const ctx = { mode, isGrayscale, accent };
   const rows = tokenPairs
-    .map(({ label, fg, bg }) => {
+    .map(({ label, fg, bg, minRatio = WCAG_AA_NORMAL }) => {
       const fgResolved = resolveTokenEffective(fg, ctx);
       const bgResolved = resolveTokenEffective(bg, ctx);
       const fgHex = tokenColor(fgResolved, accent, mode);
@@ -256,32 +286,35 @@ const displayTokenPairs = (accent: AccentName, mode: "light" | "dark") => {
         bgResolved,
         fgHex,
         bgHex,
+        minRatio,
         ratio: getContrastRatio(fgHex, bgHex),
       };
     })
-    .filter((row) => showAllPairs || row.ratio < WCAG_AA_NORMAL);
+    .filter((row) => showAllPairs || row.ratio < row.minRatio);
 
   if (rows.length === 0) return;
 
   console.log(
     `\n${ansiColors.bright}${accent}.${mode} — token pairs:${ansiColors.reset}`,
   );
-  rows.forEach(({ label, fgResolved, bgResolved, fgHex, bgHex, ratio }) => {
-    console.log(
-      [
-        ` ${getContrastGrade(ratio)}`,
-        ratio.toFixed(2).padStart(6),
-        displayColorSwatch(fgHex, "██"),
-        "on",
-        displayColorSwatch(bgHex, "██"),
-        `: ${label} (${stepDesc(fgResolved)}/${stepDesc(bgResolved)})`,
-      ].join(" "),
-    );
-  });
+  rows.forEach(
+    ({ label, fgResolved, bgResolved, fgHex, bgHex, minRatio, ratio }) => {
+      console.log(
+        [
+          ` ${getContrastGrade(ratio, minRatio)}`,
+          ratio.toFixed(2).padStart(6),
+          displayColorSwatch(fgHex, "██"),
+          "on",
+          displayColorSwatch(bgHex, "██"),
+          `: ${label} (${stepDesc(fgResolved)}/${stepDesc(bgResolved)})`,
+        ].join(" "),
+      );
+    },
+  );
 };
 
 console.log(
-  `\n${ansiColors.bright}=== Composed token pairs (normal text: AA 4.5, AAA 7)${
+  `\n${ansiColors.bright}=== Composed token pairs (normal text: AA 4.5, AAA 7; focus ring: 3)${
     showAllPairs ? "" : " — failures only, --all for every pair"
   } ===${ansiColors.reset}`,
 );

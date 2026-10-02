@@ -160,9 +160,12 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
   // (6 → 7), one notch under the filled fill. Neutral walks the card steps in
   // both (1 → 2 → 3 light, 6 → 7 dark, which has nothing above 7 to press
   // into).
+  // No `*-focus` ground: a pressable keeps its rest ground while merely
+  // focused (a mouse click leaves the focus behind), and keyboard focus is the
+  // `focus-ring` utility on `focus-visible` — drawn in the `accent` ink, so it
+  // is never a per-variant color.
   "interactive-tonal-pressable": selfAdaptive(6, 6, 1, 2),
   "interactive-tonal-hover": selfAdaptive(7, 7, 2, 3),
-  "interactive-tonal-focus": selfAdaptive(7, 7, 2, 3),
   "interactive-tonal-active": selfAdaptive(7, 7, 3, 4),
 
   // PressableBox's `filled` variant: the accent's fill. Colored, it takes the
@@ -177,7 +180,6 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
   // the text tones or receding to a darker step.
   "interactive-filled-pressable": selfAdaptive(10, 6, 11, 9),
   "interactive-filled-hover": selfAdaptive(11, 7, 10, 8),
-  "interactive-filled-focus": selfAdaptive(11, 7, 10, 8),
   "interactive-filled-active": selfAdaptive(9, 7, 9, 7),
 
   // A ground-only state set for a control that has no rest ground at all
@@ -185,14 +187,14 @@ export const tokenScaleMap: Record<string, TokenResolver> = {
   // toward the screen in light mode, a step up in dark — so the label keeps its
   // own color instead of flipping onto an accent fill.
   "interactive-soft-hover": self(5, 3),
-  "interactive-soft-focus": self(5, 3),
   "interactive-soft-active": self(6, 4),
 
+  // A field (InputText, Select outlined) keeps its `focus` state while it
+  // holds the focus, mouse or keyboard: it is being edited.
   "interactive-outlined-pressable": self(7, 9),
   "interactive-outlined-hover": self(8, 7),
   "interactive-outlined-focus": self(8, 7),
   "interactive-outlined-active": self(8, 7),
-  "interactive-outlined-outline-focus": self(8, 7),
 
   "interactive-active": self(9),
   "interactive-pressable": self(10),

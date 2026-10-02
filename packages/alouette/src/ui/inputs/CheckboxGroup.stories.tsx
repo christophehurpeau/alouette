@@ -126,8 +126,10 @@ export const TestsCheckboxGroupStory: ThisStory = {
     await expect(month).toHaveAttribute("aria-disabled", "true");
     await expect(day.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
 
-    // Focus grounds the row in the soft material and moves the box to the
-    // interactive hover foreground.
+    // Keyboard focus (focus-visible) leaves the row's ground alone — a focus
+    // ground would stay lit after a mouse click — and moves the box to the
+    // interactive hover foreground. A programmatic focus() counts as keyboard
+    // input for `:focus-visible`.
     const dayBox = [...day.querySelectorAll("div")].find(
       (element) => getComputedStyle(element).borderTopWidth === "2px",
     );
@@ -137,10 +139,8 @@ export const TestsCheckboxGroupStory: ThisStory = {
       "rgba(0, 0, 0, 0)",
     );
     day.focus();
-    await waitFor(() =>
-      expect(getComputedStyle(day).backgroundColor).not.toBe(
-        "rgba(0, 0, 0, 0)",
-      ),
+    await expect(getComputedStyle(day).backgroundColor).toBe(
+      "rgba(0, 0, 0, 0)",
     );
     await waitFor(() =>
       expect(getComputedStyle(dayBox).backgroundColor).not.toBe(restBoxColor),

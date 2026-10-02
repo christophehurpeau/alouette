@@ -89,6 +89,9 @@ export function EditableSection({
             icon={editIcon}
             // A tonal ground dissolves into an accented section.
             variant={editIconVariant ?? (accent ? "soft" : undefined)}
+            // The caller's frame is usually a `surface`, which clips an outer
+            // ring; the tonal default is inset already.
+            withFocusVisibleOutline="inset"
             disabled={disabled}
             aria-label={editAriaLabel}
             onPress={onEdit}

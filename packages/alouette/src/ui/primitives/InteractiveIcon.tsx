@@ -9,13 +9,15 @@ import { View } from "./View";
 // SegmentedItem chip: the swap has to be CSS, driven by the `group` on the
 // enclosing pressable, because a JS hover state would re-render the whole row.
 // The opacity classes live on wrapping Views and never on Icon — Icon drops its
-// className on native and only resolves the `text-*` tint from it.
+// className on native and only resolves the `text-*` tint from it. Focus
+// counts on `focus-visible` only: a mouse click leaves the focus behind, and
+// the swapped glyph would otherwise stay until the next click elsewhere.
 const interactiveIconVariants = tv({
   slots: {
     frame: "relative shrink-0",
-    rest: "transition-opacity duration-fast ease-in group-hover:opacity-0 group-focus:opacity-0 group-active:opacity-0",
+    rest: "transition-opacity duration-fast ease-in group-hover:opacity-0 group-focus-visible:opacity-0 group-active:opacity-0",
     active:
-      "absolute inset-0 opacity-0 transition-opacity duration-fast ease-in group-hover:opacity-100 group-focus:opacity-100 group-active:opacity-100",
+      "absolute inset-0 opacity-0 transition-opacity duration-fast ease-in group-hover:opacity-100 group-focus-visible:opacity-100 group-active:opacity-100",
   },
   variants: {
     active: {

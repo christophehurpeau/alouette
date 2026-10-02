@@ -98,6 +98,8 @@ export function Message({
               iconSize={size === "sm" ? "fill" : undefined}
               size={dismissDiameter}
               variant="soft"
+              // The frame is overflow-hidden: an outer ring would be clipped.
+              withFocusVisibleOutline="inset"
               aria-label={dismissIconAriaLabel}
               onPress={onDismiss}
             />

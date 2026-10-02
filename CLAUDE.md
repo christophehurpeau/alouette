@@ -217,23 +217,24 @@ Edit `packages/alouette/scripts/build-css.ts` (structural tokens) or `src/theme-
 
 ## Draw pressable states from the `interactive-*` tokens — prefer composing `PressableBox`
 
-A pressable/interactive surface must source its rest/hover/focus/press/disabled
+A pressable/interactive surface must source its rest/hover/press/disabled
 appearance from the `interactive-*` token families, never from static tokens like
 `bg-surface` / `border-muted` (those give no affordance). Prefer composing
-`PressableBox` (`src/ui/data/PressableBox.tsx`) — it wires the full state set plus
-a colored `focus-visible` outline and `AccentScope`. This is how `Button` and
+`PressableBox` (`src/ui/actions/PressableBox.tsx`) — it wires the full state set
+plus the `focus-ring` and `AccentScope`. This is how `Button` and
 `IconButton` are built, so use its `variant`:
 
-- `tonal` (default) → `bg-interactive-tonal-{pressable,hover,focus,active,disabled}` + `shadow-s`, text `text-on-tonal`.
-- `filled` → `bg-interactive-filled-{pressable,hover,focus,active,disabled}`, flat (no shadow), text `text-on-accent`.
-- `outlined` → `border-interactive-outlined-{pressable,hover,focus,active,disabled}`, text `text-sharp`.
-- `soft` → no border, no ground at rest, filling on `hover`/`focus`/`active` with `bg-interactive-soft-*`. That family is a **surface tone**, not the accent, so a `PressableBox` composed on it keeps its label's own color — never add a `group-hover:text-on-accent` flip to it. Used where a border tint reads as noise: the `AppHeader` pressables and `MenuItem` rows. `Button` and `IconButton` are the exceptions, having no ground to carry the accent: the soft `Button` is a text button whose label is `text-accent` and underlined, and the soft `IconButton` glyph turns `text-accent` on `group-hover`/`group-focus`/`group-active` (and under a forced state).
+- `tonal` (default) → `bg-interactive-tonal-{pressable,hover,active,disabled}` + `shadow-s`, text `text-on-tonal`.
+- `filled` → `bg-interactive-filled-{pressable,hover,active,disabled}`, flat (no shadow), text `text-on-accent`.
+- `outlined` → `border-interactive-outlined-{pressable,hover,active,disabled}`, text `text-sharp`.
+- `soft` → no border, no ground at rest, filling on `hover`/`active` with `bg-interactive-soft-*`. That family is a **surface tone**, not the accent, so a `PressableBox` composed on it keeps its label's own color — never add a `group-hover:text-on-accent` flip to it. Used where a border tint reads as noise: the `AppHeader` pressables and `MenuItem` rows. `Button` and `IconButton` are the exceptions, having no ground to carry the accent: the soft `Button` is a text button whose label is `text-accent` and underlined, and the soft `IconButton` glyph turns `text-accent` on `group-hover`/`group-focus-visible`/`group-active` (and under a forced state).
 
 Pass `role`/`aria-*` through `PressableBox` (they override its default
 `role="button"`). A selection indicator inside a pressable (the radio ring, the
 checkbox box) is a **foreground**: it takes the accent's
 `interactive-{pressable,hover,active}` family, selected or not, driven by the
-`group` on the pressable (`group-hover:` / `group-focus:` / `group-active:`).
+`group` on the pressable (`group-hover:` / `group-focus-visible:` /
+`group-active:`).
 Never the `interactive-filled-*` grounds — in dark mode the filled hover is the
 tonal hover ground itself, so the ring vanishes. It keeps the option's accent
 even in an unselected card that has dropped to the neutral theme
@@ -445,11 +446,41 @@ it punches out of what it covers.
 
 The focus ring belongs on the **visible chip**, not on the oversized pressable:
 the pressable fills the bar's content box and `surface` is `overflow-hidden`, so
-an `outline-offset-2` drawn there is painted outside the bar and clipped away.
+an outer ring drawn there is painted outside the bar and clipped away.
 `SegmentedItem` therefore passes `withFocusVisibleOutline={false}` to its
-`InteractiveBox` and rings the chip with `group-focus-visible:outline-2
-group-focus-visible:outline-offset-2` — the chip's ~6px of slack holds the 2px
-offset + 2px ring (a stacked item has 2px, and the bar's `py-xs` completes it).
+`InteractiveBox` and rings the chip with `group-focus-visible:focus-ring` — the
+chip's ~6px of slack holds the 2px offset + 2px ring (a stacked item has 2px,
+and the bar's `py-xs` completes it).
+
+## Focus is `focus-visible:` and the `focus-ring` utility, never `focus:`
+
+A control reacts to the **keyboard** focus only. A mouse click leaves the focus
+on the element it pressed, so anything styled on `focus:` (a ground, a swapped
+`activeIcon`, a tinted glyph) stays lit after the pointer has left, as if still
+pressed. There is no `interactive-*-focus` ground for that reason: a pressable
+keeps its rest ground while focused, and `group-focus-visible:` drives the
+indicator, the icon swap and the soft glyph tint. The one exception is a
+**field** (`InputText`, `Select` outlined): it is being edited for as long as it
+holds the focus, mouse or keyboard, so it keeps `focus:` on its border and the
+`interactive-outlined-focus` token.
+
+The indicator is one utility, `focus-ring` (`build-css.ts`): `outline-2
+outline-offset-2 outline-accent`, applied with `focus-visible:` (or
+`group-focus-visible:` on a chip). The ink is `accent`, the scope's own ink
+(the sharp ink when neutral): it clears 3:1 against every ground in both modes
+(audited in `scripts/generate-palette.ts` under the non-text threshold), where
+a border token (`border-sharp`) or a ground (`interactive-filled-pressable`)
+meets the dark tonal ground on the same step and vanishes. It is never a
+per-variant color, and never transitions. `focus-ring-inset` is the same ring
+2px **inside** the edge, for two cases: the raised `tonal` material, whose
+shadow sits where an outer ring would, and a pressable whose parent clips
+(`surface` is `overflow-hidden`: the `Message` dismiss, `EditableSection`'s
+edit button). `InteractiveBox`'s `withFocusVisibleOutline` takes `true` (outer),
+`"inset"` or `false`; `PressableBox` defaults it from the variant (`tonal` →
+`"inset"`) and `Button` / `IconButton` pass it through. A forced
+`forceStyle="focus"` renders the rest ground plus the ring, since no story can
+trigger `:focus-visible`. Native sees none of it: react-native-css drops
+`focus-visible`, and a Pressable's `focus` state is TV/keyboard only.
 
 ## Suppressing a focus ring: `outline-solid outline-0`, never `outline-none`
 

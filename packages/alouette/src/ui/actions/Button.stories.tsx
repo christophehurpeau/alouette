@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 import { AccentScope } from "../containers/AccentScope";
 import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
-import { StoryGrid } from "../story-components/StoryGrid";
+import { StoryGrid, stateTitle } from "../story-components/StoryGrid";
 import { Button, type ButtonProps, ExternalLinkButton } from "./Button";
 
 type ThisStory = StoryObj<typeof Button>;
@@ -100,7 +100,7 @@ function IconWeightRow({
       <StoryGrid.Col title="hover">
         <BackButton forceStyle="hover" withoutActiveIcon={withoutActiveIcon} />
       </StoryGrid.Col>
-      <StoryGrid.Col title="focus">
+      <StoryGrid.Col title="focus-visible">
         <BackButton forceStyle="focus" withoutActiveIcon={withoutActiveIcon} />
       </StoryGrid.Col>
       <StoryGrid.Col title="press">
@@ -161,7 +161,7 @@ export const Variants: ThisStory = {
               ).map((state) => (
                 <StoryGrid.Col
                   key={state ?? "default"}
-                  title={state ?? "Default"}
+                  title={stateTitle(state)}
                 >
                   <View className="gap-xs p-xxs">
                     {(["tonal", "filled", "outlined", "soft"] as const).map(
@@ -390,7 +390,7 @@ export const NeutralAccent: ThisStory = {
           <StoryGrid.Col title="hover">
             <TonalPair forceStyle="hover" />
           </StoryGrid.Col>
-          <StoryGrid.Col title="focus">
+          <StoryGrid.Col title="focus-visible">
             <TonalPair forceStyle="focus" />
           </StoryGrid.Col>
           <StoryGrid.Col title="press">

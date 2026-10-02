@@ -7,6 +7,7 @@ import {
 
 type AlouetteClassGroupIds =
   | DefaultClassGroupIds
+  | "focus-ring"
   | "lowered"
   | "surface-popover"
   | "surface-size"
@@ -80,6 +81,7 @@ export const twMergeConfig: ConfigExtension<
         "font-mono-bold",
         "font-mono-extrabold",
       ],
+      "focus-ring": ["focus-ring", "focus-ring-inset"],
       lowered: ["lowered"],
       surface: ["surface"],
       "surface-size": [{ surface: ["xxs", "xs", "sm", "md", "lg"] }],
@@ -92,6 +94,7 @@ export const twMergeConfig: ConfigExtension<
     // `surface bg-highlight` keeps the padding and `surface-popover surface-lg`
     // keeps the ground.
     conflictingClassGroups: {
+      "focus-ring": ["outline-w", "outline-offset", "outline-color"],
       lowered: ["bg-color", "shadow"],
       surface: [
         ...paddingAndRadiusGroups,

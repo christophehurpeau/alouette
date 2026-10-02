@@ -266,13 +266,14 @@ export const Tests: StoryObj<typeof Select> = {
     await userEvent.click(disabledSelect, { pointerEventsCheck: 0 });
     await expect(body.queryByRole("listbox")).toBe(null);
 
-    // A tonal one is a pill, ringed on keyboard focus like a tonal button.
+    // A tonal one is a pill, ringed on keyboard focus (focus-visible) like a
+    // tonal button: inset, inside its raised edge.
     const tonal = canvas.getByRole("combobox", { name: "Tonal fruit" });
     await expect(getComputedStyle(tonal).borderTopWidth).toBe("0px");
     await expect(getComputedStyle(tonal).boxShadow).not.toBe("none");
     await userEvent.tab();
     await expect(tonal).toHaveFocus();
     await expect(getComputedStyle(tonal).outlineWidth).toBe("2px");
-    await expect(getComputedStyle(tonal).outlineOffset).toBe("2px");
+    await expect(getComputedStyle(tonal).outlineOffset).toBe("-2px");
   },
 };

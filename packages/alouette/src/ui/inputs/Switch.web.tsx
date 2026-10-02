@@ -20,7 +20,6 @@ const trackVariants = tv(
       "h-[36px] w-[58px]", // TRACK_HEIGHT x TRACK_WIDTH
       "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
       "transition-[background-color] duration-fast ease-in",
-      "outline-interactive-outlined-outline-focus",
       "aria-disabled:bg-disabled-interactive-muted",
     ].join(" "),
     variants: {

@@ -25,8 +25,8 @@ const radioIndicatorVariants = tv({
       // are grounds, and in dark mode the filled hover is the tonal hover
       // ground itself.
       false: {
-        ring: "border-interactive-pressable group-hover:border-interactive-hover group-focus:border-interactive-hover group-active:border-interactive-active",
-        dot: "bg-interactive-pressable group-hover:bg-interactive-hover group-focus:bg-interactive-hover group-active:bg-interactive-active",
+        ring: "border-interactive-pressable group-hover:border-interactive-hover group-focus-visible:border-interactive-hover group-active:border-interactive-active",
+        dot: "bg-interactive-pressable group-hover:bg-interactive-hover group-focus-visible:bg-interactive-hover group-active:bg-interactive-active",
       },
     },
     withPressEffect: {

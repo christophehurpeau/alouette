@@ -30,8 +30,8 @@ This skill builds on alouette-theming. Read it first for the accent model.
 
 # alouette — Actions
 
-Buttons and pressables carry interactive token states (hover/focus/active/
-disabled) automatically. `variant` is
+Buttons and pressables carry interactive token states (hover/active/disabled,
+plus the keyboard focus ring) automatically. `variant` is
 `"tonal" | "filled" | "outlined" | "soft"`; `size` is
 `"sm" | "md"`; `accent`
 is `"brand" | "danger" | "info" | "success" | "warning" | "neutral"`. Unset,
@@ -290,9 +290,14 @@ needing another role passes its own (`MenuItem` stays a `menuitem`).
 </PressableBox>
 ```
 
-`withFocusVisibleOutline={false}` drops the focus ring for a row of a list that
-already paints its cursor (a menu item, a listbox option), where the outline
-would ring whatever the pointer crosses. It emits `outline-solid outline-0`, not
+The keyboard focus ring is the `focus-ring` utility in the accent ink, on
+`focus-visible` only — a mouse click never leaves a ring or a changed ground
+behind. A `tonal` pressable rings 2px inside its raised edge, the flat variants
+2px outside it. `withFocusVisibleOutline="inset"` moves the ring inside for a
+pressable whose parent clips (a `surface` is `overflow-hidden`), and
+`withFocusVisibleOutline={false}` drops it for a row of a list that already
+paints its cursor (a menu item, a listbox option), where the outline would ring
+whatever the pointer crosses. `false` emits `outline-solid outline-0`, not
 `outline-none` — react-native-css drops `outline-style: none`, so the UA ring
 would survive.
 

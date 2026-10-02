@@ -30,7 +30,7 @@ const segmentedItemVariants = tv({
   slots: {
     pressable: "group flex-center min-h-[44px] rounded-full",
     segment:
-      "relative flex-row flex-center gap-xxs min-h-[32px] rounded-full border border-transparent transition-[border-color] duration-fast ease-in group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-interactive-outlined-outline-focus",
+      "relative flex-row flex-center gap-xxs min-h-[32px] rounded-full border border-transparent transition-[border-color] duration-fast ease-in group-focus-visible:focus-ring",
     chip: "absolute inset-0 rounded-full transition-opacity duration-fast ease-in",
     foreground: "z-1 transition-[color] duration-fast ease-in",
     label: "select-none font-body-bold text-base text-center",
@@ -224,7 +224,7 @@ export function SegmentedItem({
   return (
     <InteractiveBox
       aria-label={label}
-      // The chip below draws the ring (`group-focus-visible:outline-*`), so the
+      // The chip below draws the ring (`group-focus-visible:focus-ring`), so the
       // pressable carries none — a zero-width one, because react-native-css
       // drops `outline-style: none` and the browser's own ring would stay.
       withFocusVisibleOutline={false}

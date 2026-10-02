@@ -34,8 +34,7 @@ const optionVariants = tv(
         // while the arrow keys move elsewhere.
         rest: "",
         highlighted: "bg-interactive-soft-hover",
-        hover:
-          "hover:bg-interactive-soft-hover focus:bg-interactive-soft-focus",
+        hover: "hover:bg-interactive-soft-hover",
       },
       disabled: {
         true: "opacity-50",
@@ -55,7 +54,7 @@ export interface ListboxOptionProps extends Omit<
   selected: boolean;
   /**
    * Position of a JS-driven cursor (downshift's `highlightedIndex`), which
-   * replaces CSS hover. Left undefined, the row lights on hover and focus.
+   * replaces CSS hover. Left undefined, the row lights on hover.
    */
   highlighted?: boolean;
   ref?: Ref<RNView>;

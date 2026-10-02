@@ -34,22 +34,17 @@ const tokenSwatchVariants = tv({
       "interactive-filled-pressable":
         "bg-(--color-interactive-filled-pressable)",
       "interactive-filled-hover": "bg-(--color-interactive-filled-hover)",
-      "interactive-filled-focus": "bg-(--color-interactive-filled-focus)",
       "interactive-filled-active": "bg-(--color-interactive-filled-active)",
       "interactive-tonal-pressable": "bg-(--color-interactive-tonal-pressable)",
       "interactive-tonal-hover": "bg-(--color-interactive-tonal-hover)",
-      "interactive-tonal-focus": "bg-(--color-interactive-tonal-focus)",
       "interactive-tonal-active": "bg-(--color-interactive-tonal-active)",
       "interactive-soft-hover": "bg-(--color-interactive-soft-hover)",
-      "interactive-soft-focus": "bg-(--color-interactive-soft-focus)",
       "interactive-soft-active": "bg-(--color-interactive-soft-active)",
       "interactive-outlined-pressable":
         "bg-(--color-interactive-outlined-pressable)",
       "interactive-outlined-hover": "bg-(--color-interactive-outlined-hover)",
       "interactive-outlined-focus": "bg-(--color-interactive-outlined-focus)",
       "interactive-outlined-active": "bg-(--color-interactive-outlined-active)",
-      "interactive-outlined-outline-focus":
-        "bg-(--color-interactive-outlined-outline-focus)",
       "interactive-active": "bg-(--color-interactive-active)",
       "interactive-pressable": "bg-(--color-interactive-pressable)",
       "interactive-hover": "bg-(--color-interactive-hover)",
@@ -88,7 +83,6 @@ interface TokenSwatchProps {
     | "interactive-active"
     | "interactive-filled-active"
     | "interactive-filled-disabled"
-    | "interactive-filled-focus"
     | "interactive-filled-hover"
     | "interactive-filled-pressable"
     | "interactive-hover"
@@ -97,15 +91,12 @@ interface TokenSwatchProps {
     | "interactive-outlined-disabled"
     | "interactive-outlined-focus"
     | "interactive-outlined-hover"
-    | "interactive-outlined-outline-focus"
     | "interactive-outlined-pressable"
     | "interactive-pressable"
     | "interactive-soft-active"
-    | "interactive-soft-focus"
     | "interactive-soft-hover"
     | "interactive-tonal-active"
     | "interactive-tonal-disabled"
-    | "interactive-tonal-focus"
     | "interactive-tonal-hover"
     | "interactive-tonal-pressable"
     | "lowered"
@@ -189,20 +180,16 @@ function AccentTokens({ accent }: AccentTokensProps): ReactNode {
       <TokenGroup group="Interactive">
         <TokenSwatch token="interactive-filled-pressable" />
         <TokenSwatch token="interactive-filled-hover" />
-        <TokenSwatch token="interactive-filled-focus" />
         <TokenSwatch token="interactive-filled-active" />
         <TokenSwatch token="interactive-tonal-pressable" />
         <TokenSwatch token="interactive-tonal-hover" />
-        <TokenSwatch token="interactive-tonal-focus" />
         <TokenSwatch token="interactive-tonal-active" />
         <TokenSwatch token="interactive-soft-hover" />
-        <TokenSwatch token="interactive-soft-focus" />
         <TokenSwatch token="interactive-soft-active" />
         <TokenSwatch token="interactive-outlined-pressable" />
         <TokenSwatch token="interactive-outlined-hover" />
         <TokenSwatch token="interactive-outlined-focus" />
         <TokenSwatch token="interactive-outlined-active" />
-        <TokenSwatch token="interactive-outlined-outline-focus" />
         <TokenSwatch token="interactive-active" />
         <TokenSwatch token="interactive-pressable" />
         <TokenSwatch token="interactive-hover" />

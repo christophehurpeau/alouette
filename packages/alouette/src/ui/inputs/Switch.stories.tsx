@@ -1,7 +1,7 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Story, neutralAndAccents } from "../story-components/Story";
-import { StoryGrid } from "../story-components/StoryGrid";
+import { StoryGrid, stateTitle } from "../story-components/StoryGrid";
 import { Switch } from "./Switch";
 
 type ThisStory = StoryObj<typeof Switch>;
@@ -51,7 +51,7 @@ export const Variants: ThisStory = {
                     "disabled:checked",
                   ] as const
                 ).map((state) => (
-                  <StoryGrid.Col key={state} title={state ?? "Default"}>
+                  <StoryGrid.Col key={state} title={stateTitle(state)}>
                     <Switch
                       accent={accent}
                       disabled={

@@ -46,7 +46,7 @@ const iconButtonVariants = tv(
         disabled: false,
         forced: false,
         class: {
-          icon: "text-sharp transition-colors duration-fast group-hover:text-accent group-focus:text-accent group-active:text-accent",
+          icon: "text-sharp transition-colors duration-fast group-hover:text-accent group-focus-visible:text-accent group-active:text-accent",
         },
       },
       {

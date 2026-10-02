@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
-import { StoryGrid } from "../story-components/StoryGrid";
+import { StoryGrid, stateTitle } from "../story-components/StoryGrid";
 import { IconButton, type IconButtonProps } from "./IconButton";
 
 type ThisStory = StoryObj<typeof IconButton>;
@@ -84,7 +84,7 @@ function IconWeightRow({
           withoutActiveIcon={withoutActiveIcon}
         />
       </StoryGrid.Col>
-      <StoryGrid.Col title="focus">
+      <StoryGrid.Col title="focus-visible">
         <BackIconButton
           forceStyle="focus"
           withoutActiveIcon={withoutActiveIcon}
@@ -134,7 +134,7 @@ export const Variants: ThisStory = {
               {(
                 [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col key={state} title={state ?? "Default"}>
+                <StoryGrid.Col key={state} title={stateTitle(state)}>
                   <View className="gap-xs">
                     {(["tonal", "filled", "soft"] as const).map((variant) => (
                       <View

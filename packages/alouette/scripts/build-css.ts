@@ -320,6 +320,25 @@ ${Object.keys(animationDurationsMs)
   @apply bg-lowered shadow-lowered;
 }
 
+/* focus-ring — the keyboard focus indicator, one geometry and one ink for
+   every ringed control, applied on focus-visible (never on focus: a mouse
+   click leaves the focus behind). The ink is \`accent\`: the scope's own ink
+   (the sharp ink in the neutral theme), which clears 3:1 against every ground
+   in both modes (audited in scripts/generate-palette.ts) — not a border or a
+   ground token, whose steps meet a tonal ground in dark mode. No transition,
+   an indicator arrives at once. The outer ring sits 2px off the edge, with the
+   page showing in the gap as its halo; the inset one sits 2px inside the edge,
+   for a raised control (the tonal material, whose shadow the outer ring would
+   overlap) and for a pressable whose parent clips (\`surface\` is
+   overflow-hidden). Native never sees either: react-native-css drops
+   focus-visible. */
+@utility focus-ring {
+  @apply outline-2 outline-offset-2 outline-accent;
+}
+@utility focus-ring-inset {
+  @apply outline-2 -outline-offset-2 outline-accent;
+}
+
 /* surface — the raised card. overflow-hidden clips children to the rounded
    corners. Any class written after it wins: it sorts ahead of bg-*, shadow-*,
    p-*, rounded-*, lowered and the surface-{size} utilities. The transition

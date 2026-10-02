@@ -1,4 +1,4 @@
-import { expect, mocked, spyOn, within } from "storybook/test";
+import { expect, mocked, spyOn, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Box } from "../containers/Box";
 import { Text } from "../primitives/Text";
@@ -115,6 +115,86 @@ export const Tests: ThisStory = {
     await expect(
       canvas.getByRole("menuitem", { name: "Menu row" }),
     ).toHaveAttribute("href", "/destination");
+  },
+};
+
+// `outlineColor` is reported as `rgb(...)`; a token is hex (or oklch), so it
+// is resolved through a probe element.
+function toRgb(color: string, root: HTMLElement): string {
+  const probe = document.createElement("span");
+  probe.style.color = color;
+  root.append(probe);
+  const resolved = getComputedStyle(probe).color;
+  probe.remove();
+  return resolved;
+}
+
+export const FocusRing: ThisStory = {
+  render: () => (
+    <Story noDarkMode>
+      <Story.Section title="focus-visible rings in the accent ink">
+        <View className="flex-row gap-m flex-wrap">
+          {VARIANTS.map((variant) => (
+            <PressableBox
+              key={variant}
+              variant={variant}
+              className="px-m py-xs rounded-sm"
+            >
+              <Text className={inkOf(variant)}>{variant}</Text>
+            </PressableBox>
+          ))}
+          <PressableBox
+            variant="soft"
+            withFocusVisibleOutline="inset"
+            className="px-m py-xs rounded-sm"
+          >
+            <Text className="text-sharp">inset</Text>
+          </PressableBox>
+        </View>
+      </Story.Section>
+    </Story>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const tonal = canvas.getByRole("button", { name: "tonal" });
+    const accent = toRgb(
+      getComputedStyle(tonal).getPropertyValue("--color-accent"),
+      canvasElement,
+    );
+    const restGround = getComputedStyle(tonal).backgroundColor;
+
+    // A mouse click leaves the focus behind, never a changed ground. (The ring
+    // cannot be asserted here: the synthetic click counts as keyboard input
+    // for `:focus-visible`.)
+    await userEvent.click(tonal);
+    await expect(tonal).toHaveFocus();
+    await userEvent.unhover(tonal);
+    await expect(getComputedStyle(tonal).backgroundColor).toBe(restGround);
+
+    // Tab brings the ring: inset on the raised tonal material, 2px outside on
+    // the flat variants, in the accent ink everywhere.
+    await userEvent.tab({ shift: true });
+    await userEvent.tab();
+    await expect(tonal).toHaveFocus();
+    await expect(getComputedStyle(tonal).outlineWidth).toBe("2px");
+    await expect(getComputedStyle(tonal).outlineOffset).toBe("-2px");
+    await expect(getComputedStyle(tonal).outlineColor).toBe(accent);
+    await expect(getComputedStyle(tonal).backgroundColor).toBe(restGround);
+
+    for (const name of ["filled", "outlined", "soft"]) {
+      await userEvent.tab();
+      const button = canvas.getByRole("button", { name });
+      await expect(button).toHaveFocus();
+      await expect(getComputedStyle(button).outlineWidth).toBe("2px");
+      await expect(getComputedStyle(button).outlineOffset).toBe("2px");
+      await expect(getComputedStyle(button).outlineColor).toBe(accent);
+    }
+
+    // An explicit `inset` for a pressable whose parent clips.
+    await userEvent.tab();
+    const inset = canvas.getByRole("button", { name: "inset" });
+    await expect(inset).toHaveFocus();
+    await expect(getComputedStyle(inset).outlineOffset).toBe("-2px");
   },
 };
 

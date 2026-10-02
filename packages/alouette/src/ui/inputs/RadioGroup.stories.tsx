@@ -97,8 +97,10 @@ export const TestsRadioGroupStory: StoryObj<typeof RadioGroup> = {
     await expect(week).toHaveAttribute("aria-checked", "false");
     await expect(month).toHaveAttribute("aria-disabled", "true");
 
-    // Focus grounds the row in the soft material and moves the ring to the
-    // interactive hover foreground.
+    // Keyboard focus (focus-visible) leaves the row's ground alone — a focus
+    // ground would stay lit after a mouse click — and moves the ring to the
+    // interactive hover foreground. A programmatic focus() counts as keyboard
+    // input for `:focus-visible`.
     const dayRing = [...day.querySelectorAll("div")].find(
       (element) => getComputedStyle(element).borderTopWidth === "2px",
     );
@@ -108,10 +110,8 @@ export const TestsRadioGroupStory: StoryObj<typeof RadioGroup> = {
       "rgba(0, 0, 0, 0)",
     );
     day.focus();
-    await waitFor(() =>
-      expect(getComputedStyle(day).backgroundColor).not.toBe(
-        "rgba(0, 0, 0, 0)",
-      ),
+    await expect(getComputedStyle(day).backgroundColor).toBe(
+      "rgba(0, 0, 0, 0)",
     );
     await waitFor(() =>
       expect(getComputedStyle(dayRing).borderTopColor).not.toBe(restRingColor),

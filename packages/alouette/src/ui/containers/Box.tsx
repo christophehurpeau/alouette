@@ -53,8 +53,13 @@ export const interactiveBoxVariants = tv({
       true: "active:translate-y-px",
       false: "",
     },
+    // The keyboard focus ring (`focus-ring`, in the accent ink), on
+    // `focus-visible` only so a mouse click leaves no residue. `inset` draws it inside the edge: for a raised control
+    // (PressableBox's tonal material picks it) and for a pressable whose
+    // parent clips (`surface` is overflow-hidden).
     withFocusVisibleOutline: {
-      true: "focus-visible:outline-2 focus-visible:outline-offset-2",
+      true: "focus-visible:focus-ring",
+      inset: "focus-visible:focus-ring-inset",
       // `outline-none` cannot express this: react-native-css keeps solid,
       // dotted and dashed outline styles only and drops `none`, so the
       // browser's own focus ring is overridden with a zero-width one instead.
