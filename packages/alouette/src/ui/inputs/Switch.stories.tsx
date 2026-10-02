@@ -129,5 +129,16 @@ export const Tests: StoryObj<typeof Switch> = {
     checkedSwitch.click();
 
     await expect(checkedSwitch).toHaveAttribute("aria-checked", "true");
+
+    // Keyboard focus (focus-visible) rings the track, not the oversized
+    // pressable that holds the focus. A programmatic focus() counts as
+    // keyboard input for `:focus-visible`.
+    const track = uncontrolledSwitch.firstElementChild;
+    if (!(track instanceof HTMLElement)) throw new Error("No switch track");
+    uncontrolledSwitch.focus();
+    await expect(uncontrolledSwitch).toHaveFocus();
+    await expect(getComputedStyle(uncontrolledSwitch).outlineWidth).toBe("0px");
+    await expect(getComputedStyle(track).outlineWidth).toBe("2px");
+    await expect(getComputedStyle(track).outlineOffset).toBe("2px");
   },
 };

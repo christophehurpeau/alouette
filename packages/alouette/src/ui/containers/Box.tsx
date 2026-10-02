@@ -95,6 +95,20 @@ export function InteractiveBox({
   );
 }
 
+// The child wears the material, but the pressable holds the focus: the ring is
+// driven from the pressable's `group`, and the pressable's own UA ring is
+// zeroed (`outline-solid outline-0`, see `withFocusVisibleOutline: false`).
+const hitSlopChildVariants = tv({
+  extend: interactiveBoxVariants,
+  variants: {
+    withFocusVisibleOutline: {
+      true: "group-focus-visible:focus-ring",
+      inset: "group-focus-visible:focus-ring-inset",
+      false: "",
+    },
+  },
+});
+
 export function InteractiveBoxHitSlop({
   withFocusVisibleOutline,
   withPressEffect,
@@ -108,11 +122,11 @@ export function InteractiveBoxHitSlop({
       // Pressable sets pointerEvents to "none" while disabled, which would hide
       // the not-allowed cursor.
       pointerEvents="auto"
-      className={`flex-center ${className ?? ""}`}
+      className={`group flex-center outline-solid outline-0 ${className ?? ""}`}
       {...rest}
     >
       {cloneElement(child, {
-        className: interactiveBoxVariants({
+        className: hitSlopChildVariants({
           withFocusVisibleOutline,
           withPressEffect: rest.disabled ? false : withPressEffect,
           className: child.props.className,

@@ -27,8 +27,10 @@ const trackVariants = tv(
         false: "bg-lowered",
         true: "bg-enabled",
       },
+      // The track has no hover or press material; a forced focus is the
+      // keyboard focus, the ring `InteractiveBoxHitSlop` draws on focus-visible.
       forceStyle: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-        ? { hover: "", focus: "", press: "" }
+        ? { hover: "", focus: "focus-ring", press: "" }
         : { hover: "", focus: "", press: "" },
     },
   },
