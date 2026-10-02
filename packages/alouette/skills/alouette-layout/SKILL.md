@@ -3,7 +3,8 @@ name: alouette-layout
 description: >
   Build screen structure: Box / InteractiveBox / SafeAreaBox for containers,
   raised with the surface utilities (surface, surface-{size}, lowered,
-  surface-popover), View with flex classes and Separator to arrange them,
+  surface-flat, surface-popover), View with flex classes and Separator to
+  arrange them,
   ScreenCenterLayout and the screen scroll containers (ScreenScrollView /
   ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through
   SafeAreaScope) for the page itself, the application shell around every screen
@@ -98,15 +99,26 @@ when it takes one. Every class written after `surface` overrides its own part
 - ground: `bg-surface` · `bg-highlight` · `bg-highlight-accent` · `bg-translucent`
   · `lowered` (utility: the lowered ground **and** its inset shadow, never split)
 - elevation: `shadow-s` · `shadow-m` · `shadow-l`
-- role: `surface-popover` — the panel a popover list opens in (overflow, ground,
-  shadow, padding and radius together), used **instead of** `surface`
+- roles, used **instead of** `surface`: `surface-flat` — the card with no
+  elevation, a `border-border-muted` hairline in place of the shadow (same
+  ground, clip, size and transition), for a card inside a card, where a second
+  shadow reads as a card stacked on a card, and for a dense grid of cards ·
+  `surface-popover` — the panel a popover list opens in (overflow, ground,
+  shadow, padding and radius together)
 
 ```tsx
 <Box className="surface shadow-m surface-sm md:surface-lg">Elevated</Box>
 <Box className="surface lowered surface-sm">Sunken</Box>
 <Box accent="info" className="surface">Info card</Box>
+<Box className="surface">
+  <Box className="surface-flat surface-sm">Card inside a card</Box>
+</Box>
 <Box className="surface-popover">{menuRows}</Box>
 ```
+
+Never write `shadow-none border border-border-muted` after `surface` by hand:
+that is `surface-flat`. The hairline is 1px inside the box, so a flat card and a
+raised one of the same content differ by 2px.
 
 Size a surface with a `surface-*` class, not a hand-picked `p-*` + `rounded-*`,
 so every surface of a size matches. Override one side after it when a layout

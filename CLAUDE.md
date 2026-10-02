@@ -89,7 +89,10 @@ A component whose only job is default classes is an alias too, which is why
 styled with `bg-*` / `shadow-*` and the `@utility` classes in `build-css.ts`:
 `surface` (the card: `overflow-hidden bg-surface shadow-s surface-md transition-colors duration-fast`), `lowered`
 (ground + inset shadow), `surface-{xxs,xs,sm,md,lg}` (padding + radius as one
-class, so surfaces of a size match) and `surface-popover` (the panel of `Menu`,
+class, so surfaces of a size match), `surface-flat` (the same card with a
+`border-border-muted` hairline instead of the shadow, used instead of `surface`
+for a card inside a card or a dense grid — `Message`'s own `flat` variant is not
+a surface and stays separate) and `surface-popover` (the panel of `Menu`,
 `Select`, `InputTextAutocomplete`, used instead of `surface`). A pairing that
 must stay consistent is a utility, and a role repeated across components gets
 one utility for the role. Each new utility gets a class group in

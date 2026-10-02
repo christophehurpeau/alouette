@@ -73,8 +73,9 @@ breakpoint prefix, a class can (`surface-sm md:surface-lg`). A pairing that must
 never be split becomes a `@utility` in `build-css.ts` instead — `lowered` (the
 lowered ground + its inset shadow), `surface-{xxs…lg}` (padding + radius) — and
 so does a role several components share (`surface-popover` for the Menu, Select
-and InputTextAutocomplete panel), so they match by construction rather than by
-each call site repeating the same classes. Give each new utility a class group
+and InputTextAutocomplete panel, `surface-flat` for the card inside a card), so
+they match by construction rather than by each call site repeating the same
+classes. Give each new utility a class group
 and its conflicts in `src/core/twMerge.ts`.
 
 Pass the incoming `className` through the call (`chipVariants({ selected, className })`)

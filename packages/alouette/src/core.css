@@ -404,6 +404,17 @@
   @apply overflow-hidden bg-surface shadow-s surface-md transition-colors duration-fast;
 }
 
+/* surface-flat — the card with no elevation: a hairline instead of the shadow,
+   used instead of `surface` for a card inside a card (a second shadow reads as
+   a card stacked on a card) and in a dense grid of cards. Same ground, clip,
+   size and transition as `surface` (transition-colors covers the hairline
+   too), so the two can sit side by side. The border is 1px in the box: a flat
+   card and a raised one of the same content differ by 2px. Not a replacement
+   for Message's own `flat` variant, which is not a surface. */
+@utility surface-flat {
+  @apply overflow-hidden bg-surface border border-border-muted surface-md transition-colors duration-fast;
+}
+
 /* surface-{size} — padding and radius as one class so the pair cannot drift
    apart between call sites. A single p-* / rounded-* written after it still
    overrides one side. */

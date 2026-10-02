@@ -76,7 +76,9 @@ inside a raised surface — a `Modal`/`AlertDialog` panel, a `surface` card, a
 `PressableListItem` row — where a second elevation reads as a card stacked on a
 card. Even there, prefer laying the message out on the screen background (its own
 `surface` banner above or below the card) when the layout allows it; `flat` is
-the allowance for when it cannot.
+the allowance for when it cannot. It is the message's own variant, not the
+`surface-flat` utility (alouette-layout): a banner is not a surface — its
+ground is `bg-highlight-accent` and its sizes carry a `gap`.
 
 ```tsx
 <ErrorMessage>Payment failed.</ErrorMessage>              {/* on the page */}

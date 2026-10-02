@@ -9,6 +9,7 @@ type AlouetteClassGroupIds =
   | DefaultClassGroupIds
   | "focus-ring"
   | "lowered"
+  | "surface-flat"
   | "surface-popover"
   | "surface-size"
   | "surface"
@@ -84,6 +85,7 @@ export const twMergeConfig: ConfigExtension<
       "focus-ring": ["focus-ring", "focus-ring-inset"],
       lowered: ["lowered"],
       surface: ["surface"],
+      "surface-flat": ["surface-flat"],
       "surface-size": [{ surface: ["xxs", "xs", "sm", "md", "lg"] }],
       "surface-popover": ["surface-popover"],
       "text-trim": ["text-trim-cap"],
@@ -100,8 +102,18 @@ export const twMergeConfig: ConfigExtension<
         ...paddingAndRadiusGroups,
         "bg-color",
         "shadow",
-        "surface-size",
+        "surface-flat",
         "surface-popover",
+        "surface-size",
+      ],
+      "surface-flat": [
+        ...paddingAndRadiusGroups,
+        "bg-color",
+        "border-color",
+        "border-w",
+        "surface",
+        "surface-popover",
+        "surface-size",
       ],
       "surface-size": [...paddingAndRadiusGroups],
       "surface-popover": [
@@ -109,6 +121,7 @@ export const twMergeConfig: ConfigExtension<
         "bg-color",
         "shadow",
         "surface",
+        "surface-flat",
         "surface-size",
       ],
     },
