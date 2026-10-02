@@ -1,6 +1,8 @@
+import { expect, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useRef, useState } from "react";
 import { animationDurationsMs } from "../../animationDurationsMs";
+import { ReducedMotionContext } from "../../core/ReducedMotionContext";
 import { Button } from "../actions/Button";
 import { InfoMessage } from "../feedback/Message";
 import { Text } from "../primitives/Text";
@@ -123,4 +125,32 @@ export const VariantsStory: StoryObj<unknown> = {
       </Story.Section>
     </Story>
   ),
+};
+
+export const ReducedMotionStory: StoryObj<unknown> = {
+  name: "Presence Reduced Motion",
+  parameters: { layout: "padded" },
+  render: () => (
+    <ReducedMotionContext.Provider value>
+      <View className="gap-m">
+        <PresenceOneDemo />
+        <PresenceListDemo />
+      </View>
+    </ReducedMotionContext.Provider>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole("button", { name: "Next game" }));
+    await expect(canvas.queryByText("Game 1")).toBeNull();
+    const card = canvas.getByText("Game 2").parentElement;
+    if (!card) throw new Error("Game card not found");
+    await expect(getComputedStyle(card).animationName).toBe("none");
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Dismiss item 2" }),
+    );
+    await expect(canvas.queryByText("Item 2")).toBeNull();
+    await expect(canvas.getByText("Item 3")).toBeVisible();
+  },
 };

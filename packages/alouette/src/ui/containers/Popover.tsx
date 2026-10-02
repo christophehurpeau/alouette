@@ -1,5 +1,6 @@
 import type { ReactNode, RefObject } from "react";
 import { Modal, Pressable, type View as RNView } from "react-native";
+import { useReducedMotion } from "../../core/ReducedMotionContext";
 import { SafeAreaProvider } from "../../core/SafeAreaProvider";
 import { useSafeAreaInsets } from "../../core/useSafeAreaInsets";
 import { View } from "../primitives/View";
@@ -112,11 +113,12 @@ export function Popover({
   "aria-label": ariaLabel,
   children,
 }: PopoverProps): ReactNode {
+  const reducedMotion = useReducedMotion();
   return (
     <Modal
       transparent
       visible={open}
-      animationType="fade"
+      animationType={reducedMotion ? "none" : "fade"}
       onRequestClose={onClose}
     >
       {/* A Modal is its own window: insets measured by an app-level provider

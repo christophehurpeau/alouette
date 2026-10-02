@@ -292,13 +292,16 @@ skills:
     domain: "animation"
     path: "packages/alouette/skills/alouette-animation/SKILL.md"
     package: "packages/alouette"
-    description: "Animate alouette UI two ways: NativeWind transition utilities for a change of state (hover, focus, press), and PresenceOne / PresenceList for content entering and leaving, which keep an element mounted long enough to play its exit keyframes. Their exit timing is read from the library's animationDurationsMs rather than hardcoded, so it stays in step with the keyframes. Both run on native through react-native-reanimated. Load when adding transitions or enter/exit animations."
+    description: "Animate alouette UI two ways: NativeWind transition utilities for a change of state (hover, focus, press), and PresenceOne / PresenceList for content entering and leaving, which keep an element mounted long enough to play its exit keyframes. Their exit timing is read from the library's animationDurationsMs rather than hardcoded, so it stays in step with the keyframes. Both run on native through react-native-reanimated, and both honour the OS reduced-motion setting on web and native; useReducedMotion covers motion driven from JS. Load when adding transitions or enter/exit animations, or handling prefers-reduced-motion."
     requires: []
     sources:
       - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/animationDurationsMs.ts"
       - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.stories.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/core/ReducedMotionContext.ts"
+      - "christophehurpeau/alouette:packages/alouette/src/reducedMotionVariables.ts"
+      - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
 
   - name: "alouette-responsive"
     slug: "alouette-responsive"

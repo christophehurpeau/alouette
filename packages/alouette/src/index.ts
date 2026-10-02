@@ -20,6 +20,7 @@ export type {
   AccentOrNeutral,
 } from "./core/AlouetteConfig";
 export { useCurrentMode, useCurrentTheme } from "./core/ThemeContext";
+export { useReducedMotion } from "./core/ReducedMotionContext";
 export type { ColorModePreference } from "./core/useColorMode";
 export { useResolvedColorMode, useSystemColorMode } from "./core/useColorMode";
 export type { ScopedThemeProps } from "./ui/containers/ScopedTheme";

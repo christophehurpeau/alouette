@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { useReducedMotion } from "../../core/ReducedMotionContext";
 import { useScrollEndState } from "../../core/useScrollEndState";
 import { buttonHeight } from "../actions/Button";
 import { IconButton } from "../actions/IconButton";
@@ -235,11 +236,12 @@ export function Modal({
   accent,
   ...panelProps
 }: ModalProps): ReactNode {
+  const reducedMotion = useReducedMotion();
   return (
     <RNModal
       transparent
       visible={visible}
-      animationType="fade"
+      animationType={reducedMotion ? "none" : "fade"}
       onRequestClose={onClose}
     >
       <PortalAccentScope accent={accent}>

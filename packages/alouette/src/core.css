@@ -132,6 +132,33 @@
       --font-mono-bold: "ChivoMonoBold";
       --font-mono-extrabold: "ChivoMonoExtraBold";
     }
+
+    /* named transition durations, read by the duration-* utilities — variables
+       so that reduced motion can zero them (see the @media block below) */
+    --motion-duration-slide: 600ms;
+    --motion-duration-collapse: 800ms;
+    --motion-duration-progress: 600ms;
+    --motion-duration-fade: 300ms;
+    --motion-duration-fast: 200ms;
+  }
+}
+
+/* prefers-reduced-motion: every alouette transition and animation token
+   collapses to nothing. Unlayered so it wins over an app's @layer theme
+   overrides. Native never matches this query: AlouetteProvider pushes the
+   same values (reducedMotionVariables.ts) from AccessibilityInfo instead. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --default-transition-duration: 0ms;
+    --motion-duration-slide: 0ms;
+    --motion-duration-collapse: 0ms;
+    --motion-duration-progress: 0ms;
+    --motion-duration-fade: 0ms;
+    --motion-duration-fast: 0ms;
+    --animate-slide-in: none;
+    --animate-slide-out: none;
+    --animate-collapse-in: none;
+    --animate-collapse-out: none;
   }
 }
 
@@ -226,19 +253,19 @@
 
 /* named transition durations */
 @utility duration-slide {
-  transition-duration: 600ms;
+  transition-duration: var(--motion-duration-slide);
 }
 @utility duration-collapse {
-  transition-duration: 800ms;
+  transition-duration: var(--motion-duration-collapse);
 }
 @utility duration-progress {
-  transition-duration: 600ms;
+  transition-duration: var(--motion-duration-progress);
 }
 @utility duration-fade {
-  transition-duration: 300ms;
+  transition-duration: var(--motion-duration-fade);
 }
 @utility duration-fast {
-  transition-duration: 200ms;
+  transition-duration: var(--motion-duration-fast);
 }
 
 /* font-family + weight utilities.
