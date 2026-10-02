@@ -34,6 +34,12 @@ export interface PopoverProps {
    */
   width?: "anchor" | "content";
   /**
+   * Which side of the anchor the panel opens on: `top` for a trigger pinned at
+   * the bottom of the viewport (a sidebar's account row), where a panel below
+   * would open off-screen. Anchored web only.
+   */
+  side?: "bottom" | "top";
+  /**
    * Placement of the overlay presentation (native, and web without an anchor).
    * `top` keeps it pinned below the status bar so its first row stays put while
    * its content resizes; `center` (the default) suits content whose height does

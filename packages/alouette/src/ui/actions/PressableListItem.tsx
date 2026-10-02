@@ -9,7 +9,9 @@ import { PressableBox, type PressableBoxProps } from "./PressableBox";
 const pressableListItemVariants = tv(
   {
     slots: {
-      row: "flex-row items-center justify-between rounded-sm mx-xs my-xxs px-m py-m",
+      // No outer margin: the row lines up with whatever surrounds it, and the
+      // list holding it spaces its rows (`gap-xs`).
+      row: "flex-row items-center justify-between rounded-sm px-m py-m",
       content: "flex-1",
       actions: "flex-row items-center flex-wrap gap-xs mt-xs",
       caretContainer: "justify-center",

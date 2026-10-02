@@ -149,7 +149,7 @@ export const Variants: ThisStory = {
       }
     >
       <Story.Section title="Variants">
-        <View>
+        <View className="gap-xs">
           <PressableListItem variant="tonal" onPress={() => {}}>
             <Text className="text-on-tonal">tonal</Text>
           </PressableListItem>
@@ -162,7 +162,7 @@ export const Variants: ThisStory = {
         </View>
       </Story.Section>
       <Story.Section title="Basic List">
-        <View>
+        <View className="gap-xs">
           <PressableListItem
             onPress={() => {
               console.log("Item 1 pressed");
@@ -203,7 +203,7 @@ export const Variants: ThisStory = {
         </View>
       </Story.Section>
       <Story.Section title="Multi-line Content">
-        <View>
+        <View className="gap-xs">
           <PressableListItem
             onPress={() => {
               console.log("Notifications");
@@ -244,7 +244,7 @@ export const Variants: ThisStory = {
       </Story.Section>
       <Story.Section title="Menu Example">
         <Box className="rounded-md overflow-hidden">
-          <View>
+          <View className="gap-xs p-xs">
             <PressableListItem
               onPress={() => {
                 console.log("Profile");

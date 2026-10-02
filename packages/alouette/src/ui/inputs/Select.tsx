@@ -1,6 +1,5 @@
 import { type ReactNode, useState } from "react";
 import { useWindowDimensions } from "react-native";
-import { tv } from "tailwind-variants";
 import { useControllableValue } from "../../core/useControllableValue";
 import { AccentScope } from "../containers/AccentScope";
 import { Box, InteractiveBox } from "../containers/Box";
@@ -10,30 +9,8 @@ import { ListboxOption } from "./ListboxOption";
 import {
   type SelectProps,
   SelectTriggerContent,
-  selectTriggerBaseClassName,
+  selectTriggerVariants,
 } from "./Select.shared";
-
-const triggerVariants = tv(
-  {
-    base: selectTriggerBaseClassName,
-    variants: {
-      // bg lives in each branch (not the shared base) so the disabled bg never
-      // competes with bg-highlight at equal specificity.
-      disabled: {
-        true: "bg-disabled-interactive-muted border-interactive-outlined-disabled",
-        false: [
-          "bg-highlight",
-          "border-interactive-outlined-pressable",
-          "hover:border-interactive-outlined-hover",
-          "focus:border-interactive-outlined-focus",
-          "active:border-interactive-outlined-active",
-        ].join(" "),
-      },
-    },
-    defaultVariants: { disabled: false },
-  },
-  { twMerge: false },
-);
 
 function SelectInner({
   options,
@@ -41,6 +18,8 @@ function SelectInner({
   defaultValue,
   onValueChange,
   placeholder,
+  icon,
+  variant,
   disabled,
   testID,
   "aria-label": ariaLabel,
@@ -72,7 +51,10 @@ function SelectInner({
         testID={testID}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
-        className={triggerVariants({ disabled })}
+        className={selectTriggerVariants({
+          variant,
+          disabled: disabled === true,
+        })}
         onPress={() => {
           setOpen(true);
         }}
@@ -80,6 +62,8 @@ function SelectInner({
         <SelectTriggerContent
           label={selected?.label}
           placeholder={placeholder}
+          icon={icon}
+          variant={variant}
           disabled={disabled}
         />
       </InteractiveBox>

@@ -90,7 +90,7 @@ skills:
     domain: "layout"
     path: "packages/alouette/skills/alouette-layout/SKILL.md"
     package: "packages/alouette"
-    description: "Build screen structure: Box / InteractiveBox / SafeAreaBox for containers, raised with the surface utilities (surface, surface-{size}, lowered, surface-popover), View with flex classes and Separator to arrange them, ScreenCenterLayout and the screen scroll containers (ScreenScrollView / ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through SafeAreaScope) for the page itself, the application shell around every screen (AppLayout + AppHeader and its brand / navigation / actions / account slots, or AppShell + AppShellSidebar + AppShellMain when the shell is composed per route), and GradientBackground / GradientScrollView for a tinted ground. Space, round and raise everything with the alouette spacing, radius and shadow scale rather than raw Tailwind numbers. Load when building screen structure, an app header or shell, cards, spacing, or backgrounds."
+    description: "Build screen structure: Box / InteractiveBox / SafeAreaBox for containers, raised with the surface utilities (surface, surface-{size}, lowered, surface-popover), View with flex classes and Separator to arrange them, ScreenCenterLayout and the screen scroll containers (ScreenScrollView / ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through SafeAreaScope) for the page itself, the application shell around every screen (AppLayout + AppHeader and its brand / navigation / actions / account slots, or AppShell + AppShellSidebar + AppShellMain when the shell is composed per route; AppSidebarLayout + AppSidebar for an app navigated from a fixed sidebar), and GradientBackground / GradientScrollView for a tinted ground. Space, round and raise everything with the alouette spacing, radius and shadow scale rather than raw Tailwind numbers. Load when building screen structure, an app header or shell, cards, spacing, or backgrounds."
     requires:
       - "alouette-theming"
     sources:
@@ -106,6 +106,9 @@ skills:
       - "christophehurpeau/alouette:packages/alouette/src/core/SafeAreaEdgesContext.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppLayout.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppShell.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebarLayout.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebar.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebarAccount.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeader.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNav.tsx"
@@ -223,7 +226,7 @@ skills:
     domain: "navigation"
     path: "packages/alouette/skills/alouette-navigation/SKILL.md"
     package: "packages/alouette"
-    description: "Move the user between places. NavBar and NavBarItem navigate between destinations — each item is a real link announced as the current page, and composes with expo Router; Tabs and Tab switch between views of one screen, announced as a tab list. Both are built by composing their items, over the same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar can also stand vertically as a sidebar rail, and HeaderNav carries the same semantics as text links on an application bar. Breadcrumbs and BreadcrumbItem render the trail back through the ancestors of the current page. Pick by meaning, not by looks: navigation is never a RadioButtonGroup, which announces a form value, and never a Link wrapped around a Text, which has no interactive state. Load when building a tab bar, a section switcher, a breadcrumb trail, or navigation between routes."
+    description: "Move the user between places. NavBar and NavBarItem navigate between destinations — each item is a real link announced as the current page, and composes with expo Router; Tabs and Tab switch between views of one screen, announced as a tab list. Both are built by composing their items, over the same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar can also stand vertically as a sidebar rail, and HeaderNav carries the same semantics as text links on an application bar. SidebarNav lays an application sidebar's destinations out as menu rows grouped under section titles. Breadcrumbs and BreadcrumbItem render the trail back through the ancestors of the current page. Pick by meaning, not by looks: navigation is never a RadioButtonGroup, which announces a form value, and never a Link wrapped around a Text, which has no interactive state. Load when building a tab bar, a section switcher, a breadcrumb trail, or navigation between routes."
     requires:
       - "alouette-theming"
       - "alouette-actions"
@@ -237,6 +240,9 @@ skills:
       - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SelectionContext.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedBar.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNav.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNavSection.tsx"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNavItem.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Breadcrumbs.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/BreadcrumbItem.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.stories.tsx"

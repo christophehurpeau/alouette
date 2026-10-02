@@ -7,7 +7,9 @@ description: >
   announced as a tab list. Both are built by composing their items, over the
   same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar
   can also stand vertically as a sidebar rail, and HeaderNav carries the same
-  semantics as text links on an application bar. Breadcrumbs and BreadcrumbItem
+  semantics as text links on an application bar. SidebarNav lays an
+  application sidebar's destinations out as menu rows grouped under section
+  titles. Breadcrumbs and BreadcrumbItem
   render the trail back through the ancestors of the current page. Pick by
   meaning, not by looks: navigation is never a RadioButtonGroup, which announces
   a form value, and never a Link wrapped around a Text, which has no interactive
@@ -28,6 +30,9 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SelectionContext.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedBar.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNav.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNavSection.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNavItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Breadcrumbs.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/BreadcrumbItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.stories.tsx"
@@ -131,6 +136,44 @@ for a fixed rail. `Tabs` and `RadioButtonGroup` stay horizontal.
 `stretch` is the horizontal counterpart: the bar fills the width it is given and
 its items grow into the spare width, instead of hugging its destinations. That is what the
 stacked line of an `AppHeader` wants (alouette-layout/SKILL.md).
+
+### Sidebar navigation, in sections
+
+An application sidebar with more than a handful of destinations groups them:
+`SidebarNav` holds the current value like a `NavBar` (same `value` /
+`defaultValue` / `onValueChange`, same per-item `onPress` for `<Link asChild>`),
+`SidebarNavSection` groups rows under a visible `title`, which also names the
+`group`, and `SidebarNavItem` is the row: a `link` with `aria-current="page"`.
+Leave the first section untitled for the primary destinations.
+
+```tsx
+import { SidebarNav, SidebarNavItem, SidebarNavSection } from "alouette";
+
+<SidebarNav aria-label="Main" value={pathname} onValueChange={router.push}>
+  <SidebarNavSection>
+    <SidebarNavItem
+      href="/"
+      label="Dashboard"
+      icon={<SquaresFourRegularIcon />}
+    />
+  </SidebarNavSection>
+  <SidebarNavSection title="Team">
+    <SidebarNavItem
+      href="/observers"
+      label="Observers"
+      icon={<UsersRegularIcon />}
+    />
+  </SidebarNavSection>
+</SidebarNav>;
+```
+
+It sits on the sidebar's ground with no track of its own: the current row is the
+`emphasis` chip raised off it, the others are `soft`. Its rows are `rounded-sm`
+on purpose, so the menu reads apart from the pill controls around it (selects,
+buttons). Put it in an `AppSidebar` (alouette-layout/SKILL.md), which scrolls
+it; a short, flat list of destinations is a vertical `NavBar` instead.
+
+Source: packages/alouette/src/ui/navigation/SidebarNavItem.tsx
 
 ### Navigation on an application bar
 

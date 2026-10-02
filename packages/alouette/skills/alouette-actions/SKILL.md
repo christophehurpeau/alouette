@@ -258,6 +258,8 @@ handler. On web a `role="button"` row is a `<button>`, so actions nest a button
 in a button: pass `role="listitem"` (inside a `role="list"`) or `"menuitem"` for
 valid markup. `href` makes the row a real `<a>` — only on a row with no
 `actions` and no link in its children, which would nest inside the anchor.
+The row has no outer margin, so it lines up with the content around it: the
+list holding the rows spaces them (`<View className="gap-xs">`).
 
 ```tsx
 <PressableListItem
@@ -349,6 +351,11 @@ A `MenuItem` closes the menu after its `onPress`. `accent` colors its label and
 icon (`danger` for a destructive action — the row itself stays a plain surface).
 `href` renders a real anchor on web, so expo Router's `<Link asChild>` composes
 with it, and a disabled item drops the `href`.
+
+On web the panel hangs from the trigger's end edge and sizes to its items. A
+full-width trigger takes `align="start"`, or `width="anchor"` to make the panel
+exactly as wide; a trigger pinned at the bottom of the viewport (a sidebar's
+account row) takes `side="top"`.
 
 ## Common Mistakes
 

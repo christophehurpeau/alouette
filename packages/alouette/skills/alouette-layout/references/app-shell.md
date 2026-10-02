@@ -1,7 +1,9 @@
 # alouette — Application shell
 
 The shell around every screen, in full: `AppLayout` at one call site, or
-`AppShell` + `AppShellSidebar` + `AppShellMain` composed per route.
+`AppShell` + `AppShellSidebar` + `AppShellMain` composed per route; and
+`AppSidebarLayout` for an application whose navigation lives in a fixed
+sidebar.
 
 ## AppLayout
 
@@ -208,3 +210,87 @@ consumed for the body, and a `web:sticky` rail slot.
 
 Source: packages/alouette/src/ui/layout/AppLayout.tsx; ui/layout/AppShell.tsx;
 ui/layout/AppHeader.tsx
+
+## AppSidebarLayout — an application with a sidebar
+
+For an application rather than a site: from `md` the frame is fixed to the
+viewport, the `sidebar` stands on its lowered ground, and the screen sits in a
+raised `bg-screen` panel inset in it — the one scroll container, so the
+sidebar never moves. Below `md` the sidebar is hidden and `header` takes over,
+scrolling with the screen exactly as in an `AppShell`, so phones keep the page
+they have. Both are one tree switched by `md:` classes: crossing the breakpoint
+keeps the screen mounted.
+
+```tsx
+import {
+  AppHeader,
+  AppHeaderBrand,
+  AppSidebar,
+  AppSidebarAccount,
+  AppSidebarLayout,
+  IconButton,
+  MenuItem,
+  NavBar,
+  NavBarItem,
+  Select,
+  SidebarNav,
+  View,
+} from "alouette";
+
+<AppSidebarLayout
+  className="h-screen"
+  sidebar={
+    <AppSidebar
+      brand={<AppHeaderBrand href="/" title="Alouette" />}
+      actions={<IconButton aria-label="Search" icon={…} size="sm" variant="soft" />}
+      header={
+        <Select
+          variant="tonal"
+          aria-label="Club"
+          icon={<FeatherRegularIcon />}
+          options={clubs}
+          value={clubId}
+          onValueChange={setClubId}
+        />
+      }
+      footer={
+        <AppSidebarAccount name={user.name} description={user.email}>
+          <MenuItem label="Log out" accent="danger" onPress={logOut} />
+        </AppSidebarAccount>
+      }
+    >
+      <SidebarNav aria-label="Main" value={pathname} onValueChange={router.push}>
+        …
+      </SidebarNav>
+    </AppSidebar>
+  }
+  header={
+    <AppHeader brand={…} actions={…}>
+      <NavBar stretch aria-label="Primary" value={pathname} onValueChange={router.push}>
+        …
+      </NavBar>
+    </AppHeader>
+  }
+>
+  <View className="gap-l p-m md:p-l">{screen}</View>
+</AppSidebarLayout>;
+```
+
+- `children` is plain content in the `main` landmark, on the screen ground, so
+  a screen written for `AppLayout` renders unchanged — never a
+  `ScreenScrollView` inside, which would nest a second scroll view. The layout
+  applies every safe-area inset.
+- The frame fills its parent (`flex-1`): a web root with no height of its own
+  passes `className="h-screen"`.
+- `header` is the phone's navigation: give its `NavBar` the primary
+  destinations, since the sidebar's are out of reach there.
+- `AppSidebar` pins `brand` + `actions` (one row) and `header` at the top,
+  `footer` at the bottom, and scrolls only `children`. Its width is 280px;
+  `className` overrides it.
+- What the navigation applies to (a team, a site) is a `Select`
+  `variant="tonal"` with a leading `icon` in `header` — a pill lifted off the
+  sidebar rather than a form field (alouette-forms/SKILL.md).
+- `AppSidebarAccount` is the signed-in footer row: avatar, name and a second
+  line, opening its `MenuItem`s above it, as wide as the row.
+
+Source: packages/alouette/src/ui/layout/AppSidebarLayout.tsx

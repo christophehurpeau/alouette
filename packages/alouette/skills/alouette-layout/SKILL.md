@@ -9,7 +9,8 @@ description: >
   SafeAreaScope) for the page itself, the application shell around every screen
   (AppLayout + AppHeader and its brand / navigation / actions / account slots,
   or AppShell +
-  AppShellSidebar + AppShellMain when the shell is composed per route), and
+  AppShellSidebar + AppShellMain when the shell is composed per route;
+  AppSidebarLayout + AppSidebar for an app navigated from a fixed sidebar), and
   GradientBackground / GradientScrollView for a tinted ground. Space, round and
   raise everything with the alouette spacing, radius and shadow scale rather
   than raw Tailwind numbers. Load when building screen structure, an app header
@@ -31,6 +32,9 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/core/SafeAreaEdgesContext.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppLayout.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppShell.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebarLayout.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebar.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebarAccount.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeader.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNav.tsx"
@@ -230,8 +234,14 @@ When the shell is rendered **once** for a whole app but the sidebar belongs to
 one section of it, compose the same shell from `AppShell` + a per-route
 `AppShellSidebar` and `AppShellMain` instead of an `AppLayout` per route.
 
-Slots, breakpoints, the signed-out header and the per-route shell:
-[references/app-shell.md](references/app-shell.md).
+An application rather than a site — a dashboard, a back office — takes
+`AppSidebarLayout` instead: from `md` the viewport is fixed, an `AppSidebar`
+(brand, scope selects, a `SidebarNav`, the account) stands on the left and the
+screen scrolls alone in a raised panel; below `md` its `header` takes over,
+scrolling with the screen as in `AppLayout`.
+
+Slots, breakpoints, the signed-out header, the per-route shell and the sidebar
+layout: [references/app-shell.md](references/app-shell.md).
 
 ## Common Mistakes
 

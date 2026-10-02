@@ -28,9 +28,15 @@ required — that is the accessible name of the `combobox` it exposes on both
 platforms.
 
 The trigger is the `InputText` outlined material at the 44px touch height and
-needs no styling. Its presentation is per platform and needs no handling either:
-web renders a real `<select>` (the OS picker and its keyboard handling), native
-opens a `Popover` listbox over an `InteractiveBox` trigger.
+needs no styling. `variant="tonal"` makes it a pill lifted off its ground — the
+material of a `tonal` button, ringed on keyboard focus only — for a select that
+is app chrome rather than a form field (the team or site an `AppSidebar`
+applies to). `icon` adds a leading glyph to either.
+
+Both platforms open the same `surface-popover` listbox of `ListboxOption` rows.
+Web anchors it under the trigger and drives it with downshift's `useSelect`
+(the ARIA select-only combobox: arrows, Home/End, type-ahead, Enter/Space,
+Escape); native presents it as an overlay over an `InteractiveBox` trigger.
 
 Inside a `FormField`, bind it as `value={field.value}`
 `onValueChange={field.onChange}` `aria-labelledby={labelId}`. It takes no `ref`

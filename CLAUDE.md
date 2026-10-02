@@ -459,7 +459,7 @@ survives. Use `outline-solid outline-0`.
 `interactiveBoxVariants`' `withFocusVisibleOutline: false` branch emits it, so a
 `PressableBox` / `InteractiveBox` passes `withFocusVisibleOutline={false}`
 (`MenuItem`, `SegmentedItem`); non-`Box` elements write the classes
-(`ListboxOption`, the `<select>` in `Select.web.tsx`). Assert
+(`ListboxOption`). Assert
 `getComputedStyle(el).outlineWidth === "0px"` **while the element holds keyboard
 focus** — `outlineStyle` is not reliable, and the ring only shows on
 `:focus-visible`.
@@ -472,7 +472,8 @@ render as a full pill. A pill-shaped control (`Button`, `IconButton`, the
 horizontal `SegmentedBar` and its chips) is `rounded-full`, which stays a pill
 whatever its height; a text field (`InputText`, `Select`) is `rounded-md`. A
 card-like pressable (`PressableBox`, `PressableListItem`) is `rounded-sm`, and a
-segment nested in one is `rounded-xs`.
+segment nested in one is `rounded-xs`. A `SidebarNavItem` row is `rounded-sm`
+too, so the sidebar's menu reads apart from the pill controls around it.
 
 # React
 
@@ -664,7 +665,8 @@ The shared base is `src/ui/selection/`:
 Each family only adds its roles: `radiogroup` + `radio`/`aria-checked`
 (`RadioButtonGroup`/`RadioButton`, `RadioGroup`/`Radio` in `src/ui/inputs/`),
 `tablist` + `tab`/`aria-selected` (`Tabs`/`Tab`), `navigation` + `link` +
-`aria-current="page"` (`NavBar`/`NavBarItem`, both in `src/ui/navigation/`). A nav
+`aria-current="page"` (`NavBar`/`NavBarItem` and the sectioned
+`SidebarNav`/`SidebarNavItem`, all in `src/ui/navigation/`). A nav
 or tab item may carry its own `onPress` (it then wins over the group's
 `onValueChange`, and the group must be controlled). Pick by semantics, not by
 looks: anything that moves between routes is a `NavBar` — never a

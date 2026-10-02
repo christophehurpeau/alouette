@@ -123,7 +123,11 @@ export type { TextAreaProps } from "./ui/inputs/TextArea";
 export { TextArea } from "./ui/inputs/TextArea";
 export type { SwitchProps } from "./ui/inputs/Switch";
 export { Switch } from "./ui/inputs/Switch";
-export type { SelectOption, SelectProps } from "./ui/inputs/Select.shared";
+export type {
+  SelectOption,
+  SelectProps,
+  SelectVariant,
+} from "./ui/inputs/Select.shared";
 export { Select } from "./ui/inputs/Select";
 export type { RadioGroupProps } from "./ui/inputs/RadioGroup";
 export { RadioGroup } from "./ui/inputs/RadioGroup";
@@ -162,6 +166,12 @@ export type { HeaderNavProps } from "./ui/navigation/HeaderNav";
 export { HeaderNav } from "./ui/navigation/HeaderNav";
 export type { HeaderNavItemProps } from "./ui/navigation/HeaderNavItem";
 export { HeaderNavItem } from "./ui/navigation/HeaderNavItem";
+export type { SidebarNavProps } from "./ui/navigation/SidebarNav";
+export { SidebarNav } from "./ui/navigation/SidebarNav";
+export type { SidebarNavSectionProps } from "./ui/navigation/SidebarNavSection";
+export { SidebarNavSection } from "./ui/navigation/SidebarNavSection";
+export type { SidebarNavItemProps } from "./ui/navigation/SidebarNavItem";
+export { SidebarNavItem } from "./ui/navigation/SidebarNavItem";
 export type { BreadcrumbsProps } from "./ui/navigation/Breadcrumbs";
 export { Breadcrumbs } from "./ui/navigation/Breadcrumbs";
 export type { BreadcrumbItemProps } from "./ui/navigation/BreadcrumbItem";
@@ -260,6 +270,12 @@ export type {
   AppShellMainProps,
 } from "./ui/layout/AppShell";
 export { AppShell, AppShellSidebar, AppShellMain } from "./ui/layout/AppShell";
+export type { AppSidebarLayoutProps } from "./ui/layout/AppSidebarLayout";
+export { AppSidebarLayout } from "./ui/layout/AppSidebarLayout";
+export type { AppSidebarProps } from "./ui/layout/AppSidebar";
+export { AppSidebar } from "./ui/layout/AppSidebar";
+export type { AppSidebarAccountProps } from "./ui/layout/AppSidebarAccount";
+export { AppSidebarAccount } from "./ui/layout/AppSidebarAccount";
 export type { AppHeaderProps } from "./ui/layout/AppHeader";
 export { AppHeader } from "./ui/layout/AppHeader";
 export type { AppHeaderSize } from "./ui/layout/AppHeader";

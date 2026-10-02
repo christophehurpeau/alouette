@@ -228,8 +228,9 @@ The two platforms present it differently, and that is deliberate:
   default, `"end"` for a panel hanging off a small trigger near the right edge)
   and `width` its sizing: `"anchor"` (default, as wide as the anchor — what a
   field dropdown wants) or `"content"`, sizing to its own content for a menu
-  whose trigger is narrower than its items. Both are anchored-web only, like
-  `anchorRef` itself. It follows the anchor through page and nested
+  whose trigger is narrower than its items. `side="top"` opens it above the
+  anchor, for a trigger pinned at the bottom of the viewport. All three are
+  anchored-web only, like `anchorRef` itself. It follows the anchor through page and nested
   scrolling, sits above react-native-web's own `Modal` layer (so a popover inside
   a dialog is not hidden behind it), and closes on Escape or a press outside the
   content and the anchor.
