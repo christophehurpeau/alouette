@@ -137,9 +137,12 @@ const buildThemeVars = ({
   return vars;
 };
 
+// Hex lowercased the way a CSS formatter leaves it, so a generated palette
+// never churns once an app formats it. The themeVariables map keeps the case
+// of `toHex`: a formatter never rewrites a string literal.
 const emit = (vars: Record<string, string>, indent: string): string =>
   Object.entries(vars)
-    .map(([key, value]) => `${indent}--color-${key}: ${value};`)
+    .map(([key, value]) => `${indent}--color-${key}: ${value.toLowerCase()};`)
     .join("\n");
 
 const prefixVars = (
@@ -287,7 +290,8 @@ export const buildOklchPaletteCss = (p3Scales: ThemeScales): string => {
 @supports (color: oklch(0 0 0)) {
   @layer theme {
     /* overrides the @theme defaults, which cannot host a feature query */
-    :root, :host {
+    :root,
+    :host {
 ${emit(lightOklchVars, "      ")}
     }
 

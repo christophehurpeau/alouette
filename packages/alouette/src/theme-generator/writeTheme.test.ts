@@ -1,6 +1,7 @@
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { format } from "oxfmt";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { ThemeVariablesMap } from "../core/NativeThemeVariablesContext.ts";
 import { generateTheme } from "./generateTheme.ts";
@@ -65,6 +66,18 @@ describe("writeTheme", () => {
     expect(contents).toContain("  light_brand: {");
     expect(contents).not.toContain('"light_brand"');
     expect(contents).toContain("/* eslint-disable camelcase */");
+  });
+
+  it("writes files a formatter leaves unchanged", async () => {
+    const { cssPath, oklchCssPath, themeVariablesPath } = writeTheme({
+      outDir,
+    });
+
+    for (const path of [cssPath, oklchCssPath!, themeVariablesPath]) {
+      const contents = readFileSync(path, "utf8");
+      const { code } = await format(path, contents, { printWidth: 80 });
+      expect(code, path).toBe(contents);
+    }
   });
 
   it("names the files palette.css and themeVariables.ts by default", () => {

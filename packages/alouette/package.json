@@ -139,6 +139,7 @@
     "@typescript/native": "npm:typescript@7.0.2",
     "expo-web-browser": "57.0.2",
     "nativewind": "5.0.0-rc.0",
+    "oxfmt": "0.54.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.2",
