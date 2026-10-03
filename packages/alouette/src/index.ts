@@ -275,7 +275,10 @@ export type {
   AppShellMainProps,
 } from "./ui/layout/AppShell";
 export { AppShell, AppShellSidebar, AppShellMain } from "./ui/layout/AppShell";
-export type { AppSidebarLayoutProps } from "./ui/layout/AppSidebarLayout";
+export type {
+  AppSidebarLayoutBreakpoint,
+  AppSidebarLayoutProps,
+} from "./ui/layout/AppSidebarLayout";
 export { AppSidebarLayout } from "./ui/layout/AppSidebarLayout";
 export type { AppSidebarProps } from "./ui/layout/AppSidebar";
 export { AppSidebar } from "./ui/layout/AppSidebar";

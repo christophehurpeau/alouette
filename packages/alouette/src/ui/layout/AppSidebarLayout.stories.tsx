@@ -83,7 +83,7 @@ export default {
   component: AppSidebarLayout,
   parameters: {
     componentSubtitle:
-      "Application layout: from md a sidebar beside the screen, which sits in a raised panel and scrolls on its own; below md, a header scrolling with the screen as one page.",
+      "Application layout: from sidebarBreakpoint (lg by default) a sidebar beside the screen, which sits in a raised panel and scrolls on its own; below it, a header scrolling with the screen as one page.",
     docs: {
       description: {
         component: `### Composition
@@ -134,12 +134,14 @@ export default {
 </AppSidebarLayout>
 ~~~
 
-- An application rather than a site: from \`md\` the frame is fixed to the viewport. The sidebar sits on its \`lowered\` ground and the screen in a panel inset in it — \`bg-screen\`, \`rounded-sm\`, \`shadow-s\` — which is the one scroll container, so the sidebar never moves. The panel pads the scroll on web, so the scrollbar sits in a gutter clear of its rounded corners rather than along its edge
+- \`sidebarBreakpoint\` (\`md\` 768px, \`lg\` 1024px — the default —, \`xl\` 1280px) is the width from which the sidebar shows; below it the \`header\` takes over. At \`md\` a 280px sidebar leaves the screen under 500px, so lower it only for a screen that holds up at that width
+- An application rather than a site: from the breakpoint the frame is fixed to the viewport. The sidebar sits on its \`lowered\` ground and the screen in a panel inset in it — \`bg-screen\`, \`rounded-sm\`, \`shadow-s\` — which is the one scroll container, so the sidebar never moves. The panel pads the scroll on web, so the scrollbar sits in a gutter clear of its rounded corners rather than along its edge
 - The panel keeps the \`screen\` ground, so a screen written for \`AppLayout\` renders unchanged inside it: its \`surface\` cards are still raised off it
-- Below \`md\` the sidebar is hidden and \`header\` takes over, scrolling with the screen exactly as in an \`AppShell\` — phones keep the layout they have. The two are the **same tree**, switched by \`md:\` classes, so crossing the breakpoint (a tablet rotating, a window resized) keeps the screen mounted. Give the header a \`NavBar\` with the primary destinations: the sidebar's are out of reach there
-- The light/dark switch is a \`ColorModePicker\` in two places, one per tree: from \`md\` in the \`header\` of the \`AppSidebarAccount\` menu — the brand row has no room beside its actions — and below it in the \`AppHeader\` actions, as in an \`AppLayout\`. Only one is ever exposed (the other is hidden with its column), and both report the same stored preference, which the app applies with \`useResolvedColorMode\` + \`ScopedTheme\` and persists. A press inside the menu's header does not close it, so the panel re-themes under the pointer. The switch is behind a click there, and keyboard users reach it with Shift+Tab from the first item, the menu taking the focus as it opens
+- Below the breakpoint the sidebar is hidden and \`header\` takes over, scrolling with the screen exactly as in an \`AppShell\` — phones keep the layout they have. The two are the **same tree**, switched by breakpoint classes, so crossing the breakpoint (a tablet rotating, a window resized) keeps the screen mounted
+- The sidebar's destinations are out of reach under the breakpoint, so the header carries them, in a form fitting their number: a few in a \`NavBar\` (or an \`HeaderNav\`), as here; a long navigation behind a menu button opening a drawer
+- The light/dark switch is a \`ColorModePicker\` in two places, one per tree: from the breakpoint in the \`header\` of the \`AppSidebarAccount\` menu — the brand row has no room beside its actions — and below it in the \`AppHeader\` actions, as in an \`AppLayout\`. Only one is ever exposed (the other is hidden with its column), and both report the same stored preference, which the app applies with \`useResolvedColorMode\` + \`ScopedTheme\` and persists. A press inside the menu's header does not close it, so the panel re-themes under the pointer. The switch is behind a click there, and keyboard users reach it with Shift+Tab from the first item, the menu taking the focus as it opens
 - \`children\` is plain content in the \`main\` landmark — no \`ScreenScrollView\` inside, which would nest a second scroll view
-- Safe areas: from \`md\` the frame pads every edge, so both columns clear them; below it the header pads its own top inset and the scrolled page pads the rest. The screen needs none of its own
+- Safe areas: from the breakpoint the frame pads every edge, so both columns clear them; below it the header pads its own top inset and the scrolled page pads the rest. The screen needs none of its own
 - The frame fills its parent (\`flex-1\`). A web app whose root has no height of its own passes \`className="h-screen"\``,
       },
     },
@@ -502,7 +504,7 @@ export const VariantsAppSidebarLayoutStory: ThisStory = {
     <Story>
       <Story.Section title="Sidebar and header">
         <Text className="text-sm text-muted">
-          From md the sidebar and the panel; below it the header
+          From lg the sidebar and the panel; below it the header
         </Text>
         <DemoFrame>
           <DemoApp label="Full layout" rows={12} />
@@ -517,7 +519,7 @@ export const VariantsAppSidebarLayoutStory: ThisStory = {
 
       <Story.Section title="Without header">
         <Text className="text-sm text-muted">
-          Below md the screen is all there is
+          Below lg the screen is all there is
         </Text>
         <DemoFrame>
           <DemoApp label="Headerless" rows={4} withHeader={false} />
@@ -552,7 +554,7 @@ export const TestsAppSidebarLayoutStory: ThisStory = {
     // The panel is the one scroll container, whatever the width.
     await expect(scroll.scrollHeight).toBeGreaterThan(scroll.clientHeight);
 
-    if (window.innerWidth >= 768) {
+    if (window.innerWidth >= 1024) {
       // The sidebar sits left of the panel and the header is gone.
       const sidebarNav = layoutCanvas.getByRole("navigation", { name: "Main" });
       await expect(layoutCanvas.queryByRole("banner")).toBe(null);

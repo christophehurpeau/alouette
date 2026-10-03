@@ -213,13 +213,17 @@ ui/layout/AppHeader.tsx
 
 ## AppSidebarLayout — an application with a sidebar
 
-For an application rather than a site: from `md` the frame is fixed to the
-viewport, the `sidebar` stands on its lowered ground, and the screen sits in a
-raised `bg-screen` panel inset in it — the one scroll container, so the
-sidebar never moves. Below `md` the sidebar is hidden and `header` takes over,
-scrolling with the screen exactly as in an `AppShell`, so phones keep the page
-they have. Both are one tree switched by `md:` classes: crossing the breakpoint
-keeps the screen mounted.
+For an application rather than a site: from `sidebarBreakpoint` the frame is
+fixed to the viewport, the `sidebar` stands on its lowered ground, and the
+screen sits in a raised `bg-screen` panel inset in it — the one scroll
+container, so the sidebar never moves. Below it the sidebar is hidden and
+`header` takes over, scrolling with the screen exactly as in an `AppShell`, so
+phones keep the page they have. Both are one tree switched by breakpoint
+classes: crossing the breakpoint keeps the screen mounted.
+
+`sidebarBreakpoint` is `"md" | "lg" | "xl"` (768 / 1024 / 1280px), `lg` by
+default: at `md` a 280px sidebar leaves the screen under 500px, so lower it
+only for a screen that holds up at that width.
 
 ```tsx
 import {
@@ -303,8 +307,10 @@ import {
   applies every safe-area inset.
 - The frame fills its parent (`flex-1`): a web root with no height of its own
   passes `className="h-screen"`.
-- `header` is the phone's navigation: give its `NavBar` the primary
-  destinations, since the sidebar's are out of reach there.
+- `header` is the navigation under the breakpoint, where the sidebar's
+  destinations are out of reach, in a form fitting their number: a few in a
+  `NavBar` (or an `HeaderNav`); a long navigation behind a menu button opening
+  a drawer.
 - `AppSidebar` pins `brand` + `actions` (one row) and `header` at the top,
   `footer` at the bottom, and scrolls only `children`. Its width is 280px;
   `className` overrides it.
@@ -313,9 +319,10 @@ import {
   sidebar rather than a form field (alouette-forms/SKILL.md).
 - `AppSidebarAccount` is the signed-in footer row: avatar, name and a second
   line, opening its `MenuItem`s above it, as wide as the row.
-- The light/dark switch is a `ColorModePicker` in each tree: from `md` in the
-  `header` of the `AppSidebarAccount` menu (the brand row has no room for it
-  beside its actions), below `md` in the `AppHeader` actions as in `AppLayout`.
+- The light/dark switch is a `ColorModePicker` in each tree: from the
+  breakpoint in the `header` of the `AppSidebarAccount` menu (the brand row has
+  no room for it beside its actions), below it in the `AppHeader` actions as in
+  `AppLayout`.
   Only the visible one is exposed. Both take the same stored preference, which
   the app applies with `useResolvedColorMode` + a `ScopedTheme` around the
   layout (alouette-theming/SKILL.md). A press in the menu's header does not

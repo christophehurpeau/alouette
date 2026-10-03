@@ -247,11 +247,12 @@ one section of it, compose the same shell from `AppShell` + a per-route
 `AppShellSidebar` and `AppShellMain` instead of an `AppLayout` per route.
 
 An application rather than a site — a dashboard, a back office — takes
-`AppSidebarLayout` instead: from `md` the viewport is fixed, an `AppSidebar`
-(brand, scope selects, a `SidebarNav`, the account) stands on the left and the
-screen scrolls alone in a raised panel; below `md` its `header` takes over,
-scrolling with the screen as in `AppLayout`. Its `ColorModePicker` goes in the
-account menu's `header` from `md`, and in the `AppHeader` actions below it.
+`AppSidebarLayout` instead: from `sidebarBreakpoint` (`lg` by default) the
+viewport is fixed, an `AppSidebar` (brand, scope selects, a `SidebarNav`, the
+account) stands on the left and the screen scrolls alone in a raised panel;
+below it its `header` takes over, scrolling with the screen as in `AppLayout`.
+Its `ColorModePicker` goes in the account menu's `header` from the breakpoint,
+and in the `AppHeader` actions below it.
 
 Slots, breakpoints, the signed-out header, the per-route shell and the sidebar
 layout: [references/app-shell.md](references/app-shell.md).
