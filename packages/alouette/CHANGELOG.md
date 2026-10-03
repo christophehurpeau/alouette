@@ -3,6 +3,61 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@23.0.0...alouette@24.0.0) (2026-10-03)
+
+### ⚠ BREAKING CHANGES
+
+* **alouette:** FormItem's `render` receives `FormItemRenderParams`
+({ labelId, describedBy, invalid, required }) instead of the label id
+string; destructure `labelId` from it and wire the other three onto the
+input. See MIGRATE.md, "To 24.0.0".
+* **alouette:** the `interactive-{tonal,filled,soft}-focus` and
+`interactive-outlined-outline-focus` tokens are removed; regenerate a custom
+palette with writeTheme.
+* **alouette:** Select renders a styled downshift listbox on web instead
+of a native <select>. PressableListItem no longer carries an outer margin;
+the list holding the rows spaces them (gap-xs).
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+* **alouette-icons:** icons are imported from their glyph module instead of
+one module per weight. Export names are unchanged.
+
+Migration:
+
+  - import { HouseDuotoneIcon } from "alouette-icons/phosphor-icons/HouseDuotoneIcon";
+  - import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+  + import { HouseDuotoneIcon, HouseRegularIcon } from "alouette-icons/phosphor-icons/House";
+
+Rewrite the paths, then merge the duplicate imports it leaves
+(eslint `import-x/no-duplicates --fix`):
+
+  perl -pi -e 's#(alouette-icons/phosphor-icons/)(\w+?)(?:Regular|Duotone|Fill)Icon"#$1$2"#g' $(git grep -l alouette-icons/phosphor-icons)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+### Features
+
+* **alouette-icons:** one module per glyph with regular, duotone and fill weights
+* **alouette:** add AppSidebarLayout with sidebar navigation
+* **alouette:** add InputCode, a fixed-length one-time code input
+* **alouette:** add InputText start/end slots and InputPassword
+* **alouette:** add surface-flat utility
+* **alouette:** field error state from FormItem's render params
+* **alouette:** focus-visible ring utility, no focus ground
+* **alouette:** support prefers-reduced-motion on web and native
+* **button:** add lg size (52px) for the hero call to action
+* replace CheckFatDuotoneIcon with CheckFatFillIcon in CheckboxIndicator
+
+### Bug Fixes
+
+* **alouette:** emit formatter-stable generated files
+* **alouette:** ring the Switch track on keyboard focus
+* correct JSX syntax in SKILL.md for IndeterminateLinearProgress component
+
+Version bump for dependency: alouette-icons
+Version bump for dependency: alouette-icons
+
+
 ## [23.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@22.15.0...alouette@23.0.0) (2026-09-28)
 
 ### ⚠ BREAKING CHANGES
