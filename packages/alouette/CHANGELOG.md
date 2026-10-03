@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.1.0](https://github.com/christophehurpeau/alouette/compare/alouette@24.0.0...alouette@24.1.0) (2026-10-03)
+
+### Features
+
+* **alouette:** add AppSidebarLayout sidebarBreakpoint, default lg
+
 ## [24.0.0](https://github.com/christophehurpeau/alouette/compare/alouette@23.0.0...alouette@24.0.0) (2026-10-03)
 
 ### ⚠ BREAKING CHANGES
