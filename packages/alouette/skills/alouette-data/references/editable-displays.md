@@ -33,7 +33,7 @@ import { EditableItem, Badge } from "alouette";
 
 `summary` is any node — a `Badge` is only the most compact option; a `Text`
 (sharp, muted or mono) reads better for a plain value, and omitting it leaves the
-label alone. `variant` (`contained` / `outlined` / `ghost`), `accent` and
+label alone. `variant` (`tonal` / `filled` / `soft`), `accent` and
 `disabled` are forwarded to the `IconButton`.
 
 ## EditableSection — a titled section
@@ -62,14 +62,16 @@ accessible name.
 The section brings no material of its own, so the caller picks it with
 `className` (alouette-layout/SKILL.md): `surface` for a card, `surface lowered`,
 an outline (`border border-muted rounded-sm p-m`), or nothing inside a container
-that already has one. The edit button's own `contained` / `outlined` /
-`ghost` / `soft` goes through `editIconVariant`:
+that already has one. The edit button's own `tonal` / `filled` / `soft`
+goes through `editIconVariant` — `tonal` by
+default, `soft` when the section has an `accent` (a tonal ground would dissolve
+into the accented surface):
 
 ```tsx
 // Wrong — the section has no variant prop
-<EditableSection variant="ghost" … />
+<EditableSection variant="soft" … />
 // Correct
-<EditableSection className="surface lowered surface-sm" editIconVariant="ghost" … />
+<EditableSection className="surface lowered surface-sm" editIconVariant="soft" … />
 ```
 
 ## Choosing between them, and wiring the editor

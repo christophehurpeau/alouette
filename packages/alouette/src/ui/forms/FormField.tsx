@@ -9,7 +9,7 @@ import {
   type RegisterOptions,
   useFormContext,
 } from "react-hook-form";
-import { FormItem } from "./FormItem";
+import { FormItem, type FormItemRenderParams } from "./FormItem";
 
 export interface FormFieldProps<
   TFieldValues extends FieldValues,
@@ -30,10 +30,11 @@ export interface FormFieldProps<
   required?: ReactNode;
   validate?: RegisterOptions<TFieldValues, TName>["validate"];
   renderError?: (error: FieldError | undefined) => ReactNode;
-  render: (params: {
-    field: ControllerRenderProps<TFieldValues, TName>;
-    labelId: string;
-  }) => ReactNode;
+  render: (
+    params: FormItemRenderParams & {
+      field: ControllerRenderProps<TFieldValues, TName>;
+    },
+  ) => ReactNode;
 }
 
 /**
@@ -44,7 +45,8 @@ export interface FormFieldProps<
  * union of every field in the form.
  * Renders any input via `render` — not tied to a specific input component.
  * The rendered input must attach `field.ref` for pressing the label to
- * focus it, via react-hook-form's own setFocus.
+ * focus it, via react-hook-form's own setFocus, and wire FormItem's render
+ * params (`labelId`, `describedBy`, `invalid`, `required`) to its ARIA state.
  */
 export function FormField<
   TFieldValues extends FieldValues,
@@ -80,7 +82,7 @@ export function FormField<
                 ? renderError(fieldState.error)
                 : (requiredError ?? fieldState.error?.message)
             }
-            render={(labelId) => render({ field, labelId })}
+            render={(params) => render({ field, ...params })}
             onLabelPress={() => {
               setFocus(name);
             }}

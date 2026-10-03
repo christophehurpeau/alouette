@@ -34,7 +34,7 @@ describe("generateTheme", () => {
 
   it("keeps the theme blocks behind a web-only feature query", () => {
     // The blocks are a className mechanism native never uses; the query is what
-    // drops them from the native bundle (see nativeCompile.test.ts).
+    // drops them from the native bundle (see nativeCompile.test-skip.ts).
     const { css } = generateTheme();
     const [beforeSupports, insideSupports] = css.split(
       "@supports (display: contents) {",
@@ -93,6 +93,21 @@ describe("generateTheme", () => {
         ).toStrictEqual(defaultThemeVariables[theme]);
       }
     }
+  });
+
+  it("tunes the shadow colors per mode, and accents keep their mode's", () => {
+    const { themeVariables } = generateTheme();
+    const shadowVars = (theme: AlouetteTheme): Record<string, string> =>
+      Object.fromEntries(
+        Object.entries(themeVariables[theme]).filter(([name]) =>
+          name.includes("shadow"),
+        ),
+      );
+
+    expect(Object.keys(shadowVars("light"))).not.toHaveLength(0);
+    expect(shadowVars("dark")).not.toStrictEqual(shadowVars("light"));
+    expect(shadowVars("light_danger")).toStrictEqual(shadowVars("light"));
+    expect(shadowVars("dark_danger")).toStrictEqual(shadowVars("dark"));
   });
 
   it("leaves grayscale base tokens untouched when an accent is overridden", () => {

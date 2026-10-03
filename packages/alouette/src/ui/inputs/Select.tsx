@@ -1,39 +1,16 @@
 import { type ReactNode, useState } from "react";
 import { useWindowDimensions } from "react-native";
-import { tv } from "tailwind-variants";
 import { useControllableValue } from "../../core/useControllableValue";
-import { AccentScope } from "../containers/AccentScope";
 import { Box, InteractiveBox } from "../containers/Box";
 import { Popover } from "../containers/Popover";
+import { StableAccentScope } from "../containers/StableAccentScope";
 import { ScrollView } from "../primitives/ScrollView";
 import { ListboxOption } from "./ListboxOption";
 import {
   type SelectProps,
   SelectTriggerContent,
-  selectTriggerBaseClassName,
+  selectTriggerVariants,
 } from "./Select.shared";
-
-const triggerVariants = tv(
-  {
-    base: selectTriggerBaseClassName,
-    variants: {
-      // bg lives in each branch (not the shared base) so the disabled bg never
-      // competes with bg-highlight at equal specificity.
-      disabled: {
-        true: "bg-disabled-interactive-muted border-interactive-outlined-disabled",
-        false: [
-          "bg-highlight",
-          "border-interactive-outlined-pressable",
-          "hover:border-interactive-outlined-hover",
-          "focus:border-interactive-outlined-focus",
-          "active:border-interactive-outlined-active",
-        ].join(" "),
-      },
-    },
-    defaultVariants: { disabled: false },
-  },
-  { twMerge: false },
-);
 
 function SelectInner({
   options,
@@ -41,10 +18,15 @@ function SelectInner({
   defaultValue,
   onValueChange,
   placeholder,
+  icon,
+  variant,
   disabled,
+  invalid,
   testID,
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledby,
+  "aria-describedby": ariaDescribedby,
+  "aria-required": ariaRequired,
 }: Omit<SelectProps, "accent">): ReactNode {
   const [current, setValue] = useControllableValue({
     value,
@@ -60,10 +42,19 @@ function SelectInner({
     setOpen(false);
   };
 
+  // Untyped by react-native, which ignores them; declared on SelectProps for
+  // the web build and kept here so both platforms take the same props.
+  const webAriaProps = {
+    "aria-invalid": invalid === true,
+    "aria-describedby": ariaDescribedby,
+    "aria-required": ariaRequired,
+  };
+
   return (
     <>
       <InteractiveBox
         withFocusVisibleOutline
+        // oxlint-disable-next-line jsx-a11y/role-has-required-aria-props -- React Native has no aria-controls (Select.web.tsx renders a native <select>)
         role="combobox"
         aria-expanded={open}
         aria-disabled={disabled === true}
@@ -71,7 +62,11 @@ function SelectInner({
         testID={testID}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}
-        className={triggerVariants({ disabled })}
+        {...webAriaProps}
+        className={selectTriggerVariants({
+          variant,
+          disabled: disabled === true,
+        })}
         onPress={() => {
           setOpen(true);
         }}
@@ -79,6 +74,8 @@ function SelectInner({
         <SelectTriggerContent
           label={selected?.label}
           placeholder={placeholder}
+          icon={icon}
+          variant={variant}
           disabled={disabled}
         />
       </InteractiveBox>
@@ -113,10 +110,12 @@ function SelectInner({
   );
 }
 
+// Stable: `invalid` toggles while the form is edited, and a plain AccentScope
+// would remount the trigger with it.
 export function Select({ accent, ...rest }: SelectProps): ReactNode {
   return (
-    <AccentScope accent={accent}>
+    <StableAccentScope accent={rest.invalid ? "danger" : accent}>
       <SelectInner {...rest} />
-    </AccentScope>
+    </StableAccentScope>
   );
 }

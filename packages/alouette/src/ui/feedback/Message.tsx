@@ -1,8 +1,10 @@
-import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
-import { InfoRegularIcon } from "alouette-icons/phosphor-icons/InfoRegularIcon";
-import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/WarningDuotoneIcon";
-import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
-import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
+import { InfoRegularIcon } from "alouette-icons/phosphor-icons/Info";
+import {
+  WarningDuotoneIcon,
+  WarningRegularIcon,
+} from "alouette-icons/phosphor-icons/Warning";
+import { XRegularIcon } from "alouette-icons/phosphor-icons/X";
 import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Except } from "type-fest";
@@ -51,7 +53,7 @@ interface MessageBaseProps {
   size?: MessageSize;
   /**
    * "surface" (default) is a raised banner. Use "flat" only when the message
-   * already sits inside a raised surface (a Modal footer, a Surface card).
+   * already sits inside a raised surface (a Modal footer, a `surface` card).
    */
   variant?: MessageVariant;
   icon: SVGIconElement;
@@ -85,7 +87,7 @@ export function Message({
         {/* React Native defaults flexShrink to 0: without `shrink` the text
             keeps its content width and pushes the dismiss button out of the
             frame instead of wrapping. */}
-        <Text className="text-sharp shrink grow">{children}</Text>
+        <Text className="text-base text-sharp shrink grow">{children}</Text>
         {onDismiss ? (
           <Box
             style={{ width: dismissDiameter, height: dismissDiameter }}
@@ -95,7 +97,9 @@ export function Message({
               icon={<XRegularIcon />}
               iconSize={size === "sm" ? "fill" : undefined}
               size={dismissDiameter}
-              variant="ghost"
+              variant="soft"
+              // The frame is overflow-hidden: an outer ring would be clipped.
+              withFocusVisibleOutline="inset"
               aria-label={dismissIconAriaLabel}
               onPress={onDismiss}
             />

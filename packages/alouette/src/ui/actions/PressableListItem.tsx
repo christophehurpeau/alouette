@@ -1,4 +1,4 @@
-import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons/CaretRightRegularIcon";
+import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons/CaretRight";
 import type { ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
 import { View } from "react-native";
@@ -9,7 +9,9 @@ import { PressableBox, type PressableBoxProps } from "./PressableBox";
 const pressableListItemVariants = tv(
   {
     slots: {
-      row: "flex-row items-center justify-between rounded-sm mx-xs my-xxs px-m py-m",
+      // No outer margin: the row lines up with whatever surrounds it, and the
+      // list holding it spaces its rows (`gap-xs`).
+      row: "flex-row items-center justify-between rounded-sm px-m py-m",
       content: "flex-1",
       actions: "flex-row items-center flex-wrap gap-xs mt-xs",
       caretContainer: "justify-center",
@@ -17,13 +19,12 @@ const pressableListItemVariants = tv(
     },
     variants: {
       variant: {
-        contained: { caret: "text-on-accent-muted" },
-        list: { caret: "text-on-list" },
+        tonal: { caret: "text-on-tonal" },
+        filled: { caret: "text-on-accent-muted" },
         outlined: { caret: "text-muted" },
-        ghost: { caret: "text-muted" },
       },
     },
-    defaultVariants: { variant: "list" },
+    defaultVariants: { variant: "tonal" },
   },
   { twMerge: false },
 );
@@ -66,7 +67,7 @@ export interface PressableListItemProps {
 }
 
 export function PressableListItem({
-  variant = "list",
+  variant = "tonal",
   role,
   accent,
   className,

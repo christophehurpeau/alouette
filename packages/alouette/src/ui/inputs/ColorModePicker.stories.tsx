@@ -40,6 +40,10 @@ export default {
 
 export const PreviewColorModePickerStory: ThisStory = {
   name: "ColorModePicker Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => <ColorModePicker {...args} />,
 };
 

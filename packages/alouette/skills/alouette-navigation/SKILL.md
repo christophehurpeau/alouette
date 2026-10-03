@@ -6,7 +6,10 @@ description: >
   composes with expo Router; Tabs and Tab switch between views of one screen,
   announced as a tab list. Both are built by composing their items, over the
   same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar
-  can also stand vertically as a sidebar rail. Breadcrumbs and BreadcrumbItem
+  can also stand vertically as a sidebar rail, and HeaderNav carries the same
+  semantics as text links on an application bar. SidebarNav lays an
+  application sidebar's destinations out as menu rows grouped under section
+  titles. Breadcrumbs and BreadcrumbItem
   render the trail back through the ancestors of the current page. Pick by
   meaning, not by looks: navigation is never a RadioButtonGroup, which announces
   a form value, and never a Link wrapped around a Text, which has no interactive
@@ -20,11 +23,16 @@ requires:
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBarItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNav.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNavItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tabs.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tab.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SelectionContext.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedBar.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNav.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNavSection.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNavItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Breadcrumbs.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/BreadcrumbItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.stories.tsx"
@@ -126,8 +134,70 @@ for a fixed rail. `Tabs` and `RadioButtonGroup` stay horizontal.
 ```
 
 `stretch` is the horizontal counterpart: the bar fills the width it is given and
-its items share it equally, instead of hugging its destinations. That is what the
+its items grow into the spare width, instead of hugging its destinations. That is what the
 stacked line of an `AppHeader` wants (alouette-layout/SKILL.md).
+
+### Sidebar navigation, in sections
+
+An application sidebar with more than a handful of destinations groups them:
+`SidebarNav` holds the current value like a `NavBar` (same `value` /
+`defaultValue` / `onValueChange`, same per-item `onPress` for `<Link asChild>`),
+`SidebarNavSection` groups rows under a visible `title`, which also names the
+`group`, and `SidebarNavItem` is the row: a `link` with `aria-current="page"`.
+Leave the first section untitled for the primary destinations.
+
+```tsx
+import { SidebarNav, SidebarNavItem, SidebarNavSection } from "alouette";
+
+<SidebarNav aria-label="Main" value={pathname} onValueChange={router.push}>
+  <SidebarNavSection>
+    <SidebarNavItem
+      href="/"
+      label="Dashboard"
+      icon={<SquaresFourRegularIcon />}
+    />
+  </SidebarNavSection>
+  <SidebarNavSection title="Team">
+    <SidebarNavItem
+      href="/observers"
+      label="Observers"
+      icon={<UsersRegularIcon />}
+    />
+  </SidebarNavSection>
+</SidebarNav>;
+```
+
+It sits on the sidebar's ground with no track of its own: the current row is the
+`emphasis` chip raised off it, the others are `soft`. Its rows are `rounded-sm`
+on purpose, so the menu reads apart from the pill controls around it (selects,
+buttons). Put it in an `AppSidebar` (alouette-layout/SKILL.md), which scrolls
+it; a short, flat list of destinations is a vertical `NavBar` instead.
+
+Source: packages/alouette/src/ui/navigation/SidebarNavItem.tsx
+
+### Navigation on an application bar
+
+A header that has to fit brand, navigation and session on one line takes
+`HeaderNav` + `HeaderNavItem` (alouette-layout/SKILL.md) instead: the same
+`navigation` / `link` / `aria-current="page"` semantics and the same
+`href`-as-identity, over a lighter material — text destinations on the bar
+itself, the current one underlined in the group's accent, no track and no chip.
+It also takes a `badge` after the label, which the segmented item has no room
+for. Reach for `NavBar` when the navigation is the screen's main control (the
+stacked line of a header, a sidebar rail), and for `HeaderNav` when it shares
+the bar with everything else.
+
+```tsx
+<HeaderNav aria-label="Main" value={pathname} onValueChange={router.push}>
+  <HeaderNavItem href="/home" label="Home" icon={<HouseRegularIcon />} />
+  <HeaderNavItem
+    href="/inbox"
+    label="Inbox"
+    aria-label="Inbox, 3 unread"
+    badge={<Badge size="sm">3</Badge>}
+  />
+</HeaderNav>
+```
 
 ### Icon-only pill
 
@@ -153,8 +223,7 @@ as long as the item is selected: the current page in a `NavBar`, the selected
 `Tab`, the checked `RadioButton`. A disabled item never swaps.
 
 ```tsx
-import { HouseDuotoneIcon } from "alouette-icons/phosphor-icons/HouseDuotoneIcon";
-import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+import { HouseDuotoneIcon, HouseRegularIcon } from "alouette-icons/phosphor-icons/House";
 
 <NavBarItem href="/home" label="Home" icon={<HouseRegularIcon />} />
 
@@ -369,7 +438,7 @@ Wrong:
 
 ```tsx
 <Box className="surface lowered flex-row">
-  <PressableBox variant="ghost">…</PressableBox>
+  <PressableBox variant="soft">…</PressableBox>
 </Box>
 ```
 

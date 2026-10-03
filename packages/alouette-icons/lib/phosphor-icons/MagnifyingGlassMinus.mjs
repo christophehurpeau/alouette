@@ -1,0 +1,14 @@
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+
+import { createDuotoneIcon, createIcon } from "alouette-icons/createIcon";
+
+export const MagnifyingGlassMinusRegularIcon = /*#__PURE__*/ createIcon(
+  "M152,112a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h64A8,8,0,0,1,152,112Zm77.66,117.66a8,8,0,0,1-11.32,0l-50.06-50.07a88.11,88.11,0,1,1,11.31-11.31l50.07,50.06A8,8,0,0,1,229.66,229.66ZM112,184a72,72,0,1,0-72-72A72.08,72.08,0,0,0,112,184Z",
+);
+export const MagnifyingGlassMinusDuotoneIcon = /*#__PURE__*/ createDuotoneIcon(
+  "M192,112a80,80,0,1,1-80-80A80,80,0,0,1,192,112Z",
+  "M229.66,218.34,179.6,168.28a88.21,88.21,0,1,0-11.32,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Zm112,0a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h64A8,8,0,0,1,152,112Z",
+);
+export const MagnifyingGlassMinusFillIcon = /*#__PURE__*/ createIcon(
+  "M229.66,218.34,179.6,168.28a88.21,88.21,0,1,0-11.32,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM144,120H80a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Z",
+);

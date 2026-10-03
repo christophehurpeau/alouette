@@ -17,7 +17,8 @@ requires:
   - alouette-theming
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Surface.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/core/twMerge.ts"
   - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
 ---
 
@@ -72,17 +73,22 @@ breakpoint prefix, a class can (`surface-sm md:surface-lg`). A pairing that must
 never be split becomes a `@utility` in `build-css.ts` instead — `lowered` (the
 lowered ground + its inset shadow), `surface-{xxs…lg}` (padding + radius) — and
 so does a role several components share (`surface-popover` for the Menu, Select
-and InputTextAutocomplete panel), so they match by construction rather than by
-each call site repeating the same classes. Give each new utility a class group
+and InputTextAutocomplete panel, `surface-flat` for the card inside a card), so
+they match by construction rather than by each call site repeating the same
+classes. Give each new utility a class group
 and its conflicts in `src/core/twMerge.ts`.
 
 Pass the incoming `className` through the call (`chipVariants({ selected, className })`)
-so callers can extend it. Outside a `tv()`, merge with the shared
-`twMerge` from `src/core/twMerge.ts`, never by string concatenation
+so callers can extend it. Outside a `tv()`, merge with a tailwind-merge
+configured for the alouette scale, never by string concatenation
 (`` `flex-row ${className}` `` emits both `flex-row` and a caller's `flex-col`
 and lets stylesheet order pick). A `tv()` that takes a caller's `className` over
-defaults on the named scale passes `{ twMergeConfig }` from the same module:
-stock tailwind-merge does not know `p-m` and `p-xl` conflict.
+defaults on the named scale passes that same config as `{ twMergeConfig }`:
+stock tailwind-merge does not know `p-m` and `p-xl` conflict, nor that `surface`
+carries a padding and a radius. Inside the library that config is
+`src/core/twMerge.ts`; it is **not** exported from `alouette`, so an app
+component builds its own with `extendTailwindMerge` over the same named spacing
+values and utility class groups.
 
 ### One component, one `tv()` — use `slots`
 
@@ -99,7 +105,7 @@ const modalVariants = tv({
   },
   variants: {
     size: {
-      sm: { panel: "max-w-[360px]", inset: "rounded-sm p-xs", footer: "py-xs" },
+      sm: { panel: "max-w-[360px]", inset: "rounded-sm p-sm", footer: "py-xs" },
       md: { panel: "max-w-[520px]", inset: "rounded-sm p-m", footer: "py-m" },
     },
   },
@@ -194,10 +200,10 @@ Each branch is a class the caller could type, so the prop only hides it: the
 bundle comes with padding the call site then has to fight, and no branch can be
 switched at a breakpoint. A bundle worth keeping (padding + radius) is a
 `@utility`, which a single class after it still overrides. A component whose
-only job is those defaults is the same alias one level up — `Surface` is
-deprecated for `<Box className="surface">` for this reason.
+only job is those defaults is the same alias one level up — `Surface` was
+removed for `<Box className="surface">` for this reason.
 
-Source: packages/alouette/src/ui/containers/Surface.tsx
+Source: packages/alouette/scripts/build-css.ts
 
 ### HIGH Several `tv()` objects for one component
 
@@ -253,7 +259,7 @@ Wrong:
 ```tsx
 tv({
   base: "px-xs gap-xxs",
-  variants: { variant: { segmented: "", icon: "rounded-md gap-0" } },
+  variants: { variant: { segmented: "", icon: "gap-0" } },
 });
 ```
 
@@ -263,7 +269,7 @@ Correct:
 tv({
   base: "px-xs",
   variants: {
-    variant: { segmented: "gap-xxs", icon: "rounded-md gap-0" },
+    variant: { segmented: "gap-xxs", icon: "gap-0" },
   },
 });
 ```

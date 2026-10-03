@@ -1,5 +1,5 @@
-import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
-import { type ReactNode, forwardRef } from "react";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
+import type { ReactNode, Ref } from "react";
 import {
   Pressable,
   type PressableProps,
@@ -34,8 +34,7 @@ const optionVariants = tv(
         // while the arrow keys move elsewhere.
         rest: "",
         highlighted: "bg-interactive-soft-hover",
-        hover:
-          "hover:bg-interactive-soft-hover focus:bg-interactive-soft-focus",
+        hover: "hover:bg-interactive-soft-hover",
       },
       disabled: {
         true: "opacity-50",
@@ -55,9 +54,10 @@ export interface ListboxOptionProps extends Omit<
   selected: boolean;
   /**
    * Position of a JS-driven cursor (downshift's `highlightedIndex`), which
-   * replaces CSS hover. Left undefined, the row lights on hover and focus.
+   * replaces CSS hover. Left undefined, the row lights on hover.
    */
   highlighted?: boolean;
+  ref?: Ref<RNView>;
 }
 
 function cursorState(
@@ -68,35 +68,37 @@ function cursorState(
 }
 
 /** One `role="option"` row of a listbox, shared by `Select` and `InputTextAutocomplete`. */
-export const ListboxOption = forwardRef<RNView, ListboxOptionProps>(
-  ({ option, selected, highlighted, ...props }, ref): ReactNode => {
-    return (
-      <Pressable
-        ref={ref}
-        role="option"
-        {...props}
-        // react-native-web's Pressable re-declares `aria-disabled` from its own
-        // `disabled` prop, after the props it is spread, so it has to be
-        // restated here — as does downshift's, which the spread carries.
-        aria-disabled={option.disabled === true}
-        // downshift's `getItemProps` reports the *highlighted* row as
-        // `aria-selected`; the cursor is already carried by
-        // `aria-activedescendant`, so the actual selection wins here — otherwise
-        // it would only be conveyed by the unlabelled check icon.
-        aria-selected={selected}
-        disabled={option.disabled}
-        className={optionVariants({
-          cursor: cursorState(highlighted),
-          disabled: option.disabled,
-        })}
-      >
-        <Text numberOfLines={1} className="flex-1 text-base text-sharp">
-          {option.label}
-        </Text>
-        {selected ? (
-          <Icon icon={<CheckRegularIcon />} size={18} className="text-accent" />
-        ) : null}
-      </Pressable>
-    );
-  },
-);
+export function ListboxOption({
+  option,
+  selected,
+  highlighted,
+  ...props
+}: ListboxOptionProps): ReactNode {
+  return (
+    <Pressable
+      role="option"
+      {...props}
+      // react-native-web's Pressable re-declares `aria-disabled` from its own
+      // `disabled` prop, after the props it is spread, so it has to be
+      // restated here — as does downshift's, which the spread carries.
+      aria-disabled={option.disabled === true}
+      // downshift's `getItemProps` reports the *highlighted* row as
+      // `aria-selected`; the cursor is already carried by
+      // `aria-activedescendant`, so the actual selection wins here — otherwise
+      // it would only be conveyed by the unlabelled check icon.
+      aria-selected={selected}
+      disabled={option.disabled}
+      className={optionVariants({
+        cursor: cursorState(highlighted),
+        disabled: option.disabled,
+      })}
+    >
+      <Text numberOfLines={1} className="flex-1 text-base text-sharp">
+        {option.label}
+      </Text>
+      {selected ? (
+        <Icon icon={<CheckRegularIcon />} size={18} className="text-accent" />
+      ) : null}
+    </Pressable>
+  );
+}

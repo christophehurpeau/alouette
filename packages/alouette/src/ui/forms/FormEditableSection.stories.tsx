@@ -83,11 +83,14 @@ function EventSection({
             name="date"
             label="Date"
             required="A date is required."
-            render={({ field, labelId }) => (
+            render={({ field, labelId, describedBy, invalid, required }) => (
               <InputText
                 ref={field.ref}
                 value={field.value}
                 aria-labelledby={labelId}
+                aria-describedby={describedBy}
+                aria-required={required}
+                invalid={invalid}
                 onChangeText={field.onChange}
                 onBlur={field.onBlur}
               />
@@ -97,11 +100,14 @@ function EventSection({
             control={control}
             name="notes"
             label="Before you come"
-            render={({ field, labelId }) => (
+            render={({ field, labelId, describedBy, invalid, required }) => (
               <InputText
                 ref={field.ref}
                 value={field.value}
                 aria-labelledby={labelId}
+                aria-describedby={describedBy}
+                aria-required={required}
+                invalid={invalid}
                 onChangeText={field.onChange}
                 onBlur={field.onBlur}
               />
@@ -143,7 +149,7 @@ export default {
     accent: { control: "select", options: accentsWithoutNeutral },
     editIconVariant: {
       control: "select",
-      options: ["contained", "outlined", "ghost", "soft"],
+      options: ["tonal", "filled", "outlined", "soft"],
     },
     disabled: { control: "boolean" },
   },
@@ -151,6 +157,10 @@ export default {
 
 export const FormEditableSectionPreviewStory: ThisStory = {
   name: "FormEditableSection Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { title: "Event details" },
   render: (args) => <EventSection {...args} />,
 };
@@ -177,6 +187,7 @@ export const FormEditableSectionVariantsStory: ThisStory = {
           className="surface bg-highlight"
           title="bg-highlight"
           editAriaLabel="Edit bg-highlight"
+          editIconVariant="soft"
         />
         <EventSection
           className="surface lowered"

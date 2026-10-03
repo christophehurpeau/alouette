@@ -1,6 +1,6 @@
 {
   "name": "alouette-icons",
-  "version": "11.1.0",
+  "version": "12.0.0",
   "description": "icons for alouette",
   "keywords": [],
   "homepage": "https://github.com/christophehurpeau/alouette",
@@ -21,36 +21,39 @@
   "sideEffects": false,
   "exports": {
     "./package.json": "./package.json",
-    "./phosphor-icons/*": {
-      "types": "./lib/phosphor-icons/*.d.ts",
+    "./createIcon": {
+      "types": "./lib/createIcon.d.ts",
       "react-native": {
-        "import": "./lib/phosphor-icons/*.react-native.mjs"
+        "import": "./lib/createIcon.react-native.mjs"
       },
-      "browser": "./lib/phosphor-icons/*.web.mjs",
-      "web": "./lib/phosphor-icons/*.web.mjs",
+      "browser": "./lib/createIcon.web.mjs",
+      "web": "./lib/createIcon.web.mjs",
       "node": {
         "web": {
-          "import": "./lib/phosphor-icons/*.web.mjs"
+          "import": "./lib/createIcon.web.mjs"
         },
         "react-native": {
-          "import": "./lib/phosphor-icons/*.react-native.mjs"
+          "import": "./lib/createIcon.react-native.mjs"
         },
-        "import": "./lib/phosphor-icons/*.web.mjs"
+        "import": "./lib/createIcon.web.mjs"
       },
-      "import": "./lib/phosphor-icons/*.web.mjs"
+      "import": "./lib/createIcon.web.mjs"
+    },
+    "./phosphor-icons/*": {
+      "types": "./lib/phosphor-icons/*.d.ts",
+      "import": "./lib/phosphor-icons/*.mjs"
     }
   },
   "scripts": {
     "build": "pnpm run build:definitions",
     "build:definitions": "tsc -p tsconfig.json",
-    "lint": "pnpm run lint:eslint",
-    "lint:eslint": "pnpm run --dir '../..' eslint --quiet 'packages/alouette-icons'",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
+    "lint:eslint": "pnpm --dir '../..' exec eslint --quiet 'packages/alouette-icons'",
+    "lint:oxlint": "pnpm --dir '../..' exec oxlint --quiet 'packages/alouette-icons'",
     "test": "yarn '../..' run test -- packages/alouette-icons",
     "tsc": "tsc"
   },
   "devDependencies": {
-    "@babel/core": "7.29.7",
-    "@babel/preset-react": "7.29.7",
     "@phosphor-icons/core": "2.1.1",
     "@typescript/native": "npm:typescript@7.0.2",
     "react-native": "0.86.2",

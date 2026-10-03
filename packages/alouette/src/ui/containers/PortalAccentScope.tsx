@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
+import type { StableAccentScopeProps } from "./StableAccentScope";
 import { StableAccentScope } from "./StableAccentScope";
 
 export interface PortalAccentScopeProps {
+  mode?: StableAccentScopeProps["mode"];
   accent?: AccentOrNeutral;
   children?: ReactNode;
 }
@@ -15,8 +17,13 @@ export interface PortalAccentScopeProps {
  * first, see `PortalAccentScope.web.tsx`.
  */
 export function PortalAccentScope({
+  mode,
   accent,
   children,
 }: PortalAccentScopeProps): ReactNode {
-  return <StableAccentScope accent={accent}>{children}</StableAccentScope>;
+  return (
+    <StableAccentScope mode={mode} accent={accent}>
+      {children}
+    </StableAccentScope>
+  );
 }

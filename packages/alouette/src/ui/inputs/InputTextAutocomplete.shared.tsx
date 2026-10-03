@@ -81,12 +81,17 @@ export interface InputTextAutocompleteProps {
   emptyLabel?: string;
   placeholder?: string;
   disabled?: boolean;
+  /** As on `InputText`: danger border and `aria-invalid` on the field. */
+  invalid?: boolean;
   accent?: AccentOrNeutral;
   mode?: InputTextMode;
   className?: string;
   testID?: string;
   "aria-label"?: string;
   "aria-labelledby"?: string;
+  /** Web only in effect, like on `InputText`. */
+  "aria-describedby"?: string;
+  "aria-required"?: boolean;
 }
 
 export function defaultFilterOption(

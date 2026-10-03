@@ -1,4 +1,4 @@
-import { ArrowSquareOutRegularIcon } from "alouette-icons/phosphor-icons/ArrowSquareOutRegularIcon";
+import { ArrowSquareOutRegularIcon } from "alouette-icons/phosphor-icons/ArrowSquareOut";
 import type { ReactNode } from "react";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { ExternalLink } from "../../expo/ExternalLink";

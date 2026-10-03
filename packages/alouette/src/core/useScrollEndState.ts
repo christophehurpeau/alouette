@@ -2,6 +2,9 @@ import { useRef, useState } from "react";
 import type { ScrollViewProps } from "react-native";
 
 export interface ScrollEndState {
+  /** True as well when the content fits. */
+  isScrolledToStart: boolean;
+  /** True as well when the content fits. */
   isScrolledToEnd: boolean;
   scrollViewProps: Required<
     Pick<
@@ -19,6 +22,7 @@ const scrollEndToleranceInPx = 1;
 // returned props on the ScrollView: onScroll alone never fires for content that
 // doesn't overflow, so layout and content size feed the initial state.
 export function useScrollEndState(): ScrollEndState {
+  const [isScrolledToStart, setIsScrolledToStart] = useState(true);
   const [isScrolledToEnd, setIsScrolledToEnd] = useState(true);
   const viewportHeightRef = useRef(0);
   const contentHeightRef = useRef(0);
@@ -32,6 +36,7 @@ export function useScrollEndState(): ScrollEndState {
   };
 
   return {
+    isScrolledToStart,
     isScrolledToEnd,
     scrollViewProps: {
       scrollEventThrottle: 16,
@@ -47,6 +52,7 @@ export function useScrollEndState(): ScrollEndState {
         const { contentOffset, contentSize, layoutMeasurement } =
           event.nativeEvent;
         scrollOffsetRef.current = contentOffset.y;
+        setIsScrolledToStart(contentOffset.y <= scrollEndToleranceInPx);
         contentHeightRef.current = contentSize.height;
         viewportHeightRef.current = layoutMeasurement.height;
         updateIsScrolledToEnd();

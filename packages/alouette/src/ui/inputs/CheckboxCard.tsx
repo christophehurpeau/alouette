@@ -25,18 +25,8 @@ const checkboxCardVariants = tv(
         list: { frame: "items-center" },
         stack: { frame: "items-start grow shrink basis-[240px]" },
       },
-      variant: {
-        contained: {
-          icon: "text-on-accent",
-          label: "text-on-accent",
-          description: "text-on-accent-muted",
-        },
-        outlined: {
-          icon: "text-muted",
-          label: "text-sharp",
-          description: "text-muted",
-        },
-      },
+      variant: { tonal: {}, outlined: {} },
+      selected: { true: {}, false: {} },
       disabled: {
         true: {
           icon: "text-disabled-muted",
@@ -46,14 +36,34 @@ const checkboxCardVariants = tv(
         false: {},
       },
     },
-    // Same as RadioCard: `on-accent-muted` falls under 4.5:1 on the hover fill.
+    // Same as RadioCard: the material's inks are enabled-only, so a disabled
+    // checked card does not keep the accent's; `muted` is too dim for a checked
+    // tonal card's accented ground.
     compoundVariants: [
       {
-        variant: "contained",
+        variant: "tonal",
+        disabled: false,
+        class: { icon: "text-on-tonal", label: "text-on-tonal" },
+      },
+      {
+        variant: "tonal",
+        selected: true,
+        disabled: false,
+        class: { description: "text-on-tonal" },
+      },
+      {
+        variant: "tonal",
+        selected: false,
+        disabled: false,
+        class: { description: "text-muted" },
+      },
+      {
+        variant: "outlined",
         disabled: false,
         class: {
-          description:
-            "group-hover:text-on-accent group-focus:text-on-accent group-active:text-on-accent",
+          icon: "text-muted",
+          label: "text-sharp",
+          description: "text-muted",
         },
       },
     ],
@@ -85,6 +95,7 @@ export function CheckboxCard({
   const styles = checkboxCardVariants({
     layout,
     variant,
+    selected,
     disabled: isDisabled,
   });
 
@@ -104,7 +115,9 @@ export function CheckboxCard({
           }}
         >
           {icon ? (
-            <Icon icon={icon} size={24} className={styles.icon()} />
+            <View className="self-start">
+              <Icon icon={icon} size={24} className={styles.icon()} />
+            </View>
           ) : null}
           <View className="flex-1 gap-xxs">
             <Text className={styles.label()}>{label}</Text>
@@ -112,11 +125,7 @@ export function CheckboxCard({
               <Text className={styles.description()}>{description}</Text>
             ) : null}
           </View>
-          <CheckboxIndicator
-            selected={selected}
-            disabled={isDisabled}
-            onAccent={variant === "contained"}
-          />
+          <CheckboxIndicator selected={selected} disabled={isDisabled} />
         </PressableBox>
       </SelectionAccentScope>
     </DefaultAccentScope>

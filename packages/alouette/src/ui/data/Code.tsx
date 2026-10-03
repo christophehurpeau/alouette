@@ -1,5 +1,4 @@
-import { forwardRef } from "react";
-import type { Text as RNText } from "react-native";
+import type { ReactNode } from "react";
 import { Text, type TextProps } from "../primitives/Text";
 
 export type CodeProps = TextProps;
@@ -12,17 +11,14 @@ export type CodeProps = TextProps;
  *
  * `role="code"` renders a `<code>` element on web; native keeps a plain Text.
  */
-export const Code = forwardRef<RNText, CodeProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <Text
-        ref={ref}
-        role="code"
-        // Android ignores horizontal padding on a nested (inline) Text — the
-        // background still reads as a code fragment there.
-        className={`font-mono bg-highlight rounded-xs px-xxs py-px select-auto ${className ?? ""}`}
-        {...props}
-      />
-    );
-  },
-);
+export function Code({ className, ...props }: CodeProps): ReactNode {
+  return (
+    <Text
+      role="code"
+      // Android ignores horizontal padding on a nested (inline) Text — the
+      // background still reads as a code fragment there.
+      className={`font-mono bg-highlight rounded-xs px-xxs py-px select-auto ${className ?? ""}`}
+      {...props}
+    />
+  );
+}

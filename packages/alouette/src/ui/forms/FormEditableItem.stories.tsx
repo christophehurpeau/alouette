@@ -1,6 +1,6 @@
 import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/CalendarRegularIcon";
+import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/Calendar";
 import { type ReactNode, useState } from "react";
 import { Badge } from "../data/Badge";
 import type { EditableItemProps } from "../data/EditableItem";
@@ -89,11 +89,14 @@ function ProfileItem({
           name="displayName"
           label="Name"
           required="A name is required."
-          render={({ field, labelId }) => (
+          render={({ field, labelId, describedBy, invalid, required }) => (
             <InputText
               ref={field.ref}
               value={field.value}
               aria-labelledby={labelId}
+              aria-describedby={describedBy}
+              aria-required={required}
+              invalid={invalid}
               onChangeText={field.onChange}
               onBlur={field.onBlur}
             />
@@ -123,7 +126,10 @@ export default {
     details: { control: "text" },
     size: { control: "select", options: ["sm", "md", "lg"] },
     accent: { control: "select", options: accentsWithoutNeutral },
-    variant: { control: "select", options: ["contained", "outlined", "ghost"] },
+    variant: {
+      control: "select",
+      options: ["tonal", "filled", "soft"],
+    },
     summaryVariant: {
       control: "select",
       options: ["badge", "text", "muted", "mono", "none"],
@@ -134,6 +140,10 @@ export default {
 
 export const FormEditableItemPreviewStory: ThisStory = {
   name: "FormEditableItem Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { label: "Display name" },
   render: (args) => <ProfileItem {...args} />,
 };
@@ -200,9 +210,8 @@ export const FormEditableItemVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Edit button variants">
-        <ProfileItem variant="contained" />
-        <ProfileItem variant="outlined" />
-        <ProfileItem variant="ghost" />
+        <ProfileItem variant="filled" />
+        <ProfileItem variant="soft" />
       </Story.Section>
 
       <Story.Section withSurface title="Custom edit icon">

@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@11.1.0...alouette-icons@12.0.0) (2026-10-03)
+
+### ⚠ BREAKING CHANGES
+
+* **alouette-icons:** icons are imported from their glyph module instead of
+one module per weight. Export names are unchanged.
+
+Migration:
+
+  - import { HouseDuotoneIcon } from "alouette-icons/phosphor-icons/HouseDuotoneIcon";
+  - import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+  + import { HouseDuotoneIcon, HouseRegularIcon } from "alouette-icons/phosphor-icons/House";
+
+Rewrite the paths, then merge the duplicate imports it leaves
+(eslint `import-x/no-duplicates --fix`):
+
+  perl -pi -e 's#(alouette-icons/phosphor-icons/)(\w+?)(?:Regular|Duotone|Fill)Icon"#$1$2"#g' $(git grep -l alouette-icons/phosphor-icons)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+### Features
+
+* **alouette-icons:** one module per glyph with regular, duotone and fill weights
+
 ## [11.1.0](https://github.com/christophehurpeau/alouette/compare/alouette-icons@11.0.0...alouette-icons@11.1.0) (2026-08-13)
 
 ### Features

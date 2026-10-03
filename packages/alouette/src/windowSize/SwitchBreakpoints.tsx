@@ -14,7 +14,7 @@ type SwitchBreakpointsProps = SetRequired<
 // is the className that makes the slot visible from `current` (inclusive)
 // up to `next` (exclusive).
 //
-// Tailwind v4 breakpoint mapping — see global.css:
+// Tailwind v4 breakpoint mapping — see core.css:
 //   sm = 480px (alouette SMALL)
 //   md = 768px (alouette MEDIUM)
 //   lg = 1024px (alouette LARGE)

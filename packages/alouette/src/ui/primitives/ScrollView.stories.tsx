@@ -58,6 +58,10 @@ function Rows({ count }: RowsProps): ReactNode {
 
 export const PreviewStory: StoryObj = {
   name: "ScrollView Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: () => (
     <ScrollView className="h-70" contentContainerClassName="gap-xxs">
       <Rows count={12} />

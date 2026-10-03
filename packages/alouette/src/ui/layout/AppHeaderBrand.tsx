@@ -8,16 +8,15 @@ import { View } from "../primitives/View";
 const appHeaderBrandVariants = tv({
   slots: {
     // The header slot aligns the brand.
-    frame: "flex-row items-center gap-xs",
+    frame: "flex-row items-center gap-sm",
     title: "font-heading-bold text-xl",
     subtitle: "text-muted text-sm",
   },
   variants: {
     interactive: {
       // A pressable needs room for its hover fill and focus outline. `-ml-xs`
-      // pulls that leading
-      // padding back out, so the fill bleeds into the header's gutter and the
-      // mark stays flush with the content edge — a linked brand lands exactly
+      // pulls that leading padding back out, so the fill bleeds into the
+      // header's gutter and the mark stays flush with the content edge — a linked brand lands exactly
       // where a display-only one does. The trailing padding is kept: it only
       // extends the hit area towards the navigation, where nothing lines up.
       true: {

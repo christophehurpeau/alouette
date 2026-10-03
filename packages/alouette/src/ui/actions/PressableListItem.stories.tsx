@@ -21,6 +21,10 @@ export default {
 } satisfies Meta<typeof PressableListItem>;
 
 export const PreviewListStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     onPress: () => {},
     children: <Text>List Item</Text>,
@@ -46,6 +50,7 @@ function PullRequestRow(): ReactNode {
             <Button
               size="sm"
               accent="neutral"
+              variant="soft"
               text="Approve"
               onPress={() => {
                 setPressed("pressed:approve");
@@ -144,23 +149,20 @@ export const Variants: ThisStory = {
       }
     >
       <Story.Section title="Variants">
-        <View>
-          <PressableListItem variant="contained" onPress={() => {}}>
-            <Text className="text-on-accent">contained</Text>
+        <View className="gap-xs">
+          <PressableListItem variant="tonal" onPress={() => {}}>
+            <Text className="text-on-tonal">tonal</Text>
           </PressableListItem>
-          <PressableListItem variant="list" onPress={() => {}}>
-            <Text className="text-on-list">list</Text>
+          <PressableListItem variant="filled" onPress={() => {}}>
+            <Text className="text-on-accent">filled</Text>
           </PressableListItem>
           <PressableListItem variant="outlined" onPress={() => {}}>
             <Text>outlined</Text>
           </PressableListItem>
-          <PressableListItem variant="ghost" onPress={() => {}}>
-            <Text>ghost</Text>
-          </PressableListItem>
         </View>
       </Story.Section>
       <Story.Section title="Basic List">
-        <View>
+        <View className="gap-xs">
           <PressableListItem
             onPress={() => {
               console.log("Item 1 pressed");
@@ -188,7 +190,7 @@ export const Variants: ThisStory = {
               console.log("Warning pressed");
             }}
           >
-            <Text className="text-on-list">Warning</Text>
+            <Text className="text-on-tonal">Warning</Text>
           </PressableListItem>
           <PressableListItem
             accent="danger"
@@ -196,12 +198,12 @@ export const Variants: ThisStory = {
               console.log("Danger pressed");
             }}
           >
-            <Text className="text-on-list">Danger</Text>
+            <Text className="text-on-tonal">Danger</Text>
           </PressableListItem>
         </View>
       </Story.Section>
       <Story.Section title="Multi-line Content">
-        <View>
+        <View className="gap-xs">
           <PressableListItem
             onPress={() => {
               console.log("Notifications");
@@ -242,7 +244,7 @@ export const Variants: ThisStory = {
       </Story.Section>
       <Story.Section title="Menu Example">
         <Box className="rounded-md overflow-hidden">
-          <View>
+          <View className="gap-xs p-xs">
             <PressableListItem
               onPress={() => {
                 console.log("Profile");
@@ -270,7 +272,7 @@ export const Variants: ThisStory = {
                 console.log("Logout");
               }}
             >
-              <Text className="text-on-list">Logout</Text>
+              <Text className="text-on-tonal">Logout</Text>
             </PressableListItem>
           </View>
         </Box>
@@ -290,63 +292,70 @@ export const Variants: ThisStory = {
     const canvas = within(canvasElement);
     const row = canvas.getAllByRole("button", { name: "First Item" })[0]!;
     const style = getComputedStyle(row);
-    // Tokens resolve per scope, so an accented row reads its own values.
-    const tokenOf = (scope: CSSStyleDeclaration, name: string): string => {
-      const hex = scope.getPropertyValue(name).trim();
-      const channels = [1, 3, 5].map((i) =>
-        Number.parseInt(hex.slice(i, i + 2), 16),
-      );
-      return `rgb(${channels.join(", ")})`;
+    // Tokens resolve per scope, so an accented row reads its own values. The
+    // browser serializes the color: a production build minifies the raw value
+    // (`#fff`, a named color), so it cannot be parsed as six hex digits.
+    const tokenOf = (scope: Element, name: string): string => {
+      const probe = document.createElement("span");
+      probe.style.color = `var(${name})`;
+      scope.append(probe);
+      const color = getComputedStyle(probe).color;
+      probe.remove();
+      return color;
     };
-    const token = (name: string): string => tokenOf(style, name);
+    const token = (name: string): string => tokenOf(row, name);
 
-    // A list row is the `list` material, not the contained button one: its
-    // ground is a tone of the theme and its label keeps the sharp ink, so an
-    // un-accented row never renders dark text on the neutral accent's fill.
+    // A row is the `tonal` material, not the `filled` one: its ground is a
+    // tone of the theme and its label keeps the sharp ink, so an un-accented
+    // row never renders dark text on the neutral accent's fill.
     await expect(style.backgroundColor).toBe(
-      token("--color-interactive-list-pressable"),
+      token("--color-interactive-tonal-pressable"),
     );
     await expect(style.backgroundColor).not.toBe(
-      token("--color-interactive-contained-pressable"),
+      token("--color-interactive-filled-pressable"),
     );
     await expect(
       getComputedStyle(within(row).getByText("First Item")).color,
     ).toBe(token("--color-sharp"));
 
-    // Each variant tints the caret for the ground it sits on: white-ish over
-    // the accent's fill, the row's own ink over a `list` card, muted over the
+    // Each variant tints the caret for the ground it sits on: the row's own ink
+    // over a `tonal` card, white-ish over the accent's fill, muted over the
     // bare surface the other two keep at rest. And every one of them is a card,
     // so every one of them is rounded — PressableBox itself only rounds two.
     const variantRowOf = (
       name: string,
-    ): { caretColor: string; style: CSSStyleDeclaration } => {
+    ): {
+      caretColor: string;
+      element: HTMLElement;
+      style: CSSStyleDeclaration;
+    } => {
       const variantRow = canvas.getAllByRole("button", { name })[0]!;
       return {
         caretColor: getComputedStyle(variantRow.querySelector("svg")!).color,
+        element: variantRow,
         style: getComputedStyle(variantRow),
       };
     };
-    const contained = variantRowOf("contained");
-    await expect(contained.caretColor).toBe(
-      tokenOf(contained.style, "--color-on-accent-muted"),
+    const tonal = variantRowOf("tonal");
+    await expect(tonal.caretColor).toBe(
+      tokenOf(tonal.element, "--color-on-tonal"),
     );
-    const list = variantRowOf("list");
-    await expect(list.caretColor).toBe(tokenOf(list.style, "--color-on-list"));
+    const filled = variantRowOf("filled");
+    await expect(filled.caretColor).toBe(
+      tokenOf(filled.element, "--color-on-accent-muted"),
+    );
     const outlined = variantRowOf("outlined");
-    const ghost = variantRowOf("ghost");
-    for (const muted of [outlined, ghost]) {
-      await expect(muted.caretColor).toBe(
-        tokenOf(muted.style, "--color-muted"),
-      );
-    }
-    for (const { style: variantStyle } of [contained, list, outlined, ghost]) {
+    await expect(outlined.caretColor).toBe(
+      tokenOf(outlined.element, "--color-muted"),
+    );
+    for (const { style: variantStyle } of [tonal, filled, outlined]) {
       await expect(variantStyle.borderTopLeftRadius).toBe("16px");
     }
 
     // An accented row tints its card instead of taking the accent's fill — the
     // ground stays light enough for dark ink — and states the accent in its ink
-    // (`text-on-list`, the accent itself in light mode), which no light tint of
-    // a red can do on its own.
+    // (`text-on-tonal`, the accent itself in light mode), which no light
+    // tint of a red can do on its own.
     const danger = canvas.getAllByRole("button", { name: "Danger" })[0]!;
     const dangerStyle = getComputedStyle(danger);
     const dangerChannels = [...dangerStyle.backgroundColor.matchAll(/[\d.]+/g)]
@@ -356,9 +365,9 @@ export const Variants: ThisStory = {
     await expect(Math.min(...dangerChannels)).toBeGreaterThan(200);
     await expect(
       getComputedStyle(within(danger).getByText("Danger")).color,
-    ).toBe(tokenOf(dangerStyle, "--color-on-list"));
-    await expect(tokenOf(dangerStyle, "--color-on-list")).not.toBe(
-      tokenOf(dangerStyle, "--color-sharp"),
+    ).toBe(tokenOf(danger, "--color-on-tonal"));
+    await expect(tokenOf(danger, "--color-on-tonal")).not.toBe(
+      tokenOf(danger, "--color-sharp"),
     );
 
     // aria-label names the row instead of its contents.

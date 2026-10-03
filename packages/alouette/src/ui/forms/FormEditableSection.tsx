@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import type { FieldValues } from "react-hook-form";
-import { twMerge } from "../../core/twMerge";
 import {
   EditableSection,
   type EditableSectionProps,
@@ -74,23 +73,3 @@ export function FormEditableSection<TFieldValues extends FieldValues>({
     </EditableSection>
   );
 }
-
-/**
- * @deprecated Renamed `FormEditableSection`, which applies no material itself:
- * write `<FormEditableSection className="surface">`.
- */
-export function FormEditableSurface<TFieldValues extends FieldValues>({
-  className,
-  ...props
-}: FormEditableSectionProps<TFieldValues>): ReactNode {
-  return (
-    <FormEditableSection<TFieldValues>
-      className={twMerge("surface", className)}
-      {...props}
-    />
-  );
-}
-
-/** @deprecated Renamed `FormEditableSectionProps`. */
-export type FormEditableSurfaceProps<TFieldValues extends FieldValues> =
-  FormEditableSectionProps<TFieldValues>;

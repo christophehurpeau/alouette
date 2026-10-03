@@ -1,11 +1,17 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DesktopDuotoneIcon } from "alouette-icons/phosphor-icons/DesktopDuotoneIcon";
-import { DesktopRegularIcon } from "alouette-icons/phosphor-icons/DesktopRegularIcon";
-import { MoonDuotoneIcon } from "alouette-icons/phosphor-icons/MoonDuotoneIcon";
-import { MoonRegularIcon } from "alouette-icons/phosphor-icons/MoonRegularIcon";
-import { SunDuotoneIcon } from "alouette-icons/phosphor-icons/SunDuotoneIcon";
-import { SunRegularIcon } from "alouette-icons/phosphor-icons/SunRegularIcon";
+import {
+  DesktopDuotoneIcon,
+  DesktopRegularIcon,
+} from "alouette-icons/phosphor-icons/Desktop";
+import {
+  MoonDuotoneIcon,
+  MoonRegularIcon,
+} from "alouette-icons/phosphor-icons/Moon";
+import {
+  SunDuotoneIcon,
+  SunRegularIcon,
+} from "alouette-icons/phosphor-icons/Sun";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Text } from "../primitives/Text";
@@ -36,6 +42,10 @@ export default {
 
 export const PreviewRadioButtonGroupStory: ThisStory = {
   name: "RadioButtonGroup Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <RadioButtonGroup defaultValue="week" {...args}>
       <RadioButton value="day" label="Day" />
@@ -268,7 +278,7 @@ export const TestsRadioButtonGroupStory: StoryObj<typeof RadioButtonGroup> = {
     await expect(week).toHaveAttribute("aria-checked", "false");
     await expect(month).toHaveAttribute("aria-disabled", "true");
 
-    // The lowered Surface bar is exactly 44px (zero vertical padding), and each
+    // The lowered `surface` bar is exactly 44px (zero vertical padding), and each
     // option's tap target fills it to the 44px accessibility minimum even though
     // the visible chip inside is shorter.
     await expect(group.getBoundingClientRect().height).toBe(44);

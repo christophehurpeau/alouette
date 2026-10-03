@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
+import { StarRegularIcon } from "alouette-icons/phosphor-icons/Star";
 import type { ReactNode } from "react";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
@@ -34,6 +34,10 @@ export default {
 
 export const PreviewStory: ThisStory = {
   name: "Icon Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     icon: <StarRegularIcon />,
   },
@@ -63,7 +67,7 @@ function AccentColumn({ accent }: { accent: AccentOrNeutral }): ReactNode {
           <TintRow className="text-disabled-sharp" />
           <TintRow className="text-disabled-muted" />
         </View>
-        <View className="gap-xs rounded-sm bg-highlight-accent p-xs mt-xs">
+        <View className="gap-xs rounded-sm bg-interactive-filled-pressable p-xs mt-xs">
           <TintRow className="text-on-accent" />
           <TintRow className="text-on-accent-muted" />
         </View>

@@ -1,28 +1,6 @@
-// Generates the alouette CSS + JS token mirrors. Run via
-// `pnpm --filter alouette build:css`.
-//
-// Color generation lives in src/theme-generator (shipped and exported as
-// `alouette/theme-generator` so apps can produce their own palette). This driver
-// only assembles the *default* outputs:
-//   - src/core.css            structural only (type/radius/shadow/spacing/anim,
-//                             fonts, base, keyframes, utilities) — NO --color-*.
-//   - src/default-palette.css the default palette in sRGB hex (@theme color
-//                             defaults + the twelve .<theme> blocks, the latter
-//                             behind a web-only feature query) =
-//                             generateTheme().css.
-//   - src/default-palette-oklch.css  optional wide-gamut overlay re-declaring the
-//                             same tokens as oklch() behind @supports =
-//                             generateTheme().oklchCss. Import after the palette
-//                             to opt web into display-p3 chroma.
-//   - src/global.css          convenience aggregator importing core + the sRGB
-//                             palette, so existing
-//                             `@import "alouette/global.css"` consumers still work.
-//   - src/defaultThemeVariablesSrgb.ts   runtime default map, sRGB hex.
-//   - src/animationDurationsMs.ts  JS mirror of the --animate-* durations.
-//
-// A BYO-palette app imports `alouette/core.css` + its own generated palette CSS
-// (never default-palette.css) and passes its generated themeVariables to
-// <AlouetteProvider themeVariables={...}>.
+// Color generation lives in src/theme-generator, shipped as
+// `alouette/theme-generator` so an app generates its own palette the same way:
+// this script only drives it for the default palette.
 
 import { writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -32,31 +10,72 @@ import { generateTheme } from "../src/theme-generator/generateTheme.ts";
 
 const srcDir = join(dirname(fileURLToPath(import.meta.url)), "../src");
 
+// Every file goes through the repo formatter, so a rebuild leaves no diff once
+// lint-staged has formatted the committed copy.
+const writeGeneratedFile = async (
+  fileName: string,
+  content: string,
+): Promise<void> => {
+  const path = join(srcDir, fileName);
+  const { code, errors } = await format(path, content, { printWidth: 80 });
+  if (errors.length > 0) {
+    throw new Error(`Failed to format ${path}: ${JSON.stringify(errors)}`);
+  }
+  writeFileSync(path, code);
+  console.log(`Wrote ${path}`);
+};
+
 const {
   css: defaultPaletteCss,
   oklchCss: defaultPaletteOklchCss,
   themeVariables,
 } = generateTheme();
 
-// Duration (ms) of each generic motion. The single source of truth for both the
-// CSS @keyframes/--animate-* tokens and the JS `animationDurationsMs` export
-// (Presence's `exitDurationMs` must match the exit animation here). Exposed from
-// the framework so consumers reference it instead of hardcoding the number — if
-// a duration changes, only this value moves.
+// Shared by the --animate-* tokens and the `animationDurationsMs` export, so
+// Presence's `exitDurationMs` stays in step with the exit animation.
 const animationDurationsMs = {
   slide: 600,
   collapse: 800,
   progress: 600,
   fade: 300,
   fast: 200,
+  caret: 1000,
 } as const;
 
+const animateTokens = {
+  "slide-in": `slide-in ${animationDurationsMs.slide}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  "slide-out": `slide-out ${animationDurationsMs.slide}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  "collapse-in": `collapse-in ${animationDurationsMs.collapse}ms ease-out`,
+  "collapse-out": `collapse-out ${animationDurationsMs.collapse}ms ease-out`,
+  // The drawn caret of InputCode: a step, like a real text caret.
+  "caret-blink": `caret-blink ${animationDurationsMs.caret}ms step-end infinite`,
+} as const;
+
+// What prefers-reduced-motion zeroes: one source for the web @media block and
+// the map AlouetteProvider pushes on native, where react-native-css never
+// matches that media feature. Durations are numbers because react-native-css
+// compiles `200ms` to `200`.
+const reducedMotionVariables = {
+  "--default-transition-duration": 0,
+  ...Object.fromEntries(
+    Object.keys(animationDurationsMs).map((name) => [
+      `--motion-duration-${name}`,
+      0,
+    ]),
+  ),
+  ...Object.fromEntries(
+    Object.keys(animateTokens).map((name) => [`--animate-${name}`, "none"]),
+  ),
+};
+
+const toCssValue = (value: string | number): string =>
+  typeof value === "number" ? `${value}ms` : value;
+
 // --- core.css ----------------------------------------------------------------
-// Structural, color-free. Color utilities generate once a palette CSS (this
-// default or an app's own) is imported after core.css — Tailwind v4 merges every
-// @theme in the import graph. NB: no @custom-variant for dark/themes. Theming is
-// applied via ScopedTheme (NativeWind's VariableContextProvider) using the
-// generated themeVariables map, not via `dark:`/theme utility variants.
+// Color-free: color utilities appear once a palette CSS is imported after it,
+// since Tailwind v4 merges every @theme in the import graph. There is no
+// @custom-variant for dark or the themes: ScopedTheme applies a theme (a class on
+// web, the themeVariables map on native), never a `dark:` utility variant.
 const coreCss = `/* Generated by scripts/build-css.ts. DO NOT EDIT. */
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
@@ -64,14 +83,12 @@ const coreCss = `/* Generated by scripts/build-css.ts. DO NOT EDIT. */
 @import "nativewind/theme";
 
 @theme {
-  /* unified alouette type scale — standard Tailwind names, exact pixel values preserved.
-     The paired --text-*--line-height modifier is what makes the text-* utility carry a
-     default line-height (Tailwind v4 convention). Without it, line-height stays unset.
-     Ratios are unitless: web treats them as font-size-relative; on native NativeWind
-     multiplies any unitless lineHeight by fontSize, so they behave identically on both platforms.
-     Body default is 1.4 (matches the old Tamagui body font); the heading-only display
-     sizes (32/40/64px) use the old heading ratios. For headings at shared sizes
-     (text-lg/text-xl), add an explicit leading-* class to tighten. */
+  /* The paired --text-*--line-height is what gives the text-* utility a default
+     line-height (Tailwind v4 convention). Ratios are unitless: web treats them as
+     font-size-relative and NativeWind multiplies a unitless lineHeight by
+     fontSize, so both platforms agree. The display sizes (2xl and up) are
+     heading-only and take tighter ratios; a heading at a shared size
+     (text-lg/text-xl) tightens with an explicit leading-* class. */
   --text-xs: 0.75rem;    /* 12px */
   --text-xs--line-height: 1.4;
   --text-sm: 0.875rem;   /* 14px */
@@ -93,68 +110,61 @@ const coreCss = `/* Generated by scripts/build-css.ts. DO NOT EDIT. */
   --text-6xl: 5rem;      /* 80px */
   --text-6xl--line-height: 1.1;
 
-  /* radius — alouette scale (16px base) */
+  /* radius */
   --radius-xs: 0.5rem;
   --radius-sm: 1rem;
   --radius-md: 2rem;
   --radius-lg: 3rem;
 
-  /* box-shadows — multi-layer with inset highlight, matches original
-     containers/variants.ts. Names map to Tailwind's shadow-{name} utilities. */
-  --shadow-s: inset 0 1px 2px #ffffff40, 0 1px 2px #00000040, 0 2px 4px #00000025;
-  --shadow-m: inset 0 1px 2px #ffffff40, 0 2px 4px #00000040, 0 4px 8px #00000025;
-  --shadow-l: inset 0 1px 2px #ffffff40, 0 4px 6px #00000040, 0 6px 10px #00000025;
-  --shadow-lowered: inset 0 1px 2px #00000040, inset 0 -2px 2px #ffffff15;
-  /* screen-spanning bar (app header): downward-only and no inset highlight —
-     a bar casts a shadow on the page below it, it is not a raised control. */
-  --shadow-bar: 0 1px 2px #00000020, 0 6px 16px #00000018;
+  /* box-shadows — the layer colors are palette tokens, so each mode tunes them: Tailwind
+     inlines this value into the utility (only its colors stay var()s), so a theme
+     block redeclaring --shadow-* would change nothing. Each var() has a fixed
+     fallback so a palette generated without the shadow tokens still yields a
+     valid box-shadow. */
+  --shadow-s: inset 0 1px 2px var(--color-shadow-highlight, #ffffff40), 0 1px 2px var(--color-dark-shadow, #00000040), 0 2px 4px var(--color-soft-shadow, #00000025);
+  --shadow-m: inset 0 1px 2px var(--color-shadow-highlight, #ffffff40), 0 2px 4px var(--color-dark-shadow, #00000040), 0 4px 8px var(--color-soft-shadow, #00000025);
+  --shadow-l: inset 0 1px 2px var(--color-shadow-highlight, #ffffff40), 0 4px 6px var(--color-dark-shadow, #00000040), 0 6px 10px var(--color-soft-shadow, #00000025);
+  --shadow-lowered: inset 0 1px 2px var(--color-shadow-lowered-dark, #00000040), inset 0 -2px 2px var(--color-shadow-lowered-highlight, #ffffff15);
+  /* downward-only and no inset highlight: a screen-spanning bar (app header)
+     casts a shadow on the page below it, it is not a raised control. */
+  --shadow-bar: 0 1px 2px var(--color-bar-dark-shadow, #00000020), 0 6px 16px var(--color-bar-soft-shadow, #00000018);
 
-  /* spacing — named scale matching the old $N.N token names */
+  /* spacing */
   --spacing-xxs: 4px;
-  --spacing-xs: 8px; /* previous $0.5 */
+  --spacing-xs: 8px;
   --spacing-sm: 12px;
-  --spacing-m: 16px; /* previous $1.0 */
+  --spacing-m: 16px;
   --spacing-md: 16px;
   --spacing-l: 24px;
   --spacing-lg: 24px;
-  --spacing-xl: 32px; /* previous $2.0 */
+  --spacing-xl: 32px;
   --spacing-xxl: 48px;
-  --spacing-3xl: 64px; /* previous $3.0 */
+  --spacing-3xl: 64px;
   --spacing-4xl: 128px;
 
-  /* breakpoints — match Breakpoints.ts */
+  /* breakpoints — must match Breakpoints.ts */
   --breakpoint-sm: 480px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
 
-  /* animations — Tailwind v4 names the utility after the --animate-* key
-     (animate-slide-in) and NativeWind runs the @keyframes on native via
-     Reanimated. Names are generic motions, not component-specific. CSS
-     animations are enter-only on their own; pair the exit animation with
-     <Presence> (keeps the outgoing child mounted) for an AnimatePresence-style
-     swap without an animation library. */
-  --animate-slide-in: slide-in ${animationDurationsMs.slide}ms cubic-bezier(0.16, 1, 0.3, 1);
-  --animate-slide-out: slide-out ${animationDurationsMs.slide}ms cubic-bezier(0.16, 1, 0.3, 1);
-  --animate-collapse-in: collapse-in ${animationDurationsMs.collapse}ms ease-out;
-  --animate-collapse-out: collapse-out ${animationDurationsMs.collapse}ms ease-out;
+  /* animations — NativeWind runs the @keyframes on native via Reanimated. A CSS animation
+     cannot play on unmount: pair an exit animation with <Presence>, which keeps
+     the outgoing child mounted. */
+${Object.entries(animateTokens)
+  .map(([name, value]) => `  --animate-${name}: ${value};`)
+  .join("\n")}
 }
 
 @layer theme {
-  /* font-family tokens — consumers can override these in their own @layer theme :root to swap fonts.
-     The base holds WEB values as a fallback list, because the two web targets load different
-     families:
-       - Expo web (react-native-web): expo-font registers weight-specific families
-         ('SoraRegular'/'SoraBold'/'SoraExtraBold', 'ChivoMono*') — 'Sora' is NOT available.
-       - Vite Storybook: Google Fonts loads the single 'Sora'/'Chivo Mono' families, weight via
-         font-weight.
-     Leading with the weight-specific name (matched on Expo web) and falling back to 'Sora'/'ChivoMono'
-     (matched on Vite) makes both work from one declaration. Native uses single names (RN has no
-     fallbacks) under @variant native (NativeWind's native: variant, from nativewind/theme).
-
-     NB: the base holds the web values and the @variant native block overrides them on native only —
-     the native: variant is dropped on web and applied by NativeWind's runtime on native, so the
-     platform font split lives there. */
+  /* font-family tokens — overridable from an app's own @layer theme :root.
+     The web values are a fallback list because the two web targets load different families:
+       - Expo web: expo-font registers weight-specific families
+         ('SoraRegular'/'SoraBold'/'SoraExtraBold', 'ChivoMono*'), no 'Sora'.
+       - Vite Storybook: Google Fonts loads the single 'Sora'/'Chivo Mono'
+         families, weight via font-weight.
+     Native takes single names (React Native has no fallback list) under
+     @variant native, which web drops. */
   :root {
     --font-body: "SoraRegular", "Sora", ui-sans-serif, system-ui, sans-serif;
     --font-body-bold: "SoraBold", "Sora", ui-sans-serif, system-ui, sans-serif;
@@ -177,11 +187,29 @@ const coreCss = `/* Generated by scripts/build-css.ts. DO NOT EDIT. */
       --font-mono-bold: "ChivoMonoBold";
       --font-mono-extrabold: "ChivoMonoExtraBold";
     }
+
+    /* named transition durations, read by the duration-* utilities — variables
+       so that reduced motion can zero them (see the @media block below) */
+${Object.entries(animationDurationsMs)
+  .map(([name, ms]) => `    --motion-duration-${name}: ${ms}ms;`)
+  .join("\n")}
+  }
+}
+
+/* prefers-reduced-motion: every alouette transition and animation token
+   collapses to nothing. Unlayered so it wins over an app's @layer theme
+   overrides. Native never matches this query: AlouetteProvider pushes the
+   same values (reducedMotionVariables.ts) from AccessibilityInfo instead. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+${Object.entries(reducedMotionVariables)
+  .map(([name, value]) => `    ${name}: ${toCssValue(value)};`)
+  .join("\n")}
   }
 }
 
 @layer base {
-  /* hotpink default catches any text missing Text component use */
+  /* hotpink flags any text rendered outside a <Text> */
   body { color: hotpink; }
 
   /* reset - equivalent to ScrollViewStyleReset */
@@ -198,8 +226,8 @@ const coreCss = `/* Generated by scripts/build-css.ts. DO NOT EDIT. */
      The track is opaque: a scroll container's background paints across its whole
      padding box, gutter included, while its content container stops at the
      gutter's inner edge — so a transparent track bares the scroller's own ground
-     (AppShell's frame is a two-tone gradient, and showed half of each color in
-     the gutter). \`lowered\` is the inset ground a track should have. The *
+     (half of each color of a two-tone gradient frame such as AppShell's).
+     \`lowered\` is the inset ground a track should have. The *
      selector re-declares the property on every element, so a nested scroller
      resolves its own theme's \`lowered\` rather than inheriting an ancestor's
      track. */
@@ -211,7 +239,7 @@ const coreCss = `/* Generated by scripts/build-css.ts. DO NOT EDIT. */
   }
 }
 
-/* keyframes referenced by the --animate-* theme tokens above. */
+/* keyframes */
 @keyframes slide-in {
   from {
     opacity: 0;
@@ -256,21 +284,29 @@ const coreCss = `/* Generated by scripts/build-css.ts. DO NOT EDIT. */
   }
 }
 
+@keyframes caret-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
 
-/* named transition durations — one per animationDurationsMs entry so transition
-   classNames reference the same source of truth as the JS export (native drives
-   the same motion via Reanimated withTiming(animationDurationsMs.*)). */
-${Object.entries(animationDurationsMs)
+
+/* named transition durations */
+${Object.keys(animationDurationsMs)
   .map(
-    ([name, ms]) =>
-      `@utility duration-${name} { transition-duration: ${ms}ms; }`,
+    (name) =>
+      `@utility duration-${name} { transition-duration: var(--motion-duration-${name}); }`,
   )
   .join("\n")}
 
-/* font-family + weight utilities — family×weight combinations; use with standard text-* size utilities.
-   font-synthesis: none — on Expo web the weight-specific family ('SoraBold') is a single registered
-   face, so the font-weight below must NOT trigger algorithmic (faux) bolding of already-bold glyphs.
-   On Vite web 'Sora' is a real variable font, so the font-weight selects the genuine weight. */
+/* font-family + weight utilities.
+   font-synthesis: none — on Expo web the weight-specific family ('SoraBold') is a
+   single registered face, so the font-weight must not faux-bold already-bold
+   glyphs. On Vite 'Sora' is a variable font, where the font-weight selects the
+   real weight. */
 @utility font-body            { font-family: var(--font-body);            font-weight: 400; font-synthesis: none; }
 @utility font-body-bold       { font-family: var(--font-body-bold);       font-weight: 700; font-synthesis: none; }
 @utility font-body-extrabold  { font-family: var(--font-body-extrabold);  font-weight: 800; font-synthesis: none; }
@@ -281,11 +317,9 @@ ${Object.entries(animationDurationsMs)
 @utility font-mono-bold       { font-family: var(--font-mono-bold);       font-weight: 700; font-synthesis: none; }
 @utility font-mono-extrabold  { font-family: var(--font-mono-extrabold);  font-weight: 800; font-synthesis: none; }
 
-/* tripwire — standalone Tailwind font-weight utilities are NOT valid here: weight
-   must be baked into the font-* family utility (font-body-bold, etc.) so it works on
-   native. Override them to weight 100 + crunched letter-spacing so any accidental use
-   renders visibly thin and cramped on web and is easy to spot. (native ignores both
-   font-weight and letterSpacing here, so this only affects web.) */
+/* tripwire — a standalone font-weight has no effect on native, where each weight
+   is its own font file (font-body-bold, …). These render visibly thin and cramped
+   on web so an accidental use is easy to spot. */
 @utility font-thin       { font-weight: 100; letter-spacing: -0.1em; }
 @utility font-extralight { font-weight: 100; letter-spacing: -0.1em; }
 @utility font-light      { font-weight: 100; letter-spacing: -0.1em; }
@@ -296,38 +330,65 @@ ${Object.entries(animationDurationsMs)
 @utility font-extrabold  { font-weight: 100; letter-spacing: -0.1em; }
 @utility font-black      { font-weight: 100; letter-spacing: -0.1em; }
 
-/* text-base-size-only — the body size *without* the line-height the text-* scale
-   utilities pair with it (Tailwind v4 emits both from one utility). A single-line
-   native TextInput must not carry a line-height: iOS pins the field's line box to
-   min == max == that height and leaves the extra leading above the glyphs, so the
-   value renders below the middle of the box while the placeholder — drawn without
-   those attributes — stays centered. Web needs no such thing (an <input> centers
-   its text whatever the line-height is), so pair it as
-   \`web:text-base native:text-base-size-only\`. */
+/* text-base-size-only — the body size without the line-height text-base
+   pairs with it. A single-line native TextInput must not carry a line-height:
+   iOS pins the field's line box to min == max == that height and leaves the
+   extra leading above the glyphs, so the value renders below the middle of the
+   box while the placeholder — drawn without those attributes — stays centered.
+   Web needs no such thing (an <input> centers its text whatever the
+   line-height is), so pair it as \`web:text-base native:text-base-size-only\`. */
 @utility text-base-size-only {
   font-size: var(--text-base);
 }
 
-/* lowered — the inset material: the recessed ground and its inset shadow always
-   travel together, so they are one class rather than a pair to keep in sync. */
+/* lowered — one class so the recessed ground and its inset shadow cannot
+   drift apart */
 @utility lowered {
   @apply bg-lowered shadow-lowered;
 }
 
-/* surface — the raised card: \`<Box className="surface">\`. overflow-hidden so the
-   multi-layer shadow respects the rounded corners (and so children are clipped
-   to them). Any class written after it wins — it sorts ahead of bg-*, shadow-*,
-   p-*, rounded-*, lowered and the surface-{size} utilities below. The ground
-   fades when the accent or the mode changes, since both swap the theme
-   variables under it. */
+/* focus-ring — the keyboard focus indicator, one geometry and one ink for
+   every ringed control, applied on focus-visible (never on focus: a mouse
+   click leaves the focus behind). The ink is \`accent\`: the scope's own ink
+   (the sharp ink in the neutral theme), which clears 3:1 against every ground
+   in both modes (audited in scripts/generate-palette.ts) — not a border or a
+   ground token, whose steps meet a tonal ground in dark mode. No transition,
+   an indicator arrives at once. The outer ring sits 2px off the edge, with the
+   page showing in the gap as its halo; the inset one sits 2px inside the edge,
+   for a raised control (the tonal material, whose shadow the outer ring would
+   overlap) and for a pressable whose parent clips (\`surface\` is
+   overflow-hidden). Native never sees either: react-native-css drops
+   focus-visible. */
+@utility focus-ring {
+  @apply outline-2 outline-offset-2 outline-accent;
+}
+@utility focus-ring-inset {
+  @apply outline-2 -outline-offset-2 outline-accent;
+}
+
+/* surface — the raised card. overflow-hidden clips children to the rounded
+   corners. Any class written after it wins: it sorts ahead of bg-*, shadow-*,
+   p-*, rounded-*, lowered and the surface-{size} utilities. The transition
+   fades the ground when the accent or the mode swaps the theme variables
+   under it. */
 @utility surface {
   @apply overflow-hidden bg-surface shadow-s surface-md transition-colors duration-fast;
 }
 
-/* surface-{size} — a surface's padding and its radius as one class, so the
-   pair cannot drift apart between call sites. A single p-* / rounded-* written
-   after it still overrides one side (the utilities sort ahead of them), and it
-   takes a breakpoint prefix like any class (surface-sm md:surface-lg). */
+/* surface-flat — the card with no elevation: a hairline instead of the shadow,
+   used instead of \`surface\` for a card inside a card (a second shadow reads as
+   a card stacked on a card) and in a dense grid of cards. Same ground, clip,
+   size and transition as \`surface\` (transition-colors covers the hairline
+   too), so the two can sit side by side. The border is 1px in the box: a flat
+   card and a raised one of the same content differ by 2px. Not a replacement
+   for Message's own \`flat\` variant, which is not a surface. */
+@utility surface-flat {
+  @apply overflow-hidden bg-surface border border-border-muted surface-md transition-colors duration-fast;
+}
+
+/* surface-{size} — padding and radius as one class so the pair cannot drift
+   apart between call sites. A single p-* / rounded-* written after it still
+   overrides one side. */
 @utility surface-xxs {
   @apply p-xs rounded-xs;
 }
@@ -344,42 +405,45 @@ ${Object.entries(animationDurationsMs)
   @apply p-xxl rounded-md;
 }
 
-/* surface-popover — the panel every popover list opens in (Menu, Select,
-   InputTextAutocomplete). Its rows carry their own px-m and rounded-xs, so the
-   panel pads them by p-xs and rounds by rounded-sm: the row's corners stay
-   concentric with the panel's. */
+/* surface-popover — the panel of Menu, Select and InputTextAutocomplete. Its
+   rows are rounded-xs, so p-xs + rounded-sm keeps their corners concentric
+   with the panel's. */
 @utility surface-popover {
   @apply overflow-hidden bg-highlight shadow-l rounded-sm p-xs;
 }
 
-/* flex-center — center children on both axes. Replaces the old Box \`center\`
-   variant. Named flex-center (not \`center\`) to avoid clashing with any future
-   text-align / place-* shorthand. */
+/* flex-center — not \`center\`, which would clash with a text-align /
+   place-* shorthand */
 @utility flex-center {
   align-items: center;
   justify-content: center;
 }
 
-/* flex-wrap-balance — \`flex-wrap: balance\` evens out the item count across
-   lines instead of packing every line full, so the last row is never a lone
-   orphan. Only Safari 26+ implements it; everywhere else (and on native, where
-   the compiler drops the feature query) the utility stays plain \`wrap\`. */
+/* flex-wrap-balance — \`balance\` evens out the item count across lines, so
+   the last row is never a lone orphan. Only Safari 26+ implements it;
+   elsewhere (and on native, where the compiler drops the feature query) it
+   stays plain \`wrap\`. */
 @utility flex-wrap-balance {
   flex-wrap: wrap;
   @supports (flex-wrap: balance) {
     flex-wrap: balance;
   }
 }
+
+/* An all-caps label (Avatar initials) centered on its line box sits ~1px high:
+   the box spans ascender + descender, and caps have no descender. Trimming it to
+   cap height over baseline centers the ink. Web only: native (where the compiler
+   drops the feature query) and browsers without \`text-box\` keep the line box. */
+@utility text-trim-cap {
+  @supports (text-box: trim-both cap alphabetic) {
+    text-box: trim-both cap alphabetic;
+  }
+}
 `;
 
-writeFileSync(join(srcDir, "core.css"), coreCss);
-console.log(`Wrote ${join(srcDir, "core.css")}`);
+await writeGeneratedFile("core.css", coreCss);
 
 // --- default-palette.css -----------------------------------------------------
-// The default palette in sRGB hex: the @theme color defaults (which generate
-// bg-*, text-*, border-* utilities) plus the twelve .<theme> blocks.
-// Optional — import after core.css. A BYO app imports its own
-// generateTheme().css instead.
 const defaultPaletteFile = `/* Generated by scripts/build-css.ts. DO NOT EDIT.
    Default alouette palette in sRGB hex (optional). Import after
    'alouette/core.css'. Complete on its own — add
@@ -387,31 +451,18 @@ const defaultPaletteFile = `/* Generated by scripts/build-css.ts. DO NOT EDIT.
    ramp. A BYO app imports its own generateTheme() palette CSS instead. */
 ${defaultPaletteCss}`;
 
-writeFileSync(join(srcDir, "default-palette.css"), defaultPaletteFile);
-console.log(`Wrote ${join(srcDir, "default-palette.css")}`);
+await writeGeneratedFile("default-palette.css", defaultPaletteFile);
 
 // --- default-palette-oklch.css -----------------------------------------------
-// The wide-gamut half, kept in its own file so oklch is opt-in: a project that
-// wants the sRGB ramp everywhere never imports it. Purely additive — it
-// re-declares the same tokens behind @supports, so it must come after the
-// palette above.
 const defaultPaletteOklchFile = `/* Generated by scripts/build-css.ts. DO NOT EDIT.
    Wide-gamut half of the default alouette palette (optional). Import after
    'alouette/default-palette.css' to opt web into the display-p3 ramp; omit it to
    stay on sRGB hex everywhere. */
 ${defaultPaletteOklchCss}`;
 
-writeFileSync(
-  join(srcDir, "default-palette-oklch.css"),
-  defaultPaletteOklchFile,
-);
-console.log(`Wrote ${join(srcDir, "default-palette-oklch.css")}`);
+await writeGeneratedFile("default-palette-oklch.css", defaultPaletteOklchFile);
 
 // --- global.css --------------------------------------------------------------
-// Convenience aggregator: structural core + the sRGB default palette. Keeps
-// existing `@import "alouette/global.css"` consumers working. The oklch overlay
-// is deliberately NOT included — it stays an explicit extra @import. BYO apps
-// import core.css + their own palette CSS instead of this file.
 const globalCss = `/* Generated by scripts/build-css.ts. DO NOT EDIT.
    Aggregator: alouette's structural core + the default sRGB palette. Add
    \`@import "alouette/default-palette-oklch.css";\` after this to opt web into
@@ -421,24 +472,14 @@ const globalCss = `/* Generated by scripts/build-css.ts. DO NOT EDIT.
 @import "./default-palette.css";
 `;
 
-writeFileSync(join(srcDir, "global.css"), globalCss);
-console.log(`Wrote ${join(srcDir, "global.css")}`);
+await writeGeneratedFile("global.css", globalCss);
 
 // --- themeVariables.ts -------------------------------------------------------
-// NativeWind v5 styles every component through CSS variables, but it has no
-// stable cross-platform API to read a variable in JS (useUnstableNativeVariable
-// throws on web). We therefore emit the same theme data as a JS map, used both
-// to feed VariableContextProvider (ScopedTheme) and to read tokens in JS
-// (useThemeToken). It is the runtime default; a BYO app passes its own map to
-// <AlouetteProvider themeVariables={...}>.
-//
-// Maps are *resolved* (base mode tokens + accent overrides merged) so a theme can
-// be applied at any depth and still carry every --color-* token.
-//
-// Two variants, mirroring the two palette CSS files: sRGB hex (the default —
-// `defaultThemeVariables.ts` re-exports it, and it is the only format React
-// Native can parse) and oklch with display-p3 chroma headroom, which an app
-// imports explicitly when it also imports default-palette-oklch.css.
+// Native never reads the .<theme> CSS blocks, so ScopedTheme feeds NativeWind's
+// VariableContextProvider from this map instead. Each theme is resolved (base
+// mode tokens + accent overrides merged) so it can be applied at any depth and
+// still carry every --color-* token. There is no oklch map: web resolves every
+// token from CSS, and native parses hex only.
 interface WriteThemeVariablesModuleParams {
   fileName: string;
   variables: Record<string, Record<string, string>>;
@@ -450,9 +491,8 @@ const writeThemeVariablesModule = async ({
   variables,
   doc,
 }: WriteThemeVariablesModuleParams): Promise<void> => {
-  const path = join(srcDir, fileName);
-  const { code } = await format(
-    path,
+  await writeGeneratedFile(
+    fileName,
     `/* Generated by scripts/build-css.ts. DO NOT EDIT. */\n/* eslint-disable camelcase */
 import { Platform } from "react-native";
 import type { AlouetteTheme } from "./core/AlouetteConfig";
@@ -465,11 +505,7 @@ export const themeVariables: Record<
   Record<\`--\${string}\`, string>
 > = Platform.OS === "web" ? {} as any : ${JSON.stringify(variables, null, 2)};
 `,
-    { printWidth: 80 },
   );
-
-  writeFileSync(path, code);
-  console.log(`Wrote ${path}`);
 };
 
 await writeThemeVariablesModule({
@@ -477,16 +513,10 @@ await writeThemeVariablesModule({
   variables: themeVariables,
   doc: `Resolved CSS-variable maps for every theme in sRGB hex, shared with
  * default-palette.css. Feeds \`ScopedTheme\` (NativeWind's
- * \`VariableContextProvider\`) and \`useThemeToken\` on every platform but web.`,
+ * \`VariableContextProvider\`) on every platform but web.`,
 });
 
-// No oklch counterpart: web resolves every token from default-palette-oklch.css,
-// so the map only ever needs the hex values native parses.
-
 // --- animationDurationsMs.ts -------------------------------------------------
-// JS mirror of the --animate-* token durations above, so consumers (e.g.
-// Presence's `exitDurationMs`) reference the framework value instead of
-// hardcoding it. Same single-source-of-truth pattern as themeVariables.ts.
 const animationDurationsTs = `/* Generated by scripts/build-css.ts. DO NOT EDIT. */
 
 /**
@@ -497,5 +527,18 @@ const animationDurationsTs = `/* Generated by scripts/build-css.ts. DO NOT EDIT.
 export const animationDurationsMs = ${JSON.stringify(animationDurationsMs, null, 2)} as const;
 `;
 
-writeFileSync(join(srcDir, "animationDurationsMs.ts"), animationDurationsTs);
-console.log(`Wrote ${join(srcDir, "animationDurationsMs.ts")}`);
+await writeGeneratedFile("animationDurationsMs.ts", animationDurationsTs);
+
+// --- reducedMotionVariables.ts -----------------------------------------------
+const reducedMotionVariablesTs = `/* Generated by scripts/build-css.ts. DO NOT EDIT. */
+
+/**
+ * The motion tokens zeroed under reduced motion, shared with core.css's
+ * \`@media (prefers-reduced-motion: reduce)\` block. Native cannot evaluate that
+ * query, so \`AlouetteProvider\` pushes this map through NativeWind's
+ * \`VariableContextProvider\` when the OS setting is on.
+ */
+export const reducedMotionVariables = ${JSON.stringify(reducedMotionVariables, null, 2)} as const;
+`;
+
+await writeGeneratedFile("reducedMotionVariables.ts", reducedMotionVariablesTs);

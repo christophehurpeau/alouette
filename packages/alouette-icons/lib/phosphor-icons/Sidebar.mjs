@@ -1,0 +1,14 @@
+// This file is generated automatically by scripts/generate-phosphor-icons.mjs
+
+import { createDuotoneIcon, createIcon } from "alouette-icons/createIcon";
+
+export const SidebarRegularIcon = /*#__PURE__*/ createIcon(
+  "M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,152H56a8,8,0,0,0,0-16H40V120H56a8,8,0,0,0,0-16H40V88H56a8,8,0,0,0,0-16H40V56H80V200H40Zm176,48H96V56H216V200Z",
+);
+export const SidebarDuotoneIcon = /*#__PURE__*/ createDuotoneIcon(
+  "M88,48V208H40a8,8,0,0,1-8-8V56a8,8,0,0,1,8-8Z",
+  "M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,152H56a8,8,0,0,0,0-16H40V120H56a8,8,0,0,0,0-16H40V88H56a8,8,0,0,0,0-16H40V56H80V200H40Zm176,48H96V56H216V200Z",
+);
+export const SidebarFillIcon = /*#__PURE__*/ createIcon(
+  "M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM64,152H48a8,8,0,0,1,0-16H64a8,8,0,0,1,0,16Zm0-32H48a8,8,0,0,1,0-16H64a8,8,0,0,1,0,16Zm0-32H48a8,8,0,0,1,0-16H64a8,8,0,0,1,0,16ZM216,200H88V56H216V200Z",
+);

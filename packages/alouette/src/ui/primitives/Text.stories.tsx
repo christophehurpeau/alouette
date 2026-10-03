@@ -40,6 +40,10 @@ All styling via \`className\`. \`<Text>\` defaults to \`font-body\` (regular bod
 
 export const PreviewStory: ThisStory = {
   name: "Text Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     children: "The quick brown fox jumps over the lazy dog",
   },

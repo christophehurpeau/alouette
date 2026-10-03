@@ -1,5 +1,5 @@
-import { PlusRegularIcon } from "alouette-icons/phosphor-icons/PlusRegularIcon";
-import { TrashRegularIcon } from "alouette-icons/phosphor-icons/TrashRegularIcon";
+import { PlusRegularIcon } from "alouette-icons/phosphor-icons/Plus";
+import { TrashRegularIcon } from "alouette-icons/phosphor-icons/Trash";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import {
   type ArrayPath,
@@ -114,7 +114,7 @@ function FormFieldArrayItem<
         </View>
         {removable ? (
           <IconButton
-            variant="ghost"
+            variant="soft"
             icon={<TrashRegularIcon />}
             aria-label={removeLabel}
             onHoverIn={() => {
@@ -136,7 +136,7 @@ function FormFieldArrayItem<
  * `control` from <Form>'s render params. FormFieldArray owns only the array
  * label and the add/remove buttons — it is agnostic about what an item contains,
  * including any per-item framing (a caller can wrap multi-field items in a
- * Surface). Each item's inputs (their values, labels and error messages) are the
+ * `<Box className="surface">`). Each item's inputs (their values, labels and error messages) are the
  * caller's job: `render` receives `control` and the item's path prefix, typed as
  * `${name}.${number}` so `${name}.value` / `${name}.firstName` compose into a
  * real field path for an object item, or `name` binds a raw value directly.

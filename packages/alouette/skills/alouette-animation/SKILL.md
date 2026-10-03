@@ -6,8 +6,10 @@ description: >
   entering and leaving, which keep an element mounted long enough to play its
   exit keyframes. Their exit timing is read from the library's
   animationDurationsMs rather than hardcoded, so it stays in step with the
-  keyframes. Both run on native through react-native-reanimated. Load when
-  adding transitions or enter/exit animations.
+  keyframes. Both run on native through react-native-reanimated, and both
+  honour the OS reduced-motion setting on web and native; useReducedMotion
+  covers motion driven from JS. Load when adding transitions or enter/exit
+  animations, or handling prefers-reduced-motion.
 type: core
 library: alouette
 sources:
@@ -15,6 +17,9 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/animationDurationsMs.ts"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/core/ReducedMotionContext.ts"
+  - "christophehurpeau/alouette:packages/alouette/src/reducedMotionVariables.ts"
+  - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
 ---
 
 # alouette — Animation
@@ -57,9 +62,10 @@ import { InteractiveBox, Text } from "alouette";
 ```
 
 For a custom transition, add `transition-*` utilities on an alouette component
-that forwards `className` so it composes with the built-in ones. Prefer the
-named `duration-*` tokens over raw numbers — they mirror `animationDurationsMs`
-(`fast` 200, `fade` 300, `slide`/`progress` 600, `collapse` 800):
+that forwards `className` so it composes with the built-in ones. Use the named
+`duration-*` tokens, never raw numbers — they mirror `animationDurationsMs`
+(`fast` 200, `fade` 300, `slide`/`progress` 600, `collapse` 800), and only they
+collapse under reduced motion:
 
 ```tsx
 <InteractiveBox className="transition-[background-color] duration-fast ease-in hover:bg-lowered" />
@@ -120,6 +126,34 @@ import { PresenceList, InfoMessage, animationDurationsMs } from "alouette";
 `PresenceOne` swaps a single child and merges the animation classes onto it via
 `cloneElement` (no wrapper); `PresenceList` wraps each child in its own `View`.
 
+### Reduced motion
+
+When the user asks the OS to reduce motion, every alouette motion token goes to
+zero: the `duration-*` utilities, the default `transition-*` duration and the
+`animate-*` keyframes. On web a `@media (prefers-reduced-motion: reduce)` block
+in `core.css` does it. Native cannot evaluate that query, so `AlouetteProvider`
+reads `AccessibilityInfo` and pushes the same values through NativeWind's
+variable context. Nothing to wire beyond rendering inside `AlouetteProvider`.
+`PresenceOne` / `PresenceList` then drop their animation classes and swap or
+remove at once, `Modal` / `Popover` open without the fade.
+
+Motion you drive from JS reads `useReducedMotion()`:
+
+```tsx
+import { useReducedMotion } from "alouette";
+import { ReduceMotion, withTiming } from "react-native-reanimated";
+
+const reducedMotion = useReducedMotion();
+offset.value = withTiming(target, {
+  reduceMotion: reducedMotion ? ReduceMotion.Always : ReduceMotion.Never,
+});
+```
+
+Pass it explicitly rather than relying on Reanimated's `ReduceMotion.System`,
+which is read once at launch.
+
+Source: packages/alouette/src/core/ReducedMotionContext.ts; src/core/AlouetteProvider.tsx; src/reducedMotionVariables.ts; ui/containers/Presence.tsx
+
 ## Common Mistakes
 
 ### HIGH Hand-rolling transitions on a raw Pressable
@@ -169,6 +203,28 @@ from the framework value, cutting the exit animation short or leaving ghost node
 mounted.
 
 Source: packages/alouette/src/animationDurationsMs.ts; ui/containers/Presence.stories.tsx
+
+### HIGH Gating motion with motion-reduce: / motion-safe: or a raw duration
+
+Wrong:
+
+```tsx
+<Box className="transition-transform duration-[250ms] motion-reduce:transition-none" />
+```
+
+Correct:
+
+```tsx
+<Box className="transition-transform duration-fast" />
+```
+
+react-native-css never matches `prefers-reduced-motion`, so on native
+`motion-reduce:` never applies and `motion-safe:` switches the animation off for
+everyone. An arbitrary `duration-[…]` is not a token and keeps playing under
+reduced motion; the named `duration-*` and `animate-*` tokens collapse on both
+platforms.
+
+Source: packages/alouette/src/reducedMotionVariables.ts; node_modules/react-native-css/src/native/conditions/media-query.ts
 
 ### HIGH PresenceList children without stable keys
 

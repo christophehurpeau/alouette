@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
 import { Story } from "../story-components/Story";
 import { ActionButton } from "./ActionButton";
 
@@ -43,6 +43,10 @@ function rejectAfter(ms: number, message: string): Promise<never> {
 
 export const ActionButtonPreviewStory: ThisStory = {
   name: "ActionButton Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     text: "Save",
   },
@@ -74,7 +78,7 @@ export const ActionButtonVariantsStory: ThisStory = {
 
       <Story.Section title="Rejects">
         <ActionButton
-          text="Delete"
+          text="Save"
           errorToMessage={(error) =>
             error instanceof Error ? error.message : "Unknown error"
           }
@@ -111,8 +115,8 @@ export const ActionButtonVariantsStory: ThisStory = {
           onPress={() => delay(1500)}
         />
         <ActionButton
-          variant="ghost"
-          text="Save"
+          variant="soft"
+          text="Cancel"
           errorToMessage={(error) =>
             error instanceof Error ? error.message : "Unknown error"
           }
@@ -122,7 +126,7 @@ export const ActionButtonVariantsStory: ThisStory = {
 
       <Story.Section withSurface title="Flat error message inside a surface">
         <ActionButton
-          text="Delete"
+          text="Save"
           errorMessageVariant="flat"
           errorToMessage={(error) =>
             error instanceof Error ? error.message : "Unknown error"

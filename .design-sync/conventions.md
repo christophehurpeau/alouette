@@ -9,103 +9,102 @@ wrapper.
 
 Components read theme colors (`bg-surface`, `text-accent`, …) from CSS variables
 that a theme scope provides. Without a theme scope, color utilities resolve to
-nothing and components render unstyled. Wrap the tree once:
+nothing and components render unstyled. Wrap the tree once, with a `View` as the
+layout root:
 
 ```tsx
-import { SafeAreaProvider, AlouetteProvider, ScopedTheme } from "alouette";
+import {
+  SafeAreaProvider,
+  AlouetteProvider,
+  ScopedTheme,
+  View,
+} from "alouette";
 
 <SafeAreaProvider>
   <AlouetteProvider>
-    <ScopedTheme theme="light">{/* app */}</ScopedTheme>
+    <ScopedTheme theme="light">
+      <View>{/* app */}</View>
+    </ScopedTheme>
   </AlouetteProvider>
 </SafeAreaProvider>;
 ```
 
-`theme` is `"light"` or `"dark"`. To switch an accent for a subtree, nest another
-`<ScopedTheme theme="light_brand">` (accents: `brand`, `info`, `danger`,
-`success` — as `light_<accent>` / `dark_<accent>`). Children always use base
-tokens (`bg-surface`, `text-accent`, …) and inherit the nearest scope's values.
+Layout follows React Native: a `View` is a flex column that stretches its
+children. Components rely on it (a `Badge` is `self-start`, a `Button` fills a
+column), so lay out with `View`, never a bare `div`.
+
+`theme` is `"light"` or `"dark"`. Accents are `brand`, `info`, `danger`,
+`success`, `warning`: pass `accent` to a component, or wrap a subtree in
+`<AccentScope accent="danger">`. `accent="neutral"` (Button, IconButton, Box,
+Badge) is the grayscale palette. Children always use base tokens (`bg-surface`,
+`text-accent`, …) and inherit the nearest scope's values.
 
 ## Styling idiom — className with Tailwind utilities
 
-There are no style props or variant props; everything is a `className`.
+`Text` and `View` have no style or variant props: everything is a `className`.
+Some components take a `variant` for their material (`Button`, `IconButton`,
+`PressableBox`: `tonal` default, `filled`, `outlined`, `soft`).
 
 - **Font family + weight** (one combined utility — never standalone `font-bold`):
   `font-body` · `font-body-bold` · `font-body-extrabold` · `font-heading` ·
   `font-heading-bold` · `font-heading-extrabold` · `font-mono` · `font-mono-bold`.
   Text defaults to `font-body`.
-- **Font size** (standard Tailwind): `text-xs` `text-sm` `text-base` `text-lg`
-  `text-xl` `text-2xl` `text-3xl` `text-4xl` `text-5xl` `text-6xl`.
-- **Text color**: `text-sharp` `text-muted` `text-accent` `text-on-accent`
-  (+ `-muted` / disabled variants).
-- **Surfaces / borders**: `bg-surface` `bg-lowered` `bg-highlight`,
-  `border-muted`, plus radius/shadow like `rounded-full` `shadow-lowered`.
+- **Font size**: `text-xs` `text-sm` `text-base` `text-lg` `text-xl` `text-2xl`
+  `text-3xl` `text-4xl` `text-5xl` `text-6xl`.
+- **Text color**: `text-sharp` `text-muted` `text-accent` `text-on-accent`.
+- **Spacing** (named scale): `gap-xxs` `gap-xs` `gap-sm` `gap-m` `gap-l`,
+  `p-xs` `p-sm` `p-m` `p-l`.
+- **Surfaces**: a card is `<Box className="surface">` (ground, shadow, padding
+  and radius in one class); `surface-{xxs,xs,sm,md,lg}` sets its size, `lowered`
+  is an inset track. Grounds: `bg-surface` `bg-lowered` `bg-highlight`; borders
+  `border-muted`; shadows `shadow-s` `shadow-m` `shadow-lowered`.
+- **Rows**: `<View className="flex-row items-center justify-between gap-sm">`.
+
+`HStack`, `VStack`, `Stack` and `Surface` are deprecated: use `View` with
+`flex-row` and `<Box className="surface">`.
 
 ```tsx
-import { Text } from "alouette";
-<Text className="font-heading-extrabold text-4xl text-sharp">Title</Text>
-<Text className="text-base">Body</Text>           {/* font-body is default */}
-```
+import { Badge, Box, Button, Separator, Text, View } from "alouette";
 
-## Component library (this kit's synced surface)
-
-The full storied roster is synced, grouped as in the source repo:
-
-- **actions** — `Button`, `IconButton`, `PressableBox`
-- **containers** — `Box`, `Surface`, `AlertDialog`, `Modal`, `PresenceOne`
-- **data** — `PressableListItem`, `FlatList`, `SectionList`
-- **feedback** — `Badge`, `ConnectionState`, `Message`
-- **inputs** — `Switch`, `InputText`, `TextArea`, `Select`
-- **layout** — `GradientBackground`, `GradientScrollView`, `Separator`
-- **primitives** — `View`, `Text`, `Icon`, `ScrollView`, `Stack`/`HStack`/`VStack`
-
-```tsx
-import { InputText, TextArea, Switch, Select } from "alouette";
-
-<InputText placeholder="Email" mode="email" />
-<InputText placeholder="Password" mode="password" />
-<TextArea placeholder="Message" />
-<Switch checked={on} onValueChange={setOn} aria-labelledby="notify-label" />
-```
-
-`InputText` props: `placeholder`, `value`, `mode`
-(`text`|`password`|`email`|`tel`|`number`|`url`|`search`), `disabled`,
-`autoCorrect`, `autoCapitalize`. `TextArea` is the multiline variant.
-`Switch` props: `checked`, `onValueChange(value)`, `disabled`, `aria-labelledby`.
-These are uncontrolled-capable (omit `value`/`checked` to let them self-manage).
-
-```tsx
-import { HStack, VStack, Separator, Surface, Button, Badge } from "alouette";
-
-<Surface className="p-m">
-  <VStack className="gap-s">
-    <HStack className="items-center justify-between">
+<Box className="surface">
+  <View className="gap-sm">
+    <View className="flex-row items-center justify-between">
+      <Text className="font-heading-bold text-lg">Project</Text>
       <Badge accent="brand">New</Badge>
-      <Button>Action</Button>
-    </HStack>
+    </View>
     <Separator />
-  </VStack>
-</Surface>;
+    <View className="flex-row justify-end gap-sm">
+      <Button accent="neutral" text="Cancel" onPress={close} />
+      <Button text="Save" onPress={save} />
+    </View>
+  </View>
+</Box>;
 ```
 
-`HStack`/`VStack` are `Stack` with `direction="row"`/`"column"`; row layouts
-depend on `flex-row`/`gap-*`/`items-*` utilities from the synced `styles.css`,
-same as any other Tailwind-driven layout here — no separate layout API.
+Two buttons side by side differ by `accent`, both `tonal`; `variant="filled"`
+is for the one action that must dominate. `Button` and `IconButton` take `text`
+/ `icon` props, not children.
 
-Components that introduce an accent (`Button`, `Message`, `Badge`,
-`ConnectionState`, `Surface` with `accent` set, `GradientBackground`) take an
-`accent?: "brand" | "info" | "danger" | "success"` prop; omit it to inherit
-the surrounding `ScopedTheme`.
+## Components
 
-`AlertDialog`/`Modal` are trigger + content compositions (see their
-`.prompt.md` for the exact children API) — don't hand-roll overlay/backdrop
-markup with `Box`/`View`.
+Grouped as in the source repo — each has a `.d.ts` and a `.prompt.md`:
+actions (`Button`, `ActionButton`, `IconButton`, `LinkText`, `Menu`,
+`PressableBox`, `PressableListItem`), containers (`Box`, `AlertDialog`, `Modal`,
+`EditableSection`), data (`Avatar`, `Badge`, `Code`, `CodeBlock`,
+`EditableItem`), feedback (`Message`, `CircularProgress`, `LinearProgress`),
+forms (`Form`, `FormField`, `FormSubmitButton`, `SimpleVForm`), inputs
+(`InputText`, `TextArea`, `Select`, `Switch`, `RadioGroup`, `CheckboxGroup`,
+`RadioButtonGroup`, `ColorModePicker`), layout (`AppShell`, `AppLayout`,
+`AppHeader`, `Separator`), navigation (`NavBar`, `Tabs`, `Breadcrumbs`), and
+primitives (`View`, `Text`, `Icon`, `ScrollView`, `FlatList`).
+
+Anything that moves between routes is a `NavBar`/`HeaderNav`, never a
+`RadioButtonGroup`. `AlertDialog`/`Modal` own their overlay — don't hand-roll
+backdrop markup with `Box`/`View`.
 
 ## Where the truth lives
 
 - Styling source: the synced `styles.css` and its `@import` closure (the compiled
-  utility classes + theme variables).
+  utility classes + theme variables). It is statically compiled, so prefer
+  utilities already listed above or used by the shipped components.
 - Per-component API + examples: each component's `.d.ts` and `.prompt.md`.
-- Layout glue uses the same Tailwind utilities (`flex`, `gap-*`, padding/margin);
-  the synced `styles.css` is statically compiled, so prefer utilities already
-  used by the shipped components. Compose Alouette components for the controls.

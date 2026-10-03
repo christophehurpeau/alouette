@@ -44,14 +44,16 @@ export default {
 - Sizes (padding + radius as one class): \`surface-xxs\` · \`surface-xs\` · \`surface-sm\` · \`surface-md\` · \`surface-lg\`
 - Grounds: \`bg-surface\` · \`bg-highlight\` · \`bg-highlight-accent\` · \`bg-translucent\` · \`lowered\` (the recessed ground with its inset shadow)
 - Elevation: \`shadow-s\` · \`shadow-m\` · \`shadow-l\`
-- Roles: \`surface-popover\` (the panel of Menu, Select and InputTextAutocomplete), used instead of \`surface\`
-- The \`Surface\` component is deprecated: \`<Surface size="sm" variant="lowered">\` is \`<Box className="surface surface-sm lowered">\`
+- Roles, used instead of \`surface\`: \`surface-flat\` (the card with no elevation — a hairline instead of the shadow — for a card inside a card or a dense grid) · \`surface-popover\` (the panel of Menu, Select and InputTextAutocomplete)
 
 ### Usage
 ~~~tsx
 <Box className="surface">Primary content</Box>
 <Box className="surface shadow-m surface-sm md:surface-lg">Larger surface</Box>
 <Box className="surface lowered">Sunken surface</Box>
+<Box className="surface">
+  <Box className="surface-flat surface-sm">Card inside a card</Box>
+</Box>
 ~~~`,
       },
     },
@@ -61,6 +63,7 @@ export default {
 export const PreviewSurfaceStory: ThisStory = {
   name: "Surface Preview",
   parameters: {
+    chromatic: { disableSnapshot: true },
     layout: "padded",
   },
   args: {
@@ -194,6 +197,34 @@ export const VariantsSurfaceStory: ThisStory = {
           <Text>bg-lowered shadow-lowered</Text>
         </Box>
       </Story.Section>
+      <Story.Section title="Flat card">
+        <StoryGrid.Row flexWrap>
+          <StoryGrid.Col title="surface-flat">
+            <Box aria-label="Flat surface" className="surface-flat">
+              <Text>surface-flat</Text>
+            </Box>
+          </StoryGrid.Col>
+          <StoryGrid.Col title="Same classes written out">
+            <Box
+              aria-label="Flat classes"
+              className="surface shadow-none border border-border-muted"
+            >
+              <Text>surface shadow-none border border-border-muted</Text>
+            </Box>
+          </StoryGrid.Col>
+          <StoryGrid.Col title="Inside a raised card">
+            <Box className="surface surface-sm gap-m">
+              <Text>surface</Text>
+              <Box
+                aria-label="Nested flat surface"
+                className="surface-flat surface-xs"
+              >
+                <Text>surface-flat surface-xs</Text>
+              </Box>
+            </Box>
+          </StoryGrid.Col>
+        </StoryGrid.Row>
+      </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
@@ -255,6 +286,23 @@ export const VariantsSurfaceStory: ThisStory = {
       style("Default surface").backgroundColor,
     );
 
+    // The flat role keeps the surface ground, clip and size, trades the shadow
+    // for a 1px border-muted hairline, and a size class after it still wins.
+    const flat = style("Flat surface");
+    const flatClasses = style("Flat classes");
+    await expectSize("Flat surface", "32px", "16px");
+    await expect(flat.backgroundColor).toBe(
+      style("Default surface").backgroundColor,
+    );
+    await expect(flat.boxShadow).toBe("none");
+    await expect(flat.borderTopWidth).toBe("1px");
+    await expect(flat.borderTopColor).toBe(flatClasses.borderTopColor);
+    await expect(flat.overflow).toBe("hidden");
+    await expect(flat.transitionProperty.split(", ")).toContain("border-color");
+    const nestedFlat = style("Nested flat surface");
+    await expectSize("Nested flat surface", "12px", "8px");
+    await expect(nestedFlat.borderTopWidth).toBe("1px");
+
     // Switching the accent swaps the theme variables under the ground, and the
     // surface fades to the new color instead of jumping to it.
     const [accentSurface] = canvas.getAllByLabelText("Accent surface");
@@ -265,7 +313,9 @@ export const VariantsSurfaceStory: ThisStory = {
       throw new Error("expected the accent change section to render");
     }
     const before = getComputedStyle(accentSurface);
-    await expect(before.transitionProperty).toBe("background-color");
+    await expect(before.transitionProperty.split(", ")).toContain(
+      "background-color",
+    );
     await expect(before.transitionDuration).toBe("0.2s");
     const initialBackground = before.backgroundColor;
 

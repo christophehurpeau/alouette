@@ -1,6 +1,6 @@
 import { expect, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/CalendarRegularIcon";
+import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/Calendar";
 import { type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
 import { Modal } from "../containers/Modal";
@@ -63,7 +63,10 @@ export default {
     label: { control: "text" },
     details: { control: "text" },
     editAriaLabel: { control: "text" },
-    variant: { control: "select", options: ["contained", "outlined", "ghost"] },
+    variant: {
+      control: "select",
+      options: ["tonal", "filled", "soft"],
+    },
     accent: { control: "select", options: accentsWithoutNeutral },
     disabled: { control: "boolean" },
   },
@@ -71,6 +74,10 @@ export default {
 
 export const EditableItemPreviewStory: ThisStory = {
   name: "EditableItem Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     label: "Display name",
     editAriaLabel: "Edit display name",
@@ -115,9 +122,8 @@ export const EditableItemVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="Edit button variants">
-        <EditableItemDemo variant="contained" />
-        <EditableItemDemo variant="outlined" />
-        <EditableItemDemo variant="ghost" />
+        <EditableItemDemo variant="filled" />
+        <EditableItemDemo variant="soft" />
       </Story.Section>
 
       <Story.Section withSurface title="Custom edit icon">
@@ -143,8 +149,7 @@ export const EditableItemVariantsStory: ThisStory = {
 
       <Story.Section withSurface title="Disabled">
         <EditableItemDemo disabled />
-        <EditableItemDemo disabled variant="outlined" />
-        <EditableItemDemo disabled variant="ghost" />
+        <EditableItemDemo disabled variant="soft" />
       </Story.Section>
     </Story>
   ),

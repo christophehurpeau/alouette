@@ -12,10 +12,13 @@ function NameField({ details }: { details?: string }): ReactNode {
     <FormItem
       label="Name"
       details={details}
-      render={(labelId) => (
+      render={({ labelId, describedBy, invalid, required }) => (
         <InputText
           ref={ref}
           aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          aria-required={required}
+          invalid={invalid}
           placeholder="Ada Lovelace"
         />
       )}
@@ -30,20 +33,36 @@ function RequiredField(): ReactNode {
     <FormItem
       required
       label="Full name"
-      render={(labelId) => <InputText ref={ref} aria-labelledby={labelId} />}
+      render={({ labelId, describedBy, invalid, required }) => (
+        <InputText
+          ref={ref}
+          aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          aria-required={required}
+          invalid={invalid}
+        />
+      )}
       onLabelPress={() => ref.current?.focus()}
     />
   );
 }
 
-function ErrorField(): ReactNode {
+function ErrorField({ details }: { details?: string }): ReactNode {
   const ref = useRef<RNTextInput>(null);
   return (
     <FormItem
       label="Email"
+      details={details}
       error="Enter a valid email address."
-      render={(labelId) => (
-        <InputText ref={ref} aria-labelledby={labelId} value="not-an-email" />
+      render={({ labelId, describedBy, invalid, required }) => (
+        <InputText
+          ref={ref}
+          aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          aria-required={required}
+          invalid={invalid}
+          value="not-an-email"
+        />
       )}
       onLabelPress={() => ref.current?.focus()}
     />
@@ -58,8 +77,15 @@ function RequiredEmptyErrorField(): ReactNode {
       isRequiredError
       label="Password"
       error="Password is required."
-      render={(labelId) => (
-        <InputText ref={ref} aria-labelledby={labelId} mode="password" />
+      render={({ labelId, describedBy, invalid, required }) => (
+        <InputText
+          ref={ref}
+          aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          aria-required={required}
+          invalid={invalid}
+          mode="password"
+        />
       )}
       onLabelPress={() => ref.current?.focus()}
     />
@@ -73,10 +99,13 @@ function RequiredOtherErrorField(): ReactNode {
       required
       label="Password"
       error="Password must be at least 8 characters."
-      render={(labelId) => (
+      render={({ labelId, describedBy, invalid, required }) => (
         <InputText
           ref={ref}
           aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          aria-required={required}
+          invalid={invalid}
           mode="password"
           value="short"
         />
@@ -93,8 +122,15 @@ function IndentedFormItem(): ReactNode {
       indented
       label="Nickname"
       details="Indented content sits under a left border rail."
-      render={(labelId) => (
-        <InputText ref={ref} aria-labelledby={labelId} placeholder="Ada" />
+      render={({ labelId, describedBy, invalid, required }) => (
+        <InputText
+          ref={ref}
+          aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          aria-required={required}
+          invalid={invalid}
+          placeholder="Ada"
+        />
       )}
       onLabelPress={() => ref.current?.focus()}
     />
@@ -127,7 +163,7 @@ export const Variants: ThisStory = {
         <RequiredField />
       </Story.Section>
 
-      <Story.Section title="With error">
+      <Story.Section title="With error — the field takes the danger border">
         <ErrorField />
       </Story.Section>
 
@@ -150,15 +186,50 @@ export const Tests: ThisStory = {
   name: "FormItem Tests",
   render: () => (
     <Story noDarkMode>
+      <NameField details="Enter your full name." />
       <RequiredEmptyErrorField />
+      <ErrorField details="We only use it to sign you in." />
     </Story>
   ),
 
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const nameInput = canvas.getByLabelText("Name");
     const input = canvas.getByLabelText("Password");
+    const emailInput = canvas.getByLabelText("Email");
     await expect(input).toBeInTheDocument();
-    await expect(canvas.getByText("Password is required.")).toBeVisible();
+    const message = canvas.getByText("Password is required.");
+    await expect(message).toBeVisible();
+
+    // The input announces the state the label and message show: invalid,
+    // required, and described by the message.
+    await expect(input).toHaveAttribute("aria-invalid", "true");
+    await expect(input).toHaveAttribute("aria-required", "true");
+    await expect(input).toHaveAttribute("aria-describedby", message.id);
+    await expect(nameInput).toHaveAttribute("aria-invalid", "false");
+    await expect(nameInput).toHaveAttribute("aria-required", "false");
+
+    // `details` is a description too, before the error.
+    await expect(nameInput).toHaveAttribute(
+      "aria-describedby",
+      canvas.getByText("Enter your full name.").id,
+    );
+    await expect(emailInput).toHaveAttribute(
+      "aria-describedby",
+      `${canvas.getByText("We only use it to sign you in.").id} ${canvas.getByText("Enter a valid email address.").id}`,
+    );
+
+    // The field in error sits in the danger scope, like its message: its
+    // border token resolves to the danger value, not the neutral one.
+    const outlinedToken = (element: Element) =>
+      getComputedStyle(element).getPropertyValue(
+        "--color-interactive-outlined-pressable",
+      );
+    await expect(outlinedToken(input)).toBe(outlinedToken(message));
+    await expect(outlinedToken(input)).not.toBe(outlinedToken(nameInput));
+    await expect(getComputedStyle(input).borderTopColor).not.toBe(
+      getComputedStyle(nameInput).borderTopColor,
+    );
 
     // Pressing the label focuses the input, like a native <label for>.
     await userEvent.click(canvas.getByText("Password"));

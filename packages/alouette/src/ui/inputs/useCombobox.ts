@@ -7,9 +7,9 @@ import type { useCombobox as useComboboxWeb } from "downshift";
 // build is only reachable at the `downshift/react-native` subpath, which
 // declares `require` but no `import` — an ESM import there matches no condition
 // at all — hence the require call.
-// This file overrided by a `.web.ts` so only Metro (ios/android) ever resolves it: the
+// This file is overridden by a `.web.ts` so only Metro (ios/android) ever resolves it: the
 // rollup builds and Expo web keep the ESM import from `useCombobox.web.ts`.
-// eslint-disable-next-line import-x/no-commonjs
+// eslint-disable-next-line import-x/no-commonjs, unicorn/prefer-module
 const { useCombobox } = require("downshift/react-native") as {
   useCombobox: typeof useComboboxWeb;
 };

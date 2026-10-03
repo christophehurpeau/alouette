@@ -95,6 +95,10 @@ function ContactSectionList({
 
 export const PreviewStory: StoryObj = {
   name: "SectionList Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: () => <ContactSectionList />,
 };
 

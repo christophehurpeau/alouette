@@ -1,7 +1,7 @@
 import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QuestionRegularIcon } from "alouette-icons/phosphor-icons/QuestionRegularIcon";
-import { TrashRegularIcon } from "alouette-icons/phosphor-icons/TrashRegularIcon";
+import { QuestionRegularIcon } from "alouette-icons/phosphor-icons/Question";
+import { TrashRegularIcon } from "alouette-icons/phosphor-icons/Trash";
 import { type ReactNode, useState } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Button } from "../actions/Button";
@@ -39,6 +39,7 @@ interface AlertDialogDemoProps {
   cancelText?: ReactNode;
   closeText?: ReactNode;
   confirmDisabled?: boolean;
+  primaryAction?: "cancel" | "confirm";
 }
 
 // Stateful demo wrapper: a trigger button that opens the dialog and manages the
@@ -216,19 +217,24 @@ export default {
     },
     size: { control: "select", options: ["sm", "md", "lg"] },
     accent: { control: "select", options: accentsWithoutNeutral },
+    primaryAction: { control: "inline-radio", options: ["confirm", "cancel"] },
   },
 } satisfies Meta<typeof AlertDialog>;
 
 export const PreviewAlertDialogStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
-    title: "Delete project",
+    title: "Start project",
     variant: "confirm",
-    confirmText: "Delete",
+    confirmText: "Start",
   },
   render: (args) => (
     <AlertDialogDemo
       {...args}
-      triggerLabel="Delete project"
+      triggerLabel="Start project"
       onConfirm={fn()}
       onCancel={fn()}
     >
@@ -279,6 +285,55 @@ export const Variants: ThisStory = {
             >
               You must accept the updated terms to continue. This dialog cannot
               be dismissed.
+            </AlertDialogDemo>
+          </StoryGrid.Col>
+        </StoryGrid.Row>
+      </Story.Section>
+
+      <Story.Section title="Cancel as primary action">
+        <StoryGrid.Row flexWrap>
+          <StoryGrid.Col title="irreversible delete">
+            <AlertDialogDemo
+              primaryAction="cancel"
+              title="Delete account"
+              triggerLabel="Delete account"
+              icon={<TrashRegularIcon />}
+              confirmText="Delete"
+              onConfirm={fn()}
+              onCancel={fn()}
+            >
+              Your account, projects and invoices are erased immediately. They
+              cannot be recovered.
+            </AlertDialogDemo>
+          </StoryGrid.Col>
+
+          <StoryGrid.Col title="discard work">
+            <AlertDialogDemo
+              primaryAction="cancel"
+              accent="warning"
+              title="Discard changes?"
+              triggerLabel="Discard"
+              confirmText="Discard"
+              cancelText="Keep editing"
+              onConfirm={fn()}
+              onCancel={fn()}
+            >
+              Your unsaved edits will be lost.
+            </AlertDialogDemo>
+          </StoryGrid.Col>
+
+          <StoryGrid.Col title="interrupt a process">
+            <AlertDialogDemo
+              primaryAction="cancel"
+              accent="brand"
+              title="Stop the import?"
+              triggerLabel="Stop import"
+              confirmText="Stop import"
+              cancelText="Continue"
+              onConfirm={fn()}
+              onCancel={fn()}
+            >
+              The 1,204 rows already imported are kept; the rest are skipped.
             </AlertDialogDemo>
           </StoryGrid.Col>
         </StoryGrid.Row>
@@ -462,6 +517,18 @@ export const Tests: StoryObj<typeof AlertDialog> = {
           This action cannot be undone.
         </AlertDialogDemo>
       </Story.Section>
+      <Story.Section title="Cancel as primary action">
+        <AlertDialogDemo
+          primaryAction="cancel"
+          title="Delete account"
+          triggerLabel="Open cancel primary"
+          confirmText="Delete"
+          onConfirm={fn()}
+          onCancel={fn()}
+        >
+          Your account is erased immediately.
+        </AlertDialogDemo>
+      </Story.Section>
       <Story.Section title="Alert variant">
         <AlertDialogDemo
           variant="alert"
@@ -521,6 +588,34 @@ export const Tests: StoryObj<typeof AlertDialog> = {
     await userEvent.click(
       within(dialog).getByRole("button", { name: "Delete" }),
     );
+    await waitFor(async () => {
+      await expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    });
+
+    // Cancel as primary: Cancel takes a filled ground and the confirm drops to
+    // soft (no ground at rest), without the buttons trading places.
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open cancel primary" }),
+    );
+    const cancelPrimary = await screen.findByRole("alertdialog");
+    const cancelButton = within(cancelPrimary).getByRole("button", {
+      name: "Cancel",
+    });
+    const deleteButton = within(cancelPrimary).getByRole("button", {
+      name: "Delete",
+    });
+    await expect(
+      within(cancelPrimary)
+        .getAllByRole("button")
+        .map((button) => button.textContent),
+    ).toEqual(["Cancel", "Delete"]);
+    await expect(getComputedStyle(cancelButton).backgroundColor).not.toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+    await expect(getComputedStyle(deleteButton).backgroundColor).toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+    await userEvent.click(cancelButton);
     await waitFor(async () => {
       await expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
     });

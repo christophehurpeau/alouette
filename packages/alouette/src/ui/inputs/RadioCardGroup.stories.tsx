@@ -1,8 +1,8 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { GlobeRegularIcon } from "alouette-icons/phosphor-icons/GlobeRegularIcon";
-import { LockRegularIcon } from "alouette-icons/phosphor-icons/LockRegularIcon";
-import { UsersRegularIcon } from "alouette-icons/phosphor-icons/UsersRegularIcon";
+import { GlobeRegularIcon } from "alouette-icons/phosphor-icons/Globe";
+import { LockRegularIcon } from "alouette-icons/phosphor-icons/Lock";
+import { UsersRegularIcon } from "alouette-icons/phosphor-icons/Users";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { View } from "../primitives/View";
@@ -21,7 +21,10 @@ export default {
   },
   argTypes: {
     disabled: { control: "boolean" },
-    variant: { control: "inline-radio", options: ["contained", "outlined"] },
+    variant: {
+      control: "inline-radio",
+      options: ["tonal", "outlined"],
+    },
     layout: { control: "inline-radio", options: ["list", "stack"] },
     accent: {
       control: "select",
@@ -57,6 +60,10 @@ function VisibilityCards(): ReactNode {
 
 export const PreviewRadioCardGroupStory: ThisStory = {
   name: "RadioCardGroup Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <RadioCardGroup defaultValue="public" {...args}>
       <VisibilityCards />
@@ -163,17 +170,29 @@ export const VariantsRadioCardGroupStory: ThisStory = {
   name: "RadioCardGroup Variants",
   render: () => (
     <Story>
-      <RadioCardGroupVariant variant="contained" />
+      <RadioCardGroupVariant variant="tonal" />
       <RadioCardGroupVariant variant="outlined" />
-      <RadioCardGroupVariant accent="brand" variant="contained" />
+      <RadioCardGroupVariant accent="brand" variant="tonal" />
       <RadioCardGroupVariant accent="brand" variant="outlined" />
-      <RadioCardGroupVariant accent="danger" variant="contained" />
+      <RadioCardGroupVariant accent="danger" variant="tonal" />
       <RadioCardGroupVariant accent="danger" variant="outlined" />
-      <RadioCardGroupVariant accent="success" variant="contained" />
+      <RadioCardGroupVariant accent="success" variant="tonal" />
       <RadioCardGroupVariant accent="success" variant="outlined" />
     </Story>
   ),
 };
+
+function getRing(card: HTMLElement): HTMLElement {
+  const ring = [...card.querySelectorAll("div")].find(
+    (element) => getComputedStyle(element).borderTopWidth === "2px",
+  );
+  if (!ring) throw new Error("No radio ring in the card");
+  return ring;
+}
+
+function getRingColor(card: HTMLElement): string {
+  return getComputedStyle(getRing(card)).borderTopColor;
+}
 
 export const TestsRadioCardGroupStory: ThisStory = {
   name: "RadioCardGroup Tests",
@@ -184,12 +203,18 @@ export const TestsRadioCardGroupStory: ThisStory = {
           <VisibilityCards />
         </RadioCardGroup>
       </Story.Section>
+      <Story.Section title="Danger">
+        <RadioCardGroup accent="danger" defaultValue="danger-selected">
+          <RadioCard value="danger-selected" label="Danger selected" />
+          <RadioCard value="danger-unselected" label="Danger unselected" />
+        </RadioCardGroup>
+      </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const group = canvas.getByRole("radiogroup");
+    const [group] = canvas.getAllByRole("radiogroup");
     const publicCard = canvas.getByRole("radio", { name: "Public" });
     const sharedCard = canvas.getByRole("radio", { name: "Partagé" });
 
@@ -199,6 +224,28 @@ export const TestsRadioCardGroupStory: ThisStory = {
     await expect(
       publicCard.getBoundingClientRect().height,
     ).toBeGreaterThanOrEqual(44);
+
+    // The ring is the accent's interactive foreground, selected or not: the
+    // unselected card drops to the neutral theme, its ring keeps the accent.
+    const restRingColor = getRingColor(sharedCard);
+    await expect(getRingColor(publicCard)).toBe(restRingColor);
+    const dangerSelected = canvas.getByRole("radio", {
+      name: "Danger selected",
+    });
+    const dangerUnselected = canvas.getByRole("radio", {
+      name: "Danger unselected",
+    });
+    await expect(getRingColor(dangerUnselected)).toBe(
+      getRingColor(dangerSelected),
+    );
+    await expect(getRingColor(dangerUnselected)).not.toBe(restRingColor);
+
+    // It reacts to the card's state.
+    sharedCard.focus();
+    await waitFor(() =>
+      expect(getRingColor(sharedCard)).not.toBe(restRingColor),
+    );
+    sharedCard.blur();
 
     sharedCard.click();
 
@@ -262,6 +309,16 @@ export const TestsDisabledRadioCardGroupStory: ThisStory = {
           />
         </RadioCardGroup>
       </Story.Section>
+      <Story.Section title="Disabled group">
+        <RadioCardGroup disabled defaultValue="shared">
+          <RadioCard
+            value="shared"
+            icon={<UsersRegularIcon />}
+            label="Partagé"
+            description="Accessible aux personnes invitées"
+          />
+        </RadioCardGroup>
+      </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
@@ -269,6 +326,7 @@ export const TestsDisabledRadioCardGroupStory: ThisStory = {
 
     const publicCard = canvas.getByRole("radio", { name: "Public" });
     const privateCard = canvas.getByRole("radio", { name: "Privé" });
+    const sharedCard = canvas.getByRole("radio", { name: "Partagé" });
 
     await expect(privateCard).toHaveAttribute("aria-disabled", "true");
 
@@ -276,5 +334,22 @@ export const TestsDisabledRadioCardGroupStory: ThisStory = {
 
     await expect(privateCard).toHaveAttribute("aria-checked", "false");
     await expect(publicCard).toHaveAttribute("aria-checked", "true");
+
+    // The disabled ring must not take the disabled card's own ground.
+    const privateGround = getComputedStyle(privateCard).backgroundColor;
+    await expect(
+      getComputedStyle(getRing(privateCard)).borderTopColor,
+    ).not.toBe(privateGround);
+
+    // A selected disabled card keeps both its ring and its dot.
+    await expect(sharedCard).toHaveAttribute("aria-checked", "true");
+    const sharedGround = getComputedStyle(sharedCard).backgroundColor;
+    const sharedRing = getRing(sharedCard);
+    const sharedRingColor = getComputedStyle(sharedRing).borderTopColor;
+    await expect(sharedRingColor).not.toBe(sharedGround);
+    await expect(
+      getComputedStyle(sharedRing.firstElementChild as HTMLElement)
+        .backgroundColor,
+    ).toBe(sharedRingColor);
   },
 };

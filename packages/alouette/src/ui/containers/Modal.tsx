@@ -1,4 +1,4 @@
-import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
+import { XRegularIcon } from "alouette-icons/phosphor-icons/X";
 import { type ReactNode, useId } from "react";
 import {
   Platform,
@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { useReducedMotion } from "../../core/ReducedMotionContext";
 import { useScrollEndState } from "../../core/useScrollEndState";
 import { buttonHeight } from "../actions/Button";
 import { IconButton } from "../actions/IconButton";
@@ -45,7 +46,7 @@ const modalVariants = tv({
     size: {
       sm: {
         panel: "max-w-[360px]",
-        inset: "rounded-sm p-xs",
+        inset: "rounded-sm p-sm",
         header: "pl-xs",
         scrollContent: "p-xs",
         footer: "py-xs",
@@ -92,7 +93,6 @@ const modalVariants = tv({
 type ModalVariantProps = VariantProps<typeof modalVariants>;
 
 export interface ModalProps {
-  /** Whether the modal is shown. */
   visible: boolean;
   /**
    * Called when the user dismisses the modal — backdrop press, close button, the
@@ -125,21 +125,32 @@ export interface ModalProps {
   testID?: string;
 }
 
-export function Modal({
-  visible,
+export interface ModalPanelProps extends Omit<
+  ModalProps,
+  "accent" | "visible"
+> {
+  /** `true` under `Modal`; a panel rendered in flow is a non-modal dialog. */
+  "aria-modal"?: boolean;
+}
+
+/**
+ * The dialog panel of `Modal` without its overlay, so a story can render it in
+ * flow: a snapshot never captures the portal an open `Modal` renders into.
+ */
+export function ModalPanel({
   onClose,
   children,
   icon,
   footer,
-  accent,
   size = "md",
   title,
   hideCloseButton = false,
   closeButtonAriaLabel = "Close",
   role = "dialog",
+  "aria-modal": ariaModal,
   "aria-describedby": ariaDescribedby,
   testID,
-}: ModalProps): ReactNode {
+}: ModalPanelProps): ReactNode {
   const { height: windowHeight } = useWindowDimensions();
   const titleId = useId();
   const iconSize = size === "lg" ? "md" : size;
@@ -156,10 +167,81 @@ export function Modal({
     );
 
   return (
+    <View
+      aria-modal={ariaModal}
+      role={role}
+      aria-labelledby={titleId}
+      aria-describedby={ariaDescribedby}
+      testID={testID}
+      className={styles.panel()}
+    >
+      <View className={styles.inset()}>
+        {/* Header sits outside the scroll box: the title and the close
+            button stay put while the body scrolls under them. */}
+        <View
+          className={styles.header()}
+          style={{ minHeight: buttonHeight[iconSize] }}
+        >
+          {icon === undefined ? null : (
+            <Icon icon={icon} size={24} className="text-accent" />
+          )}
+          <Text
+            nativeID={titleId}
+            className="shrink grow font-heading-bold text-xl leading-tight text-sharp"
+          >
+            {title}
+          </Text>
+          {hideCloseButton ? null : (
+            <IconButton
+              icon={<XRegularIcon />}
+              accent="neutral"
+              variant="soft"
+              size={iconSize}
+              aria-label={closeButtonAriaLabel}
+              onPress={onClose}
+            />
+          )}
+        </View>
+
+        {/* Pixel maxHeight (not a %) so the ScrollView sizes to its
+            content and only scrolls once it exceeds ~70% of the screen;
+            `shrink` lets it give way to the header and the detached
+            footer when the panel hits the screen height. */}
+        <ScrollView
+          className="shrink"
+          style={{ maxHeight: windowHeight * 0.7 }}
+          contentContainerClassName={styles.scrollContent()}
+          {...scrollViewProps}
+        >
+          {children}
+
+          {/* Web keeps the footer in the scroll content, where `sticky`
+              pins it to the bottom edge and the body scrolls under it. */}
+          {supportsStickyPosition ? footerElement : null}
+        </ScrollView>
+
+        {/* Native has no sticky positioning: the footer sits after the
+            scroll box instead. Same result — the ScrollView grows with
+            its content up to its maxHeight, so the footer is right below
+            short content and pinned under a full-height body. */}
+        {supportsStickyPosition ? null : footerElement}
+      </View>
+    </View>
+  );
+}
+
+export function Modal({
+  visible,
+  onClose,
+  accent,
+  ...panelProps
+}: ModalProps): ReactNode {
+  const reducedMotion = useReducedMotion();
+  return (
     <RNModal
       transparent
       visible={visible}
-      animationType="fade"
+      animationType={reducedMotion ? "none" : "fade"}
       onRequestClose={onClose}
     >
       <PortalAccentScope accent={accent}>
@@ -174,65 +256,7 @@ export function Modal({
             className="absolute inset-0 bg-translucent"
             onPress={onClose}
           />
-          <View
-            aria-modal
-            role={role}
-            aria-labelledby={titleId}
-            aria-describedby={ariaDescribedby}
-            testID={testID}
-            className={styles.panel()}
-          >
-            <View className={styles.inset()}>
-              {/* Header sits outside the scroll box: the title and the close
-                  button stay put while the body scrolls under them. */}
-              <View
-                className={styles.header()}
-                style={{ minHeight: buttonHeight[iconSize] }}
-              >
-                {icon === undefined ? null : (
-                  <Icon icon={icon} size={24} className="text-accent" />
-                )}
-                <Text
-                  nativeID={titleId}
-                  className="shrink grow font-heading-bold text-xl leading-tight text-sharp"
-                >
-                  {title}
-                </Text>
-                {hideCloseButton ? null : (
-                  <IconButton
-                    icon={<XRegularIcon />}
-                    variant="ghost"
-                    size={iconSize}
-                    aria-label={closeButtonAriaLabel}
-                    onPress={onClose}
-                  />
-                )}
-              </View>
-
-              {/* Pixel maxHeight (not a %) so the ScrollView sizes to its
-                  content and only scrolls once it exceeds ~70% of the screen;
-                  `shrink` lets it give way to the header and the detached
-                  footer when the panel hits the screen height. */}
-              <ScrollView
-                className="shrink"
-                style={{ maxHeight: windowHeight * 0.7 }}
-                contentContainerClassName={styles.scrollContent()}
-                {...scrollViewProps}
-              >
-                {children}
-
-                {/* Web keeps the footer in the scroll content, where `sticky`
-                    pins it to the bottom edge and the body scrolls under it. */}
-                {supportsStickyPosition ? footerElement : null}
-              </ScrollView>
-
-              {/* Native has no sticky positioning: the footer sits after the
-                  scroll box instead. Same result — the ScrollView grows with
-                  its content up to its maxHeight, so the footer is right below
-                  short content and pinned under a full-height body. */}
-              {supportsStickyPosition ? null : footerElement}
-            </View>
-          </View>
+          <ModalPanel aria-modal {...panelProps} onClose={onClose} />
         </View>
       </PortalAccentScope>
     </RNModal>

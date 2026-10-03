@@ -17,6 +17,7 @@ export default meta;
 export const PreviewStory: StoryObj<unknown> = {
   name: "Box Preview",
   parameters: {
+    chromatic: { disableSnapshot: true },
     layout: "padded",
   },
   render: () => (

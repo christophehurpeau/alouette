@@ -1,5 +1,6 @@
 import type { ReactNode, Ref } from "react";
 import type { View as RNView } from "react-native";
+import type { VariantProps } from "tailwind-variants";
 import { tv } from "tailwind-variants";
 import type { SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";
@@ -14,62 +15,50 @@ const iconButtonVariants = tv(
     },
     variants: {
       variant: {
-        contained: {},
-        list: {},
-        outlined: {},
-        ghost: {},
+        tonal: {},
+        filled: {},
         soft: {},
       },
       disabled: {
         true: {},
         false: {},
       },
+      forced: {
+        true: {},
+        false: {},
+      },
     },
     compoundVariants: [
       {
-        variant: "contained",
+        variant: "tonal",
+        disabled: false,
+        class: { icon: "text-on-tonal" },
+      },
+      {
+        variant: "filled",
         disabled: false,
         class: { icon: "text-on-accent" },
       },
+      // No ground to carry the accent at rest, so the glyph takes it once the
+      // soft fill arrives. Native resolves only the first `text-*` class.
       {
-        variant: "list",
+        variant: "soft",
         disabled: false,
-        class: { icon: "text-sharp" },
-      },
-      {
-        variant: "outlined",
-        disabled: false,
-        class: { icon: "text-sharp" },
-      },
-      {
-        variant: "ghost",
-        disabled: false,
-        class: { icon: "text-sharp" },
+        forced: false,
+        class: {
+          icon: "text-sharp transition-colors duration-fast group-hover:text-accent group-focus-visible:text-accent group-active:text-accent",
+        },
       },
       {
         variant: "soft",
         disabled: false,
-        class: { icon: "text-sharp" },
+        forced: true,
+        class: { icon: "text-accent" },
       },
       {
-        variant: "contained",
+        variant: ["tonal", "filled"],
         disabled: true,
         class: { icon: "text-disabled-sharp" },
-      },
-      {
-        variant: "list",
-        disabled: true,
-        class: { icon: "text-disabled-sharp" },
-      },
-      {
-        variant: "outlined",
-        disabled: true,
-        class: { icon: "text-disabled-muted" },
-      },
-      {
-        variant: "ghost",
-        disabled: true,
-        class: { icon: "text-disabled-muted" },
       },
       {
         variant: "soft",
@@ -77,12 +66,16 @@ const iconButtonVariants = tv(
         class: { icon: "text-disabled-muted" },
       },
     ],
-    defaultVariants: { variant: "contained" },
+    defaultVariants: { variant: "tonal" },
   },
   { twMerge: false },
 );
 
-export interface IconButtonProps extends Omit<PressableBoxProps, "children"> {
+export interface IconButtonProps extends Omit<
+  PressableBoxProps,
+  "children" | "variant"
+> {
+  variant?: VariantProps<typeof iconButtonVariants>["variant"];
   /**
    * Forwarded to the underlying `PressableBox`, so the button can anchor a
    * `Popover` or a `Menu`. React 19 carries it in with the other props.
@@ -104,13 +97,17 @@ export function IconButton({
   disabled,
   size = "md",
   iconSize,
-  variant = "contained",
+  variant,
   className,
   forceStyle,
   ...pressableProps
 }: IconButtonProps): ReactNode {
   const diameter = typeof size === "number" ? size : buttonHeight[size];
-  const styles = iconButtonVariants({ variant, disabled: disabled === true });
+  const styles = iconButtonVariants({
+    variant,
+    disabled: disabled === true,
+    forced: forceStyle !== undefined,
+  });
 
   return (
     <PressableBox

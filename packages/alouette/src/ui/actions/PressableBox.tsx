@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import type { ReactNode, Ref } from "react";
 import type {
   PressableProps as RNPressableProps,
   View as RNView,
@@ -6,8 +6,16 @@ import type {
 import { type VariantProps, tv } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
-import { InteractiveBox, interactiveBoxVariants } from "../containers/Box";
+import {
+  InteractiveBox,
+  type InteractiveBoxProps,
+  interactiveBoxVariants,
+} from "../containers/Box";
+import { useTonalGroundWarningRef } from "./useTonalGroundWarningRef";
 
+// No `focus:` ground in any variant: a mouse click leaves the focus behind, so
+// a focus ground would keep the button lit after the pointer has left. The
+// keyboard focus is the ring `InteractiveBox` draws on `focus-visible`.
 const pressableBoxVariants = tv(
   {
     extend: interactiveBoxVariants,
@@ -16,35 +24,30 @@ const pressableBoxVariants = tv(
     base: "group overflow-hidden",
     variants: {
       variant: {
-        contained: [
+        // Lifted off the page it sits on: the ground is a tone of the theme —
+        // the lightest step when neutral, a pale tone of the accent when
+        // accented — and the accent is carried by the `text-on-tonal` ink.
+        tonal: [
           "rounded-sm",
           process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
             ? ""
-            : "shadow-s bg-interactive-contained-pressable",
-          "hover:bg-interactive-contained-hover",
-          "focus:bg-interactive-contained-focus",
-          "active:bg-interactive-contained-active",
-          "disabled:bg-interactive-contained-disabled disabled:shadow-none",
-          "aria-disabled:bg-interactive-contained-disabled aria-disabled:shadow-none",
-          "focus-visible:outline-border-muted",
+            : "shadow-s bg-interactive-tonal-pressable",
+          "hover:bg-interactive-tonal-hover",
+          "active:shadow-lowered active:bg-interactive-tonal-active",
+          "disabled:bg-interactive-tonal-disabled disabled:shadow-none",
+          "aria-disabled:bg-interactive-tonal-disabled aria-disabled:shadow-none",
         ].join(" "),
-        // A card row lifted off the surface it sits on (PressableListItem): the
-        // ground is a tone of the theme — the lightest step when neutral, a
-        // tone of the accent when accented — so the row keeps the ambient
-        // `text-sharp` label whatever its accent. That is what `contained`
-        // cannot do: its neutral fill is the grayscale accent, a dark ground
-        // carrying white ink.
-        list: [
+        // The accent's own fill, flat, under `text-on-accent` ink — the neutral
+        // one is the grayscale accent, a dark ground carrying white ink.
+        filled: [
           "rounded-sm",
           process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
             ? ""
-            : "shadow-s bg-interactive-list-pressable",
-          "hover:bg-interactive-list-hover",
-          "focus:bg-interactive-list-focus",
-          "active:bg-interactive-list-active",
-          "disabled:bg-interactive-contained-disabled disabled:shadow-none",
-          "aria-disabled:bg-interactive-contained-disabled aria-disabled:shadow-none",
-          "focus-visible:outline-border-muted",
+            : "bg-interactive-filled-pressable",
+          "hover:bg-interactive-filled-hover",
+          "active:shadow-lowered active:bg-interactive-filled-active",
+          "disabled:bg-interactive-filled-disabled",
+          "aria-disabled:bg-interactive-filled-disabled",
         ].join(" "),
         outlined: [
           "border bg-highlight",
@@ -52,20 +55,9 @@ const pressableBoxVariants = tv(
             ? ""
             : "border-interactive-outlined-pressable",
           "hover:border-interactive-outlined-hover",
-          "focus:border-interactive-outlined-focus",
           "active:border-interactive-outlined-active",
           "disabled:border-interactive-outlined-disabled",
           "aria-disabled:border-interactive-outlined-disabled",
-          "focus-visible:outline-interactive-outlined-outline-focus",
-        ].join(" "),
-        ghost: [
-          "border border-transparent",
-          "hover:border hover:border-interactive-outlined-hover",
-          "focus:border focus:border-interactive-outlined-focus",
-          "active:border active:border-interactive-outlined-active",
-          "disabled:border-interactive-outlined-disabled",
-          "aria-disabled:border-interactive-outlined-disabled",
-          "focus-visible:outline-interactive-outlined-outline-focus",
         ].join(" "),
         // No ground and no border at rest: the affordance is the fill arriving
         // on hover, like a listbox row (ListboxOption). The fill is a tone of
@@ -75,11 +67,9 @@ const pressableBoxVariants = tv(
         soft: [
           process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "bg-transparent",
           "hover:bg-interactive-soft-hover",
-          "focus:bg-interactive-soft-focus",
           "active:bg-interactive-soft-active",
           "disabled:bg-transparent",
           "aria-disabled:bg-transparent",
-          "focus-visible:outline-offset-0 focus-visible:outline-interactive-outlined-outline-focus",
         ].join(" "),
       },
       forceStyle: {
@@ -88,57 +78,57 @@ const pressableBoxVariants = tv(
         press: "translate-y-px",
       },
     },
+    // A forced `focus` is the keyboard focus: the rest ground under the ring,
+    // which `focus-visible` never fires for in a story.
     compoundVariants: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
       ? [
-          /* contained */
+          /* tonal */
           {
-            variant: "contained",
+            variant: "tonal",
             forceStyle: undefined,
-            ghost: false,
-            className: "shadow-s bg-interactive-contained-pressable",
+            className: "shadow-s bg-interactive-tonal-pressable",
           },
           {
-            variant: "contained",
+            variant: "tonal",
             forceStyle: "hover",
-            className: "shadow-s bg-interactive-contained-hover",
+            className: "shadow-s bg-interactive-tonal-hover",
           },
           {
-            variant: "contained",
+            variant: "tonal",
             forceStyle: "focus",
-            className: "shadow-s bg-interactive-contained-focus",
+            className:
+              "shadow-s bg-interactive-tonal-pressable focus-ring-inset",
           },
           {
-            variant: "contained",
+            variant: "tonal",
             forceStyle: "press",
-            className: "shadow-s bg-interactive-contained-active",
+            className: "shadow-lowered bg-interactive-tonal-active",
           },
-          /* list */
+          /* filled */
           {
-            variant: "list",
+            variant: "filled",
             forceStyle: undefined,
-            ghost: false,
-            className: "shadow-s bg-interactive-list-pressable",
+            className: "bg-interactive-filled-pressable",
           },
           {
-            variant: "list",
+            variant: "filled",
             forceStyle: "hover",
-            className: "shadow-s bg-interactive-list-hover",
+            className: "bg-interactive-filled-hover",
           },
           {
-            variant: "list",
+            variant: "filled",
             forceStyle: "focus",
-            className: "shadow-s bg-interactive-list-focus",
+            className: "bg-interactive-filled-pressable focus-ring",
           },
           {
-            variant: "list",
+            variant: "filled",
             forceStyle: "press",
-            className: "shadow-s bg-interactive-list-active",
+            className: "shadow-lowered bg-interactive-filled-active",
           },
           /* outlined */
           {
             variant: "outlined",
             forceStyle: undefined,
-            ghost: false,
             className: "border-interactive-outlined-pressable",
           },
           {
@@ -149,31 +139,10 @@ const pressableBoxVariants = tv(
           {
             variant: "outlined",
             forceStyle: "focus",
-            className: "border-interactive-outlined-focus",
+            className: "border-interactive-outlined-pressable focus-ring",
           },
           {
             variant: "outlined",
-            forceStyle: "press",
-            className: "border-interactive-outlined-active",
-          },
-          /* ghost */
-          {
-            variant: "ghost",
-            forceStyle: undefined,
-            className: "border-transparent",
-          },
-          {
-            variant: "ghost",
-            forceStyle: "hover",
-            className: "border-interactive-outlined-hover",
-          },
-          {
-            variant: "ghost",
-            forceStyle: "focus",
-            className: "border-interactive-outlined-focus",
-          },
-          {
-            variant: "ghost",
             forceStyle: "press",
             className: "border-interactive-outlined-active",
           },
@@ -191,7 +160,7 @@ const pressableBoxVariants = tv(
           {
             variant: "soft",
             forceStyle: "focus",
-            className: "bg-interactive-soft-focus",
+            className: "bg-transparent focus-ring",
           },
           {
             variant: "soft",
@@ -201,7 +170,7 @@ const pressableBoxVariants = tv(
         ]
       : undefined,
     defaultVariants: {
-      variant: "contained",
+      variant: "tonal",
     },
   },
   { twMerge: false },
@@ -209,16 +178,19 @@ const pressableBoxVariants = tv(
 
 type PressableBoxVariantProps = VariantProps<typeof pressableBoxVariants>;
 
+export type PressableBoxVariant = NonNullable<
+  PressableBoxVariantProps["variant"]
+>;
+
 export interface PressableBoxProps
   extends RNPressableProps, PressableBoxVariantProps {
   /** `"neutral"` drops an accent inherited from an ancestor and renders the
-   * neutral interactive tokens — a `contained` secondary action. */
+   * neutral interactive tokens — the secondary action beside an accented one. */
   accent?: AccentOrNeutral;
   className?: string;
   /**
-   * Destination. react-native's Pressable types have no `href`, while
-   * react-native-web forwards it and renders a real `<a>`; native ignores it,
-   * so a native app routes from `onPress` — expo Router's `<Link asChild>`
+   * Destination. react-native-web renders a real `<a>` for it; native ignores
+   * it, so a native app routes from `onPress` — expo Router's `<Link asChild>`
    * injects both. Giving one turns the default `role` into `"link"`; a
    * component that needs another one (a `menuitem`) still passes its own.
    */
@@ -229,46 +201,54 @@ export interface PressableBoxProps
   role?: RNPressableProps["role"];
   forceStyle?: "focus" | "hover" | "press";
   /**
-   * Set it to `false` on a row of a list that already paints its cursor (a
-   * menu item, a listbox option): the focus moves with the pointer there, so
-   * the outline would ring whatever the mouse is over.
+   * The keyboard focus ring. Unset, a `tonal` pressable rings inside its edge
+   * (`"inset"`: the material is raised, and its shadow is where an outer ring
+   * would sit) and the flat variants ring 2px outside it. Pass `"inset"` to a
+   * pressable whose parent clips (a `surface` is `overflow-hidden`), and
+   * `false` on a row of a list that already paints its cursor (a menu item, a
+   * listbox option): the focus moves with the pointer there, so the outline
+   * would ring whatever the mouse is over.
    */
-  withFocusVisibleOutline?: boolean;
+  withFocusVisibleOutline?: InteractiveBoxProps["withFocusVisibleOutline"];
+  ref?: Ref<RNView>;
 }
 
-// TODO what is the diff between <Box interactive> and PressableBox ?
-export const PressableBox = forwardRef<RNView, PressableBoxProps>(
-  (
-    {
-      className,
-      variant,
-      forceStyle,
-      accent,
-      href,
-      role,
-      withFocusVisibleOutline = true,
-      ...props
-    },
-    ref,
-  ) => {
-    return (
-      <AccentScope accent={accent}>
-        <InteractiveBox
-          ref={ref}
-          withFocusVisibleOutline={withFocusVisibleOutline}
-          role={role ?? (href === undefined ? "button" : "link")}
-          className={pressableBoxVariants({
-            variant,
-            withPressEffect: !props.disabled,
-            className,
-            forceStyle,
-          })}
-          // Spread because `href` is not part of the underlying Pressable's
-          // types.
-          {...(href === undefined ? {} : { href })}
-          {...props}
-        />
-      </AccentScope>
-    );
-  },
-);
+/**
+ * `InteractiveBox` with a material: the `variant`'s `interactive-*` states, an
+ * accent scope, and a `link` role when it has an `href`.
+ */
+export function PressableBox({
+  ref,
+  className,
+  variant = "tonal",
+  forceStyle,
+  accent,
+  href,
+  role,
+  withFocusVisibleOutline = variant === "tonal" ? "inset" : true,
+  ...props
+}: PressableBoxProps): ReactNode {
+  const warningRef = useTonalGroundWarningRef(ref, {
+    variant,
+    disabled: props.disabled === true,
+    forced: forceStyle !== undefined,
+  });
+
+  return (
+    <AccentScope accent={accent}>
+      <InteractiveBox
+        ref={warningRef}
+        withFocusVisibleOutline={withFocusVisibleOutline}
+        role={role ?? (href === undefined ? "button" : "link")}
+        className={pressableBoxVariants({
+          variant,
+          withPressEffect: !props.disabled,
+          className,
+          forceStyle,
+        })}
+        href={href}
+        {...props}
+      />
+    </AccentScope>
+  );
+}

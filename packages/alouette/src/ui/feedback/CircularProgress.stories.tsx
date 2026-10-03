@@ -41,6 +41,10 @@ export default {
 
 export const CircularProgressPreviewStory: ThisStory = {
   name: "CircularProgress Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { progress: 60 },
   render: (args) => <CircularProgress {...args} />,
   play: async ({ canvasElement }) => {

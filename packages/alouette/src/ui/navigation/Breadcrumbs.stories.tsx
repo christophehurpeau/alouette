@@ -1,8 +1,8 @@
 import { expect, fn, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CaretDoubleRightRegularIcon } from "alouette-icons/phosphor-icons/CaretDoubleRightRegularIcon";
-import { FolderRegularIcon } from "alouette-icons/phosphor-icons/FolderRegularIcon";
-import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+import { CaretDoubleRightRegularIcon } from "alouette-icons/phosphor-icons/CaretDoubleRight";
+import { FolderRegularIcon } from "alouette-icons/phosphor-icons/Folder";
+import { HouseRegularIcon } from "alouette-icons/phosphor-icons/House";
 import { type ReactNode, useState } from "react";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { Text } from "../primitives/Text";
@@ -32,6 +32,10 @@ export default {
 
 export const BreadcrumbsPreviewStory: ThisStory = {
   name: "Breadcrumbs Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <Breadcrumbs {...args}>
       <BreadcrumbItem href="/" label="Home" icon={<HouseRegularIcon />} />

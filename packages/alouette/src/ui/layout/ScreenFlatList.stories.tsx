@@ -79,6 +79,7 @@ function ContactScreenList({ edges }: ContactScreenListProps): ReactNode {
 
 export const PreviewStory: StoryObj = {
   name: "ScreenFlatList Preview",
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <ContactScreenList />,
 };
 

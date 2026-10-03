@@ -1,6 +1,6 @@
 import { expect, screen, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/CalendarRegularIcon";
+import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/Calendar";
 import { type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
 import { Badge } from "../data/Badge";
@@ -64,7 +64,7 @@ function EventSection({
         visible={editing}
         title={title}
         closeButtonAriaLabel="Close editor"
-        footer={<Button accent="neutral" text="Close" onPress={close} />}
+        footer={<Button text="Close" onPress={close} />}
         onClose={close}
       >
         <Paragraph>Your editor goes here.</Paragraph>
@@ -86,7 +86,7 @@ export default {
     className: { control: "text" },
     editIconVariant: {
       control: "select",
-      options: ["contained", "outlined", "ghost", "soft"],
+      options: ["tonal", "filled", "outlined", "soft"],
     },
     accent: { control: "select", options: accentsWithoutNeutral },
     disabled: { control: "boolean" },
@@ -95,6 +95,10 @@ export default {
 
 export const EditableSectionPreviewStory: ThisStory = {
   name: "EditableSection Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { title: "Event details" },
   render: (args) => <EventSection {...args} />,
 };
@@ -133,6 +137,7 @@ export const EditableSectionVariantsStory: ThisStory = {
           className="surface bg-highlight"
           title="bg-highlight"
           editAriaLabel="Edit bg-highlight"
+          editIconVariant="soft"
         />
         <EventSection
           className="surface lowered"
@@ -141,6 +146,7 @@ export const EditableSectionVariantsStory: ThisStory = {
         />
         <EventSection
           className="bg-highlight border border-muted rounded-sm p-m"
+          editIconVariant="soft"
           title="outlined"
           editAriaLabel="Edit outlined"
         />
@@ -195,9 +201,7 @@ export const EditableSectionVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Edit button variants">
-        <EventSection editIconVariant="contained" />
-        <EventSection editIconVariant="outlined" />
-        <EventSection editIconVariant="ghost" />
+        <EventSection editIconVariant="filled" />
         <EventSection editIconVariant="soft" />
       </Story.Section>
 
@@ -237,7 +241,7 @@ export const EditableSectionTestsStory: ThisStory = {
           editAriaLabel="Edit locked section"
         />
       </Story.Section>
-      {/* The size only moves the Surface's padding — from 8px at surface-xxs
+      {/* The size only moves the surface's padding — from 8px at surface-xxs
           to 48px at surface-lg — so the header must hold at either end. */}
       <Story.Section title="Every surface size">
         <EventSection
@@ -295,7 +299,7 @@ export const EditableSectionTestsStory: ThisStory = {
     ).toBeDisabled();
 
     // The title is sized to the 38px edit button, so the header row leaves no
-    // dead space around it and the button sits inside the Surface's padding —
+    // dead space around it and the button sits inside the surface's padding —
     // whatever that padding is.
     async function expectHeaderFitsTheButton(title: string): Promise<void> {
       const surface = canvas.getByRole("region", { name: title });
@@ -329,11 +333,14 @@ export const EditableSectionTestsStory: ThisStory = {
     await expect(screen.queryAllByRole("dialog")).toHaveLength(0);
 
     // The modal portals outside the canvas, so it is queried from `screen`.
+    // Presence, not visibility: the modal fades in from opacity 0, and
+    // Chromatic pauses CSS animations at their first frame.
     await userEvent.click(
       canvas.getByRole("button", { name: "Edit event details" }),
     );
+    const dialog = await screen.findByRole("dialog", { name: "Event details" });
     await expect(
-      await screen.findByText("Your editor goes here."),
-    ).toBeVisible();
+      within(dialog).getByText("Your editor goes here."),
+    ).toBeInTheDocument();
   },
 };

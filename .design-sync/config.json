@@ -7,11 +7,15 @@
   "storybookConfigDir": "packages/storybook-native-app/.storybook",
   "buildCmd": "pnpm --filter alouette build",
   "tsconfig": "../../.design-sync/tsconfig.bundle.json",
+  "extraFonts": ["../../.design-sync/fonts.css"],
   "readmeHeader": ".design-sync/conventions.md",
-  "extraEntries": ["../../.design-sync/process-shim.mjs"],
+  "extraEntries": [
+    "../../.design-sync/process-shim.mjs",
+    "../../.design-sync/react-hook-form-entry.mjs"
+  ],
   "storyImports": {
     "bundle": ["story-components"],
-    "shim": ["ui/stacks/stacks"]
+    "shim": ["ui/stacks/stacks", "react-hook-form"]
   },
   "provider": {
     "component": "SafeAreaProvider",
@@ -19,7 +23,12 @@
       "component": "AlouetteProvider",
       "inner": {
         "component": "ScopedTheme",
-        "props": { "theme": "light" }
+        "props": {
+          "theme": "light"
+        },
+        "inner": {
+          "component": "View"
+        }
       }
     }
   },
@@ -49,14 +58,145 @@
       "primaryStory": "PreviewTextAreaStory",
       "skip": ["alouette-inputs-textarea--documentation"]
     },
-    "PresenceOne": { "cardMode": "column" },
+    "PresenceOne": {
+      "cardMode": "column"
+    },
     "Select": {
       "cardMode": "column",
       "skip": ["alouette-inputs-select--tests"]
     },
-    "GradientBackground": { "cardMode": "column" },
-    "AlertDialog": { "skip": ["alouette-containers-alertdialog--tests"] },
-    "Modal": { "skip": ["alouette-containers-modal--tests"] },
-    "Text": { "skip": ["alouette-primitives-text--tests"] }
+    "GradientBackground": {
+      "cardMode": "column"
+    },
+    "AlertDialog": {
+      "skip": ["alouette-containers-alertdialog--tests"]
+    },
+    "Modal": {
+      "skip": [
+        "alouette-containers-modal--tests",
+        "alouette-containers-modal--variants"
+      ]
+    },
+    "Text": {
+      "skip": ["alouette-primitives-text--tests"]
+    },
+    "ExternalLinkText": {
+      "skip": [
+        "alouette-actions-externallinktext--tests-external-link-text-story"
+      ]
+    },
+    "LinkText": {
+      "skip": ["alouette-actions-linktext--link-text-tests-story"]
+    },
+    "Menu": {
+      "skip": ["alouette-actions-menu--tests-menu-story"]
+    },
+    "PressableBox": {
+      "skip": ["alouette-actions-pressablebox--tests"]
+    },
+    "EditableSection": {
+      "skip": [
+        "alouette-containers-editablesection--editable-section-tests-story"
+      ]
+    },
+    "Avatar": {
+      "skip": ["alouette-data-avatar--tests-avatar-story"]
+    },
+    "Blockquote": {
+      "skip": ["alouette-data-blockquote--blockquote-tests-story"]
+    },
+    "Citation": {
+      "skip": ["alouette-data-citation--citation-tests-story"]
+    },
+    "Code": {
+      "skip": ["alouette-data-code--code-tests-story"]
+    },
+    "CodeBlock": {
+      "skip": ["alouette-data-codeblock--code-block-tests-story"]
+    },
+    "EditableItem": {
+      "skip": ["alouette-data-editableitem--editable-item-tests-story"]
+    },
+    "FormEditableItem": {
+      "skip": [
+        "alouette-forms-formeditableitem--form-editable-item-tests-story"
+      ]
+    },
+    "FormEditableSection": {
+      "skip": [
+        "alouette-forms-formeditablesection--form-editable-section-tests-story"
+      ]
+    },
+    "FormFieldArray": {
+      "skip": [
+        "alouette-forms-formfieldarray--tests",
+        "alouette-forms-formfieldarray--min-size-tests",
+        "alouette-forms-formfieldarray--multi-field-tests",
+        "alouette-forms-formfieldarray--raw-string-tests"
+      ]
+    },
+    "FormItem": {
+      "skip": ["alouette-forms-formitem--tests"]
+    },
+    "CheckboxCardGroup": {
+      "skip": [
+        "alouette-inputs-checkboxcardgroup--tests-checkbox-card-group-story",
+        "alouette-inputs-checkboxcardgroup--tests-disabled-checkbox-card-group-story",
+        "alouette-inputs-checkboxcardgroup--tests-stack-checkbox-card-group-story"
+      ]
+    },
+    "CheckboxGroup": {
+      "skip": [
+        "alouette-inputs-checkboxgroup--tests-checkbox-group-story",
+        "alouette-inputs-checkboxgroup--tests-standalone-checkbox-story"
+      ]
+    },
+    "ColorModePicker": {
+      "skip": ["alouette-inputs-colormodepicker--tests-color-mode-picker-story"]
+    },
+    "InputTextAutocomplete": {
+      "skip": ["alouette-inputs-inputtextautocomplete--tests"]
+    },
+    "RadioButtonGroup": {
+      "skip": [
+        "alouette-inputs-radiobuttongroup--tests-radio-button-group-story"
+      ]
+    },
+    "RadioCardGroup": {
+      "skip": [
+        "alouette-inputs-radiocardgroup--tests-radio-card-group-story",
+        "alouette-inputs-radiocardgroup--tests-stack-radio-card-group-story",
+        "alouette-inputs-radiocardgroup--tests-disabled-radio-card-group-story"
+      ]
+    },
+    "RadioGroup": {
+      "skip": ["alouette-inputs-radiogroup--tests-radio-group-story"]
+    },
+    "AppHeader": {
+      "skip": ["alouette-layout-appheader--tests-app-header-story"],
+      "cardMode": "column"
+    },
+    "AppLayout": {
+      "skip": ["alouette-layout-applayout--tests-app-layout-story"]
+    },
+    "AppShell": {
+      "skip": ["alouette-layout-appshell--tests-app-shell-story"]
+    },
+    "ScreenScrollView": {
+      "skip": ["alouette-layout-screenscrollview--tests"]
+    },
+    "Breadcrumbs": {
+      "skip": ["alouette-navigation-breadcrumbs--breadcrumbs-tests-story"]
+    },
+    "HeaderNav": {
+      "skip": ["alouette-navigation-headernav--tests-header-nav-story"]
+    },
+    "NavBar": {
+      "skip": ["alouette-navigation-navbar--tests-nav-bar-story"],
+      "cardMode": "column"
+    },
+    "Tabs": {
+      "skip": ["alouette-navigation-tabs--tests-tabs-story"]
+    }
   }
 }

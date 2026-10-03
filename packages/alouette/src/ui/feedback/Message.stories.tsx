@@ -1,6 +1,6 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { SwatchesRegularIcon } from "alouette-icons/phosphor-icons/SwatchesRegularIcon";
+import { SwatchesRegularIcon } from "alouette-icons/phosphor-icons/Swatches";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
@@ -41,6 +41,10 @@ export default {
 } satisfies Meta<typeof Message>;
 
 export const PreviewMessageStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { accent: "info" },
   render: (args) => (
     <Message {...args} icon={<SwatchesRegularIcon />}>

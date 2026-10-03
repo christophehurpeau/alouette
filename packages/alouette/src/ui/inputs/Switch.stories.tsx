@@ -1,7 +1,7 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Story, neutralAndAccents } from "../story-components/Story";
-import { StoryGrid } from "../story-components/StoryGrid";
+import { StoryGrid, stateTitle } from "../story-components/StoryGrid";
 import { Switch } from "./Switch";
 
 type ThisStory = StoryObj<typeof Switch>;
@@ -20,6 +20,10 @@ export default {
 } satisfies Meta<typeof Switch>;
 
 export const PreviewSwitchStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => <Switch {...args} />,
 };
 
@@ -27,39 +31,51 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        {neutralAndAccents.map((accent) => (
-          <Story.SubSection
-            key={accent}
-            withSurface
-            title={accent}
-            accent={accent}
-          >
-            <StoryGrid.Row flexWrap>
-              {(
-                [
-                  undefined,
-                  "hover",
-                  "focus",
-                  "press",
-                  "disabled",
-                  "checked",
-                ] as const
-              ).map((state) => (
-                <StoryGrid.Col key={state} title={state}>
-                  <Switch
-                    disabled={state === "disabled"}
-                    {...(process.env.EXPO_OS === "web"
-                      ? ({
-                          forceStyle: state === "disabled" ? undefined : state,
-                        } as any)
-                      : {})}
-                    {...(state === "checked" ? { checked: true } : {})}
-                  />
-                </StoryGrid.Col>
-              ))}
-            </StoryGrid.Row>
-          </Story.SubSection>
-        ))}
+        {neutralAndAccents.map((accent) =>
+          [false, true].map((onAccentSurface) => (
+            <Story.SubSection
+              key={accent}
+              withSurface
+              title={accent + (onAccentSurface ? " (on accent surface)" : "")}
+              accent={onAccentSurface ? accent : undefined}
+            >
+              <StoryGrid.Row flexWrap>
+                {(
+                  [
+                    undefined,
+                    "hover",
+                    "focus",
+                    "press",
+                    "disabled",
+                    "checked",
+                    "disabled:checked",
+                  ] as const
+                ).map((state) => (
+                  <StoryGrid.Col key={state} title={stateTitle(state)}>
+                    <Switch
+                      accent={accent}
+                      disabled={
+                        state === "disabled" || state === "disabled:checked"
+                      }
+                      {...(process.env.EXPO_OS === "web"
+                        ? ({
+                            forceStyle:
+                              state === "disabled" ||
+                              state === "disabled:checked"
+                                ? undefined
+                                : state,
+                          } as any)
+                        : {})}
+                      {...(state === "checked" || state === "disabled:checked"
+                        ? { checked: true }
+                        : {})}
+                    />
+                  </StoryGrid.Col>
+                ))}
+              </StoryGrid.Row>
+            </Story.SubSection>
+          )),
+        )}
       </Story.Section>
     </Story>
   ),
@@ -85,10 +101,8 @@ export const Tests: StoryObj<typeof Switch> = {
 
     const uncontrolledSwitch = canvas.getByTestId("uncontrolled");
     await expect(uncontrolledSwitch).toBeInTheDocument();
-    // switch role does not transforms to button element https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/modules/AccessibilityUtil/propsToAccessibilityComponent.js
-    // await expect(uncontrolledSwitch.tagName).toBe("BUTTON");
+    // react-native-web maps no element to the switch role: https://github.com/necolas/react-native-web/blob/master/packages/react-native-web/src/modules/AccessibilityUtil/propsToAccessibilityComponent.js
     await expect(uncontrolledSwitch.tagName).toBe("DIV");
-    // await expect(uncontrolledSwitch).toHaveAttribute("type", "button");
     await expect(uncontrolledSwitch).toHaveAttribute("role", "switch");
     await expect(uncontrolledSwitch).toHaveAttribute("aria-checked", "false");
 
@@ -100,8 +114,6 @@ export const Tests: StoryObj<typeof Switch> = {
 
     const uncheckedSwitch = canvas.getByTestId("unchecked");
     await expect(uncheckedSwitch).toBeInTheDocument();
-    // await expect(uncheckedSwitch.tagName).toBe("BUTTON");
-    // await expect(uncheckedSwitch).toHaveAttribute("type", "button");
     await expect(uncheckedSwitch).toHaveAttribute("role", "switch");
     await expect(uncheckedSwitch).toHaveAttribute("aria-checked", "false");
 
@@ -111,13 +123,22 @@ export const Tests: StoryObj<typeof Switch> = {
 
     const checkedSwitch = canvas.getByTestId("checked");
     await expect(checkedSwitch).toBeInTheDocument();
-    // await expect(checkedSwitch.tagName).toBe("BUTTON");
-    // await expect(checkedSwitch).toHaveAttribute("type", "button");
     await expect(checkedSwitch).toHaveAttribute("role", "switch");
     await expect(checkedSwitch).toHaveAttribute("aria-checked", "true");
 
     checkedSwitch.click();
 
     await expect(checkedSwitch).toHaveAttribute("aria-checked", "true");
+
+    // Keyboard focus (focus-visible) rings the track, not the oversized
+    // pressable that holds the focus. A programmatic focus() counts as
+    // keyboard input for `:focus-visible`.
+    const track = uncontrolledSwitch.firstElementChild;
+    if (!(track instanceof HTMLElement)) throw new Error("No switch track");
+    uncontrolledSwitch.focus();
+    await expect(uncontrolledSwitch).toHaveFocus();
+    await expect(getComputedStyle(uncontrolledSwitch).outlineWidth).toBe("0px");
+    await expect(getComputedStyle(track).outlineWidth).toBe("2px");
+    await expect(getComputedStyle(track).outlineOffset).toBe("2px");
   },
 };

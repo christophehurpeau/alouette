@@ -1,4 +1,4 @@
-import { CaretDownRegularIcon } from "alouette-icons/phosphor-icons/CaretDownRegularIcon";
+import { CaretDownRegularIcon } from "alouette-icons/phosphor-icons/CaretDown";
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
@@ -18,7 +18,8 @@ export interface AppHeaderAccountProps {
   name: string;
   /** Replaces the initials in the disc. */
   icon?: SVGIconElement;
-  /** Accent of the disc. Defaults to `brand`. */
+  /** Accent of the disc. Defaults to the inherited accent, or `brand` outside
+   * an accent scope. */
   accent?: Accent;
   /** Rendered above the items — typically the signed-in identity. */
   header?: ReactNode;
@@ -53,7 +54,7 @@ export function AppHeaderAccount({
           className={appHeaderAccountVariants()}
           {...triggerProps}
         >
-          <Avatar name={name} icon={icon} accent={accent} />
+          <Avatar name={name} icon={icon} accent={accent} variant="enabled" />
           <Icon
             icon={<CaretDownRegularIcon />}
             size={14}

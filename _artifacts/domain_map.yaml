@@ -7,7 +7,7 @@
 
 library:
   name: "alouette"
-  version: "22.13.0"
+  version: "23.0.0"
   repository: "https://github.com/christophehurpeau/alouette"
   description: "Multi-platform (web + React Native iOS/Android) React design system built on NativeWind v5 and Tailwind CSS v4, styled entirely via className with semantic theme tokens and CSS-driven animations."
   primary_framework: "React / React Native"
@@ -153,7 +153,7 @@ skills:
   - name: "Theme with modes and accents"
     slug: "alouette-theming"
     domain: "theming"
-    description: 'Re-theme a subtree with accents (brand, danger, info, success, warning) and light/dark modes. Use the accent prop, AccentScope, or ScopedTheme; children always consume base tokens (bg-surface, text-accent, text-sharp, text-muted, border-muted). Tokens are className-only: alouette exports no JS token-read hook. Read the current mode with useCurrentMode. For an accent that toggles at runtime without remounting, use StableAccentScope; inside a portal (a modal or any other overlay), where the scope escapes the themed subtree, use PortalAccentScope. All three, and the pressables, take accent="neutral": the plain mode theme, which drops an inherited accent and makes a Button the neutral contained secondary beside an accented one. A stored light/dark choice is a ColorModePreference ("light" | "dark" | "system") resolved by useResolvedColorMode and applied by the app through ScopedTheme. Load when applying colors, accents or dark mode, or when shipping a custom palette.'
+    description: 'Re-theme a subtree with accents (brand, danger, info, success, warning) and light/dark modes. Use the accent prop, AccentScope, or ScopedTheme; children always consume base tokens (bg-surface, text-accent, text-sharp, text-muted, border-muted). Tokens are className-only: alouette exports no JS token-read hook. Read the current mode with useCurrentMode. For an accent that toggles at runtime without remounting, use StableAccentScope; inside a portal (a modal or any other overlay), where the scope escapes the themed subtree, use PortalAccentScope. All three, and the pressables, take accent="neutral": the plain mode theme, which drops an inherited accent; with variant="soft" it makes a Button the secondary beside an accented one. A stored light/dark choice is a ColorModePreference ("light" | "dark" | "system") resolved by useResolvedColorMode and applied by the app through ScopedTheme. Load when applying colors, accents or dark mode, or when shipping a custom palette.'
     type: "core"
     packages: ["alouette"]
     covers:
@@ -303,7 +303,7 @@ skills:
   - name: "Lay out screens, surfaces and stacks"
     slug: "alouette-layout"
     domain: "layout"
-    description: "Build screen structure: Box / InteractiveBox / SafeAreaBox and Surface for containers, Stack / HStack / VStack and Separator to arrange them, ScreenCenterLayout and the screen scroll containers (ScreenScrollView / ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through SafeAreaScope) for the page itself, the application shell around every screen (AppLayout + AppHeader and its brand / actions / account slots, or AppShell + AppShellSidebar + AppShellMain when the shell is composed per route), and GradientBackground / GradientScrollView for a tinted ground. Space, round and raise everything with the alouette spacing, radius and shadow scale rather than raw Tailwind numbers. Load when building screen structure, an app header or shell, cards, spacing, or backgrounds."
+    description: "Build screen structure: Box / InteractiveBox / SafeAreaBox for containers, raised with the surface utilities (surface, surface-{size}, lowered, surface-flat, surface-popover), View with flex classes and Separator to arrange them, ScreenCenterLayout and the screen scroll containers (ScreenScrollView / ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through SafeAreaScope) for the page itself, the application shell around every screen (AppLayout + AppHeader and its brand / navigation / actions / account slots, or AppShell + AppShellSidebar + AppShellMain when the shell is composed per route; AppSidebarLayout + AppSidebar for an app navigated from a fixed sidebar), and GradientBackground / GradientScrollView for a tinted ground. Space, round and raise everything with the alouette spacing, radius and shadow scale rather than raw Tailwind numbers. Load when building screen structure, an app header or shell, cards, spacing, or backgrounds."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -383,12 +383,12 @@ skills:
         source: "packages/alouette/src/ui/actions/Button.tsx"
         priority: "HIGH"
         status: "active"
-      - mistake: "Using stale variant names (ghost-contained, primary)"
-        mechanism: 'variant is only "contained" | "outlined"; ghost is a separate boolean. Older docs listed ghost-contained/ghost-outlined and accent props that no longer exist.'
+      - mistake: "Using stale variant names (ghost, ghost-contained, primary)"
+        mechanism: 'variant is only "tonal" | "filled" | "outlined" | "soft"; the accent is the accent prop. Older docs listed ghost, ghost-contained/ghost-outlined and accent variants that no longer exist.'
         wrong_pattern: |
           <Button variant="ghost-contained" text="Cancel" />
         correct_pattern: |
-          <Button variant="outlined" ghost text="Cancel" />
+          <Button accent="neutral" text="Cancel" />
         source: "packages/alouette/src/ui/actions/PressableBox.tsx, ui/actions/Button.tsx"
         priority: "HIGH"
         status: "active"
@@ -405,7 +405,7 @@ skills:
   - name: "Build forms and inputs"
     slug: "alouette-forms"
     domain: "forms"
-    description: "Collect and validate user input. Inputs: InputText and TextArea for text, Switch for a toggle, Select to pick one value from a known list and InputTextAutocomplete to narrow that list by typing. Single-select groups, each composing its children rather than taking an options array: RadioGroup, RadioButtonGroup (which the light/dark ColorModePicker is built on) and RadioCardGroup; multi-select counterparts CheckboxGroup, CheckboxButtonGroup and CheckboxCardGroup, and a standalone Checkbox. Validated forms over react-hook-form: Form owns the instance and passes its control down, so the form type is written once and every field's value type is inferred; FormField labels one field and reports its error; FormFieldArray repeats a group of fields; FormSubmitButton drives the submit lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and FormEditableSurface edit a row or a section in a modal owning its own Form. Load when building inputs, radio groups, a color-mode picker or a validated form."
+    description: "Collect and validate user input. Inputs: InputText and TextArea, InputPassword with its show/hide toggle, InputCode for a one-time code (never a row of InputTexts), Switch, Select to pick one value from a known list and InputTextAutocomplete to narrow that list by typing. Single-select groups composing their children, never an options array: RadioGroup, RadioButtonGroup (behind the light/dark ColorModePicker) and RadioCardGroup; multi-select CheckboxGroup and CheckboxCardGroup, and a standalone Checkbox. Validated forms over react-hook-form: Form owns the instance and passes its control down, so the form type is written once and every field's value type is inferred; FormField labels one field and reports its error; FormFieldArray repeats a group of fields; FormSubmitButton drives the submit lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and FormEditableSection edit a row or a section in a modal owning its own Form. Load when building inputs, radio groups or a validated form."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -516,7 +516,7 @@ skills:
   - name: "Display data annotations"
     slug: "alouette-data"
     domain: "data"
-    description: "Show a value the app already holds. Badge labels something with a status, count or category pill; Avatar stands for a person or account; EditableItem shows one labelled value behind an edit affordance and EditableSurface a whole titled section behind one; Bullet is an icon + text list row; Code and CodeBlock render source inline and as a block; Blockquote and Citation render a quoted excerpt and its attribution. All are display-only — they own no editor and no press handling, and are never wrapped in a Link or Pressable to gain one. Load when showing a status chip, a list row, an avatar, a value or section with an edit affordance, code, a quote or its attribution."
+    description: "Show a value the app already holds. Badge labels something with a status, count or category pill; Avatar stands for a person or account; EditableItem shows one labelled value behind an edit affordance and EditableSection a whole titled section behind one; Bullet is an icon + text list row; Code and CodeBlock render source inline and as a block; Blockquote and Citation render a quoted excerpt and its attribution. All are display-only — they own no editor and no press handling, and are never wrapped in a Link or Pressable to gain one. Load when showing a status chip, a list row, an avatar, a value or section with an edit affordance, code, a quote or its attribution."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -574,7 +574,7 @@ skills:
   - name: "Navigate between destinations and views"
     slug: "alouette-navigation"
     domain: "navigation"
-    description: "Move the user between places. NavBar and NavBarItem navigate between destinations — each item is a real link announced as the current page, and composes with expo Router; Tabs and Tab switch between views of one screen, announced as a tab list. Both are built by composing their items, over the same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar can also stand vertically as a sidebar rail. Breadcrumbs and BreadcrumbItem render the trail back through the ancestors of the current page. Pick by meaning, not by looks: navigation is never a RadioButtonGroup, which announces a form value, and never a Link wrapped around a Text, which has no interactive state. Load when building a tab bar, a section switcher, a breadcrumb trail, or navigation between routes."
+    description: "Move the user between places. NavBar and NavBarItem navigate between destinations — each item is a real link announced as the current page, and composes with expo Router; Tabs and Tab switch between views of one screen, announced as a tab list. Both are built by composing their items, over the same segmented bar, and both can shrink to a pill of icon-only chips; a NavBar can also stand vertically as a sidebar rail, and HeaderNav carries the same semantics as text links on an application bar. SidebarNav lays an application sidebar's destinations out as menu rows grouped under section titles. Breadcrumbs and BreadcrumbItem render the trail back through the ancestors of the current page. Pick by meaning, not by looks: navigation is never a RadioButtonGroup, which announces a form value, and never a Link wrapped around a Text, which has no interactive state. Load when building a tab bar, a section switcher, a breadcrumb trail, or navigation between routes."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -623,7 +623,7 @@ skills:
       - mistake: "Hand-rolling the bar with Surface + PressableBox"
         mechanism: "SegmentedBar/SegmentedItem already give a 44px tap target inside a 44px lowered bar, the chip opacity cross-fade, the focus-visible outline and the hover/active border; a hand-rolled bar drifts from all four."
         wrong_pattern: |
-          <Surface variant="lowered" className="flex-row"><PressableBox variant="ghost">…</PressableBox></Surface>
+          <Surface variant="lowered" className="flex-row"><PressableBox variant="soft">…</PressableBox></Surface>
         correct_pattern: |
           <Tabs aria-label="Period" defaultValue="week"><Tab value="week" label="Week" /></Tabs>
         source: "packages/alouette/src/ui/selection/SegmentedBar.tsx; ui/selection/SegmentedItem.tsx"
@@ -642,7 +642,7 @@ skills:
   - name: "Show feedback messages"
     slug: "alouette-feedback"
     domain: "feedback"
-    description: "Tell the user what happened, in place. Message is the semantic banner — InfoMessage, ConfirmationMessage, WarningMessage and ErrorMessage are its ready-made meanings — optionally dismissible, and flattened when it sits inside an already-raised surface. ConnectionState is the banner pinned at the top of the screen reporting the network, and LinearProgress and CircularProgress show how far a determinate operation has got. A failure coming out of a button or a form is already rendered by that component, so reach for these for status the screen itself has to state. Load when showing inline status, alerts, dismissible notices, connection status, or progress."
+    description: "Tell the user what happened, in place. Message is the semantic banner — InfoMessage, ConfirmationMessage, WarningMessage and ErrorMessage are its ready-made meanings — optionally dismissible, and flattened when it sits inside an already-raised surface. ConnectionState is the banner pinned at the top of the screen reporting the network. LinearProgress and CircularProgress show how far an operation with a known percentage has got; their Indeterminate twins show that one is running when no percentage exists. A failure coming out of a button or a form is already rendered by that component, so reach for these for status the screen itself has to state. Load when showing inline status, alerts, dismissible notices, connection status, a progress bar or a loading indicator."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -793,7 +793,7 @@ skills:
   - name: "Animate enter/exit presence"
     slug: "alouette-animation"
     domain: "animation"
-    description: "Animate alouette UI two ways: NativeWind transition utilities for a change of state (hover, focus, press), and PresenceOne / PresenceList for content entering and leaving, which keep an element mounted long enough to play its exit keyframes. Their exit timing is read from the library's animationDurationsMs rather than hardcoded, so it stays in step with the keyframes. Both run on native through react-native-reanimated. Load when adding transitions or enter/exit animations."
+    description: "Animate alouette UI two ways: NativeWind transition utilities for a change of state (hover, focus, press), and PresenceOne / PresenceList for content entering and leaving, which keep an element mounted long enough to play its exit keyframes. Their exit timing is read from the library's animationDurationsMs rather than hardcoded, so it stays in step with the keyframes. Both run on native through react-native-reanimated, and both honour the OS reduced-motion setting on web and native; useReducedMotion covers motion driven from JS. Load when adding transitions or enter/exit animations, or handling prefers-reduced-motion."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -911,7 +911,7 @@ skills:
   - name: "Apply styling conventions"
     slug: "alouette-styling"
     domain: "styling"
-    description: "Styling conventions for writing components with alouette: express enum-like props (variant/size/shadow/state) as tailwind-variants tv() variants instead of a Record lookup, give one component a single tv() with slots instead of several tv objects, style through className instead of inline style, and write pixel sizes as arbitrary values (w-[380px]) rather than the canonical spacing-scale class. States the alouette design principles every component must satisfy, including that interactivity is a component and never a wrapper. Load when writing, restyling or reviewing a component."
+    description: "Styling conventions for writing components with alouette: express props keyed on internal state (selected/disabled/loading) or fanning out across slots as tailwind-variants tv() variants instead of a Record lookup, expose a class set the caller could write verbatim through className rather than as an alias variant prop, give one component a single tv() with slots instead of several tv objects, style through className instead of inline style, and write pixel sizes as arbitrary values (w-[380px]) rather than the canonical spacing-scale class. States the alouette design principles every component must satisfy, including that interactivity is a component and never a wrapper. Load when writing, restyling or reviewing a component."
     type: "core"
     packages: ["alouette"]
     covers:
@@ -972,14 +972,14 @@ skills:
   - name: "Use Phosphor icons with alouette"
     slug: "alouette-icons"
     domain: "layout"
-    description: "Use Phosphor icons with alouette. Each icon is imported from its own module (alouette-icons/phosphor-icons/IconName) so only what is used is bundled, and is then either rendered through the Icon component or handed as an element to a component that takes one (Button, IconButton, Message). Its color comes from a text-* token class rather than from the SVG, so an icon follows the theme and the accent around it. Load when adding icons to alouette UI."
+    description: "Use Phosphor icons with alouette. Each glyph is imported from its own module (alouette-icons/phosphor-icons/GlyphName, exporting GlyphNameRegularIcon, GlyphNameDuotoneIcon and GlyphNameFillIcon) so only what is used is bundled, and is then either rendered through the Icon component or handed as an element to a component that takes one (Button, IconButton, Message). Its color comes from a text-* token class rather than from the SVG, so an icon follows the theme and the accent around it. Load when adding icons to alouette UI."
     type: "composition"
     packages: ["alouette"]
     compositions:
       - library: "alouette-icons"
         skill: "alouette-icons"
     covers:
-      - "alouette-icons/phosphor-icons/<IconName>"
+      - "alouette-icons/phosphor-icons/<GlyphName>"
       - "Icon (icon, size, className tint)"
       - "icon prop on Button/IconButton/Message"
     tasks:
@@ -987,11 +987,11 @@ skills:
       - "Put an icon in a button"
     failure_modes:
       - mistake: "Importing the whole icon set"
-        mechanism: "Icons are individually importable modules (alouette-icons/phosphor-icons/ArrowLeftRegularIcon); a barrel import pulls in the entire generated set and bloats the bundle."
+        mechanism: "Glyphs are individually importable modules (alouette-icons/phosphor-icons/ArrowLeft); a barrel import pulls in the entire generated set and bloats the bundle."
         wrong_pattern: |
           import { ArrowLeftRegularIcon } from "alouette-icons";
         correct_pattern: |
-          import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+          import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeft";
         source: "packages/alouette/src/ui/actions/Button.stories.tsx; CLAUDE.md (Icons)"
         priority: "MEDIUM"
         status: "active"

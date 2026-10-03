@@ -41,7 +41,7 @@ yarn add alouette
 Install the peer dependencies if your app does not already provide them:
 
 ```bash
-npm install nativewind@5.0.0-preview.4 tailwindcss@^4 \
+npm install nativewind@5.0.0-rc.0 tailwindcss@^4 \
   react-native-reanimated react-native-svg
 ```
 
@@ -181,7 +181,7 @@ Alouette ships a universal component set styled through `className`:
 
 - **Actions** — `Button`, `ExternalLinkButton`, `InternalLinkButton`, `IconButton`
 - **Containers** — `Box` (raised with the `surface` utility), `InteractiveBox`, `SafeAreaBox`, `Popover`, `ScopedTheme`, `AccentScope`, `PresenceOne`, `PresenceList`
-- **Inputs** — `InputText`, `InputTextAutocomplete`, `TextArea`, `Switch`
+- **Inputs** — `InputText`, `InputCode`, `InputTextAutocomplete`, `TextArea`, `Switch`
 - **Feedback** — `Message`, `InfoMessage`, `ConfirmationMessage`, `WarningMessage`
 - **Data** — `PressableBox`, `PressableListItem`
 - **Layout** — `GradientBackground`, `GradientScrollView`
@@ -373,7 +373,7 @@ reading hex channels, say) can read `alouette/defaultThemeVariables` directly.
 Icons come from the integrated `alouette-icons` package:
 
 ```tsx
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeft";
 
 function MyComponent() {
   return <ArrowLeftRegularIcon />;
@@ -402,7 +402,7 @@ function MyComponent() {
 
 ```tsx
 import { Button } from "alouette";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeft";
 
 function MyComponent() {
   return (

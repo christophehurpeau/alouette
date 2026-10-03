@@ -1,9 +1,8 @@
-import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimpleRegularIcon";
+import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimple";
 import { type ReactNode, useId } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
-import { twMerge } from "../../core/twMerge";
+import type { IconButtonProps } from "../actions/IconButton";
 import { IconButton } from "../actions/IconButton";
-import type { PressableBoxProps } from "../actions/PressableBox";
 import type { SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
@@ -23,8 +22,9 @@ export interface EditableSectionProps extends Pick<BoxProps, "className"> {
   /** Names the edit button for assistive tech — it has no visible text. */
   editAriaLabel: string;
   editIcon?: SVGIconElement;
-  /** Variant of the edit IconButton. */
-  editIconVariant?: PressableBoxProps["variant"];
+  /** Variant of the edit IconButton. Defaults to `tonal`, or `soft` when the
+   * section has an `accent`, where a tonal ground would dissolve. */
+  editIconVariant?: IconButtonProps["variant"];
   disabled?: boolean;
   onEdit: () => void;
   /** The read-only body: as many blocks as the section needs. */
@@ -87,7 +87,11 @@ export function EditableSection({
           <IconButton
             size="sm"
             icon={editIcon}
-            variant={editIconVariant}
+            // A tonal ground dissolves into an accented section.
+            variant={editIconVariant ?? (accent ? "soft" : undefined)}
+            // The caller's frame is usually a `surface`, which clips an outer
+            // ring; the tonal default is inset already.
+            withFocusVisibleOutline="inset"
             disabled={disabled}
             aria-label={editAriaLabel}
             onPress={onEdit}
@@ -98,19 +102,3 @@ export function EditableSection({
     </Box>
   );
 }
-
-/**
- * @deprecated Renamed `EditableSection`, which applies no material itself:
- * write `<EditableSection className="surface">`.
- */
-export function EditableSurface({
-  className,
-  ...props
-}: EditableSectionProps): ReactNode {
-  return (
-    <EditableSection className={twMerge("surface", className)} {...props} />
-  );
-}
-
-/** @deprecated Renamed `EditableSectionProps`. */
-export type EditableSurfaceProps = EditableSectionProps;

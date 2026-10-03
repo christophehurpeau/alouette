@@ -103,6 +103,7 @@ function ContactScreenSectionList({
 
 export const PreviewStory: StoryObj = {
   name: "ScreenSectionList Preview",
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <ContactScreenSectionList />,
 };
 

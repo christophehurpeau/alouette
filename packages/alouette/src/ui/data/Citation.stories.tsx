@@ -33,6 +33,10 @@ export default {
 
 export const CitationPreviewStory: ThisStory = {
   name: "Citation Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { children: "Ursula K. Le Guin" },
   render: (args) => <Citation {...args} />,
 };

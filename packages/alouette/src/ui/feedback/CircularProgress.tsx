@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
+import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
 import { AccentScope, type AccentScopeProps } from "../containers/AccentScope";
 import { Icon } from "../primitives/Icon";
 import { View } from "../primitives/View";
@@ -45,9 +46,10 @@ export interface CircularProgressProps {
 export function CircularProgress({
   progress,
   hidden = false,
-  accent = "brand",
+  accent: accentProp,
   size = "md",
 }: CircularProgressProps): ReactNode {
+  const accent = useAccentOrInheritedOrBrand(accentProp);
   const diameter = diameterBySize[size];
   const strokeWidth = strokeWidthBySize[size];
   const radius = (diameter - strokeWidth) / 2;

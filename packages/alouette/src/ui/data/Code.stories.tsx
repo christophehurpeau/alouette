@@ -21,6 +21,10 @@ export default {
 
 export const CodePreviewStory: ThisStory = {
   name: "Code Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { children: "pnpm build" },
   render: (args) => <Code {...args} />,
 };

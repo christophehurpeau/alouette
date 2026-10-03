@@ -16,6 +16,7 @@ const aboveModalClassName = "z-[10000]";
 
 interface AnchorPosition {
   top: number;
+  bottom: number;
   left: number;
   width: number;
 }
@@ -26,7 +27,8 @@ function readAnchorPosition(anchor: HTMLElement): AnchorPosition {
   // an absolutely positioned popover then follows the page as it scrolls and
   // only needs recomputing when the anchor itself moves.
   return {
-    top: rect.bottom + window.scrollY,
+    top: rect.top + window.scrollY,
+    bottom: rect.bottom + window.scrollY,
     left: rect.left + window.scrollX,
     width: rect.width,
   };
@@ -38,6 +40,7 @@ export function Popover({
   anchorRef,
   align = "start",
   width = "anchor",
+  side = "bottom",
   placement = "center",
   accent,
   "aria-label": ariaLabel,
@@ -122,8 +125,12 @@ export function Popover({
       aria-label={ariaLabel}
       className={`absolute flex flex-row ${
         align === "end" ? "justify-end" : "justify-start"
-      } ${aboveModalClassName}`}
-      style={{ top: position.top, left: position.left, width: position.width }}
+      } ${side === "top" ? "-translate-y-full" : ""} ${aboveModalClassName}`}
+      style={{
+        top: side === "top" ? position.top : position.bottom,
+        left: position.left,
+        width: position.width,
+      }}
     >
       <div className={width === "content" ? "w-max" : "w-full"}>{content}</div>
     </div>,

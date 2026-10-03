@@ -24,7 +24,7 @@ export interface PaletteSpec {
 export const defaultPaletteSpecs: Record<AccentName, PaletteSpec> = {
   grayscale: { type: "grayscale", hue: 0, intensity: 0 },
   brand: { type: "accent", hue: 225 },
-  // Slightly pinker tints (hueHi 20) matching the old palette's pale reds.
+  // Slightly pinker tints (hueHi 20): a pale red reads as salmon otherwise.
   danger: { type: "accent", hue: 27, hueHi: 20 },
   info: { type: "accent", hue: 233 },
   success: { type: "accent", hue: 145 },

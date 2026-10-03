@@ -83,6 +83,14 @@ content is scrolled under it, and loses it at the end of the scroll. That is
 built in: don't rebuild it with an absolutely-positioned bar or a scroll
 listener.
 
+The footer always carries one primary action with button material — an
+accented `tonal` button by default, a neutral `filled` one when backing out is
+the expected answer. A neutral `soft` button is only ever the secondary action
+beside it (Cancel, Discard, Decline): a footer holding a lone `soft` button, even
+a plain "Close", has no action with any weight. A single-button footer is
+`<Button text="Close" onPress={close} />`, as `AlertDialog`'s `alert` variant
+renders.
+
 ### Accent across the portal
 
 `accent` themes the whole panel. A modal renders through a portal, i.e. outside
@@ -126,7 +134,29 @@ import { QuestionAlertDialog, WarningAlertDialog } from "alouette";
 </WarningAlertDialog>
 ```
 
-`confirmDisabled` disables the primary button (e.g. while a form is invalid).
+The confirm variant's footer is a neutral `soft` Cancel beside an accented
+`tonal` confirm. `primaryAction="cancel"` puts the weight on Cancel instead — a
+neutral `filled` Cancel beside an accented `soft` confirm — for an irreversible
+action where backing out is the expected answer (delete an account, discard
+work, stop a running process). Cancel is `filled` rather than `tonal` because a
+neutral tonal ground is the white of the `bg-highlight` panel and dissolves into
+it. The order stays Cancel then confirm, so the buttons never trade places
+between dialogs.
+
+```tsx
+<WarningAlertDialog
+  primaryAction="cancel"
+  visible={confirming}
+  title="Delete account"
+  confirmText="Delete"
+  onConfirm={deleteAccount}
+  onCancel={() => setConfirming(false)}
+>
+  Your account and its data are erased immediately.
+</WarningAlertDialog>
+```
+
+`confirmDisabled` disables the confirm button (e.g. while a form is invalid).
 Button labels default to Confirm/Cancel (confirm), OK (alert/required).
 
 ### Async confirmations
@@ -198,8 +228,9 @@ The two platforms present it differently, and that is deliberate:
   default, `"end"` for a panel hanging off a small trigger near the right edge)
   and `width` its sizing: `"anchor"` (default, as wide as the anchor — what a
   field dropdown wants) or `"content"`, sizing to its own content for a menu
-  whose trigger is narrower than its items. Both are anchored-web only, like
-  `anchorRef` itself. It follows the anchor through page and nested
+  whose trigger is narrower than its items. `side="top"` opens it above the
+  anchor, for a trigger pinned at the bottom of the viewport. All three are
+  anchored-web only, like `anchorRef` itself. It follows the anchor through page and nested
   scrolling, sits above react-native-web's own `Modal` layer (so a popover inside
   a dialog is not hidden behind it), and closes on Escape or a press outside the
   content and the anchor.

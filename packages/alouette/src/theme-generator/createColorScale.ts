@@ -27,7 +27,6 @@ export type OklchScale = Record<ScaleNum, OklchColor>;
 const lightnessRamps = {
   grayscale: {
     dark: [0.18, 0.24, 0.28, 0.32, 0.36, 0.4, 0.45, 0.795, 0.865, 0.96, 1],
-    // only diff is on the first 2 values
     light: [1, 0.98, 0.948, 0.89, 0.85, 0.79, 0.61, 0.54, 0.48, 0.42, 0.27],
   },
   accent: {
@@ -42,9 +41,9 @@ const lightnessRamps = {
   },
 } as const;
 
-// Fraction of the max in-gamut chroma requested at each step. Usage tiers
-// mirror the old HSL generator's 56/82/96 saturation bands: steps 1-3 pale
-// surfaces, 4-6 highlight/message tints, 7-11 interactive fills and text.
+// Fraction of the max in-gamut chroma requested at each step, tiered by usage:
+// steps 1-3 pale surfaces, 4-6 highlight/message tints, 7-11 interactive fills
+// and text.
 const relativeChromaCurve: Record<Mode, number[]> = {
   dark: [0.6, 0.68, 0.72, 0.76, 0.78, 0.84, 0.88, 0.88, 0.85, 0.82, 0.86],
   light: [0.5, 0.52, 0.55, 0.6, 0.75, 0.78, 0.92, 0.97, 0.97, 0.97, 0.95],

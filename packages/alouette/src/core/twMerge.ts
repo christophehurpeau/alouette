@@ -7,10 +7,13 @@ import {
 
 type AlouetteClassGroupIds =
   | DefaultClassGroupIds
+  | "focus-ring"
   | "lowered"
+  | "surface-flat"
   | "surface-popover"
   | "surface-size"
-  | "surface";
+  | "surface"
+  | "text-trim";
 
 const paddingAndRadiusGroups = [
   "p",
@@ -79,10 +82,13 @@ export const twMergeConfig: ConfigExtension<
         "font-mono-bold",
         "font-mono-extrabold",
       ],
+      "focus-ring": ["focus-ring", "focus-ring-inset"],
       lowered: ["lowered"],
       surface: ["surface"],
+      "surface-flat": ["surface-flat"],
       "surface-size": [{ surface: ["xxs", "xs", "sm", "md", "lg"] }],
       "surface-popover": ["surface-popover"],
+      "text-trim": ["text-trim-cap"],
     },
     // A group lists what it replaces when written after it. A single class
     // written after one of these utilities never lists them back: it only
@@ -90,13 +96,24 @@ export const twMergeConfig: ConfigExtension<
     // `surface bg-highlight` keeps the padding and `surface-popover surface-lg`
     // keeps the ground.
     conflictingClassGroups: {
+      "focus-ring": ["outline-w", "outline-offset", "outline-color"],
       lowered: ["bg-color", "shadow"],
       surface: [
         ...paddingAndRadiusGroups,
         "bg-color",
         "shadow",
-        "surface-size",
+        "surface-flat",
         "surface-popover",
+        "surface-size",
+      ],
+      "surface-flat": [
+        ...paddingAndRadiusGroups,
+        "bg-color",
+        "border-color",
+        "border-w",
+        "surface",
+        "surface-popover",
+        "surface-size",
       ],
       "surface-size": [...paddingAndRadiusGroups],
       "surface-popover": [
@@ -104,6 +121,7 @@ export const twMergeConfig: ConfigExtension<
         "bg-color",
         "shadow",
         "surface",
+        "surface-flat",
         "surface-size",
       ],
     },

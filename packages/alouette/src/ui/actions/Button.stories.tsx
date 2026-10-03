@@ -1,11 +1,14 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuotoneIcon";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import {
+  ArrowLeftDuotoneIcon,
+  ArrowLeftRegularIcon,
+} from "alouette-icons/phosphor-icons/ArrowLeft";
 import type { ReactNode } from "react";
+import { AccentScope } from "../containers/AccentScope";
 import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
-import { StoryGrid } from "../story-components/StoryGrid";
+import { StoryGrid, stateTitle } from "../story-components/StoryGrid";
 import { Button, type ButtonProps, ExternalLinkButton } from "./Button";
 
 type ThisStory = StoryObj<typeof Button>;
@@ -19,18 +22,20 @@ export default {
     docs: {
       description: {
         component: `### Variants
-- \`variant\`: contained | outlined | ghost | soft
-- \`size\`: sm (38px) | md (44px)
-- \`accent\`: brand (default) | danger | info | success | warning | neutral
+- \`variant\`: tonal | filled | outlined | soft
+- \`size\`: sm (38px) | md (44px) | lg (52px) — \`lg\` is the prominent call to action of a landing page or a hero, not a size for an action among others
+- \`accent\`: brand | danger | info | success | warning | neutral — unset, the accent of the nearest accent scope, brand outside one
 
-Differentiate a button by its \`accent\`, not by dropping to a lighter \`variant\`: \`accent="neutral"\` is the secondary action beside an accented one — the same contained material, on the neutral tokens.
+\`tonal\` (default) is a ground lighter than the page, lifted by a shadow, whose ink carries the accent. \`filled\` is the accent's own flat fill under white ink, for the one action that must dominate.
+
+The secondary action beside a primary one is \`accent="neutral" variant="soft"\`: a neutral text button, with no ground to compete with the primary. \`accent="neutral"\` alone is the neutral tonal button — the same material on the neutral tokens — for a lone action that must not carry the accent.
 
 ### Usage
 ~~~tsx
 <Button text="Save" icon={<CheckIcon />} />
 
 {/* the secondary action of a confirmation */}
-<Button accent="neutral" text="Cancel" />
+<Button accent="neutral" variant="soft" text="Cancel" />
 ~~~
 
 ### Active icon
@@ -48,6 +53,10 @@ Differentiate a button by its \`accent\`, not by dropping to a lighter \`variant
 } satisfies Meta<typeof Button>;
 
 export const PreviewButtonStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     text: "Example",
   },
@@ -91,11 +100,34 @@ function IconWeightRow({
       <StoryGrid.Col title="hover">
         <BackButton forceStyle="hover" withoutActiveIcon={withoutActiveIcon} />
       </StoryGrid.Col>
-      <StoryGrid.Col title="focus">
+      <StoryGrid.Col title="focus-visible">
         <BackButton forceStyle="focus" withoutActiveIcon={withoutActiveIcon} />
       </StoryGrid.Col>
       <StoryGrid.Col title="press">
         <BackButton forceStyle="press" withoutActiveIcon={withoutActiveIcon} />
+      </StoryGrid.Col>
+    </StoryGrid.Row>
+  );
+}
+
+function InheritedAccentRow(): ReactNode {
+  return (
+    <StoryGrid.Row flexWrap>
+      <StoryGrid.Col title="No scope">
+        <Button text="Default" />
+      </StoryGrid.Col>
+      <StoryGrid.Col title="accent=danger">
+        <Button accent="danger" text="Explicit danger" />
+      </StoryGrid.Col>
+      <StoryGrid.Col title="AccentScope danger">
+        <AccentScope accent="danger">
+          <Button text="Inherited danger" />
+        </AccentScope>
+      </StoryGrid.Col>
+      <StoryGrid.Col title="AccentScope danger, accent=info">
+        <AccentScope accent="danger">
+          <Button accent="info" text="Overridden info" />
+        </AccentScope>
       </StoryGrid.Col>
     </StoryGrid.Row>
   );
@@ -106,10 +138,10 @@ export const Variants: ThisStory = {
     <Story>
       <Story.Section withSurface title="Sizes">
         <StoryGrid.Row flexWrap>
-          {(["sm", "md"] as const).map((size) => (
+          {(["sm", "md", "lg"] as const).map((size) => (
             <StoryGrid.Col key={size} title={size}>
               <Button
-                variant="contained"
+                variant="tonal"
                 size={size}
                 icon={<ArrowLeftRegularIcon />}
                 activeIcon={<ArrowLeftDuotoneIcon />}
@@ -129,10 +161,10 @@ export const Variants: ThisStory = {
               ).map((state) => (
                 <StoryGrid.Col
                   key={state ?? "default"}
-                  title={state ?? "Default"}
+                  title={stateTitle(state)}
                 >
                   <View className="gap-xs p-xxs">
-                    {(["contained", "outlined", "ghost", "soft"] as const).map(
+                    {(["tonal", "filled", "outlined", "soft"] as const).map(
                       (variant) => (
                         <Button
                           key={variant}
@@ -143,6 +175,7 @@ export const Variants: ThisStory = {
                           icon={<ArrowLeftRegularIcon />}
                           activeIcon={<ArrowLeftDuotoneIcon />}
                           text={variant}
+                          className="justify-between"
                         />
                       ),
                     )}
@@ -152,6 +185,10 @@ export const Variants: ThisStory = {
             </StoryGrid.Row>
           </Story.SubSection>
         ))}
+      </Story.Section>
+
+      <Story.Section withSurface title="Inherited accent">
+        <InheritedAccentRow />
       </Story.Section>
 
       <Story.Section withSurface title="Icon weight">
@@ -173,7 +210,7 @@ export const Variants: ThisStory = {
       <Story.Section title="States">
         <Story.SubSection title="Loading">
           <StoryGrid.Row flexWrap>
-            {(["contained", "outlined", "ghost", "soft"] as const).map(
+            {(["tonal", "filled", "outlined", "soft"] as const).map(
               (variant) => (
                 <Button
                   key={variant}
@@ -189,7 +226,7 @@ export const Variants: ThisStory = {
 
         <Story.SubSection title="Failed">
           <StoryGrid.Row flexWrap>
-            {(["contained", "outlined", "ghost", "soft"] as const).map(
+            {(["tonal", "filled", "outlined", "soft"] as const).map(
               (variant) => (
                 <Button
                   key={variant}
@@ -205,7 +242,7 @@ export const Variants: ThisStory = {
 
         <Story.SubSection title="Success">
           <StoryGrid.Row flexWrap>
-            {(["contained", "outlined", "ghost", "soft"] as const).map(
+            {(["tonal", "filled", "outlined", "soft"] as const).map(
               (variant) => (
                 <Button
                   key={variant}
@@ -225,7 +262,7 @@ export const Variants: ThisStory = {
 
         <Story.SubSection title="Very long text">
           <StoryGrid.Row flexWrap>
-            {(["sm", "md"] as const).map((size) => (
+            {(["sm", "md", "lg"] as const).map((size) => (
               <StoryGrid.Col key={size} title={size}>
                 <View className="gap-xs">
                   <Button
@@ -247,24 +284,64 @@ export const Variants: ThisStory = {
   ),
 };
 
-interface ConfirmationFooterProps {
+interface ButtonColors {
+  ground: string;
+  ink: string;
+}
+
+const buttonColorsOf = (button: HTMLElement, text: string): ButtonColors => ({
+  ground: getComputedStyle(button).backgroundColor,
+  ink: getComputedStyle(within(button).getByText(text)).color,
+});
+
+export const InheritedAccent: ThisStory = {
+  render: () => (
+    <Story noDarkMode>
+      <Story.Section withSurface title="Inherited accent">
+        <InheritedAccentRow />
+      </Story.Section>
+    </Story>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const colorsOf = (name: string): ButtonColors =>
+      buttonColorsOf(canvas.getByRole("button", { name }), name);
+
+    const brand = colorsOf("Default");
+    const danger = colorsOf("Explicit danger");
+    await expect(danger.ink).not.toBe(brand.ink);
+    await expect(colorsOf("Inherited danger")).toEqual(danger);
+
+    const overridden = colorsOf("Overridden info");
+    await expect(overridden.ink).not.toBe(danger.ink);
+    await expect(overridden.ink).not.toBe(brand.ink);
+  },
+};
+
+function ConfirmationFooter(): ReactNode {
+  return (
+    <StoryGrid.Row flexWrap>
+      <Button accent="neutral" variant="soft" text="Cancel" />
+      <Button text="Save" />
+    </StoryGrid.Row>
+  );
+}
+
+interface TonalPairProps {
   forceStyle?: ButtonProps["forceStyle"];
   disabled?: boolean;
 }
 
-function ConfirmationFooter({
-  forceStyle,
-  disabled,
-}: ConfirmationFooterProps): ReactNode {
+function TonalPair({ forceStyle, disabled }: TonalPairProps): ReactNode {
   return (
     <StoryGrid.Row flexWrap>
       <Button
         accent="neutral"
         disabled={disabled}
         forceStyle={forceStyle}
-        text="Cancel"
+        text="Neutral"
       />
-      <Button disabled={disabled} forceStyle={forceStyle} text="Save" />
+      <Button disabled={disabled} forceStyle={forceStyle} text="Accented" />
     </StoryGrid.Row>
   );
 }
@@ -272,7 +349,7 @@ function ConfirmationFooter({
 const isAchromatic = (color: string): boolean =>
   new Set([...color.matchAll(/[\d.]+/g)].slice(0, 3).map(Number)).size === 1;
 
-interface ContainedGrounds {
+interface TonalGrounds {
   rest: string;
   hover: string;
   press: string;
@@ -280,23 +357,23 @@ interface ContainedGrounds {
   screen: string;
 }
 
-const containedGroundsOf = (element: HTMLElement): ContainedGrounds => {
+const tonalGroundsOf = (element: HTMLElement): TonalGrounds => {
   const style = getComputedStyle(element);
   const token = (name: string): string => style.getPropertyValue(name).trim();
   return {
-    rest: token("--color-interactive-contained-pressable"),
-    hover: token("--color-interactive-contained-hover"),
-    press: token("--color-interactive-contained-active"),
+    rest: token("--color-interactive-tonal-pressable"),
+    hover: token("--color-interactive-tonal-hover"),
+    press: token("--color-interactive-tonal-active"),
     surface: token("--color-surface"),
     screen: token("--color-screen"),
   };
 };
 
 /**
- * `accent="neutral"` renders the contained material on the grayscale palette:
- * the same fill steps and the same white label a colored accent gets, so the
- * secondary action of a confirmation is a real button rather than a pale one. It
- * is never an `outlined` or `ghost` button, which trade the material away.
+ * `accent="neutral"` renders the tonal material on the grayscale palette:
+ * the same ground, shadow and states a colored accent gets, with the sharp ink
+ * where an accented button carries its hue. Beside a primary action, the
+ * secondary one adds `variant="soft"`: a neutral text button.
  */
 export const NeutralAccent: ThisStory = {
   render: () => (
@@ -305,68 +382,89 @@ export const NeutralAccent: ThisStory = {
         <ConfirmationFooter />
       </Story.Section>
 
-      <Story.Section withSurface title="States">
+      <Story.Section withSurface title="Tonal states">
         <StoryGrid.Row flexWrap>
           <StoryGrid.Col title="Default">
-            <ConfirmationFooter />
+            <TonalPair />
           </StoryGrid.Col>
           <StoryGrid.Col title="hover">
-            <ConfirmationFooter forceStyle="hover" />
+            <TonalPair forceStyle="hover" />
           </StoryGrid.Col>
-          <StoryGrid.Col title="focus">
-            <ConfirmationFooter forceStyle="focus" />
+          <StoryGrid.Col title="focus-visible">
+            <TonalPair forceStyle="focus" />
           </StoryGrid.Col>
           <StoryGrid.Col title="press">
-            <ConfirmationFooter forceStyle="press" />
+            <TonalPair forceStyle="press" />
           </StoryGrid.Col>
           <StoryGrid.Col title="disabled">
-            <ConfirmationFooter disabled />
+            <TonalPair disabled />
           </StoryGrid.Col>
         </StoryGrid.Row>
       </Story.Section>
 
       <Story.Section withSurface modeTheme="dark" title="Dark mode">
-        <ConfirmationFooter />
+        <TonalPair />
       </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    // The story repeats the footer: first in light mode, last in dark mode.
-    const neutrals = canvas.getAllByRole("button", { name: "Cancel" });
+
+    // The secondary action of the pair is a text button: no ground, no shadow,
+    // and achromatic ink.
+    const cancel = canvas.getByRole("button", { name: "Cancel" });
+    await expect(getComputedStyle(cancel).backgroundColor).toBe(
+      "rgba(0, 0, 0, 0)",
+    );
+    await expect(getComputedStyle(cancel).boxShadow).toBe("none");
+    await expect(
+      isAchromatic(getComputedStyle(within(cancel).getByText("Cancel")).color),
+    ).toBe(true);
+
+    // The tonal pair repeats: first in light mode, last in dark mode.
+    const neutrals = canvas.getAllByRole("button", { name: "Neutral" });
     const neutral = neutrals[0]!;
     const darkNeutral = neutrals.at(-1)!;
-    const accented = canvas.getAllByRole("button", { name: "Save" })[0]!;
+    const accented = canvas.getAllByRole("button", { name: "Accented" })[0]!;
     const neutralStyle = getComputedStyle(neutral);
     const accentedStyle = getComputedStyle(accented);
 
-    // Same contained material — a ground and the raised shadow, not the
-    // borrowed page background an outlined or ghost button sits on.
+    // Same tonal material — a ground and the raised shadow, not the
+    // borrowed page background an outlined button sits on.
     await expect(neutralStyle.backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
     await expect(neutralStyle.boxShadow).toBe(accentedStyle.boxShadow);
     await expect(neutralStyle.boxShadow).not.toBe("none");
 
-    // The ground is the only difference: the neutral one is achromatic, the
-    // accented one is not, and both carry the same on-accent label ink.
+    // The accent is the only difference, carried by the ground and the ink:
+    // the neutral ones are achromatic, the accented ones are not.
     await expect(isAchromatic(neutralStyle.backgroundColor)).toBe(true);
     await expect(isAchromatic(accentedStyle.backgroundColor)).toBe(false);
     await expect(
-      getComputedStyle(within(neutral).getByText("Cancel")).color,
-    ).toBe(getComputedStyle(within(accented).getByText("Save")).color);
+      isAchromatic(
+        getComputedStyle(within(neutral).getByText("Neutral")).color,
+      ),
+    ).toBe(true);
+    await expect(
+      isAchromatic(
+        getComputedStyle(within(accented).getByText("Accented")).color,
+      ),
+    ).toBe(false);
 
-    // The grounds a neutral button moves through must differ from the two
-    // surfaces it is placed on, or it dissolves into them. Light has a step for
-    // every state; dark has none above hover (the scale runs into its text
-    // tones), so its press holds at hover's value.
+    // The ground a neutral button rests on must differ from the two surfaces
+    // it is placed on, or it dissolves into them. Light hovers onto the
+    // surface step itself, the shadow keeping it lifted there; dark has no
+    // step above hover (the scale runs into its text tones), so its press
+    // holds at hover's value.
     for (const element of [neutral, darkNeutral]) {
-      const { rest, hover, surface, screen } = containedGroundsOf(element);
+      const { rest, hover, surface, screen } = tonalGroundsOf(element);
       await expect(rest).not.toBe(hover);
       await expect(rest).not.toBe(surface);
       await expect(rest).not.toBe(screen);
-      await expect(hover).not.toBe(surface);
-      await expect(hover).not.toBe(screen);
     }
-    const light = containedGroundsOf(neutral);
+    const dark = tonalGroundsOf(darkNeutral);
+    await expect(dark.hover).not.toBe(dark.surface);
+    await expect(dark.hover).not.toBe(dark.screen);
+    const light = tonalGroundsOf(neutral);
     await expect(light.press).not.toBe(light.hover);
   },
 };

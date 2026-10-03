@@ -1,11 +1,17 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BellDuotoneIcon } from "alouette-icons/phosphor-icons/BellDuotoneIcon";
-import { BellRegularIcon } from "alouette-icons/phosphor-icons/BellRegularIcon";
-import { CalendarDuotoneIcon } from "alouette-icons/phosphor-icons/CalendarDuotoneIcon";
-import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/CalendarRegularIcon";
-import { ChartBarDuotoneIcon } from "alouette-icons/phosphor-icons/ChartBarDuotoneIcon";
-import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
+import {
+  BellDuotoneIcon,
+  BellRegularIcon,
+} from "alouette-icons/phosphor-icons/Bell";
+import {
+  CalendarDuotoneIcon,
+  CalendarRegularIcon,
+} from "alouette-icons/phosphor-icons/Calendar";
+import {
+  ChartBarDuotoneIcon,
+  ChartBarRegularIcon,
+} from "alouette-icons/phosphor-icons/ChartBar";
 import { type ReactNode, useState } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Box } from "../containers/Box";
@@ -36,6 +42,10 @@ export default {
 
 export const PreviewTabsStory: ThisStory = {
   name: "Tabs Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <Tabs aria-label="Period" defaultValue="week" {...args}>
       <Tab value="day" label="Day" />

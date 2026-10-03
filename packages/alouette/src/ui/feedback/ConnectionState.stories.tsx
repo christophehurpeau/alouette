@@ -83,6 +83,10 @@ export default {
 
 export const ConnectionStatePreviewStory: ThisStory = {
   name: "ConnectionState Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { state: "disconnected", children: "Disconnected" },
   render: (args) => (
     <Box className="relative h-16 overflow-hidden rounded-sm bg-lowered">

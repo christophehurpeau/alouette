@@ -52,11 +52,20 @@ function GuestListForm({
                   name={`${name}.value`}
                   label={label}
                   required="Guest name is required."
-                  render={({ field, labelId }) => (
+                  render={({
+                    field,
+                    labelId,
+                    describedBy,
+                    invalid,
+                    required,
+                  }) => (
                     <InputText
                       ref={field.ref}
                       value={field.value}
                       aria-labelledby={labelId}
+                      aria-describedby={describedBy}
+                      aria-required={required}
+                      invalid={invalid}
                       onChangeText={field.onChange}
                       onBlur={field.onBlur}
                     />
@@ -113,11 +122,20 @@ function PeopleForm({ defaultPeople = [] }: PeopleFormProps): ReactNode {
                     name={`${name}.firstName`}
                     label={`${label} first name`}
                     required="First name is required."
-                    render={({ field, labelId }) => (
+                    render={({
+                      field,
+                      labelId,
+                      describedBy,
+                      invalid,
+                      required,
+                    }) => (
                       <InputText
                         ref={field.ref}
                         value={field.value}
                         aria-labelledby={labelId}
+                        aria-describedby={describedBy}
+                        aria-required={required}
+                        invalid={invalid}
                         onChangeText={field.onChange}
                         onBlur={field.onBlur}
                       />
@@ -129,11 +147,20 @@ function PeopleForm({ defaultPeople = [] }: PeopleFormProps): ReactNode {
                     control={control}
                     name={`${name}.lastName`}
                     label={`${label} last name`}
-                    render={({ field, labelId }) => (
+                    render={({
+                      field,
+                      labelId,
+                      describedBy,
+                      invalid,
+                      required,
+                    }) => (
                       <InputText
                         ref={field.ref}
                         value={field.value}
                         aria-labelledby={labelId}
+                        aria-describedby={describedBy}
+                        aria-required={required}
+                        invalid={invalid}
                         onChangeText={field.onChange}
                         onBlur={field.onBlur}
                       />
@@ -221,6 +248,10 @@ export default {
 
 export const FormFieldArrayPreviewStory: ThisStory = {
   name: "FormFieldArray Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: () => (
     <GuestListForm
       minSize={1}

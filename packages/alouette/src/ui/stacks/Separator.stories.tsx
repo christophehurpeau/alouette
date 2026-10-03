@@ -36,6 +36,10 @@ export default {
 } satisfies Meta<typeof Separator>;
 
 export const PreviewSeparatorStory: StoryObj = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: () => <Separator />,
 };
 

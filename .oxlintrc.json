@@ -1,0 +1,80 @@
+{
+  "extends": [
+    "./node_modules/@pob/eslint-config/oxlint/base.json",
+    "./node_modules/@pob/eslint-config/oxlint/module.json",
+    "./node_modules/@pob/eslint-config/oxlint/node.json",
+    "./node_modules/@pob/eslint-config/oxlint/typescript.json",
+    "./node_modules/@pob/eslint-config/oxlint/allow-unsafe.json",
+    "./node_modules/@pob/eslint-config/oxlint/allow-implicit-return-type.json",
+    "./node_modules/@pob/eslint-config-typescript-react/oxlint/react.json",
+    "./node_modules/@pob/eslint-config-typescript-react/oxlint/react-native-web.json"
+  ],
+  "ignorePatterns": [
+    ".yarn",
+    "**/dist/",
+    "**/build/",
+    "**/coverage/",
+    "**/.next/",
+    "**/.tamagui/",
+    "**/.expo/",
+    "**/*.d.ts",
+    "/rollup.config.mjs",
+    "**/.storybook/",
+    "**/storybook-static/",
+    "**/.rnstorybook/",
+    "**/vite.config.ts",
+    "**/vitest.config.ts",
+    "**/alouette-icons/lib/",
+    "**/scripts/",
+    "/.design-sync/",
+    "/.ds-sync/",
+    "/ds-bundle/",
+    "/_artifacts/"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.test.{ts,tsx}"],
+      "rules": {
+        "import/extensions": [
+          "error",
+          "ignorePackages",
+          {
+            "pattern": {
+              "mts": "always",
+              "ts": "always",
+              "tsx": "always"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*.{stories,story}.{ts,tsx,js,jsx,mjs,cjs}"],
+      "rules": {
+        "react/rules-of-hooks": "off",
+        "import/no-anonymous-default-export": "off",
+        "storybook/await-interactions": "error",
+        "storybook/context-in-play-function": "error",
+        "storybook/default-exports": "error",
+        "storybook/hierarchy-separator": "warn",
+        "storybook/no-redundant-story-name": "warn",
+        "storybook/no-renderer-packages": "error",
+        "storybook/prefer-pascal-case": "warn",
+        "storybook/story-exports": "error",
+        "storybook/use-storybook-expect": "error",
+        "storybook/use-storybook-testing-library": "error"
+      }
+    }
+  ],
+  "jsPlugins": [
+    {
+      "name": "storybook",
+      "specifier": "eslint-plugin-storybook"
+    }
+  ],
+  "settings": {
+    "react": {
+      "version": "19.2"
+    }
+  }
+}

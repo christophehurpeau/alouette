@@ -19,6 +19,10 @@ export default {
 } satisfies Meta<typeof TextArea>;
 
 export const PreviewTextAreaStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { placeholder: "Enter text..." },
   render: (args) => <TextArea {...args} />,
 };
@@ -38,7 +42,7 @@ export const Variants: ThisStory = {
               {(
                 [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col key={state} title={state}>
+                <StoryGrid.Col key={state} title={state ?? "Default"}>
                   <TextArea
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
@@ -50,7 +54,7 @@ export const Variants: ThisStory = {
               {(
                 [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col key={state} title={state}>
+                <StoryGrid.Col key={state} title={state ?? "Default"}>
                   <TextArea
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}
@@ -63,7 +67,7 @@ export const Variants: ThisStory = {
               {(
                 [undefined, "hover", "focus", "press", "disabled"] as const
               ).map((state) => (
-                <StoryGrid.Col key={state} title={state}>
+                <StoryGrid.Col key={state} title={state ?? "Default"}>
                   <TextArea
                     disabled={state === "disabled"}
                     forceStyle={state === "disabled" ? undefined : state}

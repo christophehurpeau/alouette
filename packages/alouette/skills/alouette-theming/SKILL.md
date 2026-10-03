@@ -9,8 +9,8 @@ description: >
   runtime without remounting, use StableAccentScope; inside a portal (a modal or
   any other overlay), where the scope escapes the themed subtree, use
   PortalAccentScope. All three, and the pressables, take accent="neutral": the plain
-  mode theme, which drops an inherited accent and makes a Button the neutral
-  contained secondary beside an accented one. A stored light/dark choice is a
+  mode theme, which drops an inherited accent; with variant="soft" it makes a
+  Button the secondary beside an accented one. A stored light/dark choice is a
   ColorModePreference ("light" | "dark" | "system") resolved by
   useResolvedColorMode and applied by the app through ScopedTheme. Load when
   applying colors, accents or dark mode, or when shipping a custom palette.
@@ -125,14 +125,16 @@ that opens next to it is not.
 
 The pressables take it too — `Button`, `IconButton`, `PressableBox`,
 `PressableListItem` — where it is more than an escape hatch: `accent="neutral"` is
-the **neutral button**, the contained material (ground, shadow, hover/focus/press)
-on the grayscale palette — an accent like any other, taking the same scale steps
-and the same white `text-on-accent` label, not a pale button. It is how a
-secondary action is written beside an accented one, instead of dropping it to
-`variant="outlined"` (alouette-actions/SKILL.md).
+the **neutral button**, the same material (ground, shadow, hover/focus/press) on
+the grayscale palette — an accent like any other: a white card with sharp ink
+for the default `tonal` variant, and for `filled` the sharp ink turned into a
+ground (black under a white label in light mode, white under a dark label in
+dark).
+Beside an accented action, the secondary one is neutral **and** `soft` — a
+neutral text button — never `variant="outlined"` (alouette-actions/SKILL.md).
 
 ```tsx
-<Button accent="neutral" text="Cancel" onPress={close} />
+<Button accent="neutral" variant="soft" text="Cancel" onPress={close} />
 <Button text="Save" onPress={save} />
 ```
 
@@ -207,6 +209,11 @@ mounted, so toggling `accent` never remounts the subtree. Native has no portal
 problem (`ScopedTheme` pushes merged variables through React context, which
 crosses wherever the host renders the tree), so there it is a single
 `StableAccentScope`.
+
+Both `StableAccentScope` and `PortalAccentScope` take `mode` to force light or
+dark, as `AccentScope` does. Without an `accent` they keep the inherited accent
+and re-apply it in that mode: `<PortalAccentScope mode="dark">` under
+`light_danger` renders `dark_danger`.
 
 ### Ship a custom palette for the existing accents
 

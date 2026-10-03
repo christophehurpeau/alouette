@@ -1,5 +1,6 @@
 import type { ReactNode, RefObject } from "react";
 import { Modal, Pressable, type View as RNView } from "react-native";
+import { useReducedMotion } from "../../core/ReducedMotionContext";
 import { SafeAreaProvider } from "../../core/SafeAreaProvider";
 import { useSafeAreaInsets } from "../../core/useSafeAreaInsets";
 import { View } from "../primitives/View";
@@ -33,6 +34,12 @@ export interface PopoverProps {
    * menu whose trigger is narrower than its items. Anchored web only.
    */
   width?: "anchor" | "content";
+  /**
+   * Which side of the anchor the panel opens on: `top` for a trigger pinned at
+   * the bottom of the viewport (a sidebar's account row), where a panel below
+   * would open off-screen. Anchored web only.
+   */
+  side?: "bottom" | "top";
   /**
    * Placement of the overlay presentation (native, and web without an anchor).
    * `top` keeps it pinned below the status bar so its first row stays put while
@@ -95,7 +102,7 @@ function PopoverOverlay({
 
 /**
  * Renders `children` above everything, outside the clipping of any
- * `overflow-hidden` ancestor (`Surface` is one by design). Web portals into
+ * `overflow-hidden` ancestor (`surface` is one by design). Web portals into
  * `document.body` and anchors to `anchorRef`; native uses a transparent `Modal`.
  */
 export function Popover({
@@ -106,11 +113,12 @@ export function Popover({
   "aria-label": ariaLabel,
   children,
 }: PopoverProps): ReactNode {
+  const reducedMotion = useReducedMotion();
   return (
     <Modal
       transparent
       visible={open}
-      animationType="fade"
+      animationType={reducedMotion ? "none" : "fade"}
       onRequestClose={onClose}
     >
       {/* A Modal is its own window: insets measured by an app-level provider

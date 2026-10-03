@@ -1,4 +1,4 @@
-import { type ReactNode, forwardRef } from "react";
+import type { ReactNode, Ref } from "react";
 import {
   ScrollView as RNScrollView,
   type ScrollViewProps as RNScrollViewProps,
@@ -10,36 +10,39 @@ import { GradientBackground } from "./GradientBackground";
 
 interface GradientScrollViewInnerProps extends RNScrollViewProps {
   children?: ReactNode;
+  ref?: Ref<RNScrollView>;
 }
 
-const GradientScrollViewInner = forwardRef<
-  RNScrollView,
-  GradientScrollViewInnerProps
->(({ children, ...scrollViewProps }, ref) => {
+function GradientScrollViewInner({
+  children,
+  ...scrollViewProps
+}: GradientScrollViewInnerProps): ReactNode {
   return (
-    <RNScrollView ref={ref} {...scrollViewProps}>
+    <RNScrollView {...scrollViewProps}>
       <View className="absolute left-0 right-0 top-[-600] height-[600] bg-screen-gradient-start" />
       <View className="absolute left-0 right-0 bottom-[-600] height-[600] bg-screen-gradient-end" />
       <GradientBackground />
       {children}
     </RNScrollView>
   );
-});
+}
 
 export interface GradientScrollViewProps extends RNScrollViewProps {
   children?: ReactNode;
   accent: Accent;
+  ref?: Ref<RNScrollView>;
 }
 
-export const GradientScrollView = forwardRef<
-  RNScrollView,
-  GradientScrollViewProps
->(({ accent, children, ...scrollViewProps }, ref) => {
+export function GradientScrollView({
+  accent,
+  children,
+  ...scrollViewProps
+}: GradientScrollViewProps): ReactNode {
   return (
     <AccentScope accent={accent}>
-      <GradientScrollViewInner ref={ref} {...scrollViewProps}>
+      <GradientScrollViewInner {...scrollViewProps}>
         {children}
       </GradientScrollViewInner>
     </AccentScope>
   );
-});
+}
