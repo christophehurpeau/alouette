@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { Control, FieldValues } from "react-hook-form";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Form, type FormProps } from "./Form";
 import { FormSubmitButton } from "./FormSubmitButton";
 
@@ -32,14 +32,14 @@ export function SimpleVForm<TFieldValues extends FieldValues>({
     <Form
       {...formProps}
       render={({ control, submit }) => (
-        <VStack className={className ?? "gap-l"}>
+        <View className={className ?? "gap-l"}>
           {render({ control, submit })}
           <FormSubmitButton
             label={submitLabel}
             errorToMessage={submitErrorToMessage}
             onPress={submit}
           />
-        </VStack>
+        </View>
       )}
     />
   );

@@ -1,12 +1,16 @@
 import type { ReactNode } from "react";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 
 export interface BrandLogoProps {
   icon: SVGIconElement;
-  /** Accent of the disc. Defaults to `brand`. */
-  accent?: Accent;
+  /**
+   * Accent of the disc. Defaults to `brand`. Over a ground of the same accent
+   * (a `bg-highlight-accent` hero), pass `neutral`: the brand disc is two steps
+   * off that ground in dark mode, the neutral one is its opposite end.
+   */
+  accent?: AccentOrNeutral;
 }
 
 /** Product mark: an icon on an accent disc, for an `AppHeaderBrand`. */

@@ -1,9 +1,10 @@
 import { expect, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
+import { InputPassword } from "../inputs/InputPassword";
 import { InputText } from "../inputs/InputText";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { Form } from "./Form";
 import { FormField } from "./FormField";
@@ -24,17 +25,20 @@ function FormFieldDemo(): ReactNode {
     <Form<SignUpValues>
       defaultValues={{ username: "", password: "" }}
       render={({ control }) => (
-        <VStack className="gap-l">
+        <View className="gap-l">
           <FormField
             control={control}
             name="username"
             label="Username"
             required="Username is required."
-            render={({ field, labelId }) => (
+            render={({ field, labelId, describedBy, invalid, required }) => (
               <InputText
                 ref={field.ref}
                 value={field.value}
                 aria-labelledby={labelId}
+                aria-describedby={describedBy}
+                aria-required={required}
+                invalid={invalid}
                 onChangeText={field.onChange}
                 onBlur={field.onBlur}
               />
@@ -53,18 +57,21 @@ function FormFieldDemo(): ReactNode {
                 </Text>
               ) : undefined
             }
-            render={({ field, labelId }) => (
-              <InputText
+            render={({ field, labelId, describedBy, invalid, required }) => (
+              <InputPassword
                 ref={field.ref}
-                mode="password"
+                autoComplete="new-password"
                 value={field.value}
                 aria-labelledby={labelId}
+                aria-describedby={describedBy}
+                aria-required={required}
+                invalid={invalid}
                 onChangeText={field.onChange}
                 onBlur={field.onBlur}
               />
             )}
           />
-        </VStack>
+        </View>
       )}
       onSubmit={() => {}}
     />
@@ -94,21 +101,41 @@ export const FormFieldStory: ThisStory = {
     const canvas = within(canvasElement);
     const usernameInput = canvas.getByLabelText("Username");
     const passwordInput = canvas.getByLabelText("Password");
+    await expect(usernameInput).toHaveAttribute("aria-required", "true");
+    await expect(usernameInput).toHaveAttribute("aria-invalid", "false");
+    await expect(usernameInput).not.toHaveAttribute("aria-describedby");
+    await expect(passwordInput).toHaveAttribute("aria-required", "false");
 
     await userEvent.click(usernameInput);
     await userEvent.tab();
-    await expect(canvas.getByText("Username is required.")).toBeVisible();
+    const requiredMessage = canvas.getByText("Username is required.");
+    await expect(requiredMessage).toBeVisible();
+    // The label is not a tab stop: Tab goes straight to the next input.
+    await expect(passwordInput).toHaveFocus();
+
+    // The error reaches the input: aria-invalid, and the message as its
+    // description.
+    await expect(usernameInput).toHaveAttribute("aria-invalid", "true");
+    await expect(usernameInput).toHaveAttribute(
+      "aria-describedby",
+      requiredMessage.id,
+    );
 
     // Pressing the label focuses the input, like a native <label for>.
     await userEvent.click(canvas.getByText("Username"));
     await expect(usernameInput).toHaveFocus();
 
+    // Fixing the value clears the state on the input as well.
+    await userEvent.type(usernameInput, "ada");
+    await expect(usernameInput).toHaveAttribute("aria-invalid", "false");
+    await expect(usernameInput).not.toHaveAttribute("aria-describedby");
+
     await userEvent.type(passwordInput, "short");
     await userEvent.tab();
-    await expect(
-      canvas.getByText(
-        "Password must be at least 8 characters. Use a passphrase for something memorable.",
-      ),
-    ).toBeVisible();
+    const passwordMessage = canvas.getByText(
+      "Password must be at least 8 characters. Use a passphrase for something memorable.",
+    );
+    await expect(passwordMessage).toBeVisible();
+    await expect(passwordInput).toHaveAttribute("aria-invalid", "true");
   },
 };

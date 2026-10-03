@@ -1,6 +1,6 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { Story } from "../story-components/Story";
 import { Paragraph, Text } from "./Text";
 
@@ -24,6 +24,14 @@ All styling via \`className\`. \`<Text>\` defaults to \`font-body\` (regular bod
 <Text className="font-body-bold text-base text-sharp">Bold body text</Text>
 <Text className="font-heading-extrabold text-4xl">Extrabold heading</Text>
 <Text className="font-mono text-sm text-muted">Muted monospace</Text>
+~~~
+
+### Text vs Paragraph
+\`<Paragraph>\` is \`<Text>\` with \`role="paragraph"\` (a real \`<p>\` on web) and selectable content — use it for prose, one or more sentences. Everything else stays \`<Text>\`: a label, a heading, a stat, a URL, a single value, even alone on its line. A value with its own component keeps it (\`Code\`, \`CodeBlock\`, \`ExternalLinkText\`). A \`<p>\` holds inline children only — never a nested \`Paragraph\`, \`View\` or \`Surface\`.
+
+~~~tsx
+<Paragraph>Run <Code>pnpm build</Code> before deploying.</Paragraph>
+<Text className="font-mono text-sm text-muted">https://api.example.com/v1</Text>
 ~~~`,
       },
     },
@@ -32,6 +40,10 @@ All styling via \`className\`. \`<Text>\` defaults to \`font-body\` (regular bod
 
 export const PreviewStory: ThisStory = {
   name: "Text Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     children: "The quick brown fox jumps over the lazy dog",
   },
@@ -79,11 +91,11 @@ function Colors() {
       <Text className="text-lg text-muted">text-muted — Secondary text</Text>
       <Story.SubSection title="Accent Colors - brand" accent="brand">
         <Text className="text-lg text-accent">text-accent — Accented text</Text>
-        <Surface className="bg-highlight-accent">
+        <Box className="surface bg-highlight-accent">
           <Text className="text-lg text-on-accent">
             text-on-accent — Text on accent background
           </Text>
-        </Surface>
+        </Box>
       </Story.SubSection>
     </Story.Section>
   );

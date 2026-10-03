@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBox, type InteractiveBoxProps } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
@@ -15,7 +15,7 @@ export const linkTextVariants = tv(
   {
     slots: {
       frame:
-        "group flex-row items-center gap-xxs self-start focus-visible:outline-interactive-outlined-outline-focus",
+        "group flex-row items-center gap-xxs self-start focus-visible:focus-ring",
       text: "shrink font-body-bold underline transition-[color] duration-fast ease-in",
       icon: "",
     },
@@ -72,7 +72,7 @@ export interface LinkTextProps
   text: ReactNode;
   /** Leading icon, tinted with the label. */
   icon?: SVGIconElement;
-  accent?: Accent;
+  accent?: AccentOrNeutral;
 }
 
 /**

@@ -37,6 +37,10 @@ export default {
 
 export const LinearProgressPreviewStory: ThisStory = {
   name: "LinearProgress Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { progress: 60 },
   render: (args) => (
     <Box className="relative h-16 w-80 overflow-hidden rounded-sm bg-lowered">

@@ -4,14 +4,16 @@ import { PressableBox } from "../actions/PressableBox";
 import { DefaultAccentScope } from "../containers/DefaultAccentScope";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
+import { View } from "../primitives/View";
 import { RadioIndicator } from "../selection/RadioIndicator";
-import { VStack } from "../stacks/stacks";
-import { useRadioCardGroupVariant } from "./RadioCardGroup";
+import { SelectionAccentScope } from "../selection/SelectionAccentScope";
+import { useRadioCardGroupAppearance } from "./RadioCardGroup";
 import { useRadioContext } from "./RadioContext";
 
-// The selected card is PressableBox's `contained` fill (raised, accent) and the
-// unselected one its `outlined` surface, so every rest/hover/focus/press color
-// comes from the shared interactive tokens — only the foreground follows.
+// Every card is the group's PressableBox material (`tonal` or `outlined`) and
+// selection only swaps the accent: the selected card keeps it, the others take
+// the neutral theme. Every rest/hover/focus/press color comes from the shared
+// interactive tokens — only the foreground follows the material.
 const radioCardVariants = tv(
   {
     slots: {
@@ -27,18 +29,8 @@ const radioCardVariants = tv(
         list: { frame: "items-center" },
         stack: { frame: "items-start grow shrink basis-[240px]" },
       },
-      selected: {
-        true: {
-          icon: "text-on-accent",
-          label: "text-on-accent",
-          description: "text-on-accent-muted",
-        },
-        false: {
-          icon: "text-muted",
-          label: "text-sharp",
-          description: "text-muted",
-        },
-      },
+      variant: { tonal: {}, outlined: {} },
+      selected: { true: {}, false: {} },
       disabled: {
         true: {
           icon: "text-disabled-muted",
@@ -48,6 +40,39 @@ const radioCardVariants = tv(
         false: {},
       },
     },
+    // The material's inks are enabled-only: without tailwind-merge, the
+    // stylesheet order would let them win over the disabled ones, and a disabled
+    // selected card would keep the accent's.
+    compoundVariants: [
+      {
+        variant: "tonal",
+        disabled: false,
+        class: { icon: "text-on-tonal", label: "text-on-tonal" },
+      },
+      // `muted` is too dim for an accented tonal ground: the selected card's
+      // description takes the label's ink.
+      {
+        variant: "tonal",
+        selected: true,
+        disabled: false,
+        class: { description: "text-on-tonal" },
+      },
+      {
+        variant: "tonal",
+        selected: false,
+        disabled: false,
+        class: { description: "text-muted" },
+      },
+      {
+        variant: "outlined",
+        disabled: false,
+        class: {
+          icon: "text-muted",
+          label: "text-sharp",
+          description: "text-muted",
+        },
+      },
+    ],
   },
   { twMerge: false },
 );
@@ -74,38 +99,45 @@ export function RadioCard({
     onSelect,
     disabled: groupDisabled,
   } = useRadioContext();
-  const layout = useRadioCardGroupVariant();
+  const { layout, variant } = useRadioCardGroupAppearance();
   const selected = selectedValue === value;
   const isDisabled = disabled === true || groupDisabled === true;
-  const styles = radioCardVariants({ layout, selected, disabled: isDisabled });
+  const styles = radioCardVariants({
+    layout,
+    variant,
+    selected,
+    disabled: isDisabled,
+  });
 
   return (
     <DefaultAccentScope>
-      <PressableBox
-        variant={selected ? "contained" : "outlined"}
-        role="radio"
-        aria-checked={selected}
-        aria-disabled={isDisabled}
-        aria-label={label}
-        disabled={isDisabled}
-        className={styles.frame({ className })}
-        onPress={() => {
-          onSelect(value);
-        }}
-      >
-        {icon ? <Icon icon={icon} size={24} className={styles.icon()} /> : null}
-        <VStack className="flex-1 gap-xxs">
-          <Text className={styles.label()}>{label}</Text>
-          {description ? (
-            <Text className={styles.description()}>{description}</Text>
-          ) : null}
-        </VStack>
-        <RadioIndicator
-          selected={selected}
+      <SelectionAccentScope selected={selected}>
+        <PressableBox
+          variant={variant}
+          role="radio"
+          aria-checked={selected}
+          aria-disabled={isDisabled}
+          aria-label={label}
           disabled={isDisabled}
-          onAccent={selected}
-        />
-      </PressableBox>
+          className={styles.frame({ className })}
+          onPress={() => {
+            onSelect(value);
+          }}
+        >
+          {icon ? (
+            <View className="self-start">
+              <Icon icon={icon} size={24} className={styles.icon()} />
+            </View>
+          ) : null}
+          <View className="flex-1 gap-xxs">
+            <Text className={styles.label()}>{label}</Text>
+            {description ? (
+              <Text className={styles.description()}>{description}</Text>
+            ) : null}
+          </View>
+          <RadioIndicator selected={selected} disabled={isDisabled} />
+        </PressableBox>
+      </SelectionAccentScope>
     </DefaultAccentScope>
   );
 }

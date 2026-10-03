@@ -1,12 +1,12 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { RobotRegularIcon } from "alouette-icons/phosphor-icons/RobotRegularIcon";
-import { UserRegularIcon } from "alouette-icons/phosphor-icons/UserRegularIcon";
+import { RobotRegularIcon } from "alouette-icons/phosphor-icons/Robot";
+import { UserRegularIcon } from "alouette-icons/phosphor-icons/User";
 import type { ReactNode } from "react";
 import type { SVGIconElement } from "../primitives/Icon";
-import { HStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
-import { Avatar } from "./Avatar";
+import { View } from "../primitives/View";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
+import { Avatar, type AvatarProps } from "./Avatar";
 
 type ThisStory = StoryObj<typeof Avatar>;
 
@@ -20,12 +20,21 @@ export default {
   argTypes: {
     name: { control: "text" },
     size: { control: "inline-radio", options: ["sm", "md", "lg"] },
-    accent: { control: "select", options: accents },
+    variant: {
+      control: "inline-radio",
+      options: ["solid", "enabled"],
+      table: { defaultValue: { summary: "solid" } },
+    },
+    accent: { control: "select", options: accentsWithoutNeutral },
   },
 } satisfies Meta<typeof Avatar>;
 
 export const PreviewAvatarStory: ThisStory = {
   name: "Avatar Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { name: "Camille Hurel" },
   render: (args) => <Avatar {...args} />,
 };
@@ -33,15 +42,36 @@ export const PreviewAvatarStory: ThisStory = {
 interface SizeRowProps {
   name?: string;
   icon?: SVGIconElement;
+  variant?: AvatarProps["variant"];
 }
 
-function SizeRow({ name, icon }: SizeRowProps): ReactNode {
+function SizeRow({ name, icon, variant }: SizeRowProps): ReactNode {
   return (
-    <HStack className="gap-xs items-center">
-      <Avatar name={name} icon={icon} size="sm" />
-      <Avatar name={name} icon={icon} size="md" />
-      <Avatar name={name} icon={icon} size="lg" />
-    </HStack>
+    <View className="flex-row gap-xs items-center">
+      <Avatar name={name} icon={icon} variant={variant} size="sm" />
+      <Avatar name={name} icon={icon} variant={variant} size="md" />
+      <Avatar name={name} icon={icon} variant={variant} size="lg" />
+    </View>
+  );
+}
+
+interface AccentRowProps {
+  variant: AvatarProps["variant"];
+}
+
+function AccentRow({ variant }: AccentRowProps): ReactNode {
+  return (
+    <View className="flex-row gap-xs items-center flex-wrap">
+      {accentsWithoutNeutral.map((accent) => (
+        <Avatar
+          key={accent}
+          accent={accent}
+          variant={variant}
+          name="Camille Hurel"
+        />
+      ))}
+      <Avatar variant={variant} icon={<UserRegularIcon />} />
+    </View>
   );
 }
 
@@ -50,25 +80,32 @@ export const VariantsAvatarStory: ThisStory = {
   render: () => (
     <Story>
       <Story.Section withSurface title="Sizes">
-        <SizeRow name="Camille Hurel" />
-        <SizeRow icon={<UserRegularIcon />} />
+        <Story.SubSection title="variant=solid (default)">
+          <SizeRow name="Camille Hurel" />
+          <SizeRow icon={<UserRegularIcon />} />
+        </Story.SubSection>
+        <Story.SubSection title="variant=enabled">
+          <SizeRow name="Camille Hurel" variant="enabled" />
+          <SizeRow icon={<UserRegularIcon />} variant="enabled" />
+        </Story.SubSection>
       </Story.Section>
 
       <Story.Section withSurface title="Accents">
-        <HStack className="gap-xs items-center flex-wrap">
-          {accents.map((accent) => (
-            <Avatar key={accent} accent={accent} name="Camille Hurel" />
-          ))}
-        </HStack>
+        <Story.SubSection title="variant=solid (default)">
+          <AccentRow variant="solid" />
+        </Story.SubSection>
+        <Story.SubSection title="variant=enabled">
+          <AccentRow variant="enabled" />
+        </Story.SubSection>
       </Story.Section>
 
       <Story.Section withSurface title="Initials">
-        <HStack className="gap-xs items-center flex-wrap">
+        <View className="flex-row gap-xs items-center flex-wrap">
           <Avatar name="Camille Hurel" />
           <Avatar name="Camille Anne Hurel" />
           <Avatar name="Camille" />
           <Avatar icon={<RobotRegularIcon />} />
-        </HStack>
+        </View>
       </Story.Section>
     </Story>
   ),
@@ -92,5 +129,12 @@ export const TestsAvatarStory: ThisStory = {
     await expect(canvas.getByText("CH")).toBeTruthy();
     await expect(canvas.getByText("CA")).toBeTruthy();
     await expect(canvas.getByText("C")).toBeTruthy();
+
+    // Trimmed to the caps, the initials center on their ink rather than on
+    // ascender + descender. tailwind-merge reads `text-trim-cap` as a text
+    // color unless alouette's config registers it.
+    await expect(getComputedStyle(canvas.getByText("CH")).textBoxTrim).toBe(
+      "trim-both",
+    );
   },
 };

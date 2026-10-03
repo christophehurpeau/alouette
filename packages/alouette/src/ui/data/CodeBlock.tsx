@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { ScrollView } from "../primitives/ScrollView";
 import { Text } from "../primitives/Text";
 
 const codeBlockVariants = tv({
   slots: {
-    frame: "gap-xs",
+    frame: "surface lowered surface-sm gap-xs",
     title: "font-mono text-xs text-muted",
     // web:whitespace-pre so a long line scrolls instead of wrapping; native
     // already keeps the line intact inside the horizontal ScrollView, which
@@ -46,11 +46,7 @@ export function CodeBlock({
 }: CodeBlockProps): ReactNode {
   const styles = codeBlockVariants({ size });
   return (
-    <Surface
-      variant="lowered"
-      size="sm"
-      className={styles.frame({ className })}
-    >
+    <Box className={styles.frame({ className })}>
       {title === undefined ? null : (
         <Text className={styles.title()}>{title}</Text>
       )}
@@ -59,6 +55,6 @@ export function CodeBlock({
           {children}
         </Text>
       </ScrollView>
-    </Surface>
+    </Box>
   );
 }

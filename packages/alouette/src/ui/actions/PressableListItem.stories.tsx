@@ -1,8 +1,12 @@
+import { expect, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { type ReactNode, useState } from "react";
 import { Box } from "../containers/Box";
+import { Badge } from "../data/Badge";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
+import { Button } from "./Button";
 import { PressableListItem } from "./PressableListItem";
 
 type ThisStory = StoryObj<typeof PressableListItem>;
@@ -17,6 +21,10 @@ export default {
 } satisfies Meta<typeof PressableListItem>;
 
 export const PreviewListStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     onPress: () => {},
     children: <Text>List Item</Text>,
@@ -24,11 +32,137 @@ export const PreviewListStory: ThisStory = {
   render: (args) => <PressableListItem {...args} />,
 };
 
+function PressLog({ value }: { value: string }): ReactNode {
+  return <Text className="font-mono text-xs text-muted">{value}</Text>;
+}
+
+function PullRequestRow(): ReactNode {
+  const [pressed, setPressed] = useState("nothing");
+  return (
+    <View className="gap-xs">
+      <PressableListItem
+        // Without it the row is announced as "Add dark mode #42 opened 3 days
+        // ago Approve Merge" — the whole card read out as one name.
+        aria-label="Open Add dark mode"
+        className="max-w-[420px]"
+        actions={
+          <>
+            <Button
+              size="sm"
+              accent="neutral"
+              variant="soft"
+              text="Approve"
+              onPress={() => {
+                setPressed("pressed:approve");
+              }}
+            />
+            <Button
+              size="sm"
+              text="Merge"
+              onPress={() => {
+                setPressed("pressed:merge");
+              }}
+            />
+          </>
+        }
+        onPress={() => {
+          setPressed("pressed:row");
+        }}
+      >
+        <View className="gap-xxs">
+          <Text className="font-body-bold">Add dark mode</Text>
+          <View className="flex-row items-center gap-xs">
+            <Badge>#42</Badge>
+            <Text className="text-sm text-muted">opened 3 days ago</Text>
+          </View>
+        </View>
+      </PressableListItem>
+      <PressLog value={pressed} />
+    </View>
+  );
+}
+
+function ListItemRow(): ReactNode {
+  const [pressed, setPressed] = useState("nothing");
+  return (
+    <View role="list">
+      <PressableListItem
+        // `button` is a real <button> on web, and an action nests a second one
+        // inside it. `listitem` renders an <li>, which holds buttons legally —
+        // at the cost of the row announcing itself as actionable.
+        role="listitem"
+        aria-label="Open Ship the docs"
+        actions={
+          <Button
+            size="sm"
+            text="Publish"
+            onPress={() => {
+              setPressed("li:publish");
+            }}
+          />
+        }
+        onPress={() => {
+          setPressed("li:row");
+        }}
+      >
+        <Text className="font-body-bold">Ship the docs</Text>
+      </PressableListItem>
+      <PressLog value={pressed} />
+    </View>
+  );
+}
+
+function RouterRow(): ReactNode {
+  const [navigation, setNavigation] = useState("nothing");
+  return (
+    <View className="gap-xs">
+      <PressableListItem
+        href="/pull/42"
+        aria-label="Open Ship it"
+        className="max-w-[420px]"
+        // Routing belongs to the app: the anchor must not follow its own href.
+        onPress={(event) => {
+          event.preventDefault();
+          setNavigation(`prevented:${String(event.defaultPrevented)}`);
+        }}
+      >
+        <View className="gap-xxs">
+          <Text className="font-body-bold">Ship it</Text>
+          <Text className="text-sm text-muted">opened 3 days ago</Text>
+        </View>
+      </PressableListItem>
+      <PressLog value={navigation} />
+    </View>
+  );
+}
+
 export const Variants: ThisStory = {
   render: () => (
-    <Story>
+    <Story
+      documentation={
+        <Text>
+          A row carrying more than a title needs an `aria-label` — without one
+          it is announced by everything it holds. `actions` pins buttons to its
+          bottom end, each taking the press for itself. `href` makes it a real
+          anchor, and is only for a row holding no link of its own.
+        </Text>
+      }
+    >
+      <Story.Section title="Variants">
+        <View className="gap-xs">
+          <PressableListItem variant="tonal" onPress={() => {}}>
+            <Text className="text-on-tonal">tonal</Text>
+          </PressableListItem>
+          <PressableListItem variant="filled" onPress={() => {}}>
+            <Text className="text-on-accent">filled</Text>
+          </PressableListItem>
+          <PressableListItem variant="outlined" onPress={() => {}}>
+            <Text>outlined</Text>
+          </PressableListItem>
+        </View>
+      </Story.Section>
       <Story.Section title="Basic List">
-        <VStack>
+        <View className="gap-xs">
           <PressableListItem
             onPress={() => {
               console.log("Item 1 pressed");
@@ -51,60 +185,67 @@ export const Variants: ThisStory = {
             <Text>Third Item</Text>
           </PressableListItem>
           <PressableListItem
+            accent="warning"
+            onPress={() => {
+              console.log("Warning pressed");
+            }}
+          >
+            <Text className="text-on-tonal">Warning</Text>
+          </PressableListItem>
+          <PressableListItem
             accent="danger"
             onPress={() => {
               console.log("Danger pressed");
             }}
           >
-            <Text className="text-on-accent">Danger</Text>
+            <Text className="text-on-tonal">Danger</Text>
           </PressableListItem>
-        </VStack>
+        </View>
       </Story.Section>
       <Story.Section title="Multi-line Content">
-        <VStack>
+        <View className="gap-xs">
           <PressableListItem
             onPress={() => {
               console.log("Notifications");
             }}
           >
-            <VStack className="gap-xxs">
+            <View className="gap-xxs">
               <Text className="font-body-bold">Notifications</Text>
               <Text className="text-sm text-muted">
                 Manage your notification preferences
               </Text>
-            </VStack>
+            </View>
           </PressableListItem>
           <PressableListItem
             onPress={() => {
               console.log("Privacy");
             }}
           >
-            <VStack className="gap-xxs">
+            <View className="gap-xxs">
               <Text className="font-body-bold">Privacy & Security</Text>
               <Text className="text-sm text-muted">
                 Control your privacy settings
               </Text>
-            </VStack>
+            </View>
           </PressableListItem>
           <PressableListItem
             onPress={() => {
               console.log("Account");
             }}
           >
-            <VStack className="gap-xxs">
+            <View className="gap-xxs">
               <Text className="font-body-bold">Account Settings</Text>
               <Text className="text-sm text-muted">
                 Update your account information
               </Text>
-            </VStack>
+            </View>
           </PressableListItem>
-        </VStack>
+        </View>
       </Story.Section>
       <Story.Section title="Menu Example">
         <Box className="rounded-md overflow-hidden">
-          <VStack>
+          <View className="gap-xs p-xs">
             <PressableListItem
-              variant="contained"
               onPress={() => {
                 console.log("Profile");
               }}
@@ -112,7 +253,6 @@ export const Variants: ThisStory = {
               <Text>View Profile</Text>
             </PressableListItem>
             <PressableListItem
-              variant="contained"
               onPress={() => {
                 console.log("Edit");
               }}
@@ -120,7 +260,6 @@ export const Variants: ThisStory = {
               <Text>Edit Profile</Text>
             </PressableListItem>
             <PressableListItem
-              variant="contained"
               onPress={() => {
                 console.log("Share");
               }}
@@ -129,16 +268,146 @@ export const Variants: ThisStory = {
             </PressableListItem>
             <PressableListItem
               accent="danger"
-              variant="contained"
               onPress={() => {
                 console.log("Logout");
               }}
             >
-              <Text className="text-on-accent">Logout</Text>
+              <Text className="text-on-tonal">Logout</Text>
             </PressableListItem>
-          </VStack>
+          </View>
         </Box>
+      </Story.Section>
+      <Story.Section title="Row with actions">
+        <PullRequestRow />
+      </Story.Section>
+      <Story.Section title="Row keeping valid markup">
+        <ListItemRow />
+      </Story.Section>
+      <Story.Section title="Row as a link">
+        <RouterRow />
       </Story.Section>
     </Story>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const row = canvas.getAllByRole("button", { name: "First Item" })[0]!;
+    const style = getComputedStyle(row);
+    // Tokens resolve per scope, so an accented row reads its own values. The
+    // browser serializes the color: a production build minifies the raw value
+    // (`#fff`, a named color), so it cannot be parsed as six hex digits.
+    const tokenOf = (scope: Element, name: string): string => {
+      const probe = document.createElement("span");
+      probe.style.color = `var(${name})`;
+      scope.append(probe);
+      const color = getComputedStyle(probe).color;
+      probe.remove();
+      return color;
+    };
+    const token = (name: string): string => tokenOf(row, name);
+
+    // A row is the `tonal` material, not the `filled` one: its ground is a
+    // tone of the theme and its label keeps the sharp ink, so an un-accented
+    // row never renders dark text on the neutral accent's fill.
+    await expect(style.backgroundColor).toBe(
+      token("--color-interactive-tonal-pressable"),
+    );
+    await expect(style.backgroundColor).not.toBe(
+      token("--color-interactive-filled-pressable"),
+    );
+    await expect(
+      getComputedStyle(within(row).getByText("First Item")).color,
+    ).toBe(token("--color-sharp"));
+
+    // Each variant tints the caret for the ground it sits on: the row's own ink
+    // over a `tonal` card, white-ish over the accent's fill, muted over the
+    // bare surface the other two keep at rest. And every one of them is a card,
+    // so every one of them is rounded — PressableBox itself only rounds two.
+    const variantRowOf = (
+      name: string,
+    ): {
+      caretColor: string;
+      element: HTMLElement;
+      style: CSSStyleDeclaration;
+    } => {
+      const variantRow = canvas.getAllByRole("button", { name })[0]!;
+      return {
+        caretColor: getComputedStyle(variantRow.querySelector("svg")!).color,
+        element: variantRow,
+        style: getComputedStyle(variantRow),
+      };
+    };
+    const tonal = variantRowOf("tonal");
+    await expect(tonal.caretColor).toBe(
+      tokenOf(tonal.element, "--color-on-tonal"),
+    );
+    const filled = variantRowOf("filled");
+    await expect(filled.caretColor).toBe(
+      tokenOf(filled.element, "--color-on-accent-muted"),
+    );
+    const outlined = variantRowOf("outlined");
+    await expect(outlined.caretColor).toBe(
+      tokenOf(outlined.element, "--color-muted"),
+    );
+    for (const { style: variantStyle } of [tonal, filled, outlined]) {
+      await expect(variantStyle.borderTopLeftRadius).toBe("16px");
+    }
+
+    // An accented row tints its card instead of taking the accent's fill — the
+    // ground stays light enough for dark ink — and states the accent in its ink
+    // (`text-on-tonal`, the accent itself in light mode), which no light
+    // tint of a red can do on its own.
+    const danger = canvas.getAllByRole("button", { name: "Danger" })[0]!;
+    const dangerStyle = getComputedStyle(danger);
+    const dangerChannels = [...dangerStyle.backgroundColor.matchAll(/[\d.]+/g)]
+      .slice(0, 3)
+      .map(Number);
+    await expect(new Set(dangerChannels).size).not.toBe(1);
+    await expect(Math.min(...dangerChannels)).toBeGreaterThan(200);
+    await expect(
+      getComputedStyle(within(danger).getByText("Danger")).color,
+    ).toBe(tokenOf(danger, "--color-on-tonal"));
+    await expect(tokenOf(danger, "--color-on-tonal")).not.toBe(
+      tokenOf(danger, "--color-sharp"),
+    );
+
+    // aria-label names the row instead of its contents.
+    const pullRequest = canvas.getAllByRole("button", {
+      name: "Open Add dark mode",
+    })[0]!;
+    // className reaches the row's own element.
+    await expect(getComputedStyle(pullRequest).maxWidth).toBe("420px");
+
+    // Every action takes the press for itself, and the row still presses on its
+    // own content.
+    const actions = within(pullRequest);
+    await userEvent.click(actions.getByRole("button", { name: "Approve" }));
+    await expect(canvas.getAllByText("pressed:approve")[0]).toBeTruthy();
+    await userEvent.click(actions.getByRole("button", { name: "Merge" }));
+    await expect(canvas.getAllByText("pressed:merge")[0]).toBeTruthy();
+    await userEvent.click(actions.getByText("Add dark mode"));
+    await expect(canvas.getAllByText("pressed:row")[0]).toBeTruthy();
+
+    // The role escape hatch the `actions` caveat points at: an <li>, so the
+    // action's <button> is not nested inside another one.
+    const listRow = canvas.getAllByRole("listitem", {
+      name: "Open Ship the docs",
+    })[0]!;
+    await expect(listRow.tagName).toBe("LI");
+    await userEvent.click(
+      within(listRow).getByRole("button", { name: "Publish" }),
+    );
+    await expect(canvas.getAllByText("li:publish")[0]).toBeTruthy();
+    await userEvent.click(within(listRow).getByText("Ship the docs"));
+    await expect(canvas.getAllByText("li:row")[0]).toBeTruthy();
+
+    // The anchor is PressableBox's job and asserted there too — repeated here
+    // so the row cannot regress to pinning `role="button"` over the href, and
+    // so nothing between the two swallows the destination.
+    const link = canvas.getAllByRole("link", { name: "Open Ship it" })[0]!;
+    await expect(link.tagName).toBe("A");
+    await expect(link.getAttribute("href")).toBe("/pull/42");
+    // The handler owns the navigation.
+    await userEvent.click(link);
+    await expect(canvas.getAllByText("prevented:true")[0]).toBeTruthy();
+  },
 };

@@ -23,9 +23,11 @@ npm install --save alouette alouette-icons
 
 ```tsx
 import { Icon } from "alouette";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeft";
 
 function Component() {
   return <Icon icon={<ArrowLeftRegularIcon />} />;
 }
 ```
+
+Each Phosphor glyph is one module exporting its three weights: `ArrowLeftRegularIcon`, `ArrowLeftDuotoneIcon` and `ArrowLeftFillIcon`.

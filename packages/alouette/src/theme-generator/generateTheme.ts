@@ -1,6 +1,4 @@
 /* eslint-disable import-x/extensions */
-// Public entry: turn per-accent hue params into a theme's two coupled outputs.
-
 import type { AlouetteTheme } from "../core/AlouetteConfig.ts";
 import type { ThemeScales } from "./buildTheme.ts";
 import {

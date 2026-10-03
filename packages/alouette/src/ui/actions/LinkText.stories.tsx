@@ -1,11 +1,15 @@
 import { expect, fn, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { FolderRegularIcon } from "alouette-icons/phosphor-icons/FolderRegularIcon";
+import { FolderRegularIcon } from "alouette-icons/phosphor-icons/Folder";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Paragraph } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { View } from "../primitives/View";
+import {
+  Story,
+  accentsWithoutNeutral,
+  neutralAndAccents,
+} from "../story-components/Story";
 import { LinkText } from "./LinkText";
 
 type ThisStory = StoryObj<typeof LinkText>;
@@ -38,7 +42,7 @@ the primary navigation between screens.
   },
   argTypes: {
     size: { control: "inline-radio", options: ["sm", "md"] },
-    accent: { control: "select", options: [undefined, ...accents] },
+    accent: { control: "select", options: neutralAndAccents },
     disabled: { control: "boolean" },
     text: { control: "text" },
   },
@@ -46,6 +50,10 @@ the primary navigation between screens.
 
 export const LinkTextPreviewStory: ThisStory = {
   name: "LinkText Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { href: "/library", text: "Back to the library" },
 };
 
@@ -107,7 +115,7 @@ export const LinkTextVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Under a paragraph">
-        <VStack className="gap-xs items-start">
+        <View className="gap-xs items-start">
           <Paragraph>
             The report you are looking for moved to the shared library.
           </Paragraph>
@@ -117,12 +125,12 @@ export const LinkTextVariantsStory: ThisStory = {
             size="sm"
             text="Open the library"
           />
-        </VStack>
+        </View>
       </Story.Section>
 
       <Story.Section title="Accents">
         <AccentLinkText />
-        {accents.map((accent) => (
+        {accentsWithoutNeutral.map((accent) => (
           <AccentLinkText key={accent} accent={accent} />
         ))}
       </Story.Section>

@@ -1,6 +1,6 @@
 import type { StyleProp, ViewStyle } from "react-native";
-import { twMerge } from "tailwind-merge";
 import type { SafeAreaEdge } from "../../core/SafeAreaEdgesContext";
+import { twMerge } from "../../core/twMerge";
 import { useScreenSafeAreaPadding } from "../../core/useScreenSafeAreaPadding";
 
 export interface ScreenSafeAreaProps {

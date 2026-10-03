@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import { Text } from "../ui/primitives/Text";
 import { View } from "../ui/primitives/View";
-import { VStack } from "../ui/stacks/stacks";
 import { Story } from "../ui/story-components/Story";
 import { StoryGrid } from "../ui/story-components/StoryGrid";
 
@@ -13,13 +12,13 @@ interface SpacingSwatchProps {
 
 function SpacingSwatch({ name }: SpacingSwatchProps): ReactNode {
   return (
-    <VStack className="gap-xxs">
+    <View className="gap-xxs">
       <View
         className="h-4 rounded-xs bg-border-muted"
         style={{ width: `var(--spacing-${name})` as `${number}%` }}
       />
       <Text className="text-xs text-muted">{name}</Text>
-    </VStack>
+    </View>
   );
 }
 
@@ -44,10 +43,10 @@ interface RadiusSwatchProps {
 
 function RadiusSwatch({ name }: RadiusSwatchProps): ReactNode {
   return (
-    <VStack className="gap-xxs items-center w-20">
+    <View className="gap-xxs items-center w-20">
       <View className={radiuses({ name })} />
       <Text className="text-xs text-muted">{name}</Text>
-    </VStack>
+    </View>
   );
 }
 
@@ -72,10 +71,10 @@ interface ShadowSwatchProps {
 
 function ShadowSwatch({ name }: ShadowSwatchProps): ReactNode {
   return (
-    <VStack className="gap-xs items-center w-20">
+    <View className="gap-xs items-center w-20">
       <View className={shadows({ name })} />
       <Text className="font-mono text-base text-muted">{name}</Text>
-    </VStack>
+    </View>
   );
 }
 

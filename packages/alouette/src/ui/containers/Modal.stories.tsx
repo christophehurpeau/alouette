@@ -1,13 +1,13 @@
 import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
-import { type ReactNode, useState } from "react";
+import { WarningRegularIcon } from "alouette-icons/phosphor-icons/Warning";
+import { type ReactElement, type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
 import { Paragraph } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
-import { Modal, type ModalProps } from "./Modal";
+import { AccentScope } from "./AccentScope";
+import { Modal, ModalPanel, type ModalProps } from "./Modal";
 
 type ThisStory = StoryObj<typeof Modal>;
 
@@ -55,12 +55,16 @@ export default {
   argTypes: {
     title: { control: "text" },
     size: { control: "select", options: ["sm", "md", "lg"] },
-    accent: { control: "select", options: accents },
+    accent: { control: "select", options: accentsWithoutNeutral },
     hideCloseButton: { control: "boolean" },
   },
 } satisfies Meta<typeof Modal>;
 
 export const PreviewModalStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     title: "Delete project",
     size: "md",
@@ -70,7 +74,12 @@ export const PreviewModalStory: ThisStory = {
       {...args}
       footer={
         <>
-          <Button variant="outlined" text="Cancel" onPress={fn()} />
+          <Button
+            accent="neutral"
+            variant="soft"
+            text="Cancel"
+            onPress={fn()}
+          />
           <Button accent="danger" text="Delete" onPress={fn()} />
         </>
       }
@@ -85,135 +94,155 @@ export const PreviewModalStory: ThisStory = {
 
 type ModalSize = NonNullable<ModalProps["size"]>;
 
-// One trigger per size: the size drives the panel width, the panel/scroll
+// One panel per size: the size drives the panel width, the panel/scroll
 // padding, and the header close-button size together.
-interface SizeTriggersProps {
-  render: (size: ModalSize) => ReactNode;
+interface SizePanelsProps {
+  render: (size: ModalSize) => ReactElement;
 }
 
-function SizeTriggers({ render }: SizeTriggersProps): ReactNode {
+function SizePanels({ render }: SizePanelsProps): ReactNode {
   return (
-    <VStack className="items-start gap-xs">
-      {render("sm")}
-      {render("md")}
-      {render("lg")}
-    </VStack>
+    <>
+      <StoryGrid.Col title="sm">{render("sm")}</StoryGrid.Col>
+      <StoryGrid.Col title="md">{render("md")}</StoryGrid.Col>
+      <StoryGrid.Col title="lg">{render("lg")}</StoryGrid.Col>
+    </>
   );
 }
 
+// The panels render in flow rather than through an open `Modal`, whose portal
+// a snapshot never captures.
 export const Variants: ThisStory = {
   render: () => (
     <Story>
-      <Story.Section title="Composition">
-        <StoryGrid.Row flexWrap>
-          <StoryGrid.Col title="Title only">
-            <SizeTriggers
-              render={(size) => (
-                <ModalDemo
-                  size={size}
-                  title={`${size} modal`}
-                  triggerLabel={size}
-                >
-                  <Paragraph>
-                    A {size} modal caps its width on wide viewports and shrinks
-                    to fit narrow screens.
-                  </Paragraph>
-                </ModalDemo>
-              )}
-            />
-          </StoryGrid.Col>
+      <Story.Section title="Title only">
+        <SizePanels
+          render={(size) => (
+            <ModalPanel size={size} title={`${size} modal`} onClose={fn()}>
+              <Paragraph>
+                A {size} modal caps its width on wide viewports and shrinks to
+                fit narrow screens.
+              </Paragraph>
+            </ModalPanel>
+          )}
+        />
+      </Story.Section>
 
-          <StoryGrid.Col title="With footer actions">
-            <SizeTriggers
-              render={(size) => (
-                <ModalDemo
-                  size={size}
-                  title="Save changes?"
-                  triggerLabel={size}
-                  footer={
-                    <>
-                      <Button
-                        variant="outlined"
-                        text="Discard"
-                        onPress={fn()}
-                      />
-                      <Button text="Save" onPress={fn()} />
-                    </>
-                  }
-                >
-                  <Paragraph>
-                    Your changes will be lost if you discard.
-                  </Paragraph>
-                </ModalDemo>
-              )}
-            />
-          </StoryGrid.Col>
+      <Story.Section title="With footer actions">
+        <SizePanels
+          render={(size) => (
+            <ModalPanel
+              size={size}
+              title="Save changes?"
+              footer={
+                <>
+                  <Button
+                    accent="neutral"
+                    variant="soft"
+                    text="Discard"
+                    onPress={fn()}
+                  />
+                  <Button text="Save" onPress={fn()} />
+                </>
+              }
+              onClose={fn()}
+            >
+              <Paragraph>Your changes will be lost if you discard.</Paragraph>
+            </ModalPanel>
+          )}
+        />
+      </Story.Section>
 
-          <StoryGrid.Col title="With header icon">
-            <SizeTriggers
-              render={(size) => (
-                <ModalDemo
-                  size={size}
-                  title="Heads up"
-                  triggerLabel={size}
-                  icon={<WarningRegularIcon />}
-                >
-                  <Paragraph>
-                    The icon is accent-tinted and sits before the title in the
-                    header.
-                  </Paragraph>
-                </ModalDemo>
-              )}
-            />
-          </StoryGrid.Col>
+      <Story.Section title="With header icon">
+        <SizePanels
+          render={(size) => (
+            <ModalPanel
+              size={size}
+              title="Heads up"
+              icon={<WarningRegularIcon />}
+              onClose={fn()}
+            >
+              <Paragraph>
+                The icon is accent-tinted and sits before the title in the
+                header.
+              </Paragraph>
+            </ModalPanel>
+          )}
+        />
+      </Story.Section>
 
-          <StoryGrid.Col title="Close button hidden">
-            <SizeTriggers
-              render={(size) => (
-                <ModalDemo
-                  hideCloseButton
-                  size={size}
-                  title="Confirm"
-                  triggerLabel={size}
-                  footer={<Button text="Got it" onPress={fn()} />}
-                >
-                  <Paragraph>
-                    Dismiss via the backdrop, Escape, or an explicit action.
-                  </Paragraph>
-                </ModalDemo>
-              )}
-            />
-          </StoryGrid.Col>
-        </StoryGrid.Row>
+      <Story.Section title="Close button hidden">
+        <SizePanels
+          render={(size) => (
+            <ModalPanel
+              hideCloseButton
+              size={size}
+              title="Confirm"
+              footer={<Button text="Got it" onPress={fn()} />}
+              onClose={fn()}
+            >
+              <Paragraph>
+                Dismiss via the backdrop, Escape, or an explicit action.
+              </Paragraph>
+            </ModalPanel>
+          )}
+        />
+      </Story.Section>
+
+      <Story.Section title="Scrolling body with footer">
+        <ModalPanel
+          title="Terms of service"
+          footer={
+            <>
+              <Button
+                accent="neutral"
+                variant="soft"
+                text="Decline"
+                onPress={fn()}
+              />
+              <Button text="Accept" onPress={fn()} />
+            </>
+          }
+          onClose={fn()}
+        >
+          {Array.from({ length: 24 }, (_, index) => (
+            <Paragraph key={index}>
+              Paragraph {index + 1}. The footer sticks to the bottom of the
+              scroll box, and shows a top border only while it covers scrolled
+              content.
+            </Paragraph>
+          ))}
+        </ModalPanel>
       </Story.Section>
 
       <Story.Section title="Accents">
-        <StoryGrid.Row flexWrap>
-          {accents.map((accent) => (
-            <StoryGrid.Col key={accent} title={accent}>
-              <ModalDemo
-                accent={accent}
+        {accentsWithoutNeutral.map((accent) => (
+          <StoryGrid.Col key={accent} title={accent}>
+            <AccentScope accent={accent}>
+              <ModalPanel
                 title={`${accent} modal`}
-                triggerLabel={accent}
+                icon={<WarningRegularIcon />}
                 footer={
                   <>
                     <Button
-                      variant="outlined"
-                      accent={accent}
+                      accent="neutral"
+                      variant="soft"
                       text="Cancel"
                       onPress={fn()}
                     />
-                    <Button accent={accent} text="Confirm" onPress={fn()} />
+                    <Button text="Confirm" onPress={fn()} />
                   </>
                 }
+                onClose={fn()}
               >
                 <Paragraph>
-                  The accent themes the trigger, panel, and buttons together.
+                  The accent themes the header icon and the buttons; the panel
+                  ground stays neutral.
                 </Paragraph>
-              </ModalDemo>
-            </StoryGrid.Col>
-          ))}
-        </StoryGrid.Row>
+              </ModalPanel>
+            </AccentScope>
+          </StoryGrid.Col>
+        ))}
       </Story.Section>
     </Story>
   ),
@@ -312,7 +341,12 @@ export const ScrollingBodyWithFooterStory: ThisStory = {
       triggerLabel="Long content"
       footer={
         <>
-          <Button variant="outlined" text="Decline" onPress={fn()} />
+          <Button
+            accent="neutral"
+            variant="soft"
+            text="Decline"
+            onPress={fn()}
+          />
           <Button text="Accept" onPress={fn()} />
         </>
       }
@@ -373,7 +407,6 @@ export const Tests: StoryObj<typeof Modal> = {
 
     const dialog = await screen.findByRole("dialog");
     await expect(dialog).toHaveAttribute("aria-modal", "true");
-    // Labelled by its title.
     await expect(dialog).toHaveAccessibleName("Confirm deletion");
     // The dialog container is not an interactive control: it must not be a tab
     // stop (only the close button and body controls should be focusable).

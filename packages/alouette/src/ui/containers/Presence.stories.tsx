@@ -1,10 +1,12 @@
+import { expect, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useRef, useState } from "react";
 import { animationDurationsMs } from "../../animationDurationsMs";
+import { ReducedMotionContext } from "../../core/ReducedMotionContext";
 import { Button } from "../actions/Button";
 import { InfoMessage } from "../feedback/Message";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { Box } from "./Box";
 import { PresenceList, PresenceOne } from "./Presence";
@@ -22,7 +24,7 @@ import { PresenceList, PresenceOne } from "./Presence";
 function PresenceOneDemo(): ReactNode {
   const [gameNumber, setGameNumber] = useState(1);
   return (
-    <VStack className="items-start gap-m">
+    <View className="items-start gap-m">
       <Box className="relative h-24 w-64  rounded-md">
         <PresenceOne
           activeKey={gameNumber}
@@ -45,7 +47,7 @@ function PresenceOneDemo(): ReactNode {
           setGameNumber((n) => n + 1);
         }}
       />
-    </VStack>
+    </View>
   );
 }
 
@@ -58,7 +60,7 @@ function PresenceListDemo(): ReactNode {
   const nextIdRef = useRef(4);
   const [ids, setIds] = useState([1, 2, 3]);
   return (
-    <VStack className="items-start gap-m">
+    <View className="items-start gap-m">
       <Box className="bg-lowered w-80 rounded-md p-m">
         <PresenceList
           exitDurationMs={animationDurationsMs.collapse}
@@ -88,7 +90,7 @@ function PresenceListDemo(): ReactNode {
           setIds((current) => [...current, id]);
         }}
       />
-    </VStack>
+    </View>
   );
 }
 
@@ -105,6 +107,7 @@ export default meta;
 export const PreviewStory: StoryObj<unknown> = {
   name: "Presence Preview",
   parameters: {
+    chromatic: { disableSnapshot: true },
     layout: "padded",
   },
   render: () => <PresenceOneDemo />,
@@ -122,4 +125,32 @@ export const VariantsStory: StoryObj<unknown> = {
       </Story.Section>
     </Story>
   ),
+};
+
+export const ReducedMotionStory: StoryObj<unknown> = {
+  name: "Presence Reduced Motion",
+  parameters: { layout: "padded" },
+  render: () => (
+    <ReducedMotionContext.Provider value>
+      <View className="gap-m">
+        <PresenceOneDemo />
+        <PresenceListDemo />
+      </View>
+    </ReducedMotionContext.Provider>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole("button", { name: "Next game" }));
+    await expect(canvas.queryByText("Game 1")).toBeNull();
+    const card = canvas.getByText("Game 2").parentElement;
+    if (!card) throw new Error("Game card not found");
+    await expect(getComputedStyle(card).animationName).toBe("none");
+
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Dismiss item 2" }),
+    );
+    await expect(canvas.queryByText("Item 2")).toBeNull();
+    await expect(canvas.getByText("Item 3")).toBeVisible();
+  },
 };

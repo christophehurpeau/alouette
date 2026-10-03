@@ -18,7 +18,7 @@ export interface NavBarProps extends SelectionGroupProps {
   orientation?: SegmentedOrientation;
   /**
    * The bar fills the width it is given instead of hugging its destinations,
-   * which share it equally — what a stacked `AppHeader` wants for the line it
+   * which grow into it — what a stacked `AppHeader` wants for the line it
    * hands to the navigation.
    */
   stretch?: boolean;

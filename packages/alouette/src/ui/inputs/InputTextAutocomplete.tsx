@@ -21,10 +21,13 @@ export function InputTextAutocomplete({
   emptyLabel = "No result",
   placeholder,
   disabled,
+  invalid,
   accent,
   mode,
   className,
   testID,
+  "aria-describedby": ariaDescribedby,
+  "aria-required": ariaRequired,
   ...rest
 }: InputTextAutocompleteProps): ReactNode {
   const {
@@ -50,14 +53,18 @@ export function InputTextAutocomplete({
       <AccentScope accent={accent}>
         <InputText
           readOnly
+          // oxlint-disable-next-line jsx-a11y/role-has-required-aria-props -- React Native has no aria-controls (the .web.tsx input gets it from downshift)
           role="combobox"
           aria-expanded={isOpen}
           aria-label={rest["aria-label"]}
           aria-labelledby={rest["aria-labelledby"]}
+          aria-describedby={ariaDescribedby}
+          aria-required={ariaRequired}
           value={currentInputValue}
           mode={mode}
           placeholder={placeholder}
           disabled={disabled}
+          invalid={invalid}
           testID={testID}
           className={className}
           onPressIn={() => {
@@ -68,7 +75,7 @@ export function InputTextAutocomplete({
       <Popover
         open={isOpen}
         placement="top"
-        accent="none"
+        accent="neutral"
         aria-label={rest["aria-label"]}
         onClose={closeMenu}
       >

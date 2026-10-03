@@ -1,5 +1,5 @@
-import { PlusRegularIcon } from "alouette-icons/phosphor-icons/PlusRegularIcon";
-import { TrashRegularIcon } from "alouette-icons/phosphor-icons/TrashRegularIcon";
+import { PlusRegularIcon } from "alouette-icons/phosphor-icons/Plus";
+import { TrashRegularIcon } from "alouette-icons/phosphor-icons/Trash";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import {
   type ArrayPath,
@@ -14,7 +14,6 @@ import { Button } from "../actions/Button";
 import { IconButton } from "../actions/IconButton";
 import { StableAccentScope } from "../containers/StableAccentScope";
 import { View } from "../primitives/View";
-import { HStack, VStack } from "../stacks/stacks";
 import { FormItem } from "./FormItem";
 
 /**
@@ -109,13 +108,13 @@ function FormFieldArrayItem<
 
   return (
     <StableAccentScope accent={pendingRemoval ? "danger" : undefined}>
-      <HStack className="gap-sm items-center p-xxs">
+      <View className="flex-row gap-sm items-center p-xxs">
         <View className="grow shrink basis-0">
           {render({ control, name, index, label: itemLabel })}
         </View>
         {removable ? (
           <IconButton
-            variant="ghost"
+            variant="soft"
             icon={<TrashRegularIcon />}
             aria-label={removeLabel}
             onHoverIn={() => {
@@ -127,7 +126,7 @@ function FormFieldArrayItem<
             onPress={onRemove}
           />
         ) : null}
-      </HStack>
+      </View>
     </StableAccentScope>
   );
 }
@@ -137,7 +136,7 @@ function FormFieldArrayItem<
  * `control` from <Form>'s render params. FormFieldArray owns only the array
  * label and the add/remove buttons — it is agnostic about what an item contains,
  * including any per-item framing (a caller can wrap multi-field items in a
- * Surface). Each item's inputs (their values, labels and error messages) are the
+ * `<Box className="surface">`). Each item's inputs (their values, labels and error messages) are the
  * caller's job: `render` receives `control` and the item's path prefix, typed as
  * `${name}.${number}` so `${name}.value` / `${name}.firstName` compose into a
  * real field path for an object item, or `name` binds a raw value directly.
@@ -191,7 +190,7 @@ export function FormFieldArray<
       label={label}
       details={details}
       render={() => (
-        <VStack className="gap-xs">
+        <View className="gap-xs">
           {fields.map((field, index) => (
             <FormFieldArrayItem<TFieldValues, TName>
               key={field.id}
@@ -209,7 +208,7 @@ export function FormFieldArray<
           ))}
           <Button
             size="sm"
-            variant="outlined"
+            accent="neutral"
             icon={<PlusRegularIcon />}
             text={addLabel}
             className="self-start"
@@ -218,7 +217,7 @@ export function FormFieldArray<
               append(appendedItem);
             }}
           />
-        </VStack>
+        </View>
       )}
     />
   );

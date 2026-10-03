@@ -1,10 +1,53 @@
-# Choice inputs — autocomplete and single-select groups
+# Choice inputs — select, autocomplete and single-select groups
+
+## Select
+
+One value picked from a list, without typing. Options are data here (`options`,
+an array of `{ label, value, disabled? }`) rather than composed children — that
+is what separates it from the radio families below, whose children are JSX.
+
+```tsx
+import { Select } from "alouette";
+
+<Select
+  aria-label="Fruit"
+  placeholder="Pick a fruit"
+  options={[
+    { label: "Apple", value: "apple" },
+    { label: "Durian (sold out)", value: "durian", disabled: true },
+  ]}
+  defaultValue="apple"
+  onValueChange={setFruit}
+/>;
+```
+
+The value is controllable (`value` / `defaultValue` / `onValueChange`), and it
+also takes `accent`, `disabled` and `placeholder` (shown until something is
+selected). It renders no label element, so `aria-label` or `aria-labelledby` is
+required — that is the accessible name of the `combobox` it exposes on both
+platforms.
+
+The trigger is the `InputText` outlined material at the 44px touch height and
+needs no styling. `variant="tonal"` makes it a pill lifted off its ground — the
+material of a `tonal` button, ringed on keyboard focus only — for a select that
+is app chrome rather than a form field (the team or site an `AppSidebar`
+applies to). `icon` adds a leading glyph to either.
+
+Both platforms open the same `surface-popover` listbox of `ListboxOption` rows.
+Web anchors it under the trigger and drives it with downshift's `useSelect`
+(the ARIA select-only combobox: arrows, Home/End, type-ahead, Enter/Space,
+Escape); native presents it as an overlay over an `InteractiveBox` trigger.
+
+Inside a `FormField`, bind it as `value={field.value}`
+`onValueChange={field.onChange}` `aria-labelledby={labelId}`. It takes no `ref`
+and no `onBlur`, so those two `field` bindings have nowhere to go — pressing the
+label does not focus it.
 
 ## InputTextAutocomplete
 
 A text field backed by a filtered listbox — use it when the user types to narrow
-a known list. `Select` stays the right choice when the value is picked from the
-list without typing.
+a known list. `Select` above stays the right choice when the value is picked from
+the list without typing.
 
 ```tsx
 import { InputTextAutocomplete } from "alouette";
@@ -62,11 +105,14 @@ option. Label the group via `aria-labelledby`.
   which replaces the group's `onValueChange` and therefore requires a controlled
   group.
 - `RadioCardGroup` + `RadioCard` — cards with `icon`, `label`, `description` and
-  a radio indicator, for options that need explaining. The selected card is
-  `PressableBox`'s `contained` fill, the rest its `outlined` surface. Group
-  `variant` is `"list"` (default, one per row) or `"stack"` (cards wrap and share
-  a row from a 240px basis); both the group and each card take a `className` for
-  layout (widths, wrapping), not for restyling the card material.
+  a radio indicator, for options that need explaining. Group `variant` is the
+  card material, `PressableBox`'s `"tonal"` (default) or `"outlined"`: every
+  card shares it, the selected card takes the accent and
+  the others `accent="neutral"` — with `tonal`, white cards around a pale
+  accented one carrying the accent in its ink. Group `layout` is `"list"` (default, one per row) or
+  `"stack"` (cards wrap and share a row from a 240px basis); both the group and
+  each card take a `className` for layout (widths, wrapping), not for restyling
+  the card material.
 
 ```tsx
 <RadioGroup defaultValue="week" onValueChange={setRange} aria-labelledby={labelId}>
@@ -79,7 +125,7 @@ option. Label the group via `aria-labelledby`.
   <RadioButton value="week" label="Week" />
 </RadioButtonGroup>
 
-<RadioCardGroup variant="stack" defaultValue="public" onValueChange={setVisibility}>
+<RadioCardGroup layout="stack" defaultValue="public" onValueChange={setVisibility}>
   <RadioCard value="public" icon={<GlobeRegularIcon />} label="Public"
     description="Anyone with the link" />
   <RadioCard value="private" icon={<LockRegularIcon />} label="Private" />
@@ -90,6 +136,31 @@ option. Label the group via `aria-labelledby`.
     activeIcon={<ListDuotoneIcon />} />
   <RadioButton value="grid" label="Grid" icon={<SquaresFourRegularIcon />} />
 </RadioButtonGroup>
+```
+
+## Multi-select groups
+
+Two of those families with checkboxes: the group owns `values` (`string[]`),
+`defaultValues` and `onValuesChange(values)`, and each child toggles its `value`
+in or out. Roles are `group` + `checkbox`/`aria-checked`; label the group with
+`aria-label` or `aria-labelledby`.
+
+- `CheckboxGroup` + `Checkbox` — square-check list.
+- `CheckboxCardGroup` + `CheckboxCard` — the cards, same `layout` and `variant`
+  as `RadioCardGroup`: every checked card takes the accent.
+
+A `Checkbox` rendered outside a `CheckboxGroup` is a standalone boolean:
+`checked`, `defaultChecked`, `onValueChange(checked)` and its own `accent`. Inside
+a group it requires `value` and ignores those. `CheckboxCard` throws outside a
+group.
+
+```tsx
+<CheckboxGroup defaultValues={["email"]} onValuesChange={setChannels} aria-labelledby={labelId}>
+  <Checkbox value="email" label="Email" />
+  <Checkbox value="sms" label="SMS" />
+</CheckboxGroup>
+
+<Checkbox label="I accept the terms" checked={accepted} onValueChange={setAccepted} />
 ```
 
 ## ColorModePicker

@@ -1,6 +1,6 @@
 import { expect } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { HStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { IndeterminateToggleDemo } from "../story-components/IndeterminateToggleDemo";
 import { Story } from "../story-components/Story";
 import {
@@ -41,6 +41,10 @@ export default {
 
 export const CircularProgressPreviewStory: ThisStory = {
   name: "CircularProgress Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { progress: 60 },
   render: (args) => <CircularProgress {...args} />,
   play: async ({ canvasElement }) => {
@@ -59,20 +63,20 @@ export const CircularProgressVariantsStory: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Sizes">
-        <HStack className="items-center gap-m">
+        <View className="flex-row items-center gap-m">
           <CircularProgress progress={60} size="xs" />
           <CircularProgress progress={60} size="sm" />
           <CircularProgress progress={60} size="md" />
           <CircularProgress progress={60} size="lg" />
-        </HStack>
+        </View>
       </Story.Section>
 
       <Story.Section title="Accents">
-        <HStack className="items-center gap-m">
+        <View className="flex-row items-center gap-m">
           <CircularProgress progress={30} />
           <CircularProgress progress={60} accent="danger" />
           <CircularProgress progress={90} accent="success" />
-        </HStack>
+        </View>
       </Story.Section>
 
       <Story.Section title="Hidden">

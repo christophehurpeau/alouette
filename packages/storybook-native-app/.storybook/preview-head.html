@@ -1,3 +1,22 @@
+<!--
+  core.css pins html/body/#storybook-root to the viewport (the ScrollView
+  reset), so a story would scroll inside its own ScrollView and the document
+  never grow: Chromatic sizes a snapshot from the document and captured the
+  first viewport only, and the docs page could not scroll at all. Let the
+  document grow to the content instead, locally and in Chromatic alike.
+  Unlayered, so it wins over the reset in `@layer base`.
+-->
+<style>
+  html,
+  body,
+  #storybook-root {
+    height: auto;
+    min-height: 100vh;
+  }
+  body {
+    overflow: visible;
+  }
+</style>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link

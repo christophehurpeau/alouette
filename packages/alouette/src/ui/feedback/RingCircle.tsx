@@ -1,13 +1,16 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
-import Animated, {
+import {
   Easing,
+  ReduceMotion,
+  createAnimatedComponent,
   useAnimatedProps,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
 import { Circle, Svg } from "react-native-svg";
 import { animationDurationsMs } from "../../animationDurationsMs";
+import { useReducedMotion } from "../../core/ReducedMotionContext";
 
 export interface RingCircleProps {
   center: number;
@@ -23,7 +26,7 @@ export interface RingCircleProps {
   height?: number;
 }
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedCircle = createAnimatedComponent(Circle);
 
 // Matches the web ring's CSS `ease-out` (cubic-bezier(0, 0, 0.58, 1)).
 const easeOut = Easing.bezier(0, 0, 0.58, 1);
@@ -52,13 +55,17 @@ export function RingCircle({
   // strokeDashoffset is an SVG prop, not a view style, so NativeWind
   // transitions can't animate it — drive it with Reanimated instead.
   const animatedOffset = useSharedValue(scaledDashoffset ?? 0);
+  // Explicit rather than ReduceMotion.System, which Reanimated reads once at
+  // launch and would miss a setting changed while the app runs.
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     animatedOffset.value = withTiming(scaledDashoffset ?? 0, {
       duration: animationDurationsMs.progress,
       easing: easeOut,
+      reduceMotion: reducedMotion ? ReduceMotion.Always : ReduceMotion.Never,
     });
-  }, [animatedOffset, scaledDashoffset]);
+  }, [animatedOffset, scaledDashoffset, reducedMotion]);
 
   const animatedProps = useAnimatedProps(() => ({
     strokeDashoffset: animatedOffset.value,

@@ -1,7 +1,8 @@
-import { type ReactNode, useCallback, useState } from "react";
+import type { ReactNode } from "react";
 import { View } from "react-native";
 import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { useControllableChecked } from "../../core/useControllableChecked";
 import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBoxHitSlop } from "../containers/Box";
 
@@ -14,12 +15,11 @@ const TRAVEL_X = TRACK_WIDTH - THUMB_SIZE - THUMB_PADDING * 2;
 
 const trackVariants = tv(
   {
-    // TODO if we can fix web to use proper button, change aria-disabled to disabled
+    // react-native-web renders role="switch" as a div, which has no `:disabled`.
     base: [
-      "height-[36px] w-[58px]", // Must be identical to TRACK_HEIGHT and TRACK_WIDTH constants above
+      "h-[36px] w-[58px]", // TRACK_HEIGHT x TRACK_WIDTH
       "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
-      "transition-background-color duration-fast ease-in",
-      "outline-interactive-outlined-outline-focus",
+      "transition-[background-color] duration-fast ease-in",
       "aria-disabled:bg-disabled-interactive-muted",
     ].join(" "),
     variants: {
@@ -27,9 +27,10 @@ const trackVariants = tv(
         false: "bg-lowered",
         true: "bg-enabled",
       },
-      // Storybook-only static stand-in for the :hover/:active states above.
+      // The track has no hover or press material; a forced focus is the
+      // keyboard focus, the ring `InteractiveBoxHitSlop` draws on focus-visible.
       forceStyle: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-        ? { hover: "", focus: "", press: "" }
+        ? { hover: "", focus: "focus-ring", press: "" }
         : { hover: "", focus: "", press: "" },
     },
   },
@@ -41,7 +42,7 @@ const thumbVariants = tv(
     base: [
       "absolute rounded-full shadow-s aria-disabled:shadow-none",
       "transition-transform duration-fast ease-in",
-      "bg-surface aria-disabled:bg-disabled-interactive",
+      "bg-highlight aria-disabled:bg-disabled-interactive",
     ].join(" "),
   },
   { twMerge: false },
@@ -57,26 +58,6 @@ export interface SwitchProps {
   testID?: string;
 }
 
-function useControllableChecked(
-  controlled: boolean | undefined,
-  onValueChange?: (value: boolean) => void,
-): readonly [boolean, (next: boolean) => void] {
-  const [internal, setInternal] = useState(controlled ?? false);
-  const value = controlled ?? internal;
-  const onChange = useCallback(
-    (next: boolean) => {
-      if (controlled === undefined) {
-        setInternal(next);
-      }
-      if (next !== value) {
-        onValueChange?.(next);
-      }
-    },
-    [controlled, onValueChange, value],
-  );
-  return [value, onChange] as const;
-}
-
 function SwitchInner({
   checked,
   disabled,
@@ -84,7 +65,7 @@ function SwitchInner({
   onValueChange,
   ...props
 }: Omit<SwitchProps, "accent">): ReactNode {
-  const [value, setValue] = useControllableChecked(checked, onValueChange);
+  const [value, setValue] = useControllableChecked({ checked, onValueChange });
 
   return (
     <InteractiveBoxHitSlop
@@ -106,7 +87,7 @@ function SwitchInner({
       >
         <View
           aria-disabled={disabled === true}
-          className={thumbVariants({})}
+          className={thumbVariants()}
           style={{
             width: THUMB_SIZE,
             height: THUMB_SIZE,

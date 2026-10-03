@@ -1,6 +1,7 @@
-import { type ReactNode, useCallback, useState } from "react";
+import type { ReactNode } from "react";
 import { Switch as RNSwitch } from "react-native";
 import { useColorVariable } from "../../core/useColorToken";
+import { useControllableChecked } from "../../core/useControllableChecked";
 import { AccentScope, type AccentScopeProps } from "../containers/AccentScope";
 
 export interface SwitchProps {
@@ -12,33 +13,13 @@ export interface SwitchProps {
   testID?: string;
 }
 
-function useControllableChecked(
-  controlled: boolean | undefined,
-  onValueChange?: (value: boolean) => void,
-): readonly [boolean, (next: boolean) => void] {
-  const [internal, setInternal] = useState(controlled ?? false);
-  const value = controlled ?? internal;
-  const onChange = useCallback(
-    (next: boolean) => {
-      if (controlled === undefined) {
-        setInternal(next);
-      }
-      if (next !== value) {
-        onValueChange?.(next);
-      }
-    },
-    [controlled, onValueChange, value],
-  );
-  return [value, onChange] as const;
-}
-
 function SwitchInner({
   checked,
   disabled,
   onValueChange,
   ...props
 }: SwitchProps): ReactNode {
-  const [value, setValue] = useControllableChecked(checked, onValueChange);
+  const [value, setValue] = useControllableChecked({ checked, onValueChange });
   const trackBg = useColorVariable("--color-lowered");
   const thumb = useColorVariable("--color-highlight");
   const disabledTrackBg = useColorVariable(

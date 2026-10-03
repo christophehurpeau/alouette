@@ -8,8 +8,8 @@ import {
 } from "react";
 import type { View as RNView } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
-import { Popover } from "../containers/Popover";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
+import { Popover, type PopoverProps } from "../containers/Popover";
 import { View } from "../primitives/View";
 import { MenuContextProvider } from "./MenuContext";
 import { useMenuKeyboard } from "./useMenuKeyboard";
@@ -33,6 +33,23 @@ export interface MenuProps {
    */
   header?: ReactNode;
   accent?: Accent;
+  /**
+   * Which edge of the trigger the panel lines up with — `end` (the default)
+   * suits a small trigger at the end of a row, `start` a full-width one.
+   * Anchored web only.
+   */
+  align?: PopoverProps["align"];
+  /**
+   * `top` opens the panel above the trigger, for one pinned at the bottom of
+   * the viewport. Anchored web only.
+   */
+  side?: PopoverProps["side"];
+  /**
+   * `content` (the default) sizes the panel to its items, for a trigger
+   * narrower than them; `anchor` makes it exactly as wide as a full-width
+   * trigger. Anchored web only.
+   */
+  width?: PopoverProps["width"];
   onOpenChange?: (open: boolean) => void;
   children: ReactNode;
 }
@@ -47,6 +64,9 @@ export function Menu({
   label,
   header,
   accent,
+  align = "end",
+  side = "bottom",
+  width = "content",
   onOpenChange,
   children,
 }: MenuProps): ReactNode {
@@ -83,21 +103,15 @@ export function Menu({
       <Popover
         open={open}
         anchorRef={triggerRef}
-        // The trigger is narrower than the items it opens, and it sits at the
-        // end of whatever row holds it.
-        align="end"
-        width="content"
+        align={align}
+        width={width}
+        side={side}
         placement="top"
-        accent={accent ?? "none"}
+        accent={accent ?? "neutral"}
         onClose={close}
       >
-        <View className="pt-xxs">
-          <Surface
-            variant="highlight"
-            shadow="l"
-            size="sm"
-            className="p-xs min-w-[220px]"
-          >
+        <View className={side === "top" ? "pb-xxs" : "pt-xxs"}>
+          <Box className="surface-popover min-w-[220px]">
             {header === undefined ? null : (
               <View className="px-m py-xs">{header}</View>
             )}
@@ -106,7 +120,7 @@ export function Menu({
                 {children}
               </View>
             </MenuContextProvider>
-          </Surface>
+          </Box>
         </View>
       </Popover>
     </>

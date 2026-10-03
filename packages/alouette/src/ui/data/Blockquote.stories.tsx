@@ -2,8 +2,8 @@ import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
-import { Surface } from "../containers/Surface";
-import { Story, accents } from "../story-components/Story";
+import { Box } from "../containers/Box";
+import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { Blockquote } from "./Blockquote";
 import { Citation } from "./Citation";
 
@@ -20,7 +20,7 @@ export default {
     accent: {
       description: "The accent of the leading rule",
       control: "select",
-      options: accents,
+      options: accentsWithoutNeutral,
     },
     size: {
       description: "The size of the quoted text",
@@ -34,6 +34,10 @@ export default {
 
 export const BlockquotePreviewStory: ThisStory = {
   name: "Blockquote Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     children:
       "The only thing that makes life possible is permanent, intolerable uncertainty: not knowing what comes next.",
@@ -77,7 +81,7 @@ export const BlockquoteVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Accents">
-        {accents.map((accent) => (
+        {accentsWithoutNeutral.map((accent) => (
           <Quote
             key={accent}
             accent={accent}
@@ -88,12 +92,12 @@ export const BlockquoteVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="On a raised surface">
-        <Surface>
+        <Box className="surface">
           <Quote
             accent="brand"
             citation={<Citation>Ursula K. Le Guin</Citation>}
           />
-        </Surface>
+        </Box>
       </Story.Section>
     </Story>
   ),

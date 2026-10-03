@@ -17,8 +17,10 @@ export type {
   AlouetteModeTheme,
   AlouetteTheme,
   Accent,
+  AccentOrNeutral,
 } from "./core/AlouetteConfig";
 export { useCurrentMode, useCurrentTheme } from "./core/ThemeContext";
+export { useReducedMotion } from "./core/ReducedMotionContext";
 export type { ColorModePreference } from "./core/useColorMode";
 export { useResolvedColorMode, useSystemColorMode } from "./core/useColorMode";
 export type { ScopedThemeProps } from "./ui/containers/ScopedTheme";
@@ -33,8 +35,6 @@ export type { FlatListProps } from "./ui/primitives/FlatList";
 export { FlatList } from "./ui/primitives/FlatList";
 export type { SectionListProps } from "./ui/primitives/SectionList";
 export { SectionList } from "./ui/primitives/SectionList";
-export type { HStackProps, VStackProps, StackProps } from "./ui/stacks/stacks";
-export { Stack, HStack, VStack } from "./ui/stacks/stacks";
 export type { SeparatorProps } from "./ui/stacks/Separator";
 export { Separator } from "./ui/stacks/Separator";
 export type { StoryProps } from "./ui/story-components/Story";
@@ -69,10 +69,8 @@ export { PresenceList, PresenceOne } from "./ui/containers/Presence";
 export { animationDurationsMs } from "./animationDurationsMs";
 export type { PopoverProps } from "./ui/containers/Popover";
 export { Popover } from "./ui/containers/Popover";
-export type { SurfaceProps } from "./ui/containers/Surface";
-export { Surface } from "./ui/containers/Surface";
-export type { EditableSurfaceProps } from "./ui/containers/EditableSurface";
-export { EditableSurface } from "./ui/containers/EditableSurface";
+export type { EditableSectionProps } from "./ui/containers/EditableSection";
+export { EditableSection } from "./ui/containers/EditableSection";
 export type { ModalProps } from "./ui/containers/Modal";
 export { Modal } from "./ui/containers/Modal";
 export type {
@@ -117,6 +115,10 @@ export type { MenuItemProps } from "./ui/actions/MenuItem";
 export { MenuItem } from "./ui/actions/MenuItem";
 export type { InputTextMode, InputTextProps } from "./ui/inputs/InputText";
 export { InputText } from "./ui/inputs/InputText";
+export type { InputPasswordProps } from "./ui/inputs/InputPassword";
+export { InputPassword } from "./ui/inputs/InputPassword";
+export type { InputCodeMode, InputCodeProps } from "./ui/inputs/InputCode";
+export { InputCode } from "./ui/inputs/InputCode";
 export type {
   AutocompleteOption,
   InputTextAutocompleteProps,
@@ -126,7 +128,11 @@ export type { TextAreaProps } from "./ui/inputs/TextArea";
 export { TextArea } from "./ui/inputs/TextArea";
 export type { SwitchProps } from "./ui/inputs/Switch";
 export { Switch } from "./ui/inputs/Switch";
-export type { SelectOption, SelectProps } from "./ui/inputs/Select.shared";
+export type {
+  SelectOption,
+  SelectProps,
+  SelectVariant,
+} from "./ui/inputs/Select.shared";
 export { Select } from "./ui/inputs/Select";
 export type { RadioGroupProps } from "./ui/inputs/RadioGroup";
 export { RadioGroup } from "./ui/inputs/RadioGroup";
@@ -145,6 +151,14 @@ export type { RadioCardGroupProps } from "./ui/inputs/RadioCardGroup";
 export { RadioCardGroup } from "./ui/inputs/RadioCardGroup";
 export type { RadioCardProps } from "./ui/inputs/RadioCard";
 export { RadioCard } from "./ui/inputs/RadioCard";
+export type { CheckboxGroupProps } from "./ui/inputs/CheckboxGroup";
+export { CheckboxGroup } from "./ui/inputs/CheckboxGroup";
+export type { CheckboxProps } from "./ui/inputs/Checkbox";
+export { Checkbox } from "./ui/inputs/Checkbox";
+export type { CheckboxCardGroupProps } from "./ui/inputs/CheckboxCardGroup";
+export { CheckboxCardGroup } from "./ui/inputs/CheckboxCardGroup";
+export type { CheckboxCardProps } from "./ui/inputs/CheckboxCard";
+export { CheckboxCard } from "./ui/inputs/CheckboxCard";
 export type {
   SegmentedOrientation,
   SegmentedVariant,
@@ -153,6 +167,16 @@ export type { NavBarProps } from "./ui/navigation/NavBar";
 export { NavBar } from "./ui/navigation/NavBar";
 export type { NavBarItemProps } from "./ui/navigation/NavBarItem";
 export { NavBarItem } from "./ui/navigation/NavBarItem";
+export type { HeaderNavProps } from "./ui/navigation/HeaderNav";
+export { HeaderNav } from "./ui/navigation/HeaderNav";
+export type { HeaderNavItemProps } from "./ui/navigation/HeaderNavItem";
+export { HeaderNavItem } from "./ui/navigation/HeaderNavItem";
+export type { SidebarNavProps } from "./ui/navigation/SidebarNav";
+export { SidebarNav } from "./ui/navigation/SidebarNav";
+export type { SidebarNavSectionProps } from "./ui/navigation/SidebarNavSection";
+export { SidebarNavSection } from "./ui/navigation/SidebarNavSection";
+export type { SidebarNavItemProps } from "./ui/navigation/SidebarNavItem";
+export { SidebarNavItem } from "./ui/navigation/SidebarNavItem";
 export type { BreadcrumbsProps } from "./ui/navigation/Breadcrumbs";
 export { Breadcrumbs } from "./ui/navigation/Breadcrumbs";
 export type { BreadcrumbItemProps } from "./ui/navigation/BreadcrumbItem";
@@ -161,7 +185,7 @@ export type { TabsProps } from "./ui/navigation/Tabs";
 export { Tabs } from "./ui/navigation/Tabs";
 export type { TabProps } from "./ui/navigation/Tab";
 export { Tab } from "./ui/navigation/Tab";
-export type { FormItemProps } from "./ui/forms/FormItem";
+export type { FormItemProps, FormItemRenderParams } from "./ui/forms/FormItem";
 export { FormItem } from "./ui/forms/FormItem";
 export type { FormProps } from "./ui/forms/Form";
 export { Form, FormValidationError } from "./ui/forms/Form";
@@ -179,8 +203,8 @@ export type { SimpleVFormProps } from "./ui/forms/SimpleVForm";
 export { SimpleVForm } from "./ui/forms/SimpleVForm";
 export type { FormEditableItemProps } from "./ui/forms/FormEditableItem";
 export { FormEditableItem } from "./ui/forms/FormEditableItem";
-export type { FormEditableSurfaceProps } from "./ui/forms/FormEditableSurface";
-export { FormEditableSurface } from "./ui/forms/FormEditableSurface";
+export type { FormEditableSectionProps } from "./ui/forms/FormEditableSection";
+export { FormEditableSection } from "./ui/forms/FormEditableSection";
 export type { FormEditorProps } from "./ui/forms/useFormEditorModal";
 export type { AvatarProps } from "./ui/data/Avatar";
 export { Avatar } from "./ui/data/Avatar";
@@ -208,13 +232,19 @@ export type {
   LinearProgressProps,
   LinearProgressSize,
 } from "./ui/feedback/LinearProgress";
-export { LinearProgress } from "./ui/feedback/LinearProgress";
+export {
+  IndeterminateLinearProgress,
+  LinearProgress,
+} from "./ui/feedback/LinearProgress";
 export type {
   CircularProgressProps,
   CircularProgressSize,
   IndeterminateCircularProgressProps,
 } from "./ui/feedback/CircularProgress";
-export { CircularProgress } from "./ui/feedback/CircularProgress";
+export {
+  CircularProgress,
+  IndeterminateCircularProgress,
+} from "./ui/feedback/CircularProgress";
 export type { MessageProps } from "./ui/feedback/Message";
 export {
   ErrorMessage,
@@ -245,6 +275,15 @@ export type {
   AppShellMainProps,
 } from "./ui/layout/AppShell";
 export { AppShell, AppShellSidebar, AppShellMain } from "./ui/layout/AppShell";
+export type {
+  AppSidebarLayoutBreakpoint,
+  AppSidebarLayoutProps,
+} from "./ui/layout/AppSidebarLayout";
+export { AppSidebarLayout } from "./ui/layout/AppSidebarLayout";
+export type { AppSidebarProps } from "./ui/layout/AppSidebar";
+export { AppSidebar } from "./ui/layout/AppSidebar";
+export type { AppSidebarAccountProps } from "./ui/layout/AppSidebarAccount";
+export { AppSidebarAccount } from "./ui/layout/AppSidebarAccount";
 export type { AppHeaderProps } from "./ui/layout/AppHeader";
 export { AppHeader } from "./ui/layout/AppHeader";
 export type { AppHeaderSize } from "./ui/layout/AppHeader";

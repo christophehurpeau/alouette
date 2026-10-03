@@ -21,7 +21,7 @@ export interface FormEditableItemProps<TFieldValues extends FieldValues>
 /**
  * An EditableItem whose editor is a modal owning its own Form — see
  * useFormEditorModal for how the edit is kept out of the screen's state.
- * Reach for FormEditableSurface instead when the value is a block of several
+ * Reach for FormEditableSection instead when the value is a block of several
  * lines rather than a summary that fits beside the label.
  */
 export function FormEditableItem<TFieldValues extends FieldValues>({

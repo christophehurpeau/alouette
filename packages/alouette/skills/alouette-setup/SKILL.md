@@ -10,7 +10,6 @@ description: >
   Covers ios, android and web.
 type: lifecycle
 library: alouette
-library_version: "22.11.0"
 sources:
   - "christophehurpeau/alouette:packages/storybook-native-app/metro.config.cjs"
   - "christophehurpeau/alouette:packages/storybook-native-app/postcss.config.mjs"
@@ -64,8 +63,9 @@ independently of the JS bundle, and anything not covered is purged:
 @source "../node_modules/alouette/src/**/*.{ts,tsx,js}"; /* alouette source */
 ```
 
-`alouette/global.css` is an aggregator of `alouette/core.css` (structural,
-color-free) + `alouette/default-palette.css` (the default palette, sRGB hex).
+`alouette/global.css` is an aggregator of `alouette/core.css` (structural; its
+shadows read the palette's shadow color tokens) + `alouette/default-palette.css`
+(the default palette, sRGB hex).
 Wide-gamut color is opt-in — add `@import "alouette/default-palette-oklch.css";`
 after it to give web the display-p3 ramp. To ship a custom palette instead of the
 default, import `core.css` + your own generated palette CSS and pass the generated

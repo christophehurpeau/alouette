@@ -1,37 +1,45 @@
 ---
 name: alouette-layout
 description: >
-  Build screen structure: Box / InteractiveBox / SafeAreaBox and Surface for
-  containers, Stack / HStack / VStack and Separator to arrange them,
+  Build screen structure: Box / InteractiveBox / SafeAreaBox for containers,
+  raised with the surface utilities (surface, surface-{size}, lowered,
+  surface-flat, surface-popover), View with flex classes and Separator to
+  arrange them,
   ScreenCenterLayout and the screen scroll containers (ScreenScrollView /
   ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through
   SafeAreaScope) for the page itself, the application shell around every screen
-  (AppLayout + AppHeader and its brand / actions / account slots, or AppShell +
-  AppShellSidebar + AppShellMain when the shell is composed per route), and
+  (AppLayout + AppHeader and its brand / navigation / actions / account slots,
+  or AppShell +
+  AppShellSidebar + AppShellMain when the shell is composed per route;
+  AppSidebarLayout + AppSidebar for an app navigated from a fixed sidebar), and
   GradientBackground / GradientScrollView for a tinted ground. Space, round and
   raise everything with the alouette spacing, radius and shadow scale rather
   than raw Tailwind numbers. Load when building screen structure, an app header
   or shell, cards, spacing, or backgrounds.
 type: core
 library: alouette
-library_version: "22.11.0"
 requires:
   - alouette-theming
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Surface.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/stacks.tsx"
+  - "christophehurpeau/alouette:packages/alouette/scripts/build-css.ts"
   - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/Separator.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientBackground.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientScrollView.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenCenterLayout.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenScrollView.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenFlatList.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenSectionList.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/core/SafeAreaEdgesContext.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppLayout.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppShell.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebarLayout.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebar.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebarAccount.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeader.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNav.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNavItem.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderActions.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderAccount.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderSignIn.tsx"
@@ -43,49 +51,82 @@ This skill builds on alouette-theming. Read it first for the token model.
 
 # alouette — Layout
 
-Compose structure from `View`/`Box`, `Surface`, stacks and `Separator`, sized
-with the alouette spacing/radius/shadow scale (not the raw Tailwind numeric
-scale).
+Compose structure from `View`/`Box`, stacks and `Separator`, raised with the
+`surface` utilities and sized with the alouette spacing/radius/shadow scale (not
+the raw Tailwind numeric scale).
 
 ## Setup
 
 ```tsx
-import { Surface, VStack, Text } from "alouette";
+import { Box, View, Text } from "alouette";
 
-<Surface>
-  <VStack className="gap-m">
+<Box className="surface">
+  <View className="gap-m">
     <Text className="font-heading-bold text-xl">Card title</Text>
     <Text>Body</Text>
-  </VStack>
-</Surface>;
+  </View>
+</Box>;
 ```
 
 ## Core Patterns
 
-### Stacks
+### Rows and columns
 
-`Stack` is `flex-row flex-wrap`; `HStack` is `flex-row`; `VStack` is `flex-col`.
-They are thin `View` wrappers — add `gap-*` for spacing.
-
-```tsx
-<VStack className="gap-xs">…</VStack>
-<HStack className="gap-m items-center">…</HStack>
-```
-
-### Surface (elevated container)
-
-`variant`: `surface` (default) · `lowered` · `translucent` · `highlight` ·
-`highlight-accent`. `size`: `xxs` · `xs` · `sm` · `md` (default) · `lg` (padding + radius).
-`shadow`: `s` (default) · `m` · `l` · `lowered`; defaults to `lowered` when
-`variant="lowered"`.
+Arrange children with a `View` and flex classes. A `View` is already a column
+on React Native and react-native-web, so a column needs no direction class; a
+row is `flex-row`, a wrapping row `flex-row flex-wrap`. Add `gap-*` for spacing,
+and switch direction at a breakpoint with a prefix.
 
 ```tsx
-<Surface size="lg" shadow="m">Elevated</Surface>
-<Surface variant="lowered">Sunken</Surface>
+<View className="gap-xs">…</View>
+<View className="flex-row items-center gap-m">…</View>
+<View className="flex-col md:flex-row gap-m">…</View>
 ```
 
-A read-only section behind one edit button is `EditableSurface`
-(alouette-data/SKILL.md), not a hand-built heading row on a bare `Surface`.
+`HStack`, `VStack` and `Stack` were removed in 23.0.0;
+`npx alouette-codemod surface-and-stacks src` rewrites them.
+
+### Surfaces (raised containers)
+
+A raised card is a `Box` with the `surface` utility —
+`overflow-hidden bg-surface shadow-s surface-md transition-colors duration-fast` — plus `accent` on the `Box`
+when it takes one. Every class written after `surface` overrides its own part
+(the utility sorts ahead of them), and every class takes a breakpoint prefix:
+
+- size (padding + radius, one class): `surface-xxs` (8px / 8px) · `surface-xs`
+  (12 / 8) · `surface-sm` (16 / 16) · `surface-md` (32 / 16, default) ·
+  `surface-lg` (48 / 32)
+- ground: `bg-surface` · `bg-highlight` · `bg-highlight-accent` · `bg-translucent`
+  · `lowered` (utility: the lowered ground **and** its inset shadow, never split)
+- elevation: `shadow-s` · `shadow-m` · `shadow-l`
+- roles, used **instead of** `surface`: `surface-flat` — the card with no
+  elevation, a `border-border-muted` hairline in place of the shadow (same
+  ground, clip, size and transition), for a card inside a card, where a second
+  shadow reads as a card stacked on a card, and for a dense grid of cards ·
+  `surface-popover` — the panel a popover list opens in (overflow, ground,
+  shadow, padding and radius together)
+
+```tsx
+<Box className="surface shadow-m surface-sm md:surface-lg">Elevated</Box>
+<Box className="surface lowered surface-sm">Sunken</Box>
+<Box accent="info" className="surface">Info card</Box>
+<Box className="surface">
+  <Box className="surface-flat surface-sm">Card inside a card</Box>
+</Box>
+<Box className="surface-popover">{menuRows}</Box>
+```
+
+Never write `shadow-none border border-border-muted` after `surface` by hand:
+that is `surface-flat`. The hairline is 1px inside the box, so a flat card and a
+raised one of the same content differ by 2px.
+
+Size a surface with a `surface-*` class, not a hand-picked `p-*` + `rounded-*`,
+so every surface of a size matches. Override one side after it when a layout
+needs it (`surface-sm py-0`). The `Surface` component was removed in 23.0.0: it
+was this utility behind props that cannot take a breakpoint prefix.
+
+A read-only section behind one edit button is `EditableSection`
+(alouette-data/SKILL.md), not a hand-built heading row on a bare surface.
 
 ### Boxes
 
@@ -166,6 +207,25 @@ web — and are only passed as `contentContainerStyle` when non-zero, because on
 native an inline style wins over the className, so an inset edge would override a
 same-edge padding class.
 
+### Centered single-purpose screens
+
+`ScreenCenterLayout` is the sign-in / splash / empty-state frame: three slots in
+a full-height column, `content` centered in the space the other two leave.
+
+```tsx
+import { ScreenCenterLayout } from "alouette";
+
+<ScreenCenterLayout
+  header={<BrandLogo icon={<BirdRegularIcon />} />}
+  content={<SignInForm />}
+  footer={<Text className="text-sm text-muted">v2.4.0</Text>}
+/>;
+```
+
+All three slots are required — pass `null` for one that has nothing in it. It
+scrolls nothing and applies no insets, so put it inside a screen scroll
+container or a `SafeAreaBox` when it has to clear the system bars.
+
 ### Application shell
 
 `AppLayout` is the shell around a screen: a header, an optional left sidebar
@@ -176,47 +236,65 @@ the screen inside needs **no scroll container and no insets of its own**.
 `AppHeaderBrand` (+ `BrandLogo`) at the start, the navigation as children, and
 `AppHeaderActions` at the end — a `ColorModePicker`, an `IconButton`, and the
 session, which is `AppHeaderAccount` signed in and `AppHeaderSignIn` signed out.
+The navigation sits next to the brand by default; `HeaderNav` +
+`HeaderNavItem` is the material made for that spot — text destinations on the
+bar itself, the current one underlined — while a segmented `NavBar`
+(alouette-navigation/SKILL.md) is the alternative, and always takes
+`navAlign="center"`.
 
 When the shell is rendered **once** for a whole app but the sidebar belongs to
 one section of it, compose the same shell from `AppShell` + a per-route
 `AppShellSidebar` and `AppShellMain` instead of an `AppLayout` per route.
 
-Slots, breakpoints, the signed-out header and the per-route shell:
-[references/app-shell.md](references/app-shell.md).
+An application rather than a site — a dashboard, a back office — takes
+`AppSidebarLayout` instead: from `sidebarBreakpoint` (`lg` by default) the
+viewport is fixed, an `AppSidebar` (brand, scope selects, a `SidebarNav`, the
+account) stands on the left and the screen scrolls alone in a raised panel;
+below it its `header` takes over, scrolling with the screen as in `AppLayout`.
+Its `ColorModePicker` goes in the account menu's `header` from the breakpoint,
+and in the `AppHeader` actions below it.
+
+Slots, breakpoints, the signed-out header, the per-route shell and the sidebar
+layout: [references/app-shell.md](references/app-shell.md).
 
 ## Common Mistakes
 
-### HIGH Surface lowered/shadow passed as the wrong prop shape
+### HIGH Reaching for the removed Surface component
 
 Wrong:
 
 ```tsx
-<Surface lowered>Sunken</Surface>
+<Surface variant="lowered">Sunken</Surface>
+<Surface variant="highlight" shadow="l" size="sm" className="py-xs">…</Surface>
 ```
 
 Correct:
 
 ```tsx
-<Surface variant="lowered">Sunken</Surface>
+<Box className="surface lowered">Sunken</Box>
+<Box className="surface bg-highlight shadow-l surface-sm py-xs">…</Box>
 ```
 
-`Surface` takes `variant` and `shadow` enum props; there is no boolean `lowered`
-prop. `shadow` defaults to `"s"`, or `"lowered"` when `variant="lowered"`.
+`Surface` was removed in 23.0.0: its `variant` / `shadow` / `size` props could
+not take a breakpoint prefix. Write the utilities on a `Box`: `surface` is the card,
+`lowered` carries the lowered ground with its inset shadow (`bg-lowered` alone
+loses the shadow), and `surface-sm` is the old `size="sm"` padding + radius as
+one class. A popover list panel is `surface-popover`, not the classes rebuilt.
 
-Source: packages/alouette/src/ui/containers/Surface.tsx
+Source: packages/alouette/scripts/build-css.ts
 
 ### MEDIUM Using the raw Tailwind numeric scale instead of tokens
 
 Wrong:
 
 ```tsx
-<VStack className="gap-2 p-4 rounded-lg">…</VStack>
+<View className="gap-2 p-4 rounded-lg">…</View>
 ```
 
 Correct:
 
 ```tsx
-<VStack className="gap-xs p-m rounded-sm">…</VStack>
+<View className="gap-xs p-m rounded-sm">…</View>
 ```
 
 `p-4` / `gap-2` use the default Tailwind scale, not the alouette spacing/radius
@@ -272,24 +350,28 @@ dependency.
 
 Source: packages/alouette/src/ui/layout/GradientBackground.tsx
 
-### MEDIUM Treating Stack as a column / a navigation Stack
+### MEDIUM Reaching for the removed stacks
 
 Wrong:
 
 ```tsx
-<Stack className="flex-col">…</Stack>
+<VStack className="gap-m">…</VStack>
+<HStack className="items-center">…</HStack>
+<Stack className="gap-m">…</Stack>
 ```
 
 Correct:
 
 ```tsx
-<VStack className="gap-m">…</VStack>
+<View className="gap-m">…</View>
+<View className="flex-row items-center">…</View>
+<View className="flex-row flex-wrap gap-m">…</View>
 ```
 
-alouette `Stack` is `flex-row flex-wrap`. For a column use `VStack`; for a row
-use `HStack`. It is unrelated to navigation stacks.
+`HStack`, `VStack` and `Stack` were wrappers around those classes, removed in
+23.0.0. A navigation `Stack` (expo-router) is unrelated.
 
-Source: packages/alouette/src/ui/stacks/stacks.tsx
+Source: packages/alouette/src/ui/primitives/View.tsx
 
 ### MEDIUM Putting a screen scroll container inside AppLayout
 
@@ -305,7 +387,7 @@ Correct:
 
 ```tsx
 <AppLayout header={<AppHeader … />}>
-  <VStack className="p-m gap-m">{content}</VStack>
+  <View className="p-m gap-m">{content}</View>
 </AppLayout>
 ```
 

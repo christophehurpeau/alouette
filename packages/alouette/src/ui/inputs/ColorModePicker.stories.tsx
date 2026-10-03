@@ -6,10 +6,10 @@ import {
   type ColorModePreference,
   useResolvedColorMode,
 } from "../../core/useColorMode";
+import { Box } from "../containers/Box";
 import { ScopedTheme } from "../containers/ScopedTheme";
-import { Surface } from "../containers/Surface";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import {
   ColorModePicker,
@@ -40,6 +40,10 @@ export default {
 
 export const PreviewColorModePickerStory: ThisStory = {
   name: "ColorModePicker Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => <ColorModePicker {...args} />,
 };
 
@@ -58,7 +62,7 @@ function ThemedPreview({ name, variant }: ThemedPreviewProps): ReactNode {
   const mode = useResolvedColorMode(preference);
 
   return (
-    <VStack className="gap-m items-start">
+    <View className="gap-m items-start">
       <ColorModePicker
         variant={variant}
         aria-label={name}
@@ -66,12 +70,12 @@ function ThemedPreview({ name, variant }: ThemedPreviewProps): ReactNode {
         onValueChange={setPreference}
       />
       <ScopedTheme theme={mode}>
-        <Surface size="sm" className="w-[240px]">
+        <Box className="surface surface-sm w-[240px]">
           <Text className="font-body-bold text-base">Preview</Text>
           <Text className="text-sm text-muted">{`${name}: ${mode}`}</Text>
-        </Surface>
+        </Box>
       </ScopedTheme>
-    </VStack>
+    </View>
   );
 }
 

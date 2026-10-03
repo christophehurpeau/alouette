@@ -1,11 +1,15 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BookOpenRegularIcon } from "alouette-icons/phosphor-icons/BookOpenRegularIcon";
+import { BookOpenRegularIcon } from "alouette-icons/phosphor-icons/BookOpen";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Paragraph } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { View } from "../primitives/View";
+import {
+  Story,
+  accentsWithoutNeutral,
+  neutralAndAccents,
+} from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { ExternalLinkText } from "./ExternalLinkText";
 
@@ -42,7 +46,7 @@ same-tab web navigation or the native \`Linking\` app switch.
     size: { control: "select", options: ["sm", "md"] },
     accent: {
       control: "select",
-      options: [undefined, ...accents],
+      options: neutralAndAccents,
     },
     disabled: { control: "boolean" },
   },
@@ -50,6 +54,10 @@ same-tab web navigation or the native \`Linking\` app switch.
 
 export const PreviewExternalLinkTextStory: ThisStory = {
   name: "ExternalLinkText Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     href: "https://storybook.js.org/",
     text: "Open Storybook",
@@ -59,7 +67,7 @@ export const PreviewExternalLinkTextStory: ThisStory = {
 function AccentVariant({ accent }: { accent?: Accent }): ReactNode {
   return (
     <StoryGrid.Col title={accent ?? "Default"}>
-      <VStack className="gap-xs items-start">
+      <View className="gap-xs items-start">
         <ExternalLinkText
           accent={accent}
           href="https://storybook.js.org/"
@@ -71,7 +79,7 @@ function AccentVariant({ accent }: { accent?: Accent }): ReactNode {
           href="https://storybook.js.org/"
           text="Disabled"
         />
-      </VStack>
+      </View>
     </StoryGrid.Col>
   );
 }
@@ -97,7 +105,7 @@ export const VariantsExternalLinkTextStory: ThisStory = {
       <Story.Section withSurface title="Accents">
         <StoryGrid.Row flexWrap>
           <AccentVariant />
-          {accents.map((accent) => (
+          {accentsWithoutNeutral.map((accent) => (
             <AccentVariant key={accent} accent={accent} />
           ))}
         </StoryGrid.Row>
@@ -112,7 +120,7 @@ export const VariantsExternalLinkTextStory: ThisStory = {
       </Story.Section>
 
       <Story.Section withSurface title="In a text flow">
-        <VStack className="gap-xs items-start max-w-[420px]">
+        <View className="gap-xs items-start max-w-[420px]">
           <Paragraph>
             Every component is documented with its props, its variants and a
             play test.
@@ -122,7 +130,7 @@ export const VariantsExternalLinkTextStory: ThisStory = {
             href="https://storybook.js.org/docs"
             text="Read the documentation about writing stories and play functions"
           />
-        </VStack>
+        </View>
       </Story.Section>
     </Story>
   ),

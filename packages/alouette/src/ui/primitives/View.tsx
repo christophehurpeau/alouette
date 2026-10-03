@@ -1,8 +1,10 @@
-import { forwardRef } from "react";
+import type { ReactNode, Ref } from "react";
 import { View as RNView, type ViewProps as RNViewProps } from "react-native";
 
-export type ViewProps = RNViewProps;
+export interface ViewProps extends RNViewProps {
+  ref?: Ref<RNView>;
+}
 
-export const View = forwardRef<RNView, ViewProps>((props, ref) => {
-  return <RNView ref={ref} {...props} />;
-});
+export function View(props: ViewProps): ReactNode {
+  return <RNView {...props} />;
+}

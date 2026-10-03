@@ -33,5 +33,8 @@ export function Icon({
     color,
     width: size,
     height: size,
+    // A glyph never handles a touch: it goes to the pressable around it, or
+    // through to what lies under the glyph (an `InputText` slot over its field).
+    pointerEvents: "none",
   });
 }

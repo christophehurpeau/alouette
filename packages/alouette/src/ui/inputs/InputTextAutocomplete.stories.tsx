@@ -2,8 +2,8 @@ import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { View } from "../primitives/View";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import { InputTextAutocomplete } from "./InputTextAutocomplete";
 import type { InputTextAutocompleteProps } from "./InputTextAutocomplete.shared";
@@ -31,14 +31,14 @@ function FruitAutocomplete(
 function ControlledFruitAutocomplete(): ReactNode {
   const [value, setValue] = useState("banana");
   return (
-    <VStack className="gap-xs">
+    <View className="gap-xs">
       <FruitAutocomplete
         aria-label="Controlled fruit"
         value={value}
         onValueChange={setValue}
       />
       <Text className="font-mono text-xs text-muted">value: {value}</Text>
-    </VStack>
+    </View>
   );
 }
 
@@ -57,6 +57,10 @@ export default {
 } satisfies Meta<typeof InputTextAutocomplete>;
 
 export const PreviewInputTextAutocompleteStory: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { placeholder: "Search a fruit..." },
   render: (args) => <FruitAutocomplete onValueChange={fn()} {...args} />,
 };
@@ -65,11 +69,11 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section title="Variants">
-        {([undefined, ...accents] as const).map((accent) => (
+        {neutralAndAccents.map((accent) => (
           <Story.SubSection
-            key={accent || "default"}
+            key={accent}
             withSurface
-            title={accent ?? "Default"}
+            title={accent}
             accent={accent}
           >
             <StoryGrid.Row flexWrap>

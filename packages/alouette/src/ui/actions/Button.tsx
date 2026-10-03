@@ -1,16 +1,20 @@
-import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircleRegularIcon";
-import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/WarningDuotoneIcon";
+import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircle";
+import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactNode, type Ref, useEffect, useState } from "react";
 import type { View as RNView } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { Accent, AccentOrNeutral } from "../../core/AlouetteConfig";
+import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
 import { ExternalLink } from "../../expo/ExternalLink";
 import {
   type ExternalOpenLinkBehavior,
   defaultExternalOpenLinkBehavior,
 } from "../../expo/ExternalLink.shared";
 import { AccentScope } from "../containers/AccentScope";
-import { IndeterminateCircularProgress } from "../feedback/CircularProgress";
+import {
+  type CircularProgressSize,
+  IndeterminateCircularProgress,
+} from "../feedback/CircularProgress";
 import { indeterminateExitDurationMs } from "../feedback/useSimulatedProgress";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";
@@ -18,10 +22,26 @@ import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
+/** `lg` is the prominent call to action of a landing page or a hero. */
 export const buttonHeight = {
   sm: 38,
   md: 44,
+  lg: 52,
 } as const;
+
+export type ButtonSize = keyof typeof buttonHeight;
+
+interface ButtonSizeMetrics {
+  iconSize: number;
+  terminalIconSize: number;
+  spinnerSize: CircularProgressSize;
+}
+
+const buttonSizeMetrics: Record<ButtonSize, ButtonSizeMetrics> = {
+  sm: { iconSize: 16, terminalIconSize: 24, spinnerSize: "xs" },
+  md: { iconSize: 20, terminalIconSize: 32, spinnerSize: "sm" },
+  lg: { iconSize: 24, terminalIconSize: 36, spinnerSize: "sm" },
+};
 
 const buttonVariants = tv(
   {
@@ -35,19 +55,23 @@ const buttonVariants = tv(
     variants: {
       size: {
         sm: {
-          frame: "rounded-sm px-sm gap-xxs min-h-[38px]",
+          frame: "rounded-full px-sm gap-xxs min-h-[38px]",
           text: "text-sm py-xxs",
         },
         md: {
-          frame: "rounded-sm px-m gap-xs min-h-[44px]",
+          frame: "rounded-full px-m gap-xs min-h-[44px]",
           text: "text-base py-xs",
+        },
+        lg: {
+          frame: "rounded-full px-l gap-sm min-h-[52px]",
+          text: "text-lg py-xs",
         },
       },
       variant: {
-        contained: { text: "text-on-accent" },
-        outlined: { text: "text-sharp" },
-        ghost: { text: "text-sharp" },
-        soft: { text: "text-sharp" },
+        tonal: {},
+        filled: {},
+        outlined: {},
+        soft: {},
       },
       disabled: { true: {}, false: {} },
       dimmed: {
@@ -57,24 +81,32 @@ const buttonVariants = tv(
     },
     compoundVariants: [
       {
-        variant: "contained",
+        variant: "tonal",
         disabled: false,
-        ghost: false,
-        class: { icon: "text-on-accent" },
+        class: { text: "text-on-tonal", icon: "text-on-tonal" },
       },
       {
-        variant: "contained",
+        variant: "filled",
         disabled: false,
-        ghost: true,
-        class: {
-          text: "text-sharp hover:text-on-accent",
-          icon: "text-sharp hover:text-on-accent",
-        },
+        class: { text: "text-on-accent", icon: "text-on-accent" },
       },
-      { variant: "outlined", disabled: false, class: { icon: "text-sharp" } },
-      { variant: "soft", disabled: false, class: { icon: "text-sharp" } },
       {
-        variant: "contained",
+        variant: "outlined",
+        disabled: false,
+        class: { text: "text-sharp", icon: "text-sharp" },
+      },
+      {
+        variant: "soft",
+        disabled: false,
+        class: { text: "text-accent underline", icon: "text-accent" },
+      },
+      {
+        variant: "tonal",
+        disabled: true,
+        class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
+      },
+      {
+        variant: "filled",
         disabled: true,
         class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
       },
@@ -89,17 +121,18 @@ const buttonVariants = tv(
         class: { icon: "text-disabled-muted", text: "text-disabled-muted" },
       },
     ],
-    defaultVariants: { size: "md", variant: "contained" },
+    defaultVariants: { size: "md", variant: "tonal" },
   },
   { twMerge: false },
 );
 
-type ButtonSizeProps = Pick<VariantProps<typeof buttonVariants>, "size">;
+interface ButtonSizeProps {
+  /** `lg` is for the prominent call to action of a landing page or a hero. */
+  size?: ButtonSize;
+}
 
 export type ButtonState = "failed" | "loading" | "success";
 
-/** Icon shown above the text for a terminal `state`, once the spinner's
- * finish animation has played out. */
 function resolveTerminalIcon(state: ButtonState | undefined): {
   terminalIcon: SVGIconElement | undefined;
   terminalIconAccent: Accent | undefined;
@@ -120,11 +153,13 @@ function resolveTerminalIcon(state: ButtonState | undefined): {
 }
 
 export interface ButtonProps
-  extends Omit<PressableBoxProps, "children">, ButtonSizeProps {
+  extends Omit<PressableBoxProps, "children" | "variant">, ButtonSizeProps {
+  variant?: VariantProps<typeof buttonVariants>["variant"];
   icon?: SVGIconElement;
   /** Replaces `icon` while the button is hovered, focused or pressed. */
   activeIcon?: SVGIconElement;
-  accent?: Accent;
+  /** Defaults to the inherited accent, or `brand` outside an accent scope. */
+  accent?: AccentOrNeutral;
   text: ReactNode;
   state?: ButtonState;
   /**
@@ -152,13 +187,14 @@ export function Button({
   text,
   disabled,
   state,
-  accent = "brand",
-  variant = "contained",
+  accent: accentProp,
+  variant,
   size = "md",
   className,
   forceStyle,
   ...pressableProps
 }: ButtonProps): ReactNode {
+  const accent = useAccentOrInheritedOrBrand(accentProp);
   const isLoading = state === "loading";
 
   // Keep the spinner (and the disabled look) mounted past `state` leaving
@@ -183,6 +219,7 @@ export function Button({
   const hasOverlayIcon = showSpinner || terminalIcon !== undefined;
 
   const isDisabled = isButtonDisabled({ disabled, state });
+  const { iconSize, terminalIconSize, spinnerSize } = buttonSizeMetrics[size];
   const styles = buttonVariants({
     size,
     variant,
@@ -205,14 +242,14 @@ export function Button({
             <IndeterminateCircularProgress
               loading={isLoading}
               accent={accent}
-              size={size === "sm" ? "xs" : "sm"}
+              size={spinnerSize}
             />
           ) : (
             <AccentScope accent={terminalIconAccent}>
               <Icon
                 icon={terminalIcon}
                 className={styles.terminalIcon()}
-                size={size === "sm" ? 24 : 32}
+                size={terminalIconSize}
               />
             </AccentScope>
           )}
@@ -227,7 +264,7 @@ export function Button({
           active={forceStyle !== undefined}
           disabled={isDisabled}
           className={styles.icon()}
-          size={size === "sm" ? 16 : 20}
+          size={iconSize}
         />
       ) : null}
       <Text aria-disabled={isDisabled} className={styles.text()}>

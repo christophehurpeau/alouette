@@ -1,7 +1,7 @@
-import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
-import { InfoRegularIcon } from "alouette-icons/phosphor-icons/InfoRegularIcon";
-import { QuestionRegularIcon } from "alouette-icons/phosphor-icons/QuestionRegularIcon";
-import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
+import { InfoRegularIcon } from "alouette-icons/phosphor-icons/Info";
+import { QuestionRegularIcon } from "alouette-icons/phosphor-icons/Question";
+import { WarningRegularIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactNode, useId } from "react";
 import type { GestureResponderEvent } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
@@ -10,7 +10,7 @@ import { CollapsibleErrorMessage } from "../actions/CollapsibleErrorMessage";
 import { usePressAsync } from "../actions/usePressAsync";
 import type { SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
-import { HStack, VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Modal, type ModalProps } from "./Modal";
 
 function noop(): void {
@@ -34,7 +34,6 @@ interface AsyncActionProps {
 }
 
 interface AlertDialogBaseProps extends Pick<ModalProps, "size" | "testID"> {
-  /** Whether the dialog is shown. */
   visible: boolean;
   /** Heading; also labels the dialog for assistive tech. */
   title: string;
@@ -66,8 +65,16 @@ interface ConfirmAlertDialogProps
   confirmText?: ReactNode;
   /** Cancel button label. Defaults to "Cancel". */
   cancelText?: ReactNode;
-  /** Disables the confirm button (e.g. while a form is invalid). */
   confirmDisabled?: boolean;
+  /**
+   * Which action carries the button material. "confirm" (default) is an
+   * accented tonal confirm beside a soft Cancel. "cancel" is a neutral filled
+   * Cancel beside a soft confirm — for an irreversible action where backing out
+   * is the expected answer. Filled, not tonal: a neutral tonal ground is the
+   * white of the panel and would dissolve into it. The order stays Cancel then
+   * confirm, so the buttons never trade places.
+   */
+  primaryAction?: "cancel" | "confirm";
 }
 
 interface AcknowledgeAlertDialogProps extends AlertDialogBaseProps {
@@ -95,7 +102,6 @@ interface RequiredAlertDialogProps
   variant: "required";
   /** Action button label. Defaults to "OK". */
   confirmText?: ReactNode;
-  /** Disables the action button (e.g. while a form is invalid). */
   confirmDisabled?: boolean;
 }
 
@@ -105,7 +111,6 @@ export type AlertDialogProps =
   | RequiredAlertDialogProps;
 
 interface ResolvedVariant {
-  /** Footer buttons for the variant. */
   footer: ReactNode;
   /**
    * Handler for the dialog's dismiss affordances (backdrop / Escape / Android
@@ -115,7 +120,6 @@ interface ResolvedVariant {
 }
 
 interface ActionFooterProps {
-  /** The variant's buttons, in reading order. */
   children: ReactNode;
   errorToMessage: AsyncActionProps["errorToMessage"];
   error: Error | null;
@@ -139,16 +143,17 @@ function ActionFooter({
       />
     );
   return (
-    <VStack className="w-full gap-sm">
-      <HStack className="items-center justify-end gap-m">{children}</HStack>
+    <View className="w-full gap-sm">
+      <View className="flex-row items-center justify-end gap-m">
+        {children}
+      </View>
       {errorMessage}
-    </VStack>
+    </View>
   );
 }
 
 interface ResolveVariantParams {
   accent: Accent;
-  /** State of the confirm action, driven by `usePressAsync`. */
   buttonState: ButtonState | undefined;
   error: Error | null;
   isPending: boolean;
@@ -180,7 +185,6 @@ function resolveVariant(
     case "required": {
       const { confirmText, confirmDisabled, errorToMessage } = props;
       return {
-        // Non-dismissible: only the explicit action closes it.
         onDismiss: noop,
         footer: (
           <ActionFooter error={error} errorToMessage={errorToMessage}>
@@ -204,19 +208,23 @@ function resolveVariant(
         cancelText,
         confirmDisabled,
         errorToMessage,
+        primaryAction = "confirm",
       } = props;
+      const isCancelPrimary = primaryAction === "cancel";
       return {
         onDismiss: isPending ? noop : onCancel,
         footer: (
           <ActionFooter error={error} errorToMessage={errorToMessage}>
             <Button
-              variant="outlined"
+              accent="neutral"
+              variant={isCancelPrimary ? "filled" : "soft"}
               text={cancelText ?? "Cancel"}
               disabled={isPending}
               onPress={onCancel}
             />
             <Button
               accent={accent}
+              variant={isCancelPrimary ? "soft" : "tonal"}
               text={confirmText ?? "Confirm"}
               state={buttonState}
               disabled={confirmDisabled}
@@ -281,12 +289,10 @@ export function AlertDialog(props: AlertDialogProps): ReactNode {
   );
 }
 
-// Omit that distributes over the union so each variant keeps its own props.
 type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
   ? Omit<T, K>
   : never;
 
-// Icon is fixed by the usage component; the accent stays the caller's choice.
 export type AlertDialogUsageProps = DistributiveOmit<AlertDialogProps, "icon">;
 
 export function QuestionAlertDialog(props: AlertDialogUsageProps): ReactNode {

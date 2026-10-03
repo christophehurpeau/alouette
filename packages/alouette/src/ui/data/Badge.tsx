@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
-import type { Accent } from "../../core/AlouetteConfig";
-import { AccentScope } from "../containers/AccentScope";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
+import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
 import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
@@ -9,7 +9,7 @@ import { Text } from "../primitives/Text";
 const badgeVariants = tv(
   {
     slots: {
-      frame: "flex-row items-center self-start rounded-full",
+      frame: "border flex-row items-center self-start rounded-full",
       text: "font-body-bold",
       icon: "",
     },
@@ -20,17 +20,17 @@ const badgeVariants = tv(
       },
       variant: {
         solid: {
-          frame: "bg-highlight-accent",
-          text: "text-sharp",
-          icon: "text-sharp",
+          frame: "bg-emphasis border-emphasis",
+          text: "text-on-emphasis",
+          icon: "text-on-emphasis",
         },
         "solid.enabled": {
-          frame: "bg-enabled",
+          frame: "bg-enabled border-enabled",
           text: "text-on-accent",
           icon: "text-on-accent",
         },
         outlined: {
-          frame: "border border-accent",
+          frame: "bg-highlight-accent border-accent",
           text: "text-accent",
           icon: "text-accent",
         },
@@ -47,29 +47,29 @@ type BadgeSize = NonNullable<BadgeVariantProps["size"]>;
 const ICON_SIZE: Record<BadgeSize, number> = { sm: 12, md: 16 };
 
 export interface BadgeProps {
-  accent?: Accent;
+  /** Defaults to the inherited accent, or `brand` outside an accent scope. */
+  accent?: AccentOrNeutral;
   size?: BadgeSize;
-  variant?: NonNullable<BadgeVariantProps["variant"]>;
+  variant?: BadgeVariantProps["variant"];
   icon?: SVGIconElement;
   children?: ReactNode;
 }
 
 export function Badge({
-  accent = "brand",
+  accent: accentProp,
   size = "md",
   variant = "solid",
   icon,
   children,
 }: BadgeProps): ReactNode {
+  const accent = useAccentOrInheritedOrBrand(accentProp);
   const styles = badgeVariants({ size, variant });
   return (
-    <AccentScope accent={accent}>
-      <Box className={styles.frame()}>
-        {icon ? (
-          <Icon icon={icon} size={ICON_SIZE[size]} className={styles.icon()} />
-        ) : null}
-        <Text className={styles.text()}>{children}</Text>
-      </Box>
-    </AccentScope>
+    <Box accent={accent} className={styles.frame()}>
+      {icon ? (
+        <Icon icon={icon} size={ICON_SIZE[size]} className={styles.icon()} />
+      ) : null}
+      <Text className={styles.text()}>{children}</Text>
+    </Box>
   );
 }

@@ -4,9 +4,9 @@ import type {
   TextInput as RNTextInput,
   View as RNView,
 } from "react-native";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { useControllableValue } from "../../core/useControllableValue";
-import { Surface } from "../containers/Surface";
+import { Box } from "../containers/Box";
 import { ScrollView } from "../primitives/ScrollView";
 import { Text } from "../primitives/Text";
 import { View, type ViewProps } from "../primitives/View";
@@ -81,12 +81,17 @@ export interface InputTextAutocompleteProps {
   emptyLabel?: string;
   placeholder?: string;
   disabled?: boolean;
-  accent?: Accent;
+  /** As on `InputText`: danger border and `aria-invalid` on the field. */
+  invalid?: boolean;
+  accent?: AccentOrNeutral;
   mode?: InputTextMode;
   className?: string;
   testID?: string;
   "aria-label"?: string;
   "aria-labelledby"?: string;
+  /** Web only in effect, like on `InputText`. */
+  "aria-describedby"?: string;
+  "aria-required"?: boolean;
 }
 
 export function defaultFilterOption(
@@ -258,7 +263,7 @@ export function AutocompleteMenu({
 }: AutocompleteMenuProps): ReactNode {
   const { ref: menuRef, ...restMenuProps } = menuProps;
   return (
-    <Surface variant="highlight" shadow="l" size="sm" className="p-xs pl-md">
+    <Box className="surface-popover">
       {/* Sibling of the listbox, not a child of it: a listbox owns options
           only, so a bare text node in there is announced as "0 items" and the
           message itself is skipped. */}
@@ -307,6 +312,6 @@ export function AutocompleteMenu({
           })}
         </ScrollView>
       </View>
-    </Surface>
+    </Box>
   );
 }

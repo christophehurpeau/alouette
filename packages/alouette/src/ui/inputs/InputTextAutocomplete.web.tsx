@@ -16,10 +16,13 @@ export function InputTextAutocomplete({
   emptyLabel = "No result",
   placeholder,
   disabled,
+  invalid,
   accent,
   mode,
   className,
   testID,
+  "aria-describedby": ariaDescribedby,
+  "aria-required": ariaRequired,
   ...rest
 }: InputTextAutocompleteProps): ReactNode {
   const anchorRef = useRef<RNView>(null);
@@ -44,6 +47,9 @@ export function InputTextAutocomplete({
             ref={inputRef}
             mode={mode}
             placeholder={placeholder}
+            invalid={invalid}
+            aria-describedby={ariaDescribedby}
+            aria-required={ariaRequired}
             testID={testID}
             {...restInputProps}
             // Tapping the input reopens the menu; react-native-web's TextInput
@@ -59,7 +65,7 @@ export function InputTextAutocomplete({
       <Popover
         open={isOpen}
         anchorRef={anchorRef}
-        accent="none"
+        accent="neutral"
         onClose={closeMenu}
       >
         <View className="pt-xxs">

@@ -1,19 +1,20 @@
 ---
 name: alouette-icons
 description: >
-  Use Phosphor icons with alouette. Each icon is imported from its own module
-  (alouette-icons/phosphor-icons/IconName) so only what is used is bundled, and
-  is then either rendered through the Icon component or handed as an element to
+  Use Phosphor icons with alouette. Each glyph is imported from its own module
+  (alouette-icons/phosphor-icons/GlyphName, exporting GlyphNameRegularIcon,
+  GlyphNameDuotoneIcon and GlyphNameFillIcon) so only what is used is bundled,
+  and is then either rendered through the Icon component or handed as an element to
   a component that takes one (Button, IconButton, Message). Its color comes from
   a text-* token class rather than from the SVG, so an icon follows the theme
   and the accent around it. Load when adding icons to alouette UI.
 type: composition
 library: alouette
-library_version: "22.11.0"
 requires:
   - alouette-theming
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/Icon.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/InteractiveIcon.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Button.stories.tsx"
   - "christophehurpeau/alouette:CLAUDE.md"
 ---
@@ -31,7 +32,7 @@ className to a concrete color token and applies it as the SVG color.
 
 ```tsx
 import { Icon } from "alouette";
-import { HeartRegularIcon } from "alouette-icons/phosphor-icons/HeartRegularIcon";
+import { HeartRegularIcon } from "alouette-icons/phosphor-icons/Heart";
 
 <Icon icon={<HeartRegularIcon />} size={24} className="text-accent" />;
 ```
@@ -45,8 +46,8 @@ and tint it for you.
 
 ```tsx
 import { Button, IconButton } from "alouette";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
-import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeft";
+import { XRegularIcon } from "alouette-icons/phosphor-icons/X";
 
 <Button text="Back" icon={<ArrowLeftRegularIcon />} />
 <IconButton icon={<XRegularIcon />} aria-label="Close" onPress={close} />
@@ -62,8 +63,10 @@ Available on `Button`, `IconButton`, `MenuItem`, `NavBarItem`, `Tab` and
 `RadioButton`; a disabled control never swaps.
 
 ```tsx
-import { HouseDuotoneIcon } from "alouette-icons/phosphor-icons/HouseDuotoneIcon";
-import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+import {
+  HouseDuotoneIcon,
+  HouseRegularIcon,
+} from "alouette-icons/phosphor-icons/House";
 
 <NavBarItem
   href="/home"
@@ -117,10 +120,10 @@ import { ArrowLeftRegularIcon } from "alouette-icons";
 Correct:
 
 ```tsx
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeft";
 ```
 
-Icons are individually importable modules; a barrel import pulls in the entire
+Glyphs are individually importable modules; a barrel import pulls in the entire
 generated set and bloats the bundle.
 
 Source: packages/alouette/src/ui/actions/Button.stories.tsx; CLAUDE.md (Icons)

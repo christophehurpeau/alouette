@@ -9,7 +9,6 @@ description: >
   different component tree per size, or unmounting a heavy off-screen variant.
 type: core
 library: alouette
-library_version: "22.11.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/windowSize/SwitchBreakpoints.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/windowSize/useCurrentBreakpointName.ts"
@@ -31,9 +30,9 @@ variant.
 ## Setup
 
 ```tsx
-import { VStack } from "alouette";
+import { View } from "alouette";
 
-<VStack className="flex-col md:flex-row gap-m">…</VStack>;
+<View className="flex-col md:flex-row gap-m">…</View>;
 ```
 
 ## Core Patterns
@@ -43,7 +42,7 @@ import { VStack } from "alouette";
 ```tsx
 <View className="p-m lg:p-xl" />
 <Text className="text-base md:text-lg" />
-<VStack className="flex-col md:flex-row" />
+<View className="flex-col md:flex-row" />
 ```
 
 Stack on narrow screens, switch to a row at `md` (768px) and up.

@@ -11,6 +11,9 @@ npm-debug.*
 web-build/
 /.expo-shared
 /storybook-static/
+/playwright-results/
+/playwright-report/
+/snapshots/
 
 # macOS
 .DS_Store

@@ -1,7 +1,9 @@
 # alouette — Application shell
 
 The shell around every screen, in full: `AppLayout` at one call site, or
-`AppShell` + `AppShellSidebar` + `AppShellMain` composed per route.
+`AppShell` + `AppShellSidebar` + `AppShellMain` composed per route; and
+`AppSidebarLayout` for an application whose navigation lives in a fixed
+sidebar.
 
 ## AppLayout
 
@@ -55,17 +57,57 @@ import {
 
 `AppHeader` is the `banner`: `brand` in the start slot, `actions` in the end
 slot, and its children are the navigation slot. From `md` on web the three sit on
-one boxed line with the navigation centered; below that — and on native at every
-width — brand and actions share the first line and the navigation spans the
-second (hence `stretch` on the bar). `size` is `"xs" | "sm" | "md"`, `variant` is
-`"bar"` (default, its own ground plus a downward shadow) or `"transparent"` (for
-a landing hero), `contentWidth` is `"boxed"` (default, max 1200px) or `"full"`. It
-pads its own top safe-area inset unless an ancestor `SafeAreaScope` already
-consumed the edge (`withSafeAreaTop={false}` opts out).
+one boxed line in reading order, the navigation packed against the brand and the
+free space left on the actions side; below that — and on native at every width —
+brand and actions share the first line and the navigation spans the second (hence
+`stretch` on a `NavBar`). `navAlign="center"` is the alternative single-line
+layout: the start slot grows too, so the navigation lands in the middle, and it
+stays centered even without `actions` (the end slot is rendered empty to balance
+it). `size` is `"xs" | "sm" | "md"`, `variant` is `"bar"` (default, its own ground
+plus a downward shadow) or `"transparent"` (for a landing hero), `contentWidth` is
+`"boxed"` (default, max 1200px) or `"full"`. It pads its own top safe-area inset
+unless an ancestor `SafeAreaScope` already consumed the edge
+(`withSafeAreaTop={false}` opts out).
+
+The navigation slot takes either material. `HeaderNav` + `HeaderNavItem`
+is the bar's own: text destinations sitting directly on it, the current one
+underlined in the group's accent, so it fits beside the brand — which is what
+the default `navAlign="start"` is for. `NavBar` (alouette-navigation/SKILL.md) is
+the segmented bar, a control of its own, so a header carrying one takes
+`navAlign="center"` — the alignment follows the material, never the design's
+mood.
+
+```tsx
+<AppHeader
+  brand={<AppHeaderBrand title="Alouette" href="/" />}
+  actions={<AppHeaderSignIn label="Log in" href="/login" />}
+>
+  <HeaderNav aria-label="Main" value={pathname} onValueChange={router.push}>
+    <HeaderNavItem href="/home" label="Home" />
+    <HeaderNavItem
+      href="/inbox"
+      label="Inbox"
+      aria-label="Inbox, 3 unread"
+      badge={<Badge size="sm">3</Badge>}
+    />
+  </HeaderNav>
+</AppHeader>
+```
+
+`HeaderNav` owns the value like every other selection group (`value` +
+`onValueChange`, or `defaultValue`) and its items match it against their own
+`href` — the same `link` + `aria-current="page"` semantics as `NavBarItem`, with
+the same `icon` / `activeIcon` / `activeAccent`, plus a `badge` rendered after
+the label. A badge is not part of the accessible name, so name the item with
+`aria-label` when the label alone no longer does. Every item is a 44px tap target
+whose affordance is the bar's `soft` fill; the underline is state, never the
+affordance.
 
 The slot components: `AppHeaderBrand` (`title`, optional `subtitle` and
 `brandLogo`; given `href` or `onPress` it becomes a real pressable instead of a
-row wrapped in a link), `BrandLogo` (an icon on an accent disc),
+row wrapped in a link), `BrandLogo` (an icon on an accent disc;
+`accent="neutral"` over a ground of its own accent, such as a `transparent`
+header's hero, where the accented disc fades in dark mode),
 `AppHeaderActions` (spaces the end-slot controls) and `AppHeaderAccount` — the
 signed-in account as one `Avatar` trigger opening a `Menu` of `MenuItem`s, which
 is where session actions belong rather than in the bar itself.
@@ -73,7 +115,8 @@ is where session actions belong rather than in the bar itself.
 Signed out, the session is `AppHeaderSignIn` instead: a `Button` with the bar's
 sizing, in the bar itself, because a visitor has exactly one action and it must
 stay one press away. Pass it straight as `actions`, or beside a secondary
-`variant="outlined"` "Sign up" inside an `AppHeaderActions`. It takes the `Button`
+neutral `soft` "Sign up" (`accent="neutral" variant="soft"`: a neutral `tonal`
+ground is the bar's own white) inside an `AppHeaderActions`. It takes the `Button`
 props (`label` in place of `text`, `icon`, `accent`, `variant`, `disabled`) plus
 `href`, the in-app destination — a real `<a>` on web, ignored on native, where
 expo Router's `<Link asChild>` supplies the `onPress`. A destination outside the
@@ -110,7 +153,7 @@ persists it.
       <IconButton
         icon={<BellRegularIcon />}
         aria-label="Notifications"
-        variant="ghost"
+        variant="soft"
       />
       <AppHeaderAccount name="Ada Lovelace">
         <MenuItem label="Profile" onPress={openProfile} />
@@ -167,3 +210,123 @@ consumed for the body, and a `web:sticky` rail slot.
 
 Source: packages/alouette/src/ui/layout/AppLayout.tsx; ui/layout/AppShell.tsx;
 ui/layout/AppHeader.tsx
+
+## AppSidebarLayout — an application with a sidebar
+
+For an application rather than a site: from `sidebarBreakpoint` the frame is
+fixed to the viewport, the `sidebar` stands on its lowered ground, and the
+screen sits in a raised `bg-screen` panel inset in it — the one scroll
+container, so the sidebar never moves. Below it the sidebar is hidden and
+`header` takes over, scrolling with the screen exactly as in an `AppShell`, so
+phones keep the page they have. Both are one tree switched by breakpoint
+classes: crossing the breakpoint keeps the screen mounted.
+
+`sidebarBreakpoint` is `"md" | "lg" | "xl"` (768 / 1024 / 1280px), `lg` by
+default: at `md` a 280px sidebar leaves the screen under 500px, so lower it
+only for a screen that holds up at that width.
+
+```tsx
+import {
+  AppHeader,
+  AppHeaderAccount,
+  AppHeaderActions,
+  AppHeaderBrand,
+  AppSidebar,
+  AppSidebarAccount,
+  AppSidebarLayout,
+  ColorModePicker,
+  IconButton,
+  MenuItem,
+  NavBar,
+  NavBarItem,
+  Select,
+  SidebarNav,
+  Text,
+  View,
+} from "alouette";
+
+<AppSidebarLayout
+  className="h-screen"
+  sidebar={
+    <AppSidebar
+      brand={<AppHeaderBrand href="/" title="Alouette" />}
+      actions={<IconButton aria-label="Search" icon={…} size="sm" variant="soft" />}
+      header={
+        <Select
+          variant="tonal"
+          aria-label="Club"
+          icon={<FeatherRegularIcon />}
+          options={clubs}
+          value={clubId}
+          onValueChange={setClubId}
+        />
+      }
+      footer={
+        <AppSidebarAccount
+          name={user.name}
+          description={user.email}
+          header={
+            <View className="flex-row items-center justify-between gap-sm">
+              <Text className="text-sm text-muted">Color mode</Text>
+              <ColorModePicker value={preference} onValueChange={setPreference} />
+            </View>
+          }
+        >
+          <MenuItem label="Log out" accent="danger" onPress={logOut} />
+        </AppSidebarAccount>
+      }
+    >
+      <SidebarNav aria-label="Main" value={pathname} onValueChange={router.push}>
+        …
+      </SidebarNav>
+    </AppSidebar>
+  }
+  header={
+    <AppHeader
+      brand={…}
+      actions={
+        <AppHeaderActions>
+          <ColorModePicker value={preference} onValueChange={setPreference} />
+          <AppHeaderAccount name={user.name}>…</AppHeaderAccount>
+        </AppHeaderActions>
+      }
+    >
+      <NavBar stretch aria-label="Primary" value={pathname} onValueChange={router.push}>
+        …
+      </NavBar>
+    </AppHeader>
+  }
+>
+  <View className="gap-l p-m md:p-l">{screen}</View>
+</AppSidebarLayout>;
+```
+
+- `children` is plain content in the `main` landmark, on the screen ground, so
+  a screen written for `AppLayout` renders unchanged — never a
+  `ScreenScrollView` inside, which would nest a second scroll view. The layout
+  applies every safe-area inset.
+- The frame fills its parent (`flex-1`): a web root with no height of its own
+  passes `className="h-screen"`.
+- `header` is the navigation under the breakpoint, where the sidebar's
+  destinations are out of reach, in a form fitting their number: a few in a
+  `NavBar` (or an `HeaderNav`); a long navigation behind a menu button opening
+  a drawer.
+- `AppSidebar` pins `brand` + `actions` (one row) and `header` at the top,
+  `footer` at the bottom, and scrolls only `children`. Its width is 280px;
+  `className` overrides it.
+- What the navigation applies to (a team, a site) is a `Select`
+  `variant="tonal"` with a leading `icon` in `header` — a pill lifted off the
+  sidebar rather than a form field (alouette-forms/SKILL.md).
+- `AppSidebarAccount` is the signed-in footer row: avatar, name and a second
+  line, opening its `MenuItem`s above it, as wide as the row.
+- The light/dark switch is a `ColorModePicker` in each tree: from the
+  breakpoint in the `header` of the `AppSidebarAccount` menu (the brand row has
+  no room for it beside its actions), below it in the `AppHeader` actions as in
+  `AppLayout`.
+  Only the visible one is exposed. Both take the same stored preference, which
+  the app applies with `useResolvedColorMode` + a `ScopedTheme` around the
+  layout (alouette-theming/SKILL.md). A press in the menu's header does not
+  close the menu. Keyboard users reach the picker with Shift+Tab from the first
+  item, since the menu takes the focus as it opens.
+
+Source: packages/alouette/src/ui/layout/AppSidebarLayout.tsx

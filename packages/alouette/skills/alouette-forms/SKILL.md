@@ -1,26 +1,33 @@
 ---
 name: alouette-forms
 description: >
-  Collect and validate user input. Inputs: InputText and TextArea for text,
-  Switch for a toggle, InputTextAutocomplete to narrow a known list by typing.
-  Single-select groups, each composing its children rather than taking an
-  options array: RadioGroup, RadioButtonGroup (which the light/dark
-  ColorModePicker is built on) and RadioCardGroup. Validated forms over
-  react-hook-form: Form owns the instance and passes its control down, so the
-  form type is written once and every field's value type is inferred; FormField
-  labels one field and reports its error; FormFieldArray repeats a group of
-  fields; FormSubmitButton drives the submit lifecycle; SimpleVForm is the
-  vertical-stack shortcut; FormEditableItem and FormEditableSurface edit a row
-  or a section in a modal owning its own Form. Load when building inputs, radio
-  groups, a color-mode picker or a validated form.
+  Collect and validate user input. Inputs: InputText and TextArea,
+  InputPassword with its show/hide toggle, InputCode for a one-time code
+  (never a row of InputTexts), Switch, Select to pick one value
+  from a known list and InputTextAutocomplete to narrow that list by typing.
+  Single-select groups composing their children, never an options array: RadioGroup,
+  RadioButtonGroup (behind the light/dark ColorModePicker) and RadioCardGroup;
+  multi-select CheckboxGroup and CheckboxCardGroup, and a standalone Checkbox.
+  Validated forms over react-hook-form: Form owns the instance and passes its
+  control down, so the form type is written once and every field's value type
+  is inferred; FormField labels one field and reports its error;
+  FormFieldArray repeats a group of fields; FormSubmitButton drives the submit
+  lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and
+  FormEditableSection edit a row or a section in a modal owning its own Form.
+  Load when building inputs, radio groups or a validated form.
 type: core
 library: alouette
-library_version: "22.11.0"
 requires:
   - alouette-theming
   - alouette-actions
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputText.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputPassword.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputCode.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputCode.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.shared.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.web.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.shared.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.web.tsx"
@@ -34,6 +41,10 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCard.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxGroup.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Checkbox.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxCardGroup.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxCard.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/ColorModePicker.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/ColorModePicker.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/Form.tsx"
@@ -43,13 +54,13 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormSubmitButton.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableSurface.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableSection.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/useFormEditorModal.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormFieldArray.stories.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableItem.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableSurface.stories.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableSection.stories.tsx"
 ---
 
 This skill builds on alouette-theming (token model) and alouette-actions (the
@@ -92,9 +103,29 @@ union of every field, and never a per-field type argument.
 `mode` bundles the right keyboard, input mode, autocomplete and secure entry:
 `"password" | "email" | "number" | "tel" | "url" | "search" | "webSearch"`.
 
+A one-time code (SMS, e-mail, authenticator) is `InputCode`, never a row of
+`InputText`s: one input holds the code behind its cells, so paste, OS autofill,
+Backspace and the screen reader see a single field. Modes, `onComplete` and the
+form wiring: [references/input-code.md](references/input-code.md).
+
+A password is `InputPassword`, not `mode="password"`: that mode plus an eye
+toggle in the field (`aria-pressed` while the password shows, named by
+`toggleLabel`, default "Show password"), controlled through `visible` /
+`defaultVisible` / `onVisibleChange`. Pass `autoComplete="new-password"` on a
+sign-up form.
+
+### Slots: a glyph or an icon button in the field
+
+`startSlot` / `endSlot` overlay the field's leading / trailing 44px, the text
+padded past them: an `Icon` carrying its own ink (`text-muted`, or
+`text-form-disabled-text` on a disabled field) or a `soft` `sm` `IconButton`.
+Fixed-width content only, never a prefix text. With a slot, `className` lands
+on the frame around the input, the box the parent lays out.
+
 ```tsx
-<InputText mode="password" value={pw} onChangeText={setPw} />
-<InputText mode="number" value={qty} onChangeText={setQty} />
+<InputPassword autoComplete="new-password" toggleLabel="Afficher le mot de passe" />
+<InputText placeholder="Search" startSlot={<Icon icon={<MagnifyingGlassRegularIcon />} className="text-muted" />} />
+<InputText endSlot={<IconButton variant="soft" size="sm" icon={<CalendarBlankRegularIcon />} aria-label="Pick a date" onPress={openPicker} />} />
 ```
 
 ### TextArea, Switch, disabled
@@ -109,14 +140,15 @@ union of every field, and never a per-field type argument.
 <Switch disabled checked={on} />
 ```
 
-### Autocomplete and single-select groups
+### Select, autocomplete and single-select groups
 
-`InputTextAutocomplete` is a text field backed by a filtered listbox, for
-narrowing a known list by typing. Three single-select families share one
-group-owns-the-value API and compose their children rather than take an options
-array: `RadioGroup` + `Radio` (circle-dot list),
-`RadioButtonGroup` + `RadioButton` (segmented pill bar) and
+`Select` picks one value from a list without typing; `InputTextAutocomplete` is a
+text field backed by a filtered listbox, for narrowing that list by typing. Three
+single-select families share one group-owns-the-value API and compose their
+children rather than take an options array: `RadioGroup` + `Radio` (circle-dot
+list), `RadioButtonGroup` + `RadioButton` (segmented pill bar) and
 `RadioCardGroup` + `RadioCard` (icon/label/description cards).
+Multi-select: `CheckboxGroup`, `CheckboxCardGroup` (`values: string[]`) and a standalone boolean `Checkbox` for form opt-ins (an immediate setting stays a `Switch`).
 
 `RadioButtonGroup` also takes `variant="icon"` — a pill of square icon-only
 chips, each option's `label` staying its accessible name. `ColorModePicker` is
@@ -160,11 +192,14 @@ function submitErrorToMessage(error: unknown): string {
       name="name"
       label="Name"
       required="Name is required."
-      render={({ field, labelId }) => (
+      render={({ field, labelId, describedBy, invalid, required }) => (
         <InputText
           ref={field.ref}
           value={field.value}
           aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          aria-required={required}
+          invalid={invalid}
           onChangeText={field.onChange}
           onBlur={field.onBlur}
         />
@@ -174,88 +209,46 @@ function submitErrorToMessage(error: unknown): string {
 />;
 ```
 
-The type argument goes on `SimpleVForm` / `Form` only — `defaultValues` is a
-`DeepPartial`, which infers poorly, so that one stays explicit. Nothing below it
-needs one.
-
 ### FormField wiring
 
 `FormField` renders any input through `render` — it is not tied to `InputText`.
-The rendered input must spread the three `field` bindings and the label:
+The rendered input must wire the `field` bindings and `FormItem`'s state:
 
 - `control={control}` — from the enclosing `Form`'s `render` params; types `name`
   and `field.value`.
 - `ref={field.ref}` — lets pressing the label focus the input (via
   react-hook-form `setFocus`).
 - `value={field.value}` / `onChangeText={field.onChange}` / `onBlur={field.onBlur}`.
-- `aria-labelledby={labelId}` — ties the input to `FormItem`'s generated label.
+- `aria-labelledby={labelId}`, `aria-describedby={describedBy}`, `invalid={invalid}`
+  and `aria-required={required}` — `FormItem`'s state (label, `details` + error
+  ids, danger border + `aria-invalid`, required); every alouette field takes them.
 
 `required` doubles as the empty-field message: `true` shows the marker with no
 message; any other `ReactNode` is the message shown once the field is left empty.
 `validate` takes a react-hook-form validator (returns an error string or
-`undefined`). For rich/non-string error content, use `renderError`.
+`undefined`) and sits beside `required` on the same `FormField`; its `v` is the
+field's value type, so a `number` field's validator takes a number without a
+cast. For rich/non-string error content, use `renderError`.
 
 ```tsx
-<FormField
-  control={control}
-  name="email"
-  label="Email"
-  validate={(v) =>
-    /^[^@]+@[^@]+$/.test(v) ? undefined : "Enter a valid email."
-  }
-  render={({ field, labelId }) => (
-    <InputText
-      ref={field.ref}
-      mode="email"
-      value={field.value}
-      aria-labelledby={labelId}
-      onChangeText={field.onChange}
-      onBlur={field.onBlur}
-    />
-  )}
-/>
+validate={(v) => (/^[^@]+@[^@]+$/.test(v) ? undefined : "Enter a valid email.")}
 ```
-
-`validate`'s `v` is that field's value type, so a `number` field's validator takes
-a number without a cast.
 
 ### Custom layout with Form
 
-When the layout isn't a plain vertical stack, use `Form` directly and place a
-`FormSubmitButton` (or call `submit` yourself). `render` receives
-`{ control, submit }`.
-
-```tsx
-import { Form, FormSubmitButton } from "alouette";
-
-<Form<Values>
-  defaultValues={{ name: "", email: "" }}
-  onSubmit={async (values) => saveToServer(values)}
-  render={({ control, submit }) => (
-    <>
-      {/* fields */}
-      <FormSubmitButton
-        label="Save"
-        errorToMessage={submitErrorToMessage}
-        onPress={submit}
-      />
-    </>
-  )}
-/>;
-```
-
-To split the fields into their own component, give it a
-`control: Control<Values>` prop rather than reaching for `useFormContext`. The
-form instance is still in context — `setFocus` (to move focus between fields)
-only lives there — but `control` is what carries the types.
+When the layout isn't a plain vertical stack, use `Form` directly: `render`
+receives `{ control, submit }`, and a `FormSubmitButton` takes `submit`. Fields
+split into their own component take a `control: Control<Values>` prop, not
+`useFormContext`. Example in
+[references/custom-form-layout.md](references/custom-form-layout.md).
 
 ### Repeatable item lists and edit-in-a-modal rows
 
 `FormFieldArray` wraps `useFieldArray` and owns the array label, add/remove
 buttons and `minSize` padding; `render` gets the item's path prefix (typed
 `` `${name}.${number}` ``) and composes its own `FormField`s from it.
-`FormEditableItem` (an `EditableItem` row) and `FormEditableSurface` (an
-`EditableSurface` section, for a value of several lines) share one editor: a
+`FormEditableItem` (an `EditableItem` row) and `FormEditableSection` (an
+`EditableSection` section, for a value of several lines) share one editor: a
 modal owning **its own** `Form`, mounted per open — so cancelling is an unmount,
 not a restore — and one editor prop set, exported as `FormEditorProps`. All
 three are detailed in
@@ -301,19 +294,21 @@ Wrong:
 
 ```tsx
 <InputText secureTextEntry autoComplete="current-password" />
+<InputText keyboardType="email-address" inputMode="email" />
 ```
 
 Correct:
 
 ```tsx
-<InputText mode="password" />
+<InputPassword />
+<InputText mode="email" />
 ```
 
 The `mode` prop bundles `inputMode` + `keyboardType` + `autoComplete` +
 `secureTextEntry` consistently across platforms; setting them piecemeal is
-error-prone.
+error-prone. A password also gets its show/hide toggle from `InputPassword`.
 
-Source: packages/alouette/src/ui/inputs/InputText.tsx (MODE_PROPS)
+Source: packages/alouette/src/ui/inputs/InputText.tsx (MODE_PROPS); ui/inputs/InputPassword.tsx
 
 ### MEDIUM Wiring Switch like a web checkbox
 
@@ -378,7 +373,7 @@ is ignored.
 
 Source: packages/alouette/src/ui/forms/FormField.tsx
 
-### HIGH Forgetting field.ref / aria-labelledby on the input
+### HIGH Forgetting field.ref or FormItem's render params on the input
 
 Wrong:
 
@@ -389,15 +384,17 @@ render={({ field }) => <InputText value={field.value} onChangeText={field.onChan
 Correct:
 
 ```tsx
-render={({ field, labelId }) => (
+render={({ field, labelId, describedBy, invalid, required }) => (
   <InputText ref={field.ref} value={field.value} aria-labelledby={labelId}
+    aria-describedby={describedBy} aria-required={required} invalid={invalid}
     onChangeText={field.onChange} onBlur={field.onBlur} />
 )}
 ```
 
-Without `field.ref`, pressing the label can't focus the input and
-react-hook-form's `setFocus` no-ops; without `aria-labelledby={labelId}` the
-input has no accessible name.
+Without `field.ref`, pressing the label can't focus the input and `setFocus`
+no-ops; without `aria-labelledby` the input has no accessible name; without
+`invalid` / `describedBy` a field in error keeps a neutral border under its red
+label and a screen reader never links the message to it.
 
 Source: packages/alouette/src/ui/forms/FormField.tsx; ui/forms/FormItem.tsx
 
@@ -476,7 +473,7 @@ Binding the modal's fields to the surrounding form mutates shared state on every
 keystroke, which is why the value then has to be snapshotted on open and restored
 on cancel. `FormEditableItem` mounts a **separate** `Form` per open, seeded from
 `defaultValues`: cancel is an unmount, and the row keeps showing the last saved
-value with no restore logic. `FormEditableSurface` is the same mechanism for a
+value with no restore logic. `FormEditableSection` is the same mechanism for a
 whole section.
 
 Source: packages/alouette/src/ui/forms/useFormEditorModal.tsx

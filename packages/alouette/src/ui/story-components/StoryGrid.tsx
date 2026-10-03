@@ -2,7 +2,6 @@ import { Children, type ReactNode } from "react";
 import { Platform } from "react-native";
 import { tv } from "tailwind-variants";
 import { View } from "../primitives/View";
-import { VStack } from "../stacks/stacks";
 import { StoryTitle } from "./StoryTitle";
 
 const rowVariants = tv(
@@ -96,15 +95,25 @@ function StoryGridCol({
   }
 
   return title ? (
-    <VStack>
+    <View>
       <StoryTitle level={4} numberOfLines={1}>
         {title}
       </StoryTitle>
       {children}
-    </VStack>
+    </View>
   ) : (
     children
   );
+}
+
+/**
+ * Column title for a state grid. A forced `focus` is the keyboard focus, so it
+ * reads `focus-visible`: a mouse click never shows that state.
+ */
+export function stateTitle(state: string | undefined): string {
+  if (state === undefined) return "Default";
+  if (state === "focus") return "focus-visible";
+  return state;
 }
 
 export const StoryGrid = {

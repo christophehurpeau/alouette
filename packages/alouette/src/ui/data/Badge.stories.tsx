@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StarRegularIcon } from "alouette-icons/phosphor-icons/StarRegularIcon";
-import { HStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { StarRegularIcon } from "alouette-icons/phosphor-icons/Star";
+import { View } from "../primitives/View";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { Badge } from "./Badge";
 
 type ThisStory = StoryObj<typeof Badge>;
@@ -19,7 +19,7 @@ export default {
     accent: {
       description: "The accent of the badge",
       control: "select",
-      options: accents,
+      options: neutralAndAccents,
       table: { defaultValue: { summary: "brand" } },
     },
     variant: {
@@ -40,6 +40,10 @@ export default {
 
 export const BadgePreviewStory: ThisStory = {
   name: "Badge Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   args: { accent: "brand", children: "New" },
   render: (args) => <Badge {...args} />,
 };
@@ -58,24 +62,26 @@ export const BadgeVariantsStory: ThisStory = {
 
       <Story.Section withSurface title="Accents">
         {VARIANTS.map((variant) => (
-          <HStack key={variant} className="gap-xs flex-wrap">
-            {accents.map((accent) => (
-              <Badge key={accent} accent={accent} variant={variant}>
-                {accent}
-              </Badge>
-            ))}
-          </HStack>
+          <Story.SubSection key={variant} title={`variant=${variant}`}>
+            <View className="flex-row gap-xs flex-wrap">
+              {neutralAndAccents.map((accent) => (
+                <Badge key={accent} accent={accent} variant={variant}>
+                  {accent}
+                </Badge>
+              ))}
+            </View>
+          </Story.SubSection>
         ))}
       </Story.Section>
 
       <Story.Section withSurface title="Sizes">
         {SIZES.map((size) => (
-          <HStack key={size} className="gap-xs items-center">
+          <View key={size} className="flex-row gap-xs items-center">
             <Badge size={size}>{size}</Badge>
             <Badge size={size} icon={<StarRegularIcon />}>
               {size} with icon
             </Badge>
-          </HStack>
+          </View>
         ))}
       </Story.Section>
     </Story>

@@ -1,12 +1,11 @@
-import { AsteriskSimpleRegularIcon } from "alouette-icons/phosphor-icons/AsteriskSimpleRegularIcon";
-import { WarningRegularIcon } from "alouette-icons/phosphor-icons/WarningRegularIcon";
+import { AsteriskSimpleRegularIcon } from "alouette-icons/phosphor-icons/AsteriskSimple";
+import { WarningRegularIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactNode, useId } from "react";
 import { Pressable } from "react-native";
 import { AccentScope } from "../containers/AccentScope";
 import { Icon } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
-import { HStack, VStack } from "../stacks/stacks";
 
 export interface FormItemProps {
   label: string;
@@ -28,14 +27,32 @@ export interface FormItemProps {
   indented?: boolean;
   /** Called when the label is pressed, so it can focus the input. */
   onLabelPress?: () => void;
-  render: (labelId: string) => ReactNode;
+  render: (params: FormItemRenderParams) => ReactNode;
+}
+
+/**
+ * What the input rendered by `FormItem` wires to its ARIA attributes, so the
+ * field announces and shows the same state as the label and message around it.
+ */
+export interface FormItemRenderParams {
+  /** For `aria-labelledby`. */
+  labelId: string;
+  /**
+   * For `aria-describedby`: the ids of `details` and `error`, whichever are
+   * rendered. `undefined` when there is neither.
+   */
+  describedBy: string | undefined;
+  /** True while `error` is shown. For `invalid` on the input. */
+  invalid: boolean;
+  /** For `aria-required`. */
+  required: boolean;
 }
 
 /**
  * Label, error message and layout for a single form field. Form-library
- * agnostic — pass the input as a render prop so it can wire
- * aria-labelledby to the generated labelId, and onLabelPress so the label
- * can focus it, matching a native <label for> click.
+ * agnostic — pass the input as a render prop so it can wire aria-labelledby,
+ * aria-describedby, invalid and aria-required to the generated state, and
+ * onLabelPress so the label can focus it, matching a native <label for> click.
  */
 export function FormItem({
   label,
@@ -48,8 +65,20 @@ export function FormItem({
   render,
 }: FormItemProps): ReactNode {
   const labelId = useId();
+  const detailsId = useId();
+  const errorId = useId();
   const hasError = Boolean(error);
   const showWarningIcon = hasError && !isRequiredError;
+  const describedBy =
+    [details ? detailsId : null, hasError ? errorId : null]
+      .filter((id) => id !== null)
+      .join(" ") || undefined;
+  const content = render({
+    labelId,
+    describedBy,
+    invalid: hasError,
+    required: Boolean(required),
+  });
 
   // The trailing marker is always the last element after the label text, so
   // the text never shifts position when error/required state changes. The
@@ -58,7 +87,7 @@ export function FormItem({
   const marker = ((): ReactNode => {
     if (required === true) {
       return (
-        <HStack className="gap-xxs items-center">
+        <View className="flex-row gap-xxs items-center">
           <Icon
             icon={<AsteriskSimpleRegularIcon />}
             size={12}
@@ -71,7 +100,7 @@ export function FormItem({
               className="text-accent"
             />
           ) : null}
-        </HStack>
+        </View>
       );
     }
     if (required) {
@@ -86,14 +115,14 @@ export function FormItem({
   })();
 
   return (
-    <VStack className="gap-xxs">
-      <Pressable onPress={onLabelPress}>
-        <VStack>
-          <HStack className="gap-xxs items-center">
+    <View className="gap-xxs">
+      <Pressable tabIndex={-1} onPress={onLabelPress}>
+        <View>
+          <View className="flex-row gap-xxs items-center">
             <Text
               nativeID={labelId}
               accent={hasError ? "danger" : undefined}
-              className={`font-body-bold text-md ${hasError ? "text-accent" : ""}`}
+              className={`font-body-bold text-base ${hasError ? "text-accent" : ""}`}
             >
               {label}
             </Text>
@@ -106,26 +135,31 @@ export function FormItem({
                 )}
               </View>
             ) : null}
-          </HStack>
+          </View>
           {details ? (
-            <Text className="text-muted text-sm">{details}</Text>
+            <Text nativeID={detailsId} className="text-muted text-sm">
+              {details}
+            </Text>
           ) : null}
-        </VStack>
+        </View>
       </Pressable>
       {indented ? (
-        <View className="border-l border-border-muted pl-m">
-          {render(labelId)}
-        </View>
+        <View className="border-l border-border-muted pl-m">{content}</View>
       ) : (
-        render(labelId)
+        content
       )}
       {error ? (
         <View className="px-m">
-          <Text role="alert" accent="danger" className="text-accent text-sm">
+          <Text
+            nativeID={errorId}
+            role="alert"
+            accent="danger"
+            className="text-accent text-sm"
+          >
             {error}
           </Text>
         </View>
       ) : null}
-    </VStack>
+    </View>
   );
 }

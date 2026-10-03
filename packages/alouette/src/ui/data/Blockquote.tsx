@@ -13,7 +13,7 @@ const blockquoteRole = "blockquote" as NonNullable<RNViewProps["role"]>;
 const blockquoteVariants = tv({
   slots: {
     // The accent rule is the whole affordance: no fill, so a quote reads as a
-    // quote wherever it sits (screen, Surface, Message).
+    // quote wherever it sits (screen, surface, Message).
     frame: "gap-xs border-l-4 border-accent pl-m",
     quote: "text-sharp",
   },

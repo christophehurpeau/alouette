@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import { Button } from "../actions/Button";
 import { Box } from "../containers/Box";
-import { HStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 
 export interface IndeterminateToggleDemoProps {
   boxClassName: string;
@@ -15,7 +15,7 @@ export function IndeterminateToggleDemo({
 }: IndeterminateToggleDemoProps): ReactNode {
   const [loading, setLoading] = useState(false);
   return (
-    <HStack className="items-center gap-sm">
+    <View className="flex-row items-center gap-sm">
       <Box className={boxClassName}>{children(loading)}</Box>
       <Button
         accent={loading ? "danger" : "success"}
@@ -24,6 +24,6 @@ export function IndeterminateToggleDemo({
           setLoading((prev) => !prev);
         }}
       />
-    </HStack>
+    </View>
   );
 }

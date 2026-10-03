@@ -1,17 +1,15 @@
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BirdRegularIcon } from "alouette-icons/phosphor-icons/BirdRegularIcon";
-import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
-import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
-import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+import { BirdRegularIcon } from "alouette-icons/phosphor-icons/Bird";
+import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBar";
+import { GearRegularIcon } from "alouette-icons/phosphor-icons/Gear";
+import { HouseRegularIcon } from "alouette-icons/phosphor-icons/House";
 import { type ReactNode, useState } from "react";
 import { Box } from "../containers/Box";
-import { Surface } from "../containers/Surface";
 import { NavBar } from "../navigation/NavBar";
 import { NavBarItem } from "../navigation/NavBarItem";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
-import { HStack, VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
 import { AppHeader } from "./AppHeader";
 import { AppHeaderBrand } from "./AppHeaderBrand";
@@ -81,6 +79,7 @@ function DemoHeader({ route, onRouteChange }: DemoHeaderProps): ReactNode {
         />
       }
       contentWidth="full"
+      navAlign="center"
     >
       <NavBar
         stretch
@@ -102,9 +101,9 @@ function DemoHeader({ route, onRouteChange }: DemoHeaderProps): ReactNode {
 function DemoFooter(): ReactNode {
   return (
     <Box role="contentinfo" className="px-m py-sm">
-      <HStack className="items-center justify-between gap-m">
+      <View className="flex-row items-center justify-between gap-m">
         <Text className="text-sm text-muted">© 2026 Alouette</Text>
-      </HStack>
+      </View>
     </Box>
   );
 }
@@ -116,14 +115,14 @@ interface DemoScreenProps {
 
 function DemoScreen({ title, rows }: DemoScreenProps): ReactNode {
   return (
-    <VStack className="gap-xxs p-m">
+    <View className="gap-xxs p-m">
       <Text className="font-heading-bold text-xl">{title}</Text>
       {Array.from({ length: rows }, (_, index) => (
-        <Surface key={index} size="xs">
+        <Box key={index} className="surface surface-xs">
           <Text className="text-base">{`Row ${index + 1}`}</Text>
-        </Surface>
+        </Box>
       ))}
-    </VStack>
+    </View>
   );
 }
 
@@ -196,6 +195,7 @@ function DemoFrame({ children }: DemoFrameProps): ReactNode {
 
 export const PreviewAppShellStory: ThisStory = {
   name: "AppShell Preview",
+  parameters: { chromatic: { disableSnapshot: true } },
   render: () => <DemoApp label="App" initialRoute="/reports" />,
 };
 
@@ -286,6 +286,12 @@ export const TestsAppShellStory: ThisStory = {
     await expect(footer.getBoundingClientRect().bottom).toBeGreaterThan(
       shellBox.bottom,
     );
+
+    // The frame's two-tone ground stops at the gutter: the scrollbar track is
+    // opaque, so it reads the same beside the header and beside the screen.
+    const { scrollbarColor } = getComputedStyle(shell);
+    await expect(scrollbarColor).not.toContain("transparent");
+    await expect(scrollbarColor.match(/rgba?\(/g)).toHaveLength(2);
 
     // The rail belongs to the route, not to the shell: leaving the section
     // takes it away, and the screen then spans the whole shell.

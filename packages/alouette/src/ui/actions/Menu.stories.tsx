@@ -1,21 +1,33 @@
 import { expect, fn, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CopyDuotoneIcon } from "alouette-icons/phosphor-icons/CopyDuotoneIcon";
-import { CopyRegularIcon } from "alouette-icons/phosphor-icons/CopyRegularIcon";
-import { GearDuotoneIcon } from "alouette-icons/phosphor-icons/GearDuotoneIcon";
-import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
-import { PencilSimpleDuotoneIcon } from "alouette-icons/phosphor-icons/PencilSimpleDuotoneIcon";
-import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimpleRegularIcon";
-import { SignOutDuotoneIcon } from "alouette-icons/phosphor-icons/SignOutDuotoneIcon";
-import { SignOutRegularIcon } from "alouette-icons/phosphor-icons/SignOutRegularIcon";
-import { TrashDuotoneIcon } from "alouette-icons/phosphor-icons/TrashDuotoneIcon";
-import { TrashRegularIcon } from "alouette-icons/phosphor-icons/TrashRegularIcon";
-import { UserCircleDuotoneIcon } from "alouette-icons/phosphor-icons/UserCircleDuotoneIcon";
-import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircleRegularIcon";
+import {
+  CopyDuotoneIcon,
+  CopyRegularIcon,
+} from "alouette-icons/phosphor-icons/Copy";
+import {
+  GearDuotoneIcon,
+  GearRegularIcon,
+} from "alouette-icons/phosphor-icons/Gear";
+import {
+  PencilSimpleDuotoneIcon,
+  PencilSimpleRegularIcon,
+} from "alouette-icons/phosphor-icons/PencilSimple";
+import {
+  SignOutDuotoneIcon,
+  SignOutRegularIcon,
+} from "alouette-icons/phosphor-icons/SignOut";
+import {
+  TrashDuotoneIcon,
+  TrashRegularIcon,
+} from "alouette-icons/phosphor-icons/Trash";
+import {
+  UserCircleDuotoneIcon,
+  UserCircleRegularIcon,
+} from "alouette-icons/phosphor-icons/UserCircle";
 import { type ReactNode, useState } from "react";
 import { Text } from "../primitives/Text";
+import { View } from "../primitives/View";
 import { Separator } from "../stacks/Separator";
-import { VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
 import { Button } from "./Button";
 import { IconButton } from "./IconButton";
@@ -40,7 +52,7 @@ export default {
   render={(trigger) => <Button {...trigger} text="Account" />}
 >
   <MenuItem label="Profile" icon={<UserCircleRegularIcon />} onPress={openProfile} />
-  <Separator role="separator" className="my-xxs" />
+  <Separator className="my-xxs" />
   <MenuItem label="Log out" icon={<SignOutRegularIcon />} accent="danger" onPress={logOut} />
 </Menu>
 ~~~
@@ -74,7 +86,7 @@ function AccountMenu(): ReactNode {
         activeIcon={<GearDuotoneIcon />}
         href="/settings"
       />
-      <Separator role="separator" className="my-xxs" />
+      <Separator className="my-xxs" />
       <MenuItem
         label="Log out"
         icon={<SignOutRegularIcon />}
@@ -88,6 +100,10 @@ function AccountMenu(): ReactNode {
 
 export const PreviewMenuStory: ThisStory = {
   name: "Menu Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: () => <AccountMenu />,
 };
 
@@ -107,7 +123,7 @@ export const VariantsMenuStory: ThisStory = {
               aria-label="Row actions"
               icon={<PencilSimpleRegularIcon />}
               size="sm"
-              variant="ghost"
+              variant="soft"
               {...trigger}
             />
           )}
@@ -125,7 +141,7 @@ export const VariantsMenuStory: ThisStory = {
             onPress={fn()}
           />
           <MenuItem disabled label="Archive" onPress={fn()} />
-          <Separator role="separator" className="my-xxs" />
+          <Separator className="my-xxs" />
           <MenuItem
             label="Delete"
             icon={<TrashRegularIcon />}
@@ -144,7 +160,7 @@ export const VariantsMenuStory: ThisStory = {
         <Menu
           label="Single weight"
           render={(trigger) => (
-            <Button size="sm" variant="outlined" text="Edit" {...trigger} />
+            <Button size="sm" accent="neutral" text="Edit" {...trigger} />
           )}
         >
           <MenuItem
@@ -164,7 +180,7 @@ export const VariantsMenuStory: ThisStory = {
         <Menu
           label="Sort"
           render={(trigger) => (
-            <Button size="sm" variant="outlined" text="Sort" {...trigger} />
+            <Button size="sm" accent="neutral" text="Sort" {...trigger} />
           )}
         >
           <MenuItem label="Newest first" onPress={fn()} />
@@ -180,7 +196,7 @@ function MenuDemo(): ReactNode {
   const [lastAction, setLastAction] = useState("none");
 
   return (
-    <VStack className="gap-m items-start">
+    <View className="gap-m items-start">
       <Menu
         label="Document actions"
         header={<Text className="text-sm text-muted">report.pdf</Text>}
@@ -202,7 +218,7 @@ function MenuDemo(): ReactNode {
           }}
         />
         <MenuItem label="Open" href="/open" />
-        <Separator role="separator" className="my-xxs" />
+        <Separator className="my-xxs" />
         <MenuItem
           label="Delete"
           icon={<TrashRegularIcon />}
@@ -214,7 +230,7 @@ function MenuDemo(): ReactNode {
         />
       </Menu>
       <Text>{`last action: ${lastAction}`}</Text>
-    </VStack>
+    </View>
   );
 }
 

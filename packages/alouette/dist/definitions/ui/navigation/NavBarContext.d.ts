@@ -1,2 +1,0 @@
-export declare const NavBarContextProvider: import("react").Provider<import("../selection/SelectionContext").SelectionContextValue | undefined>, useNavBarContext: () => import("../selection/SelectionContext").SelectionContextValue;
-//# sourceMappingURL=NavBarContext.d.ts.map

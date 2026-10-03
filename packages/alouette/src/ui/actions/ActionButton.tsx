@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
 import type { MessageVariant } from "../feedback/Message";
-import { VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 import { Button, type ButtonProps } from "./Button";
 import { CollapsibleErrorMessage } from "./CollapsibleErrorMessage";
 import { usePressAsync } from "./usePressAsync";
@@ -28,13 +28,13 @@ export function ActionButton({
   const { buttonState, error, handlePress } = usePressAsync(onPress);
 
   return (
-    <VStack className="shrink">
+    <View className="shrink">
       <Button {...buttonProps} state={buttonState} onPress={handlePress} />
       <CollapsibleErrorMessage
         error={error}
         errorToMessage={errorToMessage}
         variant={errorMessageVariant}
       />
-    </VStack>
+    </View>
   );
 }

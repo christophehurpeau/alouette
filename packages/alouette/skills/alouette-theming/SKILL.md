@@ -6,17 +6,16 @@ description: >
   always consume base tokens (bg-surface, text-accent, text-sharp, text-muted,
   border-muted). Tokens are className-only: alouette exports no JS token-read
   hook. Read the current mode with useCurrentMode. For an accent that toggles at
-  runtime (e.g. on hover) without remounting the subtree, use StableAccentScope
-  instead of AccentScope; inside a portal (a modal or any other overlay), where
-  the scope escapes the themed subtree, use PortalAccentScope. All three also
-  take accent="none", which resolves to the plain mode theme and so drops an
-  accent inherited from an ancestor. A stored light/dark choice is a
+  runtime without remounting, use StableAccentScope; inside a portal (a modal or
+  any other overlay), where the scope escapes the themed subtree, use
+  PortalAccentScope. All three, and the pressables, take accent="neutral": the plain
+  mode theme, which drops an inherited accent; with variant="soft" it makes a
+  Button the secondary beside an accented one. A stored light/dark choice is a
   ColorModePreference ("light" | "dark" | "system") resolved by
   useResolvedColorMode and applied by the app through ScopedTheme. Load when
   applying colors, accents or dark mode, or when shipping a custom palette.
 type: core
 library: alouette
-library_version: "22.11.0"
 sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx"
@@ -29,6 +28,7 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/core/NativeThemeVariablesContext.ts"
   - "christophehurpeau/alouette:packages/alouette/src/core/useColorMode.ts"
   - "christophehurpeau/alouette:packages/alouette/src/theme-generator/generateTheme.ts"
+  - "christophehurpeau/alouette:packages/alouette/src/theme-generator/tokenScaleMap.ts"
   - "christophehurpeau/alouette:packages/alouette/src/theme-generator/writeTheme.ts"
   - "christophehurpeau/alouette:CLAUDE.md"
 ---
@@ -41,19 +41,21 @@ tree: components use **base tokens** (`bg-surface`, `text-accent`, `text-sharp`,
 `text-muted`, `border-muted`) and inherit the resolved value from the nearest
 scope. Setting an accent re-themes a whole subtree.
 
-`Accent` = `"brand" | "danger" | "info" | "success" | "warning"`.
+`Accent` = `"brand" | "danger" | "info" | "success" | "warning"`, and
+`AccentOrNeutral` adds `"neutral"` — both exported, and `AccentOrNeutral` is what
+every public `accent` prop takes.
 
 ## Setup
 
-Most alouette components — `Text`, `Surface`, `Box`, `Button`, `Message`, … —
-take an `accent` prop that re-themes their subtree. Prefer the prop:
+Most alouette components — `Text`, `Box`, `Button`, `Message`, … — take an
+`accent` prop that re-themes their subtree. Prefer the prop:
 
 ```tsx
-import { Surface, Text } from "alouette";
+import { Box, Text } from "alouette";
 
-<Surface accent="danger">
+<Box accent="danger" className="surface">
   <Text className="text-accent">Something went wrong</Text>
-</Surface>
+</Box>
 
 <Text accent="brand" className="text-accent">Brand-accented text</Text>;
 ```
@@ -102,7 +104,7 @@ import { AccentScope } from "alouette";
 
 ### Drop an inherited accent
 
-`accent` takes `"none"` alongside the five accents — on `AccentScope`,
+`accent` takes `"neutral"` alongside the five accents — on `AccentScope`,
 `StableAccentScope` and `PortalAccentScope` alike. It resolves to the plain mode
 theme (`light` / `dark`), so the subtree falls back to the neutral tokens even
 under an accented ancestor. This is not the same as omitting `accent`: omitting
@@ -111,7 +113,7 @@ it renders no scope at all and the ancestor's accent keeps cascading.
 ```tsx
 <AccentScope accent="danger">
   <Text className="text-accent">Delete</Text> {/* danger */}
-  <AccentScope accent="none">
+  <AccentScope accent="neutral">
     <Text className="text-accent">Details</Text>{" "}
     {/* back to the mode's accent */}
   </AccentScope>
@@ -120,6 +122,21 @@ it renders no scope at all and the ancestor's accent keeps cascading.
 
 `InputTextAutocomplete` uses it for its menu: the field is accented, the listbox
 that opens next to it is not.
+
+The pressables take it too — `Button`, `IconButton`, `PressableBox`,
+`PressableListItem` — where it is more than an escape hatch: `accent="neutral"` is
+the **neutral button**, the same material (ground, shadow, hover/focus/press) on
+the grayscale palette — an accent like any other: a white card with sharp ink
+for the default `tonal` variant, and for `filled` the sharp ink turned into a
+ground (black under a white label in light mode, white under a dark label in
+dark).
+Beside an accented action, the secondary one is neutral **and** `soft` — a
+neutral text button — never `variant="outlined"` (alouette-actions/SKILL.md).
+
+```tsx
+<Button accent="neutral" variant="soft" text="Cancel" onPress={close} />
+<Button text="Save" onPress={save} />
+```
 
 ### Read the active mode / theme
 
@@ -192,6 +209,11 @@ mounted, so toggling `accent` never remounts the subtree. Native has no portal
 problem (`ScopedTheme` pushes merged variables through React context, which
 crosses wherever the host renders the tree), so there it is a single
 `StableAccentScope`.
+
+Both `StableAccentScope` and `PortalAccentScope` take `mode` to force light or
+dark, as `AccentScope` does. Without an `accent` they keep the inherited accent
+and re-apply it in that mode: `<PortalAccentScope mode="dark">` under
+`light_danger` renders `dark_danger`.
 
 ### Ship a custom palette for the existing accents
 
@@ -304,9 +326,9 @@ Wrong:
 Correct:
 
 ```tsx
-<Surface accent="brand">
+<Box accent="brand" className="surface">
   <Text className="text-accent">Hi</Text>
-</Surface>
+</Box>
 ```
 
 Raw palette classes (`bg-blue-500`, `text-gray-600`) ignore the alouette theme,
@@ -356,7 +378,7 @@ Correct:
 </Text>
 ```
 
-`Text`, `Surface`, `Box`, `Button`, `Message` and others accept `accent`
+`Text`, `Box`, `Button`, `Message` and others accept `accent`
 directly. Reserve `AccentScope` for grouping several children or wrapping ones
 that don't take the prop.
 

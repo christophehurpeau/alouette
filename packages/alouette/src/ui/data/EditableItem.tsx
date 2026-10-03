@@ -1,11 +1,11 @@
-import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimpleRegularIcon";
+import { PencilSimpleRegularIcon } from "alouette-icons/phosphor-icons/PencilSimple";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
+import type { IconButtonProps } from "../actions/IconButton";
 import { IconButton } from "../actions/IconButton";
-import type { PressableBoxProps } from "../actions/PressableBox";
 import type { SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
-import { HStack, VStack } from "../stacks/stacks";
+import { View } from "../primitives/View";
 
 export interface EditableItemProps {
   label: string;
@@ -16,7 +16,7 @@ export interface EditableItemProps {
   /** Names the edit button for assistive tech — it has no visible text. */
   editAriaLabel: string;
   editIcon?: SVGIconElement;
-  variant?: PressableBoxProps["variant"];
+  variant?: IconButtonProps["variant"];
   accent?: Accent;
   disabled?: boolean;
   onEdit: () => void;
@@ -42,17 +42,17 @@ export function EditableItem({
   children,
 }: EditableItemProps): ReactNode {
   return (
-    <VStack className="gap-xs">
-      <HStack className="items-center justify-between gap-sm">
-        <VStack className="shrink">
-          <HStack className="items-center gap-sm">
-            <Text className="font-body-bold text-md">{label}</Text>
+    <View className="gap-xs">
+      <View className="flex-row items-center justify-between gap-sm">
+        <View className="shrink">
+          <View className="flex-row items-center gap-sm">
+            <Text className="font-body-bold text-base">{label}</Text>
             {summary}
-          </HStack>
+          </View>
           {details ? (
             <Text className="text-muted text-sm">{details}</Text>
           ) : null}
-        </VStack>
+        </View>
         <IconButton
           size="sm"
           icon={editIcon}
@@ -62,8 +62,8 @@ export function EditableItem({
           aria-label={editAriaLabel}
           onPress={onEdit}
         />
-      </HStack>
+      </View>
       {children}
-    </VStack>
+    </View>
   );
 }

@@ -14,8 +14,7 @@ import { DocTemplate } from "./DocTemplate";
 // ships as its own stylesheet, held here and enabled/disabled from the toolbar.
 // Appended to <head> after global.css, hence last in `@layer theme` — it wins
 // over the hex blocks of default-palette.css, and still loses to the unlayered
-// utilities. `AlouetteDecorator` swaps the themeVariables map: the native half.
-// Vite-only (`?inline`), so the Expo-web preview stays sRGB. Inline rather than
+// utilities. Vite-only (`?inline`), so the Expo-web preview stays sRGB. Inline rather than
 // a `<link>` because a link's `disabled` is unreliable until its sheet loads,
 // whereas a style element's sheet exists as soon as it is in the document.
 const oklchPaletteStyle = document.createElement("style");

@@ -64,11 +64,14 @@ function SimpleVFormFields({
         name="name"
         label="Name"
         validate={validateName}
-        render={({ field, labelId }) => (
+        render={({ field, labelId, describedBy, invalid, required }) => (
           <InputText
             ref={field.ref}
             value={field.value}
             aria-labelledby={labelId}
+            aria-describedby={describedBy}
+            aria-required={required}
+            invalid={invalid}
             returnKeyType="next"
             enterKeyHint="next"
             onChangeText={field.onChange}
@@ -85,12 +88,15 @@ function SimpleVFormFields({
         name="email"
         label="Email"
         validate={validateEmail}
-        render={({ field, labelId }) => (
+        render={({ field, labelId, describedBy, invalid, required }) => (
           <InputText
             ref={field.ref}
             mode="email"
             value={field.value}
             aria-labelledby={labelId}
+            aria-describedby={describedBy}
+            aria-required={required}
+            invalid={invalid}
             returnKeyType="next"
             enterKeyHint="next"
             onChangeText={field.onChange}
@@ -107,12 +113,15 @@ function SimpleVFormFields({
         name="age"
         label="Age"
         validate={validateAge}
-        render={({ field, labelId }) => (
+        render={({ field, labelId, describedBy, invalid, required }) => (
           <InputText
             ref={field.ref}
             mode="number"
             value={field.value}
             aria-labelledby={labelId}
+            aria-describedby={describedBy}
+            aria-required={required}
+            invalid={invalid}
             returnKeyType="done"
             enterKeyHint="done"
             onChangeText={field.onChange}

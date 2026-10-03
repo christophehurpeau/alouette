@@ -41,7 +41,7 @@ yarn add alouette
 Install the peer dependencies if your app does not already provide them:
 
 ```bash
-npm install nativewind@5.0.0-preview.4 tailwindcss@^4 \
+npm install nativewind@5.0.0-rc.0 tailwindcss@^4 \
   react-native-reanimated react-native-svg
 ```
 
@@ -180,12 +180,12 @@ const [fontsLoaded] = useFonts({
 Alouette ships a universal component set styled through `className`:
 
 - **Actions** — `Button`, `ExternalLinkButton`, `InternalLinkButton`, `IconButton`
-- **Containers** — `Box`, `InteractiveBox`, `SafeAreaBox`, `Surface`, `Popover`, `ScopedTheme`, `AccentScope`, `PresenceOne`, `PresenceList`
-- **Inputs** — `InputText`, `InputTextAutocomplete`, `TextArea`, `Switch`
+- **Containers** — `Box` (raised with the `surface` utility), `InteractiveBox`, `SafeAreaBox`, `Popover`, `ScopedTheme`, `AccentScope`, `PresenceOne`, `PresenceList`
+- **Inputs** — `InputText`, `InputCode`, `InputTextAutocomplete`, `TextArea`, `Switch`
 - **Feedback** — `Message`, `InfoMessage`, `ConfirmationMessage`, `WarningMessage`
 - **Data** — `PressableBox`, `PressableListItem`
 - **Layout** — `GradientBackground`, `GradientScrollView`
-- **Primitives** — `View`, `Text`, `Paragraph`, `Icon`, `ScrollView`, `Stack`, `HStack`, `VStack`, `Separator`
+- **Primitives** — `View`, `Text`, `Paragraph`, `Icon`, `ScrollView`, `Separator`
 - **Responsive** — `SwitchBreakpointsUsingDisplayNone`, `SwitchBreakpointsUsingNull`, `useCurrentBreakpointName`
 
 For detailed examples and API documentation, visit our [Storybook](https://www.chromatic.com/library?appId=679f9e8df3edc5f07975b64a).
@@ -235,14 +235,19 @@ import { Text } from "alouette";
 Themes are sets of CSS variables (`light`, `dark`, `light_brand`, `dark_info`, …)
 applied by `ScopedTheme`. Child components use **base tokens** (`bg-surface`,
 `text-accent`, `border-muted`, …) and inherit the correct values from the nearest
-theme scope. Components that introduce an accent wrap their children in
-`AccentScope`:
+theme scope. Most components take an `accent` prop that re-themes their subtree;
+`AccentScope` is for grouping several children that don't take one:
 
 ```tsx
-import { AccentScope, Surface } from "alouette";
+import { AccentScope, Box, Text } from "alouette";
+
+<Box accent="info" className="surface">
+  {/* children use base tokens */}
+</Box>;
 
 <AccentScope accent="info">
-  <Surface>{/* children use base tokens */}</Surface>
+  <Text className="text-accent">Title</Text>
+  <Text className="text-accent">Subtitle</Text>
 </AccentScope>;
 ```
 
@@ -368,7 +373,7 @@ reading hex channels, say) can read `alouette/defaultThemeVariables` directly.
 Icons come from the integrated `alouette-icons` package:
 
 ```tsx
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeft";
 
 function MyComponent() {
   return <ArrowLeftRegularIcon />;
@@ -397,7 +402,7 @@ function MyComponent() {
 
 ```tsx
 import { Button } from "alouette";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeft";
 
 function MyComponent() {
   return (

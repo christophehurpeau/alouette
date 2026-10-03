@@ -1,13 +1,13 @@
 import { expect, fn, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CaretDoubleRightRegularIcon } from "alouette-icons/phosphor-icons/CaretDoubleRightRegularIcon";
-import { FolderRegularIcon } from "alouette-icons/phosphor-icons/FolderRegularIcon";
-import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
+import { CaretDoubleRightRegularIcon } from "alouette-icons/phosphor-icons/CaretDoubleRight";
+import { FolderRegularIcon } from "alouette-icons/phosphor-icons/Folder";
+import { HouseRegularIcon } from "alouette-icons/phosphor-icons/House";
 import { type ReactNode, useState } from "react";
-import type { Accent } from "../../core/AlouetteConfig";
+import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { Text } from "../primitives/Text";
-import { VStack } from "../stacks/stacks";
-import { Story, accents } from "../story-components/Story";
+import { View } from "../primitives/View";
+import { Story, neutralAndAccents } from "../story-components/Story";
 import { BreadcrumbItem } from "./BreadcrumbItem";
 import { Breadcrumbs } from "./Breadcrumbs";
 
@@ -22,7 +22,7 @@ export default {
   },
   argTypes: {
     disabled: { control: "boolean" },
-    accent: { control: "select", options: [undefined, ...accents] },
+    accent: { control: "select", options: neutralAndAccents },
     "aria-label": {
       control: "text",
       table: { defaultValue: { summary: "Breadcrumb" } },
@@ -32,6 +32,10 @@ export default {
 
 export const BreadcrumbsPreviewStory: ThisStory = {
   name: "Breadcrumbs Preview",
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
   render: (args) => (
     <Breadcrumbs {...args}>
       <BreadcrumbItem href="/" label="Home" icon={<HouseRegularIcon />} />
@@ -41,10 +45,10 @@ export const BreadcrumbsPreviewStory: ThisStory = {
   ),
 };
 
-function AccentBreadcrumbs({ accent }: { accent?: Accent }): ReactNode {
+function AccentBreadcrumbs({ accent }: { accent: AccentOrNeutral }): ReactNode {
   return (
-    <Story.SubSection withSurface title={accent ?? "Default"}>
-      <Breadcrumbs accent={accent} aria-label={`Accent ${accent ?? "default"}`}>
+    <Story.SubSection withSurface title={accent}>
+      <Breadcrumbs accent={accent} aria-label={`Accent ${accent}`}>
         <BreadcrumbItem href="/" label="Home" icon={<HouseRegularIcon />} />
         <BreadcrumbItem href="/library" label="Library" />
         <BreadcrumbItem href="/library/reports" label="Business Reports" />
@@ -118,7 +122,7 @@ export const BreadcrumbsVariantsStory: ThisStory = {
       </Story.Section>
 
       <Story.Section title="Wrapping">
-        <VStack className="w-[320px]">
+        <View className="w-[320px]">
           <Breadcrumbs aria-label="Wrapping">
             <BreadcrumbItem href="/" label="Home" icon={<HouseRegularIcon />} />
             <BreadcrumbItem href="/library" label="Library" />
@@ -128,12 +132,11 @@ export const BreadcrumbsVariantsStory: ThisStory = {
               label="Fiscal year 2026"
             />
           </Breadcrumbs>
-        </VStack>
+        </View>
       </Story.Section>
 
       <Story.Section title="Accents">
-        <AccentBreadcrumbs />
-        {accents.map((accent) => (
+        {neutralAndAccents.map((accent) => (
           <AccentBreadcrumbs key={accent} accent={accent} />
         ))}
       </Story.Section>
@@ -145,7 +148,7 @@ function BreadcrumbsRouterDemo(): ReactNode {
   const [route, setRoute] = useState("/library/reports");
 
   return (
-    <VStack className="gap-m items-start">
+    <View className="gap-m items-start">
       <Breadcrumbs aria-label="Router" onNavigate={setRoute}>
         <BreadcrumbItem href="/" label="Home" icon={<HouseRegularIcon />} />
         <BreadcrumbItem href="/library" label="Library" />
@@ -160,7 +163,7 @@ function BreadcrumbsRouterDemo(): ReactNode {
         <BreadcrumbItem href="/library/reports/2026" label="2026" />
       </Breadcrumbs>
       <Text>{`route: ${route}`}</Text>
-    </VStack>
+    </View>
   );
 }
 

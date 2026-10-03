@@ -1,12 +1,14 @@
-import { Fragment, type ReactNode } from "react";
-import { Platform } from "react-native";
-import type { Accent, AlouetteModeTheme } from "../../core/AlouetteConfig";
+import type { ReactNode } from "react";
+import type {
+  Accent,
+  AccentOrNeutral,
+  AlouetteModeTheme,
+} from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
+import { Box } from "../containers/Box";
 import { ScopedTheme } from "../containers/ScopedTheme";
-import { Surface } from "../containers/Surface";
 import { ScrollView } from "../primitives/ScrollView";
 import { View } from "../primitives/View";
-import { VStack } from "../stacks/stacks";
 import { styled } from "../styled";
 import { StoryTitle } from "./StoryTitle";
 
@@ -15,7 +17,7 @@ export interface StorySectionProps {
   children: ReactNode;
   level?: 1 | 2;
   modeTheme?: AlouetteModeTheme;
-  accent?: Accent;
+  accent?: AccentOrNeutral;
   withSurface?: boolean;
 }
 
@@ -32,14 +34,14 @@ function StorySection({
   const content = (
     <InternalStorySection className="pb-xl bg-screen">
       {withSurface ? (
-        <Surface>
+        <Box className="surface">
           <StoryTitle level={(level + 1) as 2 | 3}>{title}</StoryTitle>
-          <VStack className="gap-m">{children}</VStack>
-        </Surface>
+          <View className="gap-m">{children}</View>
+        </Box>
       ) : (
         <>
           <StoryTitle level={(level + 1) as 2 | 3}>{title}</StoryTitle>
-          <VStack className="gap-m">{children}</VStack>
+          <View className="gap-m">{children}</View>
         </>
       )}
     </InternalStorySection>
@@ -64,14 +66,14 @@ function StorySubSection({
   const content = (
     <InternalStorySection className="mb-m">
       {withSurface ? (
-        <Surface>
+        <Box className="surface">
           <StoryTitle level={3}>{title}</StoryTitle>
-          <VStack className="gap-m">{children}</VStack>
-        </Surface>
+          <View className="gap-m">{children}</View>
+        </Box>
       ) : (
         <>
           <StoryTitle level={3}>{title}</StoryTitle>
-          <VStack className="gap-m">{children}</VStack>
+          <View className="gap-m">{children}</View>
         </>
       )}
     </InternalStorySection>
@@ -87,8 +89,6 @@ function StorySubSection({
 
 // const SimpleWebScrollView = styled(View, "h-full overflow-auto");
 
-const ScrollWrapper = Platform.OS === "web" ? Fragment : ScrollView;
-
 export interface StoryProps {
   documentation?: NonNullable<ReactNode>;
   children?: NonNullable<ReactNode>;
@@ -101,32 +101,35 @@ export function Story({
   noDarkMode,
 }: StoryProps): ReactNode {
   return (
-    <ScrollWrapper>
+    <ScrollView>
       {documentation && (
-        <Surface accent="info" className="mb-xxl">
+        <Box accent="info" className="surface mb-xxl">
           {documentation}
-        </Surface>
+        </Box>
       )}
       {(["light", ...(noDarkMode ? [] : ["dark"])] as ("dark" | "light")[]).map(
         (mode) => (
           <ScopedTheme key={mode} theme={mode}>
-            <ScrollView className="h-full bg-screen px-l">
-              {children}
-            </ScrollView>
+            <View className="bg-screen px-l">{children}</View>
           </ScopedTheme>
         ),
       )}
-    </ScrollWrapper>
+    </ScrollView>
   );
 }
 
 Story.Section = StorySection;
 Story.SubSection = StorySubSection;
 
-export const accents: Accent[] = [
+export const accentsWithoutNeutral: Accent[] = [
   "brand",
   "danger",
   "info",
   "success",
   "warning",
+];
+
+export const neutralAndAccents: AccentOrNeutral[] = [
+  "neutral",
+  ...accentsWithoutNeutral,
 ];

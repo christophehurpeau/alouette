@@ -13,7 +13,6 @@ description: >
   text links, a menu of actions, or custom pressable elements.
 type: core
 library: alouette
-library_version: "22.11.0"
 requires:
   - alouette-theming
 sources:
@@ -31,38 +30,108 @@ This skill builds on alouette-theming. Read it first for the accent model.
 
 # alouette — Actions
 
-Buttons and pressables carry interactive token states (hover/focus/active/
-disabled) automatically. `variant` is
-`"contained" | "outlined" | "ghost" | "soft"`; `size` is `"sm" | "md"`; `accent`
-defaults to `"brand"`.
+Buttons and pressables carry interactive token states (hover/active/disabled,
+plus the keyboard focus ring) automatically. `variant` is
+`"tonal" | "filled" | "outlined" | "soft"`; `size` is
+`"sm" | "md" | "lg"` (38/44/52px — `lg` is the prominent call to action of a
+landing page or a hero, never a size for an action among others); `accent`
+is `"brand" | "danger" | "info" | "success" | "warning" | "neutral"`. Unset,
+a `Button` takes the accent of the nearest accent scope (a `Modal`, `Message`,
+`Box` or `AccentScope` with an `accent`), and `"brand"` outside one.
+
+**The secondary action is neutral `soft`.** `tonal` (the default) is the
+material an action button is made of; the accent says how loud it is. The
+secondary action beside a call to action is `accent="neutral" variant="soft"` —
+a neutral text button that gives way to the primary — never a neutral `tonal`
+twin of it, and never `outlined`.
 
 ## Setup
 
 ```tsx
 import { Button } from "alouette";
-import { CheckRegularIcon } from "alouette-icons/phosphor-icons/CheckRegularIcon";
+import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
 
 <Button text="Save" icon={<CheckRegularIcon />} onPress={save} />;
 ```
 
 ## Core Patterns
 
-### Button variants and accents
+### Button accents
 
 ```tsx
-<Button text="Save" />                                 {/* contained, brand */}
-<Button variant="outlined" text="Cancel" />
-<Button variant="ghost" text="Dismiss" />
-<Button variant="soft" text="Docs" />
+<Button text="Save" />                                 {/* tonal, brand */}
+<Button accent="neutral" text="Menu" />                   {/* tonal, neutral */}
+<Button accent="neutral" variant="soft" text="Cancel" />  {/* the secondary action */}
 <Button accent="danger" text="Delete" />
+<Button variant="filled" text="Publish" />              {/* the accent's fill */}
 <Button size="sm" text="Small" />
+<Button size="lg" variant="filled" text="Get started" />  {/* the hero call to action */}
+```
+
+`tonal` is a ground **lighter than the page it sits on**, lifted by
+`shadow-s`: the lightest card step when neutral, the accent's pale tints in light
+mode and its own dark ground in dark mode. The hue is carried by the
+`text-on-tonal` ink (label and icon) — the accent itself on a light ground,
+the sharp ink on a dark one — because a tint pale enough for dark ink cannot
+carry it (a pale red reads as pink).
+
+`accent="neutral"` resolves to the plain mode theme (alouette-theming/SKILL.md), so
+the button keeps the tonal material — ground, shadow, hover/focus/press
+states — on the grayscale palette: a white card with sharp ink. That is a lone
+action that must not carry the accent: a `Menu` trigger, the Add of a field
+array, a `Modal` footer's single "Close". Beside a primary action it becomes
+`variant="soft"`: a neutral `tonal` twin reads as a second equal choice, and on
+a white `bg-highlight` ground — a `Modal` or `AlertDialog` panel, the `AppHeader`
+bar — its ground is the ground itself and dissolves. The form editor modals'
+Cancel and the header's "Sign up" beside "Log in" are neutral `soft`.
+
+`filled` is the accent's own fill, flat, under the `text-on-accent` label —
+for the one action that must dominate its neighbours. The neutral theme is an
+accent, not the absence of one: its fill is the sharp ink turned into a ground,
+so a neutral `filled` button is black with a white label in light mode and
+white with a dark label in dark mode. Beside a `filled` call to action, the
+other action is neutral `soft`.
+
+**On an accented surface** (`<Box accent className="surface">`, a
+`GradientBackground`), a lone `tonal` button is always `accent="neutral"`: in light
+mode an accented `tonal` ground is the accented surface's own step, so it
+dissolves into it. The accented action there is `filled`, or `soft` for chrome.
+What counts is the ground, not the theme: a `bg-highlight` panel stays neutral
+inside an accented theme, so an accented `Modal` or `AlertDialog` keeps a
+`tonal` confirm (with a neutral `soft` Cancel). On web, `PressableBox` warns
+outside production when an accented `tonal` pressable has the same ground as the
+surface behind it.
+
+```tsx
+<Box accent="danger" className="surface">
+  <Button accent="neutral" variant="soft" text="Keep" onPress={keep} />
+  <Button variant="filled" accent="danger" text="Delete" onPress={remove} />
+</Box>
+```
+
+### `soft` beyond the secondary action, and `outlined`
+
+```tsx
+<Button variant="soft" text="Docs" />
+<IconButton variant="soft" icon={<XRegularIcon />} aria-label="Close" />
 ```
 
 `soft` has no ground and no border at rest: the affordance is a fill arriving on
 hover/focus/press, and that fill is a tone of the surrounding surface rather than
-the accent, so the label keeps its own color (never flip it to `text-on-accent`).
-It is what a header pressable or a menu row wants, where a border tint reads as
-noise.
+the accent. A `PressableBox` row composed on it (a header pressable, a menu row)
+therefore keeps its own label color — never flip it to `text-on-accent`. It is
+what a header pressable or a menu row wants, where a border tint reads as noise,
+and the icon-only affordance inside a component's own frame — the modal close,
+the message dismiss, the remove button of a field-array row — where a second
+ground inside the frame would read as a nested card. With no ground to carry the
+accent, the soft `Button` carries it in its label (`text-accent`, underlined —
+a text button), and the soft `IconButton` glyph turns `text-accent` on
+hover/focus/press.
+
+`outlined` has no default use. Reach for it only for a pressable that must not
+carry a ground and is not chrome — a row of equal-weight actions in a dense
+toolbar. A secondary action is `accent="neutral" variant="soft"`, not
+`outlined`.
 
 ### Async action — prefer ActionButton
 
@@ -89,18 +158,18 @@ import { ActionButton } from "alouette";
 itself — don't pass `state` to it.
 
 The failure message is a raised `ErrorMessage`. When the button already sits
-inside a raised surface (a `Surface` card, a modal panel), pass
+inside a raised surface (a `surface` card, a modal panel), pass
 `errorMessageVariant="flat"` so the message doesn't read as a card on a card:
 
 ```tsx
-<Surface>
+<Box className="surface">
   <ActionButton
     text="Delete"
     errorMessageVariant="flat"
     onPress={remove}
     errorToMessage={toMessage}
   />
-</Surface>
+</Box>
 ```
 
 Leave it unset everywhere else — see alouette-feedback for when `flat` is
@@ -128,13 +197,14 @@ Don't drive loading UI yourself (spinner + manual `disabled`) — use
 
 ```tsx
 import { IconButton } from "alouette";
-import { XRegularIcon } from "alouette-icons/phosphor-icons/XRegularIcon";
+import { XRegularIcon } from "alouette-icons/phosphor-icons/X";
 
 <IconButton icon={<XRegularIcon />} aria-label="Close" onPress={close} />;
 ```
 
 `size` is `"sm" | "md"` or a number (custom diameter in px); `iconSize="fill"`
-makes the icon take 80% of the button.
+makes the icon take 80% of the button. `variant` is `"tonal" | "filled" |
+"soft"` — an icon-only button has no `outlined`.
 
 ### Icon weight on interaction
 
@@ -145,8 +215,10 @@ replacement: the background and border still come from the `interactive-*`
 tokens, and a disabled control never swaps.
 
 ```tsx
-import { ArrowLeftDuotoneIcon } from "alouette-icons/phosphor-icons/ArrowLeftDuotoneIcon";
-import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftRegularIcon";
+import {
+  ArrowLeftDuotoneIcon,
+  ArrowLeftRegularIcon,
+} from "alouette-icons/phosphor-icons/ArrowLeft";
 
 <Button
   text="Back"
@@ -159,7 +231,11 @@ import { ArrowLeftRegularIcon } from "alouette-icons/phosphor-icons/ArrowLeftReg
 ### Pressable surfaces
 
 `PressableBox` is a themed, pressable container (`variant`, `accent`,
-`forceStyle`). `PressableListItem` is a row with a trailing caret. These, and the
+`forceStyle`; `tonal` by default). `PressableListItem` is a row with a
+trailing caret, on the same `tonal` material as a button: a card lifted off
+the surface whose ground is a tone of the theme, never the accent's fill. Its
+label and caret are `text-on-tonal`, the ink that carries the accent where
+the ground cannot. These, and the
 link components below, are how something becomes interactive — never by wrapping
 a display-only component (`Badge`, `Bullet`, `Text`) in a `Link` or `Pressable`
 (alouette-styling/SKILL.md).
@@ -175,6 +251,29 @@ import { PressableBox, PressableListItem, Text } from "alouette";
   <Text>Row label</Text>
 </PressableListItem>;
 ```
+
+A `PressableListItem` holding more than a title needs `aria-label` ("Open Add
+dark mode"), else the row is announced as every label, badge and date it holds.
+`actions` pins buttons to the row's bottom end; each is a nested pressable that
+takes its own press (the row's `onPress` does not fire), so give each its own
+handler. On web a `role="button"` row is a `<button>`, so actions nest a button
+in a button: pass `role="listitem"` (inside a `role="list"`) or `"menuitem"` for
+valid markup. `href` makes the row a real `<a>` — only on a row with no
+`actions` and no link in its children, which would nest inside the anchor.
+The row has no outer margin, so it lines up with the content around it: the
+list holding the rows spaces them (`<View className="gap-xs">`).
+
+```tsx
+<PressableListItem
+  aria-label="Open Add dark mode"
+  actions={<Button size="sm" text="Merge" onPress={merge} />}
+  onPress={open}
+>
+  <Text className="font-body-bold">Add dark mode</Text>
+</PressableListItem>
+```
+
+Source: packages/alouette/src/ui/actions/PressableListItem.tsx
 
 `PressableBox` carries `group`, so a child can style itself from the pressable's
 state (`group-hover:`, `group-active:`) — that is how `InteractiveIcon` swaps a
@@ -193,9 +292,14 @@ needing another role passes its own (`MenuItem` stays a `menuitem`).
 </PressableBox>
 ```
 
-`withFocusVisibleOutline={false}` drops the focus ring for a row of a list that
-already paints its cursor (a menu item, a listbox option), where the outline
-would ring whatever the pointer crosses. It emits `outline-solid outline-0`, not
+The keyboard focus ring is the `focus-ring` utility in the accent ink, on
+`focus-visible` only — a mouse click never leaves a ring or a changed ground
+behind. A `tonal` pressable rings 2px inside its raised edge, the flat variants
+2px outside it. `withFocusVisibleOutline="inset"` moves the ring inside for a
+pressable whose parent clips (a `surface` is `overflow-hidden`), and
+`withFocusVisibleOutline={false}` drops it for a row of a list that already
+paints its cursor (a menu item, a listbox option), where the outline would ring
+whatever the pointer crosses. `false` emits `outline-solid outline-0`, not
 `outline-none` — react-native-css drops `outline-style: none`, so the UA ring
 would survive.
 
@@ -239,7 +343,7 @@ import { IconButton, Menu, MenuItem, Separator } from "alouette";
     <IconButton
       icon={<DotsThreeRegularIcon />}
       aria-label="Document actions"
-      variant="ghost"
+      variant="soft"
       {...triggerProps}
     />
   )}
@@ -254,6 +358,11 @@ A `MenuItem` closes the menu after its `onPress`. `accent` colors its label and
 icon (`danger` for a destructive action — the row itself stays a plain surface).
 `href` renders a real anchor on web, so expo Router's `<Link asChild>` composes
 with it, and a disabled item drops the `href`.
+
+On web the panel hangs from the trigger's end edge and sizes to its items. A
+full-width trigger takes `align="start"`, or `width="anchor"` to make the panel
+exactly as wide; a trigger pinned at the bottom of the viewport (a sidebar's
+account row) takes `side="top"`.
 
 ## Common Mistakes
 
@@ -276,25 +385,54 @@ prop); children are ignored, so `<Button>Save</Button>` shows no label.
 
 Source: packages/alouette/src/ui/actions/Button.tsx
 
+### HIGH A tonal or `outlined` secondary button
+
+Wrong:
+
+```tsx
+<Button accent="neutral" text="Cancel" onPress={close} />
+<Button text="Save" onPress={save} />
+
+<Button variant="outlined" text="Cancel" onPress={close} />
+<Button text="Save" onPress={save} />
+```
+
+Correct:
+
+```tsx
+<Button accent="neutral" variant="soft" text="Cancel" onPress={close} />
+<Button text="Save" onPress={save} />
+```
+
+The secondary action gives way to the primary one. A neutral `tonal` Cancel keeps
+the ground and the shadow, so the pair reads as two equal choices — and on a
+white `bg-highlight` panel (a `Modal` footer) its ground is the panel's white and
+dissolves. An `outlined` one draws a frame that competes, and on a `surface`
+card its `bg-highlight` fights the card it sits on. Neutral `soft` is a text
+button in the ambient ink: present, and plainly second.
+
+Source: packages/alouette/src/ui/containers/AlertDialog.tsx, ui/actions/Button.tsx
+
 ### HIGH Using non-existent variant names
 
 Wrong:
 
 ```tsx
-<Button variant="ghost-contained" text="Cancel" />
+<Button variant="contained" text="Cancel" />
 <Button variant="primary" text="Save" />
 ```
 
 Correct:
 
 ```tsx
-<Button variant="ghost" text="Cancel" />
+<Button accent="neutral" variant="soft" text="Cancel" />
 <Button accent="brand" text="Save" />
 ```
 
-`variant` is only `"contained" | "outlined" | "ghost" | "soft"`; the accent is
-chosen via the `accent` prop. (`ghost` is a variant value, not a separate boolean
-prop.)
+`variant` is only `"tonal" | "filled" | "outlined" | "soft"` (`IconButton`:
+no `outlined`); `contained`, `list` and `ghost` no longer exist. The accent is
+chosen via the `accent` prop — `"brand" | "danger" | "info" | "success" |
+"warning" | "neutral"`.
 
 Source: packages/alouette/src/ui/actions/PressableBox.tsx, ui/actions/Button.tsx
 

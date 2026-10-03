@@ -5,6 +5,13 @@ Shape: storybook. Package: `alouette` (window global `Alouette`).
 
 ## Scope
 
+- 2026-09-27 re-sync: roster grew to **63** storied components (39 added:
+  ActionButton, AppHeader/AppLayout/AppShell, Avatar, Breadcrumbs, the
+  Checkbox*/Radio* groups, Code/CodeBlock, ColorModePicker, the Form* family,
+  Menu, NavBar/HeaderNav/Tabs, Screen*List, ...). `HStack` dropped out: the
+  Stacks stories were removed upstream (stacks are `@deprecated`), so
+  `titleMap.Stacks` is now a dead entry - harmless, left in place because a
+  `titleMap` edit re-stamps config slices; drop it on a sync that re-grades anyway.
 - Expanded to **all storied components** (2026-07-04): removed the `titleMap`
   null exclusions that previously limited the sync to Inputs (`Switch`,
   `InputText`, `TextArea`). Full roster now includes Button, IconButton,
@@ -80,12 +87,27 @@ Tests`) all carry a `play:` interaction function (opens a dialog, types
 
 ## Build
 
+- `[GENERAL]` **Chromium needs the sandbox off.** Claude Code's macOS sandbox
+  denies `~/Library/Caches/ms-playwright`, so `resync.mjs` validate fails
+  `[RENDER_SKIPPED] browserType.launch: Target page, context or browser has been
+closed`. Installing a second copy into `.ds-sync/` does not work either (the
+  proxy cuts the 93 MB download). Run the driver, `compare.mjs` and any
+  playwright probe outside the sandbox; builds and greps stay sandboxed.
 - `pnpm --filter alouette build` (`clean:build` then `tsc -p tsconfig.json`)
   now succeeds cleanly on `main` (verified 2026-07-04) — the prior
   `dark_brand`/`AlouetteModeTheme` tsc failures were fixed upstream (commit
   `04954409`). The `git checkout -- packages/alouette/dist/definitions`
   workaround below is no longer needed; left here only in case a future
   branch reintroduces a tsc failure.
+- `[GENERAL]` **Fonts ship as files, not only via Google Fonts.** The `--font-*`
+  tokens name the expo-font families first (`SoraRegular`, `SoraBold`,
+  `ChivoMonoBold`, ...), but the Google Fonts `@import` scraped from
+  `preview-head.html` only serves `Sora` / `Chivo Mono`, so Claude Design
+  reported the fonts missing (the validator only printed `[FONT_REMOTE]`).
+  `.design-sync/fonts.css` (`cfg.extraFonts`) declares those six families over
+  the `@expo-google-fonts` TTFs; the build copies them to `ds-bundle/fonts/` and
+  `styles.css` imports `fonts/fonts.css` first. `SystemAndroid` in the same
+  warning is NativeWind's `@media android` `--font-sans`, never matched on web.
 - Entry: `./packages/alouette/dist/index-browser.es.js` (the `browser` export).
 - `--node-modules ./node_modules` (repo root): pnpm's node-modules linker keeps
   `react`/`react-dom` only at the root; the package's own node_modules is sparse.
@@ -140,11 +162,37 @@ Tests`) all carry a `play:` interaction function (opens a dialog, types
   `cfg.storyImports.bundle: ["story-components"]` bundles the story-component
   helpers from source (components they import recurse to the global, preserving
   context identity).
-- `cfg.provider` = `SafeAreaProvider > AlouetteProvider > ScopedTheme(theme=light)`,
-  the same chain as `.storybook`'s `AlouetteDecorator`. Set explicitly (not via
-  the bundled decorator) so the providers come from the SAME global bundle as the
-  components — the bundled decorator's NativeWind variable context is a different
-  instance and its theme vars never reach the global components.
+- `cfg.provider` = `SafeAreaProvider > AlouetteProvider > ScopedTheme(theme=light)
+  > View`, the same chain as `.storybook`'s `AlouetteDecorator` plus a layout
+  > root. Set explicitly (not via the bundled decorator) so the providers come from
+  > the SAME global bundle as the components — the bundled decorator's NativeWind
+  > variable context is a different instance and its theme vars never reach the
+  > global components.
+- `[GENERAL]` **The innermost `View` recreates the React Native root.** The
+  preview mount (`#r0`) is `display:block`, while Storybook's root is a flex
+  column. Without the `View`, layout diverged both ways: a `Button` (a `<button>`
+  element) shrank to its content instead of stretching, and `self-start`
+  components (`Badge`, `ColorModePicker`, `RadioButtonGroup`) became full-width
+  bars. A bare `View` (flex column, `align-items: stretch`) fixes both.
+- `[GENERAL]` **`react-hook-form` must be one instance.** Story files import
+  `useFormContext`/`useWatch`/`Controller` from `react-hook-form`; bundled per
+  story they got their own copy, so `useFormContext()` returned null under the
+  global `Form` (SimpleVForm: `Cannot destructure property 'setFocus'`).
+  `.design-sync/react-hook-form-entry.mjs` (in `cfg.extraEntries`) puts those
+  three on the global and `cfg.storyImports.shim: ["react-hook-form"]` redirects
+  story imports to it. A story importing another react-hook-form export fails
+  with `(0, ds_exports.<name>) is not a function` - add the name to the entry.
+- `[GENERAL]` **Story-only helpers are not on the global.** A story importing a
+  non-exported component renders `Element type is invalid ... got: undefined`.
+  `ModalPanel` is deliberately story-only (Modal's `Variants`), so that story is
+  skipped. `IndeterminateLinearProgress` / `IndeterminateCircularProgress` were a
+  real omission (their `Props` types were exported, the components were not) and
+  were added to `packages/alouette/src/index.ts`.
+- `[GENERAL]` **Every `*tests*` story is skipped** (`cfg.overrides.<Name>.skip`,
+  37 components): they are `play`-driven assertions whose reference shows the
+  post-interaction state. Other stories with a `play` (Modal's scrolling bodies,
+  Form, FormField, FormSubmitButton, SimpleVForm, IconButton's soft-accent
+  story) are kept and graded against the pre-play render, noted per story.
 
 ## Resolved: row/flex layout collapse (stacks.tsx shim gap)
 
@@ -188,15 +236,27 @@ Tests`) all carry a `play:` interaction function (opens a dialog, types
   that looks fine in storybook collapses to a vertical stack (or loses
   `className` styling) only in the ds preview. Add `cfg.storyImports.shim` (or
   `.bundle`, if source-bundling is actually intended) for the resolved path.
-- **GradientBackground's `absolute inset-0` overlay** (Light/Dark Brand
-  stories) needs a definite-height ancestor to fill against; real Storybook's
-  canvas/decorator provides one, the design-sync preview's provider chain
-  (`SafeAreaProvider > AlouetteProvider > ScopedTheme`) does not — content
-  collapses/escapes above the viewport, gradient never paints. Not the same
-  bug as the stacks.tsx one above (verified via isolated Playwright fullPage
-  capture): this is a preview-harness sizing gap, not a component defect —
-  GradientScrollView's Scroll story is unaffected. Needs a `min-h-screen`-
-  equivalent wrapper in the preview provider chain; not yet fixed.
+- **Owned preview: `previews/GradientBackground.tsx`.** GradientBackground is
+  `absolute inset-0` and needs a sized ancestor; Storybook's fullscreen canvas
+  provides one, the preview mount does not (content escaped above the viewport,
+  gradient never painted). The owned preview frames the Preview story in
+  `relative h-[560px]`, as the story's own Variants do. If the story's
+  `PreviewGradientBackgroundStory` changes, re-mirror it there. It still prints
+  `[RENDER_THIN]` like every card (known false positive above), phrased as
+  "already authored" - benign.
+- **Accepted `close` grades (2026-09-27)**: `Select` Preview - `Select.web.tsx`'s
+  wrapper has `flex-1`, so in Storybook's definite-height canvas the select grows
+  to ~390px tall; the preview shows a normal pill. Likely a component quirk
+  (InputText has no `flex-1`) - reported, not changed. `AppHeader` - wraps its
+  actions to a second row at the preview page's ~40px narrower content width
+  (intended flex-wrap). `ScrollView` Preview - Storybook's capture shows the
+  scroll content unclipped, the preview clips to the story's `h-70` frame.
+- **Framing only (graded match)**: AppShell/AppLayout take content height in the
+  preview vs viewport height in Storybook's fullscreen canvas.
+- **Sampling**: on 2026-09-27 each component's primary story was judged from
+  images; tall `Variants` stories (Storybook side shrunk to a thumbnail) are
+  `sibling-trusted`. A regression that only shows deep in a Variants story would
+  not have been caught.
 - **tsc/definitions**: if `dist/definitions` is stale or missing after a rebuild,
   re-run `git checkout -- packages/alouette/dist/definitions` (see Build). If the
   branch's tsc errors are fixed upstream, this whole step goes away.

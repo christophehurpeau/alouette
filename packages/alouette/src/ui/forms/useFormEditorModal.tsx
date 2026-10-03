@@ -8,7 +8,7 @@ import { FormSubmitButton } from "./FormSubmitButton";
 
 /**
  * The editor half of the public props of a component pairing a read-only
- * display with a modal form (FormEditableItem, FormEditableSurface).
+ * display with a modal form (FormEditableItem, FormEditableSection).
  */
 export interface FormEditorProps<TFieldValues extends FieldValues> extends Omit<
   FormProps<TFieldValues>,
@@ -96,7 +96,12 @@ export function useFormEditorModal<TFieldValues extends FieldValues>({
             closeButtonAriaLabel={closeButtonAriaLabel}
             footer={
               <>
-                <Button variant="outlined" text={cancelLabel} onPress={close} />
+                <Button
+                  accent="neutral"
+                  variant="soft"
+                  text={cancelLabel}
+                  onPress={close}
+                />
                 <FormSubmitButton
                   label={submitLabel}
                   errorToMessage={submitErrorToMessage}

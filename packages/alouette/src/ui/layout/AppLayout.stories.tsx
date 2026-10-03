@@ -1,25 +1,23 @@
 import { expect, fn, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BellRegularIcon } from "alouette-icons/phosphor-icons/BellRegularIcon";
-import { BirdRegularIcon } from "alouette-icons/phosphor-icons/BirdRegularIcon";
-import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBarRegularIcon";
-import { GearRegularIcon } from "alouette-icons/phosphor-icons/GearRegularIcon";
-import { HouseRegularIcon } from "alouette-icons/phosphor-icons/HouseRegularIcon";
-import { SignOutRegularIcon } from "alouette-icons/phosphor-icons/SignOutRegularIcon";
-import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircleRegularIcon";
+import { BellRegularIcon } from "alouette-icons/phosphor-icons/Bell";
+import { BirdRegularIcon } from "alouette-icons/phosphor-icons/Bird";
+import { ChartBarRegularIcon } from "alouette-icons/phosphor-icons/ChartBar";
+import { GearRegularIcon } from "alouette-icons/phosphor-icons/Gear";
+import { HouseRegularIcon } from "alouette-icons/phosphor-icons/House";
+import { SignOutRegularIcon } from "alouette-icons/phosphor-icons/SignOut";
+import { UserCircleRegularIcon } from "alouette-icons/phosphor-icons/UserCircle";
 import type { ReactNode } from "react";
 import { IconButton } from "../actions/IconButton";
 import { LinkText } from "../actions/LinkText";
 import { MenuItem } from "../actions/MenuItem";
 import { Box } from "../containers/Box";
-import { Surface } from "../containers/Surface";
 import { ColorModePicker } from "../inputs/ColorModePicker";
 import { NavBar } from "../navigation/NavBar";
 import { NavBarItem } from "../navigation/NavBarItem";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Separator } from "../stacks/Separator";
-import { HStack, VStack } from "../stacks/stacks";
 import { Story } from "../story-components/Story";
 import { AppHeader } from "./AppHeader";
 import { AppHeaderAccount } from "./AppHeaderAccount";
@@ -58,7 +56,7 @@ export default {
     </Box>
   }
 >
-  <VStack className="p-m gap-m">{screen}</VStack>
+  <View className="p-m gap-m">{screen}</View>
 </AppLayout>
 ~~~
 
@@ -107,7 +105,7 @@ function DemoHeader(): ReactNode {
               icon={<UserCircleRegularIcon />}
               href="/me"
             />
-            <Separator role="separator" className="my-xxs" />
+            <Separator className="my-xxs" />
             <MenuItem
               label="Log out"
               icon={<SignOutRegularIcon />}
@@ -153,10 +151,10 @@ function DemoSidebar({ label, className }: DemoSidebarProps): ReactNode {
 function DemoFooter(): ReactNode {
   return (
     <Box role="contentinfo" className="px-m py-sm">
-      <HStack className="items-center justify-between gap-m">
+      <View className="flex-row items-center justify-between gap-m">
         <Text className="text-sm text-muted">© 2026 Alouette</Text>
         <LinkText href="/privacy" size="sm" text="Privacy" />
-      </HStack>
+      </View>
     </Box>
   );
 }
@@ -167,14 +165,14 @@ interface DemoScreenProps {
 
 function DemoScreen({ rows }: DemoScreenProps): ReactNode {
   return (
-    <VStack className="gap-xxs p-m">
+    <View className="gap-xxs p-m">
       <Text className="font-heading-bold text-xl">Reports</Text>
       {Array.from({ length: rows }, (_, index) => (
-        <Surface key={index} size="xs">
+        <Box key={index} className="surface surface-xs">
           <Text className="text-base">{`Row ${index + 1}`}</Text>
-        </Surface>
+        </Box>
       ))}
-    </VStack>
+    </View>
   );
 }
 
@@ -206,18 +204,19 @@ function ViewportFrame({ children }: DemoFrameProps): ReactNode {
 
 function DemoEmptyScreen(): ReactNode {
   return (
-    <VStack className="flex-center grow gap-xs p-m">
+    <View className="flex-center grow gap-xs p-m">
       <Text className="font-heading-bold text-xl">Empty state</Text>
       <Text className="text-muted text-base">
         The screen and the rail fill whatever the chrome leaves, and the footer
         stays at the bottom.
       </Text>
-    </VStack>
+    </View>
   );
 }
 
 export const PreviewAppLayoutStory: ThisStory = {
   name: "AppLayout Preview",
+  parameters: { chromatic: { disableSnapshot: true } },
   render: (args) => (
     <AppLayout
       header={<DemoHeader />}
