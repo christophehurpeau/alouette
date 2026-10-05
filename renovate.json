@@ -1,3 +1,14 @@
 {
-  "extends": ["config:js-lib", "github>christophehurpeau/renovate-presets"]
+  "extends": ["config:js-lib", "github>christophehurpeau/renovate-presets"],
+  "packageRules": [
+    {
+      "description": "@storybook/react-native and the ondevice addons live in storybookjs/react-native, outside the storybook monorepo group, but depend on its packages (@storybook/react peers storybook): update them together",
+      "groupName": "storybook monorepo",
+      "matchPackageNames": [
+        "storybook",
+        "@storybook/*",
+        "eslint-plugin-storybook"
+      ]
+    }
+  ]
 }
