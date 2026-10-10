@@ -485,11 +485,12 @@ outline-offset-2 outline-accent`, applied with `focus-visible:` (or
 a border token (`border-sharp`) or a ground (`interactive-filled-pressable`)
 meets the dark tonal ground on the same step and vanishes. It is never a
 per-variant color, and never transitions. `focus-ring-inset` is the same ring
-2px **inside** the edge, for two cases: the raised `tonal` material, whose
-shadow sits where an outer ring would, and a pressable whose parent clips
-(`surface` is `overflow-hidden`: the `Message` dismiss, `EditableSection`'s
-edit button). `InteractiveBox`'s `withFocusVisibleOutline` takes `true` (outer),
-`"inset"` or `false`; `PressableBox` defaults it from the variant (`tonal` →
+2px **inside** the edge, for three cases: the raised `tonal` material, whose
+shadow sits where an outer ring would, the `soft` one, ringed like `tonal` so
+the two read as one family, and a pressable whose parent clips (`surface` is
+`overflow-hidden`: the `Message` dismiss, `EditableSection`'s edit button).
+`InteractiveBox`'s `withFocusVisibleOutline` takes `true` (outer), `"inset"` or
+`false`; `PressableBox` defaults it from the variant (`tonal` and `soft` →
 `"inset"`) and `Button` / `IconButton` pass it through. A forced
 `forceStyle="focus"` renders the rest ground plus the ring, since no story can
 trigger `:focus-visible`. Native sees none of it: react-native-css drops

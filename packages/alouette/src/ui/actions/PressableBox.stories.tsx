@@ -144,11 +144,11 @@ export const FocusRing: ThisStory = {
             </PressableBox>
           ))}
           <PressableBox
-            variant="soft"
+            variant="filled"
             withFocusVisibleOutline="inset"
             className="px-m py-xs rounded-sm"
           >
-            <Text className="text-sharp">inset</Text>
+            <Text className="text-on-accent">inset</Text>
           </PressableBox>
         </View>
       </Story.Section>
@@ -171,8 +171,8 @@ export const FocusRing: ThisStory = {
     await userEvent.unhover(tonal);
     await expect(getComputedStyle(tonal).backgroundColor).toBe(restGround);
 
-    // Tab brings the ring: inset on the raised tonal material, 2px outside on
-    // the flat variants, in the accent ink everywhere.
+    // Tab brings the ring: inset on tonal and soft, 2px outside on filled and
+    // outlined, in the accent ink everywhere.
     await userEvent.tab({ shift: true });
     await userEvent.tab();
     await expect(tonal).toHaveFocus();
@@ -181,12 +181,16 @@ export const FocusRing: ThisStory = {
     await expect(getComputedStyle(tonal).outlineColor).toBe(accent);
     await expect(getComputedStyle(tonal).backgroundColor).toBe(restGround);
 
-    for (const name of ["filled", "outlined", "soft"]) {
+    for (const [name, offset] of [
+      ["filled", "2px"],
+      ["outlined", "2px"],
+      ["soft", "-2px"],
+    ]) {
       await userEvent.tab();
       const button = canvas.getByRole("button", { name });
       await expect(button).toHaveFocus();
       await expect(getComputedStyle(button).outlineWidth).toBe("2px");
-      await expect(getComputedStyle(button).outlineOffset).toBe("2px");
+      await expect(getComputedStyle(button).outlineOffset).toBe(offset);
       await expect(getComputedStyle(button).outlineColor).toBe(accent);
     }
 

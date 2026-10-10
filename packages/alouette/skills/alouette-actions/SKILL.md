@@ -294,8 +294,8 @@ needing another role passes its own (`MenuItem` stays a `menuitem`).
 
 The keyboard focus ring is the `focus-ring` utility in the accent ink, on
 `focus-visible` only — a mouse click never leaves a ring or a changed ground
-behind. A `tonal` pressable rings 2px inside its raised edge, the flat variants
-2px outside it. `withFocusVisibleOutline="inset"` moves the ring inside for a
+behind. A `tonal` or `soft` pressable rings 2px inside its edge, `filled` and
+`outlined` 2px outside it. `withFocusVisibleOutline="inset"` moves the ring inside for a
 pressable whose parent clips (a `surface` is `overflow-hidden`), and
 `withFocusVisibleOutline={false}` drops it for a row of a list that already
 paints its cursor (a menu item, a listbox option), where the outline would ring

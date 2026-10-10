@@ -160,7 +160,7 @@ const pressableBoxVariants = tv(
           {
             variant: "soft",
             forceStyle: "focus",
-            className: "bg-transparent focus-ring",
+            className: "bg-transparent focus-ring-inset",
           },
           {
             variant: "soft",
@@ -203,7 +203,8 @@ export interface PressableBoxProps
   /**
    * The keyboard focus ring. Unset, a `tonal` pressable rings inside its edge
    * (`"inset"`: the material is raised, and its shadow is where an outer ring
-   * would sit) and the flat variants ring 2px outside it. Pass `"inset"` to a
+   * would sit), and so does a `soft` one, to match it; `filled` and `outlined`
+   * ring 2px outside it. Pass `"inset"` to a
    * pressable whose parent clips (a `surface` is `overflow-hidden`), and
    * `false` on a row of a list that already paints its cursor (a menu item, a
    * listbox option): the focus moves with the pointer there, so the outline
@@ -225,7 +226,9 @@ export function PressableBox({
   accent,
   href,
   role,
-  withFocusVisibleOutline = variant === "tonal" ? "inset" : true,
+  withFocusVisibleOutline = variant === "tonal" || variant === "soft"
+    ? "inset"
+    : true,
   ...props
 }: PressableBoxProps): ReactNode {
   const warningRef = useTonalGroundWarningRef(ref, {
