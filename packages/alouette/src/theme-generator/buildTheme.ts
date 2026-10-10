@@ -161,21 +161,17 @@ interface ThemeTarget {
 }
 
 const themeTargets: ThemeTarget[] = [
-  ...(["light", "dark"] as const).map(
-    (mode): ThemeTarget => ({
-      theme: mode,
-      mode,
-      accentName: "grayscale",
-    }),
-  ),
+  ...(["light", "dark"] as const).map((mode): ThemeTarget => ({
+    theme: mode,
+    mode,
+    accentName: "grayscale",
+  })),
   ...(["light", "dark"] as const).flatMap((mode) =>
-    accents.map(
-      (accentName): ThemeTarget => ({
-        theme: `${mode}_${accentName}` as AlouetteTheme,
-        mode,
-        accentName,
-      }),
-    ),
+    accents.map((accentName): ThemeTarget => ({
+      theme: `${mode}_${accentName}` as AlouetteTheme,
+      mode,
+      accentName,
+    })),
   ),
 ];
 
