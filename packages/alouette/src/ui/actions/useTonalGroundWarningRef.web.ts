@@ -33,7 +33,7 @@ function warnIfOnOwnGround(element: HTMLElement): void {
   const ground = getComputedStyle(element).backgroundColor;
   if (isTransparent(ground) || ground !== findGroundBehind(element)) return;
   console.warn(
-    `[Alouette] A tonal pressable rests on its own ground (${ground}), so it dissolves into the surface behind it. On an accented surface pass accent="neutral"; on a neutral one use variant="soft" (or variant="filled").`,
+    `[Alouette] A tonal pressable rests on its own ground (${ground}), so it dissolves into the surface behind it. On an accented surface pass accent="neutral"; on a neutral one pass an accent (accent="brand"), or use variant="soft" or variant="filled".`,
   );
 }
 
