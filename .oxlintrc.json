@@ -4,8 +4,8 @@
     "./node_modules/@pob/eslint-config/oxlint/module.json",
     "./node_modules/@pob/eslint-config/oxlint/node.json",
     "./node_modules/@pob/eslint-config/oxlint/typescript.json",
-    "./node_modules/@pob/eslint-config/oxlint/allow-unsafe.json",
     "./node_modules/@pob/eslint-config/oxlint/allow-implicit-return-type.json",
+    "./node_modules/@pob/eslint-config/oxlint/allow-unsafe.json",
     "./node_modules/@pob/eslint-config-typescript-react/oxlint/react.json",
     "./node_modules/@pob/eslint-config-typescript-react/oxlint/react-native-web.json"
   ],

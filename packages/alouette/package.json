@@ -129,7 +129,7 @@
     "type-fest": "5.8.0"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "10.1.0",
+    "@pob/rollup-esbuild": "10.2.0",
     "@rollup/plugin-replace": "6.0.3",
     "@tanstack/intent": "0.1.1",
     "@types/node": "24.10.1",
