@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.0](https://github.com/christophehurpeau/alouette/compare/expo-demo-app@3.1.0...expo-demo-app@3.2.0) (2026-10-10)
+
+Version bump for dependency: alouette
+
+
 ## [3.1.0](https://github.com/christophehurpeau/alouette/compare/expo-demo-app@3.0.0...expo-demo-app@3.1.0) (2026-10-03)
 
 Version bump for dependency: alouette
