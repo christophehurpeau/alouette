@@ -36,6 +36,7 @@ const {
 const animationDurationsMs = {
   slide: 600,
   collapse: 800,
+  disclose: 250,
   progress: 600,
   fade: 300,
   fast: 200,
@@ -47,6 +48,10 @@ const animateTokens = {
   "slide-out": `slide-out ${animationDurationsMs.slide}ms cubic-bezier(0.16, 1, 0.3, 1)`,
   "collapse-in": `collapse-in ${animationDurationsMs.collapse}ms ease-out`,
   "collapse-out": `collapse-out ${animationDurationsMs.collapse}ms ease-out`,
+  // Disclosure: the collapse keyframes at a pace that answers a press, shared
+  // with the caret's rotation (`duration-disclose`).
+  "disclose-in": `collapse-in ${animationDurationsMs.disclose}ms cubic-bezier(0.2, 0, 0, 1)`,
+  "disclose-out": `collapse-out ${animationDurationsMs.disclose}ms cubic-bezier(0.2, 0, 0, 1)`,
   // The drawn caret of InputCode: a step, like a real text caret.
   "caret-blink": `caret-blink ${animationDurationsMs.caret}ms step-end infinite`,
 } as const;

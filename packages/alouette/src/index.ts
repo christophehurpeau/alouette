@@ -69,6 +69,8 @@ export { PresenceList, PresenceOne } from "./ui/containers/Presence";
 export { animationDurationsMs } from "./animationDurationsMs";
 export type { PopoverProps } from "./ui/containers/Popover";
 export { Popover } from "./ui/containers/Popover";
+export type { DisclosureProps } from "./ui/containers/Disclosure";
+export { Disclosure } from "./ui/containers/Disclosure";
 export type { EditableSectionProps } from "./ui/containers/EditableSection";
 export { EditableSection } from "./ui/containers/EditableSection";
 export type { ModalProps } from "./ui/containers/Modal";

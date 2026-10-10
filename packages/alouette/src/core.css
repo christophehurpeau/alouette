@@ -90,6 +90,8 @@
   --animate-slide-out: slide-out 600ms cubic-bezier(0.16, 1, 0.3, 1);
   --animate-collapse-in: collapse-in 800ms ease-out;
   --animate-collapse-out: collapse-out 800ms ease-out;
+  --animate-disclose-in: collapse-in 250ms cubic-bezier(0.2, 0, 0, 1);
+  --animate-disclose-out: collapse-out 250ms cubic-bezier(0.2, 0, 0, 1);
   --animate-caret-blink: caret-blink 1000ms step-end infinite;
 }
 
@@ -138,6 +140,7 @@
        so that reduced motion can zero them (see the @media block below) */
     --motion-duration-slide: 600ms;
     --motion-duration-collapse: 800ms;
+    --motion-duration-disclose: 250ms;
     --motion-duration-progress: 600ms;
     --motion-duration-fade: 300ms;
     --motion-duration-fast: 200ms;
@@ -154,6 +157,7 @@
     --default-transition-duration: 0ms;
     --motion-duration-slide: 0ms;
     --motion-duration-collapse: 0ms;
+    --motion-duration-disclose: 0ms;
     --motion-duration-progress: 0ms;
     --motion-duration-fade: 0ms;
     --motion-duration-fast: 0ms;
@@ -162,6 +166,8 @@
     --animate-slide-out: none;
     --animate-collapse-in: none;
     --animate-collapse-out: none;
+    --animate-disclose-in: none;
+    --animate-disclose-out: none;
     --animate-caret-blink: none;
   }
 }
@@ -271,6 +277,9 @@
 }
 @utility duration-collapse {
   transition-duration: var(--motion-duration-collapse);
+}
+@utility duration-disclose {
+  transition-duration: var(--motion-duration-disclose);
 }
 @utility duration-progress {
   transition-duration: var(--motion-duration-progress);

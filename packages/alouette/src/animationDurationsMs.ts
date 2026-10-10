@@ -8,6 +8,7 @@
 export const animationDurationsMs = {
   slide: 600,
   collapse: 800,
+  disclose: 250,
   progress: 600,
   fade: 300,
   fast: 200,
