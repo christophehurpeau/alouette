@@ -1,7 +1,8 @@
 name: Expo Check
 permissions:
   contents: read
-on: [push]
+# Disabled on push until https://github.com/expo/expo/issues/44479 is fixed
+on: [workflow_dispatch]
 
 jobs:
   expo-doctor:
