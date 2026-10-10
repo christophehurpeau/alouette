@@ -29,6 +29,7 @@ const themeVariablesModule = (
 ): string =>
   `${generatedHeader}
 /* eslint-disable camelcase */
+/* oxlint-disable eslint-js/camelcase */
 import type { ThemeVariablesMap } from "alouette";
 
 /**

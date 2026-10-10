@@ -1,4 +1,4 @@
-/* eslint-disable react/destructuring-assignment */
+/* oxlint-disable react-js/destructuring-assignment */
 import type { Decorator } from "@storybook/react-vite";
 import { ScopedTheme } from "../ui/containers/ScopedTheme";
 import { AlouetteProvider } from "./AlouetteProvider";
