@@ -36,7 +36,7 @@
     "@pob/eslint-config": "67.10.0",
     "@pob/eslint-config-typescript-react": "67.10.0",
     "@pob/rollup-esbuild": "10.1.0",
-    "@pob/root": "27.11.0",
+    "@pob/root": "27.13.0",
     "@testing-library/dom": "10.4.1",
     "@testing-library/react": "16.3.2",
     "@typescript/native": "npm:typescript@7.0.2",
