@@ -4,7 +4,7 @@ import { createContext, createElement } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("react-native", () => ({
-  // eslint-disable-next-line camelcase
+  // oxlint-disable-next-line eslint-js/camelcase -- mocks react-native's export of that name
   unstable_TextAncestorContext: createContext(false),
   Text: ({
     ref,
