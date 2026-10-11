@@ -161,7 +161,7 @@ line, and a value with its own component keeps it (`Code`, `CodeBlock`,
   - `font-heading`, `font-heading-bold`, `font-heading-extrabold`
   - `font-mono`, `font-mono-bold`, `font-mono-extrabold`
 
-  `<Text>` defaults to `font-body`, so plain body text needs no family class. On React Native, bold/extrabold are distinct font files (e.g. `SoraBold`) — a standalone `font-weight` has no effect, which is why weight is baked into the family utility.
+  `<Text>` defaults to `font-body`, so plain body text needs no family class. A `Text` nested in another `Text` skips its `font-body text-sharp` defaults and inherits what it does not set (`TextAncestorContext`: RN's own on native, which a `View` resets; an alouette context on web, where CSS inheritance crosses a `View`). On React Native, bold/extrabold are distinct font files (e.g. `SoraBold`) — a standalone `font-weight` has no effect, which is why weight is baked into the family utility.
 
 - **Size** (standard Tailwind `text-*`, font-size only):
   `text-xs` 12px · `text-sm` 14px · `text-base` 16px · `text-lg` 18px · `text-xl` 24px · `text-2xl` 32px · `text-3xl` 40px · `text-4xl` 48px · `text-5xl` 64px · `text-6xl` 80px

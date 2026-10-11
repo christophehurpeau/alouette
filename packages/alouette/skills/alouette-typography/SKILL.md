@@ -23,7 +23,8 @@ This skill builds on alouette-theming. Read it first for the color token model.
 
 `Text` and `Paragraph` have no variant props — style them entirely with
 `className`. `Text` defaults to `font-body` + `text-sharp`, so plain body text
-needs no family or color class. `Paragraph` is `Text` with `role="paragraph"`
+needs no family or color class; nested in another `Text` it inherits instead
+(see "Nested Text inherits"). `Paragraph` is `Text` with `role="paragraph"`
 (renders a `<p>` on web) and selectable text — a block of prose, not a generic
 text wrapper (see "Text vs Paragraph").
 
@@ -99,6 +100,23 @@ Source: packages/alouette/scripts/build-css.ts, ui/data/Avatar.tsx
   Brand-colored
 </Text>
 ```
+
+### Nested Text inherits
+
+A `Text` nested in another `Text` (or a `Paragraph`) drops the `font-body` /
+`text-sharp` defaults and inherits the family, weight, color and size it does
+not set itself, so a run of a rich-text renderer is a plain `<Text>`:
+
+```tsx
+<Text className="font-heading-bold text-xl text-muted">
+  Release <Text className="text-accent">24.3</Text> notes
+</Text>
+```
+
+"24.3" stays heading-bold and `text-xl`, colored `text-accent`. A nested `Text`
+that must differ sets that class itself (`text-sharp`, `font-body`). On native,
+a `View` between the two (an inline `Badge`) breaks inheritance, so a `Text`
+inside it starts from the defaults again.
 
 ## Common Mistakes
 

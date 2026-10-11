@@ -148,6 +148,11 @@ export const Tests: ThisStory = {
       <Story.Section title="Paragraph">
         <Paragraph>Paragraph content</Paragraph>
       </Story.Section>
+      <Story.Section title="Nested inherits">
+        <Text className="font-heading-bold text-xl text-muted">
+          outer <Text>inner</Text>
+        </Text>
+      </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
@@ -155,5 +160,11 @@ export const Tests: ThisStory = {
     const paragraph = canvas.getByText("Paragraph content");
     await expect(paragraph).toBeInTheDocument();
     await expect(paragraph.tagName).toBe("P");
+
+    const inner = getComputedStyle(canvas.getByText("inner"));
+    const outer = getComputedStyle(canvas.getByText(/^outer/));
+    await expect(inner.fontFamily).toBe(outer.fontFamily);
+    await expect(inner.color).toBe(outer.color);
+    await expect(inner.fontSize).toBe(outer.fontSize);
   },
 };
