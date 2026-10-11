@@ -1,9 +1,11 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import type { ReactNode, Ref } from "react";
-import { createElement } from "react";
+import { createContext, createElement } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("react-native", () => ({
+  // eslint-disable-next-line camelcase
+  unstable_TextAncestorContext: createContext(false),
   Text: ({
     ref,
     className,
@@ -76,5 +78,31 @@ describe("Text", () => {
     expect(cls).toContain("font-body-bold");
     expect(cls).toContain("text-base");
     expect(cls).toContain("text-muted");
+  });
+
+  it("drops the defaults when nested, so the nested Text inherits", () => {
+    render(
+      createElement(
+        Text,
+        { className: "font-heading-bold text-muted", testID: "outer" },
+        "a ",
+        createElement(Text, { testID: "inner" }, "b"),
+      ),
+    );
+    expect(screen.getByTestId("outer").className).toBe(
+      "font-heading-bold text-muted",
+    );
+    expect(screen.getByTestId("inner").className).toBe("");
+  });
+
+  it("keeps a nested Text's own classes without merging defaults in", () => {
+    render(
+      createElement(
+        Text,
+        { className: "font-body-bold" },
+        createElement(Text, { className: "text-accent", testID: "inner" }),
+      ),
+    );
+    expect(screen.getByTestId("inner").className).toBe("text-accent");
   });
 });

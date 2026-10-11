@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@24.2.0...alouette@24.3.0) (2026-10-11)
+
+### Features
+
+* **alouette:** add wrap to CodeBlock
+* **alouette:** inherit parent style in nested Text
+
 ## [24.2.0](https://github.com/christophehurpeau/alouette/compare/alouette@24.1.0...alouette@24.2.0) (2026-10-10)
 
 ### Features

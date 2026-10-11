@@ -1,21 +1,38 @@
-import type { ReactNode, Ref } from "react";
+import { type ReactNode, type Ref, use } from "react";
 import { Text as RNText, type TextProps as RNTextProps } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
 import { twMerge } from "../../core/twMerge";
 import { AccentScope } from "../containers/AccentScope";
+import { TextAncestorContext } from "./TextAncestorContext";
 
 export interface TextProps extends RNTextProps {
   accent?: Accent;
   ref?: Ref<RNText>;
 }
 
+/**
+ * Defaults to `font-body text-sharp`, except nested in another `Text`: it then
+ * inherits whatever its `className` does not set itself.
+ */
 export function Text({ className, accent, ...props }: TextProps): ReactNode {
+  const hasTextAncestor = use(TextAncestorContext);
+
+  if (hasTextAncestor) {
+    return (
+      <AccentScope accent={accent}>
+        <RNText className={className} {...props} />
+      </AccentScope>
+    );
+  }
+
   return (
     <AccentScope accent={accent}>
-      <RNText
-        className={twMerge("font-body text-sharp", className)}
-        {...props}
-      />
+      <TextAncestorContext value>
+        <RNText
+          className={twMerge("font-body text-sharp", className)}
+          {...props}
+        />
+      </TextAncestorContext>
     </AccentScope>
   );
 }
