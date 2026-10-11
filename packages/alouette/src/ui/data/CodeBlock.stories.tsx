@@ -25,6 +25,12 @@ export default {
       options: ["sm", "md"],
       table: { defaultValue: { summary: "md" } },
     },
+    wrap: {
+      description:
+        "Wrap long lines instead of scrolling them — for content read end to end, like a shell command",
+      control: "boolean",
+      table: { defaultValue: { summary: "false" } },
+    },
     children: { description: "The code", control: "text" },
   },
 } satisfies Meta<typeof CodeBlock>;
@@ -85,6 +91,16 @@ export const CodeBlockVariantsStory: ThisStory = {
         </CodeBlock>
       </Story.Section>
 
+      <Story.Section title="Long line — wraps">
+        <Box className="surface">
+          <CodeBlock wrap title="install.sh">
+            curl -fsSL
+            https://raw.githubusercontent.com/christophehurpeau/alouette/main/scripts/install.sh
+            | bash -s -- --prefix=/usr/local/share/alouette
+          </CodeBlock>
+        </Box>
+      </Story.Section>
+
       <Story.Section title="On a raised surface">
         <Box className="surface">
           <ThemeSnippet title="build-css.ts" />
@@ -101,6 +117,17 @@ export const CodeBlockTestsStory: ThisStory = {
       <Story.Section title="Semantics">
         <CodeBlock title="install.sh">pnpm add alouette</CodeBlock>
       </Story.Section>
+      <Story.Section title="Wrap">
+        <Box className="w-[240px]">
+          <CodeBlock>
+            scrolling --long-line-that-overflows-the-block-and-scrolls-sideways
+          </CodeBlock>
+          <CodeBlock wrap>
+            wrapping
+            --long-line-that-overflows-the-block-and-wraps-onto-several-lines
+          </CodeBlock>
+        </Box>
+      </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
@@ -110,5 +137,18 @@ export const CodeBlockTestsStory: ThisStory = {
     // react-native-web maps role="code" onto a real <code> element.
     await expect(code.tagName).toBe("CODE");
     await expect(canvas.getByText("install.sh")).toBeTruthy();
+
+    const scrolling = canvas.getByText(/^scrolling/);
+    await expect(getComputedStyle(scrolling).whiteSpace).toBe("pre");
+
+    const wrapping = canvas.getByText(/^wrapping/);
+    await expect(wrapping.tagName).toBe("CODE");
+    await expect(getComputedStyle(wrapping).whiteSpace).toBe("pre-wrap");
+    await expect(getComputedStyle(wrapping).overflowWrap).toBe("anywhere");
+    const frame = wrapping.parentElement;
+    if (!frame) throw new Error("CodeBlock frame not found");
+    await expect(wrapping.getBoundingClientRect().right).toBeLessThanOrEqual(
+      frame.getBoundingClientRect().right,
+    );
   },
 };

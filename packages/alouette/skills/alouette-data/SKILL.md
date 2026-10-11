@@ -173,6 +173,17 @@ language) above it and `size` `"sm" | "md"` (default `"md"`) for the code text.
 };`}</CodeBlock>
 ```
 
+`wrap` wraps long lines instead of scrolling them, breaking a token longer than
+the line (a URL, a path). Use it for content read end to end rather than
+scanned by column — a shell command in a card; keep the default scroll for
+source code and program output, whose columns wrapping would misalign.
+
+```tsx
+<CodeBlock wrap title="install.sh">
+  {installCommand}
+</CodeBlock>
+```
+
 Both are display-only. To offer copying, put an `IconButton` beside the block —
 never wrap it in a pressable.
 
@@ -469,7 +480,9 @@ Correct:
 
 The hand-rolled block wraps long lines instead of scrolling them, and drops the
 `select-auto` / `web:whitespace-pre` pair that keeps the code selectable and
-its indentation intact on web.
+its indentation intact on web. To wrap on purpose, pass `wrap`: copying the
+frame with `web:whitespace-pre-wrap` also loses `role="code"`, which
+react-native's `Role` type refuses on a caller's `Text`.
 
 Source: packages/alouette/src/ui/data/CodeBlock.tsx
 
