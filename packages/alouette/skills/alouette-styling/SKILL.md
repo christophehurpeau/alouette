@@ -11,15 +11,11 @@ description: >
   class. States the alouette design principles every component must satisfy,
   including that interactivity is a component and never a wrapper. Load when
   writing, restyling or reviewing a component.
-type: core
-library: alouette
-requires:
-  - alouette-theming
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/twMerge.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
+  - packages/alouette/src/ui/containers/Modal.tsx
+  - packages/alouette/src/ui/containers/Box.tsx
+  - packages/alouette/src/core/twMerge.ts
+  - packages/alouette/src/ui/selection/SegmentedItem.tsx
 ---
 
 # alouette — Styling conventions

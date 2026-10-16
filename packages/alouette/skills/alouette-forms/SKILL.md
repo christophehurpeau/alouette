@@ -15,52 +15,47 @@ description: >
   lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and
   FormEditableSection edit a row or a section in a modal owning its own Form.
   Load when building inputs, radio groups or a validated form.
-type: core
-library: alouette
-requires:
-  - alouette-theming
-  - alouette-actions
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputText.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputPassword.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputCode.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputCode.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.shared.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Select.web.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.shared.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.web.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/InputTextAutocomplete.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/TextArea.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Switch.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioGroup.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Radio.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioButtonGroup.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioButton.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCard.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/RadioCardGroup.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxGroup.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/Checkbox.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxCardGroup.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/CheckboxCard.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/ColorModePicker.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/inputs/ColorModePicker.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/Form.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormFieldArray.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormSubmitButton.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableSection.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/useFormEditorModal.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormField.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/SimpleVForm.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormFieldArray.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableItem.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/forms/FormEditableSection.stories.tsx"
+  - packages/alouette/src/ui/inputs/InputText.tsx
+  - packages/alouette/src/ui/inputs/InputPassword.tsx
+  - packages/alouette/src/ui/inputs/InputCode.tsx
+  - packages/alouette/src/ui/inputs/InputCode.stories.tsx
+  - packages/alouette/src/ui/inputs/Select.shared.tsx
+  - packages/alouette/src/ui/inputs/Select.tsx
+  - packages/alouette/src/ui/inputs/Select.web.tsx
+  - packages/alouette/src/ui/inputs/InputTextAutocomplete.shared.tsx
+  - packages/alouette/src/ui/inputs/InputTextAutocomplete.tsx
+  - packages/alouette/src/ui/inputs/InputTextAutocomplete.web.tsx
+  - packages/alouette/src/ui/inputs/InputTextAutocomplete.stories.tsx
+  - packages/alouette/src/ui/inputs/TextArea.tsx
+  - packages/alouette/src/ui/inputs/Switch.tsx
+  - packages/alouette/src/ui/inputs/RadioGroup.tsx
+  - packages/alouette/src/ui/inputs/Radio.tsx
+  - packages/alouette/src/ui/inputs/RadioButtonGroup.tsx
+  - packages/alouette/src/ui/inputs/RadioButton.tsx
+  - packages/alouette/src/ui/inputs/RadioCardGroup.tsx
+  - packages/alouette/src/ui/inputs/RadioCard.tsx
+  - packages/alouette/src/ui/inputs/RadioCardGroup.stories.tsx
+  - packages/alouette/src/ui/inputs/CheckboxGroup.tsx
+  - packages/alouette/src/ui/inputs/Checkbox.tsx
+  - packages/alouette/src/ui/inputs/CheckboxCardGroup.tsx
+  - packages/alouette/src/ui/inputs/CheckboxCard.tsx
+  - packages/alouette/src/ui/inputs/ColorModePicker.tsx
+  - packages/alouette/src/ui/inputs/ColorModePicker.stories.tsx
+  - packages/alouette/src/ui/forms/Form.tsx
+  - packages/alouette/src/ui/forms/FormField.tsx
+  - packages/alouette/src/ui/forms/FormItem.tsx
+  - packages/alouette/src/ui/forms/FormFieldArray.tsx
+  - packages/alouette/src/ui/forms/FormSubmitButton.tsx
+  - packages/alouette/src/ui/forms/SimpleVForm.tsx
+  - packages/alouette/src/ui/forms/FormEditableItem.tsx
+  - packages/alouette/src/ui/forms/FormEditableSection.tsx
+  - packages/alouette/src/ui/forms/useFormEditorModal.tsx
+  - packages/alouette/src/ui/forms/FormField.stories.tsx
+  - packages/alouette/src/ui/forms/SimpleVForm.stories.tsx
+  - packages/alouette/src/ui/forms/FormFieldArray.stories.tsx
+  - packages/alouette/src/ui/forms/FormEditableItem.stories.tsx
+  - packages/alouette/src/ui/forms/FormEditableSection.stories.tsx
 ---
 
 This skill builds on alouette-theming (token model) and alouette-actions (the

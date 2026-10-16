@@ -6,15 +6,11 @@ description: >
   font-heading*, font-mono*), Tailwind text-* sizes, and semantic color tokens
   (text-sharp, text-muted, text-accent, text-on-accent). No variant props. Load
   when rendering any text; avoids font-bold and raw color classes.
-type: core
-library: alouette
-requires:
-  - alouette-theming
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/Text.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/Text.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/scripts/build-css.ts"
-  - "christophehurpeau/alouette:CLAUDE.md"
+  - packages/alouette/src/ui/primitives/Text.tsx
+  - packages/alouette/src/ui/primitives/Text.stories.tsx
+  - packages/alouette/scripts/build-css.ts
+  - CLAUDE.md
 ---
 
 This skill builds on alouette-theming. Read it first for the color token model.

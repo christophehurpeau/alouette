@@ -10,25 +10,20 @@ description: >
   editor and no press handling, and are never wrapped in a Link or Pressable to
   gain one. Load when showing a status chip, a list row, an avatar, a value or
   section with an edit affordance, code, a quote or its attribution.
-type: core
-library: alouette
-requires:
-  - alouette-theming
-  - alouette-actions
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/EditableSection.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/EditableSection.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Code.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/CodeBlock.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Blockquote.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Citation.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Avatar.tsx"
+  - packages/alouette/src/ui/data/Badge.tsx
+  - packages/alouette/src/ui/data/Badge.stories.tsx
+  - packages/alouette/src/ui/data/EditableItem.tsx
+  - packages/alouette/src/ui/data/EditableItem.stories.tsx
+  - packages/alouette/src/ui/containers/EditableSection.tsx
+  - packages/alouette/src/ui/containers/EditableSection.stories.tsx
+  - packages/alouette/src/ui/data/Bullet.tsx
+  - packages/alouette/src/ui/data/Bullet.stories.tsx
+  - packages/alouette/src/ui/data/Code.tsx
+  - packages/alouette/src/ui/data/CodeBlock.tsx
+  - packages/alouette/src/ui/data/Blockquote.tsx
+  - packages/alouette/src/ui/data/Citation.tsx
+  - packages/alouette/src/ui/data/Avatar.tsx
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.

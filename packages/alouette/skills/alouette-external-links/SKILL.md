@@ -7,17 +7,13 @@ description: >
   opens is decided per platform — an in-app browser or the system one on native,
   a new tab or the same one on web — and the two wrappers already pick the
   usual answer. Load when linking out to external URLs from alouette UI.
-type: composition
-library: alouette
-requires:
-  - alouette-actions
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/expo/ExternalLink.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/expo/ExternalLink.web.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/expo/ExternalLink.shared.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/ExternalLinkText.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/ExternalLinkText.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Button.tsx"
+  - packages/alouette/src/expo/ExternalLink.tsx
+  - packages/alouette/src/expo/ExternalLink.web.tsx
+  - packages/alouette/src/expo/ExternalLink.shared.ts
+  - packages/alouette/src/ui/actions/ExternalLinkText.tsx
+  - packages/alouette/src/ui/actions/ExternalLinkText.stories.tsx
+  - packages/alouette/src/ui/actions/Button.tsx
 ---
 
 This skill builds on alouette-actions. Read it first for button props.

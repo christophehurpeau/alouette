@@ -13,21 +13,17 @@ description: >
   affordance so it never has to be rebuilt by hand. Load when adding buttons,
   text links, a menu of actions, a split button or button with options, or
   custom pressable elements.
-type: core
-library: alouette
-requires:
-  - alouette-theming
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Button.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/ActionButton.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/IconButton.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/PressableBox.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/PressableListItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/LinkText.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Menu.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/MenuItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/SplitButton.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/SplitButtonOption.tsx"
+  - packages/alouette/src/ui/actions/Button.tsx
+  - packages/alouette/src/ui/actions/ActionButton.tsx
+  - packages/alouette/src/ui/actions/IconButton.tsx
+  - packages/alouette/src/ui/actions/PressableBox.tsx
+  - packages/alouette/src/ui/actions/PressableListItem.tsx
+  - packages/alouette/src/ui/actions/LinkText.tsx
+  - packages/alouette/src/ui/actions/Menu.tsx
+  - packages/alouette/src/ui/actions/MenuItem.tsx
+  - packages/alouette/src/ui/actions/SplitButton.tsx
+  - packages/alouette/src/ui/actions/SplitButtonOption.tsx
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.

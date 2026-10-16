@@ -12,18 +12,14 @@ description: >
   reach for these for status the screen itself has to state. Load when showing
   inline status, alerts, dismissible notices, connection status, a progress
   bar or a loading indicator.
-type: core
-library: alouette
-requires:
-  - alouette-theming
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/Message.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/Message.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/ConnectionState.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/ConnectionState.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/LinearProgress.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/CircularProgress.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/feedback/useSimulatedProgress.ts"
+  - packages/alouette/src/ui/feedback/Message.tsx
+  - packages/alouette/src/ui/feedback/Message.stories.tsx
+  - packages/alouette/src/ui/feedback/ConnectionState.tsx
+  - packages/alouette/src/ui/feedback/ConnectionState.stories.tsx
+  - packages/alouette/src/ui/feedback/LinearProgress.tsx
+  - packages/alouette/src/ui/feedback/CircularProgress.tsx
+  - packages/alouette/src/ui/feedback/useSimulatedProgress.ts
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.

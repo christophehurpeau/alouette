@@ -1,230 +1,286 @@
-// Read-only reconciliation report for packages/alouette/skills: what changed
-// since the last recorded run, what is not covered, and how much room each
-// SKILL.md has left. Complements `intent stale`, which only knows about
-// released versions and sourced files.
+// Reconciliation report for packages/alouette/skills: what changed since the
+// last release, what no skill covers, and whether every SKILL.md is valid.
+// Exits 1 when a skill is invalid.
 //
-//   node scripts/skills-status.ts [--base <ref>] [--json]
+//   node scripts/skills-status.ts [--base <ref>]
 //
 // Workflow: .claude/skills/update-skills/SKILL.md
 
-import { parse } from "yaml";
-import {
-  changedSince,
-  descriptionLimit,
-  exists,
-  gitOrUndefined,
-  indexPath,
-  lineLimit,
-  packageVersion,
-  parseExports,
-  read,
-  readSkills,
-  resolveBase,
-  resolveModule,
-  treePath,
-  type Skill,
-} from "./skills-lib.ts";
+import { execFileSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
 
-const args = process.argv.slice(2);
-const baseArg = args.includes("--base")
-  ? args[args.indexOf("--base") + 1]
-  : undefined;
-const asJson = args.includes("--json");
+const repoRoot = path.resolve(import.meta.dirname, "..");
+const skillsDir = "packages/alouette/skills";
+const packageJsonPath = "packages/alouette/package.json";
+const indexPath = "packages/alouette/src/index.ts";
 
-const base = resolveBase(baseArg);
+// agentskills.io limits
+const descriptionLimit = 1024;
+const lineLimit = 500;
+const namePattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+const read = (file: string): string =>
+  fs.readFileSync(path.join(repoRoot, file), "utf8");
+
+const exists = (file: string): boolean =>
+  fs.existsSync(path.join(repoRoot, file));
+
+const git = (args: string[]): string =>
+  execFileSync("git", args, {
+    cwd: repoRoot,
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
+  }).trim();
+
+const gitOrUndefined = (args: string[]): string | undefined => {
+  try {
+    return git(args);
+  } catch {
+    return undefined;
+  }
+};
+
+interface Frontmatter {
+  scalars: Map<string, string>;
+  lists: Map<string, string[]>;
+}
+
+const unquote = (value: string): string =>
+  /^(["']).*\1$/.test(value) ? value.slice(1, -1) : value;
+
+/**
+ * Reads the subset of YAML the skills use: `key: value`, folded/literal block
+ * scalars (`key: >`) and lists of `- item`.
+ */
+const parseFrontmatter = (content: string): Frontmatter | undefined => {
+  const match = /^---\n([\s\S]*?)\n---(?:\n|$)/.exec(content);
+  if (!match?.[1]) return undefined;
+  const scalars = new Map<string, string>();
+  const lists = new Map<string, string[]>();
+  const lines = match[1].split("\n");
+  for (let index = 0; index < lines.length; index++) {
+    const keyMatch = /^([\w-]+):\s*(.*)$/.exec(lines[index] ?? "");
+    if (!keyMatch) continue;
+    const [, key = "", rest = ""] = keyMatch;
+    const block: string[] = [];
+    while (index + 1 < lines.length && /^(\s|$)/.test(lines[index + 1] ?? "")) {
+      block.push((lines[++index] ?? "").trim());
+    }
+    if (rest === ">" || rest === "|") {
+      scalars.set(key, block.join(rest === ">" ? " " : "\n").trim());
+    } else if (rest) {
+      scalars.set(key, unquote(rest));
+    } else {
+      lists.set(
+        key,
+        block
+          .filter((line) => line.startsWith("- "))
+          .map((line) => unquote(line.slice(2).trim())),
+      );
+    }
+  }
+  return { scalars, lists };
+};
+
+interface Skill {
+  name: string;
+  description: string;
+  lineCount: number;
+  sources: string[];
+  problems: string[];
+}
+
+const readSkill = (name: string): Skill => {
+  const content = read(`${skillsDir}/${name}/SKILL.md`);
+  const frontmatter = parseFrontmatter(content);
+  const description = frontmatter?.scalars.get("description") ?? "";
+  const sources = frontmatter?.lists.get("sources") ?? [];
+  const lineCount =
+    content.split("\n").length - (content.endsWith("\n") ? 1 : 0);
+  const problems: string[] = [];
+  if (!frontmatter) problems.push("no frontmatter");
+  if (frontmatter?.scalars.get("name") !== name) {
+    problems.push(`name must be "${name}", the directory name`);
+  }
+  if (!namePattern.test(name)) {
+    problems.push("name must be lowercase words joined by single hyphens");
+  }
+  if (!description) problems.push("no description");
+  if (description.length > descriptionLimit) {
+    problems.push(
+      `description is ${description.length} chars (max ${descriptionLimit})`,
+    );
+  }
+  if (lineCount > lineLimit) {
+    problems.push(
+      `${lineCount} lines (max ${lineLimit}): split into references/`,
+    );
+  }
+  if (sources.length === 0) problems.push("no sources");
+  for (const source of sources) {
+    if (!exists(source)) problems.push(`source no longer exists: ${source}`);
+  }
+  return { name, description, lineCount, sources, problems };
+};
+
+const readSkills = (): Skill[] =>
+  fs
+    .readdirSync(path.join(repoRoot, skillsDir))
+    .filter((name) => exists(`${skillsDir}/${name}/SKILL.md`))
+    .sort()
+    .map(readSkill);
+
+/** `--base`, else the tag of the last release (`package.json` still holds it). */
+const resolveBase = (): { ref: string; commit: string } => {
+  const args = process.argv.slice(2);
+  const ref = args.includes("--base")
+    ? args[args.indexOf("--base") + 1]
+    : `alouette@${JSON.parse(read(packageJsonPath)).version}`;
+  const commit =
+    ref && gitOrUndefined(["rev-parse", "--verify", `${ref}^{commit}`]);
+  if (!ref || !commit) throw new Error(`Unknown base ref: ${ref}`);
+  return { ref, commit };
+};
+
+/**
+ * Files touched between `base` and the working tree: committed, staged and
+ * unstaged, so work not yet committed for the release is reported too.
+ */
+const changedSince = (base: string): Map<string, string> => {
+  const changes = new Map<string, string>();
+  const add = (status: string, file: string): void => {
+    const previous = changes.get(file);
+    changes.set(file, previous && previous !== status ? "M" : status);
+  };
+  for (const line of git(["diff", "--name-status", base, "HEAD"]).split("\n")) {
+    const [status = "", ...paths] = line.split("\t");
+    const file = paths.at(-1);
+    if (file) add(status.slice(0, 1), file);
+  }
+  for (const line of git(["status", "--porcelain"]).split("\n")) {
+    const status = line.slice(0, 2).trim();
+    const file = line.slice(3).split(" -> ").at(-1);
+    if (file) add(status.startsWith("?") ? "A" : status.slice(0, 1), file);
+  }
+  return new Map([...changes].sort(([a], [b]) => a.localeCompare(b)));
+};
+
+/** Exported names of an index barrel, keyed by name → source module. */
+const parseExports = (content: string): Map<string, string> => {
+  const exportsByName = new Map<string, string>();
+  const namedRe = /export\s+(?:type\s+)?\{([^}]*)\}\s*from\s*"([^"]+)"/g;
+  for (const [, names = "", module = ""] of content.matchAll(namedRe)) {
+    for (const entry of names.split(",")) {
+      const name = entry
+        .trim()
+        .replace(/^type\s+/, "")
+        .split(/\s+as\s+/)
+        .at(-1);
+      if (name) exportsByName.set(name, module);
+    }
+  }
+  const starRe = /export\s+\*\s+from\s*"([^"]+)"/g;
+  for (const [, module = ""] of content.matchAll(starRe)) {
+    exportsByName.set(`* (${module})`, module);
+  }
+  return exportsByName;
+};
+
+/** `./ui/containers/Box` → the repo path of the file it resolves to. */
+const resolveModule = (module: string): string | undefined => {
+  const base = path.posix.join(
+    path.posix.dirname(indexPath),
+    module.replace(/^\.\//, ""),
+  );
+  return [
+    `${base}.tsx`,
+    `${base}.ts`,
+    `${base}/index.tsx`,
+    `${base}/index.ts`,
+  ].find(exists);
+};
+
+const base = resolveBase();
 const skills = readSkills();
 const changed = changedSince(base.commit);
-const changedFiles = new Set(changed.map((c) => c.file));
-const statusOf = new Map(changed.map((c) => [c.file, c.status]));
+const sourcedFiles = new Set(skills.flatMap((skill) => skill.sources));
+const shortBase = base.commit.slice(0, 8);
 
-const changedPerSkill = skills
-  .map((skill) => ({
-    skill,
-    files: skill.sourcePaths.filter((file) => changedFiles.has(file)),
-  }))
-  .filter(({ files }) => files.length > 0);
+console.log(`base  ${base.ref} (${shortBase})`);
 
-const sourcedFiles = new Set(skills.flatMap((skill) => skill.sourcePaths));
-const uncovered = changed
-  .map((c) => c.file)
-  .filter(
-    (file) =>
-      file.startsWith("packages/alouette/src/") &&
-      !file.includes("/dist/") &&
-      !file.endsWith(".test.ts") &&
-      !file.endsWith(".test.tsx") &&
-      !sourcedFiles.has(file),
-  );
+console.log(`\nchanged sources`);
+let changedSkillCount = 0;
+for (const skill of skills) {
+  const files = skill.sources.filter((file) => changed.has(file));
+  if (files.length === 0) continue;
+  changedSkillCount++;
+  console.log(`  ${skill.name}`);
+  for (const file of files) console.log(`    ${changed.get(file)} ${file}`);
+  console.log(`    git diff ${shortBase} -- ${files.join(" ")}`);
+}
+if (changedSkillCount === 0) console.log("  none");
+
+const uncovered = [...changed.keys()].filter(
+  (file) =>
+    file.startsWith("packages/alouette/src/") &&
+    !/\.(test|stories)\.tsx?$/.test(file) &&
+    !sourcedFiles.has(file),
+);
+if (uncovered.length > 0) {
+  console.log(`\nchanged but sourced by no skill`);
+  for (const file of uncovered) console.log(`  ${changed.get(file)} ${file}`);
+}
 
 const baseIndex = gitOrUndefined(["show", `${base.commit}:${indexPath}`]);
 const headExports = parseExports(read(indexPath));
-const baseExports = baseIndex
-  ? parseExports(baseIndex)
-  : new Map<string, string>();
-const skillsSourcing = (file: string | undefined): string[] =>
-  file === undefined
-    ? []
-    : skills
-        .filter((skill) => skill.sourcePaths.includes(file))
-        .map((skill) => skill.name);
-const addedExports = [...headExports]
-  .filter(([name]) => !baseExports.has(name))
-  .map(([name, module]) => {
+const baseExports = parseExports(baseIndex ?? "");
+const addedExports = [...headExports].filter(
+  ([name]) => !baseExports.has(name),
+);
+if (addedExports.length > 0) {
+  console.log(`\nnew exports in ${indexPath}`);
+  for (const [name, module] of addedExports) {
     const file = resolveModule(module);
-    return { name, module, file, coveredBy: skillsSourcing(file) };
-  });
+    const coveredBy = skills
+      .filter((skill) => file !== undefined && skill.sources.includes(file))
+      .map((skill) => skill.name);
+    console.log(
+      `  ${name}  ${module}  → ${coveredBy.join(", ") || "NO SKILL SOURCES IT"}`,
+    );
+  }
+}
 const removedExports = [...baseExports.keys()].filter(
   (name) => !headExports.has(name),
 );
-
-const budgets = skills.map((skill) => ({
-  name: skill.name,
-  descriptionChars: skill.descriptionChars,
-  lineCount: skill.lineCount,
-  overBudget:
-    skill.descriptionChars > descriptionLimit || skill.lineCount > lineLimit,
-}));
-
-interface TreeSkillEntry {
-  name: string;
-  description?: string;
-  requires?: string[];
-  sources?: string[];
-  references?: string[];
-}
-interface SkillTree {
-  library?: { version?: string };
-  skills?: TreeSkillEntry[];
-}
-
-const tree = parse(read(treePath)) as SkillTree;
-const treeEntries = new Map(
-  (tree.skills ?? []).map((entry) => [entry.name, entry]),
-);
-const sameList = (a: string[] = [], b: string[] = []): boolean =>
-  a.length === b.length && a.every((value, index) => value === b[index]);
-const driftOf = (skill: Skill): string[] => {
-  const entry = treeEntries.get(skill.frontmatter.name);
-  if (!entry) return ["missing from skill_tree.yaml"];
-  const fields: string[] = [];
-  if (entry.description?.trim() !== skill.frontmatter.description.trim()) {
-    fields.push("description");
-  }
-  if (!sameList(entry.sources, skill.frontmatter.sources))
-    fields.push("sources");
-  if (!sameList(entry.references, skill.references)) fields.push("references");
-  if (!sameList(entry.requires, skill.frontmatter.requires ?? [])) {
-    fields.push("requires");
-  }
-  return fields;
-};
-const drift = skills
-  .map((skill) => ({ name: skill.name, fields: driftOf(skill) }))
-  .filter(({ fields }) => fields.length > 0);
-
-const versions = {
-  package: packageVersion(),
-  skillTree: tree.library?.version,
-  mismatched: packageVersion() !== tree.library?.version,
-};
-
-if (asJson) {
-  console.log(
-    JSON.stringify(
-      {
-        base,
-        versions,
-        changedPerSkill: changedPerSkill.map(({ skill, files }) => ({
-          skill: skill.name,
-          files,
-        })),
-        uncovered,
-        addedExports,
-        removedExports,
-        budgets,
-        drift,
-      },
-      null,
-      2,
-    ),
-  );
-  process.exit(0);
-}
-
-console.log(`base       ${base.commit.slice(0, 8)}  from ${base.origin}`);
-console.log(
-  `versions   package ${versions.package} · skill_tree ${versions.skillTree}` +
-    (versions.mismatched ? "   ← bump needed" : ""),
-);
-
-console.log(`\nchanged sources (${changedPerSkill.length} skills)`);
-if (changedPerSkill.length === 0) console.log("  none");
-for (const { skill, files } of changedPerSkill) {
-  console.log(`  ${skill.name}`);
-  for (const file of files) console.log(`    ${statusOf.get(file)} ${file}`);
-  console.log(`    git diff ${base.commit.slice(0, 8)} -- ${files.join(" ")}`);
-}
-
-if (uncovered.length > 0) {
-  console.log(`\nchanged but sourced by no skill (${uncovered.length})`);
-  for (const file of uncovered) console.log(`  ${statusOf.get(file)} ${file}`);
-}
-
-if (addedExports.length > 0) {
-  console.log(`\nnew exports in ${indexPath}`);
-  for (const entry of addedExports) {
-    const covered =
-      entry.coveredBy.length > 0
-        ? entry.coveredBy.join(", ")
-        : "NO SKILL SOURCES IT";
-    console.log(`  ${entry.name}  ${entry.module}  → ${covered}`);
-  }
-}
 if (removedExports.length > 0) {
   console.log(`\nremoved exports (delete their coverage)`);
   for (const name of removedExports) console.log(`  ${name}`);
 }
 
-const tight = budgets.filter(
-  (b) =>
-    b.overBudget ||
-    b.descriptionChars > descriptionLimit * 0.85 ||
-    b.lineCount > lineLimit * 0.85,
+const tight = skills.filter(
+  (skill) =>
+    skill.description.length > descriptionLimit * 0.85 ||
+    skill.lineCount > lineLimit * 0.85,
 );
 if (tight.length > 0) {
   console.log(
     `\nbudget (limits: ${descriptionLimit} chars, ${lineLimit} lines)`,
   );
-  for (const b of tight) {
+  for (const skill of tight) {
     console.log(
-      `  ${b.name.padEnd(26)} description ${String(b.descriptionChars).padStart(4)}  lines ${String(b.lineCount).padStart(3)}${b.overBudget ? "   ← OVER, split into references/" : ""}`,
+      `  ${skill.name.padEnd(26)} description ${String(skill.description.length).padStart(4)}  lines ${String(skill.lineCount).padStart(3)}`,
     );
   }
 }
 
-if (drift.length > 0) {
-  console.log(`\nskill_tree.yaml drift — run: node scripts/skills-sync.ts`);
-  for (const { name, fields } of drift) {
-    console.log(`  ${name}: ${fields.join(", ")}`);
+const invalid = skills.filter((skill) => skill.problems.length > 0);
+if (invalid.length > 0) {
+  console.log(`\ninvalid skills`);
+  for (const skill of invalid) {
+    for (const problem of skill.problems) {
+      console.log(`  ${skill.name}: ${problem}`);
+    }
   }
-}
-
-const treeOnly = [...treeEntries.keys()].filter(
-  (name) => !skills.some((skill) => skill.frontmatter.name === name),
-);
-if (treeOnly.length > 0) {
-  console.log(
-    `\nin skill_tree.yaml but not on disk (add to REMOVED_SKILLS in packages/alouette/bin/install-skills.mjs if deleted)`,
-  );
-  for (const name of treeOnly) console.log(`  ${name}`);
-}
-
-const missingSources = skills.flatMap((skill) =>
-  skill.sourcePaths
-    .filter((file) => !exists(file))
-    .map((file) => `${skill.name}: ${file}`),
-);
-if (missingSources.length > 0) {
-  console.log(`\nsources that no longer exist`);
-  for (const entry of missingSources) console.log(`  ${entry}`);
+  process.exitCode = 1;
 }

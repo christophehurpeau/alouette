@@ -15,29 +15,24 @@ description: >
   a form value, and never a Link wrapped around a Text, which has no interactive
   state. Load when building a tab bar, a section switcher, a breadcrumb trail,
   or navigation between routes.
-type: core
-library: alouette
-requires:
-  - alouette-theming
-  - alouette-actions
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBarItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNav.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNavItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tabs.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tab.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SelectionContext.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedBar.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNav.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNavSection.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/SidebarNavItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Breadcrumbs.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/BreadcrumbItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/NavBar.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Tabs.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/Breadcrumbs.stories.tsx"
+  - packages/alouette/src/ui/navigation/NavBar.tsx
+  - packages/alouette/src/ui/navigation/NavBarItem.tsx
+  - packages/alouette/src/ui/navigation/HeaderNav.tsx
+  - packages/alouette/src/ui/navigation/HeaderNavItem.tsx
+  - packages/alouette/src/ui/navigation/Tabs.tsx
+  - packages/alouette/src/ui/navigation/Tab.tsx
+  - packages/alouette/src/ui/selection/SelectionContext.tsx
+  - packages/alouette/src/ui/selection/SegmentedBar.tsx
+  - packages/alouette/src/ui/selection/SegmentedItem.tsx
+  - packages/alouette/src/ui/navigation/SidebarNav.tsx
+  - packages/alouette/src/ui/navigation/SidebarNavSection.tsx
+  - packages/alouette/src/ui/navigation/SidebarNavItem.tsx
+  - packages/alouette/src/ui/navigation/Breadcrumbs.tsx
+  - packages/alouette/src/ui/navigation/BreadcrumbItem.tsx
+  - packages/alouette/src/ui/navigation/NavBar.stories.tsx
+  - packages/alouette/src/ui/navigation/Tabs.stories.tsx
+  - packages/alouette/src/ui/navigation/Breadcrumbs.stories.tsx
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.

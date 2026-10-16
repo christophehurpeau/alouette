@@ -10,16 +10,14 @@ description: >
   honour the OS reduced-motion setting on web and native; useReducedMotion
   covers motion driven from JS. Load when adding transitions or enter/exit
   animations, or handling prefers-reduced-motion.
-type: core
-library: alouette
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/animationDurationsMs.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Presence.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/ReducedMotionContext.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/reducedMotionVariables.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
+  - packages/alouette/src/ui/containers/Box.tsx
+  - packages/alouette/src/ui/containers/Presence.tsx
+  - packages/alouette/src/animationDurationsMs.ts
+  - packages/alouette/src/ui/containers/Presence.stories.tsx
+  - packages/alouette/src/core/ReducedMotionContext.ts
+  - packages/alouette/src/reducedMotionVariables.ts
+  - packages/alouette/src/core/AlouetteProvider.tsx
 ---
 
 # alouette — Animation

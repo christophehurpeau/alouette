@@ -7,12 +7,10 @@ description: >
   SwitchBreakpointsUsingDisplayNone / SwitchBreakpointsUsingNull (and
   useCurrentBreakpointName) only when a class can't express the change — a
   different component tree per size, or unmounting a heavy off-screen variant.
-type: core
-library: alouette
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/windowSize/SwitchBreakpoints.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/windowSize/useCurrentBreakpointName.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/config/Breakpoints.ts"
+  - packages/alouette/src/windowSize/SwitchBreakpoints.tsx
+  - packages/alouette/src/windowSize/useCurrentBreakpointName.ts
+  - packages/alouette/src/config/Breakpoints.ts
 ---
 
 # alouette — Responsive design

@@ -16,35 +16,31 @@ description: >
   raise everything with the alouette spacing, radius and shadow scale rather
   than raw Tailwind numbers. Load when building screen structure, an app header
   or shell, cards, spacing, or backgrounds.
-type: core
-library: alouette
-requires:
-  - alouette-theming
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
-  - "christophehurpeau/alouette:packages/alouette/scripts/build-css.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/Separator.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientBackground.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientScrollView.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenCenterLayout.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenScrollView.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenFlatList.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenSectionList.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/SafeAreaEdgesContext.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppLayout.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppShell.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebarLayout.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebar.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebarAccount.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeader.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNav.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNavItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderActions.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderAccount.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderSignIn.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/BrandLogo.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/config/tokens.stories.tsx"
+  - packages/alouette/src/ui/containers/Box.tsx
+  - packages/alouette/scripts/build-css.ts
+  - packages/alouette/src/ui/stacks/Separator.tsx
+  - packages/alouette/src/ui/layout/GradientBackground.tsx
+  - packages/alouette/src/ui/layout/GradientScrollView.tsx
+  - packages/alouette/src/ui/layout/ScreenCenterLayout.tsx
+  - packages/alouette/src/ui/layout/ScreenScrollView.tsx
+  - packages/alouette/src/ui/layout/ScreenFlatList.tsx
+  - packages/alouette/src/ui/layout/ScreenSectionList.tsx
+  - packages/alouette/src/core/SafeAreaEdgesContext.tsx
+  - packages/alouette/src/ui/layout/AppLayout.tsx
+  - packages/alouette/src/ui/layout/AppShell.tsx
+  - packages/alouette/src/ui/layout/AppSidebarLayout.tsx
+  - packages/alouette/src/ui/layout/AppSidebar.tsx
+  - packages/alouette/src/ui/layout/AppSidebarAccount.tsx
+  - packages/alouette/src/ui/layout/AppHeader.tsx
+  - packages/alouette/src/ui/layout/AppHeaderBrand.tsx
+  - packages/alouette/src/ui/navigation/HeaderNav.tsx
+  - packages/alouette/src/ui/navigation/HeaderNavItem.tsx
+  - packages/alouette/src/ui/layout/AppHeaderActions.tsx
+  - packages/alouette/src/ui/layout/AppHeaderAccount.tsx
+  - packages/alouette/src/ui/layout/AppHeaderSignIn.tsx
+  - packages/alouette/src/ui/layout/BrandLogo.tsx
+  - packages/alouette/src/config/tokens.stories.tsx
 ---
 
 This skill builds on alouette-theming. Read it first for the token model.
