@@ -17,7 +17,7 @@ import { useRadioContext } from "./RadioContext";
 const radioCardVariants = tv(
   {
     slots: {
-      frame: "flex-row gap-m rounded-sm p-m min-h-[44px]",
+      frame: "flex-row gap-m rounded-sm p-m min-h-control-md",
       icon: "",
       label: "font-body-bold text-base",
       description: "text-sm",

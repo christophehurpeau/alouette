@@ -25,6 +25,19 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    density: {
+      description:
+        "Size of the controls: comfortable keeps the 44px touch target, compact is for an interface driven by a mouse.",
+      toolbar: {
+        title: "Density",
+        icon: "component",
+        items: [
+          { value: "comfortable", title: "Comfortable" },
+          { value: "compact", title: "Compact" },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
 
   parameters: {
@@ -50,6 +63,7 @@ const preview: Preview = {
 
   initialGlobals: {
     colorFormat: "srgb",
+    density: "comfortable",
     backgrounds: {
       value: "light",
     },

@@ -41,6 +41,7 @@ skills:
       - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.web.tsx"
       - "christophehurpeau/alouette:packages/alouette/src/core/NativeThemeVariablesContext.ts"
+      - "christophehurpeau/alouette:packages/alouette/src/ui/containers/DensityScope.tsx"
       - "christophehurpeau/alouette:packages/alouette/metro.cjs"
 
   - name: "alouette-theming"

@@ -3,7 +3,9 @@ import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactNode, type Ref, useEffect, useState } from "react";
 import type { View as RNView } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
+import type { Density, controlHeightsPx } from "../../controlSizes";
 import type { Accent, AccentOrNeutral } from "../../core/AlouetteConfig";
+import { useDensity } from "../../core/DensityContext";
 import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
 import { ExternalLink } from "../../expo/ExternalLink";
 import {
@@ -23,13 +25,7 @@ import { View } from "../primitives/View";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
 /** `lg` is the prominent call to action of a landing page or a hero. */
-export const buttonHeight = {
-  sm: 38,
-  md: 44,
-  lg: 52,
-} as const;
-
-export type ButtonSize = keyof typeof buttonHeight;
+export type ButtonSize = keyof (typeof controlHeightsPx)["comfortable"];
 
 interface ButtonSizeMetrics {
   iconSize: number;
@@ -37,10 +33,23 @@ interface ButtonSizeMetrics {
   spinnerSize: CircularProgressSize;
 }
 
-const buttonSizeMetrics: Record<ButtonSize, ButtonSizeMetrics> = {
-  sm: { iconSize: 16, terminalIconSize: 24, spinnerSize: "xs" },
-  md: { iconSize: 20, terminalIconSize: 32, spinnerSize: "sm" },
-  lg: { iconSize: 24, terminalIconSize: 36, spinnerSize: "sm" },
+// The leading icon matches the label, whose size the density keeps; the
+// terminal icon and the spinner overlay the whole button, so they follow its
+// height.
+const buttonSizeMetrics: Record<
+  Density,
+  Record<ButtonSize, ButtonSizeMetrics>
+> = {
+  comfortable: {
+    sm: { iconSize: 16, terminalIconSize: 24, spinnerSize: "xs" },
+    md: { iconSize: 20, terminalIconSize: 32, spinnerSize: "sm" },
+    lg: { iconSize: 24, terminalIconSize: 36, spinnerSize: "sm" },
+  },
+  compact: {
+    sm: { iconSize: 16, terminalIconSize: 20, spinnerSize: "xs" },
+    md: { iconSize: 20, terminalIconSize: 24, spinnerSize: "xs" },
+    lg: { iconSize: 24, terminalIconSize: 32, spinnerSize: "sm" },
+  },
 };
 
 const buttonVariants = tv(
@@ -55,16 +64,16 @@ const buttonVariants = tv(
     variants: {
       size: {
         sm: {
-          frame: "rounded-full px-sm gap-xxs min-h-[38px]",
+          frame: "rounded-full px-sm gap-xxs min-h-control-sm",
           text: "text-sm py-xxs",
         },
         md: {
-          frame: "rounded-full px-m gap-xs min-h-[44px]",
-          text: "text-base py-xs",
+          frame: "rounded-full px-m gap-xs min-h-control-md",
+          text: "text-base py-control-inset",
         },
         lg: {
-          frame: "rounded-full px-l gap-sm min-h-[52px]",
-          text: "text-lg py-xs",
+          frame: "rounded-full px-l gap-sm min-h-control-lg",
+          text: "text-lg py-control-inset",
         },
       },
       variant: {
@@ -195,6 +204,7 @@ export function Button({
   ...pressableProps
 }: ButtonProps): ReactNode {
   const accent = useAccentOrInheritedOrBrand(accentProp);
+  const density = useDensity();
   const isLoading = state === "loading";
 
   // Keep the spinner (and the disabled look) mounted past `state` leaving
@@ -219,7 +229,8 @@ export function Button({
   const hasOverlayIcon = showSpinner || terminalIcon !== undefined;
 
   const isDisabled = isButtonDisabled({ disabled, state });
-  const { iconSize, terminalIconSize, spinnerSize } = buttonSizeMetrics[size];
+  const { iconSize, terminalIconSize, spinnerSize } =
+    buttonSizeMetrics[density][size];
   const styles = buttonVariants({
     size,
     variant,

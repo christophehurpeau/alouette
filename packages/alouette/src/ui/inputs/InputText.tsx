@@ -12,8 +12,8 @@ import { View } from "../primitives/View";
 // A slot is overlaid on the field, never laid out beside the input:
 // react-native's TextInput is a leaf, and a frame carrying the border would
 // need the focus state in JS (native has no `focus-within`). The slot box is
-// as wide as the field is tall (44px), so a 20px glyph lands 12px from the
-// edge and a `sm` IconButton (38px) is centered inside the border, and the
+// as wide as the field is tall (`control-md`), so a 20px glyph lands 12px from
+// the edge and a `sm` IconButton is centered inside the border, and the
 // text is padded past it. On a multiline field the box pins to the top, level
 // with the first line.
 //
@@ -43,8 +43,10 @@ const inputVariants = tv(
         "placeholder:text-form-placeholder",
       ].join(" "),
       frame: "relative",
-      startSlot: "absolute left-0 w-[44px] flex-center web:pointer-events-none",
-      endSlot: "absolute right-0 w-[44px] flex-center web:pointer-events-none",
+      startSlot:
+        "absolute left-0 w-control-md flex-center web:pointer-events-none",
+      endSlot:
+        "absolute right-0 w-control-md flex-center web:pointer-events-none",
     },
     variants: {
       multiline: {
@@ -54,15 +56,16 @@ const inputVariants = tv(
         // scale pairs with it, which iOS would turn into leading above the
         // glyphs (the value then sits ~3pt low while the placeholder, drawn
         // without those attributes, stays centered). Android lays the text out
-        // from the top of the box — `min-h-[44px]` makes it taller than the
+        // from the top of the box — `min-h-control-md` makes it taller than the
         // line — until `align-middle` sets its gravity (RN maps the style
         // `verticalAlign` to `textAlignVertical`); on web that would be a real
         // `vertical-align` on the `<input>`, hence the platform scope. Web
         // keeps the scale: an `<input>` centers its text whatever the
-        // line-height is.
+        // line-height is. Centered on every platform, the line needs no
+        // vertical padding, which a compact field has no room for.
         false: {
           input:
-            "web:text-base native:text-base-size-only android:align-middle min-h-[44px] rounded-md py-xs",
+            "web:text-base native:text-base-size-only android:align-middle min-h-control-md rounded-md py-0",
           startSlot: "inset-y-0",
           endSlot: "inset-y-0",
         },
@@ -70,16 +73,16 @@ const inputVariants = tv(
         // lines, and the text belongs at the top of the box.
         true: {
           input: "text-base min-h-[80px] resize-y rounded-xs py-xs",
-          startSlot: "top-0 h-[44px]",
-          endSlot: "top-0 h-[44px]",
+          startSlot: "top-0 h-control-md",
+          endSlot: "top-0 h-control-md",
         },
       },
       withStartSlot: {
-        true: { input: "pl-[44px]" },
+        true: { input: "pl-control-md" },
         false: {},
       },
       withEndSlot: {
-        true: { input: "pr-[44px]" },
+        true: { input: "pr-control-md" },
         false: {},
       },
       forceStyle: {
@@ -172,12 +175,12 @@ export interface InputTextProps
   className?: string;
   disabled?: boolean;
   /**
-   * Overlaid on the field's leading 44px, the text padded past it. Fixed-width
+   * Overlaid on the field's leading square, the text padded past it. Fixed-width
    * content only: an `Icon` (which carries its own `text-*` ink) or a `sm`
    * `IconButton`. A tap on it reaches the input unless the content takes it.
    */
   startSlot?: ReactNode;
-  /** Same as `startSlot`, on the trailing 44px. */
+  /** Same as `startSlot`, on the trailing square. */
   endSlot?: ReactNode;
   /**
    * The field is in error: its border takes the danger accent (through the

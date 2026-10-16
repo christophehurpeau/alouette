@@ -15,7 +15,7 @@ import { PressableBox, type PressableBoxProps } from "./PressableBox";
 // label keeps its accent color throughout.
 const menuItemVariants = tv({
   slots: {
-    frame: "flex-row gap-xs rounded-xs px-m min-h-[44px]",
+    frame: "flex-row gap-xs rounded-xs px-m min-h-control-md",
     check: "size-[20px]",
     checkIcon: "text-accent",
     icon: "text-muted",

@@ -38,7 +38,7 @@ const inputCodeVariants = tv(
       root: "group relative flex-row self-start",
       cells: "flex-row gap-xs",
       cell: [
-        "flex-center w-[44px] h-[52px] rounded-sm border",
+        "flex-center w-control-md h-control-lg rounded-sm border",
         "transition-[border-color,background-color,outline-color] duration-fast ease-in",
         "outline-interactive-outlined-pressable",
       ].join(" "),

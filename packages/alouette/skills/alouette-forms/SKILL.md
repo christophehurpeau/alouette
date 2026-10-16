@@ -116,7 +116,7 @@ sign-up form.
 
 ### Slots: a glyph or an icon button in the field
 
-`startSlot` / `endSlot` overlay the field's leading / trailing 44px, the text
+`startSlot` / `endSlot` overlay the field's leading / trailing square (`control-md`), the text
 padded past them: an `Icon` carrying its own ink (`text-muted`, or
 `text-form-disabled-text` on a disabled field) or a `soft` `sm` `IconButton`.
 Fixed-width content only, never a prefix text. With a slot, `className` lands

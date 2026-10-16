@@ -31,9 +31,9 @@ const splitButtonVariants = tv(
     },
     variants: {
       size: {
-        sm: { caret: "pl-xxs pr-xs min-w-[38px] min-h-[38px]" },
-        md: { caret: "pl-xxs pr-xs min-w-[44px] min-h-[44px]" },
-        lg: { caret: "pl-xs pr-sm min-w-[48px] min-h-[52px]" },
+        sm: { caret: "pl-xxs pr-xs min-w-control-sm min-h-control-sm" },
+        md: { caret: "pl-xxs pr-xs min-w-control-md min-h-control-md" },
+        lg: { caret: "pl-xs pr-sm min-w-[48px] min-h-control-lg" },
       },
       // The divider is the caret's left border. An outlined caret leans on the
       // main button's right border instead: two side by side would double it.

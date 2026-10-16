@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { tv } from "tailwind-variants";
+import { useDensity } from "../../core/DensityContext";
 import type { AccentScopeProps } from "../containers/AccentScope";
 import { InteractiveBox, type InteractiveBoxProps } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
@@ -14,36 +15,44 @@ import type {
 // chip — the selected layer is raised and cross-fades on opacity so the
 // background and shadow animate together with no border. Swapping a bordered
 // variant instead would flash a border on the outgoing segment mid-transition.
-// segment — the visible chip is shorter than the 44px pressable, so the lowered
-// SegmentedBar shows around it as an inset frame while the tap target stays
-// 44px. Its border is permanently transparent and only animates color on the
+// segment — the visible chip (`control-chip`) is shorter than the pressable
+// (`control-md`), so the lowered SegmentedBar shows around it as an inset frame
+// while the tap target keeps the full height. Its border is permanently transparent and only animates color on the
 // row's hover/active, driven by the `group` on the pressable. The focus ring
 // lives here too: the pressable fills the bar's content box, and the bar clips
 // (`surface` is overflow-hidden), so an outline drawn on the pressable is cut
 // away — the chip's slack holds the 2px offset + 2px ring instead (6px a side
-// on a row, 2px on a stacked item, which the bar's own `py-xs` completes).
+// on a comfortable row, 4px on a compact one, 2px on a stacked item, which the
+// bar's own `py-xs` completes).
 // foreground — label and icon share one color set, and the icon's optional
 // `activeIcon` layer cross-fades on the same `group`. Native resolves the icon
 // tint through useColorToken, which reads the base `text-*` only, so the hover
 // tint and the stacking above the chip are web-only.
 const segmentedItemVariants = tv({
   slots: {
-    pressable: "group flex-center min-h-[44px] rounded-full",
+    pressable: "group flex-center min-h-control-md rounded-full",
     segment:
-      "relative flex-row flex-center gap-xxs min-h-[32px] rounded-full border border-transparent transition-[border-color] duration-fast ease-in group-focus-visible:focus-ring",
+      "relative flex-row flex-center gap-xxs min-h-control-chip rounded-full border border-transparent transition-[border-color] duration-fast ease-in group-focus-visible:focus-ring",
     chip: "absolute inset-0 rounded-full transition-opacity duration-fast ease-in",
     foreground: "z-1 transition-[color] duration-fast ease-in",
     label: "select-none font-body-bold text-base text-center",
     // indicator — a badge over the glyph's top-right, not beside it: the icon
-    // chip is a circle and the lunes its 20px glyph leaves in the corners are
-    // ~4px wide, too narrow to hold anything. Its halo is the chip's own fill,
-    // so the badge punches out of the glyph it overlaps, and these insets keep
-    // its painted circle inside the chip in both sizes the icon variant takes
-    // (36px in a row, 40px stacked or stretched): 1.1px and 0.3px of clearance.
+    // chip is a circle and the lunes its glyph leaves in the corners are ~4px
+    // wide, too narrow to hold anything. Its halo is the chip's own fill, so the
+    // badge punches out of the glyph it overlaps.
     indicator:
-      "absolute right-[4px] top-[4px] z-1 flex-center size-[14px] rounded-full transition-colors duration-fast ease-in",
+      "absolute z-1 flex-center size-[14px] rounded-full transition-colors duration-fast ease-in",
   },
   variants: {
+    // Comfortable, the insets keep the badge's painted circle inside the chip
+    // in both sizes the icon variant takes (36px in a row, 40px stacked or
+    // stretched): 1.1px and 0.3px of clearance. Compact, a 24px chip inset
+    // that way would put the badge on the middle of the glyph, so it hangs off
+    // the chip's corner into the 4px of bar around it, as far as the bar's clip.
+    density: {
+      comfortable: { indicator: "right-[4px] top-[4px]" },
+      compact: { indicator: "-right-[4px] -top-[4px]" },
+    },
     selected: {
       true: {
         chip: "opacity-100",
@@ -77,7 +86,7 @@ const segmentedItemVariants = tv({
       // as rows, not as chips floating in a column.
       vertical: {
         pressable: "items-stretch",
-        segment: "self-stretch min-h-[40px]",
+        segment: "self-stretch min-h-control-chip-stacked",
       },
     },
     // A stretched bar hands its extra width to its items; a stacked one already
@@ -92,8 +101,9 @@ const segmentedItemVariants = tv({
       // leaves 4px on every side: exactly the focus ring (2px offset + 2px
       // width).
       icon: {
-        pressable: "min-w-[44px]",
-        segment: "rounded-md self-center w-[36px] min-h-[36px] px-0",
+        pressable: "min-w-control-md",
+        segment:
+          "rounded-md self-center w-control-chip-icon min-h-control-chip-icon px-0",
         chip: "rounded-md",
       },
     },
@@ -124,12 +134,15 @@ const segmentedItemVariants = tv({
       // stretched or stacked icon bar centers it instead of stretching it.
       variant: "icon",
       stretch: true,
-      class: { segment: "self-center w-[40px]" },
+      class: { segment: "self-center w-control-chip-stacked" },
     },
     {
       variant: "icon",
       orientation: "vertical",
-      class: { segment: "self-center w-[40px] min-h-[40px]" },
+      class: {
+        segment:
+          "self-center w-control-chip-stacked min-h-control-chip-stacked",
+      },
     },
     {
       selected: false,
@@ -212,7 +225,9 @@ export function SegmentedItem({
   variant,
   ...props
 }: SegmentedItemProps): ReactNode {
+  const density = useDensity();
   const styles = segmentedItemVariants({
+    density,
     selected,
     disabled: disabled === true,
     compact,
@@ -241,7 +256,7 @@ export function SegmentedItem({
             activeAccent={activeAccent}
             active={selected}
             disabled={disabled === true}
-            size={20}
+            size={density === "compact" ? 16 : 20}
             className={styles.foreground()}
           />
         ) : null}

@@ -5,7 +5,7 @@ import { tv } from "tailwind-variants";
 // Its indicator takes the press alone, so the label never moves.
 export const selectionRowVariants = tv({
   slots: {
-    row: "group flex-row items-center gap-xs self-start rounded-xs px-xs min-h-11 focus-visible:focus-ring",
+    row: "group flex-row items-center gap-xs self-start rounded-xs px-xs min-h-control-md focus-visible:focus-ring",
     label: "text-base",
   },
   variants: {

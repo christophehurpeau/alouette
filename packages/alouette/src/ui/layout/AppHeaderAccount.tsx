@@ -10,7 +10,7 @@ import { Icon, type SVGIconElement } from "../primitives/Icon";
 // The disc is shorter than the row it sits in: the pressable keeps the full
 // touch target while the visible chip stays as compact as the bar needs.
 const appHeaderAccountVariants = tv({
-  base: "flex-row items-center gap-xxs rounded-sm px-xxs min-h-[44px]",
+  base: "flex-row items-center gap-xxs rounded-sm px-xxs min-h-control-md",
 });
 
 export interface AppHeaderAccountProps {

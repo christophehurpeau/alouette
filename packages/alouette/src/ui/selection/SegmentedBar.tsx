@@ -17,16 +17,16 @@ const segmentedBarVariants = tv({
   base: "surface lowered items-stretch px-xs py-0",
   variants: {
     orientation: {
-      horizontal: "flex-row min-h-[44px] rounded-full",
+      horizontal: "flex-row min-h-control-md rounded-full",
       vertical: "flex-col py-xs rounded-md",
     },
     stretch: {
       true: "self-stretch",
       false: "self-start",
     },
-    // A bar of square icon chips is a stadium at the 44px height, so the track
-    // takes the same radius as the chips it holds. It drops its gap too: the chip
-    // is already inset inside its own 44px tap target, so a gap would add to that
+    // A bar of square icon chips is a stadium at the control height, so the
+    // track takes the same radius as the chips it holds. It drops its gap too:
+    // the chip is already inset inside its own tap target, so a gap would add to that
     // slack and leave the icons floating far apart.
     variant: {
       segmented: "gap-xxs",
@@ -49,9 +49,9 @@ export interface SegmentedBarProps extends Omit<BoxProps, "role"> {
 
 /**
  * Lowered track shared by every segmented group (RadioButtonGroup, NavBar, Tabs).
- * It is a 44px lowered surface with no vertical padding, so each item pressable
- * fills the full height (a 44px tap target) while rendering a shorter visible chip
- * inside it.
+ * It is a `control-md` lowered surface with no vertical padding, so each item
+ * pressable fills the full height (the tap target) while rendering a shorter
+ * visible chip inside it.
  */
 export function SegmentedBar({
   orientation,
