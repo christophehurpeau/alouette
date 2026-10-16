@@ -176,6 +176,33 @@ export const VariantsMenuStory: ThisStory = {
         </Menu>
       </Story.Section>
 
+      <Story.Section withSurface title="Checked and description">
+        <Text className="text-sm text-muted">
+          `checked` makes the rows a set of choices (`menuitemradio`), and
+          `description` adds a line under the label.
+        </Text>
+        <Menu
+          label="View"
+          render={(trigger) => (
+            <Button size="sm" accent="neutral" text="View" {...trigger} />
+          )}
+        >
+          <MenuItem
+            checked
+            label="Compact"
+            description="Show more rows on screen."
+            onPress={fn()}
+          />
+          <MenuItem
+            checked={false}
+            label="Comfortable"
+            description="Give each row more room."
+            onPress={fn()}
+          />
+          <MenuItem disabled checked={false} label="Cards" onPress={fn()} />
+        </Menu>
+      </Story.Section>
+
       <Story.Section withSurface title="Without icons">
         <Menu
           label="Sort"

@@ -7,10 +7,12 @@ description: >
   message itself. ExternalLinkButton and InternalLinkButton are the
   link-shaped buttons, LinkText and ExternalLinkText the inline links inside a
   sentence, and Menu + MenuItem the dropdown that collects secondary actions
-  behind one trigger. PressableBox and PressableListItem are the bases for a
+  behind one trigger. SplitButton is one button whose caret picks which of
+  several alternative actions it runs (a merge method). PressableBox and PressableListItem are the bases for a
   custom pressable surface: they carry the hover, focus, press and disabled
   affordance so it never has to be rebuilt by hand. Load when adding buttons,
-  text links, a menu of actions, or custom pressable elements.
+  text links, a menu of actions, a split button or button with options, or
+  custom pressable elements.
 type: core
 library: alouette
 requires:
@@ -24,6 +26,8 @@ sources:
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/LinkText.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Menu.tsx"
   - "christophehurpeau/alouette:packages/alouette/src/ui/actions/MenuItem.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/SplitButton.tsx"
+  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/SplitButtonOption.tsx"
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -231,7 +235,8 @@ import {
 ### Pressable surfaces
 
 `PressableBox` is a themed, pressable container (`variant`, `accent`,
-`forceStyle`; `tonal` by default). `PressableListItem` is a row with a
+`forceStyle`; `tonal` by default; `raised={false}` drops the tonal shadow for a
+segment of a group that casts one). `PressableListItem` is a row with a
 trailing caret, on the same `tonal` material as a button: a card lifted off
 the surface whose ground is a tone of the theme, never the accent's fill. Its
 label and caret are `text-on-tonal`, the ink that carries the accent where
@@ -357,7 +362,10 @@ import { IconButton, Menu, MenuItem, Separator } from "alouette";
 A `MenuItem` closes the menu after its `onPress`. `accent` colors its label and
 icon (`danger` for a destructive action — the row itself stays a plain surface).
 `href` renders a real anchor on web, so expo Router's `<Link asChild>` composes
-with it, and a disabled item drops the `href`.
+with it, and a disabled item drops the `href`. `description` adds a line under
+the label; `checked` makes the rows a set of choices (`menuitemradio`), and the
+menu then opens on the checked one. One button choosing which of several actions
+it runs is a `SplitButton`: [references/split-button.md](references/split-button.md).
 
 On web the panel hangs from the trigger's end edge and sizes to its items. A
 full-width trigger takes `align="start"`, or `width="anchor"` to make the panel

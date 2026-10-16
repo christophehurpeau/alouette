@@ -1,10 +1,13 @@
 import { useEffect } from "react";
 import type { UseMenuKeyboardParams } from "./useMenuKeyboard";
 
-const enabledItemSelector = '[role="menuitem"]:not([aria-disabled="true"])';
+const enabledItemSelector = [
+  '[role="menuitem"]:not([aria-disabled="true"])',
+  '[role="menuitemradio"]:not([aria-disabled="true"])',
+].join(", ");
 
 /**
- * Roving focus over the open menu's items: the first one takes focus when the
+ * Roving focus over the open menu's items: the checked one (else the first) takes focus when the
  * menu opens, the arrow keys and Home/End move between them, the pointer moves
  * it as it goes over a row, and the trigger takes focus back on close. Escape
  * and outside presses are `Popover`'s.
@@ -33,7 +36,11 @@ export function useMenuKeyboard({
       items[(index + items.length) % items.length]?.focus();
     };
 
-    focusItem(0);
+    // A set of choices opens on the current one.
+    const checkedIndex = readItems().findIndex(
+      (item) => item.getAttribute("aria-checked") === "true",
+    );
+    focusItem(checkedIndex === -1 ? 0 : checkedIndex);
 
     const onKeyDown = (event: KeyboardEvent): void => {
       const items = readItems();

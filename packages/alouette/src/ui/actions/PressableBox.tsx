@@ -31,7 +31,7 @@ const pressableBoxVariants = tv(
           "rounded-sm",
           process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
             ? ""
-            : "shadow-s bg-interactive-tonal-pressable",
+            : "bg-interactive-tonal-pressable",
           "hover:bg-interactive-tonal-hover",
           "active:shadow-lowered active:bg-interactive-tonal-active",
           "disabled:bg-interactive-tonal-disabled disabled:shadow-none",
@@ -77,6 +77,7 @@ const pressableBoxVariants = tv(
         focus: "",
         press: "translate-y-px",
       },
+      raised: { true: "", false: "" },
     },
     // A forced `focus` is the keyboard focus: the rest ground under the ring,
     // which `focus-visible` never fires for in a story.
@@ -85,19 +86,30 @@ const pressableBoxVariants = tv(
           /* tonal */
           {
             variant: "tonal",
+            raised: true,
             forceStyle: undefined,
-            className: "shadow-s bg-interactive-tonal-pressable",
+            className: "shadow-s",
+          },
+          {
+            variant: "tonal",
+            raised: true,
+            forceStyle: ["hover", "focus"],
+            className: "shadow-s",
+          },
+          {
+            variant: "tonal",
+            forceStyle: undefined,
+            className: "bg-interactive-tonal-pressable",
           },
           {
             variant: "tonal",
             forceStyle: "hover",
-            className: "shadow-s bg-interactive-tonal-hover",
+            className: "bg-interactive-tonal-hover",
           },
           {
             variant: "tonal",
             forceStyle: "focus",
-            className:
-              "shadow-s bg-interactive-tonal-pressable focus-ring-inset",
+            className: "bg-interactive-tonal-pressable focus-ring-inset",
           },
           {
             variant: "tonal",
@@ -168,9 +180,10 @@ const pressableBoxVariants = tv(
             className: "bg-interactive-soft-active",
           },
         ]
-      : undefined,
+      : [{ variant: "tonal", raised: true, className: "shadow-s" }],
     defaultVariants: {
       variant: "tonal",
+      raised: true,
     },
   },
   { twMerge: false },
@@ -211,6 +224,12 @@ export interface PressableBoxProps
    * would ring whatever the mouse is over.
    */
   withFocusVisibleOutline?: InteractiveBoxProps["withFocusVisibleOutline"];
+  /**
+   * `false` drops the `tonal` shadow at rest, for a segment of a group that
+   * casts one shadow for all of them (`SplitButton`): side by side, each
+   * segment's shadow would fall on its neighbor.
+   */
+  raised?: boolean;
   ref?: Ref<RNView>;
 }
 
@@ -223,6 +242,7 @@ export function PressableBox({
   className,
   variant = "tonal",
   forceStyle,
+  raised,
   accent,
   href,
   role,
@@ -248,6 +268,7 @@ export function PressableBox({
           withPressEffect: !props.disabled,
           className,
           forceStyle,
+          raised,
         })}
         href={href}
         {...props}

@@ -242,6 +242,11 @@ plus the `focus-ring` and `AccentScope`. This is how `Button` and
 - `outlined` → `border-interactive-outlined-{pressable,hover,active,disabled}`, text `text-sharp`.
 - `soft` → no border, no ground at rest, filling on `hover`/`active` with `bg-interactive-soft-*`. That family is a **surface tone**, not the accent, so a `PressableBox` composed on it keeps its label's own color — never add a `group-hover:text-on-accent` flip to it. Used where a border tint reads as noise: the `AppHeader` pressables and `MenuItem` rows. `Button` and `IconButton` are the exceptions, having no ground to carry the accent: the soft `Button` is a text button whose label is `text-accent` and underlined, and the soft `IconButton` glyph turns `text-accent` on `group-hover`/`group-focus-visible`/`group-active` (and under a forced state).
 
+Pressables joined side by side (`SplitButton`'s main button and caret) pass
+`raised={false}` and the group casts the one `shadow-s`: each segment's own
+shadow would fall on its neighbor at the joint. They ring `"inset"` for the same
+reason, an outer ring passing under the adjoining segment.
+
 Pass `role`/`aria-*` through `PressableBox` (they override its default
 `role="button"`). A selection indicator inside a pressable (the radio ring, the
 checkbox box) is a **foreground**: it takes the accent's

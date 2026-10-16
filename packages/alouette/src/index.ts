@@ -115,6 +115,15 @@ export type { MenuProps, MenuTriggerParams } from "./ui/actions/Menu";
 export { Menu } from "./ui/actions/Menu";
 export type { MenuItemProps } from "./ui/actions/MenuItem";
 export { MenuItem } from "./ui/actions/MenuItem";
+export type {
+  SplitButtonControlledProps,
+  SplitButtonProps,
+  SplitButtonUncontrolledProps,
+  SplitButtonVariant,
+} from "./ui/actions/SplitButton";
+export { SplitButton } from "./ui/actions/SplitButton";
+export type { SplitButtonOptionProps } from "./ui/actions/SplitButtonOption";
+export { SplitButtonOption } from "./ui/actions/SplitButtonOption";
 export type { InputTextMode, InputTextProps } from "./ui/inputs/InputText";
 export { InputText } from "./ui/inputs/InputText";
 export type { InputPasswordProps } from "./ui/inputs/InputPassword";
