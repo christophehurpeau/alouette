@@ -60,21 +60,6 @@ export default [
           ],
         },
       ],
-      "import-x/extensions": [
-        "error",
-        "always",
-        {
-          ignorePackages: true,
-          pattern: {
-            js: "always",
-            cjs: "always",
-            mjs: "always",
-            cts: "always",
-            mts: "always",
-            ts: "always",
-          },
-        },
-      ],
     },
   },
   // alouette's package exports declare only the node / react-native / browser

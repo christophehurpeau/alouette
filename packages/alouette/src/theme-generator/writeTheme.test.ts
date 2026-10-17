@@ -66,6 +66,7 @@ describe("writeTheme", () => {
     expect(contents).toContain("  light_brand: {");
     expect(contents).not.toContain('"light_brand"');
     expect(contents).toContain("/* eslint-disable camelcase */");
+    expect(contents).toContain("/* oxlint-disable eslint-js/camelcase */");
   });
 
   it("writes files a formatter leaves unchanged", async () => {

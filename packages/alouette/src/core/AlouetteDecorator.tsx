@@ -1,4 +1,4 @@
-/* eslint-disable react/destructuring-assignment */
+/* oxlint-disable react-js/destructuring-assignment */
 import type { Decorator } from "@storybook/react-vite";
 import { DensityScope } from "../ui/containers/DensityScope";
 import { ScopedTheme } from "../ui/containers/ScopedTheme";
