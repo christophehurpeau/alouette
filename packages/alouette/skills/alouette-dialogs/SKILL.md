@@ -13,19 +13,14 @@ description: >
   but a set of actions off a trigger is Menu + MenuItem, never a hand-built
   Popover. Load when adding a modal, confirmation, alert dialog, or a dropdown
   escaping a clipping container.
-type: core
-library: alouette
-requires:
-  - alouette-theming
-  - alouette-actions
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AlertDialog.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Popover.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Popover.web.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/PortalAccentScope.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AlertDialog.stories.tsx"
+  - packages/alouette/src/ui/containers/Modal.tsx
+  - packages/alouette/src/ui/containers/AlertDialog.tsx
+  - packages/alouette/src/ui/containers/Popover.tsx
+  - packages/alouette/src/ui/containers/Popover.web.tsx
+  - packages/alouette/src/ui/containers/PortalAccentScope.tsx
+  - packages/alouette/src/ui/containers/Modal.stories.tsx
+  - packages/alouette/src/ui/containers/AlertDialog.stories.tsx
 ---
 
 This skill builds on alouette-theming (accents) and alouette-actions (the footer

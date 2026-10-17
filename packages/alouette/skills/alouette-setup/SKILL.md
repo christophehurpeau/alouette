@@ -8,18 +8,16 @@ description: >
   bold text is the right typeface. Load when bootstrapping a project, when
   alouette classes render unstyled, or when fonts/bold weights look wrong.
   Covers ios, android and web.
-type: lifecycle
-library: alouette
 sources:
-  - "christophehurpeau/alouette:packages/storybook-native-app/metro.config.cjs"
-  - "christophehurpeau/alouette:packages/storybook-native-app/postcss.config.mjs"
-  - "christophehurpeau/alouette:packages/storybook-native-app/src/global.css"
-  - "christophehurpeau/alouette:packages/storybook-native-app/src/App.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.web.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/NativeThemeVariablesContext.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/DensityScope.tsx"
-  - "christophehurpeau/alouette:packages/alouette/metro.cjs"
+  - packages/storybook-native-app/metro.config.cjs
+  - packages/storybook-native-app/postcss.config.mjs
+  - packages/storybook-native-app/src/global.css
+  - packages/storybook-native-app/src/App.tsx
+  - packages/alouette/src/core/AlouetteProvider.tsx
+  - packages/alouette/src/core/AlouetteProvider.web.tsx
+  - packages/alouette/src/core/NativeThemeVariablesContext.ts
+  - packages/alouette/src/ui/containers/DensityScope.tsx
+  - packages/alouette/metro.cjs
 ---
 
 # alouette — Setup
