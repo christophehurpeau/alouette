@@ -3,18 +3,21 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Box } from "../containers/Box";
+import { Paragraph } from "../primitives/Text";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
-import { Blockquote } from "./Blockquote";
+import { Blockquote, BlockquoteFrame } from "./Blockquote";
 import { Citation } from "./Citation";
+import { CodeBlock } from "./CodeBlock";
 
 type ThisStory = StoryObj<typeof Blockquote>;
 
 export default {
   title: "alouette/Data/Blockquote",
   component: Blockquote,
+  subcomponents: { BlockquoteFrame },
   parameters: {
     componentSubtitle:
-      "A quoted excerpt set off by an accent rule, with an optional Citation underneath",
+      "A quoted excerpt set off by an accent rule, with an optional Citation underneath: Blockquote for text, BlockquoteFrame for block content",
   },
   argTypes: {
     accent: {
@@ -69,6 +72,25 @@ export const BlockquoteVariantsStory: ThisStory = {
         <Quote size="md" />
       </Story.Section>
 
+      <Story.Section title="Several paragraphs">
+        <BlockquoteFrame citation={<Citation>Ursula K. Le Guin</Citation>}>
+          <Paragraph className="text-lg">
+            The only thing that makes life possible is permanent, intolerable
+            uncertainty: not knowing what comes next.
+          </Paragraph>
+          <Paragraph className="text-lg">
+            Light is the left hand of darkness.
+          </Paragraph>
+        </BlockquoteFrame>
+      </Story.Section>
+
+      <Story.Section title="Block content">
+        <BlockquoteFrame>
+          <Paragraph>Run it with:</Paragraph>
+          <CodeBlock>pnpm install</CodeBlock>
+        </BlockquoteFrame>
+      </Story.Section>
+
       <Story.Section title="Citation">
         <Quote citation={<Citation>Ursula K. Le Guin</Citation>} />
         <Quote
@@ -116,6 +138,12 @@ export const BlockquoteTestsStory: ThisStory = {
           Quoted text.
         </Blockquote>
       </Story.Section>
+      <Story.Section title="Block content">
+        <BlockquoteFrame>
+          <Paragraph>First paragraph.</Paragraph>
+          <Paragraph>Second paragraph.</Paragraph>
+        </BlockquoteFrame>
+      </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
@@ -131,5 +159,13 @@ export const BlockquoteTestsStory: ThisStory = {
     const link = canvas.getByRole("link", { name: "A Source" });
     await expect(blockquote?.contains(link)).toBe(true);
     await expect(link).toHaveAttribute("href", "https://example.com/source");
+
+    // BlockquoteFrame renders its children as they are: each paragraph is a direct
+    // child of the <blockquote>, not nested in a <p> of its own.
+    const first = canvas.getByText("First paragraph.");
+    const second = canvas.getByText("Second paragraph.");
+    await expect(first.tagName).toBe("P");
+    await expect(first.parentElement?.tagName).toBe("BLOCKQUOTE");
+    await expect(second.parentElement).toBe(first.parentElement);
   },
 };

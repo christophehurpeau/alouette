@@ -43,7 +43,8 @@ stat, a table cell, a single value — even when it stands alone on its own line
 
 A value with its own component keeps that component: a code fragment is `Code`,
 a code listing `CodeBlock`, a link `ExternalLinkText` / `LinkText`, a quotation
-`Blockquote` (which already wraps its text in a `Paragraph`).
+`Blockquote` (which already wraps its text in a `Paragraph`; block content goes
+in a `BlockquoteFrame`).
 
 A `<p>` takes no block content, so a `Paragraph`'s children are inline only —
 `Text`, `Code`, `ExternalLinkText`. Nesting a `Paragraph`, a `View` or a

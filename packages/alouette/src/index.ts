@@ -232,8 +232,11 @@ export type { CodeProps } from "./ui/data/Code";
 export { Code } from "./ui/data/Code";
 export type { CodeBlockProps } from "./ui/data/CodeBlock";
 export { CodeBlock } from "./ui/data/CodeBlock";
-export type { BlockquoteProps } from "./ui/data/Blockquote";
-export { Blockquote } from "./ui/data/Blockquote";
+export type {
+  BlockquoteFrameProps,
+  BlockquoteProps,
+} from "./ui/data/Blockquote";
+export { Blockquote, BlockquoteFrame } from "./ui/data/Blockquote";
 export type { CitationProps } from "./ui/data/Citation";
 export { Citation } from "./ui/data/Citation";
 export type { EditableItemProps } from "./ui/data/EditableItem";
