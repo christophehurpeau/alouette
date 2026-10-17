@@ -4,8 +4,10 @@ import type { VariantProps } from "tailwind-variants";
 import { tv } from "tailwind-variants";
 import { controlHeightsPx } from "../../controlSizes";
 import { useDensity } from "../../core/DensityContext";
+import { mergeTooltipTriggerProps } from "../containers/mergeTooltipTriggerProps";
 import type { SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";
+import { DisabledReasonTooltip } from "./DisabledReasonTooltip";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
 const iconButtonVariants = tv(
@@ -93,9 +95,14 @@ export interface IconButtonProps extends Omit<
   /** When "fill", the icon takes 80% of the button; default uses 50%. */
   iconSize?: "fill";
   "aria-label": string;
+  /**
+   * Why the button is disabled. A non-empty reason disables it, describes it
+   * with the reason and, on web, shows the reason on hover.
+   */
+  disabledReason?: string | null;
 }
 
-export function IconButton({
+function IconButtonPressable({
   icon,
   activeIcon,
   disabled,
@@ -105,7 +112,7 @@ export function IconButton({
   className,
   forceStyle,
   ...pressableProps
-}: IconButtonProps): ReactNode {
+}: Omit<IconButtonProps, "disabledReason">): ReactNode {
   const density = useDensity();
   const diameter =
     typeof size === "number" ? size : controlHeightsPx[density][size];
@@ -135,5 +142,21 @@ export function IconButton({
         className={styles.icon()}
       />
     </PressableBox>
+  );
+}
+
+export function IconButton({
+  disabledReason,
+  ...iconButtonProps
+}: IconButtonProps): ReactNode {
+  return (
+    <DisabledReasonTooltip
+      disabledReason={disabledReason}
+      render={(triggerProps) => (
+        <IconButtonPressable
+          {...mergeTooltipTriggerProps(iconButtonProps, triggerProps)}
+        />
+      )}
+    />
   );
 }
