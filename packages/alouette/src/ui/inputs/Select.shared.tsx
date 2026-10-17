@@ -57,7 +57,7 @@ export interface SelectProps {
 export const selectTriggerVariants = tv(
   {
     base: [
-      "flex flex-row items-center justify-between gap-xs px-m py-xs min-h-[44px]",
+      "flex flex-row items-center justify-between gap-xs px-m min-h-control-md",
       "transition-[border-color,outline-color,background-color,box-shadow] duration-fast ease-in",
     ].join(" "),
     variants: {

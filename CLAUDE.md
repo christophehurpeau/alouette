@@ -399,44 +399,73 @@ for its label and caret. `emphasis` cannot stand in for it: a `SegmentedBar` chi
 has to win against its track, so it stays the accent's fill with
 `text-on-emphasis` ink.
 
-## Touch targets: 44px accessible height, not the named spacing scale
+## Control sizes: the `control-*` tokens and `DensityScope`
 
-An interactive control's minimum height is an accessibility constant (44px), not a
-padding choice — write it explicitly as `min-h-[44px]` (matches `Button`) so the
-value reads as the accessibility minimum it is. Do **not** reach for the named
-`--spacing-*` tokens (`min-h-9`, `p-xs`, …) for a touch-target height: those are
-the layout spacing scale and `min-h-9` is only 36px, below the minimum. (ESLint
-will suggest collapsing `min-h-[44px]` to `min-h-11`; ignore that here — the
-explicit px keeps the intent legible.)
+A control's height is a `--spacing-control-*` token, never a pixel value nor the
+layout spacing scale (`min-h-9` is 36px, below the touch target): `min-h-control-md`
+for a field, a menu or listbox row, a nav item, the segmented bar, a selection
+row; `control-sm` / `control-lg` for the other `Button` sizes; `control-chip*`
+for the visible chip of a segmented item; `control-inset` for the vertical
+padding of a label that may wrap. One table holds them (`controlSizesPx` in
+`build-css.ts`), one column per density:
+
+| token                                      | comfortable  | compact      |
+| ------------------------------------------ | ------------ | ------------ |
+| `control-sm` / `-md` / `-lg`               | 38 / 44 / 52 | 32 / 36 / 44 |
+| `control-chip` / `-chip-icon` / `-stacked` | 32 / 36 / 40 | 28 / 28 / 32 |
+| `control-inset`                            | 8            | 4            |
+
+`comfortable` is the `@theme` default and keeps every control at the 44px touch
+target. `<DensityScope density="compact">` swaps the tokens for its subtree, for
+an interface driven by a mouse only — a `.density-*` class on web,
+`densityVariables` pushed through `VariableContextProvider` on native (the
+`.density-*` blocks are also the second declaration of each token, without which
+react-native-css would inline the `@theme` value and leave nothing to override).
+The density never changes a type size. A size set from JS reads `useDensity()`
+(`controlHeightsPx` for a height): `Button`'s spinner and terminal icon,
+`IconButton`'s diameter, the position of the segmented badge. Portaled content keeps it:
+`PortalAccentScope.web` rebuilds the scope beside the theme. It is unrelated to
+`RadioButtonGroup`'s `compact` prop, which only tightens the chips' horizontal
+padding.
+
+A label has to fit a compact control on one line: a fixed `py-xs` around a
+22.4px line already makes 38px. Pad it with `py-control-inset`, or not at all on
+a field that centers its single line (`InputText`, `Select`) — the `min-h` gives
+the height.
+
+The Storybook `density` toolbar global wraps every story in a `DensityScope`
+(`AlouetteDecorator`, declared in both previews), and `DensityScope.stories.tsx`'s
+`ControlHeights` asserts that a toolbar of field, select, segmented bar, buttons
+and checkbox is 44px comfortable, 36px compact, menu included.
 
 ### Compact visual chip, full-height tap target
 
-When a control's segment should _look_ shorter than 44px, keep the full 44px on
-the tap target and shrink only the visible chip inside it — don't shrink the
-pressable. `SegmentedBar` / `SegmentedItem` (`src/ui/selection/`) implement this
+When a control's segment should _look_ shorter than its control height, keep the
+full height on the tap target and shrink only the visible chip inside it — don't
+shrink the pressable. `SegmentedBar` / `SegmentedItem` (`src/ui/selection/`) implement this
 with a `surface lowered` `Box` as the in-flow flex container: the lowered surface
-is a real 44px bar with **zero vertical padding** (`py-0` overriding the
-`surface` padding, `min-h-[44px]`), so each item pressable (`min-h-[44px]`) fills the
-full height as the tap target, and centers a shorter visible chip (`min-h-[32px]`)
-— leaving ~6px of the lowered surface showing above/below each chip as the inset
-frame. No absolute track, no z-order tricks, no inline `style`. `RadioButtonGroup`,
+is a real `control-md` bar with **zero vertical padding** (`py-0` overriding the
+`surface` padding, `min-h-control-md`), so each item pressable (`min-h-control-md`)
+fills the full height as the tap target, and centers a shorter visible chip
+(`min-h-control-chip`) — leaving 6px (4px compact) of the lowered surface showing
+above/below each chip as the inset frame. No absolute track, no z-order tricks, no inline `style`. `RadioButtonGroup`,
 `NavBar` and `Tabs` all build on it, and each one's `play` test measures both the
 container (== 44) and each item (>= 44) so the geometry can't regress.
 `SegmentedBar` also has an `orientation` variant, exposed only on `NavBar`
 (`orientation="vertical"` — a sidebar rail): the bar stacks, each item still owns
-a 44px tap target and its chip stretches to the bar's width and stands taller
-(`min-h-[40px]`), so the frame at the two ends comes from the bar's own `py-xs`
+its tap target and its chip stretches to the bar's width and stands taller
+(`min-h-control-chip-stacked`), so the frame at the two ends comes from the bar's own `py-xs`
 rather than from the chip's shortfall.
 
 A horizontal bar is a pill: `rounded-full` on the track, the pressable and the
 chip; a vertical one is `rounded-md`. `variant="icon"` (on `RadioButtonGroup`,
-`NavBar` and `Tabs` alike) fills that pill with square icon-only chips (36px,
-`rounded-md`, so a circle) — a light/dark/system mode picker is the canonical
+`NavBar` and `Tabs` alike) fills that pill with square icon-only chips
+(`control-chip-icon`, 36px, `rounded-md`, so a circle) — a light/dark/system mode picker is the canonical
 use. The item renders its `icon` alone and its `label` stays the accessible name,
 so `label` is still required and `getByRole(…, { name })` keeps working; an item
 without an `icon` renders an empty chip. Because a 36px chip is 8px short of the
-touch target in the other axis, the icon variant adds `min-w-[44px]` to the
-pressable — the horizontal counterpart of `min-h-[44px]`, asserted by each
+touch target in the other axis, the icon variant adds `min-w-control-md` to the
+pressable — the horizontal counterpart of `min-h-control-md`, asserted by each
 group's `play` test. The 4px left on every side is exactly the focus ring (2px
 offset + 2px width).
 

@@ -15,7 +15,7 @@ const disclosureVariants = tv(
     slots: {
       root: "",
       trigger:
-        "flex-row items-center gap-xs self-start rounded-sm px-xs min-h-[44px]",
+        "flex-row items-center gap-xs self-start rounded-sm px-xs min-h-control-md",
       // Icon reads only the tint from its className, so the rotation sits on a
       // wrapping view.
       caretFrame: "transition-transform duration-disclose ease-in-out",

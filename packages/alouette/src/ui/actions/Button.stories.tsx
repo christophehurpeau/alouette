@@ -6,6 +6,7 @@ import {
 } from "alouette-icons/phosphor-icons/ArrowLeft";
 import type { ReactNode } from "react";
 import { AccentScope } from "../containers/AccentScope";
+import { DensityScope } from "../containers/DensityScope";
 import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid, stateTitle } from "../story-components/StoryGrid";
@@ -23,7 +24,7 @@ export default {
       description: {
         component: `### Variants
 - \`variant\`: tonal | filled | outlined | soft
-- \`size\`: sm (38px) | md (44px) | lg (52px) — \`lg\` is the prominent call to action of a landing page or a hero, not a size for an action among others
+- \`size\`: sm (38px) | md (44px) | lg (52px) — 32 / 36 / 44px in a compact \`DensityScope\`. \`lg\` is the prominent call to action of a landing page or a hero, not a size for an action among others
 - \`accent\`: brand | danger | info | success | warning | neutral — unset, the accent of the nearest accent scope, brand outside one
 
 \`tonal\` (default) is a ground lighter than the page, lifted by a shadow, whose ink carries the accent. \`filled\` is the accent's own flat fill under white ink, for the one action that must dominate.
@@ -110,6 +111,28 @@ function IconWeightRow({
   );
 }
 
+function SizesRow(): ReactNode {
+  return (
+    <StoryGrid.Row flexWrap>
+      {(["sm", "md", "lg"] as const).map((size) => (
+        <StoryGrid.Col key={size} title={size}>
+          <View className="gap-xs">
+            <Button
+              variant="tonal"
+              size={size}
+              icon={<ArrowLeftRegularIcon />}
+              activeIcon={<ArrowLeftDuotoneIcon />}
+              text={size}
+            />
+            <Button size={size} state="loading" text="loading" />
+            <Button size={size} state="success" text="success" />
+          </View>
+        </StoryGrid.Col>
+      ))}
+    </StoryGrid.Row>
+  );
+}
+
 function InheritedAccentRow(): ReactNode {
   return (
     <StoryGrid.Row flexWrap>
@@ -137,19 +160,14 @@ export const Variants: ThisStory = {
   render: () => (
     <Story>
       <Story.Section withSurface title="Sizes">
-        <StoryGrid.Row flexWrap>
-          {(["sm", "md", "lg"] as const).map((size) => (
-            <StoryGrid.Col key={size} title={size}>
-              <Button
-                variant="tonal"
-                size={size}
-                icon={<ArrowLeftRegularIcon />}
-                activeIcon={<ArrowLeftDuotoneIcon />}
-                text={size}
-              />
-            </StoryGrid.Col>
-          ))}
-        </StoryGrid.Row>
+        <Story.SubSection title="comfortable density">
+          <SizesRow />
+        </Story.SubSection>
+        <Story.SubSection title="compact density">
+          <DensityScope density="compact">
+            <SizesRow />
+          </DensityScope>
+        </Story.SubSection>
       </Story.Section>
 
       <Story.Section withSurface title="Variants">

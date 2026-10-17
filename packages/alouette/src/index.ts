@@ -21,6 +21,9 @@ export type {
 } from "./core/AlouetteConfig";
 export { useCurrentMode, useCurrentTheme } from "./core/ThemeContext";
 export { useReducedMotion } from "./core/ReducedMotionContext";
+export { useDensity } from "./core/DensityContext";
+export type { Density } from "./controlSizes";
+export { controlHeightsPx } from "./controlSizes";
 export type { ColorModePreference } from "./core/useColorMode";
 export { useResolvedColorMode, useSystemColorMode } from "./core/useColorMode";
 export type { ScopedThemeProps } from "./ui/containers/ScopedTheme";
@@ -61,6 +64,8 @@ export type { StableAccentScopeProps } from "./ui/containers/StableAccentScope";
 export { StableAccentScope } from "./ui/containers/StableAccentScope";
 export type { PortalAccentScopeProps } from "./ui/containers/PortalAccentScope";
 export { PortalAccentScope } from "./ui/containers/PortalAccentScope";
+export type { DensityScopeProps } from "./ui/containers/DensityScope";
+export { DensityScope } from "./ui/containers/DensityScope";
 export type {
   PresenceListProps,
   PresenceOneProps,

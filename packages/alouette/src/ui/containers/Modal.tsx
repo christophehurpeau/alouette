@@ -10,7 +10,6 @@ import { type VariantProps, tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useReducedMotion } from "../../core/ReducedMotionContext";
 import { useScrollEndState } from "../../core/useScrollEndState";
-import { buttonHeight } from "../actions/Button";
 import { IconButton } from "../actions/IconButton";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { ScrollView } from "../primitives/ScrollView";
@@ -47,21 +46,22 @@ const modalVariants = tv({
       sm: {
         panel: "max-w-[360px]",
         inset: "rounded-sm p-sm",
-        header: "pl-xs",
+        // As tall as the close button, shown or not, so the title never moves.
+        header: "pl-xs min-h-control-sm",
         scrollContent: "p-xs",
         footer: "py-xs",
       },
       md: {
         panel: "max-w-[520px]",
         inset: "rounded-sm p-m",
-        header: "pl-m",
+        header: "pl-m min-h-control-md",
         scrollContent: "p-m",
         footer: "py-sm",
       },
       lg: {
         panel: "max-w-[720px]",
         inset: "rounded-md p-l",
-        header: "pl-l",
+        header: "pl-l min-h-control-md",
         scrollContent: "p-l",
         footer: "py-m",
       },
@@ -178,10 +178,7 @@ export function ModalPanel({
       <View className={styles.inset()}>
         {/* Header sits outside the scroll box: the title and the close
             button stay put while the body scrolls under them. */}
-        <View
-          className={styles.header()}
-          style={{ minHeight: buttonHeight[iconSize] }}
-        >
+        <View className={styles.header()}>
           {icon === undefined ? null : (
             <Icon icon={icon} size={24} className="text-accent" />
           )}

@@ -12,7 +12,7 @@ import { View } from "../primitives/View";
 const appSidebarAccountVariants = tv({
   slots: {
     frame:
-      "flex-row items-center gap-sm rounded-full px-xs py-xxs min-h-[44px]",
+      "flex-row items-center gap-sm rounded-full px-xs py-xxs min-h-control-md",
     identity: "flex-1",
     name: "text-base text-sharp",
     description: "text-sm text-muted",
