@@ -1,12 +1,13 @@
-import { expect, within } from "storybook/test";
+import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   ArrowLeftDuotoneIcon,
   ArrowLeftRegularIcon,
 } from "alouette-icons/phosphor-icons/ArrowLeft";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import { AccentScope } from "../containers/AccentScope";
 import { DensityScope } from "../containers/DensityScope";
+import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Story, neutralAndAccents } from "../story-components/Story";
 import { StoryGrid, stateTitle } from "../story-components/StoryGrid";
@@ -278,6 +279,13 @@ export const Variants: ThisStory = {
           <Button text="Example" />
         </Story.SubSection>
 
+        <Story.SubSection title="Disabled with a reason">
+          <Button
+            text="Archive"
+            disabledReason="A deployment of this project is still running"
+          />
+        </Story.SubSection>
+
         <Story.SubSection title="Very long text">
           <StoryGrid.Row flexWrap>
             {(["sm", "md", "lg"] as const).map((size) => (
@@ -300,6 +308,81 @@ export const Variants: ThisStory = {
       </Story.Section>
     </Story>
   ),
+};
+
+function ToggledReasonRow(): ReactNode {
+  const [running, setRunning] = useState(true);
+  return (
+    <StoryGrid.Row>
+      <Button
+        text={running ? "Finish deployment" : "Start deployment"}
+        onPress={() => {
+          setRunning((wasRunning) => !wasRunning);
+        }}
+      />
+      <Button
+        text="Archive"
+        disabledReason={
+          running ? "A deployment of this project is still running" : null
+        }
+      />
+    </StoryGrid.Row>
+  );
+}
+
+export const DisabledReason: ThisStory = {
+  render: () => (
+    <Story noDarkMode>
+      <Story.Section withSurface title="Disabled with a reason">
+        <ToggledReasonRow />
+      </Story.Section>
+      <Story.Section withSurface title="With its own description">
+        <View className="gap-xs">
+          <Text id="delete-warning">Deleting cannot be undone.</Text>
+          <Button
+            text="Delete"
+            aria-describedby="delete-warning"
+            disabledReason="Archive the project first"
+          />
+        </View>
+      </Story.Section>
+    </Story>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const archive = canvas.getByRole("button", { name: "Archive" });
+
+    await expect(archive).toHaveAttribute("aria-disabled", "true");
+    await expect(archive).toHaveAccessibleDescription(
+      "A deployment of this project is still running",
+    );
+
+    // A disabled `<button>` takes no focus: the reason shows on hover.
+    await userEvent.hover(archive);
+    await expect(
+      await screen.findByRole("tooltip", { hidden: true }),
+    ).toHaveTextContent("A deployment of this project is still running");
+    await userEvent.unhover(archive);
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("tooltip", { hidden: true }),
+      ).not.toBeInTheDocument(),
+    );
+
+    // The reason going away enables the same node, not a remounted one.
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Finish deployment" }),
+    );
+    await expect(canvas.getByRole("button", { name: "Archive" })).toBe(archive);
+    await expect(archive).not.toHaveAttribute("aria-disabled");
+    await expect(archive).not.toHaveAccessibleDescription();
+
+    await expect(
+      canvas.getByRole("button", { name: "Delete" }),
+    ).toHaveAccessibleDescription(
+      "Deleting cannot be undone. Archive the project first",
+    );
+  },
 };
 
 interface ButtonColors {

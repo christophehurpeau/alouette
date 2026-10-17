@@ -13,6 +13,7 @@ import {
   defaultExternalOpenLinkBehavior,
 } from "../../expo/ExternalLink.shared";
 import { AccentScope } from "../containers/AccentScope";
+import { mergeTooltipTriggerProps } from "../containers/mergeTooltipTriggerProps";
 import {
   type CircularProgressSize,
   IndeterminateCircularProgress,
@@ -22,6 +23,10 @@ import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
+import {
+  DisabledReasonTooltip,
+  hasDisabledReason,
+} from "./DisabledReasonTooltip";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
 /** `lg` is the prominent call to action of a landing page or a hero. */
@@ -172,6 +177,11 @@ export interface ButtonProps
   text: ReactNode;
   state?: ButtonState;
   /**
+   * Why the button is disabled. A non-empty reason disables it, describes it
+   * with the reason and, on web, shows the reason on hover.
+   */
+  disabledReason?: string | null;
+  /**
    * Forwarded to the underlying `PressableBox`, so the button can anchor a
    * `Popover` or a `Menu`. React 19 carries it in with the other props.
    */
@@ -180,17 +190,21 @@ export interface ButtonProps
 
 interface IsButtonDisabledParams {
   disabled?: boolean | null;
+  disabledReason?: string | null;
   state?: ButtonState;
 }
 
 function isButtonDisabled({
   disabled,
+  disabledReason,
   state,
 }: IsButtonDisabledParams): boolean {
-  return disabled === true || state != null;
+  return (
+    disabled === true || hasDisabledReason(disabledReason) || state != null
+  );
 }
 
-export function Button({
+function ButtonPressable({
   icon,
   activeIcon,
   text,
@@ -202,7 +216,7 @@ export function Button({
   className,
   forceStyle,
   ...pressableProps
-}: ButtonProps): ReactNode {
+}: Omit<ButtonProps, "disabledReason">): ReactNode {
   const accent = useAccentOrInheritedOrBrand(accentProp);
   const density = useDensity();
   const isLoading = state === "loading";
@@ -282,6 +296,22 @@ export function Button({
         {text}
       </Text>
     </PressableBox>
+  );
+}
+
+export function Button({
+  disabledReason,
+  ...buttonProps
+}: ButtonProps): ReactNode {
+  return (
+    <DisabledReasonTooltip
+      disabledReason={disabledReason}
+      render={(triggerProps) => (
+        <ButtonPressable
+          {...mergeTooltipTriggerProps(buttonProps, triggerProps)}
+        />
+      )}
+    />
   );
 }
 

@@ -135,6 +135,17 @@ export const ActionButtonVariantsStory: ThisStory = {
         />
       </Story.Section>
 
+      <Story.Section title="Disabled with a reason">
+        <ActionButton
+          text="Archive"
+          disabledReason="A deployment of this project is still running"
+          errorToMessage={(error) =>
+            error instanceof Error ? error.message : "Unknown error"
+          }
+          onPress={() => {}}
+        />
+      </Story.Section>
+
       <Story.Section title="Synchronous onPress">
         <ActionButton
           text="Log"
