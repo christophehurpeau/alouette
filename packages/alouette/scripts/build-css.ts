@@ -92,12 +92,12 @@ const controlSizesPx = {
     inset: 8,
   },
   compact: {
-    sm: 28,
-    md: 32,
-    lg: 40,
-    chip: 24,
-    "chip-icon": 24,
-    "chip-stacked": 28,
+    sm: 32,
+    md: 36,
+    lg: 44,
+    chip: 28,
+    "chip-icon": 28,
+    "chip-stacked": 32,
     inset: 4,
   },
 } as const;

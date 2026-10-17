@@ -46,8 +46,8 @@ const segmentedItemVariants = tv({
   variants: {
     // Comfortable, the insets keep the badge's painted circle inside the chip
     // in both sizes the icon variant takes (36px in a row, 40px stacked or
-    // stretched): 1.1px and 0.3px of clearance. Compact, a 24px chip inset
-    // that way would put the badge on the middle of the glyph, so it hangs off
+    // stretched): 1.1px and 0.3px of clearance. Compact, a 28px chip inset
+    // that way would put the badge over most of the glyph, so it hangs off
     // the chip's corner into the 4px of bar around it, as far as the bar's clip.
     density: {
       comfortable: { indicator: "right-[4px] top-[4px]" },
@@ -256,7 +256,7 @@ export function SegmentedItem({
             activeAccent={activeAccent}
             active={selected}
             disabled={disabled === true}
-            size={density === "compact" ? 16 : 20}
+            size={20}
             className={styles.foreground()}
           />
         ) : null}

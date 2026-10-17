@@ -411,8 +411,8 @@ padding of a label that may wrap. One table holds them (`controlSizesPx` in
 
 | token                                      | comfortable  | compact      |
 | ------------------------------------------ | ------------ | ------------ |
-| `control-sm` / `-md` / `-lg`               | 38 / 44 / 52 | 28 / 32 / 40 |
-| `control-chip` / `-chip-icon` / `-stacked` | 32 / 36 / 40 | 24 / 24 / 28 |
+| `control-sm` / `-md` / `-lg`               | 38 / 44 / 52 | 32 / 36 / 44 |
+| `control-chip` / `-chip-icon` / `-stacked` | 32 / 36 / 40 | 28 / 28 / 32 |
 | `control-inset`                            | 8            | 4            |
 
 `comfortable` is the `@theme` default and keeps every control at the 44px touch
@@ -423,7 +423,7 @@ an interface driven by a mouse only — a `.density-*` class on web,
 react-native-css would inline the `@theme` value and leave nothing to override).
 The density never changes a type size. A size set from JS reads `useDensity()`
 (`controlHeightsPx` for a height): `Button`'s spinner and terminal icon,
-`IconButton`'s diameter, the segmented glyph. Portaled content keeps it:
+`IconButton`'s diameter, the position of the segmented badge. Portaled content keeps it:
 `PortalAccentScope.web` rebuilds the scope beside the theme. It is unrelated to
 `RadioButtonGroup`'s `compact` prop, which only tightens the chips' horizontal
 padding.
@@ -436,7 +436,7 @@ the height.
 The Storybook `density` toolbar global wraps every story in a `DensityScope`
 (`AlouetteDecorator`, declared in both previews), and `DensityScope.stories.tsx`'s
 `ControlHeights` asserts that a toolbar of field, select, segmented bar, buttons
-and checkbox is 44px comfortable, 32px compact, menu included.
+and checkbox is 44px comfortable, 36px compact, menu included.
 
 ### Compact visual chip, full-height tap target
 

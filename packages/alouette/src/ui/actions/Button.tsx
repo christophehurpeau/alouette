@@ -47,7 +47,7 @@ const buttonSizeMetrics: Record<
   },
   compact: {
     sm: { iconSize: 16, terminalIconSize: 20, spinnerSize: "xs" },
-    md: { iconSize: 20, terminalIconSize: 24, spinnerSize: "xs" },
+    md: { iconSize: 20, terminalIconSize: 28, spinnerSize: "sm" },
     lg: { iconSize: 24, terminalIconSize: 32, spinnerSize: "sm" },
   },
 };

@@ -139,7 +139,7 @@ padding, gap and radius still use the token scale (`p-m`, `gap-xs`,
 
 A control's height is neither: it is a `control-*` token (`min-h-control-md`,
 `w-control-md`, `min-h-control-chip`), which `DensityScope` swaps — 44px
-comfortable, 32px compact for an interface driven by a mouse. A control written
+comfortable, 36px compact for an interface driven by a mouse. A control written
 with `min-h-[44px]` stays 44px in a compact scope. Its label's vertical padding
 is `py-control-inset`, so a single line still fits the compact height.
 

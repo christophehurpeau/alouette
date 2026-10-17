@@ -7,7 +7,7 @@ import { DensityContext } from "../../core/DensityContext";
 export interface DensityScopeProps {
   /**
    * `comfortable` keeps every control at the 44px touch target. `compact`
-   * (32px) is for an interface driven by a mouse or a trackpad only: below 44px
+   * (36px) is for an interface driven by a mouse or a trackpad only: below 44px
    * a control is no longer a comfortable touch target.
    */
   density: Density;

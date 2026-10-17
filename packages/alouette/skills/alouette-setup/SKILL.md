@@ -213,7 +213,7 @@ import { SafeAreaProvider } from "alouette";
 Every control is 44px tall by default, the touch target. An interface driven by
 a mouse only (a desktop web app, an admin) wraps its tree in a compact
 `DensityScope`: fields, buttons, menus, segmented bars and nav items drop to
-32px (`Button` sizes 28 / 32 / 40px). Type sizes do not change.
+36px (`Button` sizes 32 / 36 / 44px). Type sizes do not change.
 
 ```tsx
 import { DensityScope } from "alouette";

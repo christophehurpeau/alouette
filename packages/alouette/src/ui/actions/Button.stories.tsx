@@ -24,7 +24,7 @@ export default {
       description: {
         component: `### Variants
 - \`variant\`: tonal | filled | outlined | soft
-- \`size\`: sm (38px) | md (44px) | lg (52px) — 28 / 32 / 40px in a compact \`DensityScope\`. \`lg\` is the prominent call to action of a landing page or a hero, not a size for an action among others
+- \`size\`: sm (38px) | md (44px) | lg (52px) — 32 / 36 / 44px in a compact \`DensityScope\`. \`lg\` is the prominent call to action of a landing page or a hero, not a size for an action among others
 - \`accent\`: brand | danger | info | success | warning | neutral — unset, the accent of the nearest accent scope, brand outside one
 
 \`tonal\` (default) is a ground lighter than the page, lifted by a shadow, whose ink carries the accent. \`filled\` is the accent's own flat fill under white ink, for the one action that must dominate.

@@ -16,12 +16,12 @@ export const densityVariables = {
     "--spacing-control-inset": 8,
   },
   compact: {
-    "--spacing-control-sm": 28,
-    "--spacing-control-md": 32,
-    "--spacing-control-lg": 40,
-    "--spacing-control-chip": 24,
-    "--spacing-control-chip-icon": 24,
-    "--spacing-control-chip-stacked": 28,
+    "--spacing-control-sm": 32,
+    "--spacing-control-md": 36,
+    "--spacing-control-lg": 44,
+    "--spacing-control-chip": 28,
+    "--spacing-control-chip-icon": 28,
+    "--spacing-control-chip-stacked": 32,
     "--spacing-control-inset": 4,
   },
 } as const;
@@ -40,8 +40,8 @@ export const controlHeightsPx = {
     lg: 52,
   },
   compact: {
-    sm: 28,
-    md: 32,
-    lg: 40,
+    sm: 32,
+    md: 36,
+    lg: 44,
   },
 } as const;

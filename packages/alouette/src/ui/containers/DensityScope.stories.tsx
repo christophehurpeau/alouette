@@ -37,7 +37,7 @@ export default {
       description: {
         component: `### Densities
 - \`comfortable\` (default, outside any scope): every control keeps the 44px touch target — \`Button\` sizes 38 / 44 / 52px
-- \`compact\`: 32px controls — \`Button\` sizes 28 / 32 / 40px — for a desktop-only interface (WCAG 2.5.8 asks 24px for a pointer target)
+- \`compact\`: 36px controls — \`Button\` sizes 32 / 36 / 44px — for a desktop-only interface (WCAG 2.5.8 asks 24px for a pointer target)
 
 The scope swaps the \`--spacing-control-*\` tokens, so a control written with \`min-h-control-md\` follows it; type sizes do not change. \`useDensity()\` reads it for a size set from JS, and \`controlHeightsPx\` gives the heights in px. Scopes nest, and a \`Popover\`, \`Menu\` or \`Modal\` keeps the density of the element that opened it.
 
@@ -236,14 +236,14 @@ export const ControlHeights: ThisStory = {
       height: 44,
     });
     const compact = canvas.getByRole("group", { name: "compact" });
-    await expectControlHeights({ group: compact, height: 32 });
+    await expectControlHeights({ group: compact, height: 36 });
 
     await userEvent.click(
       within(compact).getByRole("button", { name: "More actions" }),
     );
     const menu = await screen.findByRole("menu", { name: "More actions" });
     for (const item of within(menu).getAllByRole("menuitem")) {
-      await expect(heightOf(item)).toBe(32);
+      await expect(heightOf(item)).toBe(36);
     }
   },
 };

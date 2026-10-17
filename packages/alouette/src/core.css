@@ -198,12 +198,12 @@
     --spacing-control-inset: 8px;
   }
   .density-compact {
-    --spacing-control-sm: 28px;
-    --spacing-control-md: 32px;
-    --spacing-control-lg: 40px;
-    --spacing-control-chip: 24px;
-    --spacing-control-chip-icon: 24px;
-    --spacing-control-chip-stacked: 28px;
+    --spacing-control-sm: 32px;
+    --spacing-control-md: 36px;
+    --spacing-control-lg: 44px;
+    --spacing-control-chip: 28px;
+    --spacing-control-chip-icon: 28px;
+    --spacing-control-chip-stacked: 32px;
     --spacing-control-inset: 4px;
   }
 }
