@@ -46,6 +46,17 @@ export default defineConfig({
       },
     },
     holdUntilCrawlEnd: true,
+    // The NativeWind Babel preset adds these imports while transforming, after
+    // the dependency crawl: discovered mid-run, they reload the page and fail
+    // the tests on a cold cache (CI).
+    include: [
+      "react-native-css/components/FlatList",
+      "react-native-css/components/Pressable",
+      "react-native-css/components/ScrollView",
+      "react-native-css/components/Text",
+      "react-native-css/components/TextInput",
+      "react-native-css/components/View",
+    ],
     exclude: ["alouette-icons"],
   },
   resolve: {
