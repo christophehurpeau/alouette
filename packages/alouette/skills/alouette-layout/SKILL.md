@@ -4,7 +4,7 @@ description: >
   Build screen structure: Box / InteractiveBox / SafeAreaBox for containers,
   raised with the surface utilities (surface, surface-{size}, lowered,
   surface-flat, surface-popover), View with flex classes and Separator to
-  arrange them,
+  arrange them, page-container for the boxed column of a page,
   ScreenCenterLayout and the screen scroll containers (ScreenScrollView /
   ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through
   SafeAreaScope) for the page itself, the application shell around every screen
@@ -160,6 +160,20 @@ import { GradientBackground, GradientScrollView } from "alouette";
 <GradientScrollView accent="brand">
   {content}
 </GradientScrollView>;
+```
+
+### Page column
+
+`page-container` is the boxed column of a page: full width up to
+`max-w-page` (1200px), centered, with the `px-m md:px-l` gutter of `AppHeader`'s
+boxed row at its default size — so the content starts under the brand at every
+width. Never rewrite it as `mx-auto max-w-[1200px] px-…`: the copy drifts the
+day the header changes. `max-w-page` alone is the width without the gutter.
+
+```tsx
+<AppLayout header={<AppHeader brand={brand} />}>
+  <View className="page-container gap-l py-l">{screen}</View>
+</AppLayout>
 ```
 
 ### Screen scroll containers
