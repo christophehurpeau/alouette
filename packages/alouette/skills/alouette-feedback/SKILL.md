@@ -8,7 +8,8 @@ description: >
   top of the screen reporting the network. LinearProgress and CircularProgress
   show how far an operation with a known percentage has got; their
   Indeterminate twins show that one is running when no percentage exists. The
-  skeleton utility is the pulsing placeholder of content still loading. A failure
+  skeleton utility is the pulsing placeholder of content still loading.
+  EmptyState stands in for a list or a section with nothing to show. A failure
   coming out of a button or a form is already rendered by that component, so
   reach for these for status the screen itself has to state. Load when showing
   inline status, alerts, dismissible notices, connection status, a progress
@@ -21,6 +22,8 @@ sources:
   - packages/alouette/src/ui/feedback/LinearProgress.tsx
   - packages/alouette/src/ui/feedback/CircularProgress.tsx
   - packages/alouette/src/ui/feedback/useSimulatedProgress.ts
+  - packages/alouette/src/ui/feedback/EmptyState.tsx
+  - packages/alouette/src/ui/feedback/EmptyState.stories.tsx
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -189,6 +192,27 @@ been shown, a refetch keeps it and uses an `IndeterminateLinearProgress` instead
 of swapping back to skeletons.
 
 Source: packages/alouette/scripts/build-css.ts; ui/feedback/Skeleton.stories.tsx
+
+## Empty state
+
+A list or a section that loaded and has nothing to show renders an `EmptyState`
+where the content would have been, on the screen ground: a muted 48px `icon`, a
+`title`, and optional muted prose as `children` saying why it is empty or what
+would fill it. It is not a `Message`: nothing went wrong, so it carries no accent.
+
+```tsx
+import { EmptyState } from "alouette";
+import { ConfettiRegularIcon } from "alouette-icons/phosphor-icons/Confetti";
+
+<EmptyState icon={<ConfettiRegularIcon />} title="Nothing to review">
+  No pull request is waiting for you.
+</EmptyState>;
+```
+
+A whole screen with a single purpose (sign-in, splash) is `ScreenCenterLayout`
+(alouette-layout), not an `EmptyState`.
+
+Source: packages/alouette/src/ui/feedback/EmptyState.tsx
 
 ## Common Mistakes
 

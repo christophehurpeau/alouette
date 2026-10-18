@@ -250,6 +250,8 @@ export type {
   ConnectionStateStatus,
 } from "./ui/feedback/ConnectionState";
 export { ConnectionState } from "./ui/feedback/ConnectionState";
+export type { EmptyStateProps } from "./ui/feedback/EmptyState";
+export { EmptyState } from "./ui/feedback/EmptyState";
 export type {
   IndeterminateLinearProgressProps,
   LinearProgressProps,

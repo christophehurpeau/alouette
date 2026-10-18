@@ -182,7 +182,7 @@ Alouette ships a universal component set styled through `className`:
 - **Actions** — `Button`, `ExternalLinkButton`, `InternalLinkButton`, `IconButton`
 - **Containers** — `Box` (raised with the `surface` utility), `InteractiveBox`, `SafeAreaBox`, `Popover`, `ScopedTheme`, `AccentScope`, `PresenceOne`, `PresenceList`
 - **Inputs** — `InputText`, `InputCode`, `InputTextAutocomplete`, `TextArea`, `Switch`
-- **Feedback** — `Message`, `InfoMessage`, `ConfirmationMessage`, `WarningMessage`
+- **Feedback** — `Message`, `InfoMessage`, `ConfirmationMessage`, `WarningMessage`, `EmptyState`
 - **Data** — `PressableBox`, `PressableListItem`
 - **Layout** — `GradientBackground`, `GradientScrollView`, `GlowBackground`, `SectionTitle`
 - **Primitives** — `View`, `Text`, `Paragraph`, `Icon`, `ScrollView`, `Separator`
