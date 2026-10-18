@@ -12,7 +12,8 @@ description: >
   or AppShell +
   AppShellSidebar + AppShellMain when the shell is composed per route;
   AppSidebarLayout + AppSidebar for an app navigated from a fixed sidebar), and
-  GradientBackground / GradientScrollView for a tinted ground. Space, round and
+  GradientBackground / GradientScrollView for a tinted ground, or
+  GlowBackground for soft accent glows over the plain one. Space, round and
   raise everything with the alouette spacing, radius and shadow scale rather
   than raw Tailwind numbers. Load when building screen structure, an app header
   or shell, cards, spacing, or backgrounds.
@@ -22,6 +23,7 @@ sources:
   - packages/alouette/src/ui/stacks/Separator.tsx
   - packages/alouette/src/ui/layout/GradientBackground.tsx
   - packages/alouette/src/ui/layout/GradientScrollView.tsx
+  - packages/alouette/src/ui/layout/GlowBackground.tsx
   - packages/alouette/src/ui/layout/ScreenCenterLayout.tsx
   - packages/alouette/src/ui/layout/ScreenScrollView.tsx
   - packages/alouette/src/ui/layout/ScreenFlatList.tsx
@@ -156,6 +158,20 @@ import { GradientBackground, GradientScrollView } from "alouette";
 <GradientScrollView accent="brand">
   {content}
 </GradientScrollView>;
+```
+
+`GlowBackground` keeps the `bg-screen` ground and bleeds radial glows from the
+top corners instead: `accent` from the top-left, the optional `secondaryAccent`
+from the top-right. It is an absolute, non-interactive overlay, so it goes first
+inside a `relative` (or full-height) container, before the content.
+
+```tsx
+import { GlowBackground } from "alouette";
+
+<View className="h-screen bg-screen">
+  <GlowBackground accent="brand" secondaryAccent="info" />
+  <ScrollView className="flex-1">{content}</ScrollView>
+</View>;
 ```
 
 ### Page column

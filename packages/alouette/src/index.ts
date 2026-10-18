@@ -278,6 +278,8 @@ export {
 } from "./ui/feedback/Message";
 export type { PressableListItemProps } from "./ui/actions/PressableListItem";
 export { PressableListItem } from "./ui/actions/PressableListItem";
+export type { GlowBackgroundProps } from "./ui/layout/GlowBackground";
+export { GlowBackground } from "./ui/layout/GlowBackground";
 export type { GradientBackgroundProps } from "./ui/layout/GradientBackground";
 export { GradientBackground } from "./ui/layout/GradientBackground";
 export type { GradientScrollViewProps } from "./ui/layout/GradientScrollView";
