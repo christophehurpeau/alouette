@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.4.0](compare/storybook-native-app%4014.3.0...storybook-native-app%4014.4.0) (2026-10-18)
+
+### Features
+
+* **alouette:** add DensityScope and control size tokens ([#380](issues/380))
+
+Version bump for dependency: alouette
+
+
 ## [14.3.0](///compare/storybook-native-app@14.2.0...storybook-native-app@14.3.0) (2026-10-11)
 
 Version bump for dependency: alouette
