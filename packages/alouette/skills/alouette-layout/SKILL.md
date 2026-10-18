@@ -4,7 +4,8 @@ description: >
   Build screen structure: Box / InteractiveBox / SafeAreaBox for containers,
   raised with the surface utilities (surface, surface-{size}, lowered,
   surface-flat, surface-popover), View with flex classes and Separator to
-  arrange them, page-container for the boxed column of a page,
+  arrange them, page-container for the boxed column of a page, SectionTitle
+  to head a section standing on the screen ground,
   ScreenCenterLayout and the screen scroll containers (ScreenScrollView /
   ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through
   SafeAreaScope) for the page itself, the application shell around every screen
@@ -21,6 +22,7 @@ sources:
   - packages/alouette/src/ui/containers/Box.tsx
   - packages/alouette/scripts/build-css.ts
   - packages/alouette/src/ui/stacks/Separator.tsx
+  - packages/alouette/src/ui/layout/SectionTitle.tsx
   - packages/alouette/src/ui/layout/GradientBackground.tsx
   - packages/alouette/src/ui/layout/GradientScrollView.tsx
   - packages/alouette/src/ui/layout/GlowBackground.tsx
@@ -125,6 +127,26 @@ was this utility behind props that cannot take a breakpoint prefix.
 
 A read-only section behind one edit button is `EditableSection`
 (alouette-data/SKILL.md), not a hand-built heading row on a bare surface.
+
+### Sections on the screen ground
+
+Never nest raised material: a `surface` card and a `PressableListItem` /
+`PressableBox` row each carry their own ground, shadow and radius, so one inside
+the other reads as a double elevation. A list of pressable rows therefore stands
+on the screen ground, headed by a `SectionTitle` — a heading (`level` 2 by
+default) with an optional `icon`, tinted by `accent`. Keep `surface` for static
+content.
+
+```tsx
+import { SectionTitle } from "alouette";
+
+<View className="gap-xs">
+  <SectionTitle icon={<EyeRegularIcon />} accent="info">
+    Waiting for your review
+  </SectionTitle>
+  {rows}
+</View>;
+```
 
 ### Boxes
 

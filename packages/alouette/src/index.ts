@@ -284,6 +284,8 @@ export type { GradientBackgroundProps } from "./ui/layout/GradientBackground";
 export { GradientBackground } from "./ui/layout/GradientBackground";
 export type { GradientScrollViewProps } from "./ui/layout/GradientScrollView";
 export { GradientScrollView } from "./ui/layout/GradientScrollView";
+export type { SectionTitleProps } from "./ui/layout/SectionTitle";
+export { SectionTitle } from "./ui/layout/SectionTitle";
 export type { ScreenCenterLayoutProps } from "./ui/layout/ScreenCenterLayout";
 export { ScreenCenterLayout } from "./ui/layout/ScreenCenterLayout";
 export type { ScreenScrollViewProps } from "./ui/layout/ScreenScrollView";

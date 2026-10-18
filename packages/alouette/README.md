@@ -184,7 +184,7 @@ Alouette ships a universal component set styled through `className`:
 - **Inputs** — `InputText`, `InputCode`, `InputTextAutocomplete`, `TextArea`, `Switch`
 - **Feedback** — `Message`, `InfoMessage`, `ConfirmationMessage`, `WarningMessage`
 - **Data** — `PressableBox`, `PressableListItem`
-- **Layout** — `GradientBackground`, `GradientScrollView`, `GlowBackground`
+- **Layout** — `GradientBackground`, `GradientScrollView`, `GlowBackground`, `SectionTitle`
 - **Primitives** — `View`, `Text`, `Paragraph`, `Icon`, `ScrollView`, `Separator`
 - **Responsive** — `SwitchBreakpointsUsingDisplayNone`, `SwitchBreakpointsUsingNull`, `useCurrentBreakpointName`
 
