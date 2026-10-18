@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, use } from "react";
 
 export interface SplitButtonContextValue {
   value: string | undefined;
@@ -17,7 +17,7 @@ const SplitButtonContext = createContext<SplitButtonContextValue | undefined>(
 export const SplitButtonContextProvider = SplitButtonContext.Provider;
 
 export function useSplitButtonContext(): SplitButtonContextValue {
-  const context = useContext(SplitButtonContext);
+  const context = use(SplitButtonContext);
   if (!context) {
     throw new Error("SplitButtonOption must be rendered inside a SplitButton.");
   }

@@ -153,7 +153,7 @@ export const ActionButtonVariantsStory: ThisStory = {
             error instanceof Error ? error.message : "Unknown error"
           }
           onPress={() => {
-            // eslint-disable-next-line no-console
+            // oxlint-disable-next-line no-console
             console.log("Synchronous press, no loading state");
           }}
         />

@@ -1,4 +1,4 @@
-/* eslint-disable import-x/extensions */
+/* oxlint-disable import/extensions */
 // Node-only — call it from a build script, never from app code.
 
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -28,7 +28,7 @@ const themeVariablesModule = (
   themeVariables: GenerateThemeResult["themeVariables"],
 ): string =>
   `${generatedHeader}
-/* eslint-disable camelcase */
+/* oxlint-disable eslint-js/camelcase */
 import type { ThemeVariablesMap } from "alouette";
 
 /**

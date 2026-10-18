@@ -266,7 +266,6 @@ export function InputCode({
           {Array.from({ length }, (_, index) => {
             const active = index === activeIndex;
             return (
-              // eslint-disable-next-line react/no-array-index-key -- a cell is its position
               <View key={index} className={styles.cell({ active })}>
                 {showCaret && active ? (
                   <View className={styles.caret()} />
@@ -285,7 +284,7 @@ export function InputCode({
           editable={!isDisabled}
           disabled={disabled}
           aria-disabled={isDisabled}
-          // eslint-disable-next-line jsx-a11y/no-autofocus -- the caller's call, as on InputText
+          // oxlint-disable-next-line jsx-a11y/no-autofocus -- the caller's call, as on InputText
           autoFocus={autoFocus}
           className={styles.input()}
           testID={testID}

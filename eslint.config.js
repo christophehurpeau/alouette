@@ -1,6 +1,4 @@
-import pobTypescriptReactConfig, {
-  applyTs,
-} from "@pob/eslint-config-typescript-react";
+import pobTypescriptReactConfig from "@pob/eslint-config-typescript-react";
 
 const { configs: pobTypescriptReactConfigs } = pobTypescriptReactConfig;
 
@@ -11,34 +9,14 @@ export default [
       "**/.storybook/**",
       "**/storybook-static/**",
       "**/.rnstorybook/**",
-      "**/vite.config.ts",
-      "**/vitest.config.ts",
-      "**/tamagui.config.ts",
       "**/alouette-icons/lib/**",
-      "**/scripts/**",
       "**/.design-sync/**",
       "**/.ds-sync/**",
       "**/ds-bundle/**",
     ],
   },
   ...pobTypescriptReactConfigs.node,
-  ...pobTypescriptReactConfigs.allowUnsafe,
-  ...pobTypescriptReactConfigs.allowImplicitReturnType,
-  ...applyTs({
-    mode: "directory",
-    files: ["packages/storybook-app/"],
-    configs: [
-      {
-        settings: {
-          "check-package-dependencies": {
-            isLibrary: false,
-          },
-        },
-      },
-      ...pobTypescriptReactConfigs.app,
-      ...pobTypescriptReactConfigs["react-native-web"],
-    ],
-  }),
+  ...pobTypescriptReactConfigs.monorepo,
   {
     files: ["**/*.stories.{ts,tsx}"],
     settings: {
@@ -58,21 +36,6 @@ export default [
             import.meta.dirname,
             `${import.meta.dirname}/packages/alouette`,
           ],
-        },
-      ],
-      "import-x/extensions": [
-        "error",
-        "always",
-        {
-          ignorePackages: true,
-          pattern: {
-            js: "always",
-            cjs: "always",
-            mjs: "always",
-            cts: "always",
-            mts: "always",
-            ts: "always",
-          },
         },
       ],
     },

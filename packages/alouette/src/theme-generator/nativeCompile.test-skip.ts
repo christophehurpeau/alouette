@@ -1,4 +1,4 @@
-/* eslint-disable import-x/extensions */
+/* oxlint-disable import/extensions */
 /* eslint-disable import-x/no-extraneous-dependencies */
 import { compile } from "react-native-css/compiler";
 import { describe, expect, it } from "vitest";

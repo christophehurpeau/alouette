@@ -515,7 +515,7 @@ The indicator is one utility, `focus-ring` (`build-css.ts`): `outline-2
 outline-offset-2 outline-accent`, applied with `focus-visible:` (or
 `group-focus-visible:` on a chip). The ink is `accent`, the scope's own ink
 (the sharp ink when neutral): it clears 3:1 against every ground in both modes
-(audited in `scripts/generate-palette.ts` under the non-text threshold), where
+(audited in `packages/alouette/scripts/generate-palette.ts` under the non-text threshold), where
 a border token (`border-sharp`) or a ground (`interactive-filled-pressable`)
 meets the dark tonal ground on the same step and vanishes. It is never a
 per-variant color, and never transitions. `focus-ring-inset` is the same ring

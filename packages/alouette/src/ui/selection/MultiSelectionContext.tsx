@@ -1,5 +1,5 @@
 import type { Provider, ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, use, useMemo } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useControllableValues } from "../../core/useControllableValues";
 
@@ -41,13 +41,13 @@ export function createMultiSelectionContext(
   return {
     MultiSelectionContextProvider: Context.Provider,
     useMultiSelection: () => {
-      const context = useContext(Context);
+      const context = use(Context);
       if (!context) {
         throw new Error(missingProviderMessage);
       }
       return context;
     },
-    useOptionalMultiSelection: () => useContext(Context),
+    useOptionalMultiSelection: () => use(Context),
   };
 }
 

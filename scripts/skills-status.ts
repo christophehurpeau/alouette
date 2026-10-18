@@ -60,11 +60,15 @@ const parseFrontmatter = (content: string): Frontmatter | undefined => {
   const lists = new Map<string, string[]>();
   const lines = match[1].split("\n");
   for (let index = 0; index < lines.length; index++) {
-    const keyMatch = /^([\w-]+):\s*(.*)$/.exec(lines[index] ?? "");
+    const keyMatch = /^([\w-]+):(.*)$/.exec(lines[index] ?? "");
     if (!keyMatch) continue;
-    const [, key = "", rest = ""] = keyMatch;
+    const [, key = "", rawRest = ""] = keyMatch;
+    const rest = rawRest.trimStart();
     const block: string[] = [];
-    while (index + 1 < lines.length && /^(\s|$)/.test(lines[index + 1] ?? "")) {
+    while (
+      index + 1 < lines.length &&
+      /^(?:\s|$)/.test(lines[index + 1] ?? "")
+    ) {
       block.push((lines[++index] ?? "").trim());
     }
     if (rest === ">" || rest === "|") {
@@ -128,7 +132,7 @@ const readSkills = (): Skill[] =>
   fs
     .readdirSync(path.join(repoRoot, skillsDir))
     .filter((name) => exists(`${skillsDir}/${name}/SKILL.md`))
-    .sort()
+    .toSorted()
     .map(readSkill);
 
 /** `--base`, else the tag of the last release (`package.json` still holds it). */
@@ -136,10 +140,10 @@ const resolveBase = (): { ref: string; commit: string } => {
   const args = process.argv.slice(2);
   const ref = args.includes("--base")
     ? args[args.indexOf("--base") + 1]
-    : `alouette@${JSON.parse(read(packageJsonPath)).version}`;
+    : `alouette@${(JSON.parse(read(packageJsonPath)) as { version: string }).version}`;
   const commit =
     ref && gitOrUndefined(["rev-parse", "--verify", `${ref}^{commit}`]);
-  if (!ref || !commit) throw new Error(`Unknown base ref: ${ref}`);
+  if (!ref || !commit) throw new Error(`Unknown base ref: ${ref ?? "(none)"}`);
   return { ref, commit };
 };
 
@@ -163,7 +167,7 @@ const changedSince = (base: string): Map<string, string> => {
     const file = line.slice(3).split(" -> ").at(-1);
     if (file) add(status.startsWith("?") ? "A" : status.slice(0, 1), file);
   }
-  return new Map([...changes].sort(([a], [b]) => a.localeCompare(b)));
+  return new Map([...changes].toSorted(([a], [b]) => a.localeCompare(b)));
 };
 
 /** Exported names of an index barrel, keyed by name → source module. */
@@ -209,14 +213,15 @@ const shortBase = base.commit.slice(0, 8);
 
 console.log(`base  ${base.ref} (${shortBase})`);
 
-console.log(`\nchanged sources`);
+console.log("\nchanged sources");
 let changedSkillCount = 0;
 for (const skill of skills) {
   const files = skill.sources.filter((file) => changed.has(file));
   if (files.length === 0) continue;
   changedSkillCount++;
   console.log(`  ${skill.name}`);
-  for (const file of files) console.log(`    ${changed.get(file)} ${file}`);
+  for (const file of files)
+    console.log(`    ${changed.get(file) ?? ""} ${file}`);
   console.log(`    git diff ${shortBase} -- ${files.join(" ")}`);
 }
 if (changedSkillCount === 0) console.log("  none");
@@ -224,12 +229,13 @@ if (changedSkillCount === 0) console.log("  none");
 const uncovered = [...changed.keys()].filter(
   (file) =>
     file.startsWith("packages/alouette/src/") &&
-    !/\.(test|stories)\.tsx?$/.test(file) &&
+    !/\.(?:test|stories)\.tsx?$/.test(file) &&
     !sourcedFiles.has(file),
 );
 if (uncovered.length > 0) {
-  console.log(`\nchanged but sourced by no skill`);
-  for (const file of uncovered) console.log(`  ${changed.get(file)} ${file}`);
+  console.log("\nchanged but sourced by no skill");
+  for (const file of uncovered)
+    console.log(`  ${changed.get(file) ?? ""} ${file}`);
 }
 
 const baseIndex = gitOrUndefined(["show", `${base.commit}:${indexPath}`]);
@@ -254,7 +260,7 @@ const removedExports = [...baseExports.keys()].filter(
   (name) => !headExports.has(name),
 );
 if (removedExports.length > 0) {
-  console.log(`\nremoved exports (delete their coverage)`);
+  console.log("\nremoved exports (delete their coverage)");
   for (const name of removedExports) console.log(`  ${name}`);
 }
 
@@ -276,7 +282,7 @@ if (tight.length > 0) {
 
 const invalid = skills.filter((skill) => skill.problems.length > 0);
 if (invalid.length > 0) {
-  console.log(`\ninvalid skills`);
+  console.log("\ninvalid skills");
   for (const skill of invalid) {
     for (const problem of skill.problems) {
       console.log(`  ${skill.name}: ${problem}`);

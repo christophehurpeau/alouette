@@ -25,10 +25,10 @@ export function DensityScope({
   children,
 }: DensityScopeProps): ReactNode {
   return (
-    <DensityContext.Provider value={density}>
+    <DensityContext value={density}>
       <VariableContextProvider value={densityVariables[density]}>
         {children}
       </VariableContextProvider>
-    </DensityContext.Provider>
+    </DensityContext>
   );
 }

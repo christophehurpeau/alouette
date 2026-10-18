@@ -2,6 +2,7 @@
   "name": "alouette",
   "version": "24.3.0",
   "description": "A modern, customizable design system built on top of NativeWind v5 with configurable defaults",
+  "keywords": [],
   "homepage": "https://github.com/christophehurpeau/alouette",
   "bugs": {
     "url": "https://github.com/christophehurpeau/alouette/issues"
@@ -126,13 +127,14 @@
     "type-fest": "5.8.0"
   },
   "devDependencies": {
-    "@pob/rollup-esbuild": "10.1.0",
+    "@pob/rollup-esbuild": "11.0.0",
     "@rollup/plugin-replace": "6.0.3",
     "@types/node": "24.10.1",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.4",
     "@types/react-native-web": "0.19.2",
     "@typescript/native": "npm:typescript@7.0.2",
+    "color-convert": "3.1.3",
     "expo-web-browser": "57.0.2",
     "nativewind": "5.0.0-rc.0",
     "oxfmt": "0.72.0",

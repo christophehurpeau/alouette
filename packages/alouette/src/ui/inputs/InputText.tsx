@@ -213,7 +213,7 @@ export function InputText({
   const placeholderColor =
     Platform.OS === "web"
       ? undefined
-      : // eslint-disable-next-line react-hooks/rules-of-hooks -- native only, web is set via css.
+      : // oxlint-disable-next-line react/rules-of-hooks -- native only, web is set via css.
         useColorVariable("--color-form-placeholder");
   const modeProps = mode ? MODE_PROPS[mode] : undefined;
   // Same forwarding as `aria-describedby`: untyped by react-native, rendered by

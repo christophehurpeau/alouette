@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, use, useMemo } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
 import { AccentScope } from "../containers/AccentScope";
 import { View } from "../primitives/View";
@@ -39,7 +39,7 @@ const RadioCardGroupAppearanceContext = createContext<RadioCardGroupAppearance>(
 
 /** Lets a card size itself for the row it flows in and take the group's material. */
 export function useRadioCardGroupAppearance(): RadioCardGroupAppearance {
-  return useContext(RadioCardGroupAppearanceContext);
+  return use(RadioCardGroupAppearanceContext);
 }
 
 export interface RadioCardGroupProps

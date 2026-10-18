@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { createContext, useContext } from "react";
+import { createContext, use } from "react";
 import type { AlouetteTheme } from "../../core/AlouetteConfig";
 import { useCurrentMode, useCurrentTheme } from "../../core/ThemeContext";
 import { DefaultAccentScope } from "../containers/DefaultAccentScope";
@@ -47,7 +47,7 @@ export interface SelectionIndicatorAccentScopeProps {
 export function SelectionIndicatorAccentScope({
   children,
 }: SelectionIndicatorAccentScopeProps): ReactNode {
-  const selectionAccentTheme = useContext(SelectionAccentThemeContext);
+  const selectionAccentTheme = use(SelectionAccentThemeContext);
   if (selectionAccentTheme === undefined) {
     return <DefaultAccentScope>{children}</DefaultAccentScope>;
   }

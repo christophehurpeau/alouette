@@ -1,6 +1,6 @@
 import { VariableContextProvider } from "nativewind";
 import type { ReactNode } from "react";
-import { useContext } from "react";
+import { use } from "react";
 import type { AlouetteTheme } from "../../core/AlouetteConfig";
 import { NativeThemeVariablesContext } from "../../core/NativeThemeVariablesContext";
 import { ThemeContext } from "../../core/ThemeContext";
@@ -19,12 +19,12 @@ export interface ScopedThemeProps {
  * so `AccentScope` can read it.
  */
 export function ScopedTheme({ theme, children }: ScopedThemeProps): ReactNode {
-  const themeVariables = useContext(NativeThemeVariablesContext);
+  const themeVariables = use(NativeThemeVariablesContext);
   return (
-    <ThemeContext.Provider value={theme}>
+    <ThemeContext value={theme}>
       <VariableContextProvider value={themeVariables[theme]}>
         {children}
       </VariableContextProvider>
-    </ThemeContext.Provider>
+    </ThemeContext>
   );
 }

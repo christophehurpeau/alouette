@@ -11,10 +11,10 @@ export function AlouetteProvider({
   const colorScheme = useColorScheme();
   const reducedMotion = useSystemReducedMotion();
   return (
-    <ReducedMotionContext.Provider value={reducedMotion}>
+    <ReducedMotionContext value={reducedMotion}>
       <ScopedTheme theme={colorScheme === "dark" ? "dark" : "light"}>
         {children}
       </ScopedTheme>
-    </ReducedMotionContext.Provider>
+    </ReducedMotionContext>
   );
 }

@@ -28,8 +28,8 @@ export function AlouetteProvider({
   const colorScheme = useColorScheme();
   const reducedMotion = useSystemReducedMotion();
   return (
-    <NativeThemeVariablesContext.Provider value={themeVariables}>
-      <ReducedMotionContext.Provider value={reducedMotion}>
+    <NativeThemeVariablesContext value={themeVariables}>
+      <ReducedMotionContext value={reducedMotion}>
         {/* react-native-css never matches `prefers-reduced-motion`, so the
             values core.css sets under that query are pushed from JS. */}
         <VariableContextProvider
@@ -39,7 +39,7 @@ export function AlouetteProvider({
             {children}
           </ScopedTheme>
         </VariableContextProvider>
-      </ReducedMotionContext.Provider>
-    </NativeThemeVariablesContext.Provider>
+      </ReducedMotionContext>
+    </NativeThemeVariablesContext>
   );
 }

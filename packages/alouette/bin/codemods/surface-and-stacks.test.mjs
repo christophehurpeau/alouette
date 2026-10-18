@@ -1,4 +1,5 @@
-/* eslint-disable import-x/no-extraneous-dependencies, no-template-curly-in-string */
+/* eslint-disable import-x/no-extraneous-dependencies */
+/* oxlint-disable no-template-curly-in-string */
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import { transformSurfaceAndStacks } from "./surface-and-stacks.mjs";

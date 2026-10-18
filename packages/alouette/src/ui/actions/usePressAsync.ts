@@ -74,7 +74,7 @@ export function usePressAsync(
           caughtError instanceof Error
             ? caughtError
             : new Error(String(caughtError));
-        // eslint-disable-next-line no-console
+        // oxlint-disable-next-line no-console
         console.error(
           "Unexpected error caught in usePressAsync",
           normalizedError,

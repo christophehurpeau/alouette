@@ -7,10 +7,10 @@ export function DensityScope({
   children,
 }: DensityScopeProps): ReactNode {
   return (
-    <DensityContext.Provider value={density}>
+    <DensityContext value={density}>
       <div className={`density-${density}`} style={{ display: "contents" }}>
         {children}
       </div>
-    </DensityContext.Provider>
+    </DensityContext>
   );
 }

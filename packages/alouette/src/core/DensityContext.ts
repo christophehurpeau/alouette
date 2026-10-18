@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, use } from "react";
 import type { Density } from "../controlSizes";
 
 /** Set by `DensityScope`; `comfortable` outside one. */
@@ -10,5 +10,5 @@ export const DensityContext = createContext<Density>("comfortable");
  * JS (a glyph or a spinner sized to the control, `controlHeightsPx`).
  */
 export function useDensity(): Density {
-  return useContext(DensityContext);
+  return use(DensityContext);
 }

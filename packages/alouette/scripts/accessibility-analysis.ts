@@ -1,7 +1,7 @@
-/* eslint-disable import-x/extensions */
+/* oxlint-disable import/extensions */
 import convert from "color-convert";
-import { createColorScale } from "../packages/alouette/src/theme-generator/createColorScale.ts";
-import { defaultPaletteSpecs } from "../packages/alouette/src/theme-generator/paletteSpecs.ts";
+import { createColorScale } from "../src/theme-generator/createColorScale.ts";
+import { defaultPaletteSpecs } from "../src/theme-generator/paletteSpecs.ts";
 
 // WCAG contrast ratio requirements
 const WCAG_AA_NORMAL = 4.5; // Normal text
@@ -31,7 +31,7 @@ const hexToRgb = (hex: string): [number, number, number] => {
 const getLuminance = (hex: string) => {
   const [r, g, b] = hexToRgb(hex);
   const [rs, gs, bs] = [r, g, b].map((c) =>
-    c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4),
+    c <= 0.039_28 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4,
   ) as [number, number, number];
   return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
 };
@@ -53,23 +53,45 @@ const getContrastGrade = (ratio: number) => {
   return "FAIL";
 };
 
+const getUsageDescription = (step: number) => {
+  const descriptions = {
+    1: "Interactive outlined hover/focus",
+    2: "Interactive filled press",
+    3: "Interactive outlined press",
+    4: "Interactive filled hover/focus",
+    5: "Interactive filled background",
+    6: "Main color",
+    7: "Border hover/focus",
+    8: "Border color",
+    9: "Text/shadow color",
+    10: "Bold text color",
+  };
+  return descriptions[step as keyof typeof descriptions] || "Unknown";
+};
+
+const getStatusSymbol = (grade: ReturnType<typeof getContrastGrade>) => {
+  if (grade === "FAIL") return "❌";
+  if (grade === "AA Large") return "⚠️";
+  return "✅";
+};
+
 const analyzeColorScale = (name: string, scale: ColorScale) => {
   console.log(`\n🔍 ${name.toUpperCase()} ACCESSIBILITY ANALYSIS`);
   console.log("=".repeat(50));
 
   // Light Mode Analysis
-  console.log(`\n📋 LIGHT MODE:`);
+  console.log("\n📋 LIGHT MODE:");
   console.log("Step | Color     | Test Combination | Ratio | Grade | Usage");
   console.log(
     "-----|-----------|------------------|-------|-------|------------------",
   );
 
   Object.entries(scale).forEach(([step, color]) => {
-    const stepNum = parseInt(step);
+    const stepNum = Number.parseInt(step, 10);
     const usage = getUsageDescription(stepNum);
 
-    let testDesc = "";
-    let ratio = 0;
+    let testDesc: string;
+    let ratio: number;
 
     if (stepNum <= 3) {
       // Steps 1-3: Light backgrounds - test with black text
@@ -86,7 +108,7 @@ const analyzeColorScale = (name: string, scale: ColorScale) => {
     }
 
     const grade = getContrastGrade(ratio);
-    const status = grade === "FAIL" ? "❌" : grade === "AA Large" ? "⚠️" : "✅";
+    const status = getStatusSymbol(grade);
 
     console.log(
       `${step.padStart(4)} | ${color} | ${testDesc.padStart(16)} | ${ratio.toFixed(2).padStart(5)} | ${grade.padStart(5)} | ${status} ${usage}`,
@@ -94,19 +116,19 @@ const analyzeColorScale = (name: string, scale: ColorScale) => {
   });
 
   // Dark Mode Analysis (with scale inversion)
-  console.log(`\n🌙 DARK MODE (Scale Inverted):`);
+  console.log("\n🌙 DARK MODE (Scale Inverted):");
   console.log("Step | Color     | Test Combination | Ratio | Grade | Usage");
   console.log(
     "-----|-----------|------------------|-------|-------|------------------",
   );
 
   Object.entries(scale).forEach(([step, color]) => {
-    const stepNum = parseInt(step);
+    const stepNum = Number.parseInt(step, 10);
     const darkStep = darkModeScaleNumbers[stepNum]!;
     const darkUsage = getUsageDescription(darkStep);
 
-    let testDesc = "";
-    let ratio = 0;
+    let testDesc: string;
+    let ratio: number;
 
     if (darkStep <= 3) {
       // In dark mode, steps 1-3 become background colors - test with white text
@@ -123,28 +145,12 @@ const analyzeColorScale = (name: string, scale: ColorScale) => {
     }
 
     const grade = getContrastGrade(ratio);
-    const status = grade === "FAIL" ? "❌" : grade === "AA Large" ? "⚠️" : "✅";
+    const status = getStatusSymbol(grade);
 
     console.log(
       `${step.padStart(4)} | ${color} | ${testDesc.padStart(16)} | ${ratio.toFixed(2).padStart(5)} | ${grade.padStart(5)} | ${status} ${darkUsage}`,
     );
   });
-};
-
-const getUsageDescription = (step: number) => {
-  const descriptions = {
-    1: "Interactive outlined hover/focus",
-    2: "Interactive filled press",
-    3: "Interactive outlined press",
-    4: "Interactive filled hover/focus",
-    5: "Interactive filled background",
-    6: "Main color",
-    7: "Border hover/focus",
-    8: "Border color",
-    9: "Text/shadow color",
-    10: "Bold text color",
-  };
-  return descriptions[step as keyof typeof descriptions] || "Unknown";
 };
 
 const analyzeBackgroundTextCombinations = (name: string, scale: ColorScale) => {
@@ -208,21 +214,14 @@ const analyzeBackgroundTextCombinations = (name: string, scale: ColorScale) => {
 
   combinations.forEach(({ bg, text, desc }) => {
     const bgColor = scale[bg as keyof ColorScale];
-    const textColor =
-      typeof text === "string" ? text : scale[text as keyof ColorScale];
-    const ratio = getContrastRatio(textColor, bgColor);
+    const ratio = getContrastRatio(text, bgColor);
     const grade = getContrastGrade(ratio);
-    const status = grade === "FAIL" ? "❌" : grade === "AA Large" ? "⚠️" : "✅";
+    const status = getStatusSymbol(grade);
 
-    const bgDisplay =
-      typeof text === "string"
-        ? `Step ${bg} (${bgColor})`
-        : `Step ${bg} (${bgColor})`;
-    const textDisplay =
-      typeof text === "string" ? text : `Step ${text} (${textColor})`;
+    const bgDisplay = `Step ${bg} (${bgColor})`;
 
     console.log(
-      `${bgDisplay.padStart(20)} | ${textDisplay.padStart(11)} | ${ratio.toFixed(2).padStart(5)} | ${grade.padStart(5)} | ${status} | ${desc}`,
+      `${bgDisplay.padStart(20)} | ${text.padStart(11)} | ${ratio.toFixed(2).padStart(5)} | ${grade.padStart(5)} | ${status} | ${desc}`,
     );
   });
 };
@@ -232,15 +231,15 @@ console.log("=".repeat(60));
 
 const palettes: Record<string, ColorScale> = {};
 for (const [name, spec] of Object.entries(defaultPaletteSpecs)) {
-  palettes[`${name}.light`] = createColorScale(spec, "light") as ColorScale;
-  palettes[`${name}.dark`] = createColorScale(spec, "dark") as ColorScale;
+  palettes[`${name}.light`] = createColorScale(spec, "light");
+  palettes[`${name}.dark`] = createColorScale(spec, "dark");
 }
 Object.entries(palettes).forEach(([name, scale]) => {
   analyzeColorScale(name, scale);
   analyzeBackgroundTextCombinations(name, scale);
 });
 
-console.log("\n" + "=".repeat(60));
+console.log(`\n${"=".repeat(60)}`);
 console.log("📊 SUMMARY:");
 console.log("✅ = WCAG AA compliant");
 console.log("⚠️ = WCAG AA Large text compliant only");
