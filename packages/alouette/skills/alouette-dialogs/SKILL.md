@@ -154,6 +154,46 @@ between dialogs.
 `confirmDisabled` disables the confirm button (e.g. while a form is invalid).
 Button labels default to Confirm/Cancel (confirm), OK (alert/required).
 
+### Content beside the description
+
+`children` is the description: it is wrapped in a `Text` and announced as the
+dialog's `aria-describedby`, so it takes copy only. What the decision needs
+besides it — a field completing what is confirmed, the list of items affected —
+goes in `content`, rendered under the description and outside it. The caller
+owns the field's state and reads it in `onConfirm`.
+
+```tsx
+<QuestionAlertDialog
+  visible={confirming}
+  accent="success"
+  title="Merge this pull request?"
+  confirmText="Squash and merge"
+  confirmDisabled={commitTitle.trim() === ""}
+  content={
+    <FormItem
+      label="Commit message"
+      render={({ labelId, describedBy, invalid, required }) => (
+        <InputText
+          aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          aria-required={required}
+          invalid={invalid}
+          value={commitTitle}
+          onChangeText={setCommitTitle}
+        />
+      )}
+    />
+  }
+  onConfirm={() => merge(commitTitle)}
+  onCancel={close}
+>
+  #42 goes into main.
+</QuestionAlertDialog>
+```
+
+A field never goes in `children`: inside a `Text` it is invalid on native and
+read out as the description.
+
 ### Async confirmations
 
 `onConfirm` (confirm and required variants) may return a promise. The dialog then

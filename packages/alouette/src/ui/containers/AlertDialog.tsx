@@ -39,6 +39,14 @@ interface AlertDialogBaseProps extends Pick<ModalProps, "size" | "testID"> {
   title: string;
   /** Body copy describing the situation or the consequence of confirming. */
   children?: ReactNode;
+  /**
+   * What the decision needs besides its description — the fields completing
+   * what is confirmed (a commit message), a list of the items affected.
+   * Rendered under the description, outside it: `children` is wrapped in a
+   * `Text` and announced as the dialog's description, which a field must not
+   * be.
+   */
+  content?: ReactNode;
   /** Themes the icon and the primary button. Defaults to "danger". */
   accent?: Accent;
   /**
@@ -248,6 +256,7 @@ export function AlertDialog(props: AlertDialogProps): ReactNode {
     visible,
     title,
     children,
+    content,
     accent = "danger",
     icon,
     size = "md",
@@ -265,6 +274,12 @@ export function AlertDialog(props: AlertDialogProps): ReactNode {
     isPending,
     handleConfirm: handlePress,
   });
+  const description =
+    children === undefined ? null : (
+      <Text nativeID={descriptionId} className="text-base text-muted">
+        {children}
+      </Text>
+    );
 
   return (
     <Modal
@@ -280,10 +295,13 @@ export function AlertDialog(props: AlertDialogProps): ReactNode {
       footer={footer}
       onClose={onDismiss}
     >
-      {children === undefined ? null : (
-        <Text nativeID={descriptionId} className="text-base text-muted">
-          {children}
-        </Text>
+      {content === undefined ? (
+        description
+      ) : (
+        <View className="gap-m">
+          {description}
+          {content}
+        </View>
       )}
     </Modal>
   );
