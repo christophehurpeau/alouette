@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CalendarRegularIcon } from "alouette-icons/phosphor-icons/Calendar";
 import { type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
+import { DecisionBar } from "../actions/DecisionBar";
 import { Badge } from "../data/Badge";
 import { Paragraph, Text } from "../primitives/Text";
 import { View } from "../primitives/View";
@@ -64,7 +65,12 @@ function EventSection({
         visible={editing}
         title={title}
         closeButtonAriaLabel="Close editor"
-        footer={<Button text="Close" onPress={close} />}
+        footer={
+          <DecisionBar
+            primary={<Button text="Save" onPress={close} />}
+            onDismiss={close}
+          />
+        }
         onClose={close}
       >
         <Paragraph>Your editor goes here.</Paragraph>

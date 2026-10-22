@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { WarningRegularIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactElement, type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
+import { DecisionBar } from "../actions/DecisionBar";
 import { Paragraph } from "../primitives/Text";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
@@ -73,15 +74,11 @@ export const PreviewModalStory: ThisStory = {
     <ModalDemo
       {...args}
       footer={
-        <>
-          <Button
-            accent="neutral"
-            variant="soft"
-            text="Cancel"
-            onPress={fn()}
-          />
-          <Button accent="danger" text="Delete" onPress={fn()} />
-        </>
+        <DecisionBar
+          dismissText="Cancel"
+          primary={<Button accent="danger" text="Delete" onPress={fn()} />}
+          onDismiss={fn()}
+        />
       }
     >
       <Paragraph>
@@ -135,15 +132,11 @@ export const Variants: ThisStory = {
               size={size}
               title="Save changes?"
               footer={
-                <>
-                  <Button
-                    accent="neutral"
-                    variant="soft"
-                    text="Discard"
-                    onPress={fn()}
-                  />
-                  <Button text="Save" onPress={fn()} />
-                </>
+                <DecisionBar
+                  dismissText="Discard"
+                  primary={<Button text="Save" onPress={fn()} />}
+                  onDismiss={fn()}
+                />
               }
               onClose={fn()}
             >
@@ -178,7 +171,11 @@ export const Variants: ThisStory = {
               hideCloseButton
               size={size}
               title="Confirm"
-              footer={<Button text="Got it" onPress={fn()} />}
+              footer={
+                <DecisionBar
+                  primary={<Button text="Got it" onPress={fn()} />}
+                />
+              }
               onClose={fn()}
             >
               <Paragraph>
@@ -193,15 +190,11 @@ export const Variants: ThisStory = {
         <ModalPanel
           title="Terms of service"
           footer={
-            <>
-              <Button
-                accent="neutral"
-                variant="soft"
-                text="Decline"
-                onPress={fn()}
-              />
-              <Button text="Accept" onPress={fn()} />
-            </>
+            <DecisionBar
+              dismissText="Decline"
+              primary={<Button text="Accept" onPress={fn()} />}
+              onDismiss={fn()}
+            />
           }
           onClose={fn()}
         >
@@ -223,15 +216,11 @@ export const Variants: ThisStory = {
                 title={`${accent} modal`}
                 icon={<WarningRegularIcon />}
                 footer={
-                  <>
-                    <Button
-                      accent="neutral"
-                      variant="soft"
-                      text="Cancel"
-                      onPress={fn()}
-                    />
-                    <Button text="Confirm" onPress={fn()} />
-                  </>
+                  <DecisionBar
+                    dismissText="Cancel"
+                    primary={<Button text="Confirm" onPress={fn()} />}
+                    onDismiss={fn()}
+                  />
                 }
                 onClose={fn()}
               >
@@ -340,15 +329,11 @@ export const ScrollingBodyWithFooterStory: ThisStory = {
       title="Terms of service"
       triggerLabel="Long content"
       footer={
-        <>
-          <Button
-            accent="neutral"
-            variant="soft"
-            text="Decline"
-            onPress={fn()}
-          />
-          <Button text="Accept" onPress={fn()} />
-        </>
+        <DecisionBar
+          dismissText="Decline"
+          primary={<Button text="Accept" onPress={fn()} />}
+          onDismiss={fn()}
+        />
       }
     >
       {Array.from({ length: 24 }, (_, index) => (

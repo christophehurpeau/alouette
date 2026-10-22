@@ -118,6 +118,8 @@ export type { ExternalLinkTextProps } from "./ui/actions/ExternalLinkText";
 export { ExternalLinkText } from "./ui/actions/ExternalLinkText";
 export type { ActionButtonProps } from "./ui/actions/ActionButton";
 export { ActionButton } from "./ui/actions/ActionButton";
+export type { DecisionBarProps } from "./ui/actions/DecisionBar";
+export { DecisionBar } from "./ui/actions/DecisionBar";
 export type { IconButtonProps } from "./ui/actions/IconButton";
 export { IconButton } from "./ui/actions/IconButton";
 export type { MenuProps, MenuTriggerParams } from "./ui/actions/Menu";

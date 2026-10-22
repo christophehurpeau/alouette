@@ -37,7 +37,7 @@ dismiss on backdrop press, the close button, the Android back button, and Escape
 ## Setup
 
 ```tsx
-import { Modal, Button } from "alouette";
+import { Button, DecisionBar, Modal } from "alouette";
 
 function Example() {
   const [open, setOpen] = useState(false);
@@ -48,7 +48,11 @@ function Example() {
         visible={open}
         onClose={() => setOpen(false)}
         title="Details"
-        footer={<Button text="Done" onPress={() => setOpen(false)} />}
+        footer={
+          <DecisionBar
+            primary={<Button text="Done" onPress={() => setOpen(false)} />}
+          />
+        }
       >
         <Text>Body content.</Text>
       </Modal>
@@ -82,9 +86,30 @@ The footer always carries one primary action with button material — an
 accented `tonal` button by default, a neutral `filled` one when backing out is
 the expected answer. A neutral `soft` button is only ever the secondary action
 beside it (Cancel, Discard, Decline): a footer holding a lone `soft` button, even
-a plain "Close", has no action with any weight. A single-button footer is
-`<Button text="Close" onPress={close} />`, as `AlertDialog`'s `alert` variant
-renders.
+a plain "Close", has no action with any weight. The footer's
+actions go in a `DecisionBar` (alouette-actions), which fixes their order:
+dismiss, alternative, primary — a lone "Close" is a `DecisionBar` with only a
+`primary`. `footer` itself takes any content, for a footer that is not a
+decision (a hint, a link beside the actions).
+
+```tsx
+<Modal
+  visible={open}
+  onClose={close}
+  title="Save changes?"
+  footer={
+    <DecisionBar
+      dismissText="Discard"
+      onDismiss={discard}
+      primary={
+        <ActionButton text="Save" onPress={save} errorToMessage={toMessage} />
+      }
+    />
+  }
+>
+  …
+</Modal>
+```
 
 ### Accent across the portal
 
@@ -328,15 +353,16 @@ Correct:
   visible={open}
   onClose={close}
   title="Details"
-  footer={<Button text="Done" onPress={close} />}
+  footer={<DecisionBar primary={<Button text="Done" onPress={close} />} />}
 >
   <Text>…</Text>
 </Modal>
 ```
 
 A row placed in `children` scrolls away with the body. `footer` stays pinned at
-the bottom of the scroll box on both platforms, right-aligns its buttons, and
-takes on the separator border while content scrolls under it.
+the bottom of the scroll box on both platforms and takes on the separator
+border while content scrolls under it; the `DecisionBar` in it orders and
+right-aligns the actions.
 
 Source: packages/alouette/src/ui/containers/Modal.tsx
 

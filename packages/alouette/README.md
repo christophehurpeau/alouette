@@ -179,7 +179,7 @@ const [fontsLoaded] = useFonts({
 
 Alouette ships a universal component set styled through `className`:
 
-- **Actions** — `Button`, `ExternalLinkButton`, `InternalLinkButton`, `IconButton`
+- **Actions** — `Button`, `ExternalLinkButton`, `InternalLinkButton`, `IconButton`, `DecisionBar`
 - **Containers** — `Box` (raised with the `surface` utility), `InteractiveBox`, `SafeAreaBox`, `Popover`, `ScopedTheme`, `AccentScope`, `PresenceOne`, `PresenceList`
 - **Inputs** — `InputText`, `InputCode`, `InputTextAutocomplete`, `TextArea`, `Switch`
 - **Feedback** — `Message`, `InfoMessage`, `ConfirmationMessage`, `WarningMessage`, `EmptyState`

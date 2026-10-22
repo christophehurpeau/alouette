@@ -13,10 +13,13 @@ description: >
   affordance so it never has to be rebuilt by hand. A disabled button says why
   with disabledReason, and Tooltip describes any other element. Load when
   adding buttons, text links, a menu of actions, a split button or button with
-  options, a tooltip, or custom pressable elements.
+  options, a tooltip, or custom pressable elements. DecisionBar is the row of
+  actions ending a decision (a dialog footer, an inline form's Cancel and
+  Save): it owns their order and alignment.
 sources:
   - packages/alouette/src/ui/actions/Button.tsx
   - packages/alouette/src/ui/actions/ActionButton.tsx
+  - packages/alouette/src/ui/actions/DecisionBar.tsx
   - packages/alouette/src/ui/actions/IconButton.tsx
   - packages/alouette/src/ui/actions/PressableBox.tsx
   - packages/alouette/src/ui/actions/PressableListItem.tsx
@@ -425,6 +428,46 @@ full-width trigger takes `align="start"`, or `width="anchor"` to make the panel
 exactly as wide; a trigger pinned at the bottom of the viewport (a sidebar's
 account row) takes `side="top"`.
 
+### Decision bar
+
+The actions ending a decision — a `Modal` footer, an inline form's Cancel and
+Save, a reply box — are a `DecisionBar`, never a hand-built row. It
+right-aligns them in one order whatever the call site's: the dismiss action,
+`alternative`, then `primary`. A lone "Close" is a `DecisionBar` with only a
+`primary`.
+
+```tsx
+import { ActionButton, DecisionBar } from "alouette";
+
+<DecisionBar
+  dismissText="Discard"
+  onDismiss={close}
+  alternative={
+    <ActionButton
+      accent="neutral"
+      text="Save draft"
+      onPress={saveDraft}
+      errorToMessage={toMessage}
+    />
+  }
+  primary={
+    <ActionButton text="Publish" onPress={publish} errorToMessage={toMessage} />
+  }
+/>;
+```
+
+- `primary` is required: an `ActionButton` for an async action, a
+  `FormSubmitButton` in a `Form`, a plain `Button` for a synchronous one.
+- `onDismiss` makes the bar render the dismiss action itself, as the neutral
+  `soft` text button labelled `dismissText` ("Cancel" by default), so a
+  dismissal always looks the same. `emphasis="dismiss"` turns it neutral
+  `filled` when backing out is the expected answer — pass a `soft` primary then.
+  `dismissDisabled` locks it while the primary is pending.
+- `alternative` is one other way to commit ("Save draft" beside "Publish").
+  Several alternatives are a `SplitButton` or a `Menu`.
+- It holds only actions that end the decision. An editor's tools (attach,
+  insert a template) are not part of it: lay the editor's toolbar beside it.
+
 ## Common Mistakes
 
 ### HIGH Passing the button label as children instead of text
@@ -473,6 +516,34 @@ card its `bg-highlight` fights the card it sits on. Neutral `soft` is a text
 button in the ambient ink: present, and plainly second.
 
 Source: packages/alouette/src/ui/containers/AlertDialog.tsx, ui/actions/Button.tsx
+
+### HIGH A hand-built row of decision buttons
+
+Wrong:
+
+```tsx
+<View className="flex-row gap-xs">
+  <Button text="Save" onPress={save} />
+  <Button accent="neutral" variant="soft" text="Cancel" onPress={close} />
+</View>
+```
+
+Correct:
+
+```tsx
+<DecisionBar
+  dismissText="Cancel"
+  onDismiss={close}
+  primary={<Button text="Save" onPress={save} />}
+/>
+```
+
+Each hand-built row picks its own alignment and order, and nothing catches it:
+each one is correct on its own and passes review, and the app ends up with
+Save before Cancel in one form and after it in the next. `DecisionBar` sets the
+order from its props, not from the children's order.
+
+Source: packages/alouette/src/ui/actions/DecisionBar.tsx
 
 ### HIGH Using non-existent variant names
 

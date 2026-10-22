@@ -257,6 +257,24 @@ with `FormValidationError` when fields are invalid (nothing was submitted), so
 `errorToMessage` can render "fix the errors above" distinctly from a real
 `onSubmit` failure.
 
+Next to a Cancel, the submit button goes in a `DecisionBar`
+(alouette-actions), inline as in a modal, so every form orders its actions the
+same way:
+
+```tsx
+<DecisionBar
+  dismissText="Cancel"
+  onDismiss={close}
+  primary={
+    <FormSubmitButton
+      label="Save"
+      errorToMessage={toMessage}
+      onPress={submit}
+    />
+  }
+/>
+```
+
 `mode` defaults to `"onTouched"`. By default an exception thrown from `onSubmit`
 propagates (consumed by `FormSubmitButton`); pass `onSubmitError` to `Form` only
 if you need to observe it elsewhere.

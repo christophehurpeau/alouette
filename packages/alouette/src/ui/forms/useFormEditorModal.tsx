@@ -1,7 +1,7 @@
 import { type ReactNode, useState } from "react";
 import type { Control, FieldValues } from "react-hook-form";
 import type { Accent } from "../../core/AlouetteConfig";
-import { Button } from "../actions/Button";
+import { DecisionBar } from "../actions/DecisionBar";
 import { Modal, type ModalProps } from "../containers/Modal";
 import { Form, type FormProps } from "./Form";
 import { FormSubmitButton } from "./FormSubmitButton";
@@ -95,19 +95,17 @@ export function useFormEditorModal<TFieldValues extends FieldValues>({
             size={size}
             closeButtonAriaLabel={closeButtonAriaLabel}
             footer={
-              <>
-                <Button
-                  accent="neutral"
-                  variant="soft"
-                  text={cancelLabel}
-                  onPress={close}
-                />
-                <FormSubmitButton
-                  label={submitLabel}
-                  errorToMessage={submitErrorToMessage}
-                  onPress={submit}
-                />
-              </>
+              <DecisionBar
+                dismissText={cancelLabel}
+                primary={
+                  <FormSubmitButton
+                    label={submitLabel}
+                    errorToMessage={submitErrorToMessage}
+                    onPress={submit}
+                  />
+                }
+                onDismiss={close}
+              />
             }
             onClose={close}
           >
