@@ -25,6 +25,8 @@ pnpm -C ./packages/storybook-native-app test Radio   # filter by file
 
 You can't visually validate rendering — only behavior via `play`. Styling/material looks are the user's to confirm.
 
+A PR changing how a component looks embeds screenshots of its stories: invoke the `pr-screenshots` skill.
+
 Verify with one deliberate pass: `pnpm tsc`, then `eslint` scoped to the files you changed, then the single relevant test. Don't re-run a check to re-confirm a pass or to isolate output you could have parsed the first time.
 
 Run a single unit test file:

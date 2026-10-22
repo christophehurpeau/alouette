@@ -11,6 +11,7 @@
     "lint": "yarn run lint:eslint",
     "lint:eslint": "yarn '../..' eslint --quiet packages/storybook-app",
     "screenshots:check": "pnpm run build-storybook && playwright test",
+    "screenshots:stories": "node scripts/screenshot-stories.ts",
     "screenshots:update": "pnpm run build-storybook && rm -rf snapshots && playwright install chromium && playwright test --update-snapshots",
     "serve:build": "pnpm dlx http-server -p 6006 storybook-static",
     "start": "expo start",
