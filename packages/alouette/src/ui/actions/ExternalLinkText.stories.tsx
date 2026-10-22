@@ -119,6 +119,14 @@ export const VariantsExternalLinkTextStory: ThisStory = {
         />
       </Story.Section>
 
+      <Story.Section withSurface title="Without icon">
+        <ExternalLinkText
+          icon={null}
+          href="https://github.com/christophehurpeau/alouette/issues/371"
+          text="#371"
+        />
+      </Story.Section>
+
       <Story.Section withSurface title="In a text flow">
         <View className="gap-xs items-start max-w-[420px]">
           <Paragraph>
@@ -153,6 +161,20 @@ export const TestsExternalLinkTextStory: ThisStory = {
           text="Open Storybook disabled"
         />
       </Story.Section>
+      <Story.Section title="Without icon">
+        <ExternalLinkText
+          icon={null}
+          href="https://storybook.js.org/"
+          text="No icon"
+        />
+      </Story.Section>
+      <Story.Section title="Inside a paragraph">
+        <Paragraph className="text-base">
+          {"Contact "}
+          <ExternalLinkText href="mailto:contact@example.com" text="support" />
+          {" to enable it."}
+        </Paragraph>
+      </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
@@ -169,5 +191,32 @@ export const TestsExternalLinkTextStory: ThisStory = {
     });
     await expect(disabledLink).toHaveAttribute("aria-disabled", "true");
     await expect(disabledLink).not.toHaveAttribute("href");
+
+    await expect(link.querySelector("svg")).not.toBeNull();
+    const noIconLink = canvas.getByRole("link", { name: "No icon" });
+    await expect(noIconLink.querySelector("svg")).toBeNull();
+
+    // Same font size on both sides, so equal glyph boxes mean equal baselines.
+    const textNodeBottom = (element: Element, text: string): number => {
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if (node.textContent === text) {
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          return range.getBoundingClientRect().bottom;
+        }
+      }
+      throw new Error(`Text node "${text}" not found`);
+    };
+    const inlineLink = canvas.getByRole("link", { name: "support" });
+    const paragraph = inlineLink.closest("p");
+    if (!paragraph) throw new Error("Paragraph not found");
+    await expect(
+      Math.abs(
+        textNodeBottom(inlineLink, "support") -
+          textNodeBottom(paragraph, "Contact "),
+      ),
+    ).toBeLessThanOrEqual(1);
   },
 };

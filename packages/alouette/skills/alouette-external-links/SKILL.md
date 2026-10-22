@@ -45,7 +45,7 @@ import { ExternalLinkButton, ExternalLinkText } from "alouette";
 `ExternalLinkButton` takes every `Button` prop (`variant`, `size`, `accent`,
 `icon`, `state`, …) and reads as an action. `ExternalLinkText` is the lightweight
 one: bold underlined text preceded by an affordance icon (the external-link
-arrow, overridable via `icon`), `size` `"sm" | "md"`, an `accent`, and a
+arrow, overridable via `icon`, dropped with `icon={null}`), `size` `"sm" | "md"`, an `accent`, and a
 `disabled` state — on web the text and icon tint through hover/active from the
 interactive tokens, and the row carries the focus-visible outline.
 

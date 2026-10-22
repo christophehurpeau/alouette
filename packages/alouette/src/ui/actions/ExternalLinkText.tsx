@@ -22,8 +22,11 @@ export interface ExternalLinkTextProps
   /** How the link opens. Defaults to an in-app browser sheet / a new tab. */
   openLinkBehavior?: ExternalOpenLinkBehavior;
   text: ReactNode;
-  /** Leading affordance icon. Defaults to the external-link arrow. */
-  icon?: SVGIconElement;
+  /**
+   * Leading affordance icon. Defaults to the external-link arrow; `null`
+   * renders the label alone.
+   */
+  icon?: SVGIconElement | null;
   accent?: AccentOrNeutral;
 }
 
@@ -64,11 +67,13 @@ export function ExternalLinkText({
         onPress={onPress ?? undefined}
         {...pressableProps}
       >
-        <Icon
-          icon={icon}
-          size={linkTextIconSize(size)}
-          className={styles.icon()}
-        />
+        {icon ? (
+          <Icon
+            icon={icon}
+            size={linkTextIconSize(size)}
+            className={styles.icon()}
+          />
+        ) : null}
         <Text className={styles.text()}>{text}</Text>
       </ExternalLink>
     </AccentScope>
