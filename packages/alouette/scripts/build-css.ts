@@ -207,6 +207,9 @@ ${Object.entries(controlSizesPx.comfortable)
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
 
+  /* the boxed width of a page: AppHeader's boxed row and page-container */
+  --container-page: 1200px;
+
   /* animations — NativeWind runs the @keyframes on native via Reanimated. A CSS animation
      cannot play on unmount: pair an exit animation with <Presence>, which keeps
      the outgoing child mounted. */
@@ -487,6 +490,14 @@ ${Object.keys(animationDurationsMs)
    with the panel's. */
 @utility surface-popover {
   @apply overflow-hidden bg-highlight shadow-l rounded-sm p-xs;
+}
+
+/* page-container — the boxed column of a page: the width and the horizontal
+   padding of AppHeader's boxed row at its default size, so the content lines up
+   with the header at every width. \`self-center\` rather than \`mx-auto\`, like
+   the header's row: it centers in any flex column, on native too. */
+@utility page-container {
+  @apply w-full self-center max-w-page px-m md:px-l;
 }
 
 /* flex-center — not \`center\`, which would clash with a text-align /

@@ -402,6 +402,18 @@ export const TestsAppLayoutStory: ThisStory = {
           </AppLayout>
         </NarrowFrame>
       </Story.Section>
+      <Story.Section title="Boxed page">
+        <DemoFrame>
+          <AppLayout
+            aria-label="Boxed shell"
+            header={<AppHeader brand={<AppHeaderBrand title="Boxed" />} />}
+          >
+            <View className="page-container py-m">
+              <Text className="text-base">Boxed content</Text>
+            </View>
+          </AppLayout>
+        </DemoFrame>
+      </Story.Section>
       <Story.Section title="Sticky rail">
         <ViewportFrame>
           <AppLayout
@@ -560,6 +572,22 @@ export const TestsAppLayoutStory: ThisStory = {
     await expect(bareMain.width).toBeCloseTo(
       canvas.getByLabelText("Sidebarless shell").getBoundingClientRect().width,
       0,
+    );
+
+    // page-container shares the boxed header row's column: same edges, same
+    // gutter, so the content starts under the brand.
+    const boxed = within(canvas.getByLabelText("Boxed shell"));
+    const boxedRow = boxed.getByRole("banner").firstElementChild;
+    if (!boxedRow) throw new Error("expected the header's boxed row");
+    const pageContainer = boxed.getByText("Boxed content").parentElement;
+    if (!pageContainer) throw new Error("expected the page container");
+    const boxedRowBox = boxedRow.getBoundingClientRect();
+    const pageContainerBox = pageContainer.getBoundingClientRect();
+    await expect(pageContainerBox.left).toBeCloseTo(boxedRowBox.left, 0);
+    await expect(pageContainerBox.width).toBeCloseTo(boxedRowBox.width, 0);
+    await expect(pageContainerBox.width).toBeLessThanOrEqual(1200);
+    await expect(getComputedStyle(pageContainer).paddingLeft).toBe(
+      getComputedStyle(boxedRow).paddingLeft,
     );
   },
 };
