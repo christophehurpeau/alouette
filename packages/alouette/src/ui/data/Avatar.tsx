@@ -1,45 +1,42 @@
 import type { ReactNode } from "react";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
-import { twMergeConfig } from "../../core/twMerge";
+import { tv } from "../../core/tv";
 import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 
-const avatarVariants = tv(
-  {
-    slots: {
-      frame: "flex-center shrink-0 rounded-full",
-      label: "font-body-bold text-trim-cap",
-      icon: "",
+const avatarVariants = tv({
+  slots: {
+    frame: "flex-center shrink-0 rounded-full",
+    label: "font-body-bold text-trim-cap",
+    icon: "",
+  },
+  variants: {
+    size: {
+      sm: { frame: "size-[28px]", label: "text-xs" },
+      md: { frame: "size-[32px]", label: "text-sm" },
+      lg: { frame: "size-[40px]", label: "text-base" },
     },
-    variants: {
-      size: {
-        sm: { frame: "size-[28px]", label: "text-xs" },
-        md: { frame: "size-[32px]", label: "text-sm" },
-        lg: { frame: "size-[40px]", label: "text-base" },
+    variant: {
+      solid: {
+        frame: "bg-emphasis",
+        label: "text-on-emphasis",
+        icon: "text-on-emphasis",
       },
-      variant: {
-        solid: {
-          frame: "bg-emphasis",
-          label: "text-on-emphasis",
-          icon: "text-on-emphasis",
-        },
-        enabled: {
-          frame: "bg-enabled",
-          label: "text-on-accent",
-          icon: "text-on-accent",
-        },
+      enabled: {
+        frame: "bg-enabled",
+        label: "text-on-accent",
+        icon: "text-on-accent",
       },
-    },
-    defaultVariants: {
-      size: "md",
-      variant: "solid",
     },
   },
-  { twMergeConfig },
-);
+  defaultVariants: {
+    size: "md",
+    variant: "solid",
+  },
+});
 
 type AvatarVariantProps = VariantProps<typeof avatarVariants>;
 

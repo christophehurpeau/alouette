@@ -1,7 +1,7 @@
 import { CaretDownRegularIcon } from "alouette-icons/phosphor-icons/CaretDown";
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 
@@ -54,61 +54,58 @@ export interface SelectProps {
 // variant × disabled pair rather than in the variant, so the disabled one never
 // competes with the enabled one at equal specificity.
 // `flex` is for web, where the trigger is a plain element rather than a View.
-export const selectTriggerVariants = tv(
-  {
-    base: [
-      "flex flex-row items-center justify-between gap-xs px-m min-h-control-md",
-      "transition-[border-color,outline-color,background-color,box-shadow] duration-fast ease-in",
-    ].join(" "),
-    variants: {
-      variant: {
-        outlined: "rounded-md border outline-interactive-outlined-pressable",
-        tonal: "rounded-full",
-      },
-      disabled: {
-        true: "cursor-not-allowed",
-        false: "cursor-pointer",
-      },
+export const selectTriggerVariants = tv({
+  base: [
+    "flex flex-row items-center justify-between gap-xs px-m min-h-control-md",
+    "transition-[border-color,outline-color,background-color,box-shadow] duration-fast ease-in",
+  ].join(" "),
+  variants: {
+    variant: {
+      outlined: "rounded-md border outline-interactive-outlined-pressable",
+      tonal: "rounded-full",
     },
-    compoundVariants: [
-      {
-        variant: "outlined",
-        disabled: true,
-        class:
-          "bg-disabled-interactive-muted border-interactive-outlined-disabled",
-      },
-      {
-        variant: "outlined",
-        disabled: false,
-        class: [
-          "bg-highlight",
-          "border-interactive-outlined-pressable",
-          "hover:border-interactive-outlined-hover",
-          "focus:border-interactive-outlined-focus",
-          "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
-          "active:border-interactive-outlined-active",
-        ].join(" "),
-      },
-      {
-        variant: "tonal",
-        disabled: true,
-        class: "bg-interactive-tonal-disabled",
-      },
-      {
-        variant: "tonal",
-        disabled: false,
-        class: [
-          "shadow-s bg-interactive-tonal-pressable",
-          "hover:bg-interactive-tonal-hover",
-          "active:shadow-lowered active:bg-interactive-tonal-active",
-          "focus-visible:focus-ring-inset",
-        ].join(" "),
-      },
-    ],
-    defaultVariants: { variant: "outlined", disabled: false },
+    disabled: {
+      true: "cursor-not-allowed",
+      false: "cursor-pointer",
+    },
   },
-  { twMerge: false },
-);
+  compoundVariants: [
+    {
+      variant: "outlined",
+      disabled: true,
+      class:
+        "bg-disabled-interactive-muted border-interactive-outlined-disabled",
+    },
+    {
+      variant: "outlined",
+      disabled: false,
+      class: [
+        "bg-highlight",
+        "border-interactive-outlined-pressable",
+        "hover:border-interactive-outlined-hover",
+        "focus:border-interactive-outlined-focus",
+        "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
+        "active:border-interactive-outlined-active",
+      ].join(" "),
+    },
+    {
+      variant: "tonal",
+      disabled: true,
+      class: "bg-interactive-tonal-disabled",
+    },
+    {
+      variant: "tonal",
+      disabled: false,
+      class: [
+        "shadow-s bg-interactive-tonal-pressable",
+        "hover:bg-interactive-tonal-hover",
+        "active:shadow-lowered active:bg-interactive-tonal-active",
+        "focus-visible:focus-ring-inset",
+      ].join(" "),
+    },
+  ],
+  defaultVariants: { variant: "outlined", disabled: false },
+});
 
 // The label mirrors InputText on an outlined field: sharp value,
 // form-placeholder, form-disabled-text. On a tonal ground the value takes the

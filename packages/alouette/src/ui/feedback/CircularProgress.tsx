@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
 import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
+import { tv } from "../../core/tv";
 import { AccentScope, type AccentScopeProps } from "../containers/AccentScope";
 import { Icon } from "../primitives/Icon";
 import { View } from "../primitives/View";

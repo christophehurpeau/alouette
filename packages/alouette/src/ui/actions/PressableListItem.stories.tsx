@@ -411,3 +411,27 @@ export const Variants: ThisStory = {
     await expect(canvas.getAllByText("prevented:true")[0]).toBeTruthy();
   },
 };
+
+export const DenseRow: ThisStory = {
+  parameters: {
+    layout: "padded",
+    chromatic: { disableSnapshot: true },
+  },
+  args: {
+    className: "p-xs",
+    onPress: () => {},
+    children: <Text>Dense row</Text>,
+  },
+  play: async ({ canvasElement }) => {
+    const row = within(canvasElement).getByRole("button", {
+      name: "Dense row",
+    });
+    const style = getComputedStyle(row);
+    // The caller's padding on the named scale replaces the row's `px-m py-m`,
+    // which would otherwise win by stylesheet order (`p-*` sorts first).
+    await expect(style.paddingLeft).toBe("8px");
+    await expect(style.paddingRight).toBe("8px");
+    await expect(style.paddingTop).toBe("8px");
+    await expect(style.paddingBottom).toBe("8px");
+  },
+};

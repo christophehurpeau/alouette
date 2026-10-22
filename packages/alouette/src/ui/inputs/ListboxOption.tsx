@@ -5,7 +5,7 @@ import {
   type PressableProps,
   type View as RNView,
 } from "react-native";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { Icon } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import type { SelectOption } from "./Select.shared";
@@ -16,35 +16,32 @@ import type { SelectOption } from "./Select.shared";
 // label keeps its color instead of flipping onto an accent ground, and an
 // untouched list reads as rows on the surface. Selection shows as the check icon,
 // so hovering the selected row never swaps its fill from one step to another.
-const optionVariants = tv(
-  {
-    base: [
-      "flex-row items-center justify-between gap-xxs rounded-xs px-m py-control-inset min-h-control-md",
-      "active:bg-interactive-soft-active",
-      // The row's fill is the cursor, and the combobox input keeps the focus:
-      // an outline here would ring a row the keyboard never lands on. A
-      // zero-width one, because react-native-css drops `outline-style: none`
-      // (`outline-none`) and leaves the browser's own ring in place.
-      "outline-solid outline-0",
-    ].join(" "),
-    variants: {
-      cursor: {
-        // A listbox driving its cursor from JS owns both the pointer and the
-        // keyboard position, so leaving CSS hover on would light a second row
-        // while the arrow keys move elsewhere.
-        rest: "",
-        highlighted: "bg-interactive-soft-hover",
-        hover: "hover:bg-interactive-soft-hover",
-      },
-      disabled: {
-        true: "opacity-50",
-        false: "",
-      },
+const optionVariants = tv({
+  base: [
+    "flex-row items-center justify-between gap-xxs rounded-xs px-m py-control-inset min-h-control-md",
+    "active:bg-interactive-soft-active",
+    // The row's fill is the cursor, and the combobox input keeps the focus:
+    // an outline here would ring a row the keyboard never lands on. A
+    // zero-width one, because react-native-css drops `outline-style: none`
+    // (`outline-none`) and leaves the browser's own ring in place.
+    "outline-solid outline-0",
+  ].join(" "),
+  variants: {
+    cursor: {
+      // A listbox driving its cursor from JS owns both the pointer and the
+      // keyboard position, so leaving CSS hover on would light a second row
+      // while the arrow keys move elsewhere.
+      rest: "",
+      highlighted: "bg-interactive-soft-hover",
+      hover: "hover:bg-interactive-soft-hover",
     },
-    defaultVariants: { cursor: "hover", disabled: false },
+    disabled: {
+      true: "opacity-50",
+      false: "",
+    },
   },
-  { twMerge: false },
-);
+  defaultVariants: { cursor: "hover", disabled: false },
+});
 
 export interface ListboxOptionProps extends Omit<
   PressableProps,

@@ -3,8 +3,9 @@ import type {
   PressableProps as RNPressableProps,
   View as RNView,
 } from "react-native";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { AccentScope } from "../containers/AccentScope";
 import {
   InteractiveBox,
@@ -16,178 +17,175 @@ import { useTonalGroundWarningRef } from "./useTonalGroundWarningRef";
 // No `focus:` ground in any variant: a mouse click leaves the focus behind, so
 // a focus ground would keep the button lit after the pointer has left. The
 // keyboard focus is the ring `InteractiveBox` draws on `focus-visible`.
-const pressableBoxVariants = tv(
-  {
-    extend: interactiveBoxVariants,
-    // `group`: a child styles itself from the pressable's state — the icon
-    // swapped by InteractiveIcon, and anything an app composes on top.
-    base: "group overflow-hidden",
-    variants: {
-      variant: {
-        // Lifted off the page it sits on: the ground is a tone of the theme —
-        // the lightest step when neutral, a pale tone of the accent when
-        // accented — and the accent is carried by the `text-on-tonal` ink.
-        tonal: [
-          "rounded-sm",
-          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-            ? ""
-            : "bg-interactive-tonal-pressable",
-          "hover:bg-interactive-tonal-hover",
-          "active:shadow-lowered active:bg-interactive-tonal-active",
-          "disabled:bg-interactive-tonal-disabled disabled:shadow-none",
-          "aria-disabled:bg-interactive-tonal-disabled aria-disabled:shadow-none",
-        ].join(" "),
-        // The accent's own fill, flat, under `text-on-accent` ink — the neutral
-        // one is the grayscale accent, a dark ground carrying white ink.
-        filled: [
-          "rounded-sm",
-          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-            ? ""
-            : "bg-interactive-filled-pressable",
-          "hover:bg-interactive-filled-hover",
-          "active:shadow-lowered active:bg-interactive-filled-active",
-          "disabled:bg-interactive-filled-disabled",
-          "aria-disabled:bg-interactive-filled-disabled",
-        ].join(" "),
-        outlined: [
-          "border bg-highlight",
-          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-            ? ""
-            : "border-interactive-outlined-pressable",
-          "hover:border-interactive-outlined-hover",
-          "active:border-interactive-outlined-active",
-          "disabled:border-interactive-outlined-disabled",
-          "aria-disabled:border-interactive-outlined-disabled",
-        ].join(" "),
-        // No ground and no border at rest: the affordance is the fill arriving
-        // on hover, like a listbox row (ListboxOption). The fill is a tone of
-        // the surrounding surface, not the accent, so the label keeps its own
-        // color. No radius either (twMerge is off here, so a variant radius
-        // would collide with the caller's own).
-        soft: [
-          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "bg-transparent",
-          "hover:bg-interactive-soft-hover",
-          "active:bg-interactive-soft-active",
-          "disabled:bg-transparent",
-          "aria-disabled:bg-transparent",
-        ].join(" "),
-      },
-      forceStyle: {
-        hover: "",
-        focus: "",
-        press: "translate-y-px",
-      },
-      raised: { true: "", false: "" },
+const pressableBoxVariants = tv({
+  extend: interactiveBoxVariants,
+  // `group`: a child styles itself from the pressable's state — the icon
+  // swapped by InteractiveIcon, and anything an app composes on top.
+  base: "group overflow-hidden",
+  variants: {
+    variant: {
+      // Lifted off the page it sits on: the ground is a tone of the theme —
+      // the lightest step when neutral, a pale tone of the accent when
+      // accented — and the accent is carried by the `text-on-tonal` ink.
+      tonal: [
+        "rounded-sm",
+        process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? ""
+          : "bg-interactive-tonal-pressable",
+        "hover:bg-interactive-tonal-hover",
+        "active:shadow-lowered active:bg-interactive-tonal-active",
+        "disabled:bg-interactive-tonal-disabled disabled:shadow-none",
+        "aria-disabled:bg-interactive-tonal-disabled aria-disabled:shadow-none",
+      ].join(" "),
+      // The accent's own fill, flat, under `text-on-accent` ink — the neutral
+      // one is the grayscale accent, a dark ground carrying white ink.
+      filled: [
+        "rounded-sm",
+        process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? ""
+          : "bg-interactive-filled-pressable",
+        "hover:bg-interactive-filled-hover",
+        "active:shadow-lowered active:bg-interactive-filled-active",
+        "disabled:bg-interactive-filled-disabled",
+        "aria-disabled:bg-interactive-filled-disabled",
+      ].join(" "),
+      outlined: [
+        "border bg-highlight",
+        process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? ""
+          : "border-interactive-outlined-pressable",
+        "hover:border-interactive-outlined-hover",
+        "active:border-interactive-outlined-active",
+        "disabled:border-interactive-outlined-disabled",
+        "aria-disabled:border-interactive-outlined-disabled",
+      ].join(" "),
+      // No ground and no border at rest: the affordance is the fill arriving
+      // on hover, like a listbox row (ListboxOption). The fill is a tone of
+      // the surrounding surface, not the accent, so the label keeps its own
+      // color. No radius either (twMerge is off here, so a variant radius
+      // would collide with the caller's own).
+      soft: [
+        process.env.EXPO_PUBLIC_STORYBOOK_ENABLED ? "" : "bg-transparent",
+        "hover:bg-interactive-soft-hover",
+        "active:bg-interactive-soft-active",
+        "disabled:bg-transparent",
+        "aria-disabled:bg-transparent",
+      ].join(" "),
     },
-    // A forced `focus` is the keyboard focus: the rest ground under the ring,
-    // which `focus-visible` never fires for in a story.
-    compoundVariants: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-      ? [
-          /* tonal */
-          {
-            variant: "tonal",
-            raised: true,
-            forceStyle: undefined,
-            className: "shadow-s",
-          },
-          {
-            variant: "tonal",
-            raised: true,
-            forceStyle: ["hover", "focus"],
-            className: "shadow-s",
-          },
-          {
-            variant: "tonal",
-            forceStyle: undefined,
-            className: "bg-interactive-tonal-pressable",
-          },
-          {
-            variant: "tonal",
-            forceStyle: "hover",
-            className: "bg-interactive-tonal-hover",
-          },
-          {
-            variant: "tonal",
-            forceStyle: "focus",
-            className: "bg-interactive-tonal-pressable focus-ring-inset",
-          },
-          {
-            variant: "tonal",
-            forceStyle: "press",
-            className: "shadow-lowered bg-interactive-tonal-active",
-          },
-          /* filled */
-          {
-            variant: "filled",
-            forceStyle: undefined,
-            className: "bg-interactive-filled-pressable",
-          },
-          {
-            variant: "filled",
-            forceStyle: "hover",
-            className: "bg-interactive-filled-hover",
-          },
-          {
-            variant: "filled",
-            forceStyle: "focus",
-            className: "bg-interactive-filled-pressable focus-ring",
-          },
-          {
-            variant: "filled",
-            forceStyle: "press",
-            className: "shadow-lowered bg-interactive-filled-active",
-          },
-          /* outlined */
-          {
-            variant: "outlined",
-            forceStyle: undefined,
-            className: "border-interactive-outlined-pressable",
-          },
-          {
-            variant: "outlined",
-            forceStyle: "hover",
-            className: "border-interactive-outlined-hover",
-          },
-          {
-            variant: "outlined",
-            forceStyle: "focus",
-            className: "border-interactive-outlined-pressable focus-ring",
-          },
-          {
-            variant: "outlined",
-            forceStyle: "press",
-            className: "border-interactive-outlined-active",
-          },
-          /* soft */
-          {
-            variant: "soft",
-            forceStyle: undefined,
-            className: "bg-transparent",
-          },
-          {
-            variant: "soft",
-            forceStyle: "hover",
-            className: "bg-interactive-soft-hover",
-          },
-          {
-            variant: "soft",
-            forceStyle: "focus",
-            className: "bg-transparent focus-ring-inset",
-          },
-          {
-            variant: "soft",
-            forceStyle: "press",
-            className: "bg-interactive-soft-active",
-          },
-        ]
-      : [{ variant: "tonal", raised: true, className: "shadow-s" }],
-    defaultVariants: {
-      variant: "tonal",
-      raised: true,
+    forceStyle: {
+      hover: "",
+      focus: "",
+      press: "translate-y-px",
     },
+    raised: { true: "", false: "" },
   },
-  { twMerge: false },
-);
+  // A forced `focus` is the keyboard focus: the rest ground under the ring,
+  // which `focus-visible` never fires for in a story.
+  compoundVariants: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+    ? [
+        /* tonal */
+        {
+          variant: "tonal",
+          raised: true,
+          forceStyle: undefined,
+          className: "shadow-s",
+        },
+        {
+          variant: "tonal",
+          raised: true,
+          forceStyle: ["hover", "focus"],
+          className: "shadow-s",
+        },
+        {
+          variant: "tonal",
+          forceStyle: undefined,
+          className: "bg-interactive-tonal-pressable",
+        },
+        {
+          variant: "tonal",
+          forceStyle: "hover",
+          className: "bg-interactive-tonal-hover",
+        },
+        {
+          variant: "tonal",
+          forceStyle: "focus",
+          className: "bg-interactive-tonal-pressable focus-ring-inset",
+        },
+        {
+          variant: "tonal",
+          forceStyle: "press",
+          className: "shadow-lowered bg-interactive-tonal-active",
+        },
+        /* filled */
+        {
+          variant: "filled",
+          forceStyle: undefined,
+          className: "bg-interactive-filled-pressable",
+        },
+        {
+          variant: "filled",
+          forceStyle: "hover",
+          className: "bg-interactive-filled-hover",
+        },
+        {
+          variant: "filled",
+          forceStyle: "focus",
+          className: "bg-interactive-filled-pressable focus-ring",
+        },
+        {
+          variant: "filled",
+          forceStyle: "press",
+          className: "shadow-lowered bg-interactive-filled-active",
+        },
+        /* outlined */
+        {
+          variant: "outlined",
+          forceStyle: undefined,
+          className: "border-interactive-outlined-pressable",
+        },
+        {
+          variant: "outlined",
+          forceStyle: "hover",
+          className: "border-interactive-outlined-hover",
+        },
+        {
+          variant: "outlined",
+          forceStyle: "focus",
+          className: "border-interactive-outlined-pressable focus-ring",
+        },
+        {
+          variant: "outlined",
+          forceStyle: "press",
+          className: "border-interactive-outlined-active",
+        },
+        /* soft */
+        {
+          variant: "soft",
+          forceStyle: undefined,
+          className: "bg-transparent",
+        },
+        {
+          variant: "soft",
+          forceStyle: "hover",
+          className: "bg-interactive-soft-hover",
+        },
+        {
+          variant: "soft",
+          forceStyle: "focus",
+          className: "bg-transparent focus-ring-inset",
+        },
+        {
+          variant: "soft",
+          forceStyle: "press",
+          className: "bg-interactive-soft-active",
+        },
+      ]
+    : [{ variant: "tonal", raised: true, className: "shadow-s" }],
+  defaultVariants: {
+    variant: "tonal",
+    raised: true,
+  },
+});
 
 type PressableBoxVariantProps = VariantProps<typeof pressableBoxVariants>;
 

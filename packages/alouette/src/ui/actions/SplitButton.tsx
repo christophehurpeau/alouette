@@ -1,8 +1,8 @@
 import { CaretDownRegularIcon } from "alouette-icons/phosphor-icons/CaretDown";
 import { type ReactNode, useMemo } from "react";
-import { tv } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
+import { tv } from "../../core/tv";
 import { useControllableValue } from "../../core/useControllableValue";
 import { Icon } from "../primitives/Icon";
 import { View } from "../primitives/View";
@@ -21,71 +21,68 @@ import {
 
 // The radius of each segment's inner edge is dropped after the pill radius
 // `Button` and `PressableBox` set: a side utility sorts after the shorthand.
-const splitButtonVariants = tv(
-  {
-    slots: {
-      group: "flex-row items-stretch self-start",
-      main: "rounded-r-none",
-      caret: "flex-center rounded-full rounded-l-none",
-      caretIcon: "",
-    },
-    variants: {
-      size: {
-        sm: { caret: "pl-xxs pr-xs min-w-control-sm min-h-control-sm" },
-        md: { caret: "pl-xxs pr-xs min-w-control-md min-h-control-md" },
-        lg: { caret: "pl-xs pr-sm min-w-[48px] min-h-control-lg" },
-      },
-      // The divider is the caret's left border. An outlined caret leans on the
-      // main button's right border instead: two side by side would double it.
-      variant: {
-        tonal: { caret: "border-l border-border-muted" },
-        filled: { caret: "border-l" },
-        outlined: { caret: "border-l-0" },
-      },
-      disabled: { true: {}, false: {} },
-    },
-    compoundVariants: [
-      // One shadow for the whole pill: the segments drop theirs (`raised`),
-      // since each one's would fall on the other at the joint.
-      {
-        variant: "tonal",
-        disabled: false,
-        class: { group: "rounded-full shadow-s", caretIcon: "text-on-tonal" },
-      },
-      // The fill carries a light ink, so the divider takes it too.
-      {
-        variant: "filled",
-        disabled: false,
-        class: {
-          caret: "border-on-accent-muted",
-          caretIcon: "text-on-accent",
-        },
-      },
-      {
-        variant: "filled",
-        disabled: true,
-        class: { caret: "border-border-muted" },
-      },
-      {
-        variant: "outlined",
-        disabled: false,
-        class: { caretIcon: "text-sharp" },
-      },
-      {
-        variant: ["tonal", "filled"],
-        disabled: true,
-        class: { caretIcon: "text-disabled-sharp" },
-      },
-      {
-        variant: "outlined",
-        disabled: true,
-        class: { caretIcon: "text-disabled-muted" },
-      },
-    ],
-    defaultVariants: { size: "md", variant: "tonal", disabled: false },
+const splitButtonVariants = tv({
+  slots: {
+    group: "flex-row items-stretch self-start",
+    main: "rounded-r-none",
+    caret: "flex-center rounded-full rounded-l-none",
+    caretIcon: "",
   },
-  { twMerge: false },
-);
+  variants: {
+    size: {
+      sm: { caret: "pl-xxs pr-xs min-w-control-sm min-h-control-sm" },
+      md: { caret: "pl-xxs pr-xs min-w-control-md min-h-control-md" },
+      lg: { caret: "pl-xs pr-sm min-w-[48px] min-h-control-lg" },
+    },
+    // The divider is the caret's left border. An outlined caret leans on the
+    // main button's right border instead: two side by side would double it.
+    variant: {
+      tonal: { caret: "border-l border-border-muted" },
+      filled: { caret: "border-l" },
+      outlined: { caret: "border-l-0" },
+    },
+    disabled: { true: {}, false: {} },
+  },
+  compoundVariants: [
+    // One shadow for the whole pill: the segments drop theirs (`raised`),
+    // since each one's would fall on the other at the joint.
+    {
+      variant: "tonal",
+      disabled: false,
+      class: { group: "rounded-full shadow-s", caretIcon: "text-on-tonal" },
+    },
+    // The fill carries a light ink, so the divider takes it too.
+    {
+      variant: "filled",
+      disabled: false,
+      class: {
+        caret: "border-on-accent-muted",
+        caretIcon: "text-on-accent",
+      },
+    },
+    {
+      variant: "filled",
+      disabled: true,
+      class: { caret: "border-border-muted" },
+    },
+    {
+      variant: "outlined",
+      disabled: false,
+      class: { caretIcon: "text-sharp" },
+    },
+    {
+      variant: ["tonal", "filled"],
+      disabled: true,
+      class: { caretIcon: "text-disabled-sharp" },
+    },
+    {
+      variant: "outlined",
+      disabled: true,
+      class: { caretIcon: "text-disabled-muted" },
+    },
+  ],
+  defaultVariants: { size: "md", variant: "tonal", disabled: false },
+});
 
 const caretIconSize: Record<ButtonSize, number> = { sm: 16, md: 20, lg: 24 };
 

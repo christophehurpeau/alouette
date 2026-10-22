@@ -1,6 +1,6 @@
 import { CheckFatFillIcon } from "alouette-icons/phosphor-icons/CheckFat";
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { Icon } from "../primitives/Icon";
 import { View } from "../primitives/View";
 import { SelectionIndicatorAccentScope } from "./SelectionAccentScope";

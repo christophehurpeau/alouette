@@ -1,4 +1,5 @@
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
+import { tv } from "../../core/tv";
 
 // The link treatment of the whole system, shared with ExternalLinkText: an
 // underlined label drawn from the `interactive-*` foreground tokens, tinted on
@@ -12,38 +13,35 @@ import { type VariantProps, tv } from "tailwind-variants";
 // line. `self-baseline` on the label hands the frame its baseline instead. Only
 // inline: a lone baseline item is pinned to the top of a frame taller than its
 // line (a crumb's tap target). Native renders an inline link as a nested Text.
-export const linkTextVariants = tv(
-  {
-    slots: {
-      frame:
-        "group flex-row items-center gap-xxs self-start focus-visible:focus-ring",
-      text: "shrink font-body-bold underline transition-[color] duration-fast ease-in",
-      icon: "",
-    },
-    variants: {
-      size: {
-        sm: { text: "text-sm" },
-        md: { text: "text-base" },
-      },
-      inline: {
-        true: { text: "self-baseline" },
-        false: {},
-      },
-      disabled: {
-        true: {
-          text: "text-disabled-muted",
-          icon: "text-disabled-muted",
-        },
-        false: {
-          text: "text-interactive-pressable group-hover:text-interactive-hover group-active:text-interactive-active",
-          icon: "text-interactive-pressable group-hover:text-interactive-hover group-active:text-interactive-active",
-        },
-      },
-    },
-    defaultVariants: { size: "md", disabled: false, inline: false },
+export const linkTextVariants = tv({
+  slots: {
+    frame:
+      "group flex-row items-center gap-xxs self-start focus-visible:focus-ring",
+    text: "shrink font-body-bold underline transition-[color] duration-fast ease-in",
+    icon: "",
   },
-  { twMerge: false },
-);
+  variants: {
+    size: {
+      sm: { text: "text-sm" },
+      md: { text: "text-base" },
+    },
+    inline: {
+      true: { text: "self-baseline" },
+      false: {},
+    },
+    disabled: {
+      true: {
+        text: "text-disabled-muted",
+        icon: "text-disabled-muted",
+      },
+      false: {
+        text: "text-interactive-pressable group-hover:text-interactive-hover group-active:text-interactive-active",
+        icon: "text-interactive-pressable group-hover:text-interactive-hover group-active:text-interactive-active",
+      },
+    },
+  },
+  defaultVariants: { size: "md", disabled: false, inline: false },
+});
 
 export type LinkTextSizeProps = Pick<
   VariantProps<typeof linkTextVariants>,

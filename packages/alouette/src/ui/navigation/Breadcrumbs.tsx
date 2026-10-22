@@ -1,7 +1,7 @@
 import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons/CaretRight";
 import { Children, type ReactNode, useMemo } from "react";
-import { tv } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import {

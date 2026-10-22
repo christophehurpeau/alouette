@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import type { AccentScopeProps } from "../containers/AccentScope";
 import { AccentScope } from "../containers/AccentScope";
 import { Icon, type IconProps, type SVGIconElement } from "./Icon";

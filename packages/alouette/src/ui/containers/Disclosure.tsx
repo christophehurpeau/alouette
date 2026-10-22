@@ -1,8 +1,7 @@
 import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons/CaretRight";
 import { type ReactNode, useId, useState } from "react";
-import { tv } from "tailwind-variants";
 import { animationDurationsMs } from "../../animationDurationsMs";
-import { twMergeConfig } from "../../core/twMerge";
+import { tv } from "../../core/tv";
 import { useControllableChecked } from "../../core/useControllableChecked";
 import { PressableBox } from "../actions/PressableBox";
 import { Icon } from "../primitives/Icon";
@@ -10,39 +9,36 @@ import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { PresenceList } from "./Presence";
 
-const disclosureVariants = tv(
-  {
-    slots: {
-      root: "",
-      trigger:
-        "flex-row items-center gap-xs self-start rounded-sm px-xs min-h-control-md",
-      // Icon reads only the tint from its className, so the rotation sits on a
-      // wrapping view.
-      caretFrame: "transition-transform duration-disclose ease-in-out",
-      caret: "",
-      label: "text-sm",
-      // Clips for the height animation, and carries no padding: a box cannot
-      // be shorter than its padding, so the height would start and end on it.
-      clip: "overflow-hidden",
-      // Indented by the trigger's padding, caret and gap (8 + 16 + 8) to line
-      // up with the label; the other sides leave room inside the clip for the
-      // shadow and focus ring of a surface in the content.
-      content: "pl-xl pr-xs pt-xxs pb-sm",
-    },
-    variants: {
-      expanded: {
-        true: { caretFrame: "rotate-90" },
-        false: { caretFrame: "rotate-0" },
-      },
-      disabled: {
-        true: { caret: "text-disabled-muted", label: "text-disabled-muted" },
-        false: { caret: "text-muted", label: "text-muted" },
-      },
-    },
-    defaultVariants: { expanded: false, disabled: false },
+const disclosureVariants = tv({
+  slots: {
+    root: "",
+    trigger:
+      "flex-row items-center gap-xs self-start rounded-sm px-xs min-h-control-md",
+    // Icon reads only the tint from its className, so the rotation sits on a
+    // wrapping view.
+    caretFrame: "transition-transform duration-disclose ease-in-out",
+    caret: "",
+    label: "text-sm",
+    // Clips for the height animation, and carries no padding: a box cannot
+    // be shorter than its padding, so the height would start and end on it.
+    clip: "overflow-hidden",
+    // Indented by the trigger's padding, caret and gap (8 + 16 + 8) to line
+    // up with the label; the other sides leave room inside the clip for the
+    // shadow and focus ring of a surface in the content.
+    content: "pl-xl pr-xs pt-xxs pb-sm",
   },
-  { twMergeConfig },
-);
+  variants: {
+    expanded: {
+      true: { caretFrame: "rotate-90" },
+      false: { caretFrame: "rotate-0" },
+    },
+    disabled: {
+      true: { caret: "text-disabled-muted", label: "text-disabled-muted" },
+      false: { caret: "text-muted", label: "text-muted" },
+    },
+  },
+  defaultVariants: { expanded: false, disabled: false },
+});
 
 export interface DisclosureProps {
   /** The trigger's text, which stays visible in both states. */

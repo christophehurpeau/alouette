@@ -12,7 +12,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import type { View as RNView } from "react-native";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Popover } from "./Popover";

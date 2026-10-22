@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { PressableBox } from "../actions/PressableBox";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";

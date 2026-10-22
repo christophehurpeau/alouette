@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { View, type ViewProps } from "../primitives/View";
 
 const appHeaderActionsVariants = tv({

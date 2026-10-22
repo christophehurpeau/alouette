@@ -1,78 +1,75 @@
 import type { ReactNode, Ref } from "react";
 import type { View as RNView } from "react-native";
 import type { VariantProps } from "tailwind-variants";
-import { tv } from "tailwind-variants";
 import { controlHeightsPx } from "../../controlSizes";
 import { useDensity } from "../../core/DensityContext";
+import { tv } from "../../core/tv";
 import { mergeTooltipTriggerProps } from "../containers/mergeTooltipTriggerProps";
 import type { SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";
 import { DisabledReasonTooltip } from "./DisabledReasonTooltip";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
-const iconButtonVariants = tv(
-  {
-    slots: {
-      frame: "shrink-0 flex-center rounded-full",
-      icon: "",
-    },
-    variants: {
-      variant: {
-        tonal: {},
-        filled: {},
-        soft: {},
-      },
-      disabled: {
-        true: {},
-        false: {},
-      },
-      forced: {
-        true: {},
-        false: {},
-      },
-    },
-    compoundVariants: [
-      {
-        variant: "tonal",
-        disabled: false,
-        class: { icon: "text-on-tonal" },
-      },
-      {
-        variant: "filled",
-        disabled: false,
-        class: { icon: "text-on-accent" },
-      },
-      // No ground to carry the accent at rest, so the glyph takes it once the
-      // soft fill arrives. Native resolves only the first `text-*` class.
-      {
-        variant: "soft",
-        disabled: false,
-        forced: false,
-        class: {
-          icon: "text-sharp transition-colors duration-fast group-hover:text-accent group-focus-visible:text-accent group-active:text-accent",
-        },
-      },
-      {
-        variant: "soft",
-        disabled: false,
-        forced: true,
-        class: { icon: "text-accent" },
-      },
-      {
-        variant: ["tonal", "filled"],
-        disabled: true,
-        class: { icon: "text-disabled-sharp" },
-      },
-      {
-        variant: "soft",
-        disabled: true,
-        class: { icon: "text-disabled-muted" },
-      },
-    ],
-    defaultVariants: { variant: "tonal" },
+const iconButtonVariants = tv({
+  slots: {
+    frame: "shrink-0 flex-center rounded-full",
+    icon: "",
   },
-  { twMerge: false },
-);
+  variants: {
+    variant: {
+      tonal: {},
+      filled: {},
+      soft: {},
+    },
+    disabled: {
+      true: {},
+      false: {},
+    },
+    forced: {
+      true: {},
+      false: {},
+    },
+  },
+  compoundVariants: [
+    {
+      variant: "tonal",
+      disabled: false,
+      class: { icon: "text-on-tonal" },
+    },
+    {
+      variant: "filled",
+      disabled: false,
+      class: { icon: "text-on-accent" },
+    },
+    // No ground to carry the accent at rest, so the glyph takes it once the
+    // soft fill arrives. Native resolves only the first `text-*` class.
+    {
+      variant: "soft",
+      disabled: false,
+      forced: false,
+      class: {
+        icon: "text-sharp transition-colors duration-fast group-hover:text-accent group-focus-visible:text-accent group-active:text-accent",
+      },
+    },
+    {
+      variant: "soft",
+      disabled: false,
+      forced: true,
+      class: { icon: "text-accent" },
+    },
+    {
+      variant: ["tonal", "filled"],
+      disabled: true,
+      class: { icon: "text-disabled-sharp" },
+    },
+    {
+      variant: "soft",
+      disabled: true,
+      class: { icon: "text-disabled-muted" },
+    },
+  ],
+  defaultVariants: { variant: "tonal" },
+});
 
 export interface IconButtonProps extends Omit<
   PressableBoxProps,

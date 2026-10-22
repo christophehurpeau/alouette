@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { View } from "react-native";
-import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { useControllableChecked } from "../../core/useControllableChecked";
 import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBoxHitSlop } from "../containers/Box";
@@ -13,40 +13,34 @@ const THUMB_PADDING = TRACK_HEIGHT * 0.1;
 const THUMB_SIZE = TRACK_HEIGHT * 0.8;
 const TRAVEL_X = TRACK_WIDTH - THUMB_SIZE - THUMB_PADDING * 2;
 
-const trackVariants = tv(
-  {
-    // react-native-web renders role="switch" as a div, which has no `:disabled`.
-    base: [
-      "h-[36px] w-[58px]", // TRACK_HEIGHT x TRACK_WIDTH
-      "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
-      "transition-[background-color] duration-fast ease-in",
-      "aria-disabled:bg-disabled-interactive-muted",
-    ].join(" "),
-    variants: {
-      checked: {
-        false: "bg-lowered",
-        true: "bg-enabled",
-      },
-      // The track has no hover or press material; a forced focus is the
-      // keyboard focus, the ring `InteractiveBoxHitSlop` draws on focus-visible.
-      forceStyle: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-        ? { hover: "", focus: "focus-ring", press: "" }
-        : { hover: "", focus: "", press: "" },
+const trackVariants = tv({
+  // react-native-web renders role="switch" as a div, which has no `:disabled`.
+  base: [
+    "h-[36px] w-[58px]", // TRACK_HEIGHT x TRACK_WIDTH
+    "relative rounded-full overflow-hidden shadow-lowered pointer-events-auto",
+    "transition-[background-color] duration-fast ease-in",
+    "aria-disabled:bg-disabled-interactive-muted",
+  ].join(" "),
+  variants: {
+    checked: {
+      false: "bg-lowered",
+      true: "bg-enabled",
     },
+    // The track has no hover or press material; a forced focus is the
+    // keyboard focus, the ring `InteractiveBoxHitSlop` draws on focus-visible.
+    forceStyle: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+      ? { hover: "", focus: "focus-ring", press: "" }
+      : { hover: "", focus: "", press: "" },
   },
-  { twMerge: false },
-);
+});
 
-const thumbVariants = tv(
-  {
-    base: [
-      "absolute rounded-full shadow-s aria-disabled:shadow-none",
-      "transition-transform duration-fast ease-in",
-      "bg-highlight aria-disabled:bg-disabled-interactive",
-    ].join(" "),
-  },
-  { twMerge: false },
-);
+const thumbVariants = tv({
+  base: [
+    "absolute rounded-full shadow-s aria-disabled:shadow-none",
+    "transition-transform duration-fast ease-in",
+    "bg-highlight aria-disabled:bg-disabled-interactive",
+  ].join(" "),
+});
 
 export interface SwitchProps {
   accent?: Accent;

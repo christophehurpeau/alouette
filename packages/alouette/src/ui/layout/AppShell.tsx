@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
 import {
   SafeAreaScope,
   allSafeAreaEdges,
   useConsumedSafeAreaEdges,
 } from "../../core/SafeAreaEdgesContext";
+import { tv } from "../../core/tv";
 import { useScreenSafeAreaPadding } from "../../core/useScreenSafeAreaPadding";
 import { ScrollView, type ScrollViewProps } from "../primitives/ScrollView";
 import { View } from "../primitives/View";

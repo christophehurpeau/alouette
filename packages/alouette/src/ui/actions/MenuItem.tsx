@@ -1,8 +1,8 @@
 import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
 import type { ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
-import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";
 import { Text } from "../primitives/Text";

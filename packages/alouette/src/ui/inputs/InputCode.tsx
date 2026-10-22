@@ -13,8 +13,8 @@ import {
   TextInput as RNTextInput,
   type TextInputProps as RNTextInputProps,
 } from "react-native";
-import { type VariantProps, tv } from "tailwind-variants";
-import { twMergeConfig } from "../../core/twMerge";
+import type { VariantProps } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { useControllableValue } from "../../core/useControllableValue";
 import { StableAccentScope } from "../containers/StableAccentScope";
 import { Text } from "../primitives/Text";
@@ -32,74 +32,71 @@ const focusedCellClasses =
 // only display it. The cells are inert Views under it, so their hover and
 // press come from the root `group`, and the focus ring from a JS `focused`
 // state (the input is a sibling of the cells, not an ancestor).
-const inputCodeVariants = tv(
-  {
-    slots: {
-      root: "group relative flex-row self-start",
-      cells: "flex-row gap-xs",
-      cell: [
-        "flex-center w-control-md h-control-lg rounded-sm border",
-        "transition-[border-color,background-color,outline-color] duration-fast ease-in",
-        "outline-interactive-outlined-pressable",
-      ].join(" "),
-      char: "font-mono-bold text-xl",
-      caret: "w-[2px] h-[28px] rounded-full bg-accent animate-caret-blink",
-      // `text-xl` keeps iOS Safari from zooming on focus (it does under 16px).
-      input: "absolute inset-0 z-1 opacity-0 text-transparent text-xl",
-    },
-    variants: {
-      disabled: {
-        true: {
-          cell: "bg-disabled-interactive-muted border-interactive-outlined-disabled",
-          char: "text-form-disabled-text",
-          input: "web:cursor-not-allowed",
-        },
-        false: {
-          cell: [
-            "bg-highlight",
-            process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-              ? ""
-              : "border-interactive-outlined-pressable",
-            "group-hover:border-interactive-outlined-hover",
-            "group-active:border-interactive-outlined-active",
-          ].join(" "),
-          char: "text-sharp",
-          input: "web:cursor-text",
-        },
+const inputCodeVariants = tv({
+  slots: {
+    root: "group relative flex-row self-start",
+    cells: "flex-row gap-xs",
+    cell: [
+      "flex-center w-control-md h-control-lg rounded-sm border",
+      "transition-[border-color,background-color,outline-color] duration-fast ease-in",
+      "outline-interactive-outlined-pressable",
+    ].join(" "),
+    char: "font-mono-bold text-xl",
+    caret: "w-[2px] h-[28px] rounded-full bg-accent animate-caret-blink",
+    // `text-xl` keeps iOS Safari from zooming on focus (it does under 16px).
+    input: "absolute inset-0 z-1 opacity-0 text-transparent text-xl",
+  },
+  variants: {
+    disabled: {
+      true: {
+        cell: "bg-disabled-interactive-muted border-interactive-outlined-disabled",
+        char: "text-form-disabled-text",
+        input: "web:cursor-not-allowed",
       },
-      focused: { true: {}, false: {} },
-      active: { true: {}, false: {} },
-      forceStyle: {
-        undefined: {
-          cell: storybookOnly("border-interactive-outlined-pressable"),
-        },
-        hover: { cell: storybookOnly("border-interactive-outlined-hover") },
-        focus: {},
-        press: { cell: storybookOnly("border-interactive-outlined-active") },
+      false: {
+        cell: [
+          "bg-highlight",
+          process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+            ? ""
+            : "border-interactive-outlined-pressable",
+          "group-hover:border-interactive-outlined-hover",
+          "group-active:border-interactive-outlined-active",
+        ].join(" "),
+        char: "text-sharp",
+        input: "web:cursor-text",
       },
     },
-    compoundVariants: [
-      {
-        focused: true,
-        active: true,
-        disabled: false,
-        class: { cell: focusedCellClasses },
+    focused: { true: {}, false: {} },
+    active: { true: {}, false: {} },
+    forceStyle: {
+      undefined: {
+        cell: storybookOnly("border-interactive-outlined-pressable"),
       },
-      {
-        forceStyle: "focus",
-        active: true,
-        class: { cell: storybookOnly(focusedCellClasses) },
-      },
-    ],
-    defaultVariants: {
-      disabled: false,
-      focused: false,
-      active: false,
-      forceStyle: "undefined",
+      hover: { cell: storybookOnly("border-interactive-outlined-hover") },
+      focus: {},
+      press: { cell: storybookOnly("border-interactive-outlined-active") },
     },
   },
-  { twMergeConfig },
-);
+  compoundVariants: [
+    {
+      focused: true,
+      active: true,
+      disabled: false,
+      class: { cell: focusedCellClasses },
+    },
+    {
+      forceStyle: "focus",
+      active: true,
+      class: { cell: storybookOnly(focusedCellClasses) },
+    },
+  ],
+  defaultVariants: {
+    disabled: false,
+    focused: false,
+    active: false,
+    forceStyle: "undefined",
+  },
+});
 
 export type InputCodeMode = "alphanumeric" | "numeric";
 

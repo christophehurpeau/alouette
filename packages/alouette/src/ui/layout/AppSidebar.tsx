@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
-import { twMergeConfig } from "../../core/twMerge";
+import { tv } from "../../core/tv";
 import { useScrollEndState } from "../../core/useScrollEndState";
 import { ScrollView } from "../primitives/ScrollView";
 import { View } from "../primitives/View";
@@ -17,24 +16,21 @@ import { View } from "../primitives/View";
 // offset + 2px width) inside the scroll, which clips.
 // The brand row's `pl-m` is a select's own padding: it lines the brand mark up
 // with the selects' icons.
-const appSidebarVariants = tv(
-  {
-    slots: {
-      frame: "w-[280px] flex-1 gap-sm py-m",
-      top: "gap-sm px-sm",
-      brandRow: "flex-row items-center justify-between gap-xs pl-m",
-      actions: "flex-row items-center gap-xxs",
-      body: "flex-1 mr-xxs border-y border-transparent transition-colors duration-fast ease-in",
-      bodyContent: "gap-m py-xxs pl-sm pr-xs",
-      footer: "px-sm",
-    },
-    variants: {
-      hiddenAbove: { true: { body: "border-t-border-muted" } },
-      hiddenBelow: { true: { body: "border-b-border-muted" } },
-    },
+const appSidebarVariants = tv({
+  slots: {
+    frame: "w-[280px] flex-1 gap-sm py-m",
+    top: "gap-sm px-sm",
+    brandRow: "flex-row items-center justify-between gap-xs pl-m",
+    actions: "flex-row items-center gap-xxs",
+    body: "flex-1 mr-xxs border-y border-transparent transition-colors duration-fast ease-in",
+    bodyContent: "gap-m py-xxs pl-sm pr-xs",
+    footer: "px-sm",
   },
-  { twMergeConfig },
-);
+  variants: {
+    hiddenAbove: { true: { body: "border-t-border-muted" } },
+    hiddenBelow: { true: { body: "border-b-border-muted" } },
+  },
+});
 
 export interface AppSidebarProps {
   /** Start of the top row — typically an `AppHeaderBrand`. */

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { PressableBox } from "../actions/PressableBox";
 import { DefaultAccentScope } from "../containers/DefaultAccentScope";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
@@ -12,64 +12,61 @@ import { useCheckboxContext } from "./CheckboxContext";
 
 // Same material as RadioCard: every card is the group's PressableBox variant,
 // a checked card keeps the accent and an unchecked one takes the neutral theme.
-const checkboxCardVariants = tv(
-  {
-    slots: {
-      frame: "flex-row gap-m rounded-sm p-m min-h-control-md",
-      icon: "",
-      label: "font-body-bold text-base",
-      description: "text-sm",
-    },
-    variants: {
-      layout: {
-        list: { frame: "items-center" },
-        stack: { frame: "items-start grow shrink basis-[240px]" },
-      },
-      variant: { tonal: {}, outlined: {} },
-      selected: { true: {}, false: {} },
-      disabled: {
-        true: {
-          icon: "text-disabled-muted",
-          label: "text-disabled-sharp",
-          description: "text-disabled-muted",
-        },
-        false: {},
-      },
-    },
-    // Same as RadioCard: the material's inks are enabled-only, so a disabled
-    // checked card does not keep the accent's; `muted` is too dim for a checked
-    // tonal card's accented ground.
-    compoundVariants: [
-      {
-        variant: "tonal",
-        disabled: false,
-        class: { icon: "text-on-tonal", label: "text-on-tonal" },
-      },
-      {
-        variant: "tonal",
-        selected: true,
-        disabled: false,
-        class: { description: "text-on-tonal" },
-      },
-      {
-        variant: "tonal",
-        selected: false,
-        disabled: false,
-        class: { description: "text-muted" },
-      },
-      {
-        variant: "outlined",
-        disabled: false,
-        class: {
-          icon: "text-muted",
-          label: "text-sharp",
-          description: "text-muted",
-        },
-      },
-    ],
+const checkboxCardVariants = tv({
+  slots: {
+    frame: "flex-row gap-m rounded-sm p-m min-h-control-md",
+    icon: "",
+    label: "font-body-bold text-base",
+    description: "text-sm",
   },
-  { twMerge: false },
-);
+  variants: {
+    layout: {
+      list: { frame: "items-center" },
+      stack: { frame: "items-start grow shrink basis-[240px]" },
+    },
+    variant: { tonal: {}, outlined: {} },
+    selected: { true: {}, false: {} },
+    disabled: {
+      true: {
+        icon: "text-disabled-muted",
+        label: "text-disabled-sharp",
+        description: "text-disabled-muted",
+      },
+      false: {},
+    },
+  },
+  // Same as RadioCard: the material's inks are enabled-only, so a disabled
+  // checked card does not keep the accent's; `muted` is too dim for a checked
+  // tonal card's accented ground.
+  compoundVariants: [
+    {
+      variant: "tonal",
+      disabled: false,
+      class: { icon: "text-on-tonal", label: "text-on-tonal" },
+    },
+    {
+      variant: "tonal",
+      selected: true,
+      disabled: false,
+      class: { description: "text-on-tonal" },
+    },
+    {
+      variant: "tonal",
+      selected: false,
+      disabled: false,
+      class: { description: "text-muted" },
+    },
+    {
+      variant: "outlined",
+      disabled: false,
+      class: {
+        icon: "text-muted",
+        label: "text-sharp",
+        description: "text-muted",
+      },
+    },
+  ],
+});
 
 export interface CheckboxCardProps {
   value: string;

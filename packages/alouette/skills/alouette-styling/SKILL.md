@@ -48,7 +48,8 @@ internal state (`selected`, `disabled`, `loading`), or one that fans out across
 `VariantProps`, and `defaultVariants` supplies the default.
 
 ```tsx
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
+import { tv } from "../../core/tv"; // merges with alouette's twMerge
 
 const chipVariants = tv({
   base: "rounded-xs min-h-[32px]",
@@ -78,13 +79,17 @@ Pass the incoming `className` through the call (`chipVariants({ selected, classN
 so callers can extend it. Outside a `tv()`, merge with a tailwind-merge
 configured for the alouette scale, never by string concatenation
 (`` `flex-row ${className}` `` emits both `flex-row` and a caller's `flex-col`
-and lets stylesheet order pick). A `tv()` that takes a caller's `className` over
-defaults on the named scale passes that same config as `{ twMergeConfig }`:
-stock tailwind-merge does not know `p-m` and `p-xl` conflict, nor that `surface`
-carries a padding and a radius. Inside the library that config is
-`src/core/twMerge.ts`; it is **not** exported from `alouette`, so an app
-component builds its own with `extendTailwindMerge` over the same named spacing
-values and utility class groups.
+and lets stylesheet order pick). A `tv()` merges a caller's `className` with
+that same tailwind-merge: stock tailwind-merge does not know `p-m` and `p-xl`
+conflict, nor that `surface` carries a padding and a radius. Inside the library
+that `tv` is `src/core/tv.ts`, and the plain `tv` from `tailwind-variants` is a
+lint error. It is `createTV({ twMerge: false })` with its output passed through
+the `twMerge` of `src/core/twMerge.ts`, rather than `createTV({ twMergeConfig })`:
+tailwind-variants keeps one merge function per process, built from the
+`twMergeConfig` of the last `tv()` created, so a config passed to `tv()` holds
+only until another one is. Neither is exported from `alouette`, so an app
+component builds its own the same way, with `extendTailwindMerge` over the same
+named spacing values and utility class groups.
 
 ### One component, one `tv()` — use `slots`
 
