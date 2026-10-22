@@ -3,7 +3,7 @@ import { Text as RNText, type TextProps as RNTextProps } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
 import { twMerge } from "../../core/twMerge";
 import { AccentScope } from "../containers/AccentScope";
-import { TextAncestorContext } from "./TextAncestorContext";
+import { TextAncestorContext, TextAncestorScope } from "./TextAncestorContext";
 
 export interface TextProps extends RNTextProps {
   accent?: Accent;
@@ -27,12 +27,12 @@ export function Text({ className, accent, ...props }: TextProps): ReactNode {
 
   return (
     <AccentScope accent={accent}>
-      <TextAncestorContext value>
+      <TextAncestorScope>
         <RNText
           className={twMerge("font-body text-sharp", className)}
           {...props}
         />
-      </TextAncestorContext>
+      </TextAncestorScope>
     </AccentScope>
   );
 }

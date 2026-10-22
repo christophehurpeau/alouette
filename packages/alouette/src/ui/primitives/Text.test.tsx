@@ -3,9 +3,13 @@ import type { ReactNode, Ref } from "react";
 import { createContext, createElement } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+// Like React Native's own, the Text provides the ancestor context to its
+// children.
+const TextAncestorContext = createContext(false);
+
 vi.mock("react-native", () => ({
   // oxlint-disable-next-line eslint-js/camelcase
-  unstable_TextAncestorContext: createContext(false),
+  unstable_TextAncestorContext: TextAncestorContext,
   Text: ({
     ref,
     className,
@@ -17,7 +21,11 @@ vi.mock("react-native", () => ({
     testID?: string;
     children?: ReactNode;
   }) =>
-    createElement("span", { ref, className, "data-testid": testID }, children),
+    createElement(
+      "span",
+      { ref, className, "data-testid": testID },
+      createElement(TextAncestorContext, { value: true }, children),
+    ),
 }));
 
 // AccentScope pulls in the NativeWind runtime (nativewind → react-native
