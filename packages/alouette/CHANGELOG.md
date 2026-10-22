@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [24.5.0](https://github.com/christophehurpeau/alouette/compare/alouette%4024.4.0...alouette%4024.5.0) (2026-10-19)
+
+### Features
+
+* **alouette:** add content to AlertDialog
+
+## [24.4.0](https://github.com/christophehurpeau/alouette/compare/alouette%4024.3.0...alouette%4024.4.0) (2026-10-18)
+
+### Features
+
+* **alouette:** add BlockquoteFrame for block content ([#375](https://github.com/christophehurpeau/alouette/issues/375))
+* **alouette:** add DensityScope and control size tokens ([#380](https://github.com/christophehurpeau/alouette/issues/380))
+* **alouette:** add SplitButton
+* **alouette:** add Tooltip and disabledReason on buttons ([#376](https://github.com/christophehurpeau/alouette/issues/376)), closes [#373](https://github.com/christophehurpeau/alouette/issues/373)
+
 ## [24.3.0](https://github.com/christophehurpeau/alouette/compare/alouette@24.2.0...alouette@24.3.0) (2026-10-11)
 
 ### Features

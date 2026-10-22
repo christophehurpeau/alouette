@@ -13,19 +13,14 @@ description: >
   but a set of actions off a trigger is Menu + MenuItem, never a hand-built
   Popover. Load when adding a modal, confirmation, alert dialog, or a dropdown
   escaping a clipping container.
-type: core
-library: alouette
-requires:
-  - alouette-theming
-  - alouette-actions
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AlertDialog.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Popover.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Popover.web.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/PortalAccentScope.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AlertDialog.stories.tsx"
+  - packages/alouette/src/ui/containers/Modal.tsx
+  - packages/alouette/src/ui/containers/AlertDialog.tsx
+  - packages/alouette/src/ui/containers/Popover.tsx
+  - packages/alouette/src/ui/containers/Popover.web.tsx
+  - packages/alouette/src/ui/containers/PortalAccentScope.tsx
+  - packages/alouette/src/ui/containers/Modal.stories.tsx
+  - packages/alouette/src/ui/containers/AlertDialog.stories.tsx
 ---
 
 This skill builds on alouette-theming (accents) and alouette-actions (the footer
@@ -158,6 +153,46 @@ between dialogs.
 
 `confirmDisabled` disables the confirm button (e.g. while a form is invalid).
 Button labels default to Confirm/Cancel (confirm), OK (alert/required).
+
+### Content beside the description
+
+`children` is the description: it is wrapped in a `Text` and announced as the
+dialog's `aria-describedby`, so it takes copy only. What the decision needs
+besides it — a field completing what is confirmed, the list of items affected —
+goes in `content`, rendered under the description and outside it. The caller
+owns the field's state and reads it in `onConfirm`.
+
+```tsx
+<QuestionAlertDialog
+  visible={confirming}
+  accent="success"
+  title="Merge this pull request?"
+  confirmText="Squash and merge"
+  confirmDisabled={commitTitle.trim() === ""}
+  content={
+    <FormItem
+      label="Commit message"
+      render={({ labelId, describedBy, invalid, required }) => (
+        <InputText
+          aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          aria-required={required}
+          invalid={invalid}
+          value={commitTitle}
+          onChangeText={setCommitTitle}
+        />
+      )}
+    />
+  }
+  onConfirm={() => merge(commitTitle)}
+  onCancel={close}
+>
+  #42 goes into main.
+</QuestionAlertDialog>
+```
+
+A field never goes in `children`: inside a `Text` it is invalid on native and
+read out as the description.
 
 ### Async confirmations
 

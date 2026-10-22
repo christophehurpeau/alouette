@@ -131,12 +131,12 @@ export const ReducedMotionStory: StoryObj<unknown> = {
   name: "Presence Reduced Motion",
   parameters: { layout: "padded" },
   render: () => (
-    <ReducedMotionContext.Provider value>
+    <ReducedMotionContext value>
       <View className="gap-m">
         <PresenceOneDemo />
         <PresenceListDemo />
       </View>
-    </ReducedMotionContext.Provider>
+    </ReducedMotionContext>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

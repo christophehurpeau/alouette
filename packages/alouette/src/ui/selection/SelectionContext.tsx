@@ -1,5 +1,5 @@
 import type { Provider, ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, use, useMemo } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useControllableValue } from "../../core/useControllableValue";
 
@@ -49,7 +49,7 @@ export function createSelectionContext(
   return {
     SelectionContextProvider: Context.Provider,
     useSelection: () => {
-      const context = useContext(Context);
+      const context = use(Context);
       if (!context) {
         throw new Error(missingProviderMessage);
       }

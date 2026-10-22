@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, use } from "react";
 
 /** Provided by `AlouetteProvider`; `false` outside one. */
 export const ReducedMotionContext = createContext<boolean>(false);
@@ -11,5 +11,5 @@ export const ReducedMotionContext = createContext<boolean>(false);
  * `withTiming`, a native `animationType`).
  */
 export function useReducedMotion(): boolean {
-  return useContext(ReducedMotionContext);
+  return use(ReducedMotionContext);
 }

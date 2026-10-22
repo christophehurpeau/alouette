@@ -12,7 +12,7 @@ interface Story {
 const index = JSON.parse(
   fs.readFileSync(
     new URL("./storybook-static/index.json", import.meta.url),
-    // eslint-disable-next-line unicorn/prefer-json-parse-buffer -- JSON.parse is typed to take a string
+    // oxlint-disable-next-line unicorn-js/prefer-json-parse-buffer -- JSON.parse is typed to take a string
     "utf8",
   ),
 ) as { entries: Record<string, Story> };
@@ -33,7 +33,7 @@ test.describe("Storybook Screenshots", () => {
         await page.setViewportSize({ width, height: 800 });
         page.on("console", (msg) => {
           if (msg.type() === "error") {
-            // eslint-disable-next-line no-console -- we should throw when this happens
+            // oxlint-disable-next-line no-console -- we should throw when this happens
             console.log(`Error in browser for ${story.id}: ${msg.text()}`);
           }
         });

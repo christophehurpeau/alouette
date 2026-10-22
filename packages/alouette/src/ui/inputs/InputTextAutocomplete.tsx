@@ -84,7 +84,7 @@ export function InputTextAutocomplete({
             ref={inputRef}
             // The sheet exists only to type in, and downshift's own focus
             // effect is a no-op on native (it needs `environment.document`).
-            // eslint-disable-next-line jsx-a11y/no-autofocus
+            // oxlint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             mode={mode ?? "search"}
             placeholder={placeholder}

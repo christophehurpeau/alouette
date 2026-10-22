@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, use } from "react";
 
 export interface BreadcrumbItemContextValue {
   /** Last crumb of the trail: the page being viewed, not a destination. */
@@ -14,7 +14,7 @@ const BreadcrumbItemContext = createContext<
 export const BreadcrumbItemContextProvider = BreadcrumbItemContext.Provider;
 
 export function useBreadcrumbItemContext(): BreadcrumbItemContextValue {
-  const context = useContext(BreadcrumbItemContext);
+  const context = use(BreadcrumbItemContext);
   if (!context) {
     throw new Error("BreadcrumbItem must be rendered inside Breadcrumbs.");
   }

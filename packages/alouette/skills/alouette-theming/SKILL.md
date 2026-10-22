@@ -14,23 +14,21 @@ description: >
   ColorModePreference ("light" | "dark" | "system") resolved by
   useResolvedColorMode and applied by the app through ScopedTheme. Load when
   applying colors, accents or dark mode, or when shipping a custom palette.
-type: core
-library: alouette
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/AccentScope.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/StableAccentScope.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/PortalAccentScope.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/PortalAccentScope.web.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/ScopedTheme.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/ScopedTheme.web.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteConfig.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/NativeThemeVariablesContext.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/core/useColorMode.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/theme-generator/generateTheme.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/theme-generator/tokenScaleMap.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/theme-generator/writeTheme.ts"
-  - "christophehurpeau/alouette:CLAUDE.md"
+  - packages/alouette/src/ui/containers/AccentScope.tsx
+  - packages/alouette/src/ui/containers/StableAccentScope.tsx
+  - packages/alouette/src/ui/containers/PortalAccentScope.tsx
+  - packages/alouette/src/ui/containers/PortalAccentScope.web.tsx
+  - packages/alouette/src/ui/containers/ScopedTheme.tsx
+  - packages/alouette/src/ui/containers/ScopedTheme.web.tsx
+  - packages/alouette/src/core/AlouetteConfig.ts
+  - packages/alouette/src/core/AlouetteProvider.tsx
+  - packages/alouette/src/core/NativeThemeVariablesContext.ts
+  - packages/alouette/src/core/useColorMode.ts
+  - packages/alouette/src/theme-generator/generateTheme.ts
+  - packages/alouette/src/theme-generator/tokenScaleMap.ts
+  - packages/alouette/src/theme-generator/writeTheme.ts
+  - CLAUDE.md
 ---
 
 # alouette — Theming with modes and accents

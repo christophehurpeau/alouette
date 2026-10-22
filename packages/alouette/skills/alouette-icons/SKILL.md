@@ -8,15 +8,11 @@ description: >
   a component that takes one (Button, IconButton, Message). Its color comes from
   a text-* token class rather than from the SVG, so an icon follows the theme
   and the accent around it. Load when adding icons to alouette UI.
-type: composition
-library: alouette
-requires:
-  - alouette-theming
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/Icon.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/primitives/InteractiveIcon.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Button.stories.tsx"
-  - "christophehurpeau/alouette:CLAUDE.md"
+  - packages/alouette/src/ui/primitives/Icon.tsx
+  - packages/alouette/src/ui/primitives/InteractiveIcon.tsx
+  - packages/alouette/src/ui/actions/Button.stories.tsx
+  - CLAUDE.md
 ---
 
 This skill builds on alouette-theming. Read it first for color tokens.

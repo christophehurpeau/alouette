@@ -18,8 +18,8 @@ import { useBreadcrumbItemContext } from "./BreadcrumbsContext";
 const breadcrumbItemVariants = tv({
   slots: {
     // LinkText is already the row; it only needs the tap target around it.
-    link: "min-h-[44px] px-xxs",
-    page: "flex-row items-center gap-xxs min-h-[44px] px-xxs",
+    link: "min-h-control-md px-xxs",
+    page: "flex-row items-center gap-xxs min-h-control-md px-xxs",
     icon: "text-sharp",
     label: "select-none font-body-bold text-base text-sharp",
   },

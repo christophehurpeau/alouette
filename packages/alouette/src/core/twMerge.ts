@@ -10,6 +10,7 @@ type AlouetteClassGroupIds =
   | "focus-ring"
   | "lowered"
   | "skeleton"
+  | "page-container"
   | "surface-flat"
   | "surface-popover"
   | "surface-size"
@@ -68,8 +69,16 @@ export const twMergeConfig: ConfigExtension<
         "xxl",
         "3xl",
         "4xl",
+        "control-sm",
+        "control-md",
+        "control-lg",
+        "control-chip",
+        "control-chip-icon",
+        "control-chip-stacked",
+        "control-inset",
       ],
       shadow: ["s", "m", "l", "lowered", "bar"],
+      container: ["page"],
     },
     classGroups: {
       "font-family": [
@@ -86,6 +95,7 @@ export const twMergeConfig: ConfigExtension<
       "focus-ring": ["focus-ring", "focus-ring-inset"],
       lowered: ["lowered"],
       skeleton: ["skeleton"],
+      "page-container": ["page-container"],
       surface: ["surface"],
       "surface-flat": ["surface-flat"],
       "surface-size": [{ surface: ["xxs", "xs", "sm", "md", "lg"] }],
@@ -101,6 +111,16 @@ export const twMergeConfig: ConfigExtension<
       "focus-ring": ["outline-w", "outline-offset", "outline-color"],
       lowered: ["bg-color", "shadow"],
       skeleton: ["animate", "bg-color", "rounded"],
+      "page-container": [
+        "w",
+        "align-self",
+        "max-w",
+        "px",
+        "pl",
+        "pr",
+        "ps",
+        "pe",
+      ],
       surface: [
         ...paddingAndRadiusGroups,
         "bg-color",

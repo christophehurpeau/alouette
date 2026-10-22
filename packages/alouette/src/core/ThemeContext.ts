@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, use } from "react";
 import type {
   Accent,
   AccentOrNeutral,
@@ -16,11 +16,11 @@ import type {
 export const ThemeContext = createContext<AlouetteTheme>("light");
 
 export function useCurrentTheme(): AlouetteTheme {
-  return useContext(ThemeContext);
+  return use(ThemeContext);
 }
 
 export function useCurrentMode(): AlouetteModeTheme {
-  return useContext(ThemeContext).startsWith("dark") ? "dark" : "light";
+  return use(ThemeContext).startsWith("dark") ? "dark" : "light";
 }
 
 export function getThemeAccent(theme: AlouetteTheme): Accent | undefined {
@@ -34,6 +34,6 @@ export function getThemeAccent(theme: AlouetteTheme): Accent | undefined {
 export function useAccentOrInheritedOrBrand<T extends AccentOrNeutral>(
   accent: T | undefined,
 ): Accent | T {
-  const inheritedAccent = getThemeAccent(useContext(ThemeContext));
+  const inheritedAccent = getThemeAccent(use(ThemeContext));
   return accent ?? inheritedAccent ?? "brand";
 }

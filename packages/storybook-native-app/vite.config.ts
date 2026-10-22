@@ -1,18 +1,17 @@
-import { createRequire } from "module";
-import { rnw } from "vite-plugin-rnw";
-import tailwindcss from "@tailwindcss/vite";
-import svgr from "vite-plugin-svgr";
-import { defineConfig } from "vite";
-import { playwright } from "@vitest/browser-playwright";
-import { URL, fileURLToPath } from "url";
+import { createRequire } from "node:module";
+import { URL, fileURLToPath } from "node:url";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
-import path from "path";
+import tailwindcss from "@tailwindcss/vite";
+import { playwright } from "@vitest/browser-playwright";
+import { defineConfig } from "vite";
+import { rnw } from "vite-plugin-rnw";
+import svgr from "vite-plugin-svgr";
 
 // NativeWind's Babel preset is published as ESM that calls `require()` inside the
 // preset body, which throws in Vite's ESM config context. Load the CommonJS
 // build via createRequire so those internal `require()` calls resolve.
-const require = createRequire(import.meta.url);
-const nativewindBabelPreset = require("nativewind/babel").default;
+const requireCommonjs = createRequire(import.meta.url);
+const nativewindBabelPreset = requireCommonjs("nativewind/babel").default;
 
 const extensions = [
   ".mjs",
@@ -22,7 +21,7 @@ const extensions = [
   ".jsx",
   ".tsx",
   ".json",
-].flatMap((extension) => [".web" + extension, extension]);
+].flatMap((extension) => [`.web${extension}`, extension]);
 
 export default defineConfig({
   define: {
@@ -37,8 +36,8 @@ export default defineConfig({
     postcss: {},
   },
   optimizeDeps: {
-    esbuildOptions: {
-      loader: {
+    rolldownOptions: {
+      moduleTypes: {
         ".web.js": "jsx",
         ".js": "jsx",
         ".web.ts": "ts",
@@ -47,6 +46,17 @@ export default defineConfig({
       },
     },
     holdUntilCrawlEnd: true,
+    // The NativeWind Babel preset adds these imports while transforming, after
+    // the dependency crawl: discovered mid-run, they reload the page and fail
+    // the tests on a cold cache (CI).
+    include: [
+      "react-native-css/components/FlatList",
+      "react-native-css/components/Pressable",
+      "react-native-css/components/ScrollView",
+      "react-native-css/components/Text",
+      "react-native-css/components/TextInput",
+      "react-native-css/components/View",
+    ],
     exclude: ["alouette-icons"],
   },
   resolve: {

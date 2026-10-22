@@ -1,7 +1,6 @@
-/* eslint-disable import-x/extensions */
 // Single source of truth mapping each semantic token to a color-scale step,
 // per mode and accent. Shared by `buildTheme.ts` (emits the CSS variables /
-// themeVariables) and the repo-root `scripts/generate-palette.ts` contrast
+// themeVariables) and `scripts/generate-palette.ts` contrast
 // audit (resolves the steps a token pair actually uses), so the two can never
 // drift. A token resolves to `null` when it is not emitted for the given accent.
 

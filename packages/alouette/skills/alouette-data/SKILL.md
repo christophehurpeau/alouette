@@ -5,30 +5,25 @@ description: >
   count or category pill; Avatar stands for a person or account; EditableItem
   shows one labelled value behind an edit affordance and EditableSection a whole
   titled section behind one; Bullet is an icon + text list row; Code and
-  CodeBlock render source inline and as a block; Blockquote and Citation render
-  a quoted excerpt and its attribution. All are display-only — they own no
+  CodeBlock render source inline and as a block; Blockquote (BlockquoteFrame
+  for block content) and Citation render a quoted excerpt and its attribution. All are display-only — they own no
   editor and no press handling, and are never wrapped in a Link or Pressable to
   gain one. Load when showing a status chip, a list row, an avatar, a value or
   section with an edit affordance, code, a quote or its attribution.
-type: core
-library: alouette
-requires:
-  - alouette-theming
-  - alouette-actions
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Badge.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/EditableItem.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/EditableSection.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/EditableSection.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Bullet.stories.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Code.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/CodeBlock.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Blockquote.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Citation.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/data/Avatar.tsx"
+  - packages/alouette/src/ui/data/Badge.tsx
+  - packages/alouette/src/ui/data/Badge.stories.tsx
+  - packages/alouette/src/ui/data/EditableItem.tsx
+  - packages/alouette/src/ui/data/EditableItem.stories.tsx
+  - packages/alouette/src/ui/containers/EditableSection.tsx
+  - packages/alouette/src/ui/containers/EditableSection.stories.tsx
+  - packages/alouette/src/ui/data/Bullet.tsx
+  - packages/alouette/src/ui/data/Bullet.stories.tsx
+  - packages/alouette/src/ui/data/Code.tsx
+  - packages/alouette/src/ui/data/CodeBlock.tsx
+  - packages/alouette/src/ui/data/Blockquote.tsx
+  - packages/alouette/src/ui/data/Citation.tsx
+  - packages/alouette/src/ui/data/Avatar.tsx
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -190,23 +185,25 @@ never wrap it in a pressable.
 ## Blockquote and Citation
 
 `Blockquote` renders a quoted excerpt behind an accent rule on its leading edge
-(`role="blockquote"` → a real `<blockquote>` on web); its `children` are the
-quote text and go into a `Paragraph`, sized by `size` `"sm" | "md"`. Attribution
-goes to the `citation` prop as a node — normally a `Citation`.
+(`role="blockquote"` → a real `<blockquote>` on web). Use one or the other:
+
+- `Blockquote` for a quote that is text: its `children` go into a `Paragraph`,
+  sized by `size` `"sm" | "md"`, so they are inline content only.
+- `BlockquoteFrame` for block content (several paragraphs, a list, a
+  `CodeBlock`): its `children` render as they are, sized and laid out by the
+  caller. Text there needs its own `Paragraph`: a bare string throws on native.
+
+Both take attribution in the `citation` prop as a node — normally a `Citation`.
 
 ```tsx
-import { Blockquote, Citation } from "alouette";
-
-<Blockquote
-  accent="brand"
-  citation={
-    <Citation href="https://example.com/the-left-hand-of-darkness">
-      The Left Hand of Darkness
-    </Citation>
-  }
->
+<Blockquote accent="brand" citation={<Citation>Le Guin</Citation>}>
   Light is the left hand of darkness.
 </Blockquote>;
+
+<BlockquoteFrame>
+  <Paragraph>Run it with:</Paragraph>
+  <CodeBlock>pnpm install</CodeBlock>
+</BlockquoteFrame>;
 ```
 
 `Citation` is an em dash plus the source, muted, `size` `"sm" | "md"`. With

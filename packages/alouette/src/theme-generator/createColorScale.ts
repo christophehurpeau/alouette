@@ -1,4 +1,3 @@
-/* eslint-disable import-x/extensions */
 // OKLCH color-scale generator. Palettes are generated in OKLCH so a single
 // lightness ramp is perceptually uniform across every hue (HSL lightness is not
 // — yellow at HSL L=56 reads far brighter than blue at the same L). Chroma is

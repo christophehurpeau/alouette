@@ -3,7 +3,9 @@ import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactNode, type Ref, useEffect, useState } from "react";
 import type { View as RNView } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
+import type { Density, controlHeightsPx } from "../../controlSizes";
 import type { Accent, AccentOrNeutral } from "../../core/AlouetteConfig";
+import { useDensity } from "../../core/DensityContext";
 import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
 import { ExternalLink } from "../../expo/ExternalLink";
 import {
@@ -11,6 +13,7 @@ import {
   defaultExternalOpenLinkBehavior,
 } from "../../expo/ExternalLink.shared";
 import { AccentScope } from "../containers/AccentScope";
+import { mergeTooltipTriggerProps } from "../containers/mergeTooltipTriggerProps";
 import {
   type CircularProgressSize,
   IndeterminateCircularProgress,
@@ -20,16 +23,14 @@ import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
+import {
+  DisabledReasonTooltip,
+  hasDisabledReason,
+} from "./DisabledReasonTooltip";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
 /** `lg` is the prominent call to action of a landing page or a hero. */
-export const buttonHeight = {
-  sm: 38,
-  md: 44,
-  lg: 52,
-} as const;
-
-export type ButtonSize = keyof typeof buttonHeight;
+export type ButtonSize = keyof (typeof controlHeightsPx)["comfortable"];
 
 interface ButtonSizeMetrics {
   iconSize: number;
@@ -37,10 +38,23 @@ interface ButtonSizeMetrics {
   spinnerSize: CircularProgressSize;
 }
 
-const buttonSizeMetrics: Record<ButtonSize, ButtonSizeMetrics> = {
-  sm: { iconSize: 16, terminalIconSize: 24, spinnerSize: "xs" },
-  md: { iconSize: 20, terminalIconSize: 32, spinnerSize: "sm" },
-  lg: { iconSize: 24, terminalIconSize: 36, spinnerSize: "sm" },
+// The leading icon matches the label, whose size the density keeps; the
+// terminal icon and the spinner overlay the whole button, so they follow its
+// height.
+const buttonSizeMetrics: Record<
+  Density,
+  Record<ButtonSize, ButtonSizeMetrics>
+> = {
+  comfortable: {
+    sm: { iconSize: 16, terminalIconSize: 24, spinnerSize: "xs" },
+    md: { iconSize: 20, terminalIconSize: 32, spinnerSize: "sm" },
+    lg: { iconSize: 24, terminalIconSize: 36, spinnerSize: "sm" },
+  },
+  compact: {
+    sm: { iconSize: 16, terminalIconSize: 20, spinnerSize: "xs" },
+    md: { iconSize: 20, terminalIconSize: 28, spinnerSize: "sm" },
+    lg: { iconSize: 24, terminalIconSize: 32, spinnerSize: "sm" },
+  },
 };
 
 const buttonVariants = tv(
@@ -55,16 +69,16 @@ const buttonVariants = tv(
     variants: {
       size: {
         sm: {
-          frame: "rounded-full px-sm gap-xxs min-h-[38px]",
+          frame: "rounded-full px-sm gap-xxs min-h-control-sm",
           text: "text-sm py-xxs",
         },
         md: {
-          frame: "rounded-full px-m gap-xs min-h-[44px]",
-          text: "text-base py-xs",
+          frame: "rounded-full px-m gap-xs min-h-control-md",
+          text: "text-base py-control-inset",
         },
         lg: {
-          frame: "rounded-full px-l gap-sm min-h-[52px]",
-          text: "text-lg py-xs",
+          frame: "rounded-full px-l gap-sm min-h-control-lg",
+          text: "text-lg py-control-inset",
         },
       },
       variant: {
@@ -163,6 +177,11 @@ export interface ButtonProps
   text: ReactNode;
   state?: ButtonState;
   /**
+   * Why the button is disabled. A non-empty reason disables it, describes it
+   * with the reason and, on web, shows the reason on hover.
+   */
+  disabledReason?: string | null;
+  /**
    * Forwarded to the underlying `PressableBox`, so the button can anchor a
    * `Popover` or a `Menu`. React 19 carries it in with the other props.
    */
@@ -171,17 +190,21 @@ export interface ButtonProps
 
 interface IsButtonDisabledParams {
   disabled?: boolean | null;
+  disabledReason?: string | null;
   state?: ButtonState;
 }
 
 function isButtonDisabled({
   disabled,
+  disabledReason,
   state,
 }: IsButtonDisabledParams): boolean {
-  return disabled === true || state != null;
+  return (
+    disabled === true || hasDisabledReason(disabledReason) || state != null
+  );
 }
 
-export function Button({
+function ButtonPressable({
   icon,
   activeIcon,
   text,
@@ -193,8 +216,9 @@ export function Button({
   className,
   forceStyle,
   ...pressableProps
-}: ButtonProps): ReactNode {
+}: Omit<ButtonProps, "disabledReason">): ReactNode {
   const accent = useAccentOrInheritedOrBrand(accentProp);
+  const density = useDensity();
   const isLoading = state === "loading";
 
   // Keep the spinner (and the disabled look) mounted past `state` leaving
@@ -219,7 +243,8 @@ export function Button({
   const hasOverlayIcon = showSpinner || terminalIcon !== undefined;
 
   const isDisabled = isButtonDisabled({ disabled, state });
-  const { iconSize, terminalIconSize, spinnerSize } = buttonSizeMetrics[size];
+  const { iconSize, terminalIconSize, spinnerSize } =
+    buttonSizeMetrics[density][size];
   const styles = buttonVariants({
     size,
     variant,
@@ -271,6 +296,22 @@ export function Button({
         {text}
       </Text>
     </PressableBox>
+  );
+}
+
+export function Button({
+  disabledReason,
+  ...buttonProps
+}: ButtonProps): ReactNode {
+  return (
+    <DisabledReasonTooltip
+      disabledReason={disabledReason}
+      render={(triggerProps) => (
+        <ButtonPressable
+          {...mergeTooltipTriggerProps(buttonProps, triggerProps)}
+        />
+      )}
+    />
   );
 }
 

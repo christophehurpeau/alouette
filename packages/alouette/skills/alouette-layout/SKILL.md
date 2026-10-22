@@ -4,7 +4,7 @@ description: >
   Build screen structure: Box / InteractiveBox / SafeAreaBox for containers,
   raised with the surface utilities (surface, surface-{size}, lowered,
   surface-flat, surface-popover), View with flex classes and Separator to
-  arrange them,
+  arrange them, page-container for the boxed column of a page,
   ScreenCenterLayout and the screen scroll containers (ScreenScrollView /
   ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through
   SafeAreaScope) for the page itself, the application shell around every screen
@@ -12,39 +12,37 @@ description: >
   or AppShell +
   AppShellSidebar + AppShellMain when the shell is composed per route;
   AppSidebarLayout + AppSidebar for an app navigated from a fixed sidebar), and
-  GradientBackground / GradientScrollView for a tinted ground. Space, round and
+  GradientBackground / GradientScrollView for a tinted ground, or
+  GlowBackground for soft accent glows over the plain one. Space, round and
   raise everything with the alouette spacing, radius and shadow scale rather
   than raw Tailwind numbers. Load when building screen structure, an app header
   or shell, cards, spacing, or backgrounds.
-type: core
-library: alouette
-requires:
-  - alouette-theming
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
-  - "christophehurpeau/alouette:packages/alouette/scripts/build-css.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/stacks/Separator.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientBackground.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/GradientScrollView.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenCenterLayout.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenScrollView.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenFlatList.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/ScreenSectionList.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/SafeAreaEdgesContext.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppLayout.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppShell.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebarLayout.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebar.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppSidebarAccount.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeader.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderBrand.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNav.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/navigation/HeaderNavItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderActions.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderAccount.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/AppHeaderSignIn.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/layout/BrandLogo.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/config/tokens.stories.tsx"
+  - packages/alouette/src/ui/containers/Box.tsx
+  - packages/alouette/scripts/build-css.ts
+  - packages/alouette/src/ui/stacks/Separator.tsx
+  - packages/alouette/src/ui/layout/GradientBackground.tsx
+  - packages/alouette/src/ui/layout/GradientScrollView.tsx
+  - packages/alouette/src/ui/layout/GlowBackground.tsx
+  - packages/alouette/src/ui/layout/ScreenCenterLayout.tsx
+  - packages/alouette/src/ui/layout/ScreenScrollView.tsx
+  - packages/alouette/src/ui/layout/ScreenFlatList.tsx
+  - packages/alouette/src/ui/layout/ScreenSectionList.tsx
+  - packages/alouette/src/core/SafeAreaEdgesContext.tsx
+  - packages/alouette/src/ui/layout/AppLayout.tsx
+  - packages/alouette/src/ui/layout/AppShell.tsx
+  - packages/alouette/src/ui/layout/AppSidebarLayout.tsx
+  - packages/alouette/src/ui/layout/AppSidebar.tsx
+  - packages/alouette/src/ui/layout/AppSidebarAccount.tsx
+  - packages/alouette/src/ui/layout/AppHeader.tsx
+  - packages/alouette/src/ui/layout/AppHeaderBrand.tsx
+  - packages/alouette/src/ui/navigation/HeaderNav.tsx
+  - packages/alouette/src/ui/navigation/HeaderNavItem.tsx
+  - packages/alouette/src/ui/layout/AppHeaderActions.tsx
+  - packages/alouette/src/ui/layout/AppHeaderAccount.tsx
+  - packages/alouette/src/ui/layout/AppHeaderSignIn.tsx
+  - packages/alouette/src/ui/layout/BrandLogo.tsx
+  - packages/alouette/src/config/tokens.stories.tsx
 ---
 
 This skill builds on alouette-theming. Read it first for the token model.
@@ -160,6 +158,34 @@ import { GradientBackground, GradientScrollView } from "alouette";
 <GradientScrollView accent="brand">
   {content}
 </GradientScrollView>;
+```
+
+`GlowBackground` keeps the `bg-screen` ground and bleeds radial glows from the
+top corners instead: `accent` from the top-left, the optional `secondaryAccent`
+from the top-right. It is an absolute, non-interactive overlay, so it goes first
+inside a `relative` (or full-height) container, before the content.
+
+```tsx
+import { GlowBackground } from "alouette";
+
+<View className="h-screen bg-screen">
+  <GlowBackground accent="brand" secondaryAccent="info" />
+  <ScrollView className="flex-1">{content}</ScrollView>
+</View>;
+```
+
+### Page column
+
+`page-container` is the boxed column of a page: full width up to
+`max-w-page` (1200px), centered, with the `px-m md:px-l` gutter of `AppHeader`'s
+boxed row at its default size — so the content starts under the brand at every
+width. Never rewrite it as `mx-auto max-w-[1200px] px-…`: the copy drifts the
+day the header changes. `max-w-page` alone is the width without the gutter.
+
+```tsx
+<AppLayout header={<AppHeader brand={brand} />}>
+  <View className="page-container gap-l py-l">{screen}</View>
+</AppLayout>
 ```
 
 ### Screen scroll containers

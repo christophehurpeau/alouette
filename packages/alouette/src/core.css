@@ -76,12 +76,24 @@
   --spacing-xxl: 48px;
   --spacing-3xl: 64px;
   --spacing-4xl: 128px;
+  /* control sizes, comfortable — DensityScope swaps them (the .density-* blocks
+     below, densityVariables on native) */
+  --spacing-control-sm: 38px;
+  --spacing-control-md: 44px;
+  --spacing-control-lg: 52px;
+  --spacing-control-chip: 32px;
+  --spacing-control-chip-icon: 36px;
+  --spacing-control-chip-stacked: 40px;
+  --spacing-control-inset: 8px;
 
   /* breakpoints — must match Breakpoints.ts */
   --breakpoint-sm: 480px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
+
+  /* the boxed width of a page: AppHeader's boxed row and page-container */
+  --container-page: 1200px;
 
   /* animations — NativeWind runs the @keyframes on native via Reanimated. A CSS animation
      cannot play on unmount: pair an exit animation with <Presence>, which keeps
@@ -173,6 +185,33 @@
     --animate-disclose-out: none;
     --animate-caret-blink: none;
     --animate-pulse: none;
+  }
+}
+
+/* density — the class DensityScope renders on web, re-declaring the control
+   sizes for its subtree (the nearest scope wins, by inheritance). Behind the
+   feature query the react-native-css compiler drops, like the theme blocks:
+   native pushes densityVariables instead. Declaring each token a second time
+   is also what keeps the compiler from inlining the @theme value, which would
+   leave nothing for that push to override. */
+@supports (display: contents) {
+  .density-comfortable {
+    --spacing-control-sm: 38px;
+    --spacing-control-md: 44px;
+    --spacing-control-lg: 52px;
+    --spacing-control-chip: 32px;
+    --spacing-control-chip-icon: 36px;
+    --spacing-control-chip-stacked: 40px;
+    --spacing-control-inset: 8px;
+  }
+  .density-compact {
+    --spacing-control-sm: 32px;
+    --spacing-control-md: 36px;
+    --spacing-control-lg: 44px;
+    --spacing-control-chip: 28px;
+    --spacing-control-chip-icon: 28px;
+    --spacing-control-chip-stacked: 32px;
+    --spacing-control-inset: 4px;
   }
 }
 
@@ -485,6 +524,14 @@
    stands in for carries role="status" and an aria-label. */
 @utility skeleton {
   @apply animate-pulse rounded-sm bg-lowered;
+}
+
+/* page-container — the boxed column of a page: the width and the horizontal
+   padding of AppHeader's boxed row at its default size, so the content lines up
+   with the header at every width. `self-center` rather than `mx-auto`, like
+   the header's row: it centers in any flex column, on native too. */
+@utility page-container {
+  @apply w-full self-center max-w-page px-m md:px-l;
 }
 
 /* flex-center — not `center`, which would clash with a text-align /

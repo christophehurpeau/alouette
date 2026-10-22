@@ -21,6 +21,9 @@ export type {
 } from "./core/AlouetteConfig";
 export { useCurrentMode, useCurrentTheme } from "./core/ThemeContext";
 export { useReducedMotion } from "./core/ReducedMotionContext";
+export { useDensity } from "./core/DensityContext";
+export type { Density } from "./controlSizes";
+export { controlHeightsPx } from "./controlSizes";
 export type { ColorModePreference } from "./core/useColorMode";
 export { useResolvedColorMode, useSystemColorMode } from "./core/useColorMode";
 export type { ScopedThemeProps } from "./ui/containers/ScopedTheme";
@@ -61,6 +64,8 @@ export type { StableAccentScopeProps } from "./ui/containers/StableAccentScope";
 export { StableAccentScope } from "./ui/containers/StableAccentScope";
 export type { PortalAccentScopeProps } from "./ui/containers/PortalAccentScope";
 export { PortalAccentScope } from "./ui/containers/PortalAccentScope";
+export type { DensityScopeProps } from "./ui/containers/DensityScope";
+export { DensityScope } from "./ui/containers/DensityScope";
 export type {
   PresenceListProps,
   PresenceOneProps,
@@ -69,6 +74,10 @@ export { PresenceList, PresenceOne } from "./ui/containers/Presence";
 export { animationDurationsMs } from "./animationDurationsMs";
 export type { PopoverProps } from "./ui/containers/Popover";
 export { Popover } from "./ui/containers/Popover";
+export type { TooltipProps } from "./ui/containers/Tooltip";
+export { Tooltip } from "./ui/containers/Tooltip";
+export type { TooltipTriggerProps } from "./ui/containers/mergeTooltipTriggerProps";
+export { mergeTooltipTriggerProps } from "./ui/containers/mergeTooltipTriggerProps";
 export type { DisclosureProps } from "./ui/containers/Disclosure";
 export { Disclosure } from "./ui/containers/Disclosure";
 export type { EditableSectionProps } from "./ui/containers/EditableSection";
@@ -227,8 +236,11 @@ export type { CodeProps } from "./ui/data/Code";
 export { Code } from "./ui/data/Code";
 export type { CodeBlockProps } from "./ui/data/CodeBlock";
 export { CodeBlock } from "./ui/data/CodeBlock";
-export type { BlockquoteProps } from "./ui/data/Blockquote";
-export { Blockquote } from "./ui/data/Blockquote";
+export type {
+  BlockquoteFrameProps,
+  BlockquoteProps,
+} from "./ui/data/Blockquote";
+export { Blockquote, BlockquoteFrame } from "./ui/data/Blockquote";
 export type { CitationProps } from "./ui/data/Citation";
 export { Citation } from "./ui/data/Citation";
 export type { EditableItemProps } from "./ui/data/EditableItem";
@@ -266,6 +278,8 @@ export {
 } from "./ui/feedback/Message";
 export type { PressableListItemProps } from "./ui/actions/PressableListItem";
 export { PressableListItem } from "./ui/actions/PressableListItem";
+export type { GlowBackgroundProps } from "./ui/layout/GlowBackground";
+export { GlowBackground } from "./ui/layout/GlowBackground";
 export type { GradientBackgroundProps } from "./ui/layout/GradientBackground";
 export { GradientBackground } from "./ui/layout/GradientBackground";
 export type { GradientScrollViewProps } from "./ui/layout/GradientScrollView";

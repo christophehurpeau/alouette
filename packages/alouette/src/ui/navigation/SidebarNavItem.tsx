@@ -17,7 +17,7 @@ import { useSidebarNavContext } from "./SidebarNavContext";
 const sidebarNavItemVariants = tv({
   slots: {
     pressable:
-      "group relative flex-row items-center gap-sm rounded-sm px-sm min-h-[44px] focus-visible:focus-ring",
+      "group relative flex-row items-center gap-sm rounded-sm px-sm min-h-control-md focus-visible:focus-ring",
     chip: "absolute inset-0 rounded-sm transition-opacity duration-fast ease-in",
     foreground: "z-1 transition-[color] duration-fast ease-in",
     label: "flex-1 select-none text-base",

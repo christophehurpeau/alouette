@@ -7,33 +7,52 @@
       "label": "git: main",
       "type": "shell",
       "command": "git main",
-      "group": { "kind": "none" },
-      "options": { "cwd": "${workspaceFolder}" },
-      "presentation": { "close": true, "panel": "dedicated" },
+      "group": {
+        "kind": "none"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "close": true,
+        "panel": "dedicated"
+      },
       "problemMatcher": []
     },
     {
       "label": "build",
       "type": "shell",
       "command": "pnpm build",
-      "options": { "cwd": "${workspaceFolder}/packages/alouette" },
-      "group": { "kind": "none" },
+      "options": {
+        "cwd": "${workspaceFolder}/packages/alouette"
+      },
+      "group": {
+        "kind": "none"
+      },
       "problemMatcher": []
     },
     {
       "label": "build:css",
       "type": "shell",
       "command": "pnpm build:css",
-      "options": { "cwd": "${workspaceFolder}/packages/alouette" },
-      "group": { "kind": "none" },
+      "options": {
+        "cwd": "${workspaceFolder}/packages/alouette"
+      },
+      "group": {
+        "kind": "none"
+      },
       "problemMatcher": []
     },
     {
       "label": "tsc",
       "type": "shell",
       "command": "pnpm tsc",
-      "group": { "kind": "test" },
-      "options": { "cwd": "${workspaceFolder}" },
+      "group": {
+        "kind": "test"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "presentation": {
         "close": true,
         "revealProblems": "onProblem",
@@ -45,8 +64,12 @@
       "label": "storybook-native-app:web",
       "type": "shell",
       "command": "pnpm start:web",
-      "options": { "cwd": "${workspaceFolder}/packages/storybook-native-app" },
-      "group": { "kind": "none" },
+      "options": {
+        "cwd": "${workspaceFolder}/packages/storybook-native-app"
+      },
+      "group": {
+        "kind": "none"
+      },
       "dependsOn": [],
       "problemMatcher": []
     },
@@ -54,8 +77,12 @@
       "label": "storybook-native-app:native",
       "type": "shell",
       "command": "pnpm start",
-      "options": { "cwd": "${workspaceFolder}/packages/storybook-native-app" },
-      "group": { "kind": "none" },
+      "options": {
+        "cwd": "${workspaceFolder}/packages/storybook-native-app"
+      },
+      "group": {
+        "kind": "none"
+      },
       "dependsOn": [],
       "problemMatcher": []
     },
@@ -63,8 +90,12 @@
       "label": "demo-app",
       "type": "shell",
       "command": "pnpm start",
-      "options": { "cwd": "${workspaceFolder}/packages/expo-demo-app" },
-      "group": { "kind": "none" },
+      "options": {
+        "cwd": "${workspaceFolder}/packages/expo-demo-app"
+      },
+      "group": {
+        "kind": "none"
+      },
       "dependsOn": [],
       "problemMatcher": []
     },
@@ -225,7 +256,9 @@
       "label": "test:watch",
       "problemMatcher": {
         "owner": "vitest-watch",
-        "pattern": { "regexp": ".*" },
+        "pattern": {
+          "regexp": ".*"
+        },
         "background": {
           "activeOnStart": true,
           "beginsPattern": "RERUN",

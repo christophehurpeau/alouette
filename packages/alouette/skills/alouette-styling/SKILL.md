@@ -11,15 +11,11 @@ description: >
   class. States the alouette design principles every component must satisfy,
   including that interactivity is a component and never a wrapper. Load when
   writing, restyling or reviewing a component.
-type: core
-library: alouette
-requires:
-  - alouette-theming
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Modal.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/containers/Box.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/twMerge.ts"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/selection/SegmentedItem.tsx"
+  - packages/alouette/src/ui/containers/Modal.tsx
+  - packages/alouette/src/ui/containers/Box.tsx
+  - packages/alouette/src/core/twMerge.ts
+  - packages/alouette/src/ui/selection/SegmentedItem.tsx
 ---
 
 # alouette — Styling conventions
@@ -130,12 +126,18 @@ dimension, `windowHeight * 0.7`, a token-derived pixel height).
 
 ### Pixel sizes as arbitrary values
 
-Write a pixel dimension as an arbitrary value — `w-[380px]`, `max-w-[460px]`,
-`min-h-[44px]` — and keep it even when the linter suggests the canonical
-spacing-scale class (`w-95`, `max-w-115`, `min-h-11`). The scale class hides the
-actual pixel value, which is the thing being reasoned about. This applies to
-one-off pixel dimensions only; padding, gap and radius still use the token scale
-(`p-m`, `gap-xs`, `rounded-sm`).
+Write a pixel dimension as an arbitrary value — `w-[380px]`, `max-w-[460px]` —
+and keep it even when the linter suggests the canonical spacing-scale class
+(`w-95`, `max-w-115`). The scale class hides the actual pixel value, which is the
+thing being reasoned about. This applies to one-off pixel dimensions only;
+padding, gap and radius still use the token scale (`p-m`, `gap-xs`,
+`rounded-sm`).
+
+A control's height is neither: it is a `control-*` token (`min-h-control-md`,
+`w-control-md`, `min-h-control-chip`), which `DensityScope` swaps — 44px
+comfortable, 36px compact for an interface driven by a mouse. A control written
+with `min-h-[44px]` stays 44px in a compact scope. Its label's vertical padding
+is `py-control-inset`, so a single line still fits the compact height.
 
 ### Interactivity is a component, never a wrapper
 
@@ -285,18 +287,20 @@ Source: packages/alouette/src/ui/selection/SegmentedBar.tsx
 Wrong:
 
 ```tsx
-<View className="w-95 min-h-11" />
+<View className="w-95" />
+<Pressable className="min-h-[44px]" />
 ```
 
 Correct:
 
 ```tsx
-<View className="w-[380px] min-h-[44px]" />
+<View className="w-[380px]" />
+<Pressable className="min-h-control-md" />
 ```
 
-`w-95` / `min-h-11` are the same pixels but read as scale steps; the explicit
-arbitrary value keeps the measurement legible (`min-h-[44px]` is the
-accessibility touch-target minimum, not a padding choice).
+`w-95` is the same pixels but reads as a scale step; the explicit arbitrary value
+keeps the measurement legible. A control's height is the `control-md` token,
+which follows the `DensityScope`; a hardcoded 44px ignores it.
 
 Source: packages/alouette/src/ui/actions/Button.tsx
 

@@ -4,10 +4,10 @@ import type { ScopedThemeProps } from "./ScopedTheme";
 
 export function ScopedTheme({ theme, children }: ScopedThemeProps): ReactNode {
   return (
-    <ThemeContext.Provider value={theme}>
+    <ThemeContext value={theme}>
       <div data-theme={theme} className={theme} style={{ display: "contents" }}>
         {children}
       </div>
-    </ThemeContext.Provider>
+    </ThemeContext>
   );
 }

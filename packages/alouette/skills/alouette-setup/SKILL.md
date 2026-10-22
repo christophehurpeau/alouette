@@ -8,17 +8,16 @@ description: >
   bold text is the right typeface. Load when bootstrapping a project, when
   alouette classes render unstyled, or when fonts/bold weights look wrong.
   Covers ios, android and web.
-type: lifecycle
-library: alouette
 sources:
-  - "christophehurpeau/alouette:packages/storybook-native-app/metro.config.cjs"
-  - "christophehurpeau/alouette:packages/storybook-native-app/postcss.config.mjs"
-  - "christophehurpeau/alouette:packages/storybook-native-app/src/global.css"
-  - "christophehurpeau/alouette:packages/storybook-native-app/src/App.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/AlouetteProvider.web.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/core/NativeThemeVariablesContext.ts"
-  - "christophehurpeau/alouette:packages/alouette/metro.cjs"
+  - packages/storybook-native-app/metro.config.cjs
+  - packages/storybook-native-app/postcss.config.mjs
+  - packages/storybook-native-app/src/global.css
+  - packages/storybook-native-app/src/App.tsx
+  - packages/alouette/src/core/AlouetteProvider.tsx
+  - packages/alouette/src/core/AlouetteProvider.web.tsx
+  - packages/alouette/src/core/NativeThemeVariablesContext.ts
+  - packages/alouette/src/ui/containers/DensityScope.tsx
+  - packages/alouette/metro.cjs
 ---
 
 # alouette — Setup
@@ -206,6 +205,29 @@ import { SafeAreaProvider } from "alouette";
   </AlouetteProvider>
 </SafeAreaProvider>;
 ```
+
+### DensityScope: compact controls for a desktop-only app
+
+Every control is 44px tall by default, the touch target. An interface driven by
+a mouse only (a desktop web app, an admin) wraps its tree in a compact
+`DensityScope`: fields, buttons, menus, segmented bars and nav items drop to
+36px (`Button` sizes 32 / 36 / 44px). Type sizes do not change.
+
+```tsx
+import { DensityScope } from "alouette";
+
+<AlouetteProvider themeVariables={themeVariables}>
+  <DensityScope density="compact">
+    <App />
+  </DensityScope>
+</AlouetteProvider>;
+```
+
+Scopes nest (`density="comfortable"` restores the touch size for a subtree), and
+a `Popover`, `Menu` or `Modal` keeps the density of what opened it. A custom
+control follows it by taking its height from the `control-*` tokens
+(`min-h-control-md`), never `min-h-[44px]`; `useDensity()` and
+`controlHeightsPx` cover a size set from JS.
 
 ### Web: load fonts from Google Fonts
 

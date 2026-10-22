@@ -1,4 +1,3 @@
-/* eslint-disable import-x/extensions */
 // Palette definitions: the single place declaring each accent — its hue
 // parameters (turned into OKLCH color scales by `createColorScale`) and its
 // traits (consumed by `tokenScaleMap.ts` when a token's step depends on the

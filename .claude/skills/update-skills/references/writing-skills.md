@@ -7,8 +7,8 @@ choosing one. So the two are optimized for different things: descriptions for
 _picking the right skill and the right component_, bodies for _writing a call
 site that compiles, is accessible, and doesn't fight the design system_.
 
-`intent validate`'s limits (1024-char description, 500-line SKILL.md) are a
-ceiling, not a target. Passing validation is not the goal; being loaded at the
+The spec's limits (1024-char description, 500-line SKILL.md) are a ceiling,
+not a target. Passing validation is not the goal; being loaded at the
 right moment and answering fast is.
 
 ## Descriptions
@@ -86,11 +86,9 @@ Splitting is not deleting. The parent keeps:
   shell: [references/app-shell.md](references/app-shell.md)".
 
 The reference carries the depth: the full example, the prop-level nuance, the
-edge cases, the platform-specific behaviour. Files are listed in
-`_artifacts/skill_tree.yaml` automatically by `scripts/skills-sync.ts` — never
-hand-edit that list.
+edge cases, the platform-specific behaviour.
 
-## Checklist before validating
+## Checklist
 
 - Description names purposes and triggers, no props, no variant values.
 - Each component has one copyable call site.
@@ -98,5 +96,4 @@ hand-edit that list.
 - Anything only some tasks need lives in `references/`, with the rule still
   stated in the parent.
 - Confusable components are separated by an explicit discriminator sentence.
-- `node scripts/skills-sync.ts` run, then `intent validate` and `intent stale`
-  clean.
+- `node scripts/skills-status.ts` reports no invalid skill.

@@ -5,6 +5,8 @@ import { TrashRegularIcon } from "alouette-icons/phosphor-icons/Trash";
 import { type ReactNode, useState } from "react";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Button } from "../actions/Button";
+import { FormItem } from "../forms/FormItem";
+import { InputText } from "../inputs/InputText";
 import { Story, accentsWithoutNeutral } from "../story-components/Story";
 import { StoryGrid } from "../story-components/StoryGrid";
 import {
@@ -202,6 +204,57 @@ function AsyncAlertDialogDemo({
   );
 }
 
+// A confirmation completed by a field: the commit message of a merge, prefilled
+// and editable, the confirm disabled while it is blank.
+function ContentAlertDialogDemo({
+  triggerLabel,
+}: {
+  triggerLabel: string;
+}): ReactNode {
+  const [visible, setVisible] = useState(false);
+  const [commitTitle, setCommitTitle] = useState("Add dark mode (#42)");
+  const close = () => {
+    setVisible(false);
+  };
+  return (
+    <>
+      <Button
+        accent="success"
+        text={triggerLabel}
+        onPress={() => {
+          setVisible(true);
+        }}
+      />
+      <QuestionAlertDialog
+        visible={visible}
+        accent="success"
+        title="Merge this pull request?"
+        confirmText="Squash and merge"
+        confirmDisabled={commitTitle.trim() === ""}
+        content={
+          <FormItem
+            label="Commit message"
+            render={({ labelId, describedBy, invalid, required }) => (
+              <InputText
+                aria-labelledby={labelId}
+                aria-describedby={describedBy}
+                aria-required={required}
+                invalid={invalid}
+                value={commitTitle}
+                onChangeText={setCommitTitle}
+              />
+            )}
+          />
+        }
+        onConfirm={close}
+        onCancel={close}
+      >
+        #42 goes into main.
+      </QuestionAlertDialog>
+    </>
+  );
+}
+
 export default {
   title: "alouette/Containers/AlertDialog",
   component: AlertDialog,
@@ -377,6 +430,14 @@ export const Variants: ThisStory = {
             >
               The dialog stays open on failure so the action can be retried.
             </AsyncAlertDialogDemo>
+          </StoryGrid.Col>
+        </StoryGrid.Row>
+      </Story.Section>
+
+      <Story.Section title="With content">
+        <StoryGrid.Row flexWrap>
+          <StoryGrid.Col title="a field completing the confirmation">
+            <ContentAlertDialogDemo triggerLabel="Merge" />
           </StoryGrid.Col>
         </StoryGrid.Row>
       </Story.Section>
@@ -572,6 +633,9 @@ export const Tests: StoryObj<typeof AlertDialog> = {
           The failure is shown in the footer.
         </AsyncAlertDialogDemo>
       </Story.Section>
+      <Story.Section title="With content">
+        <ContentAlertDialogDemo triggerLabel="Open with content" />
+      </Story.Section>
     </Story>
   ),
   play: async ({ canvasElement }) => {
@@ -698,6 +762,29 @@ export const Tests: StoryObj<typeof AlertDialog> = {
     await userEvent.click(
       within(failingDialog).getByRole("button", { name: "Cancel" }),
     );
+    await waitFor(async () => {
+      await expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    });
+
+    // Content: a field under the description, never part of it, which the
+    // caller reads to enable the confirm.
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open with content" }),
+    );
+    const contentDialog = await screen.findByRole("alertdialog");
+    await expect(contentDialog).toHaveAccessibleDescription(
+      "#42 goes into main.",
+    );
+    const field = within(contentDialog).getByLabelText("Commit message");
+    await expect(field).toHaveValue("Add dark mode (#42)");
+    const mergeButton = within(contentDialog).getByRole("button", {
+      name: "Squash and merge",
+    });
+    await userEvent.clear(field);
+    await expect(mergeButton).toHaveAttribute("aria-disabled", "true");
+    await userEvent.type(field, "Add dark mode");
+    await expect(mergeButton).not.toHaveAttribute("aria-disabled", "true");
+    await userEvent.click(mergeButton);
     await waitFor(async () => {
       await expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
     });

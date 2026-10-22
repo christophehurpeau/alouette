@@ -1,4 +1,4 @@
-/* eslint-disable import-x/extensions */
+/* oxlint-disable import/extensions */
 // The CSS blocks and the `themeVariables` maps feed the two halves of
 // `ScopedTheme`: web applies a `className={theme}` element, resolved by
 // custom-property inheritance, native applies the maps through NativeWind's
@@ -161,21 +161,17 @@ interface ThemeTarget {
 }
 
 const themeTargets: ThemeTarget[] = [
-  ...(["light", "dark"] as const).map(
-    (mode): ThemeTarget => ({
-      theme: mode,
-      mode,
-      accentName: "grayscale",
-    }),
-  ),
+  ...(["light", "dark"] as const).map((mode): ThemeTarget => ({
+    theme: mode,
+    mode,
+    accentName: "grayscale",
+  })),
   ...(["light", "dark"] as const).flatMap((mode) =>
-    accents.map(
-      (accentName): ThemeTarget => ({
-        theme: `${mode}_${accentName}` as AlouetteTheme,
-        mode,
-        accentName,
-      }),
-    ),
+    accents.map((accentName): ThemeTarget => ({
+      theme: `${mode}_${accentName}` as AlouetteTheme,
+      mode,
+      accentName,
+    })),
   ),
 ];
 

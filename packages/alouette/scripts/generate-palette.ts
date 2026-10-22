@@ -1,4 +1,4 @@
-/* eslint-disable import-x/extensions */
+/* oxlint-disable import/extensions */
 // Dev tool: renders every default palette as terminal swatches and audits the
 // WCAG contrast of the real composed token pairs the design system uses. Color
 // generation is NOT defined here — it is imported from the shipped, exported
@@ -13,18 +13,18 @@ import Color from "colorjs.io";
 import type {
   ColorScale,
   Gamut,
-} from "../packages/alouette/src/theme-generator/createColorScale.ts";
+} from "../src/theme-generator/createColorScale.ts";
 import {
   createOklchScale,
   maxChroma,
   toHex,
-} from "../packages/alouette/src/theme-generator/createColorScale.ts";
-import { defaultPaletteSpecs } from "../packages/alouette/src/theme-generator/paletteSpecs.ts";
+} from "../src/theme-generator/createColorScale.ts";
+import { defaultPaletteSpecs } from "../src/theme-generator/paletteSpecs.ts";
 import type {
   AccentName,
   ResolvedToken,
-} from "../packages/alouette/src/theme-generator/tokenScaleMap.ts";
-import { resolveTokenEffective } from "../packages/alouette/src/theme-generator/tokenScaleMap.ts";
+} from "../src/theme-generator/tokenScaleMap.ts";
+import { resolveTokenEffective } from "../src/theme-generator/tokenScaleMap.ts";
 
 // sRGB hex is what native renders; --gamut=p3 audits the wide-gamut palette web
 // gets, whose steps hold the same lightness with more chroma.
@@ -51,17 +51,17 @@ for (const [name, spec] of Object.entries(defaultPaletteSpecs)) {
 
 // ANSI color codes for terminal display
 const ansiColors = {
-  reset: "\x1b[0m",
-  bright: "\x1b[1m",
-  dim: "\x1b[2m",
+  reset: "\u001B[0m",
+  bright: "\u001B[1m",
+  dim: "\u001B[2m",
 };
 
 const getAnsiColor = (color: string) => {
-  const [r, g, b] = new Color(color)
+  const [r = 0, g = 0, b = 0] = new Color(color)
     .to("srgb")
     .toGamut({ method: "css" })
     .coords.map((channel) => Math.round(channel! * 255));
-  return `\x1b[38;2;${r};${g};${b}m`;
+  return `\u001B[38;2;${r};${g};${b}m`;
 };
 
 const displayColorSwatch = (color: string, text: string) => {

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import { execFileSync } from "node:child_process";
 import {
+  copyFileSync,
   existsSync,
   mkdirSync,
   readFileSync,
   rmSync,
-  copyFileSync,
 } from "node:fs";
 import { writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -98,11 +98,11 @@ for (const icon of icons) {
     ...(variants.some(({ iconPaths }) => iconPaths.backgroundPath)
       ? ["createDuotoneIcon"]
       : []),
-  ].sort();
+  ].toSorted();
 
   writes.push(
     writeFile(
-      new URL(`${icon.pascal_name}.mjs`, outDir),
+      new URL(`./${icon.pascal_name}.mjs`, outDir),
       `${header}\nimport { ${factories.join(", ")} } from "alouette-icons/createIcon";\n\n${variants
         .map(
           ({ componentName, iconPaths }) =>

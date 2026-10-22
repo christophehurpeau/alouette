@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, use, useMemo } from "react";
 import { type VariantProps, tv } from "tailwind-variants";
 import { AccentScope } from "../containers/AccentScope";
 import { View } from "../primitives/View";
@@ -43,7 +43,7 @@ const CheckboxCardGroupAppearanceContext =
 
 /** Lets a card size itself for the row it flows in and take the group's material. */
 export function useCheckboxCardGroupAppearance(): CheckboxCardGroupAppearance {
-  return useContext(CheckboxCardGroupAppearanceContext);
+  return use(CheckboxCardGroupAppearanceContext);
 }
 
 export interface CheckboxCardGroupProps

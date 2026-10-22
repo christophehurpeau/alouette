@@ -10,26 +10,26 @@ import { Paragraph } from "../primitives/Text";
 // simply ignores a role it does not know.
 const blockquoteRole = "blockquote" as NonNullable<RNViewProps["role"]>;
 
-const blockquoteVariants = tv({
-  slots: {
-    // The accent rule is the whole affordance: no fill, so a quote reads as a
-    // quote wherever it sits (screen, surface, Message).
-    frame: "gap-xs border-l-4 border-accent pl-m",
-    quote: "text-sharp",
-  },
+// The accent rule is the whole affordance: no fill, so a quote reads as a quote
+// wherever it sits (screen, surface, Message).
+const blockquoteFrame = tv({ base: "gap-xs border-l-4 border-accent pl-m" });
+
+const blockquoteQuote = tv({
+  base: "text-sharp",
   variants: {
     size: {
-      sm: { quote: "text-base" },
-      md: { quote: "text-lg" },
+      sm: "text-base",
+      md: "text-lg",
     },
   },
   defaultVariants: { size: "md" },
 });
 
-type BlockquoteVariantProps = VariantProps<typeof blockquoteVariants>;
-
-export interface BlockquoteProps extends BlockquoteVariantProps {
-  /** The quoted text. */
+export interface BlockquoteFrameProps {
+  /**
+   * The quoted block content, rendered as is: paragraphs, a list, a
+   * `CodeBlock`. A quote that is only text is a `Blockquote`.
+   */
   children?: ReactNode;
   /** Attribution rendered under the quote — usually a `<Citation>`. */
   citation?: ReactNode;
@@ -38,27 +38,49 @@ export interface BlockquoteProps extends BlockquoteVariantProps {
 }
 
 /**
- * A quoted excerpt, set off by an accent rule on its leading edge.
+ * The frame of a `Blockquote` around block content, laid out by the caller.
  *
  * `role="blockquote"` renders a `<blockquote>` element on web; native keeps a
  * plain View.
  */
-export function Blockquote({
+export function BlockquoteFrame({
   children,
   citation,
   accent,
-  size,
   className,
-}: BlockquoteProps): ReactNode {
-  const styles = blockquoteVariants({ size });
+}: BlockquoteFrameProps): ReactNode {
   return (
     <Box
       accent={accent}
       role={blockquoteRole}
-      className={styles.frame({ className })}
+      className={blockquoteFrame({ className })}
     >
-      <Paragraph className={styles.quote()}>{children}</Paragraph>
+      {children}
       {citation}
     </Box>
+  );
+}
+
+type BlockquoteVariantProps = VariantProps<typeof blockquoteQuote>;
+
+export interface BlockquoteProps
+  extends Omit<BlockquoteFrameProps, "children">, BlockquoteVariantProps {
+  /** The quoted text: inline content only, it renders a `<p>` on web. */
+  children?: ReactNode;
+}
+
+/**
+ * A quoted excerpt, set off by an accent rule on its leading edge. Its text
+ * goes in a `Paragraph`; block content goes in a `BlockquoteFrame` instead.
+ */
+export function Blockquote({
+  children,
+  size,
+  ...frameProps
+}: BlockquoteProps): ReactNode {
+  return (
+    <BlockquoteFrame {...frameProps}>
+      <Paragraph className={blockquoteQuote({ size })}>{children}</Paragraph>
+    </BlockquoteFrame>
   );
 }

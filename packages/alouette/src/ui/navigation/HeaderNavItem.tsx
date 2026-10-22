@@ -21,7 +21,7 @@ import { useHeaderNavContext } from "./HeaderNavContext";
 const headerNavItemVariants = tv({
   slots: {
     pressable:
-      "relative flex-row items-center gap-xs min-h-[44px] rounded-xs px-xs md:px-sm",
+      "relative flex-row items-center gap-xs min-h-control-md rounded-xs px-xs md:px-sm",
     underline:
       "absolute inset-x-xs md:inset-x-sm bottom-0 h-[2px] rounded-full bg-accent transition-opacity duration-fast ease-in",
     foreground: "transition-[color] duration-fast ease-in",

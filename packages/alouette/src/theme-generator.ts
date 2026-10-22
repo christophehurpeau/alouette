@@ -1,4 +1,4 @@
-/* eslint-disable import-x/extensions */
+/* oxlint-disable import/extensions */
 // Public entry for `alouette/theme-generator`: generate a coherent theme (CSS +
 // runtime themeVariables) for the alouette accents from hue params, staying on
 // the OKLCH ramp. Node-only, imported from an app's build script — `writeTheme`

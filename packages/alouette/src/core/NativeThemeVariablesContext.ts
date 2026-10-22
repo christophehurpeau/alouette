@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, use } from "react";
 import type { AlouetteTheme } from "./AlouetteConfig";
 
 /**
@@ -22,5 +22,5 @@ export const NativeThemeVariablesContext = createContext<ThemeVariablesMap>(
 );
 
 export function useNativeThemeVariables(): ThemeVariablesMap {
-  return useContext(NativeThemeVariablesContext);
+  return use(NativeThemeVariablesContext);
 }

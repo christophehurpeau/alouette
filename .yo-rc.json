@@ -4,6 +4,8 @@
       "enable": true
     },
     "monorepo": {
+      "storybook": true,
+      "storybookReactNative": true,
       "ci": true,
       "testing": true,
       "testRunner": "vitest",

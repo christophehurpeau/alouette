@@ -102,11 +102,11 @@ export function Story({
 }: StoryProps): ReactNode {
   return (
     <ScrollView>
-      {documentation && (
+      {documentation ? (
         <Box accent="info" className="surface mb-xxl">
           {documentation}
         </Box>
-      )}
+      ) : null}
       {(["light", ...(noDarkMode ? [] : ["dark"])] as ("dark" | "light")[]).map(
         (mode) => (
           <ScopedTheme key={mode} theme={mode}>

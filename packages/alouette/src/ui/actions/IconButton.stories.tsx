@@ -1,4 +1,4 @@
-import { expect, userEvent, waitFor, within } from "storybook/test";
+import { expect, screen, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   ArrowLeftDuotoneIcon,
@@ -127,6 +127,14 @@ export const Variants: ThisStory = {
         </Story.SubSection>
       </Story.Section>
 
+      <Story.Section title="Disabled with a reason">
+        <IconButton
+          icon={<ArrowLeftRegularIcon />}
+          aria-label="Go back"
+          disabledReason="Nothing to go back to"
+        />
+      </Story.Section>
+
       <Story.Section withSurface title="Variants">
         {neutralAndAccents.map((accent) => (
           <Story.SubSection key={accent} title={accent}>
@@ -213,6 +221,38 @@ export const SoftAccentOnInteraction: ThisStory = {
     await expect(button).toHaveFocus();
     await waitFor(() =>
       expect(getComputedStyle(glyph).color).toBe(accentColor),
+    );
+  },
+};
+
+export const DisabledReason: ThisStory = {
+  render: () => (
+    <Story noDarkMode>
+      <Story.Section title="Disabled with a reason">
+        <IconButton
+          icon={<ArrowLeftRegularIcon />}
+          aria-label="Go back"
+          disabledReason="Nothing to go back to"
+        />
+      </Story.Section>
+    </Story>
+  ),
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByRole("button", {
+      name: "Go back",
+    });
+    await expect(button).toHaveAttribute("aria-disabled", "true");
+    await expect(button).toHaveAccessibleDescription("Nothing to go back to");
+
+    await userEvent.hover(button);
+    await expect(
+      await screen.findByRole("tooltip", { hidden: true }),
+    ).toHaveTextContent("Nothing to go back to");
+    await userEvent.unhover(button);
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("tooltip", { hidden: true }),
+      ).not.toBeInTheDocument(),
     );
   },
 };

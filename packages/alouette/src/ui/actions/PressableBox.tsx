@@ -230,6 +230,8 @@ export interface PressableBoxProps
    * segment's shadow would fall on its neighbor.
    */
   raised?: boolean;
+  /** Untyped by react-native; web only in effect. */
+  "aria-describedby"?: string;
   ref?: Ref<RNView>;
 }
 

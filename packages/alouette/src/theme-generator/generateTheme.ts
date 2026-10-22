@@ -1,4 +1,4 @@
-/* eslint-disable import-x/extensions */
+/* oxlint-disable import/extensions */
 import type { AlouetteTheme } from "../core/AlouetteConfig.ts";
 import type { ThemeScales } from "./buildTheme.ts";
 import {

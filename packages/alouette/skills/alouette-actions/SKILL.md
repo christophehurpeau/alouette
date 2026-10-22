@@ -10,24 +10,24 @@ description: >
   behind one trigger. SplitButton is one button whose caret picks which of
   several alternative actions it runs (a merge method). PressableBox and PressableListItem are the bases for a
   custom pressable surface: they carry the hover, focus, press and disabled
-  affordance so it never has to be rebuilt by hand. Load when adding buttons,
-  text links, a menu of actions, a split button or button with options, or
-  custom pressable elements.
-type: core
-library: alouette
-requires:
-  - alouette-theming
+  affordance so it never has to be rebuilt by hand. A disabled button says why
+  with disabledReason, and Tooltip describes any other element. Load when
+  adding buttons, text links, a menu of actions, a split button or button with
+  options, a tooltip, or custom pressable elements.
 sources:
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Button.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/ActionButton.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/IconButton.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/PressableBox.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/PressableListItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/LinkText.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/Menu.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/MenuItem.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/SplitButton.tsx"
-  - "christophehurpeau/alouette:packages/alouette/src/ui/actions/SplitButtonOption.tsx"
+  - packages/alouette/src/ui/actions/Button.tsx
+  - packages/alouette/src/ui/actions/ActionButton.tsx
+  - packages/alouette/src/ui/actions/IconButton.tsx
+  - packages/alouette/src/ui/actions/PressableBox.tsx
+  - packages/alouette/src/ui/actions/PressableListItem.tsx
+  - packages/alouette/src/ui/actions/LinkText.tsx
+  - packages/alouette/src/ui/actions/Menu.tsx
+  - packages/alouette/src/ui/actions/MenuItem.tsx
+  - packages/alouette/src/ui/actions/SplitButton.tsx
+  - packages/alouette/src/ui/actions/SplitButtonOption.tsx
+  - packages/alouette/src/ui/containers/Tooltip.tsx
+  - packages/alouette/src/ui/containers/Tooltip.web.tsx
+  - packages/alouette/src/ui/containers/mergeTooltipTriggerProps.ts
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -209,6 +209,59 @@ import { XRegularIcon } from "alouette-icons/phosphor-icons/X";
 `size` is `"sm" | "md"` or a number (custom diameter in px); `iconSize="fill"`
 makes the icon take 80% of the button. `variant` is `"tonal" | "filled" |
 "soft"` — an icon-only button has no `outlined`.
+
+### Disabled with a reason
+
+When an action is unavailable for a reason the user should know, pass
+`disabledReason` to `Button`, `IconButton` or `ActionButton` rather than
+`disabled`. A non-empty reason disables the button, adds the reason to its
+accessible description, and on web shows it in a `Tooltip` on hover. Like any
+disabled button it leaves the tab order (react-native-web sets the native
+`disabled` attribute), so a screen reader gets the reason from the
+description.
+
+```tsx
+<Button
+  text="Archive"
+  disabledReason={
+    isDeploying ? "A deployment of this project is still running" : null
+  }
+  onPress={archive}
+/>
+```
+
+Don't wrap a disabled button in a DOM element carrying `title`:
+react-native-web forwards no `title`, the wrapper is web-only, and the reason
+then has to be repeated in `aria-label`. For any other element (an icon-only
+button's label, a truncated value), `Tooltip` takes a `render` prop and hands
+it the props to spread on the described element:
+
+```tsx
+import { Tooltip } from "alouette";
+
+<Tooltip
+  content="Archive the project"
+  render={(triggerProps) => (
+    <IconButton
+      {...triggerProps}
+      icon={<ArchiveRegularIcon />}
+      aria-label="Archive"
+    />
+  )}
+/>;
+```
+
+The trigger props carry the hover and focus handlers as well as
+`aria-describedby`, so spread them last, or keep the element's own with
+`mergeTooltipTriggerProps(ownProps, triggerProps)`, which joins the
+descriptions and runs both handlers. `content={null}` renders the element
+alone in the same tree, so toggling it never remounts the element. The panel
+opens on hover (not on a tap) and on keyboard focus, above the element or below
+it when there is no room above, and stays open while the pointer is on it.
+Don't nest two tooltips around one element.
+
+Native has no hover: `Tooltip` shows no panel there and only announces the
+content as the element's accessibility hint.
 
 ### Icon weight on interaction
 

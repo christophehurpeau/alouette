@@ -184,7 +184,7 @@ Alouette ships a universal component set styled through `className`:
 - **Inputs** — `InputText`, `InputCode`, `InputTextAutocomplete`, `TextArea`, `Switch`
 - **Feedback** — `Message`, `InfoMessage`, `ConfirmationMessage`, `WarningMessage`
 - **Data** — `PressableBox`, `PressableListItem`
-- **Layout** — `GradientBackground`, `GradientScrollView`
+- **Layout** — `GradientBackground`, `GradientScrollView`, `GlowBackground`
 - **Primitives** — `View`, `Text`, `Paragraph`, `Icon`, `ScrollView`, `Separator`
 - **Responsive** — `SwitchBreakpointsUsingDisplayNone`, `SwitchBreakpointsUsingNull`, `useCurrentBreakpointName`
 
@@ -413,11 +413,12 @@ function MyComponent() {
 
 ## 🤖 Using an AI agent?
 
-Alouette ships [skills](https://www.npmjs.com/package/@tanstack/intent) that teach
-AI coding agents how to use the design system correctly:
+Alouette ships [skills](https://agentskills.io) that teach AI coding agents how
+to use the design system correctly. Link them into your project's
+`.claude/skills/`:
 
 ```bash
-npx @tanstack/intent@latest install
+npx alouette-install-skills
 ```
 
 ## 🏗️ Architecture

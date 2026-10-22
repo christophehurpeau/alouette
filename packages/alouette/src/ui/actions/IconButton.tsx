@@ -2,9 +2,12 @@ import type { ReactNode, Ref } from "react";
 import type { View as RNView } from "react-native";
 import type { VariantProps } from "tailwind-variants";
 import { tv } from "tailwind-variants";
+import { controlHeightsPx } from "../../controlSizes";
+import { useDensity } from "../../core/DensityContext";
+import { mergeTooltipTriggerProps } from "../containers/mergeTooltipTriggerProps";
 import type { SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";
-import { buttonHeight } from "./Button";
+import { DisabledReasonTooltip } from "./DisabledReasonTooltip";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
 const iconButtonVariants = tv(
@@ -84,14 +87,22 @@ export interface IconButtonProps extends Omit<
   icon: SVGIconElement;
   /** Replaces `icon` while the button is hovered, focused or pressed. */
   activeIcon?: SVGIconElement;
-  /** Preset size token, or any number for a custom diameter (px). */
+  /**
+   * Preset size, the height of a `Button` of that size in the current density,
+   * or any number for a custom diameter (px).
+   */
   size?: number | "md" | "sm";
   /** When "fill", the icon takes 80% of the button; default uses 50%. */
   iconSize?: "fill";
   "aria-label": string;
+  /**
+   * Why the button is disabled. A non-empty reason disables it, describes it
+   * with the reason and, on web, shows the reason on hover.
+   */
+  disabledReason?: string | null;
 }
 
-export function IconButton({
+function IconButtonPressable({
   icon,
   activeIcon,
   disabled,
@@ -101,8 +112,10 @@ export function IconButton({
   className,
   forceStyle,
   ...pressableProps
-}: IconButtonProps): ReactNode {
-  const diameter = typeof size === "number" ? size : buttonHeight[size];
+}: Omit<IconButtonProps, "disabledReason">): ReactNode {
+  const density = useDensity();
+  const diameter =
+    typeof size === "number" ? size : controlHeightsPx[density][size];
   const styles = iconButtonVariants({
     variant,
     disabled: disabled === true,
@@ -129,5 +142,21 @@ export function IconButton({
         className={styles.icon()}
       />
     </PressableBox>
+  );
+}
+
+export function IconButton({
+  disabledReason,
+  ...iconButtonProps
+}: IconButtonProps): ReactNode {
+  return (
+    <DisabledReasonTooltip
+      disabledReason={disabledReason}
+      render={(triggerProps) => (
+        <IconButtonPressable
+          {...mergeTooltipTriggerProps(iconButtonProps, triggerProps)}
+        />
+      )}
+    />
   );
 }

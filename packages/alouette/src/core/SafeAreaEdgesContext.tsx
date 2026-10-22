@@ -1,4 +1,4 @@
-import { type ReactNode, createContext, useContext } from "react";
+import { type ReactNode, createContext, use } from "react";
 
 export type SafeAreaEdge = "bottom" | "left" | "right" | "top";
 
@@ -12,7 +12,7 @@ export const allSafeAreaEdges: readonly SafeAreaEdge[] = [
 const ConsumedSafeAreaEdgesContext = createContext<readonly SafeAreaEdge[]>([]);
 
 export function useConsumedSafeAreaEdges(): readonly SafeAreaEdge[] {
-  return useContext(ConsumedSafeAreaEdgesContext);
+  return use(ConsumedSafeAreaEdgesContext);
 }
 
 export interface SafeAreaScopeProps {
@@ -38,8 +38,8 @@ export function SafeAreaScope({
   );
 
   return (
-    <ConsumedSafeAreaEdgesContext.Provider value={mergedEdges}>
+    <ConsumedSafeAreaEdgesContext value={mergedEdges}>
       {children}
-    </ConsumedSafeAreaEdgesContext.Provider>
+    </ConsumedSafeAreaEdgesContext>
   );
 }

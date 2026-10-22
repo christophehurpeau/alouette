@@ -62,7 +62,7 @@ const appHeaderVariants = tv({
       transparent: { frame: "bg-transparent" },
     },
     contentWidth: {
-      boxed: { inner: "max-w-[1200px]" },
+      boxed: { inner: "max-w-page" },
       full: {},
     },
     withActions: {
