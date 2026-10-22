@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { twMerge } from "../../core/twMerge";
 import { AccentScope } from "../containers/AccentScope";
 import { View } from "../primitives/View";
 import {
@@ -7,7 +8,11 @@ import {
 } from "../selection/SelectionContext";
 import { RadioContextProvider } from "./RadioContext";
 
-export type RadioGroupProps = SelectionGroupProps;
+export interface RadioGroupProps extends SelectionGroupProps {
+  /** The group is as wide as its widest option; `self-stretch` makes it (and
+   * every row) fill its container, as a list in a dialog does. */
+  className?: string;
+}
 
 export function RadioGroup({
   value,
@@ -15,6 +20,7 @@ export function RadioGroup({
   onValueChange,
   accent,
   disabled,
+  className,
   children,
   ...props
 }: RadioGroupProps): ReactNode {
@@ -28,7 +34,11 @@ export function RadioGroup({
   return (
     <AccentScope accent={accent}>
       <RadioContextProvider value={context}>
-        <View role="radiogroup" {...props}>
+        <View
+          role="radiogroup"
+          className={twMerge("self-start", className)}
+          {...props}
+        >
           {children}
         </View>
       </RadioContextProvider>
