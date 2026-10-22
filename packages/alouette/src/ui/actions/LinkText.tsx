@@ -1,10 +1,12 @@
-import type { ReactNode } from "react";
+import { type ReactNode, use } from "react";
+import { type GestureResponderEvent, Platform } from "react-native";
 import { type VariantProps, tv } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBox, type InteractiveBoxProps } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
+import { TextAncestorContext } from "../primitives/TextAncestorContext";
 
 // The link treatment of the whole system, shared with ExternalLinkText: an
 // underlined label drawn from the `interactive-*` foreground tokens, tinted on
@@ -56,6 +58,53 @@ export function linkTextIconSize(size: LinkTextSizeProps["size"]): number {
   return size === "sm" ? 16 : 20;
 }
 
+/**
+ * On native a View inside a Text is laid out as one inline block, so its label
+ * cannot share the line's baseline: a link in a Text renders as a nested Text.
+ */
+export function useIsInNativeText(): boolean {
+  const hasTextAncestor = use(TextAncestorContext);
+  return Platform.OS !== "web" && hasTextAncestor;
+}
+
+interface NestedLinkTextProps extends LinkTextSizeProps {
+  text: ReactNode;
+  icon?: SVGIconElement | null;
+  disabled: boolean;
+  onPress?: (event: GestureResponderEvent) => void;
+}
+
+export function NestedLinkText({
+  text,
+  icon,
+  size,
+  disabled,
+  onPress,
+}: NestedLinkTextProps): ReactNode {
+  const styles = linkTextVariants({ size, disabled });
+
+  return (
+    <Text
+      role="link"
+      aria-disabled={disabled}
+      disabled={disabled}
+      className={styles.text()}
+      onPress={onPress}
+    >
+      {icon ? (
+        <>
+          <Icon
+            icon={icon}
+            size={linkTextIconSize(size)}
+            className={styles.icon()}
+          />{" "}
+        </>
+      ) : null}
+      {text}
+    </Text>
+  );
+}
+
 // react-native's Pressable types have no `href`, but react-native-web forwards
 // it — and renders an `<a>` for it — while native ignores it.
 interface LinkPressableProps extends InteractiveBoxProps {
@@ -99,6 +148,20 @@ export function LinkText({
 }: LinkTextProps): ReactNode {
   const isDisabled = disabled === true;
   const styles = linkTextVariants({ size, disabled: isDisabled });
+
+  if (useIsInNativeText()) {
+    return (
+      <AccentScope accent={accent}>
+        <NestedLinkText
+          text={text}
+          icon={icon}
+          size={size}
+          disabled={isDisabled}
+          onPress={pressableProps.onPress ?? undefined}
+        />
+      </AccentScope>
+    );
+  }
 
   return (
     <AccentScope accent={accent}>
