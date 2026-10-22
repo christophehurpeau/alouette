@@ -40,11 +40,15 @@ export default [
       ],
     },
   },
-  // The plain `tv` merges `className` with tailwind-merge's default config,
-  // which does not know alouette's named scale nor its utilities.
+  // The plain `tv` merges `className` with tailwind-variants' process-wide
+  // tailwind-merge, which does not know alouette's named scale nor its
+  // utilities unless the last `twMergeConfig` passed to a `tv()` was alouette's.
   {
     files: ["packages/alouette/src/**/*.{ts,tsx}"],
-    ignores: ["packages/alouette/src/core/tv.ts"],
+    ignores: [
+      "packages/alouette/src/core/tv.ts",
+      "packages/alouette/src/core/tv.test.ts",
+    ],
     rules: {
       "no-restricted-imports": [
         "error",

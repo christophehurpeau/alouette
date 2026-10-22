@@ -7,40 +7,37 @@ import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 
-const badgeVariants = tv(
-  {
-    slots: {
-      frame: "border flex-row items-center self-start rounded-full",
-      text: "font-body-bold",
-      icon: "",
-    },
-    variants: {
-      size: {
-        sm: { frame: "gap-xxs px-xs py-xxs", text: "text-xs", icon: "" },
-        md: { frame: "gap-xs px-sm py-xxs", text: "text-sm", icon: "" },
-      },
-      variant: {
-        solid: {
-          frame: "bg-emphasis border-emphasis",
-          text: "text-on-emphasis",
-          icon: "text-on-emphasis",
-        },
-        "solid.enabled": {
-          frame: "bg-enabled border-enabled",
-          text: "text-on-accent",
-          icon: "text-on-accent",
-        },
-        outlined: {
-          frame: "bg-highlight-accent border-accent",
-          text: "text-accent",
-          icon: "text-accent",
-        },
-      },
-    },
-    defaultVariants: { size: "md", variant: "solid" },
+const badgeVariants = tv({
+  slots: {
+    frame: "border flex-row items-center self-start rounded-full",
+    text: "font-body-bold",
+    icon: "",
   },
-  { twMerge: false },
-);
+  variants: {
+    size: {
+      sm: { frame: "gap-xxs px-xs py-xxs", text: "text-xs", icon: "" },
+      md: { frame: "gap-xs px-sm py-xxs", text: "text-sm", icon: "" },
+    },
+    variant: {
+      solid: {
+        frame: "bg-emphasis border-emphasis",
+        text: "text-on-emphasis",
+        icon: "text-on-emphasis",
+      },
+      "solid.enabled": {
+        frame: "bg-enabled border-enabled",
+        text: "text-on-accent",
+        icon: "text-on-accent",
+      },
+      outlined: {
+        frame: "bg-highlight-accent border-accent",
+        text: "text-accent",
+        icon: "text-accent",
+      },
+    },
+  },
+  defaultVariants: { size: "md", variant: "solid" },
+});
 
 type BadgeVariantProps = VariantProps<typeof badgeVariants>;
 type BadgeSize = NonNullable<BadgeVariantProps["size"]>;

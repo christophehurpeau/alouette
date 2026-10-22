@@ -58,88 +58,85 @@ const buttonSizeMetrics: Record<
   },
 };
 
-const buttonVariants = tv(
-  {
-    slots: {
-      frame: "flex-row flex-center relative",
-      text: "font-body-bold text-center shrink transition-opacity duration-fade",
-      icon: "",
-      terminalIcon: "text-accent",
-      overlayIconContainer: "absolute inset-0 flex-center",
-    },
-    variants: {
-      size: {
-        sm: {
-          frame: "rounded-full px-sm gap-xxs min-h-control-sm",
-          text: "text-sm py-xxs",
-        },
-        md: {
-          frame: "rounded-full px-m gap-xs min-h-control-md",
-          text: "text-base py-control-inset",
-        },
-        lg: {
-          frame: "rounded-full px-l gap-sm min-h-control-lg",
-          text: "text-lg py-control-inset",
-        },
-      },
-      variant: {
-        tonal: {},
-        filled: {},
-        outlined: {},
-        soft: {},
-      },
-      disabled: { true: {}, false: {} },
-      dimmed: {
-        true: { text: "opacity-30", icon: "opacity-30" },
-        false: {},
-      },
-    },
-    compoundVariants: [
-      {
-        variant: "tonal",
-        disabled: false,
-        class: { text: "text-on-tonal", icon: "text-on-tonal" },
-      },
-      {
-        variant: "filled",
-        disabled: false,
-        class: { text: "text-on-accent", icon: "text-on-accent" },
-      },
-      {
-        variant: "outlined",
-        disabled: false,
-        class: { text: "text-sharp", icon: "text-sharp" },
-      },
-      {
-        variant: "soft",
-        disabled: false,
-        class: { text: "text-accent underline", icon: "text-accent" },
-      },
-      {
-        variant: "tonal",
-        disabled: true,
-        class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
-      },
-      {
-        variant: "filled",
-        disabled: true,
-        class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
-      },
-      {
-        variant: "outlined",
-        disabled: true,
-        class: { icon: "text-disabled-muted", text: "text-disabled-muted" },
-      },
-      {
-        variant: "soft",
-        disabled: true,
-        class: { icon: "text-disabled-muted", text: "text-disabled-muted" },
-      },
-    ],
-    defaultVariants: { size: "md", variant: "tonal" },
+const buttonVariants = tv({
+  slots: {
+    frame: "flex-row flex-center relative",
+    text: "font-body-bold text-center shrink transition-opacity duration-fade",
+    icon: "",
+    terminalIcon: "text-accent",
+    overlayIconContainer: "absolute inset-0 flex-center",
   },
-  { twMerge: false },
-);
+  variants: {
+    size: {
+      sm: {
+        frame: "rounded-full px-sm gap-xxs min-h-control-sm",
+        text: "text-sm py-xxs",
+      },
+      md: {
+        frame: "rounded-full px-m gap-xs min-h-control-md",
+        text: "text-base py-control-inset",
+      },
+      lg: {
+        frame: "rounded-full px-l gap-sm min-h-control-lg",
+        text: "text-lg py-control-inset",
+      },
+    },
+    variant: {
+      tonal: {},
+      filled: {},
+      outlined: {},
+      soft: {},
+    },
+    disabled: { true: {}, false: {} },
+    dimmed: {
+      true: { text: "opacity-30", icon: "opacity-30" },
+      false: {},
+    },
+  },
+  compoundVariants: [
+    {
+      variant: "tonal",
+      disabled: false,
+      class: { text: "text-on-tonal", icon: "text-on-tonal" },
+    },
+    {
+      variant: "filled",
+      disabled: false,
+      class: { text: "text-on-accent", icon: "text-on-accent" },
+    },
+    {
+      variant: "outlined",
+      disabled: false,
+      class: { text: "text-sharp", icon: "text-sharp" },
+    },
+    {
+      variant: "soft",
+      disabled: false,
+      class: { text: "text-accent underline", icon: "text-accent" },
+    },
+    {
+      variant: "tonal",
+      disabled: true,
+      class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
+    },
+    {
+      variant: "filled",
+      disabled: true,
+      class: { icon: "text-disabled-sharp", text: "text-disabled-sharp" },
+    },
+    {
+      variant: "outlined",
+      disabled: true,
+      class: { icon: "text-disabled-muted", text: "text-disabled-muted" },
+    },
+    {
+      variant: "soft",
+      disabled: true,
+      class: { icon: "text-disabled-muted", text: "text-disabled-muted" },
+    },
+  ],
+  defaultVariants: { size: "md", variant: "tonal" },
+});
 
 interface ButtonSizeProps {
   /** `lg` is for the prominent call to action of a landing page or a hero. */

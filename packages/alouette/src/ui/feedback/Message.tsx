@@ -16,27 +16,24 @@ import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 
-const messageFrameVariants = tv(
-  {
-    base: "flex-row items-center overflow-hidden bg-highlight-accent",
-    variants: {
-      size: {
-        sm: "gap-xs p-sm rounded-xs",
-        md: "gap-m p-m rounded-sm",
-        lg: "gap-l p-l rounded-md",
-      },
-      variant: {
-        // Raised: the banner is its own layer above the screen background.
-        surface: "shadow-m",
-        // Flush: for a banner already inside a raised surface, where a second
-        // elevation would read as a card stacked on a card.
-        flat: "shadow-none border-border-muted border",
-      },
+const messageFrameVariants = tv({
+  base: "flex-row items-center overflow-hidden bg-highlight-accent",
+  variants: {
+    size: {
+      sm: "gap-xs p-sm rounded-xs",
+      md: "gap-m p-m rounded-sm",
+      lg: "gap-l p-l rounded-md",
     },
-    defaultVariants: { size: "md", variant: "surface" },
+    variant: {
+      // Raised: the banner is its own layer above the screen background.
+      surface: "shadow-m",
+      // Flush: for a banner already inside a raised surface, where a second
+      // elevation would read as a card stacked on a card.
+      flat: "shadow-none border-border-muted border",
+    },
   },
-  { twMerge: false },
-);
+  defaultVariants: { size: "md", variant: "surface" },
+});
 
 type MessageVariantProps = VariantProps<typeof messageFrameVariants>;
 type MessageSize = NonNullable<MessageVariantProps["size"]>;

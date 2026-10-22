@@ -25,107 +25,104 @@ import { View } from "../primitives/View";
 // the box is `box-none` and the glyph is inert on its own (`Icon`).
 const slotPointerEvents = Platform.OS === "web" ? undefined : "box-none";
 
-const inputVariants = tv(
-  {
-    slots: {
-      input: [
-        "bg-highlight text-sharp",
-        "border",
-        "transition-[border-color,background-color,outline-color] duration-fast ease-in",
-        "outline-interactive-outlined-pressable", // to have proper outline color transition
-        process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-          ? ""
-          : "border-interactive-outlined-pressable",
-        "hover:border-interactive-outlined-hover",
-        "focus:border-interactive-outlined-focus",
-        "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
-        "active:border-interactive-outlined-active",
-        "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed",
-        "placeholder:text-form-placeholder",
-      ].join(" "),
-      frame: "relative",
-      startSlot:
-        "absolute left-0 w-control-md flex-center web:pointer-events-none",
-      endSlot:
-        "absolute right-0 w-control-md flex-center web:pointer-events-none",
-    },
-    variants: {
-      multiline: {
-        // Centering the text of a single-line field is per-platform. iOS
-        // centers the line itself, but only without a line-height —
-        // `text-base-size-only` is `text-base` minus the 1.4 line-height the
-        // scale pairs with it, which iOS would turn into leading above the
-        // glyphs (the value then sits ~3pt low while the placeholder, drawn
-        // without those attributes, stays centered). Android lays the text out
-        // from the top of the box — `min-h-control-md` makes it taller than the
-        // line — until `align-middle` sets its gravity (RN maps the style
-        // `verticalAlign` to `textAlignVertical`); on web that would be a real
-        // `vertical-align` on the `<input>`, hence the platform scope. Web
-        // keeps the scale: an `<input>` centers its text whatever the
-        // line-height is. Centered on every platform, the line needs no
-        // vertical padding, which a compact field has no room for.
-        false: {
-          input:
-            "web:text-base native:text-base-size-only android:align-middle min-h-control-md rounded-md py-0",
-          startSlot: "inset-y-0",
-          endSlot: "inset-y-0",
-        },
-        // Multiline is a paragraph: there the line-height is what spaces the
-        // lines, and the text belongs at the top of the box.
-        true: {
-          input: "text-base min-h-[80px] resize-y rounded-xs py-xs",
-          startSlot: "top-0 h-control-md",
-          endSlot: "top-0 h-control-md",
-        },
+const inputVariants = tv({
+  slots: {
+    input: [
+      "bg-highlight text-sharp",
+      "border",
+      "transition-[border-color,background-color,outline-color] duration-fast ease-in",
+      "outline-interactive-outlined-pressable", // to have proper outline color transition
+      process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+        ? ""
+        : "border-interactive-outlined-pressable",
+      "hover:border-interactive-outlined-hover",
+      "focus:border-interactive-outlined-focus",
+      "focus:outline-1 focus:outline-interactive-outlined-focus focus:outline-offset-0",
+      "active:border-interactive-outlined-active",
+      "disabled:bg-disabled-interactive-muted disabled:border-interactive-outlined-disabled disabled:text-form-disabled-text disabled:cursor-not-allowed",
+      "placeholder:text-form-placeholder",
+    ].join(" "),
+    frame: "relative",
+    startSlot:
+      "absolute left-0 w-control-md flex-center web:pointer-events-none",
+    endSlot:
+      "absolute right-0 w-control-md flex-center web:pointer-events-none",
+  },
+  variants: {
+    multiline: {
+      // Centering the text of a single-line field is per-platform. iOS
+      // centers the line itself, but only without a line-height —
+      // `text-base-size-only` is `text-base` minus the 1.4 line-height the
+      // scale pairs with it, which iOS would turn into leading above the
+      // glyphs (the value then sits ~3pt low while the placeholder, drawn
+      // without those attributes, stays centered). Android lays the text out
+      // from the top of the box — `min-h-control-md` makes it taller than the
+      // line — until `align-middle` sets its gravity (RN maps the style
+      // `verticalAlign` to `textAlignVertical`); on web that would be a real
+      // `vertical-align` on the `<input>`, hence the platform scope. Web
+      // keeps the scale: an `<input>` centers its text whatever the
+      // line-height is. Centered on every platform, the line needs no
+      // vertical padding, which a compact field has no room for.
+      false: {
+        input:
+          "web:text-base native:text-base-size-only android:align-middle min-h-control-md rounded-md py-0",
+        startSlot: "inset-y-0",
+        endSlot: "inset-y-0",
       },
-      withStartSlot: {
-        true: { input: "pl-control-md" },
-        false: {},
-      },
-      withEndSlot: {
-        true: { input: "pr-control-md" },
-        false: {},
-      },
-      forceStyle: {
-        undefined: {
-          input: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-            ? "border-interactive-outlined-pressable"
-            : "",
-        },
-        hover: {
-          input: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-            ? "border-interactive-outlined-hover"
-            : "",
-        },
-        focus: {
-          input: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-            ? "border-interactive-outlined-focus outline-1 outline-interactive-outlined-focus outline-offset-0"
-            : "",
-        },
-        press: {
-          input: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
-            ? "border-interactive-outlined-active"
-            : "",
-        },
+      // Multiline is a paragraph: there the line-height is what spaces the
+      // lines, and the text belongs at the top of the box.
+      true: {
+        input: "text-base min-h-[80px] resize-y rounded-xs py-xs",
+        startSlot: "top-0 h-control-md",
+        endSlot: "top-0 h-control-md",
       },
     },
-    // The horizontal padding is per side: the side with a slot takes the slot
-    // width instead, so neither value has to cancel the other.
-    compoundVariants: [
-      { multiline: false, withStartSlot: false, class: { input: "pl-m" } },
-      { multiline: false, withEndSlot: false, class: { input: "pr-m" } },
-      { multiline: true, withStartSlot: false, class: { input: "pl-xs" } },
-      { multiline: true, withEndSlot: false, class: { input: "pr-xs" } },
-    ],
-    defaultVariants: {
-      multiline: false,
-      withStartSlot: false,
-      withEndSlot: false,
-      forceStyle: "undefined",
+    withStartSlot: {
+      true: { input: "pl-control-md" },
+      false: {},
+    },
+    withEndSlot: {
+      true: { input: "pr-control-md" },
+      false: {},
+    },
+    forceStyle: {
+      undefined: {
+        input: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? "border-interactive-outlined-pressable"
+          : "",
+      },
+      hover: {
+        input: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? "border-interactive-outlined-hover"
+          : "",
+      },
+      focus: {
+        input: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? "border-interactive-outlined-focus outline-1 outline-interactive-outlined-focus outline-offset-0"
+          : "",
+      },
+      press: {
+        input: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED
+          ? "border-interactive-outlined-active"
+          : "",
+      },
     },
   },
-  { twMerge: false },
-);
+  // The horizontal padding is per side: the side with a slot takes the slot
+  // width instead, so neither value has to cancel the other.
+  compoundVariants: [
+    { multiline: false, withStartSlot: false, class: { input: "pl-m" } },
+    { multiline: false, withEndSlot: false, class: { input: "pr-m" } },
+    { multiline: true, withStartSlot: false, class: { input: "pl-xs" } },
+    { multiline: true, withEndSlot: false, class: { input: "pr-xs" } },
+  ],
+  defaultVariants: {
+    multiline: false,
+    withStartSlot: false,
+    withEndSlot: false,
+    forceStyle: "undefined",
+  },
+});
 
 type InputVariantProps = Pick<
   VariantProps<typeof inputVariants>,

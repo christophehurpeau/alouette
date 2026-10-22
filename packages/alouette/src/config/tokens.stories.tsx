@@ -22,20 +22,17 @@ function SpacingSwatch({ name }: SpacingSwatchProps): ReactNode {
   );
 }
 
-const radiuses = tv(
-  {
-    base: "w-16 h-16 border-2 border-border-sharp bg-highlight",
-    variants: {
-      name: {
-        xs: "rounded-xs",
-        sm: "rounded-sm",
-        md: "rounded-md",
-        lg: "rounded-lg",
-      },
+const radiuses = tv({
+  base: "w-16 h-16 border-2 border-border-sharp bg-highlight",
+  variants: {
+    name: {
+      xs: "rounded-xs",
+      sm: "rounded-sm",
+      md: "rounded-md",
+      lg: "rounded-lg",
     },
   },
-  { twMerge: false },
-);
+});
 
 interface RadiusSwatchProps {
   name: "lg" | "md" | "sm" | "xs";
@@ -50,20 +47,17 @@ function RadiusSwatch({ name }: RadiusSwatchProps): ReactNode {
   );
 }
 
-const shadows = tv(
-  {
-    base: "w-16 h-16 rounded-sm bg-highlight",
-    variants: {
-      name: {
-        s: "shadow-s",
-        m: "shadow-m",
-        l: "shadow-l",
-        lowered: "shadow-lowered",
-      },
+const shadows = tv({
+  base: "w-16 h-16 rounded-sm bg-highlight",
+  variants: {
+    name: {
+      s: "shadow-s",
+      m: "shadow-m",
+      l: "shadow-l",
+      lowered: "shadow-lowered",
     },
   },
-  { twMerge: false },
-);
+});
 
 interface ShadowSwatchProps {
   name: "l" | "lowered" | "m" | "s";

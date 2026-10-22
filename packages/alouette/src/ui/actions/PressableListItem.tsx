@@ -6,28 +6,25 @@ import { tv } from "../../core/tv";
 import { Icon } from "../primitives/Icon";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 
-const pressableListItemVariants = tv(
-  {
-    slots: {
-      // No outer margin: the row lines up with whatever surrounds it, and the
-      // list holding it spaces its rows (`gap-xs`).
-      row: "flex-row items-center justify-between rounded-sm px-m py-m",
-      content: "flex-1",
-      actions: "flex-row items-center flex-wrap gap-xs mt-xs",
-      caretContainer: "justify-center",
-      caret: "",
-    },
-    variants: {
-      variant: {
-        tonal: { caret: "text-on-tonal" },
-        filled: { caret: "text-on-accent-muted" },
-        outlined: { caret: "text-muted" },
-      },
-    },
-    defaultVariants: { variant: "tonal" },
+const pressableListItemVariants = tv({
+  slots: {
+    // No outer margin: the row lines up with whatever surrounds it, and the
+    // list holding it spaces its rows (`gap-xs`).
+    row: "flex-row items-center justify-between rounded-sm px-m py-m",
+    content: "flex-1",
+    actions: "flex-row items-center flex-wrap gap-xs mt-xs",
+    caretContainer: "justify-center",
+    caret: "",
   },
-  { twMerge: false },
-);
+  variants: {
+    variant: {
+      tonal: { caret: "text-on-tonal" },
+      filled: { caret: "text-on-accent-muted" },
+      outlined: { caret: "text-muted" },
+    },
+  },
+  defaultVariants: { variant: "tonal" },
+});
 
 export interface PressableListItemProps {
   variant?: Exclude<PressableBoxProps["variant"], "soft">;

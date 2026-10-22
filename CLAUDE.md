@@ -112,8 +112,10 @@ one utility for the role. Each new utility gets a class group in
 a conflict of the single classes, which override it by stylesheet order (the
 multi-declaration utilities sort first). Components
 that accept a `className` merge it with the shared `core/twMerge.ts`, or through a
-`tv()` imported from `core/tv.ts` (built on its `twMergeConfig`; the plain `tv`
-from `tailwind-variants` is a lint error), never by string concatenation —
+`tv()` imported from `core/tv.ts` (it merges with that `twMerge`, never with
+tailwind-variants' process-wide one, which the last `twMergeConfig` passed to
+any `tv()` reconfigures; the plain `tv` from `tailwind-variants` is a lint
+error), never by string concatenation —
 tailwind-merge does not know the named spacing scale or the custom utilities
 without it.
 

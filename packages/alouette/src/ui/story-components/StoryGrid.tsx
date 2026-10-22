@@ -4,51 +4,45 @@ import { tv } from "../../core/tv";
 import { View } from "../primitives/View";
 import { StoryTitle } from "./StoryTitle";
 
-const rowVariants = tv(
-  {
-    base: "flex-col",
-    variants: {
-      breakpoint: {
-        small: "sm:flex-row sm:mb-xl",
-        medium: "md:flex-row md:mb-xl",
-      },
-      flexWrap: { true: "" },
+const rowVariants = tv({
+  base: "flex-col",
+  variants: {
+    breakpoint: {
+      small: "sm:flex-row sm:mb-xl",
+      medium: "md:flex-row md:mb-xl",
     },
-    compoundVariants: [
-      { breakpoint: "small", flexWrap: true, class: "sm:flex-wrap sm:gap-m" },
-      { breakpoint: "medium", flexWrap: true, class: "md:flex-wrap md:gap-m" },
-    ],
+    flexWrap: { true: "" },
   },
-  { twMerge: false },
-);
+  compoundVariants: [
+    { breakpoint: "small", flexWrap: true, class: "sm:flex-wrap sm:gap-m" },
+    { breakpoint: "medium", flexWrap: true, class: "md:flex-wrap md:gap-m" },
+  ],
+});
 
-const itemVariants = tv(
-  {
-    base: "pt-m pb-xl",
-    variants: {
-      breakpoint: {
-        small: "sm:pt-0 sm:pb-0 sm:my-xxs shrink",
-        medium: "md:pt-0 md:pb-0 md:my-xxs shrink",
-      },
-      flexWrap: {
-        true: "",
-        false: "",
-      },
-      loose: {
-        true: "",
-        false: "grow",
-      },
+const itemVariants = tv({
+  base: "pt-m pb-xl",
+  variants: {
+    breakpoint: {
+      small: "sm:pt-0 sm:pb-0 sm:my-xxs shrink",
+      medium: "md:pt-0 md:pb-0 md:my-xxs shrink",
     },
-    compoundVariants: [
-      { breakpoint: "small", flexWrap: false, class: "sm:basis-0" },
-      { breakpoint: "medium", flexWrap: false, class: "md:basis-0" },
-    ],
-    defaultVariants: {
-      flexWrap: false,
+    flexWrap: {
+      true: "",
+      false: "",
+    },
+    loose: {
+      true: "",
+      false: "grow",
     },
   },
-  { twMerge: false },
-);
+  compoundVariants: [
+    { breakpoint: "small", flexWrap: false, class: "sm:basis-0" },
+    { breakpoint: "medium", flexWrap: false, class: "md:basis-0" },
+  ],
+  defaultVariants: {
+    flexWrap: false,
+  },
+});
 
 export interface StoryGridRowProps {
   children: NonNullable<ReactNode>;
