@@ -105,6 +105,7 @@
   --animate-disclose-in: collapse-in 250ms cubic-bezier(0.2, 0, 0, 1);
   --animate-disclose-out: collapse-out 250ms cubic-bezier(0.2, 0, 0, 1);
   --animate-caret-blink: caret-blink 1000ms step-end infinite;
+  --animate-pulse: pulse 2000ms cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @layer theme {
@@ -157,6 +158,7 @@
     --motion-duration-fade: 300ms;
     --motion-duration-fast: 200ms;
     --motion-duration-caret: 1000ms;
+    --motion-duration-pulse: 2000ms;
   }
 }
 
@@ -174,6 +176,7 @@
     --motion-duration-fade: 0ms;
     --motion-duration-fast: 0ms;
     --motion-duration-caret: 0ms;
+    --motion-duration-pulse: 0ms;
     --animate-slide-in: none;
     --animate-slide-out: none;
     --animate-collapse-in: none;
@@ -181,6 +184,7 @@
     --animate-disclose-in: none;
     --animate-disclose-out: none;
     --animate-caret-blink: none;
+    --animate-pulse: none;
   }
 }
 
@@ -310,6 +314,12 @@
   }
 }
 
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
 /* named transition durations */
 @utility duration-slide {
   transition-duration: var(--motion-duration-slide);
@@ -331,6 +341,9 @@
 }
 @utility duration-caret {
   transition-duration: var(--motion-duration-caret);
+}
+@utility duration-pulse {
+  transition-duration: var(--motion-duration-pulse);
 }
 
 /* font-family + weight utilities.
@@ -504,6 +517,13 @@
    with the panel's. */
 @utility surface-popover {
   @apply overflow-hidden bg-highlight shadow-l rounded-sm p-xs;
+}
+
+/* skeleton — the placeholder of content still loading: the recessed ground,
+   pulsing. Size it with w-* / h-*; it announces nothing, so the region it
+   stands in for carries role="status" and an aria-label. */
+@utility skeleton {
+  @apply animate-pulse rounded-sm bg-lowered;
 }
 
 /* page-container — the boxed column of a page: the width and the horizontal

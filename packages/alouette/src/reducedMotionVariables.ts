@@ -15,6 +15,7 @@ export const reducedMotionVariables = {
   "--motion-duration-fade": 0,
   "--motion-duration-fast": 0,
   "--motion-duration-caret": 0,
+  "--motion-duration-pulse": 0,
   "--animate-slide-in": "none",
   "--animate-slide-out": "none",
   "--animate-collapse-in": "none",
@@ -22,4 +23,5 @@ export const reducedMotionVariables = {
   "--animate-disclose-in": "none",
   "--animate-disclose-out": "none",
   "--animate-caret-blink": "none",
+  "--animate-pulse": "none",
 } as const;

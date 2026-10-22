@@ -13,4 +13,5 @@ export const animationDurationsMs = {
   fade: 300,
   fast: 200,
   caret: 1000,
+  pulse: 2000,
 } as const;

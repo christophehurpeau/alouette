@@ -7,7 +7,8 @@ description: >
   inside an already-raised surface. ConnectionState is the banner pinned at the
   top of the screen reporting the network. LinearProgress and CircularProgress
   show how far an operation with a known percentage has got; their
-  Indeterminate twins show that one is running when no percentage exists. A failure
+  Indeterminate twins show that one is running when no percentage exists. The
+  skeleton utility is the pulsing placeholder of content still loading. A failure
   coming out of a button or a form is already rendered by that component, so
   reach for these for status the screen itself has to state. Load when showing
   inline status, alerts, dismissible notices, connection status, a progress
@@ -166,6 +167,28 @@ A pending **action** needs neither: a `Button` with `state="loading"` (or
 indeterminate ring (see alouette-actions).
 
 Source: packages/alouette/src/ui/feedback/LinearProgress.tsx; ui/feedback/useSimulatedProgress.ts
+
+## Loading placeholders
+
+Content whose shape is known but whose data is not there yet (a first fetch)
+renders `skeleton` blocks in its place: `animate-pulse rounded-sm bg-lowered`,
+sized with `w-*` / `h-*` to the content they stand in for. A bar is mute, so the
+region carries `role="status"` and an `aria-label`. The pulse stops under reduced
+motion.
+
+```tsx
+<View role="status" aria-label="Loading pull requests" className="gap-xs">
+  <View className="skeleton h-[54px]" />
+  <View className="skeleton h-[54px]" />
+</View>
+```
+
+A placeholder sits where the content will: on the screen ground for rows that
+are raised on their own, inside the `surface` for a card's lines. Once data has
+been shown, a refetch keeps it and uses an `IndeterminateLinearProgress` instead
+of swapping back to skeletons.
+
+Source: packages/alouette/scripts/build-css.ts; ui/feedback/Skeleton.stories.tsx
 
 ## Common Mistakes
 

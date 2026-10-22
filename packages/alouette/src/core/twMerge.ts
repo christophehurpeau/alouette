@@ -9,6 +9,7 @@ type AlouetteClassGroupIds =
   | DefaultClassGroupIds
   | "focus-ring"
   | "lowered"
+  | "skeleton"
   | "page-container"
   | "surface-flat"
   | "surface-popover"
@@ -93,6 +94,7 @@ export const twMergeConfig: ConfigExtension<
       ],
       "focus-ring": ["focus-ring", "focus-ring-inset"],
       lowered: ["lowered"],
+      skeleton: ["skeleton"],
       "page-container": ["page-container"],
       surface: ["surface"],
       "surface-flat": ["surface-flat"],
@@ -108,6 +110,7 @@ export const twMergeConfig: ConfigExtension<
     conflictingClassGroups: {
       "focus-ring": ["outline-w", "outline-offset", "outline-color"],
       lowered: ["bg-color", "shadow"],
+      skeleton: ["animate", "bg-color", "rounded"],
       "page-container": [
         "w",
         "align-self",

@@ -42,6 +42,7 @@ const animationDurationsMs = {
   fade: 300,
   fast: 200,
   caret: 1000,
+  pulse: 2000,
 } as const;
 
 const animateTokens = {
@@ -55,6 +56,8 @@ const animateTokens = {
   "disclose-out": `collapse-out ${animationDurationsMs.disclose}ms cubic-bezier(0.2, 0, 0, 1)`,
   // The drawn caret of InputCode: a step, like a real text caret.
   "caret-blink": `caret-blink ${animationDurationsMs.caret}ms step-end infinite`,
+  // Tailwind's own pulse, redeclared so reduced motion zeroes it with the rest.
+  pulse: `pulse ${animationDurationsMs.pulse}ms cubic-bezier(0.4, 0, 0.6, 1) infinite`,
 } as const;
 
 // What prefers-reduced-motion zeroes: one source for the web @media block and
@@ -373,6 +376,12 @@ ${Object.entries(variables)
   }
 }
 
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
 
 /* named transition durations */
 ${Object.keys(animationDurationsMs)
@@ -490,6 +499,13 @@ ${Object.keys(animationDurationsMs)
    with the panel's. */
 @utility surface-popover {
   @apply overflow-hidden bg-highlight shadow-l rounded-sm p-xs;
+}
+
+/* skeleton — the placeholder of content still loading: the recessed ground,
+   pulsing. Size it with w-* / h-*; it announces nothing, so the region it
+   stands in for carries role="status" and an aria-label. */
+@utility skeleton {
+  @apply animate-pulse rounded-sm bg-lowered;
 }
 
 /* page-container — the boxed column of a page: the width and the horizontal
