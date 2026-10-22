@@ -1,5 +1,6 @@
 import { ArrowSquareOutRegularIcon } from "alouette-icons/phosphor-icons/ArrowSquareOut";
-import type { ReactNode } from "react";
+import { type ReactNode, use } from "react";
+import { Platform } from "react-native";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { ExternalLink } from "../../expo/ExternalLink";
 import {
@@ -10,6 +11,7 @@ import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBox, type InteractiveBoxProps } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
+import { TextAncestorContext } from "../primitives/TextAncestorContext";
 import {
   type LinkTextSizeProps,
   linkTextIconSize,
@@ -49,6 +51,36 @@ export function ExternalLinkText({
 }: ExternalLinkTextProps): ReactNode {
   const isDisabled = disabled === true;
   const styles = linkTextVariants({ size, disabled: isDisabled });
+  const hasTextAncestor = use(TextAncestorContext);
+
+  // On native a View inside a Text is laid out as one inline block, so its
+  // label cannot share the line's baseline: a nested Text does.
+  if (Platform.OS !== "web" && hasTextAncestor) {
+    return (
+      <AccentScope accent={accent}>
+        <ExternalLink
+          as={Text}
+          href={isDisabled ? "" : href}
+          openLinkBehavior={openLinkBehavior}
+          role="link"
+          aria-disabled={isDisabled}
+          disabled={isDisabled}
+          className={styles.text()}
+          onPress={onPress ?? undefined}
+        >
+          {icon ? (
+            <Icon
+              icon={icon}
+              size={linkTextIconSize(size)}
+              className={styles.icon()}
+            />
+          ) : null}
+          {icon ? " " : null}
+          {text}
+        </ExternalLink>
+      </AccentScope>
+    );
+  }
 
   return (
     <AccentScope accent={accent}>
