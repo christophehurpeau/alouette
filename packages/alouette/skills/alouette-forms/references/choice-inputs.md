@@ -92,7 +92,8 @@ option. Label the group via `aria-labelledby`.
 - `RadioGroup` + `Radio` — circle-dot list, for longer or self-evident options.
   The group is as wide as its widest option and every row stretches to it, so
   each option has the same target and hover ground whatever its label; pass
-  `className="self-stretch"` to fill the container (a list in a dialog).
+  `className="self-stretch"` to fill a column container (a list in a dialog),
+  `flex-1` to share a row's width.
 - `RadioButtonGroup` + `RadioButton` — segmented pill bar: a lowered 44px track,
   each pressable filling the tap target around a shorter visible chip. It is a
   form input; for the same material used to move between destinations or switch

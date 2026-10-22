@@ -104,9 +104,11 @@ function getContainerWidth(element: HTMLElement): number {
   if (!container) throw new Error("No laid-out container");
   const style = getComputedStyle(container);
   return (
-    container.clientWidth -
+    container.getBoundingClientRect().width -
+    Number.parseFloat(style.borderLeftWidth) -
     Number.parseFloat(style.paddingLeft) -
-    Number.parseFloat(style.paddingRight)
+    Number.parseFloat(style.paddingRight) -
+    Number.parseFloat(style.borderRightWidth)
   );
 }
 

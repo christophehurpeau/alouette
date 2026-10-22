@@ -9,8 +9,9 @@ import {
 import { CheckboxContextProvider } from "./CheckboxContext";
 
 export interface CheckboxGroupProps extends MultiSelectionGroupProps {
-  /** The group is as wide as its widest option; `self-stretch` makes it (and
-   * every row) fill its container, as a list in a dialog does. */
+  /** The group is as wide as its widest option. In a column, `self-stretch`
+   * makes it (and every row) fill its container, as a list in a dialog does;
+   * in a row, `flex-1` shares the row's width. */
   className?: string;
 }
 
