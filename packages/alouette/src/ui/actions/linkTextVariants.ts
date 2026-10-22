@@ -6,23 +6,28 @@ import { type VariantProps, tv } from "tailwind-variants";
 // reads the base `text-*` only, so the group-driven hover/active tint is
 // web-only.
 //
-// Inside a Text, react-native-web renders the frame `inline-flex`, whose
-// baseline comes from its first item — the icon, whose baseline is its bottom
-// edge — so the label would sit above the surrounding line. `self-baseline` on
-// the label hands the frame its baseline instead. Web only: Yoga aligns a lone
-// baseline item to the cross start, which would lift the label off the icon.
+// `inline` (web only, a link inside a Text): react-native-web renders the frame
+// `inline-flex`, whose baseline comes from its first item — the icon, whose
+// baseline is its bottom edge — so the label would sit above the surrounding
+// line. `self-baseline` on the label hands the frame its baseline instead. Only
+// inline: a lone baseline item is pinned to the top of a frame taller than its
+// line (a crumb's tap target). Native renders an inline link as a nested Text.
 export const linkTextVariants = tv(
   {
     slots: {
       frame:
         "group flex-row items-center gap-xxs self-start focus-visible:focus-ring",
-      text: "shrink web:self-baseline font-body-bold underline transition-[color] duration-fast ease-in",
+      text: "shrink font-body-bold underline transition-[color] duration-fast ease-in",
       icon: "",
     },
     variants: {
       size: {
         sm: { text: "text-sm" },
         md: { text: "text-base" },
+      },
+      inline: {
+        true: { text: "self-baseline" },
+        false: {},
       },
       disabled: {
         true: {
@@ -35,7 +40,7 @@ export const linkTextVariants = tv(
         },
       },
     },
-    defaultVariants: { size: "md", disabled: false },
+    defaultVariants: { size: "md", disabled: false, inline: false },
   },
   { twMerge: false },
 );

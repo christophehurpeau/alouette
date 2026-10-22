@@ -208,9 +208,19 @@ export const BreadcrumbsTestsStory: ThisStory = {
     await expect(home).not.toHaveAttribute("aria-current");
 
     for (const crumb of [home, library]) {
-      await expect(crumb.getBoundingClientRect().height).toBeGreaterThanOrEqual(
-        44,
-      );
+      const crumbRect = crumb.getBoundingClientRect();
+      await expect(crumbRect.height).toBeGreaterThanOrEqual(44);
+      // The label is centered in the tap target, not pinned to its top.
+      const labelRect = within(crumb)
+        .getByText(crumb.getAttribute("aria-label") ?? "")
+        .getBoundingClientRect();
+      await expect(
+        Math.abs(
+          labelRect.top +
+            labelRect.height / 2 -
+            (crumbRect.top + crumbRect.height / 2),
+        ),
+      ).toBeLessThanOrEqual(1);
     }
 
     const router = within(canvas.getByRole("navigation", { name: "Router" }));

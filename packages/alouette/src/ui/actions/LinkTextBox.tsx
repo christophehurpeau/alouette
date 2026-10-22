@@ -20,15 +20,20 @@ export interface LinkTextFrameProps
   disabled: boolean;
 }
 
+interface LinkTextBoxProps extends LinkTextFrameProps {
+  inline?: boolean;
+}
+
 export function LinkTextBox({
+  inline,
   text,
   icon,
   size,
   disabled,
   className,
   ...pressableProps
-}: LinkTextFrameProps): ReactNode {
-  const styles = linkTextVariants({ size, disabled });
+}: LinkTextBoxProps): ReactNode {
+  const styles = linkTextVariants({ size, disabled, inline });
 
   return (
     <InteractiveBox
