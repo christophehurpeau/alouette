@@ -85,6 +85,14 @@ export const DecisionBarVariantsStory: ThisStory = {
         />
       </Story.Section>
 
+      <Story.Section title="Null dismiss text">
+        <DecisionBar
+          dismissText={null}
+          primary={<Button text="Save" onPress={fn()} />}
+          onDismiss={fn()}
+        />
+      </Story.Section>
+
       <Story.Section title="With an alternative">
         <DecisionBar
           primary={<Button text="Publish" onPress={fn()} />}
@@ -173,5 +181,21 @@ export const DecisionBarOrderStory: ThisStory = {
 
     await userEvent.click(canvas.getByRole("button", { name: "Discard" }));
     await expect(args.onDismiss).toHaveBeenCalledOnce();
+  },
+};
+
+export const DecisionBarDefaultDismissTextStory: ThisStory = {
+  name: "DecisionBar Default Dismiss Text",
+  args: {
+    primary: <Button text="Save" onPress={fn()} />,
+    dismissText: null,
+    onDismiss: fn(),
+  },
+  render: (args) => <DecisionBar {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole("button", { name: "Cancel" }),
+    ).toBeInTheDocument();
   },
 };

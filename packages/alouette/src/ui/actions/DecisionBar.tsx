@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { twMerge } from "../../core/twMerge";
 import { View } from "../primitives/View";
 import { Button } from "./Button";
@@ -9,14 +9,14 @@ export interface DecisionBarProps {
    * runs a promise, a `FormSubmitButton` in a `Form`, a plain `Button` for a
    * synchronous one ("Close", "OK").
    */
-  primary: ReactNode;
+  primary: ReactElement;
   /**
    * Another way to end the decision, committing differently from `primary`
    * ("Save draft" beside "Publish"). Rendered between the dismiss action and
    * `primary`. One element: several alternatives belong in a `SplitButton` or
    * a `Menu`.
    */
-  alternative?: ReactNode;
+  alternative?: ReactElement;
   /**
    * Ends the decision without committing — Cancel, Discard, Not now. The bar
    * renders it, leftmost of the row, so a dismissal always looks the same.
@@ -45,7 +45,7 @@ export function DecisionBar({
   primary,
   alternative,
   onDismiss,
-  dismissText = "Cancel",
+  dismissText,
   dismissDisabled,
   emphasis = "primary",
   className,
@@ -61,7 +61,7 @@ export function DecisionBar({
         <Button
           accent="neutral"
           variant={emphasis === "dismiss" ? "filled" : "soft"}
-          text={dismissText}
+          text={dismissText ?? "Cancel"}
           disabled={dismissDisabled}
           onPress={onDismiss}
         />
