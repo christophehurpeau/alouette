@@ -48,7 +48,10 @@ export function Checkbox({
       ? group.values.includes(value)
       : standaloneChecked;
   const isDisabled = disabled === true || group?.disabled === true;
-  const styles = selectionRowVariants({ disabled: isDisabled });
+  const styles = selectionRowVariants({
+    standalone: !group,
+    disabled: isDisabled,
+  });
 
   return (
     <AccentScope accent={group ? undefined : accent}>

@@ -73,6 +73,23 @@ export const VariantsRadioGroupStory: ThisStory = {
   ),
 };
 
+/** The content-box width of the first ancestor that lays `element` out. */
+function getContainerWidth(element: HTMLElement): number {
+  let container = element.parentElement;
+  while (container && getComputedStyle(container).display === "contents") {
+    container = container.parentElement;
+  }
+  if (!container) throw new Error("No laid-out container");
+  const style = getComputedStyle(container);
+  return (
+    container.getBoundingClientRect().width -
+    Number.parseFloat(style.borderLeftWidth) -
+    Number.parseFloat(style.paddingLeft) -
+    Number.parseFloat(style.paddingRight) -
+    Number.parseFloat(style.borderRightWidth)
+  );
+}
+
 export const TestsRadioGroupStory: StoryObj<typeof RadioGroup> = {
   name: "RadioGroup Tests",
   render: () => (
@@ -82,6 +99,12 @@ export const TestsRadioGroupStory: StoryObj<typeof RadioGroup> = {
           <Radio value="day" label="Day" />
           <Radio value="week" label="Week" />
           <Radio disabled value="month" label="Month" />
+        </RadioGroup>
+      </Story.Section>
+      <Story.Section title="Stretched">
+        <RadioGroup className="self-stretch" defaultValue="comment">
+          <Radio value="comment" label="Comment" />
+          <Radio value="request-changes" label="Request changes" />
         </RadioGroup>
       </Story.Section>
     </Story>
@@ -96,6 +119,24 @@ export const TestsRadioGroupStory: StoryObj<typeof RadioGroup> = {
     await expect(day).toHaveAttribute("aria-checked", "true");
     await expect(week).toHaveAttribute("aria-checked", "false");
     await expect(month).toHaveAttribute("aria-disabled", "true");
+
+    // Every row stretches to the group, which shrinks to its widest row: the
+    // target does not depend on the label's length, and the hover ground does
+    // not span the page.
+    const [group, stretchedGroup] = canvas.getAllByRole("radiogroup");
+    if (!group || !stretchedGroup) throw new Error("Missing radio groups");
+    const groupWidth = group.getBoundingClientRect().width;
+    for (const row of [day, week, month]) {
+      await expect(row.getBoundingClientRect().width).toBe(groupWidth);
+    }
+    await expect(groupWidth).toBeLessThan(getContainerWidth(group));
+
+    // `self-stretch` on the group makes it, and every row, fill its container.
+    const stretchedWidth = stretchedGroup.getBoundingClientRect().width;
+    await expect(stretchedWidth).toBe(getContainerWidth(stretchedGroup));
+    for (const row of within(stretchedGroup).getAllByRole("radio")) {
+      await expect(row.getBoundingClientRect().width).toBe(stretchedWidth);
+    }
 
     // Keyboard focus (focus-visible) leaves the row's ground alone — a focus
     // ground would stay lit after a mouse click — and moves the ring to the

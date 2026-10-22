@@ -95,6 +95,23 @@ export const VariantsCheckboxGroupStory: ThisStory = {
   ),
 };
 
+/** The content-box width of the first ancestor that lays `element` out. */
+function getContainerWidth(element: HTMLElement): number {
+  let container = element.parentElement;
+  while (container && getComputedStyle(container).display === "contents") {
+    container = container.parentElement;
+  }
+  if (!container) throw new Error("No laid-out container");
+  const style = getComputedStyle(container);
+  return (
+    container.getBoundingClientRect().width -
+    Number.parseFloat(style.borderLeftWidth) -
+    Number.parseFloat(style.paddingLeft) -
+    Number.parseFloat(style.paddingRight) -
+    Number.parseFloat(style.borderRightWidth)
+  );
+}
+
 export const TestsCheckboxGroupStory: ThisStory = {
   name: "CheckboxGroup Tests",
   args: { onValuesChange: fn() },
@@ -111,6 +128,12 @@ export const TestsCheckboxGroupStory: ThisStory = {
           <Checkbox disabled value="month" label="Month" />
         </CheckboxGroup>
       </Story.Section>
+      <Story.Section title="Stretched">
+        <CheckboxGroup aria-label="Notifications" className="self-stretch">
+          <Checkbox value="email" label="Email" />
+          <Checkbox value="push" label="Push notifications" />
+        </CheckboxGroup>
+      </Story.Section>
     </Story>
   ),
   play: async ({ args, canvasElement }) => {
@@ -125,6 +148,21 @@ export const TestsCheckboxGroupStory: ThisStory = {
     await expect(week).toHaveAttribute("aria-checked", "false");
     await expect(month).toHaveAttribute("aria-disabled", "true");
     await expect(day.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
+
+    // Every row stretches to the group, which shrinks to its widest row.
+    const groupWidth = group.getBoundingClientRect().width;
+    for (const row of [day, week, month]) {
+      await expect(row.getBoundingClientRect().width).toBe(groupWidth);
+    }
+    await expect(groupWidth).toBeLessThan(getContainerWidth(group));
+
+    // `self-stretch` on the group makes it, and every row, fill its container.
+    const stretchedGroup = canvas.getByRole("group", { name: "Notifications" });
+    const stretchedWidth = stretchedGroup.getBoundingClientRect().width;
+    await expect(stretchedWidth).toBe(getContainerWidth(stretchedGroup));
+    for (const row of within(stretchedGroup).getAllByRole("checkbox")) {
+      await expect(row.getBoundingClientRect().width).toBe(stretchedWidth);
+    }
 
     // Keyboard focus (focus-visible) leaves the row's ground alone — a focus
     // ground would stay lit after a mouse click — and moves the box to the
@@ -182,6 +220,11 @@ export const TestsStandaloneCheckboxStory: ThisStory = {
     const danger = canvas.getByRole("checkbox", { name: "Delete my data" });
 
     await expect(terms).toHaveAttribute("aria-checked", "false");
+
+    // A standalone row keeps its own width.
+    await expect(terms.getBoundingClientRect().width).toBeLessThan(
+      getContainerWidth(terms),
+    );
 
     // An unchecked box already carries its accent.
     const getBoxBorderColor = (row: HTMLElement): string | undefined => {

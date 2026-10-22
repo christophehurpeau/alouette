@@ -19,7 +19,10 @@ export function Radio({ value, label, disabled }: RadioProps): ReactNode {
   } = useRadioContext();
   const selected = selectedValue === value;
   const isDisabled = disabled === true || groupDisabled === true;
-  const styles = selectionRowVariants({ disabled: isDisabled });
+  const styles = selectionRowVariants({
+    standalone: false,
+    disabled: isDisabled,
+  });
 
   return (
     <InteractiveBox

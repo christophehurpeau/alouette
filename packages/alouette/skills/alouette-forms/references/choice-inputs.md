@@ -90,6 +90,10 @@ passed as an options array, and a child's own `disabled` affects only that
 option. Label the group via `aria-labelledby`.
 
 - `RadioGroup` + `Radio` — circle-dot list, for longer or self-evident options.
+  The group is as wide as its widest option and every row stretches to it, so
+  each option has the same target and hover ground whatever its label; pass
+  `className="self-stretch"` to fill a column container (a list in a dialog),
+  `flex-1` to share a row's width.
 - `RadioButtonGroup` + `RadioButton` — segmented pill bar: a lowered 44px track,
   each pressable filling the tap target around a shorter visible chip. It is a
   form input; for the same material used to move between destinations or switch
@@ -145,12 +149,14 @@ Two of those families with checkboxes: the group owns `values` (`string[]`),
 in or out. Roles are `group` + `checkbox`/`aria-checked`; label the group with
 `aria-label` or `aria-labelledby`.
 
-- `CheckboxGroup` + `Checkbox` — square-check list.
+- `CheckboxGroup` + `Checkbox` — square-check list, sized like `RadioGroup`
+  (as wide as its widest row, `className="self-stretch"` to fill).
 - `CheckboxCardGroup` + `CheckboxCard` — the cards, same `layout` and `variant`
   as `RadioCardGroup`: every checked card takes the accent.
 
 A `Checkbox` rendered outside a `CheckboxGroup` is a standalone boolean:
-`checked`, `defaultChecked`, `onValueChange(checked)` and its own `accent`. Inside
+`checked`, `defaultChecked`, `onValueChange(checked)` and its own `accent`; its
+row keeps the width of its label. Inside
 a group it requires `value` and ignores those. `CheckboxCard` throws outside a
 group.
 
