@@ -128,6 +128,27 @@ export const LinkTextVariantsStory: ThisStory = {
         </View>
       </Story.Section>
 
+      <Story.Section title="In a text flow">
+        <View className="gap-xs items-start max-w-[420px]">
+          <Paragraph className="text-base">
+            {"The report you are looking for moved to the "}
+            <LinkText href="/library" text="library" />, next to the other
+            documents shared with your team during the last quarter.
+          </Paragraph>
+          <Paragraph className="text-base">
+            {"Every document of the quarter now sits in "}
+            <LinkText
+              href="/library"
+              icon={<FolderRegularIcon />}
+              size="sm"
+              text="reports"
+            />
+            , sorted by date, with the drafts kept apart until they are
+            reviewed.
+          </Paragraph>
+        </View>
+      </Story.Section>
+
       <Story.Section title="Accents">
         <AccentLinkText />
         {accentsWithoutNeutral.map((accent) => (
