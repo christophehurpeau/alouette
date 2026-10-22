@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { Text, type TextProps } from "../primitives/Text";
 
 const storyTitleVariants = tv({

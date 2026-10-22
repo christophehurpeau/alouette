@@ -3,8 +3,9 @@ import type {
   PressableProps as RNPressableProps,
   View as RNView,
 } from "react-native";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { AccentScope } from "../containers/AccentScope";
 import {
   InteractiveBox,

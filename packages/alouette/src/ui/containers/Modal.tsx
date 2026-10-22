@@ -6,9 +6,10 @@ import {
   Modal as RNModal,
   useWindowDimensions,
 } from "react-native";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useReducedMotion } from "../../core/ReducedMotionContext";
+import { tv } from "../../core/tv";
 import { useScrollEndState } from "../../core/useScrollEndState";
 import { IconButton } from "../actions/IconButton";
 import { Icon, type SVGIconElement } from "../primitives/Icon";

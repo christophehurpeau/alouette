@@ -1,8 +1,8 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
 import type { Accent } from "../core/AlouetteConfig";
+import { tv } from "../core/tv";
 import { AccentScope } from "../ui/containers/AccentScope";
 import { Text } from "../ui/primitives/Text";
 import { View } from "../ui/primitives/View";

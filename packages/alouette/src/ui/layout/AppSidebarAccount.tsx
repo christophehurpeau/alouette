@@ -1,7 +1,7 @@
 import { CaretUpRegularIcon } from "alouette-icons/phosphor-icons/CaretUp";
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { Menu } from "../actions/Menu";
 import { PressableBox } from "../actions/PressableBox";
 import { Avatar } from "../data/Avatar";

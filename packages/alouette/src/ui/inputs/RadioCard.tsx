@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { PressableBox } from "../actions/PressableBox";
 import { DefaultAccentScope } from "../containers/DefaultAccentScope";
 import { Icon, type SVGIconElement } from "../primitives/Icon";

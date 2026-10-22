@@ -1,29 +1,25 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
-import { twMergeConfig } from "../../core/twMerge";
+import { tv } from "../../core/tv";
 import { AccentScope } from "../containers/AccentScope";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 
-const sectionTitleVariants = tv(
-  {
-    slots: {
-      frame: "flex-row items-center gap-xs",
-      icon: "text-muted",
-      title: "font-heading-bold text-lg",
-    },
-    variants: {
-      accented: {
-        true: { icon: "text-accent", title: "text-accent" },
-        false: {},
-      },
-    },
-    defaultVariants: { accented: false },
+const sectionTitleVariants = tv({
+  slots: {
+    frame: "flex-row items-center gap-xs",
+    icon: "text-muted",
+    title: "font-heading-bold text-lg",
   },
-  { twMergeConfig },
-);
+  variants: {
+    accented: {
+      true: { icon: "text-accent", title: "text-accent" },
+      false: {},
+    },
+  },
+  defaultVariants: { accented: false },
+});
 
 export interface SectionTitleProps {
   children: string;

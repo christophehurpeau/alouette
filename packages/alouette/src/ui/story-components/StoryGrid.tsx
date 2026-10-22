@@ -1,6 +1,6 @@
 import { Children, type ReactNode } from "react";
 import { Platform } from "react-native";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { View } from "../primitives/View";
 import { StoryTitle } from "./StoryTitle";
 

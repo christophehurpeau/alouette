@@ -4,7 +4,8 @@ import {
   TextInput as RNTextInput,
   type TextInputProps as RNTextInputProps,
 } from "react-native";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { useColorVariable } from "../../core/useColorToken";
 import { StableAccentScope } from "../containers/StableAccentScope";
 import { View } from "../primitives/View";

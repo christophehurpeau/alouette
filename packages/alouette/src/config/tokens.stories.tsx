@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
+import { tv } from "../core/tv";
 import { Text } from "../ui/primitives/Text";
 import { View } from "../ui/primitives/View";
 import { Story } from "../ui/story-components/Story";

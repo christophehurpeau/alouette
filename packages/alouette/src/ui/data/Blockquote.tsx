@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import type { ViewProps as RNViewProps } from "react-native";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { Box } from "../containers/Box";
 import { Paragraph } from "../primitives/Text";
 

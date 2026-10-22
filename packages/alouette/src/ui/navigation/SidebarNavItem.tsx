@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import type { AccentScopeProps } from "../containers/AccentScope";
 import { InteractiveBox } from "../containers/Box";
 import type { SVGIconElement } from "../primitives/Icon";

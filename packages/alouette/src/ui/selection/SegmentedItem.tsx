@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
 import { useDensity } from "../../core/DensityContext";
+import { tv } from "../../core/tv";
 import type { AccentScopeProps } from "../containers/AccentScope";
 import { InteractiveBox, type InteractiveBoxProps } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";

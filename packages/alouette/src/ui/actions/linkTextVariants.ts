@@ -1,4 +1,5 @@
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
+import { tv } from "../../core/tv";
 
 // The link treatment of the whole system, shared with ExternalLinkText: an
 // underlined label drawn from the `interactive-*` foreground tokens, tinted on

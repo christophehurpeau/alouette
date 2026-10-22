@@ -7,8 +7,8 @@ import {
   type ViewProps as RNViewProps,
 } from "react-native";
 import type { VariantProps } from "tailwind-variants";
-import { tv } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { twMerge } from "../../core/twMerge";
 import { useSafeAreaInsets } from "../../core/useSafeAreaInsets";
 import { AccentScope } from "./AccentScope";

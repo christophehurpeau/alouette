@@ -1,8 +1,8 @@
 import { CaretDownRegularIcon } from "alouette-icons/phosphor-icons/CaretDown";
 import { type ReactNode, useMemo } from "react";
-import { tv } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
+import { tv } from "../../core/tv";
 import { useControllableValue } from "../../core/useControllableValue";
 import { Icon } from "../primitives/Icon";
 import { View } from "../primitives/View";

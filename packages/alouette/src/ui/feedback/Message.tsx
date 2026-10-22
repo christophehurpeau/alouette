@@ -6,9 +6,10 @@ import {
 } from "alouette-icons/phosphor-icons/Warning";
 import { XRegularIcon } from "alouette-icons/phosphor-icons/X";
 import type { ReactNode } from "react";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import type { Except } from "type-fest";
 import type { Accent } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { IconButton } from "../actions/IconButton";
 import { AccentScope } from "../containers/AccentScope";
 import { Box } from "../containers/Box";

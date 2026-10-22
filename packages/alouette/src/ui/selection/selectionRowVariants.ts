@@ -1,4 +1,4 @@
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 
 // A bare label row (Radio, Checkbox) wears the `soft` material: no ground at
 // rest, a surface tone on hover and press, the focus ring on keyboard focus.

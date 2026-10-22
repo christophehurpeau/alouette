@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { LinkText, type LinkTextProps } from "../actions/LinkText";
 import { linkTextIconSize } from "../actions/linkTextVariants";
 import { Icon, type SVGIconElement } from "../primitives/Icon";

@@ -2,7 +2,7 @@ import { CaretRightRegularIcon } from "alouette-icons/phosphor-icons/CaretRight"
 import type { ReactNode } from "react";
 import type { GestureResponderEvent } from "react-native";
 import { View } from "react-native";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { Icon } from "../primitives/Icon";
 import { PressableBox, type PressableBoxProps } from "./PressableBox";
 

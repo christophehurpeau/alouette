@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { View } from "react-native";
-import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import { useControllableChecked } from "../../core/useControllableChecked";
 import { AccentScope } from "../containers/AccentScope";
 import { InteractiveBoxHitSlop } from "../containers/Box";

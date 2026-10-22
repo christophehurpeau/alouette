@@ -111,9 +111,11 @@ one utility for the role. Each new utility gets a class group in
 `core/twMerge.ts` listing what it replaces when written after — never listed as
 a conflict of the single classes, which override it by stylesheet order (the
 multi-declaration utilities sort first). Components
-that accept a `className` merge it with the shared `core/twMerge.ts` (or pass its
-`twMergeConfig` to `tv()`), never by string concatenation — tailwind-merge does
-not know the named spacing scale or the custom utilities without it.
+that accept a `className` merge it with the shared `core/twMerge.ts`, or through a
+`tv()` imported from `core/tv.ts` (built on its `twMergeConfig`; the plain `tv`
+from `tailwind-variants` is a lint error), never by string concatenation —
+tailwind-merge does not know the named spacing scale or the custom utilities
+without it.
 
 This project uses **NativeWind v5**. Tailwind classes via `className`; animations are CSS `@keyframes` + `--animate-*` tokens, run on native via Reanimated. Define **structural** tokens/keyframes (type/radius/shadow/spacing/animation, fonts, utilities) in `packages/alouette/scripts/build-css.ts`; define **color** palettes in `packages/alouette/src/theme-generator/paletteSpecs.ts`. Regenerate with `pnpm --filter alouette build:css` — never edit the generated CSS (`global.css`, `core.css`, `default-palette.css`, `default-palette-oklch.css`) directly.
 

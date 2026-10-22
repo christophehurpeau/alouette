@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import { useConsumedSafeAreaEdges } from "../../core/SafeAreaEdgesContext";
+import { tv } from "../../core/tv";
 import { useScreenSafeAreaPadding } from "../../core/useScreenSafeAreaPadding";
 import { Box, type BoxProps } from "../containers/Box";
 import { View } from "../primitives/View";

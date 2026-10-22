@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 import { useWindowDimensions } from "react-native";
-import { tv } from "tailwind-variants";
 import { Breakpoints } from "../../config/Breakpoints";
 import {
   SafeAreaScope,
   allSafeAreaEdges,
   useConsumedSafeAreaEdges,
 } from "../../core/SafeAreaEdgesContext";
+import { tv } from "../../core/tv";
 import { useScreenSafeAreaPadding } from "../../core/useScreenSafeAreaPadding";
 import { ScrollView } from "../primitives/ScrollView";
 import { View } from "../primitives/View";

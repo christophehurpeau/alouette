@@ -2,11 +2,12 @@ import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircl
 import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/Warning";
 import { type ReactNode, type Ref, useEffect, useState } from "react";
 import type { View as RNView } from "react-native";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import type { Density, controlHeightsPx } from "../../controlSizes";
 import type { Accent, AccentOrNeutral } from "../../core/AlouetteConfig";
 import { useDensity } from "../../core/DensityContext";
 import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
+import { tv } from "../../core/tv";
 import { ExternalLink } from "../../expo/ExternalLink";
 import {
   type ExternalOpenLinkBehavior,

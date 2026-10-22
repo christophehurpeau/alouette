@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
+import { tv } from "../../core/tv";
 import { Box } from "../containers/Box";
 import { Icon, type SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";

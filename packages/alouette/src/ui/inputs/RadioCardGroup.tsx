@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { createContext, use, useMemo } from "react";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { AccentScope } from "../containers/AccentScope";
 import { View } from "../primitives/View";
 import {

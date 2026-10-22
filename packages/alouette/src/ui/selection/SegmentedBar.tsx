@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { Box, type BoxProps } from "../containers/Box";
 import type {
   SegmentedOrientation,

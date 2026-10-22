@@ -1,9 +1,9 @@
 import type { ReactNode, Ref } from "react";
 import type { View as RNView } from "react-native";
 import type { VariantProps } from "tailwind-variants";
-import { tv } from "tailwind-variants";
 import { controlHeightsPx } from "../../controlSizes";
 import { useDensity } from "../../core/DensityContext";
+import { tv } from "../../core/tv";
 import { mergeTooltipTriggerProps } from "../containers/mergeTooltipTriggerProps";
 import type { SVGIconElement } from "../primitives/Icon";
 import { InteractiveIcon } from "../primitives/InteractiveIcon";

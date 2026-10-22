@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { tv } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
 import { useAccentOrInheritedOrBrand } from "../../core/ThemeContext";
+import { tv } from "../../core/tv";
 import { AccentScope } from "../containers/AccentScope";
 import { View } from "../primitives/View";
 import { useSimulatedProgress } from "./useSimulatedProgress";

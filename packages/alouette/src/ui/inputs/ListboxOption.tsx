@@ -5,7 +5,7 @@ import {
   type PressableProps,
   type View as RNView,
 } from "react-native";
-import { tv } from "tailwind-variants";
+import { tv } from "../../core/tv";
 import { Icon } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
 import type { SelectOption } from "./Select.shared";

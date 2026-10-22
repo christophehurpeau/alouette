@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
-import { type VariantProps, tv } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import type { Accent } from "../../core/AlouetteConfig";
+import { tv } from "../../core/tv";
 import {
   type ExternalOpenLinkBehavior,
   defaultExternalOpenLinkBehavior,
