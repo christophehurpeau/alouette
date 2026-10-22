@@ -7,6 +7,7 @@ import type { GestureResponderEvent } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
 import { Button, type ButtonState } from "../actions/Button";
 import { CollapsibleErrorMessage } from "../actions/CollapsibleErrorMessage";
+import { DecisionBar } from "../actions/DecisionBar";
 import { usePressAsync } from "../actions/usePressAsync";
 import type { SVGIconElement } from "../primitives/Icon";
 import { Text } from "../primitives/Text";
@@ -133,9 +134,9 @@ interface ActionFooterProps {
   error: Error | null;
 }
 
-// Modal lays the footer out as a right-aligned row; a single full-width child
-// turns it into a column so the failure message spans the dialog instead of
-// being squeezed to the width of the button that triggered it.
+// The failure message goes under the whole bar rather than under the button
+// that triggered it, so it spans the dialog instead of being squeezed to the
+// width of that button.
 function ActionFooter({
   children,
   errorToMessage,
@@ -152,9 +153,7 @@ function ActionFooter({
     );
   return (
     <View className="w-full gap-sm">
-      <View className="flex-row items-center justify-end gap-m">
-        {children}
-      </View>
+      {children}
       {errorMessage}
     </View>
   );
@@ -186,7 +185,15 @@ function resolveVariant(
       return {
         onDismiss: onClose,
         footer: (
-          <Button accent={accent} text={closeText ?? "OK"} onPress={onClose} />
+          <DecisionBar
+            primary={
+              <Button
+                accent={accent}
+                text={closeText ?? "OK"}
+                onPress={onClose}
+              />
+            }
+          />
         ),
       };
     }
@@ -196,12 +203,16 @@ function resolveVariant(
         onDismiss: noop,
         footer: (
           <ActionFooter error={error} errorToMessage={errorToMessage}>
-            <Button
-              accent={accent}
-              text={confirmText ?? "OK"}
-              state={buttonState}
-              disabled={confirmDisabled}
-              onPress={handleConfirm}
+            <DecisionBar
+              primary={
+                <Button
+                  accent={accent}
+                  text={confirmText ?? "OK"}
+                  state={buttonState}
+                  disabled={confirmDisabled}
+                  onPress={handleConfirm}
+                />
+              }
             />
           </ActionFooter>
         ),
@@ -223,20 +234,21 @@ function resolveVariant(
         onDismiss: isPending ? noop : onCancel,
         footer: (
           <ActionFooter error={error} errorToMessage={errorToMessage}>
-            <Button
-              accent="neutral"
-              variant={isCancelPrimary ? "filled" : "soft"}
-              text={cancelText ?? "Cancel"}
-              disabled={isPending}
-              onPress={onCancel}
-            />
-            <Button
-              accent={accent}
-              variant={isCancelPrimary ? "soft" : "tonal"}
-              text={confirmText ?? "Confirm"}
-              state={buttonState}
-              disabled={confirmDisabled}
-              onPress={handleConfirm}
+            <DecisionBar
+              emphasis={isCancelPrimary ? "dismiss" : "primary"}
+              dismissText={cancelText}
+              dismissDisabled={isPending}
+              primary={
+                <Button
+                  accent={accent}
+                  variant={isCancelPrimary ? "soft" : "tonal"}
+                  text={confirmText ?? "Confirm"}
+                  state={buttonState}
+                  disabled={confirmDisabled}
+                  onPress={handleConfirm}
+                />
+              }
+              onDismiss={onCancel}
             />
           </ActionFooter>
         ),

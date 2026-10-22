@@ -1,3 +1,49 @@
+# Recommended: DecisionBar for action rows
+
+Not breaking: `Modal`'s `footer` still takes any content. A row of buttons
+ending a decision — a `Modal` footer, an inline form's Cancel and Save — moves
+to `DecisionBar`, which owns its alignment and order (dismiss, `alternative`,
+`primary`) instead of each call site picking its own. The dismiss action is
+rendered by the bar, as the neutral `soft` button.
+
+```tsx
+// Before
+<View className="flex-row gap-xs">
+  <ActionButton text="Save" onPress={save} errorToMessage={toMessage} />
+  <Button accent="neutral" variant="soft" text="Cancel" onPress={close} />
+</View>
+
+<Modal
+  footer={
+    <>
+      <Button accent="neutral" variant="soft" text="Discard" onPress={discard} />
+      <Button text="Save" onPress={save} />
+    </>
+  }
+/>
+
+// After
+<DecisionBar
+  dismissText="Cancel"
+  onDismiss={close}
+  primary={<ActionButton text="Save" onPress={save} errorToMessage={toMessage} />}
+/>
+
+<Modal
+  footer={
+    <DecisionBar
+      dismissText="Discard"
+      onDismiss={discard}
+      primary={<Button text="Save" onPress={save} />}
+    />
+  }
+/>
+```
+
+A second way to commit ("Save draft" beside "Publish") is `alternative`; a
+Cancel carrying the weight (neutral `filled`, beside a `soft` primary) is
+`emphasis="dismiss"`.
+
 # To 24.0.0
 
 ## FormItem: `render` takes an object, and the input shows the error
