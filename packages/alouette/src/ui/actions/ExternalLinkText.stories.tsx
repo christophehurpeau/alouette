@@ -138,6 +138,27 @@ export const VariantsExternalLinkTextStory: ThisStory = {
             href="https://storybook.js.org/docs"
             text="Read the documentation about writing stories and play functions"
           />
+          <Paragraph className="text-base">
+            {"Every component is documented with its props and variants. See "}
+            <ExternalLinkText
+              href="https://storybook.js.org/docs"
+              text="docs"
+            />
+            {
+              " for the conventions behind stories and play functions, then open an issue if something is missing."
+            }
+          </Paragraph>
+          <Paragraph className="text-base">
+            {"Live updates are not enabled. Contact "}
+            <ExternalLinkText
+              size="sm"
+              href="mailto:contact@example.com"
+              text="support"
+            />
+            {
+              " to enable them on your workspace, or check the status page for the planned rollout of the feature."
+            }
+          </Paragraph>
         </View>
       </Story.Section>
     </Story>
