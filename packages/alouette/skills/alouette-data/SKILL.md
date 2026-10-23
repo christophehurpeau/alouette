@@ -6,10 +6,13 @@ description: >
   shows one labelled value behind an edit affordance and EditableSection a whole
   titled section behind one; Bullet is an icon + text list row; Code and
   CodeBlock render source inline and as a block; Blockquote (BlockquoteFrame
-  for block content) and Citation render a quoted excerpt and its attribution. All are display-only — they own no
-  editor and no press handling, and are never wrapped in a Link or Pressable to
-  gain one. Load when showing a status chip, a list row, an avatar, a value or
-  section with an edit affordance, code, a quote or its attribution.
+  for block content) and Citation render a quoted excerpt and its attribution;
+  Disclosure hides content behind a caret row, like an HTML details/summary.
+  All but Disclosure are display-only — they own no editor and no press
+  handling, and are never wrapped in a Link or Pressable to gain one. Load when
+  showing a status chip, a list row, an avatar, a value or section with an edit
+  affordance, code, a quote or its attribution, collapsible details, or
+  rendering markdown.
 sources:
   - packages/alouette/src/ui/data/Badge.tsx
   - packages/alouette/src/ui/data/Badge.stories.tsx
@@ -24,6 +27,7 @@ sources:
   - packages/alouette/src/ui/data/Blockquote.tsx
   - packages/alouette/src/ui/data/Citation.tsx
   - packages/alouette/src/ui/data/Avatar.tsx
+  - packages/alouette/src/ui/containers/Disclosure.tsx
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.
@@ -210,6 +214,12 @@ Both take attribution in the `citation` prop as a node — normally a `Citation`
 `href` the source becomes an `ExternalLinkText` (so `openLinkBehavior` applies);
 without it, plain muted text. It stands alone under any excerpt, not only under a
 `Blockquote`.
+
+## Disclosure
+
+`Disclosure` shows or hides its children under a caret row. Its `label` is
+inline text naming the trigger (nested `Text` and `Code` runs, **never a link**).
+A markdown `<details>`: [references/disclosure.md](references/disclosure.md).
 
 ## EditableItem and EditableSection
 

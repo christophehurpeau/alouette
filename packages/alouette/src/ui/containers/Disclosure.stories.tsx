@@ -2,7 +2,8 @@ import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
 import { Button } from "../actions/Button";
-import { Text } from "../primitives/Text";
+import { Code } from "../data/Code";
+import { Paragraph, Text } from "../primitives/Text";
 import { View } from "../primitives/View";
 import { Story } from "../story-components/Story";
 import { Box } from "./Box";
@@ -103,6 +104,37 @@ export const DisclosureVariantsStory: ThisStory = {
           <ToolList />
         </Disclosure>
       </Story.Section>
+      <Story.Section title="Disabled with a label color">
+        <Disclosure
+          disabled
+          labelClassName="text-base text-sharp"
+          label="Nothing to show"
+        >
+          <ToolList />
+        </Disclosure>
+      </Story.Section>
+      <Story.Section title="Inside content">
+        <View className="gap-xs">
+          <Paragraph>Version 4 changes how the config is read.</Paragraph>
+          <Disclosure
+            guide
+            size="sm"
+            labelClassName="text-base text-sharp"
+            label={
+              <>
+                <Text className="font-body-bold">Breaking change</Text> in{" "}
+                <Code>parseConfig</Code>
+              </>
+            }
+          >
+            <Paragraph>
+              The options object is now required: pass an empty one to keep the
+              defaults.
+            </Paragraph>
+          </Disclosure>
+          <Paragraph>Every other change is additive.</Paragraph>
+        </View>
+      </Story.Section>
       <Story.Section title="Controlled">
         <ControlledDisclosure />
       </Story.Section>
@@ -195,6 +227,36 @@ export const DisclosureVariantsStory: ThisStory = {
     const disabled = button("No tools used");
     await expect(disabled).toBeDisabled();
     await expect(disabled).toHaveAttribute("aria-expanded", "false");
+
+    // The disabled color wins over a color from labelClassName; its size stays.
+    const disabledLabel = getComputedStyle(
+      within(disabled).getByText("No tools used"),
+    );
+    const restyledLabel = getComputedStyle(
+      within(button("Nothing to show")).getByText("Nothing to show"),
+    );
+    await expect(restyledLabel.color).toBe(disabledLabel.color);
+    await expect(restyledLabel.fontSize).toBe("16px");
+
+    // The formatted label names the trigger from its text.
+    const summary = button("Breaking change in parseConfig");
+    const summaryHeight = summary.getBoundingClientRect().height;
+    await expect(summaryHeight).toBeGreaterThanOrEqual(24);
+    await expect(summaryHeight).toBeLessThan(44);
+    await userEvent.click(summary);
+    const details = await within(
+      canvasElement.ownerDocument.getElementById(
+        summary.getAttribute("aria-controls") ?? "",
+      )!,
+    ).findByText(/The options object is now required/);
+    const guide = details.parentElement!;
+    await expect(getComputedStyle(guide).borderLeftWidth).toBe("1px");
+    const summaryLabel =
+      within(summary).getByText("Breaking change").parentElement!;
+    await expect(details.getBoundingClientRect().left).toBeCloseTo(
+      summaryLabel.getBoundingClientRect().left,
+      0,
+    );
 
     const controlled = button("Controlled");
     await userEvent.click(button("Expand from outside"));
