@@ -11,8 +11,9 @@ description: >
   PortalAccentScope. All three, and the pressables, take accent="neutral": the plain
   mode theme, which drops an inherited accent; with variant="soft" it makes a
   Button the secondary beside an accented one. A stored light/dark choice is a
-  ColorModePreference ("light" | "dark" | "system") resolved by
-  useResolvedColorMode and applied by the app through ScopedTheme. Load when
+  ColorModePreference ("light" | "dark" | "system") the app passes to
+  ScopedTheme as is: "system" is resolved in CSS on web, so a prerendered page
+  never flashes the wrong mode. Load when
   applying colors, accents or dark mode, or when shipping a custom palette.
 sources:
   - packages/alouette/src/ui/containers/AccentScope.tsx
@@ -24,7 +25,10 @@ sources:
   - packages/alouette/src/core/AlouetteConfig.ts
   - packages/alouette/src/core/AlouetteProvider.tsx
   - packages/alouette/src/core/NativeThemeVariablesContext.ts
+  - packages/alouette/src/core/ThemeContext.ts
   - packages/alouette/src/core/useColorMode.ts
+  - packages/alouette/src/core/useSystemColorMode.web.ts
+  - packages/alouette/src/theme-generator/buildTheme.ts
   - packages/alouette/src/theme-generator/generateTheme.ts
   - packages/alouette/src/theme-generator/tokenScaleMap.ts
   - packages/alouette/src/theme-generator/writeTheme.ts
@@ -145,28 +149,41 @@ const mode = useCurrentMode(); // "light" | "dark"
 const theme = useCurrentTheme(); // e.g. "dark_brand"
 ```
 
+Both resolve a `system` scope to the OS mode. On web they are hydration-safe:
+they read `light` during the server render and hydration, then the client's mode
+on the next render — so a JS read (a status bar style, a computed color) never
+mismatches the prerendered HTML.
+
 ### Apply a stored light/dark preference
 
 A stored choice is a `ColorModePreference`: `"light" | "dark" | "system"`.
-`useSystemColorMode()` reads the OS setting (`prefers-color-scheme` on web) and
-`useResolvedColorMode(preference)` turns the preference into the mode to apply.
-On web both are hydration-safe: they return `light` during the server render and
-hydration, then the client's mode on the next render.
-Applying it is the app's job — pass the result to a `ScopedTheme` around the
+Applying it is the app's job — pass it **as is** to a `ScopedTheme` around the
 tree; `ColorModePicker` (alouette-inputs/SKILL.md) is the ready-made control that
-reports the choice.
+reports the choice. `AlouetteProvider` already applies `system`.
+
+A `system` scope renders the `system` class (and `system_<accent>` under an
+accent), which the palette CSS resolves with `prefers-color-scheme`: the
+prerendered HTML and the hydration render are identical, and a dark-mode visitor
+never sees the light page first. `:root` follows it as long as a `system` scope
+is in the document, for `html` and `body`. An explicit `light` / `dark` keeps its
+own classes, which the media query never touches. Native has no prerender and
+resolves `system` with `useColorScheme`.
+
+Never resolve the preference before applying it: a `ScopedTheme` given
+`useResolvedColorMode(preference)` renders `light` on the server, and the page
+flashes. `useResolvedColorMode(preference)` and `useSystemColorMode()` are for
+what reads the mode in JS, and are hydration-safe like `useCurrentMode`.
 
 ```tsx
 import {
   type ColorModePreference,
   ColorModePicker,
   ScopedTheme,
-  useResolvedColorMode,
 } from "alouette";
 
 const [preference, setPreference] = useState<ColorModePreference>("system");
 
-<ScopedTheme theme={useResolvedColorMode(preference)}>
+<ScopedTheme theme={preference}>
   <ColorModePicker value={preference} onValueChange={setPreference} />
 </ScopedTheme>;
 ```
@@ -255,8 +272,8 @@ opt-in stylesheet, imported after the hex palette:
 
 The OKLCH CSS is additive — it re-declares the same variables behind
 `@supports (color: oklch(0 0 0))`, and the native compiler drops the feature query
-and keeps the hex. The palette CSS uses the same trick for the twelve `.<theme>`
-blocks, which are a web-only mechanism (native themes through
+and keeps the hex. The palette CSS uses the same trick for the `.<theme>`
+blocks (the twelve explicit ones and the six `.system*` ones), which are a web-only mechanism (native themes through
 `VariableContextProvider`, not classNames): they sit behind
 `@supports (display: contents)` and never reach the native bundle — which is why
 native needs the `themeVariables` map at all.

@@ -181,6 +181,29 @@ interface EmitThemeBlocksParams {
   indent: string;
 }
 
+interface EmitBlockParams extends EmitThemeBlocksParams {
+  selector: string;
+  mode: Mode;
+  accentName: AccentName;
+}
+
+const emitBlock = ({
+  scales,
+  format,
+  indent,
+  selector,
+  mode,
+  accentName,
+}: EmitBlockParams): string => {
+  const vars = buildThemeVars({ scales, mode, accentName, format });
+  return `${indent}${selector} {\n${emit(vars, `${indent}  `)}\n${indent}}`;
+};
+
+const systemThemeClass = (accentName: AccentName): string =>
+  accentName === "grayscale" ? "system" : `system_${accentName}`;
+
+const darkColorSchemeQuery = "@media (prefers-color-scheme: dark)";
+
 // Native never sets a theme className, so these blocks are dead weight there:
 // both callers keep them behind a feature query the native compiler cannot
 // evaluate — {@link webOnly} here, the `oklch()` query in the overlay.
@@ -198,6 +221,13 @@ interface EmitThemeBlocksParams {
 // What the specificity does buy is the `:root`/`:host` case — a theme class set
 // on the document element ties with the `@theme` defaults and wins on order.
 //
+// The `.system*` blocks follow the OS in CSS — light tokens, then the dark ones
+// under `prefers-color-scheme` — so a prerendered page already wears the mode
+// the visitor's system asks for. The explicit `.light*` / `.dark*` blocks stay
+// outside the media query. `html` and `body` sit above every themed element:
+// `:root` takes the dark grayscale tokens too, but only while a `.system` scope
+// is in the document, so an app on an explicit mode keeps its root untouched.
+//
 // Accent blocks are partial (only the tokens the accent redefines); the rest
 // inherit from the nearest ancestor theme class. `AccentScope` derives the
 // accent theme from the current mode, so that ancestor is the matching base
@@ -208,13 +238,56 @@ const emitThemeBlocks = ({
   scales,
   format,
   indent,
-}: EmitThemeBlocksParams): string =>
-  themeTargets
-    .map(({ theme, mode, accentName }) => {
-      const vars = buildThemeVars({ scales, mode, accentName, format });
-      return `${indent}.${theme} {\n${emit(vars, `${indent}  `)}\n${indent}}`;
-    })
-    .join("\n\n");
+}: EmitThemeBlocksParams): string => {
+  const explicitBlocks = themeTargets.map(({ theme, mode, accentName }) =>
+    emitBlock({
+      scales,
+      format,
+      indent,
+      selector: `.${theme}`,
+      mode,
+      accentName,
+    }),
+  );
+  const systemTargets = themeTargets.filter(({ mode }) => mode === "light");
+  const systemLightBlocks = systemTargets.map(({ accentName }) =>
+    emitBlock({
+      scales,
+      format,
+      indent,
+      selector: `.${systemThemeClass(accentName)}`,
+      mode: "light",
+      accentName,
+    }),
+  );
+  const darkIndent = `${indent}  `;
+  const systemDarkBlocks = [
+    emitBlock({
+      scales,
+      format,
+      indent: darkIndent,
+      selector: ":root:has(.system)",
+      mode: "dark",
+      accentName: "grayscale",
+    }),
+    ...systemTargets.map(({ accentName }) =>
+      emitBlock({
+        scales,
+        format,
+        indent: darkIndent,
+        selector: `.${systemThemeClass(accentName)}`,
+        mode: "dark",
+        accentName,
+      }),
+    ),
+  ];
+
+  return [
+    ...explicitBlocks,
+    ...systemLightBlocks,
+    `${indent}${darkColorSchemeQuery} {\n${systemDarkBlocks.join("\n\n")}\n${indent}}`,
+  ].join("\n\n");
+};
 
 // Hides web-only rules from the native compiler, which skips any `@supports`
 // whose condition it cannot evaluate — so the block never reaches the native
@@ -227,8 +300,9 @@ ${rules}
 
 /**
  * The base palette CSS for a set of sRGB scales: the `@theme` color defaults
- * (light grayscale, which generate the color utilities) and the twelve
- * `.<theme>` selector blocks, all in hex.
+ * (light grayscale, which generate the color utilities) and the `.<theme>`
+ * selector blocks — the twelve explicit ones and the six `.system*` ones that
+ * follow `prefers-color-scheme` — all in hex.
  *
  * Hex is the only format native can compile, so this file alone is a complete
  * palette on every platform. Layer {@link buildOklchPaletteCss} after it to opt

@@ -20,8 +20,9 @@ export interface GenerateThemeResult {
   /**
    * Base palette CSS to import after `alouette/core.css`: the `@theme` color
    * defaults (which generate the color utilities — bg-, text-, border-) and the
-   * twelve `.<theme>` selector blocks, in sRGB hex. Complete on its own,
-   * on every platform.
+   * `.<theme>` selector blocks (the twelve explicit ones and the six
+   * `.system*` ones resolved by `prefers-color-scheme`), in sRGB hex. Complete
+   * on its own, on every platform.
    */
   css: string;
   /**

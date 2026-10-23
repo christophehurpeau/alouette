@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
-import { useCurrentMode, useCurrentTheme } from "../../core/ThemeContext";
+import {
+  useCurrentColorMode,
+  useCurrentScopedTheme,
+} from "../../core/ThemeContext";
 import { ScopedTheme } from "./ScopedTheme";
 
 export interface DefaultAccentScopeProps {
@@ -14,12 +17,14 @@ export interface DefaultAccentScopeProps {
 export function DefaultAccentScope({
   children,
 }: DefaultAccentScopeProps): ReactNode {
-  const currentTheme = useCurrentTheme();
-  const currentMode = useCurrentMode();
+  const currentTheme = useCurrentScopedTheme();
+  const currentColorMode = useCurrentColorMode();
   return (
     <ScopedTheme
       theme={
-        currentTheme === currentMode ? `${currentTheme}_brand` : currentTheme
+        currentTheme === currentColorMode
+          ? `${currentTheme}_brand`
+          : currentTheme
       }
     >
       {children}

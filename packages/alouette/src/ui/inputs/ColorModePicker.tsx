@@ -11,8 +11,11 @@ import {
   SunRegularIcon,
 } from "alouette-icons/phosphor-icons/Sun";
 import type { ReactNode } from "react";
-import type { Accent, AlouetteModeTheme } from "../../core/AlouetteConfig";
-import type { ColorModePreference } from "../../core/useColorMode";
+import type {
+  Accent,
+  AlouetteModeTheme,
+  ColorModePreference,
+} from "../../core/AlouetteConfig";
 import { useControllableValue } from "../../core/useControllableValue";
 import { useSystemColorMode } from "../../core/useSystemColorMode";
 import type { SVGIconElement } from "../primitives/Icon";
@@ -165,7 +168,7 @@ export interface ColorModePickerProps {
 /**
  * Light/dark picker: a pill of icon-only chips over the stored
  * `ColorModePreference`. It only reports the choice — the app applies it, by
- * passing `useResolvedColorMode(preference)` to a `ScopedTheme`.
+ * passing the preference to a `ScopedTheme`.
  */
 export function ColorModePicker({
   value,

@@ -42,6 +42,7 @@ sources:
 | 22.x         | [22.md](references/22.md) | NativeWind rc; `Surface`, the stacks and `EditableSurface` deprecated (codemod)                      |
 | 23.0.0       | [23.md](references/23.md) | `tonal` button material, variants renamed, deprecated aliases removed, tokens renamed, palette regen |
 | 24.0.0, 24.x | [24.md](references/24.md) | `FormItem` render params, one `alouette-icons` module per glyph; `DecisionBar` recommended           |
+| 25.0.0       | [25.md](references/25.md) | `system` theme resolved in CSS: palette regen, pass the preference to `ScopedTheme` as is            |
 
 ## Codemod
 

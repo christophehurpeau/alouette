@@ -1,13 +1,16 @@
 import type { ReactNode } from "react";
 import { createContext, use } from "react";
-import type { AlouetteTheme } from "../../core/AlouetteConfig";
-import { useCurrentMode, useCurrentTheme } from "../../core/ThemeContext";
+import type { AlouetteScopedTheme } from "../../core/AlouetteConfig";
+import {
+  useCurrentColorMode,
+  useCurrentScopedTheme,
+} from "../../core/ThemeContext";
 import { DefaultAccentScope } from "../containers/DefaultAccentScope";
 import { ScopedTheme } from "../containers/ScopedTheme";
 
-const SelectionAccentThemeContext = createContext<AlouetteTheme | undefined>(
-  undefined,
-);
+const SelectionAccentThemeContext = createContext<
+  AlouetteScopedTheme | undefined
+>(undefined);
 
 export interface SelectionAccentScopeProps {
   selected: boolean;
@@ -23,11 +26,11 @@ export function SelectionAccentScope({
   selected,
   children,
 }: SelectionAccentScopeProps): ReactNode {
-  const currentTheme = useCurrentTheme();
-  const currentMode = useCurrentMode();
+  const currentTheme = useCurrentScopedTheme();
+  const currentColorMode = useCurrentColorMode();
   return (
     <SelectionAccentThemeContext value={currentTheme}>
-      <ScopedTheme theme={selected ? currentTheme : currentMode}>
+      <ScopedTheme theme={selected ? currentTheme : currentColorMode}>
         {children}
       </ScopedTheme>
     </SelectionAccentThemeContext>

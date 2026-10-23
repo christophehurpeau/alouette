@@ -15,7 +15,9 @@ export {
 export { useScreenSafeAreaPadding } from "./core/useScreenSafeAreaPadding";
 export type {
   AlouetteModeTheme,
+  AlouetteScopedTheme,
   AlouetteTheme,
+  ColorModePreference,
   Accent,
   AccentOrNeutral,
 } from "./core/AlouetteConfig";
@@ -24,7 +26,6 @@ export { useReducedMotion } from "./core/ReducedMotionContext";
 export { useDensity } from "./core/DensityContext";
 export type { Density } from "./controlSizes";
 export { controlHeightsPx } from "./controlSizes";
-export type { ColorModePreference } from "./core/useColorMode";
 export { useResolvedColorMode } from "./core/useColorMode";
 export { useSystemColorMode } from "./core/useSystemColorMode";
 export type { ScopedThemeProps } from "./ui/containers/ScopedTheme";

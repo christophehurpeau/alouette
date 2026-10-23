@@ -3,32 +3,53 @@ import type {
   Accent,
   AccentOrNeutral,
   AlouetteModeTheme,
+  AlouetteScopedTheme,
   AlouetteTheme,
+  ColorModePreference,
 } from "./AlouetteConfig";
+import { useSystemColorMode } from "./useSystemColorMode";
 
 /**
- * Tracks the currently applied theme name (e.g. "dark_brand") so native reads
- * and accent composition (`AccentScope`) know which theme
- * is active. Set by `ScopedTheme` alongside NativeWind's variable context.
+ * Tracks the applied theme name as `ScopedTheme` received it (e.g.
+ * "system_brand"), so accent composition (`AccentScope`) derives nested scopes
+ * from it and keeps `system` resolved in CSS. Set by `ScopedTheme`.
  *
  * Defaults to "light", matching the light defaults in the global `@theme` block.
  */
-export const ThemeContext = createContext<AlouetteTheme>("light");
+export const ThemeContext = createContext<AlouetteScopedTheme>("light");
 
-export function useCurrentTheme(): AlouetteTheme {
-  return use(ThemeContext);
+export function resolveTheme(
+  theme: AlouetteScopedTheme,
+  systemMode: AlouetteModeTheme,
+): AlouetteTheme {
+  return theme.replace(/^system/, systemMode) as AlouetteTheme;
 }
 
-export function useCurrentMode(): AlouetteModeTheme {
-  return use(ThemeContext).startsWith("dark") ? "dark" : "light";
-}
-
-export function getThemeAccent(theme: AlouetteTheme): Accent | undefined {
+export function getThemeAccent(theme: AlouetteScopedTheme): Accent | undefined {
   const [, accent] = theme.split("_") as [
-    AlouetteModeTheme,
+    ColorModePreference,
     Accent | undefined,
   ];
   return accent;
+}
+
+export function useCurrentScopedTheme(): AlouetteScopedTheme {
+  return use(ThemeContext);
+}
+
+export function useCurrentColorMode(): ColorModePreference {
+  const [colorMode] = use(ThemeContext).split("_") as [ColorModePreference];
+  return colorMode;
+}
+
+/** The applied theme with `system` resolved; hydration-safe on web. */
+export function useCurrentTheme(): AlouetteTheme {
+  return resolveTheme(use(ThemeContext), useSystemColorMode());
+}
+
+/** The applied mode with `system` resolved; hydration-safe on web. */
+export function useCurrentMode(): AlouetteModeTheme {
+  return useCurrentTheme().startsWith("dark") ? "dark" : "light";
 }
 
 export function useAccentOrInheritedOrBrand<T extends AccentOrNeutral>(

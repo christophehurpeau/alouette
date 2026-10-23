@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import { useDensity } from "../../core/DensityContext";
-import { useCurrentMode, useCurrentTheme } from "../../core/ThemeContext";
+import {
+  useCurrentColorMode,
+  useCurrentScopedTheme,
+} from "../../core/ThemeContext";
 import { DensityScope } from "./DensityScope";
 import type { PortalAccentScopeProps } from "./PortalAccentScope";
 import { ScopedTheme } from "./ScopedTheme";
@@ -21,11 +24,11 @@ export function PortalAccentScope({
   accent,
   children,
 }: PortalAccentScopeProps): ReactNode {
-  const currentTheme = useCurrentTheme();
-  const currentMode = useCurrentMode();
+  const currentTheme = useCurrentScopedTheme();
+  const currentColorMode = useCurrentColorMode();
   const density = useDensity();
 
-  const modeToUse = mode ?? currentMode;
+  const modeToUse = mode ?? currentColorMode;
   const theme = resolveStableTheme({ currentTheme, mode: modeToUse, accent });
   return (
     <ScopedTheme theme={modeToUse}>

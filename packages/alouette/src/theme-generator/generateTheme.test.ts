@@ -25,11 +25,13 @@ describe("generateTheme", () => {
     expect(themeVariables).toStrictEqual(defaultThemeVariables);
   });
 
-  it("emits the @theme color defaults plus the twelve theme blocks", () => {
+  it("emits the @theme color defaults plus the theme blocks", () => {
+    // Twelve explicit themes, then the six system ones twice: light, and dark
+    // under the media query.
     const { css, oklchCss } = generateTheme();
     expect(css).toContain("@theme {");
-    expect(css.match(/^\s+\.[a-z_]+ \{$/gm) ?? []).toHaveLength(12);
-    expect(oklchCss.match(/^\s+\.[a-z_]+ \{$/gm) ?? []).toHaveLength(12);
+    expect(css.match(/^\s+\.[a-z_]+ \{$/gm) ?? []).toHaveLength(24);
+    expect(oklchCss.match(/^\s+\.[a-z_]+ \{$/gm) ?? []).toHaveLength(24);
   });
 
   it("keeps the theme blocks behind a web-only feature query", () => {
@@ -42,7 +44,49 @@ describe("generateTheme", () => {
 
     expect(insideSupports).toBeDefined();
     expect(beforeSupports).not.toMatch(/^\s+\.[a-z_]+ \{$/m);
-    expect(insideSupports!.match(/^\s+\.[a-z_]+ \{$/gm) ?? []).toHaveLength(12);
+    expect(insideSupports!.match(/^\s+\.[a-z_]+ \{$/gm) ?? []).toHaveLength(24);
+  });
+
+  it("resolves the system themes and the root in CSS, leaving explicit ones out of the media query", () => {
+    const { css, oklchCss, themeVariables } = generateTheme();
+    for (const palette of [css, oklchCss]) {
+      const [outsideMedia, insideMedia] = palette.split(
+        "@media (prefers-color-scheme: dark) {",
+      );
+      const selectorsIn = (part: string | undefined): string[] =>
+        (part?.match(/^\s+[.:][^\s{]+ \{$/gm) ?? []).map((line) =>
+          line.trim().slice(0, -2),
+        );
+
+      expect(selectorsIn(insideMedia)).toStrictEqual([
+        ":root:has(.system)",
+        ".system",
+        ".system_brand",
+        ".system_info",
+        ".system_success",
+        ".system_warning",
+        ".system_danger",
+      ]);
+      expect(selectorsIn(outsideMedia)).toContain(".system_brand");
+      expect(selectorsIn(outsideMedia)).toContain(".dark_brand");
+    }
+
+    const blockOf = (selector: string, part: string): string =>
+      part.slice(part.indexOf(`${selector} {`)).split("}")[0]!;
+    const [outsideMedia, insideMedia] = css.split(
+      "@media (prefers-color-scheme: dark) {",
+    );
+    const screenOf = (block: string): string | undefined =>
+      /--color-screen: (#[\da-f]+);/.exec(block)?.[1];
+    expect(screenOf(blockOf(".system", outsideMedia!))).toBe(
+      themeVariables.light["--color-screen"]!.toLowerCase(),
+    );
+    expect(screenOf(blockOf(".system", insideMedia!))).toBe(
+      themeVariables.dark["--color-screen"]!.toLowerCase(),
+    );
+    expect(screenOf(blockOf(":root:has(.system)", insideMedia!))).toBe(
+      themeVariables.dark["--color-screen"]!.toLowerCase(),
+    );
   });
 
   it("scopes each theme block to the themed element, never its descendants", () => {

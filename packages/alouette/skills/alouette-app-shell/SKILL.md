@@ -171,8 +171,8 @@ the slot instead.
 A light/dark switch goes in the same actions slot as a `ColorModePicker`
 (alouette-inputs/SKILL.md) — one pill of icon-only chips, never two loose
 `IconButton`s. It reports the stored `ColorModePreference` only; the app applies
-it with `useResolvedColorMode` + `ScopedTheme` (alouette-theming/SKILL.md) and
-persists it.
+it by passing it to a `ScopedTheme` (alouette-theming/SKILL.md) and persists
+it.
 
 ```tsx
 <AppHeader
@@ -360,8 +360,7 @@ import {
   no room for it beside its actions), below it in the `AppHeader` actions as in
   `AppLayout`.
   Only the visible one is exposed. Both take the same stored preference, which
-  the app applies with `useResolvedColorMode` + a `ScopedTheme` around the
-  layout (alouette-theming/SKILL.md). A press in the menu's header does not
+  the app applies by passing it to a `ScopedTheme` around the layout (alouette-theming/SKILL.md). A press in the menu's header does not
   close the menu. Keyboard users reach the picker with Shift+Tab from the first
   item, since the menu takes the focus as it opens.
 

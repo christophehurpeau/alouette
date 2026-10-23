@@ -47,11 +47,8 @@ import {
   UsersRegularIcon,
 } from "alouette-icons/phosphor-icons/Users";
 import { type ReactNode, useState } from "react";
+import type { ColorModePreference } from "../../core/AlouetteConfig";
 import { useCurrentMode } from "../../core/ThemeContext";
-import {
-  type ColorModePreference,
-  useResolvedColorMode,
-} from "../../core/useColorMode";
 import { IconButton } from "../actions/IconButton";
 import { MenuItem } from "../actions/MenuItem";
 import { PressableListItem } from "../actions/PressableListItem";
@@ -139,7 +136,7 @@ export default {
 - The panel keeps the \`screen\` ground, so a screen written for \`AppLayout\` renders unchanged inside it: its \`surface\` cards are still raised off it
 - Below the breakpoint the sidebar is hidden and \`header\` takes over, scrolling with the screen exactly as in an \`AppShell\` — phones keep the layout they have. The two are the **same tree**, switched by breakpoint classes, so crossing the breakpoint (a tablet rotating, a window resized) keeps the screen mounted
 - The sidebar's destinations are out of reach under the breakpoint, so the header carries them, in a form fitting their number: a few in a \`NavBar\` (or an \`HeaderNav\`), as here; a long navigation behind a menu button opening a drawer
-- The light/dark switch is a \`ColorModePicker\` in two places, one per tree: from the breakpoint in the \`header\` of the \`AppSidebarAccount\` menu — the brand row has no room beside its actions — and below it in the \`AppHeader\` actions, as in an \`AppLayout\`. Only one is ever exposed (the other is hidden with its column), and both report the same stored preference, which the app applies with \`useResolvedColorMode\` + \`ScopedTheme\` and persists. A press inside the menu's header does not close it, so the panel re-themes under the pointer. The switch is behind a click there, and keyboard users reach it with Shift+Tab from the first item, the menu taking the focus as it opens
+- The light/dark switch is a \`ColorModePicker\` in two places, one per tree: from the breakpoint in the \`header\` of the \`AppSidebarAccount\` menu — the brand row has no room beside its actions — and below it in the \`AppHeader\` actions, as in an \`AppLayout\`. Only one is ever exposed (the other is hidden with its column), and both report the same stored preference, which the app applies by passing it to a \`ScopedTheme\` and persists. A press inside the menu's header does not close it, so the panel re-themes under the pointer. The switch is behind a click there, and keyboard users reach it with Shift+Tab from the first item, the menu taking the focus as it opens
 - \`children\` is plain content in the \`main\` landmark — no \`ScreenScrollView\` inside, which would nest a second scroll view
 - Safe areas: from the breakpoint the frame pads every edge, so both columns clear them; below it the header pads its own top inset and the scrolled page pads the rest. The screen needs none of its own
 - The frame fills its parent (\`flex-1\`). A web app whose root has no height of its own passes \`className="h-screen"\``,
@@ -447,10 +444,9 @@ function DemoApp({ label, rows, withHeader = true }: DemoAppProps): ReactNode {
   const [route, setRoute] = useState("/");
   const [colorMode, setColorMode] =
     useState<ColorModePreference>(useCurrentMode());
-  const resolvedColorMode = useResolvedColorMode(colorMode);
 
   return (
-    <ScopedTheme theme={resolvedColorMode}>
+    <ScopedTheme theme={colorMode}>
       <AppSidebarLayout
         aria-label={label}
         sidebar={

@@ -1,13 +1,10 @@
-import type { AlouetteModeTheme } from "./AlouetteConfig";
+import type { AlouetteModeTheme, ColorModePreference } from "./AlouetteConfig";
 import { useSystemColorMode } from "./useSystemColorMode";
 
-/** A stored color-mode choice: an explicit mode, or follow the system. */
-export type ColorModePreference = AlouetteModeTheme | "system";
-
 /**
- * The theme a preference applies: `system` resolves through the OS setting. Pass
- * the result to `ScopedTheme` (or `AlouetteProvider` already does it for the
- * whole app when nothing is stored).
+ * The mode a preference resolves to, for what reads it in JS (a status bar
+ * style, a computed color). Hydration-safe on web: `system` reads `light` until
+ * hydration is done. To apply a preference, pass it to `ScopedTheme` as is.
  */
 export function useResolvedColorMode(
   preference: ColorModePreference,

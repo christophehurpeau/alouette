@@ -173,15 +173,15 @@ group.
 
 The ready-made light/dark control built on that icon pill, over a stored
 `ColorModePreference` (`"light" | "dark" | "system"`). It reports the choice
-only — the app applies it, passing `useResolvedColorMode(preference)` to a
-`ScopedTheme` (alouette-theming/SKILL.md).
+only — the app applies it, passing the preference as is to a `ScopedTheme`
+(alouette-theming/SKILL.md), which resolves `system` in CSS on web.
 
 ```tsx
-import { ColorModePicker, ScopedTheme, useResolvedColorMode } from "alouette";
+import { ColorModePicker, ScopedTheme } from "alouette";
 
 const [preference, setPreference] = useState<ColorModePreference>("system");
 
-<ScopedTheme theme={useResolvedColorMode(preference)}>
+<ScopedTheme theme={preference}>
   <ColorModePicker value={preference} onValueChange={setPreference} />
 </ScopedTheme>;
 ```

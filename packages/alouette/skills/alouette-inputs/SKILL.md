@@ -122,7 +122,7 @@ Multi-select: `CheckboxGroup`, `CheckboxCardGroup` (`values: string[]`) and a st
 `RadioButtonGroup` also takes `variant="icon"` — a pill of square icon-only
 chips, each option's `label` staying its accessible name. `ColorModePicker` is
 the light/dark control built on it: it reports a `ColorModePreference` and the
-app applies it with `useResolvedColorMode` (alouette-theming/SKILL.md).
+app applies it by passing it to a `ScopedTheme` (alouette-theming/SKILL.md).
 
 Props, platform behavior and examples: [references/choice-inputs.md](references/choice-inputs.md).
 

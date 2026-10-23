@@ -1,11 +1,8 @@
 import { expect, waitFor, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ReactNode, useState } from "react";
-import type { Accent } from "../../core/AlouetteConfig";
-import {
-  type ColorModePreference,
-  useResolvedColorMode,
-} from "../../core/useColorMode";
+import type { Accent, ColorModePreference } from "../../core/AlouetteConfig";
+import { useResolvedColorMode } from "../../core/useColorMode";
 import { Box } from "../containers/Box";
 import { ScopedTheme } from "../containers/ScopedTheme";
 import { Text } from "../primitives/Text";
@@ -23,7 +20,7 @@ export default {
   component: ColorModePicker,
   parameters: {
     componentSubtitle:
-      "Light/dark picker over the stored ColorModePreference. It reports the choice only — the app applies it with useResolvedColorMode + ScopedTheme.",
+      "Light/dark picker over the stored ColorModePreference. It reports the choice only — the app applies it by passing it to a ScopedTheme.",
   },
   argTypes: {
     disabled: { control: "boolean" },
@@ -54,8 +51,8 @@ interface ThemedPreviewProps {
 }
 
 /**
- * What an app wires: the preference is its own state, `useResolvedColorMode`
- * turns it into a theme, and `ScopedTheme` applies it.
+ * What an app wires: the preference is its own state, `ScopedTheme` applies it,
+ * and `useResolvedColorMode` reads the mode it resolves to.
  */
 function ThemedPreview({ name, variant }: ThemedPreviewProps): ReactNode {
   const [preference, setPreference] = useState<ColorModePreference>("system");
@@ -69,7 +66,7 @@ function ThemedPreview({ name, variant }: ThemedPreviewProps): ReactNode {
         value={preference}
         onValueChange={setPreference}
       />
-      <ScopedTheme theme={mode}>
+      <ScopedTheme theme={preference}>
         <Box className="surface surface-sm w-[240px]">
           <Text className="font-body-bold text-base">Preview</Text>
           <Text className="text-sm text-muted">{`${name}: ${mode}`}</Text>

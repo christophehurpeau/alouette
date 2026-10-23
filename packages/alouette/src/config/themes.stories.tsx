@@ -1,9 +1,11 @@
 import { expect, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import type { Accent } from "../core/AlouetteConfig";
+import type { Accent, ColorModePreference } from "../core/AlouetteConfig";
+import { useCurrentMode } from "../core/ThemeContext";
 import { tv } from "../core/tv";
 import { AccentScope } from "../ui/containers/AccentScope";
+import { ScopedTheme } from "../ui/containers/ScopedTheme";
 import { Text } from "../ui/primitives/Text";
 import { View } from "../ui/primitives/View";
 import { Story, accentsWithoutNeutral } from "../ui/story-components/Story";
@@ -299,6 +301,69 @@ export const NestedThemes: StoryObj = {
     await expect(accentOf("danger then info")).toBe(accentOf("info"));
     await expect(accentOf("danger")).not.toBe(accentOf("info"));
     await expect(accentOf("danger")).not.toBe(accentOf("base"));
+  },
+};
+
+interface ColorModeProbesProps {
+  colorMode: ColorModePreference;
+}
+
+function ColorModeProbes({ colorMode }: ColorModeProbesProps): ReactNode {
+  return (
+    <ScopedTheme theme={colorMode}>
+      <View className="gap-xs">
+        <Text className="text-xs">{`${colorMode} reads ${useCurrentMode()}`}</Text>
+        <StoryGrid.Row flexWrap loose>
+          <ThemeProbe label={`${colorMode} base`} />
+          <AccentScope accent="info">
+            <ThemeProbe label={`${colorMode} info`} />
+          </AccentScope>
+        </StoryGrid.Row>
+      </View>
+    </ScopedTheme>
+  );
+}
+
+/**
+ * A `system` scope is resolved by `prefers-color-scheme` in the palette CSS,
+ * so the prerendered HTML already wears the OS mode; its nested accent scope
+ * stays a `system_*` theme rather than a mode resolved in JS. `useCurrentMode`
+ * reads the same mode once hydrated. The expectations follow the runner's own
+ * scheme.
+ */
+export const SystemColorMode: StoryObj = {
+  render: () => (
+    <Story noDarkMode>
+      <Story.Section title="System follows prefers-color-scheme">
+        <Story.SubSection withSurface title="Explicit and system scopes">
+          <View className="gap-m">
+            <ColorModeProbes colorMode="light" />
+            <ColorModeProbes colorMode="dark" />
+            <ColorModeProbes colorMode="system" />
+          </View>
+        </Story.SubSection>
+      </Story.Section>
+    </Story>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const systemMode = globalThis.matchMedia("(prefers-color-scheme: dark)")
+      .matches
+      ? "dark"
+      : "light";
+    const accentOf = (label: string): string =>
+      getComputedStyle(canvas.getByLabelText(label)).backgroundColor;
+
+    await expect(accentOf("light base")).not.toBe(accentOf("dark base"));
+    await expect(accentOf("system base")).toBe(accentOf(`${systemMode} base`));
+    await expect(accentOf("system info")).toBe(accentOf(`${systemMode} info`));
+    await expect(
+      canvas.getByLabelText("system info").closest<HTMLElement>("[data-theme]")
+        ?.dataset.theme,
+    ).toBe("system_info");
+    await expect(
+      canvas.getByText(`system reads ${systemMode}`),
+    ).toBeInTheDocument();
   },
 };
 
