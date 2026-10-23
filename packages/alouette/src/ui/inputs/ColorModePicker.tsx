@@ -12,11 +12,9 @@ import {
 } from "alouette-icons/phosphor-icons/Sun";
 import type { ReactNode } from "react";
 import type { Accent, AlouetteModeTheme } from "../../core/AlouetteConfig";
-import {
-  type ColorModePreference,
-  useSystemColorMode,
-} from "../../core/useColorMode";
+import type { ColorModePreference } from "../../core/useColorMode";
 import { useControllableValue } from "../../core/useControllableValue";
+import { useSystemColorMode } from "../../core/useSystemColorMode";
 import type { SVGIconElement } from "../primitives/Icon";
 import { RadioButton } from "./RadioButton";
 import { RadioButtonGroup } from "./RadioButtonGroup";

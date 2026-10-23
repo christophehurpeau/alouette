@@ -1,11 +1,11 @@
 import { VariableContextProvider } from "nativewind";
 import type { ReactNode } from "react";
-import { useColorScheme } from "react-native";
 import { reducedMotionVariables } from "../reducedMotionVariables";
 import { ScopedTheme } from "../ui/containers/ScopedTheme";
 import type { ThemeVariablesMap } from "./NativeThemeVariablesContext";
 import { NativeThemeVariablesContext } from "./NativeThemeVariablesContext";
 import { ReducedMotionContext } from "./ReducedMotionContext";
+import { useSystemColorMode } from "./useSystemColorMode";
 import { useSystemReducedMotion } from "./useSystemReducedMotion";
 
 export interface AlouetteProviderProps {
@@ -25,7 +25,7 @@ export function AlouetteProvider({
   children,
   themeVariables,
 }: AlouetteProviderProps): ReactNode {
-  const colorScheme = useColorScheme();
+  const systemColorMode = useSystemColorMode();
   const reducedMotion = useSystemReducedMotion();
   return (
     <NativeThemeVariablesContext value={themeVariables}>
@@ -35,9 +35,7 @@ export function AlouetteProvider({
         <VariableContextProvider
           value={reducedMotion ? reducedMotionVariables : noVariables}
         >
-          <ScopedTheme theme={colorScheme === "dark" ? "dark" : "light"}>
-            {children}
-          </ScopedTheme>
+          <ScopedTheme theme={systemColorMode}>{children}</ScopedTheme>
         </VariableContextProvider>
       </ReducedMotionContext>
     </NativeThemeVariablesContext>

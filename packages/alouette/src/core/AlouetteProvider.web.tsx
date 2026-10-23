@@ -1,20 +1,18 @@
 import type { ReactNode } from "react";
-import { useColorScheme } from "react-native";
 import { ScopedTheme } from "../ui/containers/ScopedTheme";
 import type { AlouetteProviderProps } from "./AlouetteProvider";
 import { ReducedMotionContext } from "./ReducedMotionContext";
+import { useSystemColorMode } from "./useSystemColorMode";
 import { useSystemReducedMotion } from "./useSystemReducedMotion";
 
 export function AlouetteProvider({
   children,
 }: AlouetteProviderProps): ReactNode {
-  const colorScheme = useColorScheme();
+  const systemColorMode = useSystemColorMode();
   const reducedMotion = useSystemReducedMotion();
   return (
     <ReducedMotionContext value={reducedMotion}>
-      <ScopedTheme theme={colorScheme === "dark" ? "dark" : "light"}>
-        {children}
-      </ScopedTheme>
+      <ScopedTheme theme={systemColorMode}>{children}</ScopedTheme>
     </ReducedMotionContext>
   );
 }

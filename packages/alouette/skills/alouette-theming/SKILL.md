@@ -150,6 +150,8 @@ const theme = useCurrentTheme(); // e.g. "dark_brand"
 A stored choice is a `ColorModePreference`: `"light" | "dark" | "system"`.
 `useSystemColorMode()` reads the OS setting (`prefers-color-scheme` on web) and
 `useResolvedColorMode(preference)` turns the preference into the mode to apply.
+On web both are hydration-safe: they return `light` during the server render and
+hydration, then the client's mode on the next render.
 Applying it is the app's job — pass the result to a `ScopedTheme` around the
 tree; `ColorModePicker` (alouette-inputs/SKILL.md) is the ready-made control that
 reports the choice.
