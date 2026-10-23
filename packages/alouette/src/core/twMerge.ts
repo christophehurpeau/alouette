@@ -60,6 +60,7 @@ export const twMergeConfig: ConfigExtension<
       spacing: [
         "xxs",
         "xs",
+        "s",
         "sm",
         "m", // legacy
         "md",
