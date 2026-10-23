@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.0.0](compare/storybook-native-app%4014.5.0...storybook-native-app%4015.0.0) (2026-10-23)
+
+### Features
+
+* **alouette:** add DecisionBar ([#401](issues/401))
+
+Version bump for dependency: alouette
+
+
 ## [14.5.0](compare/storybook-native-app%4014.4.0...storybook-native-app%4014.5.0) (2026-10-19)
 
 Version bump for dependency: alouette

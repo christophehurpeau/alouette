@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [25.0.0](https://github.com/christophehurpeau/alouette/compare/alouette%4024.5.0...alouette%4025.0.0) (2026-10-23)
+
+### ⚠ BREAKING CHANGES
+
+* **alouette:** a custom palette must be regenerated with writeTheme /
+  generateTheme to get the `.system*` blocks, or web renders light whatever the
+  OS mode. A stored preference is passed to ScopedTheme as is instead of
+  through useResolvedColorMode.
+
+### Features
+
+* **alouette:** add DecisionBar ([#401](https://github.com/christophehurpeau/alouette/issues/401))
+* **alouette:** add EmptyState
+* **alouette:** add GlowBackground ([#392](https://github.com/christophehurpeau/alouette/issues/392))
+* **alouette:** add page-container utility ([#393](https://github.com/christophehurpeau/alouette/issues/393))
+* **alouette:** add s spacing alias of sm
+* **alouette:** add SectionTitle
+* **alouette:** add skeleton utility ([#394](https://github.com/christophehurpeau/alouette/issues/394))
+* **alouette:** formatted label and content size for Disclosure, closes [#377](https://github.com/christophehurpeau/alouette/issues/377)
+* **alouette:** resolve the system color mode in CSS
+* **alouette:** size grouped Radio/Checkbox rows to the group ([#398](https://github.com/christophehurpeau/alouette/issues/398))
+* **ExternalLinkText:** baseline inside Text, optional icon ([#403](https://github.com/christophehurpeau/alouette/issues/403))
+
+### Bug Fixes
+
+* **alouette:** align inline LinkText/ExternalLinkText on native ([#405](https://github.com/christophehurpeau/alouette/issues/405))
+* **alouette:** make useSystemColorMode hydration-safe on web
+* **alouette:** merge className with alouette's tailwind-merge in every tv ([#406](https://github.com/christophehurpeau/alouette/issues/406)), closes [#372](https://github.com/christophehurpeau/alouette/issues/372)
+* **alouette:** reference react-native-web types from a declaration file ([#402](https://github.com/christophehurpeau/alouette/issues/402))
+* render root Text on native ([#404](https://github.com/christophehurpeau/alouette/issues/404))
+
 ## [24.5.0](https://github.com/christophehurpeau/alouette/compare/alouette%4024.4.0...alouette%4024.5.0) (2026-10-19)
 
 ### Features
