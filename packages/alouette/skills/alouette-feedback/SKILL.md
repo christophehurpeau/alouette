@@ -24,6 +24,7 @@ sources:
   - packages/alouette/src/ui/feedback/useSimulatedProgress.ts
   - packages/alouette/src/ui/feedback/EmptyState.tsx
   - packages/alouette/src/ui/feedback/EmptyState.stories.tsx
+  - packages/alouette/scripts/build-css.ts
 ---
 
 This skill builds on alouette-theming. Read it first for the accent model.

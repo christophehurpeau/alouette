@@ -15,6 +15,7 @@ sources:
   - packages/alouette/src/ui/containers/Modal.tsx
   - packages/alouette/src/ui/containers/Box.tsx
   - packages/alouette/src/core/twMerge.ts
+  - packages/alouette/src/core/tv.ts
   - packages/alouette/src/ui/selection/SegmentedItem.tsx
 ---
 

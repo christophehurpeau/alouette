@@ -1,9 +1,45 @@
+---
+name: alouette-app-shell
+description: >
+  The chrome around every screen of an app. AppLayout is the shell at one call
+  site: a header, an optional rail and a footer scrolling with the page, the
+  screen in its main landmark with the safe-area insets already applied.
+  AppShell with AppShellSidebar and AppShellMain is the same shell rendered
+  once in a root layout, each route deciding whether it has a rail.
+  AppSidebarLayout is for an application (a dashboard, a back office)
+  navigated from a fixed AppSidebar, falling back to a header on small
+  screens. AppHeader is the banner, filled from caller-composed slots:
+  AppHeaderBrand with a BrandLogo, HeaderNav for text destinations on the bar,
+  AppHeaderActions, and the session — AppHeaderAccount signed in,
+  AppHeaderSignIn signed out, never a "Guest" account menu. Load when building
+  an app header or top bar, a site or app shell, a sidebar layout, a brand
+  logo, or the sign-in button or account menu of a header.
+sources:
+  - packages/alouette/src/ui/layout/AppLayout.tsx
+  - packages/alouette/src/ui/layout/AppShell.tsx
+  - packages/alouette/src/ui/layout/AppSidebarLayout.tsx
+  - packages/alouette/src/ui/layout/AppSidebar.tsx
+  - packages/alouette/src/ui/layout/AppSidebarAccount.tsx
+  - packages/alouette/src/ui/layout/AppHeader.tsx
+  - packages/alouette/src/ui/layout/AppHeaderBrand.tsx
+  - packages/alouette/src/ui/navigation/HeaderNav.tsx
+  - packages/alouette/src/ui/navigation/HeaderNavItem.tsx
+  - packages/alouette/src/ui/layout/AppHeaderActions.tsx
+  - packages/alouette/src/ui/layout/AppHeaderAccount.tsx
+  - packages/alouette/src/ui/layout/AppHeaderSignIn.tsx
+  - packages/alouette/src/ui/layout/BrandLogo.tsx
+---
+
+This skill builds on alouette-layout (the screen inside the shell) and
+alouette-navigation (the `NavBar` and `SidebarNav` it holds). Read them first.
+
 # alouette — Application shell
 
-The shell around every screen, in full: `AppLayout` at one call site, or
-`AppShell` + `AppShellSidebar` + `AppShellMain` composed per route; and
-`AppSidebarLayout` for an application whose navigation lives in a fixed
-sidebar.
+The shell around every screen: `AppLayout` at one call site, or `AppShell` +
+`AppShellSidebar` + `AppShellMain` composed per route; and `AppSidebarLayout`
+for an application whose navigation lives in a fixed sidebar. Each one is the
+scroll container and applies the safe-area insets, so the screen inside is a
+plain `View` — never a `ScreenScrollView`.
 
 ## AppLayout
 
@@ -133,7 +169,7 @@ the slot instead.
 ```
 
 A light/dark switch goes in the same actions slot as a `ColorModePicker`
-(alouette-forms/SKILL.md) — one pill of icon-only chips, never two loose
+(alouette-inputs/SKILL.md) — one pill of icon-only chips, never two loose
 `IconButton`s. It reports the stored `ColorModePreference` only; the app applies
 it with `useResolvedColorMode` + `ScopedTheme` (alouette-theming/SKILL.md) and
 persists it.
@@ -316,7 +352,7 @@ import {
   `className` overrides it.
 - What the navigation applies to (a team, a site) is a `Select`
   `variant="tonal"` with a leading `icon` in `header` — a pill lifted off the
-  sidebar rather than a form field (alouette-forms/SKILL.md).
+  sidebar rather than a form field (alouette-inputs/SKILL.md).
 - `AppSidebarAccount` is the signed-in footer row: avatar, name and a second
   line, opening its `MenuItem`s above it, as wide as the row.
 - The light/dark switch is a `ColorModePicker` in each tree: from the
@@ -330,3 +366,92 @@ import {
   item, since the menu takes the focus as it opens.
 
 Source: packages/alouette/src/ui/layout/AppSidebarLayout.tsx
+
+## Common Mistakes
+
+### HIGH Signed-out header hidden behind a "Guest" account menu
+
+Wrong:
+
+```tsx
+<AppHeaderAccount name="Guest" icon={<UserRegularIcon />}>
+  <ExternalLink as={MenuItem} href={`${authOrigin}/login`} label="Login" />
+</AppHeaderAccount>
+```
+
+Correct:
+
+```tsx
+<AppHeaderSignIn label="Login" href="/login" />
+```
+
+`AppHeaderAccount` is the signed-in session: an avatar standing for a person,
+opening the several actions that person has. A signed-out visitor has one, so
+wrapping it in an account menu invents an identity nobody has and buries the
+only call to action behind a second press. `AppHeaderSignIn` is the signed-out
+counterpart: a button in the bar, one press. When the destination is outside the
+app, an `ExternalLinkButton` goes in the slot the same way — still a button in
+the bar, never a menu.
+
+Source: packages/alouette/src/ui/layout/AppHeaderSignIn.tsx
+
+### MEDIUM Putting a screen scroll container inside AppLayout
+
+Wrong:
+
+```tsx
+<AppLayout header={<AppHeader … />}>
+  <ScreenScrollView contentContainerClassName="p-m">{content}</ScreenScrollView>
+</AppLayout>
+```
+
+Correct:
+
+```tsx
+<AppLayout header={<AppHeader … />}>
+  <View className="p-m gap-m">{content}</View>
+</AppLayout>
+```
+
+`AppLayout` is itself the scroll container — the header and footer scroll with
+the page — and it declares every safe-area edge consumed for its body. A nested
+scroll container gives a second scrollable inside the first and pads insets that
+are already applied.
+
+Source: packages/alouette/src/ui/layout/AppLayout.tsx
+
+### MEDIUM An AppLayout per route to give one section a sidebar
+
+Wrong:
+
+```tsx
+// every route rebuilds the whole shell to change the rail
+<AppLayout header={<AppHeader … />} sidebar={<NavBar …/>} footer={<Footer />}>
+  {screen}
+</AppLayout>
+```
+
+Correct:
+
+```tsx
+// the shell once, in the root layout
+<AppShell header={<AppHeader … />} footer={<Footer />}>
+  <Slot />
+</AppShell>
+
+// the section that owns a rail composes the body
+<>
+  <AppShellSidebar>
+    <NavBar orientation="vertical" className="w-[220px] grow" …/>
+  </AppShellSidebar>
+  <AppShellMain>
+    <Slot />
+  </AppShellMain>
+</>
+```
+
+A shell per route remounts the scroll container, the header and the footer on
+every navigation — the scroll position, the header state and the safe-area
+padding all reset. `AppShell` keeps one shell and lets the route decide the body.
+
+Source: packages/alouette/src/ui/layout/AppShell.tsx

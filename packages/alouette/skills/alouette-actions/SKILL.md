@@ -1,21 +1,18 @@
 ---
 name: alouette-actions
 description: >
-  Everything the user presses. Button and IconButton are the primary actions;
-  ActionButton is the one to reach for when pressing starts an async operation —
-  it runs the promise and shows the spinner, the success state and the failure
-  message itself. ExternalLinkButton and InternalLinkButton are the
-  link-shaped buttons, LinkText and ExternalLinkText the inline links inside a
-  sentence, and Menu + MenuItem the dropdown that collects secondary actions
-  behind one trigger. SplitButton is one button whose caret picks which of
-  several alternative actions it runs (a merge method). PressableBox and PressableListItem are the bases for a
-  custom pressable surface: they carry the hover, focus, press and disabled
-  affordance so it never has to be rebuilt by hand. A disabled button says why
-  with disabledReason, and Tooltip describes any other element. Load when
-  adding buttons, text links, a menu of actions, a split button or button with
-  options, a tooltip, or custom pressable elements. DecisionBar is the row of
-  actions ending a decision (a dialog footer, an inline form's Cancel and
-  Save): it owns their order and alignment.
+  Everything the user presses. Button and IconButton are the actions;
+  ActionButton is the one to reach for when pressing starts an async operation
+  — it runs the promise and shows its pending, success and failure states. DecisionBar is the row of actions ending a decision
+  (a dialog footer, a form's Cancel and Save) and owns their order. The
+  secondary action beside a primary one is a neutral soft text button, never a
+  second tonal one. ExternalLinkButton and InternalLinkButton are link-shaped
+  buttons; LinkText and ExternalLinkText the links inside a sentence.
+  PressableBox and PressableListItem are the bases of a custom pressable card
+  or row: nothing becomes interactive by being wrapped. A disabled button says why with
+  disabledReason, and Tooltip describes any other element. Menus of actions
+  are alouette-menus. Load when adding buttons, an async action, dialog or form
+  actions, text links, a tooltip, or a custom pressable card or list row.
 sources:
   - packages/alouette/src/ui/actions/Button.tsx
   - packages/alouette/src/ui/actions/ActionButton.tsx
@@ -24,10 +21,7 @@ sources:
   - packages/alouette/src/ui/actions/PressableBox.tsx
   - packages/alouette/src/ui/actions/PressableListItem.tsx
   - packages/alouette/src/ui/actions/LinkText.tsx
-  - packages/alouette/src/ui/actions/Menu.tsx
-  - packages/alouette/src/ui/actions/MenuItem.tsx
-  - packages/alouette/src/ui/actions/SplitButton.tsx
-  - packages/alouette/src/ui/actions/SplitButtonOption.tsx
+  - packages/alouette/src/ui/actions/LinkTextFrame.tsx
   - packages/alouette/src/ui/containers/Tooltip.tsx
   - packages/alouette/src/ui/containers/Tooltip.web.tsx
   - packages/alouette/src/ui/containers/mergeTooltipTriggerProps.ts
@@ -75,39 +69,24 @@ import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
 <Button size="lg" variant="filled" text="Get started" />  {/* the hero call to action */}
 ```
 
-`tonal` is a ground **lighter than the page it sits on**, lifted by
-`shadow-s`: the lightest card step when neutral, the accent's pale tints in light
-mode and its own dark ground in dark mode. The hue is carried by the
-`text-on-tonal` ink (label and icon) — the accent itself on a light ground,
-the sharp ink on a dark one — because a tint pale enough for dark ink cannot
-carry it (a pale red reads as pink).
-
-`accent="neutral"` resolves to the plain mode theme (alouette-theming/SKILL.md), so
-the button keeps the tonal material — ground, shadow, hover/focus/press
-states — on the grayscale palette: a white card with sharp ink. That is a lone
-action that must not carry the accent: a `Menu` trigger, the Add of a field
-array, a `Modal` footer's single "Close". Beside a primary action it becomes
-`variant="soft"`: a neutral `tonal` twin reads as a second equal choice, and on
-a white `bg-highlight` ground — a `Modal` or `AlertDialog` panel, the `AppHeader`
-bar — its ground is the ground itself and dissolves. The form editor modals'
-Cancel and the header's "Sign up" beside "Log in" are neutral `soft`.
-
-`filled` is the accent's own fill, flat, under the `text-on-accent` label —
-for the one action that must dominate its neighbours. The neutral theme is an
-accent, not the absence of one: its fill is the sharp ink turned into a ground,
-so a neutral `filled` button is black with a white label in light mode and
-white with a dark label in dark mode. Beside a `filled` call to action, the
-other action is neutral `soft`.
-
-**On an accented surface** (`<Box accent className="surface">`, a
-`GradientBackground`), a lone `tonal` button is always `accent="neutral"`: in light
-mode an accented `tonal` ground is the accented surface's own step, so it
-dissolves into it. The accented action there is `filled`, or `soft` for chrome.
-What counts is the ground, not the theme: a `bg-highlight` panel stays neutral
-inside an accented theme, so an accented `Modal` or `AlertDialog` keeps a
-`tonal` confirm (with a neutral `soft` Cancel). On web, `PressableBox` warns
-outside production when an accented `tonal` pressable has the same ground as the
-surface behind it.
+- `tonal` is a ground **lighter than the page it sits on**, lifted by
+  `shadow-s`; the hue is carried by the `text-on-tonal` ink, not the ground.
+- `accent="neutral"` keeps the tonal material on the grayscale palette: a lone
+  action that must not carry the accent (a `Menu` trigger, a field array's Add,
+  a `Modal` footer's single "Close"). Beside a primary action it becomes
+  `variant="soft"`.
+- `filled` is the accent's own fill, flat, for the one action that must
+  dominate; the neutral `filled` button is black in light mode, white in dark.
+- **On an accented surface** (`<Box accent className="surface">`, a
+  `GradientBackground`) a lone `tonal` button is `accent="neutral"`, and the
+  accented action is `filled` or `soft`: an accented `tonal` ground is the
+  surface's own step and dissolves. A `bg-highlight` panel (`Modal`,
+  `AlertDialog`) is a neutral ground, so it keeps an accented `tonal` confirm.
+  On web, `PressableBox` warns outside production when that happens.
+- `soft` has no ground at rest: the secondary action, chrome where a border
+  reads as noise (header pressables, menu rows), and an icon-only control
+  inside a component's own frame (a modal close, a message dismiss). `outlined`
+  has no default use.
 
 ```tsx
 <Box accent="danger" className="surface">
@@ -116,29 +95,9 @@ surface behind it.
 </Box>
 ```
 
-### `soft` beyond the secondary action, and `outlined`
-
-```tsx
-<Button variant="soft" text="Docs" />
-<IconButton variant="soft" icon={<XRegularIcon />} aria-label="Close" />
-```
-
-`soft` has no ground and no border at rest: the affordance is a fill arriving on
-hover/focus/press, and that fill is a tone of the surrounding surface rather than
-the accent. A `PressableBox` row composed on it (a header pressable, a menu row)
-therefore keeps its own label color — never flip it to `text-on-accent`. It is
-what a header pressable or a menu row wants, where a border tint reads as noise,
-and the icon-only affordance inside a component's own frame — the modal close,
-the message dismiss, the remove button of a field-array row — where a second
-ground inside the frame would read as a nested card. With no ground to carry the
-accent, the soft `Button` carries it in its label (`text-accent`, underlined —
-a text button), and the soft `IconButton` glyph turns `text-accent` on
-hover/focus/press.
-
-`outlined` has no default use. Reach for it only for a pressable that must not
-carry a ground and is not chrome — a row of equal-weight actions in a dense
-toolbar. A secondary action is `accent="neutral" variant="soft"`, not
-`outlined`.
+Why each holds (the ink on a pale tint, the dissolving ground, the soft label
+and glyph tints) and when `outlined` fits:
+[references/button-materials.md](references/button-materials.md).
 
 ### Async action — prefer ActionButton
 
@@ -235,36 +194,11 @@ description.
 
 Don't wrap a disabled button in a DOM element carrying `title`:
 react-native-web forwards no `title`, the wrapper is web-only, and the reason
-then has to be repeated in `aria-label`. For any other element (an icon-only
-button's label, a truncated value), `Tooltip` takes a `render` prop and hands
-it the props to spread on the described element:
-
-```tsx
-import { Tooltip } from "alouette";
-
-<Tooltip
-  content="Archive the project"
-  render={(triggerProps) => (
-    <IconButton
-      {...triggerProps}
-      icon={<ArchiveRegularIcon />}
-      aria-label="Archive"
-    />
-  )}
-/>;
-```
-
-The trigger props carry the hover and focus handlers as well as
-`aria-describedby`, so spread them last, or keep the element's own with
-`mergeTooltipTriggerProps(ownProps, triggerProps)`, which joins the
-descriptions and runs both handlers. `content={null}` renders the element
-alone in the same tree, so toggling it never remounts the element. The panel
-opens on hover (not on a tap) and on keyboard focus, above the element or below
-it when there is no room above, and stays open while the pointer is on it.
-Don't nest two tooltips around one element.
-
-Native has no hover: `Tooltip` shows no panel there and only announces the
-content as the element's accessibility hint.
+then has to be repeated in `aria-label`. Any other element (an icon-only
+button's label, a truncated value) is described by a `Tooltip`, whose `render`
+hands the props to spread on it; native shows no panel and announces the
+content as the accessibility hint. The trigger props, `mergeTooltipTriggerProps`
+and placement: [references/tooltip.md](references/tooltip.md).
 
 ### Icon weight on interaction
 
@@ -290,16 +224,12 @@ import {
 
 ### Pressable surfaces
 
-`PressableBox` is a themed, pressable container (`variant`, `accent`,
-`forceStyle`; `tonal` by default; `raised={false}` drops the tonal shadow for a
-segment of a group that casts one). `PressableListItem` is a row with a
-trailing caret, on the same `tonal` material as a button: a card lifted off
-the surface whose ground is a tone of the theme, never the accent's fill. Its
-label and caret are `text-on-tonal`, the ink that carries the accent where
-the ground cannot. These, and the
-link components below, are how something becomes interactive — never by wrapping
-a display-only component (`Badge`, `Bullet`, `Text`) in a `Link` or `Pressable`
-(alouette-styling/SKILL.md).
+`PressableBox` is the themed, pressable container every custom pressable
+starts from (`tonal` by default, the same `variant`s as a button);
+`PressableListItem` is a row with a trailing caret on the same `tonal`
+material. These, and the link components below, are how something becomes
+interactive — never by wrapping a display-only component (`Badge`, `Bullet`,
+`Text`) in a `Link` or `Pressable` (alouette-styling/SKILL.md).
 
 ```tsx
 import { PressableBox, PressableListItem, Text } from "alouette";
@@ -308,61 +238,21 @@ import { PressableBox, PressableListItem, Text } from "alouette";
   <Text>Custom card</Text>
 </PressableBox>
 
-<PressableListItem onPress={open}>
-  <Text>Row label</Text>
+<PressableListItem aria-label="Open Add dark mode" onPress={open}>
+  <Text className="font-body-bold">Add dark mode</Text>
 </PressableListItem>;
 ```
 
-A `PressableListItem` holding more than a title needs `aria-label` ("Open Add
-dark mode"), else the row is announced as every label, badge and date it holds.
-`actions` pins buttons to the row's bottom end; each is a nested pressable that
-takes its own press (the row's `onPress` does not fire), so give each its own
-handler. On web a `role="button"` row is a `<button>`, so actions nest a button
-in a button: pass `role="listitem"` (inside a `role="list"`) or `"menuitem"` for
-valid markup. `href` makes the row a real `<a>` — only on a row with no
-`actions` and no link in its children, which would nest inside the anchor.
-The row has no outer margin, so it lines up with the content around it: the
-list holding the rows spaces them (`<View className="gap-xs">`).
+A `PressableListItem` holding more than a title needs `aria-label`, else the
+row is announced as every label, badge and date it holds. `href` makes either
+one a real `<a>` on web with the `link` role. Rows carry their own ground and
+shadow, so a list of them stands on the screen ground — never inside a
+`surface` card — and the list spaces them (`<View className="gap-xs">`).
+`PressableBox` carries `group` for children styled from its state, and the
+keyboard focus ring is drawn for you on `focus-visible` only.
 
-```tsx
-<PressableListItem
-  aria-label="Open Add dark mode"
-  actions={<Button size="sm" text="Merge" onPress={merge} />}
-  onPress={open}
->
-  <Text className="font-body-bold">Add dark mode</Text>
-</PressableListItem>
-```
-
-Source: packages/alouette/src/ui/actions/PressableListItem.tsx
-
-`PressableBox` carries `group`, so a child can style itself from the pressable's
-state (`group-hover:`, `group-active:`) — that is how `InteractiveIcon` swaps a
-glyph. It also forwards its `ref`, as `Button` and `IconButton` do, so a button
-can anchor a `Popover` or a `Menu`.
-
-`href` makes it a link: react-native-web renders a real `<a>` (native ignores it
-and routes from `onPress` — expo Router's `<Link asChild>` injects both), and the
-default `role` becomes `"link"` instead of `"button"`. Every pressable built on
-it inherits this — `Button`, `IconButton`, `AppHeaderSignIn` — and a component
-needing another role passes its own (`MenuItem` stays a `menuitem`).
-
-```tsx
-<PressableBox href="/login">
-  <Text>Log in</Text>
-</PressableBox>
-```
-
-The keyboard focus ring is the `focus-ring` utility in the accent ink, on
-`focus-visible` only — a mouse click never leaves a ring or a changed ground
-behind. A `tonal` or `soft` pressable rings 2px inside its edge, `filled` and
-`outlined` 2px outside it. `withFocusVisibleOutline="inset"` moves the ring inside for a
-pressable whose parent clips (a `surface` is `overflow-hidden`), and
-`withFocusVisibleOutline={false}` drops it for a row of a list that already
-paints its cursor (a menu item, a listbox option), where the outline would ring
-whatever the pointer crosses. `false` emits `outline-solid outline-0`, not
-`outline-none` — react-native-css drops `outline-style: none`, so the UA ring
-would survive.
+Row `actions`, valid nesting roles, `raised={false}`, `href` routing and the
+focus-ring options: [references/pressable-surfaces.md](references/pressable-surfaces.md).
 
 ### Link buttons
 
@@ -377,7 +267,10 @@ import { ExternalLinkButton, ExternalLinkText, InternalLinkButton, LinkText } fr
 text link treatment, for a link inside a text flow rather than a call to action.
 `LinkText` goes to an in-app destination (`href` renders a real `<a>` on web,
 native routes from `onPress`; `icon` is leading), `ExternalLinkText` leaves the
-app and adds the trailing arrow. `size` is `"sm" | "md"` on both. Primary
+app behind a leading external-link arrow (`icon={null}` drops it). `size` is
+`"sm" | "md"` on both. Inside a `Text` or `Paragraph` either one renders as a
+nested `Text`, so it wraps with the sentence and sits on its baseline on both
+platforms; on its own line it is a pressable row carrying the focus ring. Primary
 navigation between screens is a `NavBar`, not a text link
 (alouette-navigation/SKILL.md); for full external-link control (in-app browser vs
 new tab), see alouette-external-links/SKILL.md.
@@ -388,45 +281,10 @@ new tab), see alouette-external-links/SKILL.md.
 
 ### Menu of secondary actions
 
-`Menu` is a pressable that opens a list of actions: anchored under its trigger on
-web, an overlay on native. Prefer it over a row of buttons for actions that are
-secondary, rare or destructive. The trigger is composed through `render` — spread
-the params it gives you (they carry the `ref`, `onPress`, `aria-haspopup` and
-`aria-expanded`) onto any pressable. `label` names the menu; `header` renders
-above the items, outside the `menu` element.
-
-```tsx
-import { IconButton, Menu, MenuItem, Separator } from "alouette";
-
-<Menu
-  label="Document actions"
-  render={(triggerProps) => (
-    <IconButton
-      icon={<DotsThreeRegularIcon />}
-      aria-label="Document actions"
-      variant="soft"
-      {...triggerProps}
-    />
-  )}
->
-  <MenuItem label="Rename" icon={<PencilRegularIcon />} onPress={rename} />
-  <Separator />
-  <MenuItem label="Delete" accent="danger" onPress={remove} />
-</Menu>;
-```
-
-A `MenuItem` closes the menu after its `onPress`. `accent` colors its label and
-icon (`danger` for a destructive action — the row itself stays a plain surface).
-`href` renders a real anchor on web, so expo Router's `<Link asChild>` composes
-with it, and a disabled item drops the `href`. `description` adds a line under
-the label; `checked` makes the rows a set of choices (`menuitemradio`), and the
-menu then opens on the checked one. One button choosing which of several actions
-it runs is a `SplitButton`: [references/split-button.md](references/split-button.md).
-
-On web the panel hangs from the trigger's end edge and sizes to its items. A
-full-width trigger takes `align="start"`, or `width="anchor"` to make the panel
-exactly as wide; a trigger pinned at the bottom of the viewport (a sidebar's
-account row) takes `side="top"`.
+Secondary, rare or destructive actions go behind one trigger in a `Menu` of
+`MenuItem`s rather than in a row of buttons, and one button choosing which of
+several alternative actions it runs is a `SplitButton`: both are
+alouette-menus/SKILL.md.
 
 ### Decision bar
 

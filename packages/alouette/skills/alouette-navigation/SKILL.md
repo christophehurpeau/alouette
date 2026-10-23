@@ -130,7 +130,7 @@ for a fixed rail. `Tabs` and `RadioButtonGroup` stay horizontal.
 
 `stretch` is the horizontal counterpart: the bar fills the width it is given and
 its items grow into the spare width, instead of hugging its destinations. That is what the
-stacked line of an `AppHeader` wants (alouette-layout/SKILL.md).
+stacked line of an `AppHeader` wants (alouette-app-shell/SKILL.md).
 
 ### Sidebar navigation, in sections
 
@@ -165,7 +165,7 @@ import { SidebarNav, SidebarNavItem, SidebarNavSection } from "alouette";
 It sits on the sidebar's ground with no track of its own: the current row is the
 `emphasis` chip raised off it, the others are `soft`. Its rows are `rounded-sm`
 on purpose, so the menu reads apart from the pill controls around it (selects,
-buttons). Put it in an `AppSidebar` (alouette-layout/SKILL.md), which scrolls
+buttons). Put it in an `AppSidebar` (alouette-app-shell/SKILL.md), which scrolls
 it; a short, flat list of destinations is a vertical `NavBar` instead.
 
 Source: packages/alouette/src/ui/navigation/SidebarNavItem.tsx
@@ -173,7 +173,7 @@ Source: packages/alouette/src/ui/navigation/SidebarNavItem.tsx
 ### Navigation on an application bar
 
 A header that has to fit brand, navigation and session on one line takes
-`HeaderNav` + `HeaderNavItem` (alouette-layout/SKILL.md) instead: the same
+`HeaderNav` + `HeaderNavItem` (alouette-app-shell/SKILL.md) instead: the same
 `navigation` / `link` / `aria-current="page"` semantics and the same
 `href`-as-identity, over a lighter material — text destinations on the bar
 itself, the current one underlined in the group's accent, no track and no chip.
@@ -451,5 +451,5 @@ named, especially when a screen has more than one.
 
 Source: packages/alouette/src/ui/navigation/NavBar.tsx
 
-See also: alouette-forms/SKILL.md for `RadioButtonGroup`, the same material with
+See also: alouette-inputs/SKILL.md for `RadioButtonGroup`, the same material with
 `radiogroup` semantics; alouette-icons/SKILL.md for importing icon elements.

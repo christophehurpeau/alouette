@@ -1,47 +1,18 @@
 ---
 name: alouette-forms
 description: >
-  Collect and validate user input. Inputs: InputText and TextArea,
-  InputPassword with its show/hide toggle, InputCode for a one-time code
-  (never a row of InputTexts), Switch, Select to pick one value
-  from a known list and InputTextAutocomplete to narrow that list by typing.
-  Single-select groups composing their children, never an options array: RadioGroup,
-  RadioButtonGroup (behind the light/dark ColorModePicker) and RadioCardGroup;
-  multi-select CheckboxGroup and CheckboxCardGroup, and a standalone Checkbox.
-  Validated forms over react-hook-form: Form owns the instance and passes its
+  Validated forms over react-hook-form. Form owns the instance and passes its
   control down, so the form type is written once and every field's value type
-  is inferred; FormField labels one field and reports its error;
-  FormFieldArray repeats a group of fields; FormSubmitButton drives the submit
-  lifecycle; SimpleVForm is the vertical-stack shortcut; FormEditableItem and
-  FormEditableSection edit a row or a section in a modal owning its own Form.
-  Load when building inputs, radio groups or a validated form.
+  is inferred; FormField labels one field, renders any input through render and
+  reports its error; FormFieldArray repeats a group of fields with its own add
+  and remove; FormSubmitButton drives the submit lifecycle (spinner, success,
+  inline error) and sits in a DecisionBar beside Cancel; SimpleVForm is the
+  vertical-stack shortcut. FormEditableItem and FormEditableSection edit a row
+  or a section in a modal owning its own Form, so cancelling is an unmount,
+  never a restore. The controls themselves are alouette-inputs. Load when
+  building a form with validation or a submit button, a repeatable list of
+  fields, or an edit-in-a-modal row.
 sources:
-  - packages/alouette/src/ui/inputs/InputText.tsx
-  - packages/alouette/src/ui/inputs/InputPassword.tsx
-  - packages/alouette/src/ui/inputs/InputCode.tsx
-  - packages/alouette/src/ui/inputs/InputCode.stories.tsx
-  - packages/alouette/src/ui/inputs/Select.shared.tsx
-  - packages/alouette/src/ui/inputs/Select.tsx
-  - packages/alouette/src/ui/inputs/Select.web.tsx
-  - packages/alouette/src/ui/inputs/InputTextAutocomplete.shared.tsx
-  - packages/alouette/src/ui/inputs/InputTextAutocomplete.tsx
-  - packages/alouette/src/ui/inputs/InputTextAutocomplete.web.tsx
-  - packages/alouette/src/ui/inputs/InputTextAutocomplete.stories.tsx
-  - packages/alouette/src/ui/inputs/TextArea.tsx
-  - packages/alouette/src/ui/inputs/Switch.tsx
-  - packages/alouette/src/ui/inputs/RadioGroup.tsx
-  - packages/alouette/src/ui/inputs/Radio.tsx
-  - packages/alouette/src/ui/inputs/RadioButtonGroup.tsx
-  - packages/alouette/src/ui/inputs/RadioButton.tsx
-  - packages/alouette/src/ui/inputs/RadioCardGroup.tsx
-  - packages/alouette/src/ui/inputs/RadioCard.tsx
-  - packages/alouette/src/ui/inputs/RadioCardGroup.stories.tsx
-  - packages/alouette/src/ui/inputs/CheckboxGroup.tsx
-  - packages/alouette/src/ui/inputs/Checkbox.tsx
-  - packages/alouette/src/ui/inputs/CheckboxCardGroup.tsx
-  - packages/alouette/src/ui/inputs/CheckboxCard.tsx
-  - packages/alouette/src/ui/inputs/ColorModePicker.tsx
-  - packages/alouette/src/ui/inputs/ColorModePicker.stories.tsx
   - packages/alouette/src/ui/forms/Form.tsx
   - packages/alouette/src/ui/forms/FormField.tsx
   - packages/alouette/src/ui/forms/FormItem.tsx
@@ -58,18 +29,17 @@ sources:
   - packages/alouette/src/ui/forms/FormEditableSection.stories.tsx
 ---
 
-This skill builds on alouette-theming (token model) and alouette-actions (the
-ActionButton lifecycle the submit button reuses). Read them first.
+This skill builds on alouette-inputs (the controls a field renders) and
+alouette-actions (the ActionButton lifecycle the submit button reuses). Read
+them first.
 
 # alouette — Forms
 
-Two layers. **Inputs** are the raw controls: `InputText` wraps react-native
-`TextInput` with alouette styling and a `mode` prop, `TextArea` is a multiline
-`InputText`, and `Switch` wraps the native switch with themed colors.
-**Composition** wraps [react-hook-form](https://react-hook-form.com): `Form`
-owns the form instance and hands `{ control, submit }` to its subtree,
-`FormField` binds one field to a labelled, error-aware row and renders any
-input, and the submit button reuses the async-action lifecycle.
+[react-hook-form](https://react-hook-form.com) underneath: `Form` owns the
+form instance and hands `{ control, submit }` to its subtree, `FormField` binds
+one field to a labelled, error-aware row and renders any input — the controls
+of alouette-inputs/SKILL.md — and the submit button reuses the async-action
+lifecycle.
 
 `control` is how the types flow, exactly as in react-hook-form's own
 `Controller`: write the form type **once** on `<Form<Values>>`, then pass its
@@ -81,76 +51,6 @@ union of every field, and never a per-field type argument.
 <Form<Values> … render={({ control }) => <FormField control={control} name="age" … />} />
 //                                       field.value is Values["age"], inferred
 ```
-
-## Inputs
-
-```tsx
-<InputText
-  mode="email"
-  value={email}
-  onChangeText={setEmail}
-  placeholder="you@example.com"
-/>
-```
-
-### Input modes
-
-`mode` bundles the right keyboard, input mode, autocomplete and secure entry:
-`"password" | "email" | "number" | "tel" | "url" | "search" | "webSearch"`.
-
-A one-time code (SMS, e-mail, authenticator) is `InputCode`, never a row of
-`InputText`s: one input holds the code behind its cells, so paste, OS autofill,
-Backspace and the screen reader see a single field. Modes, `onComplete` and the
-form wiring: [references/input-code.md](references/input-code.md).
-
-A password is `InputPassword`, not `mode="password"`: that mode plus an eye
-toggle in the field (`aria-pressed` while the password shows, named by
-`toggleLabel`, default "Show password"), controlled through `visible` /
-`defaultVisible` / `onVisibleChange`. Pass `autoComplete="new-password"` on a
-sign-up form.
-
-### Slots: a glyph or an icon button in the field
-
-`startSlot` / `endSlot` overlay the field's leading / trailing square (`control-md`), the text
-padded past them: an `Icon` carrying its own ink (`text-muted`, or
-`text-form-disabled-text` on a disabled field) or a `soft` `sm` `IconButton`.
-Fixed-width content only, never a prefix text. With a slot, `className` lands
-on the frame around the input, the box the parent lays out.
-
-```tsx
-<InputPassword autoComplete="new-password" toggleLabel="Afficher le mot de passe" />
-<InputText placeholder="Search" startSlot={<Icon icon={<MagnifyingGlassRegularIcon />} className="text-muted" />} />
-<InputText endSlot={<IconButton variant="soft" size="sm" icon={<CalendarBlankRegularIcon />} aria-label="Pick a date" onPress={openPicker} />} />
-```
-
-### TextArea, Switch, disabled
-
-```tsx
-<TextArea value={notes} onChangeText={setNotes} placeholder="Notes" />
-
-<Switch checked={on} onValueChange={setOn} />   {/* controlled */}
-<Switch onValueChange={(v) => log(v)} />        {/* uncontrolled */}
-
-<InputText disabled value={value} />
-<Switch disabled checked={on} />
-```
-
-### Select, autocomplete and single-select groups
-
-`Select` picks one value from a list without typing; `InputTextAutocomplete` is a
-text field backed by a filtered listbox, for narrowing that list by typing. Three
-single-select families share one group-owns-the-value API and compose their
-children rather than take an options array: `RadioGroup` + `Radio` (circle-dot
-list), `RadioButtonGroup` + `RadioButton` (segmented pill bar) and
-`RadioCardGroup` + `RadioCard` (icon/label/description cards).
-Multi-select: `CheckboxGroup`, `CheckboxCardGroup` (`values: string[]`) and a standalone boolean `Checkbox` for form opt-ins (an immediate setting stays a `Switch`).
-
-`RadioButtonGroup` also takes `variant="icon"` — a pill of square icon-only
-chips, each option's `label` staying its accessible name. `ColorModePicker` is
-the light/dark control built on it: it reports a `ColorModePreference` and the
-app applies it with `useResolvedColorMode` (alouette-theming/SKILL.md).
-
-Props, platform behavior and examples: [references/choice-inputs.md](references/choice-inputs.md).
 
 ## Validated forms
 
@@ -280,68 +180,6 @@ propagates (consumed by `FormSubmitButton`); pass `onSubmitError` to `Form` only
 if you need to observe it elsewhere.
 
 ## Common Mistakes
-
-### MEDIUM Disabling an input with editable={false}
-
-Wrong:
-
-```tsx
-<InputText editable={false} />
-```
-
-Correct:
-
-```tsx
-<InputText disabled />
-```
-
-`InputText` exposes a `disabled` prop that sets `editable`, `aria-disabled` and
-the disabled styling together; passing `editable` directly skips the disabled
-visual state and a11y.
-
-Source: packages/alouette/src/ui/inputs/InputText.tsx
-
-### MEDIUM Setting keyboardType / secureTextEntry by hand
-
-Wrong:
-
-```tsx
-<InputText secureTextEntry autoComplete="current-password" />
-<InputText keyboardType="email-address" inputMode="email" />
-```
-
-Correct:
-
-```tsx
-<InputPassword />
-<InputText mode="email" />
-```
-
-The `mode` prop bundles `inputMode` + `keyboardType` + `autoComplete` +
-`secureTextEntry` consistently across platforms; setting them piecemeal is
-error-prone. A password also gets its show/hide toggle from `InputPassword`.
-
-Source: packages/alouette/src/ui/inputs/InputText.tsx (MODE_PROPS); ui/inputs/InputPassword.tsx
-
-### MEDIUM Wiring Switch like a web checkbox
-
-Wrong:
-
-```tsx
-<Switch value={on} onChange={(e) => setOn(e.target.checked)} />
-```
-
-Correct:
-
-```tsx
-<Switch checked={on} onValueChange={setOn} />
-```
-
-`Switch` is controlled via `checked` and reports through
-`onValueChange(value: boolean)`. `value`/`onChange` with `e.target` do nothing
-in React Native.
-
-Source: packages/alouette/src/ui/inputs/Switch.tsx
 
 ### HIGH Omitting control, or writing the form type on every FormField
 
@@ -490,20 +328,3 @@ value with no restore logic. `FormEditableSection` is the same mechanism for a
 whole section.
 
 Source: packages/alouette/src/ui/forms/useFormEditorModal.tsx
-
-### MEDIUM Picking the wrong single-select family
-
-`RadioGroup` + `Radio`: vertical circle-dot list (longer option lists, labeled
-form fields). `RadioButtonGroup` + `RadioButton`: horizontal segmented pill bar
-(2–4 compact, equal-weight choices like view mode or time range).
-`RadioCardGroup` + `RadioCard`: cards, for a few options that each need an icon
-and a line of explanation. None of the three replaces the two components for long
-lists: `Select` when the value is picked from the list, `InputTextAutocomplete`
-when the user types to narrow it.
-
-The three share one context, so a child must sit inside its own group: a
-`RadioCard` under a `RadioGroup` renders, but a `Radio` outside any of the three
-throws "Radio, RadioButton and RadioCard must be rendered inside a RadioGroup,
-RadioButtonGroup or RadioCardGroup."
-
-Source: packages/alouette/src/ui/inputs/RadioGroup.tsx; ui/inputs/RadioButtonGroup.tsx; ui/inputs/RadioCardGroup.tsx

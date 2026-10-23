@@ -1,23 +1,18 @@
 ---
 name: alouette-layout
 description: >
-  Build screen structure: Box / InteractiveBox / SafeAreaBox for containers,
-  raised with the surface utilities (surface, surface-{size}, lowered,
-  surface-flat, surface-popover), View with flex classes and Separator to
-  arrange them, page-container for the boxed column of a page, SectionTitle
-  to head a section standing on the screen ground,
-  ScreenCenterLayout and the screen scroll containers (ScreenScrollView /
-  ScreenFlatList / ScreenSectionList, whose safe-area edges are declared through
-  SafeAreaScope) for the page itself, the application shell around every screen
-  (AppLayout + AppHeader and its brand / navigation / actions / account slots,
-  or AppShell +
-  AppShellSidebar + AppShellMain when the shell is composed per route;
-  AppSidebarLayout + AppSidebar for an app navigated from a fixed sidebar), and
-  GradientBackground / GradientScrollView for a tinted ground, or
-  GlowBackground for soft accent glows over the plain one. Space, round and
-  raise everything with the alouette spacing, radius and shadow scale rather
-  than raw Tailwind numbers. Load when building screen structure, an app header
-  or shell, cards, spacing, or backgrounds.
+  Build a screen's structure. A raised card is a Box with the surface
+  utilities, never the removed Surface component; a View with flex classes
+  plus Separator arranges children. page-container is
+  the boxed column of a page; SectionTitle heads a section standing on the
+  screen ground, where a list of pressable rows goes instead of inside a card.
+  ScreenScrollView, ScreenFlatList and ScreenSectionList are a screen's
+  scrollable body, padding the safe-area edges no SafeAreaScope has consumed;
+  ScreenCenterLayout frames a sign-in or splash screen. GradientBackground and
+  GradientScrollView tint the ground, GlowBackground bleeds soft accent glows
+  over it. Spacing, radius and shadow come from the alouette scale, never raw
+  Tailwind numbers. The shell around every screen is alouette-app-shell. Load when building screen structure, cards, a section
+  heading, spacing, a scrollable screen, or a background.
 sources:
   - packages/alouette/src/ui/containers/Box.tsx
   - packages/alouette/scripts/build-css.ts
@@ -31,19 +26,6 @@ sources:
   - packages/alouette/src/ui/layout/ScreenFlatList.tsx
   - packages/alouette/src/ui/layout/ScreenSectionList.tsx
   - packages/alouette/src/core/SafeAreaEdgesContext.tsx
-  - packages/alouette/src/ui/layout/AppLayout.tsx
-  - packages/alouette/src/ui/layout/AppShell.tsx
-  - packages/alouette/src/ui/layout/AppSidebarLayout.tsx
-  - packages/alouette/src/ui/layout/AppSidebar.tsx
-  - packages/alouette/src/ui/layout/AppSidebarAccount.tsx
-  - packages/alouette/src/ui/layout/AppHeader.tsx
-  - packages/alouette/src/ui/layout/AppHeaderBrand.tsx
-  - packages/alouette/src/ui/navigation/HeaderNav.tsx
-  - packages/alouette/src/ui/navigation/HeaderNavItem.tsx
-  - packages/alouette/src/ui/layout/AppHeaderActions.tsx
-  - packages/alouette/src/ui/layout/AppHeaderAccount.tsx
-  - packages/alouette/src/ui/layout/AppHeaderSignIn.tsx
-  - packages/alouette/src/ui/layout/BrandLogo.tsx
   - packages/alouette/src/config/tokens.stories.tsx
 ---
 
@@ -274,36 +256,13 @@ All three slots are required — pass `null` for one that has nothing in it. It
 scrolls nothing and applies no insets, so put it inside a screen scroll
 container or a `SafeAreaBox` when it has to clear the system bars.
 
-### Application shell
+### Inside the application shell
 
-`AppLayout` is the shell around a screen: a header, an optional left sidebar
-beside the screen, and a footer, all scrolling together as one page. It puts the
-screen in a `main` landmark and applies the safe-area insets around the body, so
-the screen inside needs **no scroll container and no insets of its own**.
-`AppHeader` is the `banner`, filled from caller-composed slots:
-`AppHeaderBrand` (+ `BrandLogo`) at the start, the navigation as children, and
-`AppHeaderActions` at the end — a `ColorModePicker`, an `IconButton`, and the
-session, which is `AppHeaderAccount` signed in and `AppHeaderSignIn` signed out.
-The navigation sits next to the brand by default; `HeaderNav` +
-`HeaderNavItem` is the material made for that spot — text destinations on the
-bar itself, the current one underlined — while a segmented `NavBar`
-(alouette-navigation/SKILL.md) is the alternative, and always takes
-`navAlign="center"`.
-
-When the shell is rendered **once** for a whole app but the sidebar belongs to
-one section of it, compose the same shell from `AppShell` + a per-route
-`AppShellSidebar` and `AppShellMain` instead of an `AppLayout` per route.
-
-An application rather than a site — a dashboard, a back office — takes
-`AppSidebarLayout` instead: from `sidebarBreakpoint` (`lg` by default) the
-viewport is fixed, an `AppSidebar` (brand, scope selects, a `SidebarNav`, the
-account) stands on the left and the screen scrolls alone in a raised panel;
-below it its `header` takes over, scrolling with the screen as in `AppLayout`.
-Its `ColorModePicker` goes in the account menu's `header` from the breakpoint,
-and in the `AppHeader` actions below it.
-
-Slots, breakpoints, the signed-out header, the per-route shell and the sidebar
-layout: [references/app-shell.md](references/app-shell.md).
+The header, rail and footer around every screen — `AppLayout`, `AppShell`,
+`AppSidebarLayout`, `AppHeader` and its slots — are alouette-app-shell/SKILL.md.
+Each of them is the scroll container and applies the insets itself, so the
+screen inside is a plain `View` (`page-container` for its column), never a
+screen scroll container.
 
 ## Common Mistakes
 
@@ -350,32 +309,6 @@ scale, so layouts drift from the design-system rhythm.
 
 Source: src/config/tokens.stories.tsx (see references/spacing-radius-shadow.md)
 
-### HIGH Signed-out header hidden behind a "Guest" account menu
-
-Wrong:
-
-```tsx
-<AppHeaderAccount name="Guest" icon={<UserRegularIcon />}>
-  <ExternalLink as={MenuItem} href={`${authOrigin}/login`} label="Login" />
-</AppHeaderAccount>
-```
-
-Correct:
-
-```tsx
-<AppHeaderSignIn label="Login" href="/login" />
-```
-
-`AppHeaderAccount` is the signed-in session: an avatar standing for a person,
-opening the several actions that person has. A signed-out visitor has one, so
-wrapping it in an account menu invents an identity nobody has and buries the
-only call to action behind a second press. `AppHeaderSignIn` is the signed-out
-counterpart: a button in the bar, one press. When the destination is outside the
-app, an `ExternalLinkButton` goes in the slot the same way — still a button in
-the bar, never a menu.
-
-Source: packages/alouette/src/ui/layout/AppHeaderSignIn.tsx
-
 ### MEDIUM Reaching for expo-linear-gradient for backgrounds
 
 Wrong:
@@ -421,70 +354,8 @@ Correct:
 
 Source: packages/alouette/src/ui/primitives/View.tsx
 
-### MEDIUM Putting a screen scroll container inside AppLayout
-
-Wrong:
-
-```tsx
-<AppLayout header={<AppHeader … />}>
-  <ScreenScrollView contentContainerClassName="p-m">{content}</ScreenScrollView>
-</AppLayout>
-```
-
-Correct:
-
-```tsx
-<AppLayout header={<AppHeader … />}>
-  <View className="p-m gap-m">{content}</View>
-</AppLayout>
-```
-
-`AppLayout` is itself the scroll container — the header and footer scroll with
-the page — and it declares every safe-area edge consumed for its body. A nested
-scroll container gives a second scrollable inside the first and pads insets that
-are already applied.
-
-Source: packages/alouette/src/ui/layout/AppLayout.tsx
-
-### MEDIUM An AppLayout per route to give one section a sidebar
-
-Wrong:
-
-```tsx
-// every route rebuilds the whole shell to change the rail
-<AppLayout header={<AppHeader … />} sidebar={<NavBar …/>} footer={<Footer />}>
-  {screen}
-</AppLayout>
-```
-
-Correct:
-
-```tsx
-// the shell once, in the root layout
-<AppShell header={<AppHeader … />} footer={<Footer />}>
-  <Slot />
-</AppShell>
-
-// the section that owns a rail composes the body
-<>
-  <AppShellSidebar>
-    <NavBar orientation="vertical" className="w-[220px] grow" …/>
-  </AppShellSidebar>
-  <AppShellMain>
-    <Slot />
-  </AppShellMain>
-</>
-```
-
-A shell per route remounts the scroll container, the header and the footer on
-every navigation — the scroll position, the header state and the safe-area
-padding all reset. `AppShell` keeps one shell and lets the route decide the body.
-
-Source: packages/alouette/src/ui/layout/AppShell.tsx
-
 ## References
 
 - [Spacing, radius & shadow scale](references/spacing-radius-shadow.md)
-- [Application shell](references/app-shell.md)
 
 See also: alouette-responsive/SKILL.md — switch between layout variants by breakpoint.

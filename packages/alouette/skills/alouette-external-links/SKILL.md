@@ -13,6 +13,7 @@ sources:
   - packages/alouette/src/expo/ExternalLink.shared.ts
   - packages/alouette/src/ui/actions/ExternalLinkText.tsx
   - packages/alouette/src/ui/actions/ExternalLinkText.stories.tsx
+  - packages/alouette/src/ui/actions/LinkTextFrame.tsx
   - packages/alouette/src/ui/actions/Button.tsx
 ---
 
@@ -54,6 +55,9 @@ interactive tokens, and the row carries the focus-visible outline.
   Read <ExternalLinkText size="sm" href={docsUrl} text="the guide" /> first.
 </Paragraph>
 ```
+
+Inside a `Text` or `Paragraph` it renders as a nested `Text`, so it wraps with
+the sentence and keeps its baseline on native as on web.
 
 A disabled link drops its `href` on both platforms, because a disabled
 `Pressable` never sees the press that would cancel the navigation. On web both

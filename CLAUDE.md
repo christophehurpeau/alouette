@@ -39,9 +39,12 @@ pnpm test run packages/alouette/src/config/utils/colorContrast.test.ts
 
 A change that breaks a consumer (a removed or renamed export, prop or token, a
 changed prop signature, a palette that must be regenerated) is documented in
-`packages/alouette/MIGRATE.md` in the same commit, under the next version's
-heading (`# To <next major>`, above the released ones; `package.json` holds the
-last released version), with a before/after example. The commit is marked `!`
+the shipped `alouette-migration` skill in the same commit: in
+`packages/alouette/skills/alouette-migration/references/<next major>.md`, under
+`## To <next major>.0.0` (`package.json` holds the last released version), with
+a before/after example. A new major creates that file and its row in the
+skill's table. A deprecation or a recommended replacement that breaks nothing
+goes in the current major's file, under `## Within <major>.x — …`. The commit is marked `!`
 (`feat(alouette)!: …`) and carries a `BREAKING CHANGE:` footer naming what
 breaks and what replaces it, never a plain `feat`.
 

@@ -151,7 +151,7 @@ A stored choice is a `ColorModePreference`: `"light" | "dark" | "system"`.
 `useSystemColorMode()` reads the OS setting (`prefers-color-scheme` on web) and
 `useResolvedColorMode(preference)` turns the preference into the mode to apply.
 Applying it is the app's job — pass the result to a `ScopedTheme` around the
-tree; `ColorModePicker` (alouette-forms/SKILL.md) is the ready-made control that
+tree; `ColorModePicker` (alouette-inputs/SKILL.md) is the ready-made control that
 reports the choice.
 
 ```tsx
@@ -215,17 +215,18 @@ and re-apply it in that mode: `<PortalAccentScope mode="dark">` under
 
 ### Ship a custom palette for the existing accents
 
-An app can re-color the existing accents (`brand`, `danger`, `info`, `success`,
-`warning`, plus `grayscale`) on alouette's OKLCH ramp and ship only its own
-palette — no default CSS. A theme has two coupled outputs: the palette **CSS**
-and the runtime **`themeVariables`** map. The app generates them the way alouette
-generates its own default palette — a build script calling
-`alouette/theme-generator`. `writeTheme` writes both files; override only the
-accents you want to change (the rest inherit the defaults):
+An app re-colors the existing accents (`brand`, `danger`, `info`, `success`,
+`warning`, `grayscale`) from a build script: `writeTheme` from
+`alouette/theme-generator` (node-only, never imported by app code) writes the
+palette CSS, an optional OKLCH overlay and the `themeVariables` map. The app
+then imports `alouette/core.css` + its palette instead of `alouette/global.css`,
+and passes **its own** map to `AlouetteProvider` — the CSS and the map are two
+halves of one theme, and the default map under a custom palette leaves every
+native token read on the default colors. The accent set is fixed: this
+re-colors accents, it never adds one.
 
 ```ts
-// scripts/build-theme.ts — run via a package.json script:
-// "build:theme": "node --experimental-strip-types scripts/build-theme.ts"
+// scripts/build-theme.ts
 import { writeTheme } from "alouette/theme-generator";
 
 writeTheme({
@@ -234,54 +235,8 @@ writeTheme({
 });
 ```
 
-That writes `src/palette.css` + `src/themeVariables.ts` (sRGB hex, complete on
-their own) and `src/palette-oklch.css` (the OKLCH / display-p3 overlay) — names
-configurable via `cssFileName` / `themeVariablesFileName`, headed `DO NOT EDIT`
-and already formatter-stable. Commit them and re-run the script when the params
-change. `srgbOnly: true` skips the OKLCH file. `generateTheme(overrides)` returns
-the same content in memory
-(`{ css, oklchCss, themeVariables, oklchThemeVariables }`) for an app that writes
-the files itself. Both are node-only build-time APIs: never import
-`alouette/theme-generator` from app code.
-
-The OKLCH half is opt-in, web-only and CSS-only: `@import "./palette-oklch.css"`
-after `./palette.css` enables it. The `themeVariables` map has no OKLCH
-counterpart — web resolves every token from the CSS, and only native reads the
-map. See "Color format" below.
-
-Then import `alouette/core.css` + the generated palette (instead of
-`alouette/global.css`) and pass the map to `AlouetteProvider` so native token
-reads (gradients, `Switch`, `placeholderTextColor`, SVG tint) match the palette
-CSS:
-
-```css
-/* global.css */
-@import "alouette/core.css";
-@import "./palette.css";
-@import "./palette-oklch.css"; /* optional wide-gamut half */
-```
-
-```tsx
-import { AlouetteProvider, type ThemeVariablesMap } from "alouette";
-import { themeVariables } from "./themeVariables";
-
-<AlouetteProvider themeVariables={themeVariables}>
-  {/* app */}
-</AlouetteProvider>;
-```
-
-`ThemeVariablesMap` is exported for code that passes the map around (a theme
-switcher, a test helper). The `themeVariables.ts` that `writeTheme` emits already
-imports it from `alouette` and annotates the map with it.
-
-`PaletteSpec` per accent: `type` (`"accent"` | `"brightAccent"` | `"grayscale"`),
-`hue` (0–360), optional `hueHi` / `hueLo` (hue ramp across lightness) and
-`intensity` (chroma multiplier). The accent set is fixed — this re-colors the
-existing accents, it does not add new ones. The palette CSS and the map are two
-halves of one theme: `themeVariables` is a required `AlouetteProvider` prop, so
-shipping custom CSS while still passing `alouette/defaultThemeVariables`
-type-checks but leaves every **native** token read on the default colors (web is
-unaffected — it never reads the map).
+Output files, the CSS imports, `generateTheme` in memory and the `PaletteSpec`
+parameters: [references/custom-palette.md](references/custom-palette.md).
 
 ### Color format: OKLCH on web, hex on native
 
@@ -490,5 +445,6 @@ Source: packages/alouette/src/ui/containers/StableAccentScope.tsx
 ## References
 
 - [Token catalog](references/tokens.md) — color, spacing, radius and shadow token names.
+- [Custom palette](references/custom-palette.md) — `writeTheme`, the generated files and `PaletteSpec`.
 
 See also: alouette-typography/SKILL.md — color tokens are applied through Text.

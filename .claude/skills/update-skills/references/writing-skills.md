@@ -2,7 +2,7 @@
 
 The reader is an agent writing screens in someone's app, with the whole alouette
 surface unknown to it and no time to browse. It sees skill **descriptions**
-first (all 15 sit in its context at once) and loads a **body** only after
+first (all of them sit in its context at once) and loads a **body** only after
 choosing one. So the two are optimized for different things: descriptions for
 _picking the right skill and the right component_, bodies for _writing a call
 site that compiles, is accessible, and doesn't fight the design system_.
@@ -74,16 +74,18 @@ that is what makes the next reconciliation a diff instead of a re-read.
 
 Split when a topic is needed by _some_ tasks only, or when the SKILL.md is
 crowding 500 lines (`skills-status.ts` prints the budget). Good splits are
-task-shaped: `field-arrays-and-editable-rows.md`, `app-shell.md`,
-`choice-inputs.md`, `tokens.md`.
+task-shaped: `field-arrays-and-editable-rows.md`, `custom-palette.md`,
+`choice-inputs.md`, `tokens.md`. A topic that is a domain of its own (the
+application shell, menus, the raw controls under the form layer) is a new
+skill instead, with its own description and triggers.
 
 Splitting is not deleting. The parent keeps:
 
 - the rule itself, in one or two sentences (an agent that never opens the
   reference must still not do the wrong thing), and
 - a pointer where the detail used to be, phrased so it is obvious what is
-  behind it: "Slots, breakpoints, the signed-out header and the per-route
-  shell: [references/app-shell.md](references/app-shell.md)".
+  behind it: "Row `actions`, valid nesting roles, `href` routing and the
+  focus-ring options: [references/pressable-surfaces.md](references/pressable-surfaces.md)".
 
 The reference carries the depth: the full example, the prop-level nuance, the
 edge cases, the platform-specific behaviour.
