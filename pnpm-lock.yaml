@@ -109,8 +109,8 @@ importers:
         specifier: 19.2.4
         version: 19.2.4(@types/react@19.2.17)
       '@types/react-native-web':
-        specifier: 0.19.2
-        version: 0.19.2(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1)
+        specifier: 0.19.3
+        version: 0.19.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1)
       '@typescript/native':
         specifier: npm:typescript@7.0.2
         version: typescript@7.0.2
@@ -2260,7 +2260,11 @@ packages:
     engines: {node: '>=22.18.0'}
     hasBin: true
     peerDependencies:
+      rollup: 4.60.4
       typescript: ^4.0.3 || ^5.0.0 || ^6.0.0 || ^7.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
 
   '@pob/rollup@8.3.0':
     resolution: {integrity: sha512-EkIcxwnlrsYgDIJnDN8rW3m8Mp+oPaXCky+dNy/n0TP2rbVy37E5PP7FMh15/t3nSwQDpVn3EQev9k+vdUMGmw==}
@@ -3356,8 +3360,8 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
-  '@types/react-native-web@0.19.2':
-    resolution: {integrity: sha512-TAgyUi1XcYYUM5j3IwBDufPUD0NaOJiz8ftld6oJPtuIT5lc+uRZZmTcTdflpsVzCtiZ6AjSyLFZ/xD0OtCfJA==}
+  '@types/react-native-web@0.19.3':
+    resolution: {integrity: sha512-QoFf3fadLPZdBAXmufD8RElBmGI+aCIczs/79gT4ZzURP0O2kHMsJPTPVOU+f1wMzQDWeXFc7QXou9vyKKy4OQ==}
 
   '@types/react-test-renderer@19.1.0':
     resolution: {integrity: sha512-XD0WZrHqjNrxA/MaR9O22w/RNidWR9YZmBdRGI7wcnWGrv/3dA8wKCJ8m63Sn+tLJhcjmuhOi629N66W6kgWzQ==}
@@ -4734,6 +4738,7 @@ packages:
     resolution: {integrity: sha512-sVgXaMjh5uapBvBkik3QibxbKI2g1zNtNeHntjRfixWAI3tlQZbaK4ACdInY4+jUBVymkf8u9BXJUaSes9jdtA==}
     hasBin: true
     peerDependencies:
+      '@expo/dom-webview': '*'
       '@expo/metro-runtime': '*'
       react: '*'
       react-dom: '*'
@@ -4741,6 +4746,8 @@ packages:
       react-native-web: '*'
       react-native-webview: '*'
     peerDependenciesMeta:
+      '@expo/dom-webview':
+        optional: true
       '@expo/metro-runtime':
         optional: true
       react-dom:
@@ -9922,7 +9929,7 @@ snapshots:
     dependencies:
       '@types/react': 19.2.17
 
-  '@types/react-native-web@0.19.2(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1)':
+  '@types/react-native-web@0.19.3(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(react@19.2.3)(supports-color@8.1.1)':
     dependencies:
       '@types/react': 19.2.17
       react-native: 0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.3)(supports-color@8.1.1)
