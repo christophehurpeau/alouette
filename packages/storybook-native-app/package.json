@@ -74,7 +74,7 @@
     "storybook": "10.6.2",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "vite": "8.3.5",
-    "vite-plugin-rnw": "0.0.11",
+    "vite-plugin-rnw": "0.0.13",
     "vite-plugin-svgr": "5.2.0",
     "vitest": "5.0.5"
   },
