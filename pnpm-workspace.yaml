@@ -12,6 +12,8 @@ minimumReleaseAgeExclude:
   - alouette-icons
   - nightingale
   - nightingale-logger
+  # Renovate security update: happy-dom@21.0.4
+  - happy-dom@21.0.4
 nodeLinker: hoisted
 overrides:
   # react-native-css loads Expo's copy; newer Lightning CSS versions fail with
