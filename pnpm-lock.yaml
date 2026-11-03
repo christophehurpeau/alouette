@@ -399,9 +399,6 @@ importers:
       '@storybook/react-native':
         specifier: 10.7.1
         version: 10.7.1(0259661c9ac206f004dd50a77893a1a3)
-      '@storybook/react-native-web-vite':
-        specifier: 10.6.5
-        version: 10.6.5(@types/react-dom@19.2.4(@types/react@19.2.17))(@types/react@19.2.17)(@typescript/typescript6@6.0.2)(react-dom@19.2.3(react@19.2.3))(react-native-web@0.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-native@0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(rollup@4.67.3)(storybook@10.6.5(@types/react@19.2.17)(react@19.2.3))(supports-color@8.1.1)(vite@8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1))
       '@storybook/react-vite':
         specifier: 10.6.5
         version: 10.6.5(@types/react-dom@19.2.4(@types/react@19.2.17))(@types/react@19.2.17)(@typescript/typescript6@6.0.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rollup@4.67.3)(storybook@10.6.5(@types/react@19.2.17)(react@19.2.3))(supports-color@8.1.1)(vite@8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1))
@@ -3161,16 +3158,6 @@ packages:
       react-native-safe-area-context: '*'
       react-native-svg: '>=14'
       storybook: ^10.5.4
-
-  '@storybook/react-native-web-vite@10.6.5':
-    resolution: {integrity: sha512-QeUSwYllXPGqoQ6SbEqrBjVCiINEXtoBEnXb2rIfkm3j1EsIv742mpJOSCvXRonPXcj3L4Y/MwRIMi0d+1pVAw==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      react-native: '>=0.74.5'
-      react-native-web: ^0.19.12 || ^0.20.0 || ^0.21.0
-      storybook: ^10.6.5
-      vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
 
   '@storybook/react-native@10.7.1':
     resolution: {integrity: sha512-GilhBoQkTrX/ydJRRhETCPDm4qEO7EpZotL+U/VvjWAxlTMEGsTcCCsDDhpmCO2NwS2sAztUHM/P71wL2IWdrw==}
@@ -6689,17 +6676,6 @@ packages:
   ts-pattern@5.9.2:
     resolution: {integrity: sha512-qAf+7M7Jjk7uebZeIo9uEzyintfuRtgHdzM9dqxRKcMi2dt76Ec+FH2wW3bnU9TuGLkZIJLoLs7cCQnU7Tu8ig==}
 
-  tsconfck@3.1.6:
-    resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
-    engines: {node: ^18 || >=20}
-    deprecated: unmaintained
-    hasBin: true
-    peerDependencies:
-      typescript: ^5.0.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   tsconfig-paths@4.2.0:
     resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
     engines: {node: '>=6'}
@@ -6871,11 +6847,6 @@ packages:
     resolution: {integrity: sha512-qj2eAKF8C6PZWemVTvQA0xgQIcP1hHU6Buh7fl6BhvayWwnuxE+z417miKxeDvRWbDrupQ1oK99hfxElopJ3sQ==}
     peerDependencies:
       vite: '>=3.0.0'
-
-  vite-tsconfig-paths@6.1.1:
-    resolution: {integrity: sha512-2cihq7zliibCCZ8P9cKJrQBkfgdvcFkOOc3Y02o3GWUDLgqjWsZudaoiuOwO/gzTzy17cS5F7ZPo4bsnS4DGkg==}
-    peerDependencies:
-      vite: '*'
 
   vite@8.3.5:
     resolution: {integrity: sha512-z1YpjieJ9g0ebTmQpLBv/oq9E3F9EIlOe+7LahW8SrE3LTiG3udBRUXQOlYXP9b+IC2q2phHeVxj9xGlw34OEQ==}
@@ -9795,26 +9766,6 @@ snapshots:
       - '@types/react'
       - '@types/react-dom'
       - react-dom
-      - supports-color
-      - typescript
-
-  '@storybook/react-native-web-vite@10.6.5(@types/react-dom@19.2.4(@types/react@19.2.17))(@types/react@19.2.17)(@typescript/typescript6@6.0.2)(react-dom@19.2.3(react@19.2.3))(react-native-web@0.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-native@0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.3)(supports-color@8.1.1))(react@19.2.3)(rollup@4.67.3)(storybook@10.6.5(@types/react@19.2.17)(react@19.2.3))(supports-color@8.1.1)(vite@8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1))':
-    dependencies:
-      '@storybook/builder-vite': 10.6.5(storybook@10.6.5(@types/react@19.2.17)(react@19.2.3))(vite@8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1))
-      '@storybook/react': 10.6.5(@types/react-dom@19.2.4(@types/react@19.2.17))(@types/react@19.2.17)(@typescript/typescript6@6.0.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(storybook@10.6.5(@types/react@19.2.17)(react@19.2.3))(supports-color@8.1.1)
-      '@storybook/react-vite': 10.6.5(@types/react-dom@19.2.4(@types/react@19.2.17))(@types/react@19.2.17)(@typescript/typescript6@6.0.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rollup@4.67.3)(storybook@10.6.5(@types/react@19.2.17)(react@19.2.3))(supports-color@8.1.1)(vite@8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1))
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
-      react-native: 0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.2(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.3)(supports-color@8.1.1)
-      react-native-web: 0.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      storybook: 10.6.5(@types/react@19.2.17)(react@19.2.3)
-      vite: 8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1)
-      vite-plugin-rnw: 0.0.11(@typescript/typescript6@6.0.2)(react-native-web@0.21.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(supports-color@8.1.1)(vite@8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1))
-      vite-tsconfig-paths: 6.1.1(@typescript/typescript6@6.0.2)(supports-color@8.1.1)(vite@8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1))
-    transitivePeerDependencies:
-      - '@types/react'
-      - '@types/react-dom'
-      - rollup
       - supports-color
       - typescript
 
@@ -13512,10 +13463,6 @@ snapshots:
 
   ts-pattern@5.9.2: {}
 
-  tsconfck@3.1.6(@typescript/typescript6@6.0.2):
-    optionalDependencies:
-      typescript: '@typescript/typescript6@6.0.2'
-
   tsconfig-paths@4.2.0:
     dependencies:
       json5: 2.2.3
@@ -13717,16 +13664,6 @@ snapshots:
       vite: 8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1)
     transitivePeerDependencies:
       - rollup
-      - supports-color
-      - typescript
-
-  vite-tsconfig-paths@6.1.1(@typescript/typescript6@6.0.2)(supports-color@8.1.1)(vite@8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1)):
-    dependencies:
-      debug: 4.4.3(supports-color@8.1.1)
-      globrex: 0.1.2
-      tsconfck: 3.1.6(@typescript/typescript6@6.0.2)
-      vite: 8.3.5(@types/node@24.10.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.48.0)(yaml@2.9.1)
-    transitivePeerDependencies:
       - supports-color
       - typescript
 
