@@ -1,11 +1,10 @@
-import React from "react";
 import {
-  Title,
-  Subtitle,
+  Controls,
   Description,
   Primary,
-  Controls,
   Stories,
+  Subtitle,
+  Title,
 } from "@storybook/addon-docs/blocks";
 
 const primaryColor = "#23C8FB";
@@ -20,7 +19,7 @@ const primarySectionStyle = {
   padding: "16px",
 };
 
-export const DocTemplate = () => {
+export function DocTemplate() {
   return (
     <>
       <div style={sectionStyle}>
@@ -46,4 +45,4 @@ export const DocTemplate = () => {
       </div>
     </>
   );
-};
+}
