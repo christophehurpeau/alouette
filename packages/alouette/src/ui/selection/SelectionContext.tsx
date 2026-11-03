@@ -36,7 +36,7 @@ export interface SelectionGroupProps {
   children: ReactNode;
 }
 
-interface SelectionContext {
+export interface SelectionContext {
   SelectionContextProvider: Provider<SelectionContextValue | undefined>;
   useSelection: () => SelectionContextValue;
 }
