@@ -22,7 +22,7 @@ export interface MultiSelectionGroupProps {
   children: ReactNode;
 }
 
-interface MultiSelectionContext {
+export interface MultiSelectionContext {
   MultiSelectionContextProvider: Provider<
     MultiSelectionContextValue | undefined
   >;
