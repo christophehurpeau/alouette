@@ -45,7 +45,11 @@ const { values, positionals } = parseArgs({
 
 function readIndex(): IndexEntry[] {
   const index = JSON.parse(
-    fs.readFileSync(path.join(staticDir, "index.json"), "utf8"),
+    fs.readFileSync(
+      path.join(staticDir, "index.json"),
+      // oxlint-disable-next-line unicorn-js/prefer-json-parse-buffer -- JSON.parse is typed to take a string
+      "utf8",
+    ),
   ) as { entries: Record<string, IndexEntry> };
   return Object.values(index.entries).filter((entry) => entry.type === "story");
 }

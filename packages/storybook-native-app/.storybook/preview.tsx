@@ -1,6 +1,6 @@
 // @ts-expect-error missing css types
 import "../src/global.css";
-import { Decorator, Preview } from "@storybook/react-vite";
+import type { Decorator, Preview } from "@storybook/react-vite";
 import { AlouetteDecorator } from "alouette";
 import { themeVariables } from "alouette/defaultThemeVariables";
 // @ts-expect-error missing css types for vite inline import
@@ -36,7 +36,7 @@ function OklchPalette({ colorFormat, children }: OklchPaletteProps): ReactNode {
   return children;
 }
 
-const OklchPaletteDecorator: Decorator = (storyFn, context) => (
+const withOklchPalette: Decorator = (storyFn, context) => (
   <OklchPalette colorFormat={context.globals.colorFormat}>
     {storyFn(context)}
   </OklchPalette>
@@ -92,7 +92,7 @@ const preview: Preview = {
   },
   parameters: {
     alouette: {
-      themeVariables: themeVariables,
+      themeVariables,
     },
     controls: {
       matchers: {
@@ -107,7 +107,7 @@ const preview: Preview = {
     },
   },
 
-  decorators: [OklchPaletteDecorator, AlouetteDecorator],
+  decorators: [withOklchPalette, AlouetteDecorator],
 };
 
 export default preview;

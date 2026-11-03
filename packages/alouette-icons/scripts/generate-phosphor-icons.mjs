@@ -129,7 +129,7 @@ copyFileSync(
     "../../../node_modules/@phosphor-icons/core/LICENSE",
     import.meta.url,
   ),
-  new URL("LICENSE", outDir),
+  new URL("./LICENSE", outDir),
 );
 
 execFileSync("pnpm", ["exec", "oxfmt", fileURLToPath(outDir)], {

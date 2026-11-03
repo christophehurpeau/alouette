@@ -42,7 +42,7 @@ const preview: Preview = {
 
   parameters: {
     alouette: {
-      themeVariables: themeVariables,
+      themeVariables,
     },
     backgrounds: {
       options: {
