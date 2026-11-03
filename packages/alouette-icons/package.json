@@ -46,17 +46,19 @@
   },
   "scripts": {
     "build": "pnpm run build:definitions",
-    "build:definitions": "tsc -p tsconfig.json",
+    "build:definitions": "tsrs -p tsconfig.json",
     "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "lint:eslint": "pnpm --dir '../..' exec eslint --quiet 'packages/alouette-icons'",
     "lint:oxlint": "pnpm --dir '../..' exec oxlint --quiet 'packages/alouette-icons'",
     "test": "yarn '../..' run test -- packages/alouette-icons",
-    "tsc": "tsc"
+    "tsc": "tsrs",
+    "tsc:go": "tsc"
   },
   "devDependencies": {
     "@phosphor-icons/core": "2.1.1",
     "@typescript/native": "npm:typescript@7.0.2",
     "react-native": "0.86.2",
+    "tsrs": "0.18.0-ts7.1.0-dev.20260929",
     "typescript": "npm:@typescript/typescript6@6.0.2"
   },
   "peerDependencies": {
@@ -65,7 +67,7 @@
     "react-native-svg": "*"
   },
   "engines": {
-    "node": ">=22.18.0"
+    "node": "^22.18.0 || >=24.14.1"
   },
   "pob": {
     "entries": [
