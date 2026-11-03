@@ -11,6 +11,12 @@
       ]
     },
     {
+      "description": "nativewind declares an exact react-native-css peer: update them together. Re-enabled here: renovate-presets disables them so the consumers of alouette follow its peerDependencies when they update alouette",
+      "groupName": "nativewind",
+      "matchPackageNames": ["nativewind", "react-native-css"],
+      "enabled": true
+    },
+    {
       "description": "lightningcss is pinned to 1.30.1 for react-native-css (NativeWind v5): the pnpm-workspace.yaml override \"@expo/metro-config>lightningcss\" (react-native-css loads Expo's copy; Vite's and Tailwind's copies stay independent) and the direct dependency of the Expo apps. lightningcss >= 1.31 makes react-native-css compile() fail with \"failed to deserialize; expected an object-like struct named Specifier\", still on 1.33.0: https://github.com/parcel-bundler/lightningcss/issues/1081, https://github.com/nativewind/react-native-css/issues/470. Remove this rule, the override and the apps' pins once a lightningcss release fixes #1081 and react-native-css works with it.",
       "matchManagers": ["npm"],
       "matchDepTypes": ["pnpm-workspace.overrides", "dependencies"],
