@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.1.0](compare/storybook-native-app%4015.0.0...storybook-native-app%4015.1.0) (2026-11-03)
+
+### Features
+
+* **deps:** update dependency @react-native-community/datetimepicker to v9.2.2 ([#430](issues/430))
+
+### Bug Fixes
+
+* **deps:** update dependency @react-native-community/slider to v5.2.2 ([#384](issues/384))
+
+Version bump for dependency: alouette
+
+
 ## [15.0.0](compare/storybook-native-app%4014.5.0...storybook-native-app%4015.0.0) (2026-10-23)
 
 ### Features
