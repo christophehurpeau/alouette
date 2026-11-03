@@ -89,14 +89,6 @@ export default [
           },
         },
       ],
-      "check-package-dependencies/require-direct-peer-dependencies": [
-        "error",
-        {
-          onlyWarnsFor: {
-            "vite-plugin-rnw": ["typescript"],
-          },
-        },
-      ],
     },
   },
 ];
