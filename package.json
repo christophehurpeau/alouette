@@ -42,11 +42,11 @@
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "5.0.5",
     "eslint": "10.13.0",
-    "eslint-plugin-storybook": "10.6.2",
+    "eslint-plugin-storybook": "10.6.5",
     "happy-dom": "21.0.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "storybook": "10.6.2",
+    "storybook": "10.6.5",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "vite": "8.3.5",
     "vitest": "5.0.5"
