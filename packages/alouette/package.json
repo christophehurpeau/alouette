@@ -125,7 +125,7 @@
     "react-native-safe-area-context": "5.8.0",
     "tailwind-merge": "3.6.0",
     "tailwind-variants": "3.2.2",
-    "type-fest": "5.8.0"
+    "type-fest": "^5.8.0"
   },
   "devDependencies": {
     "@pob/rollup-esbuild": "11.4.0",
