@@ -15,7 +15,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm run clean:build && rollup --config rollup.config.mjs && pnpm run build:definitions",
-    "build:definitions": "tsc -b",
+    "build:definitions": "tsrs -b",
     "clean:build": "pnpm -r --parallel run clean:build",
     "format": "oxfmt",
     "format:check": "oxfmt --check .",
@@ -28,25 +28,27 @@
     "test:coverage": "TZ=UTC POB_VITEST_COVERAGE=json,text vitest run --coverage",
     "test:coverage:generate": "TZ=UTC POB_VITEST_COVERAGE=json vitest run --coverage",
     "test:watch": "TZ=UTC vitest --watch",
-    "tsc": "tsc -b",
+    "tsc": "tsrs -b",
+    "tsc:go": "tsc -b",
     "upgrade-expo": "pnpm -r --sequential run upgrade-expo",
     "watch": "pnpm run clean:build && rollup --config rollup.config.mjs --watch"
   },
   "devDependencies": {
-    "@pob/eslint-config": "68.0.0",
-    "@pob/eslint-config-typescript-react": "68.0.0",
-    "@pob/rollup-esbuild": "11.0.0",
+    "@pob/eslint-config": "68.3.0",
+    "@pob/eslint-config-typescript-react": "68.4.0",
+    "@pob/rollup-esbuild": "11.3.0",
     "@pob/root": "28.6.0",
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "5.0.5",
-    "eslint": "10.13.0",
+    "eslint": "10.14.0",
     "eslint-plugin-storybook": "10.6.5",
     "happy-dom": "21.0.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "storybook": "10.6.5",
+    "tsrs": "0.18.0-ts7.1.0-dev.20260929",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "vite": "8.3.5",
     "vitest": "5.0.5"
@@ -64,7 +66,7 @@
     }
   },
   "engines": {
-    "node": ">=22.18.0",
+    "node": "^22.18.0 || >=24.14.1",
     "pnpm": ">= 12.0.0"
   }
 }

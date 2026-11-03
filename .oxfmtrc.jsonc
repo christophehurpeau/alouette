@@ -4,6 +4,7 @@
   "printWidth": 80,
   "sortPackageJson": { "sortScripts": true },
   "ignorePatterns": [
+    "**/storybook.requires.ts",
     "/packages/*/dist",
     "/packages/*/.expo/",
     "/packages/*/android/",

@@ -23,7 +23,8 @@
     "start:android": "expo start --android",
     "start:ios": "expo start --ios",
     "start:web": "expo start --web",
-    "tsc": "tsc",
+    "tsc": "tsrs",
+    "tsc:go": "tsc",
     "upgrade-expo": "expo install expo@57 --fix"
   },
   "dependencies": {
@@ -60,10 +61,11 @@
     "@tailwindcss/postcss": "4.3.3",
     "@types/react": "19.2.17",
     "@typescript/native": "npm:typescript@7.0.2",
+    "tsrs": "0.18.0-ts7.1.0-dev.20260929",
     "typescript": "npm:@typescript/typescript6@6.0.2"
   },
   "engines": {
-    "node": ">=22.18.0"
+    "node": "^22.18.0 || >=24.14.1"
   },
   "expo": {
     "install": {
