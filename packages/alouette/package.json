@@ -119,7 +119,7 @@
   "dependencies": {
     "@tailwindcss/postcss": "4.3.3",
     "alouette-icons": "workspace:*",
-    "colorjs.io": "0.6.0-alpha.1",
+    "colorjs.io": "0.7.1",
     "downshift": "9.4.0",
     "react-hook-form": "7.81.0",
     "react-native-safe-area-context": "5.8.0",
