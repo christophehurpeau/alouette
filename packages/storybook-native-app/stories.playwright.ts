@@ -12,7 +12,6 @@ interface Story {
 const index = JSON.parse(
   fs.readFileSync(
     new URL("./storybook-static/index.json", import.meta.url),
-    // oxlint-disable-next-line unicorn-js/prefer-json-parse-buffer -- JSON.parse is typed to take a string
     "utf8",
   ),
 ) as { entries: Record<string, Story> };
