@@ -1,7 +1,7 @@
 "use strict";
 
 const { withAlouetteConfig } = require("alouette/metro.cjs");
-const { getDefaultConfig } = require("expo/metro-config.js");
+const { getDefaultConfig } = require("expo/metro-config");
 
 const defaultConfig = getDefaultConfig(__dirname);
 

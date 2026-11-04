@@ -57,7 +57,7 @@
   "devDependencies": {
     "@phosphor-icons/core": "2.1.1",
     "@typescript/native": "npm:typescript@7.0.2",
-    "react-native": "0.86.2",
+    "react-native": "0.88.1",
     "tsrs": "0.18.0-ts7.1.0-dev.20260929",
     "typescript": "npm:@typescript/typescript6@6.0.2"
   },

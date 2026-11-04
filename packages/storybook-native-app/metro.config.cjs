@@ -4,7 +4,7 @@ const {
   withStorybook,
 } = require("@storybook/react-native/metro/withStorybook");
 const { withAlouetteConfig } = require("alouette/metro.cjs");
-const { getDefaultConfig } = require("expo/metro-config.js");
+const { getDefaultConfig } = require("expo/metro-config");
 const { withExpoSvgTransformer } = require("expo-svg-transformer");
 
 const defaultConfig = getDefaultConfig(__dirname);
