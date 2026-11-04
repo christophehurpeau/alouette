@@ -1,13 +1,14 @@
-import { type ReactNode, type Ref, use } from "react";
+import { type ComponentRef, type ReactNode, type Ref, use } from "react";
 import { Text as RNText, type TextProps as RNTextProps } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
 import { twMerge } from "../../core/twMerge";
 import { AccentScope } from "../containers/AccentScope";
 import { TextAncestorContext, TextAncestorScope } from "./TextAncestorContext";
+import { webTextRole } from "./webTextRole";
 
 export interface TextProps extends RNTextProps {
   accent?: Accent;
-  ref?: Ref<RNText>;
+  ref?: Ref<ComponentRef<typeof RNText>>;
 }
 
 /**
@@ -56,7 +57,7 @@ export type ParagraphProps = TextProps;
 export function Paragraph({ className, ...props }: ParagraphProps): ReactNode {
   return (
     <Text
-      role="paragraph"
+      role={webTextRole("paragraph")}
       className={twMerge("select-auto", className)}
       {...props}
     />

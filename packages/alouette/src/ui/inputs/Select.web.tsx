@@ -1,5 +1,11 @@
 import { useSelect } from "downshift";
-import { type ReactNode, type Ref, type RefObject, useRef } from "react";
+import {
+  type ComponentRef,
+  type ReactNode,
+  type Ref,
+  type RefObject,
+  useRef,
+} from "react";
 import type { View as RNView } from "react-native";
 import { useControllableValue } from "../../core/useControllableValue";
 import { Box } from "../containers/Box";
@@ -21,7 +27,7 @@ type ListboxOptionPressHandler = ListboxOptionProps["onPress"];
 type ListboxOptionHoverHandler = ListboxOptionProps["onHoverIn"];
 
 interface SelectMenuProps extends ViewProps {
-  ref: Ref<RNView>;
+  ref: Ref<ComponentRef<typeof RNView>>;
 }
 
 function optionToString(option: SelectOption | null): string {
@@ -143,7 +149,9 @@ export function Select({
       </StableAccentScope>
       <Popover
         open={isOpen}
-        anchorRef={triggerRef as unknown as RefObject<RNView | null>}
+        anchorRef={
+          triggerRef as unknown as RefObject<ComponentRef<typeof RNView> | null>
+        }
         accent="neutral"
         onClose={closeMenu}
       >

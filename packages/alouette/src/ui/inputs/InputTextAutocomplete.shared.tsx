@@ -1,4 +1,4 @@
-import { type ReactNode, type Ref, useMemo } from "react";
+import { type ComponentRef, type ReactNode, type Ref, useMemo } from "react";
 import type {
   PressableProps,
   TextInput as RNTextInput,
@@ -23,7 +23,7 @@ export interface ComboboxInputProps extends Omit<
   InputTextProps,
   "onKeyDown" | "onKeyPress"
 > {
-  ref: Ref<RNTextInput>;
+  ref: Ref<ComponentRef<typeof RNTextInput>>;
   /**
    * Web only. Typed as the `onKeyPress` handler rather than as a DOM one
    * because that is the prop it ends up on — react-native-web hands it the same
@@ -35,11 +35,11 @@ export interface ComboboxInputProps extends Omit<
 }
 
 interface ComboboxMenuProps extends ViewProps {
-  ref: Ref<RNView>;
+  ref: Ref<ComponentRef<typeof RNView>>;
 }
 
 interface ComboboxItemProps extends Omit<PressableProps, "onPress"> {
-  ref: Ref<RNView>;
+  ref: Ref<ComponentRef<typeof RNView>>;
   onClick?: () => void;
   onPress?: () => void;
   /** Web only: how downshift moves its cursor with the pointer. */

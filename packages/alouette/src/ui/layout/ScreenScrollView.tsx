@@ -13,6 +13,7 @@ export function ScreenScrollView({
   className,
   contentContainerClassName,
   contentContainerStyle,
+  contentInsetAdjustmentBehavior,
   edges,
   ...props
 }: ScreenScrollViewProps): ReactNode {
@@ -20,6 +21,7 @@ export function ScreenScrollView({
     className,
     contentContainerClassName,
     contentContainerStyle,
+    contentInsetAdjustmentBehavior,
     edges,
   });
   return <ScrollView {...containerProps} {...props} />;

@@ -1,4 +1,4 @@
-import type { RefObject } from "react";
+import type { ComponentRef, RefObject } from "react";
 import type { View as RNView } from "react-native";
 
 export interface UseMenuKeyboardParams {
@@ -7,8 +7,8 @@ export interface UseMenuKeyboardParams {
    * ref: the anchored panel mounts a commit after the menu opens, so an effect
    * keyed on the open state would run before there is anything to focus.
    */
-  menuNode: RNView | null;
-  triggerRef: RefObject<RNView | null>;
+  menuNode: ComponentRef<typeof RNView> | null;
+  triggerRef: RefObject<ComponentRef<typeof RNView> | null>;
 }
 
 /** Web-only: native has no keyboard to rove with. */

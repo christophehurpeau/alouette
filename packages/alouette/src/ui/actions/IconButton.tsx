@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from "react";
+import type { ComponentRef, ReactNode, Ref } from "react";
 import type { View as RNView } from "react-native";
 import type { VariantProps } from "tailwind-variants";
 import { controlHeightsPx } from "../../controlSizes";
@@ -80,7 +80,7 @@ export interface IconButtonProps extends Omit<
    * Forwarded to the underlying `PressableBox`, so the button can anchor a
    * `Popover` or a `Menu`. React 19 carries it in with the other props.
    */
-  ref?: Ref<RNView>;
+  ref?: Ref<ComponentRef<typeof RNView>>;
   icon: SVGIconElement;
   /** Replaces `icon` while the button is hovered, focused or pressed. */
   activeIcon?: SVGIconElement;

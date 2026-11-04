@@ -6,6 +6,7 @@ export default ({ config }) => ({
   orientation: "portrait",
   icon: "./assets/icon.png",
   newArchEnabled: true,
+  plugins: ["@react-native-community/datetimepicker", "expo-status-bar"],
   splash: {
     resizeMode: "contain",
     backgroundColor: "#ffffff",

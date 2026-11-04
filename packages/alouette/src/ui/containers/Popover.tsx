@@ -1,4 +1,4 @@
-import type { ReactNode, RefObject } from "react";
+import type { ComponentRef, ReactNode, RefObject } from "react";
 import { Modal, Pressable, type View as RNView } from "react-native";
 import { useReducedMotion } from "../../core/ReducedMotionContext";
 import { SafeAreaProvider } from "../../core/SafeAreaProvider";
@@ -21,7 +21,7 @@ export interface PopoverProps {
    * input is not something the platform can render. Web falls back to the same
    * overlay when no anchor is given.
    */
-  anchorRef?: RefObject<RNView | null>;
+  anchorRef?: RefObject<ComponentRef<typeof RNView> | null>;
   /**
    * Which edge of the anchor the panel lines up with. Anchored web only, like
    * {@link anchorRef} — `end` is what a menu hanging off a small trigger near

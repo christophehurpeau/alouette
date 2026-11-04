@@ -1,9 +1,10 @@
-import type { ReactNode, Ref } from "react";
+import type { ComponentRef, ReactNode, Ref } from "react";
 import {
   Platform,
   TextInput as RNTextInput,
   type TextInputProps as RNTextInputProps,
 } from "react-native";
+import type { TextInputProps as WebTextInputProps } from "react-native-web";
 import type { VariantProps } from "tailwind-variants";
 import { tv } from "../../core/tv";
 import { useColorVariable } from "../../core/useColorToken";
@@ -164,7 +165,7 @@ const MODE_PROPS = {
 export type InputTextMode = keyof typeof MODE_PROPS;
 
 export interface InputTextProps
-  extends Omit<RNTextInputProps, "editable">, InputVariantProps {
+  extends Omit<RNTextInputProps, "editable" | "multiline">, InputVariantProps {
   /**
    * On the input itself. With a `startSlot` / `endSlot`, on the frame around
    * it instead: that frame is then the box the parent lays out, and the input
@@ -187,7 +188,7 @@ export interface InputTextProps
    */
   invalid?: boolean;
   mode?: InputTextMode;
-  ref?: Ref<RNTextInput>;
+  ref?: Ref<ComponentRef<typeof RNTextInput>>;
   /**
    * react-native's types have no `aria-describedby` / `aria-required`, but
    * react-native-web forwards both and native ignores unknown props. Web only
@@ -217,6 +218,7 @@ export function InputText({
   // Same forwarding as `aria-describedby`: untyped by react-native, rendered by
   // react-native-web.
   const ariaInvalidProps = { "aria-invalid": invalid === true };
+  const webDisabledProps: Pick<WebTextInputProps, "disabled"> = { disabled };
   const withStartSlot = startSlot !== undefined;
   const withEndSlot = endSlot !== undefined;
   const withSlot = withStartSlot || withEndSlot;
@@ -229,7 +231,7 @@ export function InputText({
   const input = (
     <RNTextInput
       editable={!disabled}
-      disabled={disabled}
+      {...webDisabledProps}
       aria-disabled={disabled === true}
       multiline={multiline === true}
       placeholderTextColor={placeholderColor}

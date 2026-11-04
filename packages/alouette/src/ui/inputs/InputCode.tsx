@@ -1,4 +1,5 @@
 import {
+  type ComponentRef,
   type ReactNode,
   type Ref,
   type RefObject,
@@ -13,6 +14,7 @@ import {
   TextInput as RNTextInput,
   type TextInputProps as RNTextInputProps,
 } from "react-native";
+import type { TextInputProps as WebTextInputProps } from "react-native-web";
 import type { VariantProps } from "tailwind-variants";
 import { tv } from "../../core/tv";
 import { useControllableValue } from "../../core/useControllableValue";
@@ -140,7 +142,9 @@ function sanitizeCode({ raw, mode, length }: SanitizeCodeParams): string {
  * `selectionchange` is what sees the click. Native re-applies `selection`
  * itself after its own selection event.
  */
-function usePinCaretToEnd(inputRef: RefObject<RNTextInput | null>): void {
+function usePinCaretToEnd(
+  inputRef: RefObject<ComponentRef<typeof RNTextInput> | null>,
+): void {
   useEffect(() => {
     if (Platform.OS !== "web") return;
     const pin = (): void => {
@@ -182,7 +186,7 @@ export interface InputCodeProps extends Pick<
   autoFocus?: boolean;
   /** On the row the parent lays out; the cells and the input are inside it. */
   className?: string;
-  ref?: Ref<RNTextInput>;
+  ref?: Ref<ComponentRef<typeof RNTextInput>>;
   testID?: string;
   "aria-label"?: string;
   "aria-labelledby"?: string;
@@ -217,11 +221,11 @@ export function InputCode({
     onValueChange,
   });
   const [focused, setFocused] = useState(false);
-  const inputRef = useRef<RNTextInput | null>(null);
+  const inputRef = useRef<ComponentRef<typeof RNTextInput> | null>(null);
   usePinCaretToEnd(inputRef);
 
   const setInputRef = useCallback(
-    (node: RNTextInput | null) => {
+    (node: ComponentRef<typeof RNTextInput> | null) => {
       inputRef.current = node;
       if (typeof ref === "function") ref(node);
       else if (ref) ref.current = node;
@@ -253,6 +257,7 @@ export function InputCode({
   // Same forwarding as `aria-describedby`: untyped by react-native, rendered by
   // react-native-web.
   const ariaInvalidProps = { "aria-invalid": invalid === true };
+  const webDisabledProps: Pick<WebTextInputProps, "disabled"> = { disabled };
 
   // Stable: `invalid` toggles while the code is being typed, and a plain
   // AccentScope would remount the input (and drop its focus) with it.
@@ -279,7 +284,7 @@ export function InputCode({
           value={code}
           selection={selection}
           editable={!isDisabled}
-          disabled={disabled}
+          {...webDisabledProps}
           aria-disabled={isDisabled}
           // oxlint-disable-next-line jsx-a11y/no-autofocus -- the caller's call, as on InputText
           autoFocus={autoFocus}

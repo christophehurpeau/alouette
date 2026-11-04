@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from "react";
+import type { ComponentRef, ReactNode, Ref } from "react";
 import {
   ScrollView as RNScrollView,
   type ScrollViewProps as RNScrollViewProps,
@@ -10,7 +10,7 @@ import { GradientBackground } from "./GradientBackground";
 
 interface GradientScrollViewInnerProps extends RNScrollViewProps {
   children?: ReactNode;
-  ref?: Ref<RNScrollView>;
+  ref?: Ref<ComponentRef<typeof RNScrollView>>;
 }
 
 function GradientScrollViewInner({
@@ -30,7 +30,7 @@ function GradientScrollViewInner({
 export interface GradientScrollViewProps extends RNScrollViewProps {
   children?: ReactNode;
   accent: Accent;
-  ref?: Ref<RNScrollView>;
+  ref?: Ref<ComponentRef<typeof RNScrollView>>;
 }
 
 export function GradientScrollView({

@@ -1,13 +1,13 @@
 import { expect, userEvent, within } from "storybook/test";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { type ReactNode, useRef } from "react";
+import { type ComponentRef, type ReactNode, useRef } from "react";
 import type { TextInput as RNTextInput } from "react-native";
 import { InputText } from "../inputs/InputText";
 import { Story } from "../story-components/Story";
 import { FormItem } from "./FormItem";
 
 function NameField({ details }: { details?: string }): ReactNode {
-  const ref = useRef<RNTextInput>(null);
+  const ref = useRef<ComponentRef<typeof RNTextInput>>(null);
   return (
     <FormItem
       label="Name"
@@ -28,7 +28,7 @@ function NameField({ details }: { details?: string }): ReactNode {
 }
 
 function RequiredField(): ReactNode {
-  const ref = useRef<RNTextInput>(null);
+  const ref = useRef<ComponentRef<typeof RNTextInput>>(null);
   return (
     <FormItem
       required
@@ -48,7 +48,7 @@ function RequiredField(): ReactNode {
 }
 
 function ErrorField({ details }: { details?: string }): ReactNode {
-  const ref = useRef<RNTextInput>(null);
+  const ref = useRef<ComponentRef<typeof RNTextInput>>(null);
   return (
     <FormItem
       label="Email"
@@ -70,7 +70,7 @@ function ErrorField({ details }: { details?: string }): ReactNode {
 }
 
 function RequiredEmptyErrorField(): ReactNode {
-  const ref = useRef<RNTextInput>(null);
+  const ref = useRef<ComponentRef<typeof RNTextInput>>(null);
   return (
     <FormItem
       required
@@ -93,7 +93,7 @@ function RequiredEmptyErrorField(): ReactNode {
 }
 
 function RequiredOtherErrorField(): ReactNode {
-  const ref = useRef<RNTextInput>(null);
+  const ref = useRef<ComponentRef<typeof RNTextInput>>(null);
   return (
     <FormItem
       required
@@ -116,7 +116,7 @@ function RequiredOtherErrorField(): ReactNode {
 }
 
 function IndentedFormItem(): ReactNode {
-  const ref = useRef<RNTextInput>(null);
+  const ref = useRef<ComponentRef<typeof RNTextInput>>(null);
   return (
     <FormItem
       indented

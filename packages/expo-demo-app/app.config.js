@@ -6,7 +6,7 @@ export default ({ config }) => ({
   version: "1.0.0",
   orientation: "default",
   newArchEnabled: true,
-  plugins: ["expo-router"],
+  plugins: ["expo-router", "expo-status-bar"],
   updates: {
     fallbackToCacheTimeout: 0,
   },

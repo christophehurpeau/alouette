@@ -1,4 +1,4 @@
-import { type ReactNode, useRef } from "react";
+import { type ComponentRef, type ReactNode, useRef } from "react";
 import type { View as RNView } from "react-native";
 import { AccentScope } from "../containers/AccentScope";
 import { Popover } from "../containers/Popover";
@@ -25,7 +25,7 @@ export function InputTextAutocomplete({
   "aria-required": ariaRequired,
   ...rest
 }: InputTextAutocompleteProps): ReactNode {
-  const anchorRef = useRef<RNView>(null);
+  const anchorRef = useRef<ComponentRef<typeof RNView>>(null);
   const { isOpen, inputProps, closeMenu, ...menu } = useAutocomplete({
     ...rest,
     disabled,

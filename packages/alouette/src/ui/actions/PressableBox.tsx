@@ -1,8 +1,9 @@
-import type { ReactNode, Ref } from "react";
+import type { ComponentRef, ReactNode, Ref } from "react";
 import type {
   PressableProps as RNPressableProps,
   View as RNView,
 } from "react-native";
+import type { PressableProps as WebPressableProps } from "react-native-web";
 import type { VariantProps } from "tailwind-variants";
 import type { AccentOrNeutral } from "../../core/AlouetteConfig";
 import { tv } from "../../core/tv";
@@ -230,7 +231,7 @@ export interface PressableBoxProps
   raised?: boolean;
   /** Untyped by react-native; web only in effect. */
   "aria-describedby"?: string;
-  ref?: Ref<RNView>;
+  ref?: Ref<ComponentRef<typeof RNView>>;
 }
 
 /**
@@ -256,6 +257,9 @@ export function PressableBox({
     disabled: props.disabled === true,
     forced: forceStyle !== undefined,
   });
+  // Spread, not written as a prop: react-native's Pressable types have no
+  // href, while react-native-web renders it as a real anchor.
+  const linkProps: Pick<WebPressableProps, "href"> = { href };
 
   return (
     <AccentScope accent={accent}>
@@ -270,7 +274,7 @@ export function PressableBox({
           forceStyle,
           raised,
         })}
-        href={href}
+        {...linkProps}
         {...props}
       />
     </AccentScope>

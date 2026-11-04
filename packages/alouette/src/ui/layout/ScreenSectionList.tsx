@@ -13,6 +13,7 @@ export function ScreenSectionList<ItemT, SectionT>({
   className,
   contentContainerClassName,
   contentContainerStyle,
+  contentInsetAdjustmentBehavior,
   edges,
   ...props
 }: ScreenSectionListProps<ItemT, SectionT>): ReactNode {
@@ -20,6 +21,7 @@ export function ScreenSectionList<ItemT, SectionT>({
     className,
     contentContainerClassName,
     contentContainerStyle,
+    contentInsetAdjustmentBehavior,
     edges,
   });
   return <SectionList<ItemT, SectionT> {...containerProps} {...props} />;

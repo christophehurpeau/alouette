@@ -13,6 +13,7 @@ export function ScreenFlatList<ItemT>({
   className,
   contentContainerClassName,
   contentContainerStyle,
+  contentInsetAdjustmentBehavior,
   edges,
   ...props
 }: ScreenFlatListProps<ItemT>): ReactNode {
@@ -20,6 +21,7 @@ export function ScreenFlatList<ItemT>({
     className,
     contentContainerClassName,
     contentContainerStyle,
+    contentInsetAdjustmentBehavior,
     edges,
   });
   return <FlatList<ItemT> {...containerProps} {...props} />;

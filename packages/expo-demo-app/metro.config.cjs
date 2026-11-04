@@ -1,7 +1,7 @@
 "use strict";
 
 const { withAlouetteConfig } = require("alouette/metro.cjs");
-const { getDefaultConfig } = require("expo/metro-config.js");
+const { getDefaultConfig } = require("expo/metro-config");
 
 const defaultConfig = getDefaultConfig(__dirname);
 
@@ -18,4 +18,6 @@ defaultConfig.resolver.resolveRequest = (context, moduleName, platform) => {
   return context.resolveRequest(context, moduleName, platform);
 };
 
-module.exports = withAlouetteConfig(defaultConfig);
+module.exports = withAlouetteConfig(defaultConfig, {
+  disableTypeScriptGeneration: true,
+});

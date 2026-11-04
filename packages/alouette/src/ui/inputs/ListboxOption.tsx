@@ -1,5 +1,5 @@
 import { CheckRegularIcon } from "alouette-icons/phosphor-icons/Check";
-import type { ReactNode, Ref } from "react";
+import type { ComponentRef, ReactNode, Ref } from "react";
 import {
   Pressable,
   type PressableProps,
@@ -54,7 +54,7 @@ export interface ListboxOptionProps extends Omit<
    * replaces CSS hover. Left undefined, the row lights on hover.
    */
   highlighted?: boolean;
-  ref?: Ref<RNView>;
+  ref?: Ref<ComponentRef<typeof RNView>>;
 }
 
 function cursorState(
