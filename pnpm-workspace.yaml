@@ -19,4 +19,6 @@ overrides:
   "@expo/metro-config>lightningcss": 1.30.1
 packages:
   - packages/*
+patchedDependencies:
+  react-native-css@3.1.0-rc.0: patches/react-native-css@3.1.0-rc.0.patch
 savePrefix: ^
