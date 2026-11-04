@@ -4,6 +4,7 @@ import {
   TextInput as RNTextInput,
   type TextInputProps as RNTextInputProps,
 } from "react-native";
+import type { TextInputProps as WebTextInputProps } from "react-native-web";
 import type { VariantProps } from "tailwind-variants";
 import { tv } from "../../core/tv";
 import { useColorVariable } from "../../core/useColorToken";
@@ -217,6 +218,7 @@ export function InputText({
   // Same forwarding as `aria-describedby`: untyped by react-native, rendered by
   // react-native-web.
   const ariaInvalidProps = { "aria-invalid": invalid === true };
+  const webDisabledProps: Pick<WebTextInputProps, "disabled"> = { disabled };
   const withStartSlot = startSlot !== undefined;
   const withEndSlot = endSlot !== undefined;
   const withSlot = withStartSlot || withEndSlot;
@@ -229,7 +231,7 @@ export function InputText({
   const input = (
     <RNTextInput
       editable={!disabled}
-      disabled={disabled}
+      {...webDisabledProps}
       aria-disabled={disabled === true}
       multiline={multiline === true}
       placeholderTextColor={placeholderColor}

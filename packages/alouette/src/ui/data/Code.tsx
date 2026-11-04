@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Text, type TextProps } from "../primitives/Text";
+import { webTextRole } from "../primitives/webTextRole";
 
 export type CodeProps = TextProps;
 
@@ -14,7 +15,7 @@ export type CodeProps = TextProps;
 export function Code({ className, ...props }: CodeProps): ReactNode {
   return (
     <Text
-      role="code"
+      role={webTextRole("code")}
       // Android ignores horizontal padding on a nested (inline) Text — the
       // background still reads as a code fragment there.
       className={`font-mono bg-highlight rounded-xs px-xxs py-px select-auto ${className ?? ""}`}

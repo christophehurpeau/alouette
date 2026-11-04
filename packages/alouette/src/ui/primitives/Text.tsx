@@ -4,6 +4,7 @@ import type { Accent } from "../../core/AlouetteConfig";
 import { twMerge } from "../../core/twMerge";
 import { AccentScope } from "../containers/AccentScope";
 import { TextAncestorContext, TextAncestorScope } from "./TextAncestorContext";
+import { webTextRole } from "./webTextRole";
 
 export interface TextProps extends RNTextProps {
   accent?: Accent;
@@ -56,7 +57,7 @@ export type ParagraphProps = TextProps;
 export function Paragraph({ className, ...props }: ParagraphProps): ReactNode {
   return (
     <Text
-      role="paragraph"
+      role={webTextRole("paragraph")}
       className={twMerge("select-auto", className)}
       {...props}
     />

@@ -4,6 +4,7 @@ import { tv } from "../../core/tv";
 import { Box } from "../containers/Box";
 import { ScrollView } from "../primitives/ScrollView";
 import { Text } from "../primitives/Text";
+import { webTextRole } from "../primitives/webTextRole";
 
 const codeBlockVariants = tv({
   slots: {
@@ -57,7 +58,7 @@ export function CodeBlock({
 }: CodeBlockProps): ReactNode {
   const styles = codeBlockVariants({ size, wrap });
   const code = (
-    <Text role="code" className={styles.code()}>
+    <Text role={webTextRole("code")} className={styles.code()}>
       {children}
     </Text>
   );

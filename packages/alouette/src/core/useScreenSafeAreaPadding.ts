@@ -1,4 +1,5 @@
 import type { ViewStyle } from "react-native";
+import type { Writable } from "type-fest";
 import {
   type SafeAreaEdge,
   allSafeAreaEdges,
@@ -25,7 +26,7 @@ export function useScreenSafeAreaPadding(
   const appliedEdges =
     edges ?? allSafeAreaEdges.filter((edge) => !consumedEdges.includes(edge));
 
-  const padding: ViewStyle = {};
+  const padding: Writable<ViewStyle> = {};
   if (insets.top > 0 && appliedEdges.includes("top")) {
     padding.paddingTop = insets.top;
   }

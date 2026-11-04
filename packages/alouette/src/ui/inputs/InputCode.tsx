@@ -14,6 +14,7 @@ import {
   TextInput as RNTextInput,
   type TextInputProps as RNTextInputProps,
 } from "react-native";
+import type { TextInputProps as WebTextInputProps } from "react-native-web";
 import type { VariantProps } from "tailwind-variants";
 import { tv } from "../../core/tv";
 import { useControllableValue } from "../../core/useControllableValue";
@@ -256,6 +257,7 @@ export function InputCode({
   // Same forwarding as `aria-describedby`: untyped by react-native, rendered by
   // react-native-web.
   const ariaInvalidProps = { "aria-invalid": invalid === true };
+  const webDisabledProps: Pick<WebTextInputProps, "disabled"> = { disabled };
 
   // Stable: `invalid` toggles while the code is being typed, and a plain
   // AccentScope would remount the input (and drop its focus) with it.
@@ -282,7 +284,7 @@ export function InputCode({
           value={code}
           selection={selection}
           editable={!isDisabled}
-          disabled={disabled}
+          {...webDisabledProps}
           aria-disabled={isDisabled}
           // oxlint-disable-next-line jsx-a11y/no-autofocus -- the caller's call, as on InputText
           autoFocus={autoFocus}
