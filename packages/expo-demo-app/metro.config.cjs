@@ -18,4 +18,6 @@ defaultConfig.resolver.resolveRequest = (context, moduleName, platform) => {
   return context.resolveRequest(context, moduleName, platform);
 };
 
-module.exports = withAlouetteConfig(defaultConfig);
+module.exports = withAlouetteConfig(defaultConfig, {
+  disableTypeScriptGeneration: true,
+});
