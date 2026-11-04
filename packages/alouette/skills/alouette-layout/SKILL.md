@@ -26,6 +26,8 @@ sources:
   - packages/alouette/src/ui/layout/ScreenFlatList.tsx
   - packages/alouette/src/ui/layout/ScreenSectionList.tsx
   - packages/alouette/src/core/SafeAreaEdgesContext.tsx
+  - packages/alouette/src/core/resolveScreenSafeAreaPadding.ts
+  - packages/alouette/src/ui/layout/useScreenContainerProps.ts
   - packages/alouette/src/config/tokens.stories.tsx
 ---
 
@@ -236,6 +238,38 @@ container. Insets are native-only — `useSafeAreaInsets` is stubbed to zeros on
 web — and are only passed as `contentContainerStyle` when non-zero, because on
 native an inline style wins over the className, so an inset edge would override a
 same-edge padding class.
+
+On iOS the containers pass `contentInsetAdjustmentBehavior="automatic"` and pad
+only the left and right edges by hand: UIKit insets the top and bottom from
+the bars that actually cover the list (status bar, a native header, opaque or
+glass, the home indicator, a tab bar), so `consumedEdges` has no effect on those
+two edges there. Passing `edges` or a `topOverlayHeight` turns it back to
+`"never"` and the manual padding of every edge, as on Android.
+
+A transparent native header (Expo Router 58 makes the iOS 26 header a
+transparent glass bar unless the screen sets `headerTransparent: false` or a
+`headerStyle.backgroundColor`) lays over the content, and only iOS knows it.
+Declare its height so Android clears it as well:
+
+```tsx
+import { useHeaderHeight } from "expo-router/react-navigation";
+
+<Stack screenOptions={{ headerTransparent: false }}>
+  {/* a screen over a background image keeps the glass header */}
+  <Stack.Screen name="hero" options={{ headerTransparent: true }} />
+</Stack>;
+
+function HeroScreen() {
+  return (
+    <SafeAreaScope topOverlayHeight={useHeaderHeight()}>
+      <ScreenScrollView>…</ScreenScrollView>
+    </SafeAreaScope>
+  );
+}
+```
+
+The top padding is then the larger of the header height and the top inset. A
+nested scope inherits it unless it consumes the top edge.
 
 ### Centered single-purpose screens
 
