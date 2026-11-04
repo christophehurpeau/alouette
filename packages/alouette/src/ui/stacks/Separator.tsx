@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from "react";
+import type { ComponentRef, ReactNode, Ref } from "react";
 import { View as RNView, type ViewProps as RNViewProps } from "react-native";
 import type { VariantProps } from "tailwind-variants";
 import { tv } from "../../core/tv";
@@ -19,7 +19,7 @@ const separatorVariants = tv({
 type SeparatorVariantProps = VariantProps<typeof separatorVariants>;
 
 export interface SeparatorProps extends RNViewProps, SeparatorVariantProps {
-  ref?: Ref<RNView>;
+  ref?: Ref<ComponentRef<typeof RNView>>;
 }
 
 export function Separator({

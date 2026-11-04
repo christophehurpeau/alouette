@@ -1,4 +1,5 @@
 import {
+  type ComponentRef,
   type FocusEvent,
   type PointerEvent,
   type ReactNode,
@@ -155,7 +156,7 @@ export function Tooltip({ content, render }: TooltipProps): ReactNode {
           side={placement.side}
           align={placement.align}
           width="content"
-          anchorRef={anchorRef as RefObject<RNView | null>}
+          anchorRef={anchorRef as RefObject<ComponentRef<typeof RNView> | null>}
           onClose={close}
         >
           {/* The trigger already carries the content as its description: the

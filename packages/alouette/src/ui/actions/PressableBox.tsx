@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from "react";
+import type { ComponentRef, ReactNode, Ref } from "react";
 import type {
   PressableProps as RNPressableProps,
   View as RNView,
@@ -230,7 +230,7 @@ export interface PressableBoxProps
   raised?: boolean;
   /** Untyped by react-native; web only in effect. */
   "aria-describedby"?: string;
-  ref?: Ref<RNView>;
+  ref?: Ref<ComponentRef<typeof RNView>>;
 }
 
 /**

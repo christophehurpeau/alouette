@@ -1,4 +1,4 @@
-import { type ReactNode, type Ref, use } from "react";
+import { type ComponentRef, type ReactNode, type Ref, use } from "react";
 import { Text as RNText, type TextProps as RNTextProps } from "react-native";
 import type { Accent } from "../../core/AlouetteConfig";
 import { twMerge } from "../../core/twMerge";
@@ -7,7 +7,7 @@ import { TextAncestorContext, TextAncestorScope } from "./TextAncestorContext";
 
 export interface TextProps extends RNTextProps {
   accent?: Accent;
-  ref?: Ref<RNText>;
+  ref?: Ref<ComponentRef<typeof RNText>>;
 }
 
 /**

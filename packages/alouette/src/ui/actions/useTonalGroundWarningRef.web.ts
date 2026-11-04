@@ -1,4 +1,5 @@
 import {
+  type ComponentRef,
   type Ref,
   type RefCallback,
   useCallback,
@@ -48,9 +49,9 @@ function warnIfOnOwnGround(element: HTMLElement): void {
  * detaching and re-attaching the caller's ref.
  */
 export function useTonalGroundWarningRef(
-  ref: Ref<RNView> | undefined,
+  ref: Ref<ComponentRef<typeof RNView>> | undefined,
   { variant, disabled, forced }: TonalGroundWarningParams,
-): RefCallback<RNView> {
+): RefCallback<ComponentRef<typeof RNView>> {
   const elementRef = useRef<HTMLElement | null>(null);
   const isTonalAtRest =
     (variant ?? "tonal") === "tonal" && !disabled && !forced;
@@ -61,7 +62,7 @@ export function useTonalGroundWarningRef(
   }, [isTonalAtRest]);
 
   return useCallback(
-    (node: RNView | null) => {
+    (node: ComponentRef<typeof RNView> | null) => {
       elementRef.current = node as unknown as HTMLElement | null;
       if (typeof ref === "function") ref(node);
       else if (ref) ref.current = node;

@@ -1,4 +1,4 @@
-import type { Ref } from "react";
+import type { ComponentRef, Ref } from "react";
 import type { View as RNView } from "react-native";
 import type { PressableBoxVariant } from "./PressableBox";
 
@@ -10,8 +10,8 @@ export interface TonalGroundWarningParams {
 
 /** Web-only: native exposes no computed style to compare grounds with. */
 export function useTonalGroundWarningRef(
-  ref: Ref<RNView> | undefined,
+  ref: Ref<ComponentRef<typeof RNView>> | undefined,
   _params: TonalGroundWarningParams,
-): Ref<RNView> | undefined {
+): Ref<ComponentRef<typeof RNView>> | undefined {
   return ref;
 }

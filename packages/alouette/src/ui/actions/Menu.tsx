@@ -1,4 +1,5 @@
 import {
+  type ComponentRef,
   type ReactNode,
   type Ref,
   useCallback,
@@ -15,7 +16,7 @@ import { MenuContextProvider } from "./MenuContext";
 import { useMenuKeyboard } from "./useMenuKeyboard";
 
 export interface MenuTriggerParams {
-  ref: Ref<RNView>;
+  ref: Ref<ComponentRef<typeof RNView>>;
   onPress: () => void;
   "aria-haspopup": "menu";
   "aria-expanded": boolean;
@@ -70,8 +71,10 @@ export function Menu({
   onOpenChange,
   children,
 }: MenuProps): ReactNode {
-  const triggerRef = useRef<RNView>(null);
-  const [menuNode, setMenuNode] = useState<RNView | null>(null);
+  const triggerRef = useRef<ComponentRef<typeof RNView>>(null);
+  const [menuNode, setMenuNode] = useState<ComponentRef<typeof RNView> | null>(
+    null,
+  );
   const [open, setOpen] = useState(false);
 
   const setOpenState = useCallback(

@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode, Ref } from "react";
+import type { ComponentRef, ReactElement, ReactNode, Ref } from "react";
 import { Children, cloneElement } from "react";
 import {
   Pressable,
@@ -19,7 +19,7 @@ export const boxBaseClasses = "shrink";
 
 export interface BoxProps extends RNViewProps {
   accent?: AccentOrNeutral;
-  ref?: Ref<RNView>;
+  ref?: Ref<ComponentRef<typeof RNView>>;
 }
 
 export function Box({ className, accent, ...props }: BoxProps): ReactNode {
@@ -71,7 +71,7 @@ export const interactiveBoxVariants = tv({
 
 export interface InteractiveBoxProps
   extends VariantProps<typeof interactiveBoxVariants>, PressableProps {
-  ref?: Ref<RNView>;
+  ref?: Ref<ComponentRef<typeof RNView>>;
 }
 
 export function InteractiveBox({

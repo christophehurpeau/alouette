@@ -1,6 +1,12 @@
 import { CheckCircleRegularIcon } from "alouette-icons/phosphor-icons/CheckCircle";
 import { WarningDuotoneIcon } from "alouette-icons/phosphor-icons/Warning";
-import { type ReactNode, type Ref, useEffect, useState } from "react";
+import {
+  type ComponentRef,
+  type ReactNode,
+  type Ref,
+  useEffect,
+  useState,
+} from "react";
 import type { View as RNView } from "react-native";
 import type { VariantProps } from "tailwind-variants";
 import type { Density, controlHeightsPx } from "../../controlSizes";
@@ -183,7 +189,7 @@ export interface ButtonProps
    * Forwarded to the underlying `PressableBox`, so the button can anchor a
    * `Popover` or a `Menu`. React 19 carries it in with the other props.
    */
-  ref?: Ref<RNView>;
+  ref?: Ref<ComponentRef<typeof RNView>>;
 }
 
 interface IsButtonDisabledParams {

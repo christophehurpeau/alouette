@@ -14,10 +14,13 @@ const useOpenExternalLink = () => {
   const textSharp = useColorVariable("text-sharp");
   const bgSurface = useColorVariable("bg-surface");
 
-  return async (href: string, openLinkBehavior: ExternalOpenLinkBehavior) => {
+  return async (
+    href: string,
+    openLinkBehavior: ExternalOpenLinkBehavior,
+  ): Promise<void> => {
     switch (openLinkBehavior.native) {
       case "webBrowser": {
-        return WebBrowser.openBrowserAsync(href, {
+        await WebBrowser.openBrowserAsync(href, {
           controlsColor: textSharp,
           dismissButtonStyle: "close",
           presentationStyle: WebBrowserPresentationStyle.PAGE_SHEET,
@@ -28,9 +31,11 @@ const useOpenExternalLink = () => {
           showTitle: true,
           enableDefaultShareMenuItem: true,
         });
+        return;
       }
       case "linking": {
-        return Linking.openURL(href);
+        await Linking.openURL(href);
+        return;
       }
       default: {
         throw new Error(

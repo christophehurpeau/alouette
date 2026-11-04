@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from "react";
+import type { ComponentRef, ReactNode, Ref } from "react";
 import {
   Platform,
   TextInput as RNTextInput,
@@ -164,7 +164,7 @@ const MODE_PROPS = {
 export type InputTextMode = keyof typeof MODE_PROPS;
 
 export interface InputTextProps
-  extends Omit<RNTextInputProps, "editable">, InputVariantProps {
+  extends Omit<RNTextInputProps, "editable" | "multiline">, InputVariantProps {
   /**
    * On the input itself. With a `startSlot` / `endSlot`, on the frame around
    * it instead: that frame is then the box the parent lays out, and the input
@@ -187,7 +187,7 @@ export interface InputTextProps
    */
   invalid?: boolean;
   mode?: InputTextMode;
-  ref?: Ref<RNTextInput>;
+  ref?: Ref<ComponentRef<typeof RNTextInput>>;
   /**
    * react-native's types have no `aria-describedby` / `aria-required`, but
    * react-native-web forwards both and native ignores unknown props. Web only
