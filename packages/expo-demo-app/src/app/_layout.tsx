@@ -33,10 +33,14 @@ export default function RootLayout(): ReactNode {
   return (
     <SafeAreaProvider>
       <AlouetteProvider themeVariables={themeVariables}>
-        <Stack>
+        <Stack screenOptions={{ headerTransparent: false }}>
           <Stack.Screen
             name="index"
             options={{ headerShown: true, title: "With header" }}
+          />
+          <Stack.Screen
+            name="transparent-header"
+            options={{ headerTransparent: true, title: "Transparent header" }}
           />
           <Stack.Screen name="no-header" options={{ headerShown: false }} />
         </Stack>
