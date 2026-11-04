@@ -25,7 +25,7 @@
     "start:web": "expo start --web",
     "tsc": "tsrs",
     "tsc:go": "tsc",
-    "upgrade-expo": "expo install expo@58 --fix"
+    "upgrade-expo": "expo install expo@57 --fix"
   },
   "dependencies": {
     "@babel/core": "7.29.7",
@@ -61,11 +61,11 @@
     "@tailwindcss/postcss": "4.3.3",
     "@types/react": "19.3.0",
     "@typescript/native": "npm:typescript@7.0.2",
-    "tsrs": "0.18.0-ts7.1.0-dev.20260929",
+    "tsrs": "0.20.1-ts7.1.0-beta",
     "typescript": "npm:@typescript/typescript6@6.0.2"
   },
   "engines": {
-    "node": "^22.18.0 || >=24.14.1"
+    "node": "^22.23.4 || ^24.22.1 || >=26.13.0"
   },
   "expo": {
     "install": {
