@@ -10,6 +10,7 @@ interface PressAsyncState {
 }
 
 type PressAsyncAction =
+  | { type: "pending" }
   | { type: "reject"; error: Error }
   | { type: "resolve" }
   | { type: "settledTimeout" }
@@ -22,6 +23,8 @@ function pressAsyncReducer(
   action: PressAsyncAction,
 ): PressAsyncState {
   switch (action.type) {
+    case "pending":
+      return idleState;
     case "start":
       return { buttonState: "loading", error: null };
     case "resolve":
@@ -44,19 +47,37 @@ export function usePressAsync(
 ): UsePressAsyncResult {
   const [pressAsyncState, dispatch] = useReducer(pressAsyncReducer, idleState);
   const settledTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const loadingTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const pendingRef = useRef(false);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
+    mountedRef.current = true;
     return () => {
+      mountedRef.current = false;
+      clearTimeout(loadingTimerRef.current);
       clearTimeout(settledTimerRef.current);
     };
   }, []);
 
   function handlePress(event: GestureResponderEvent): void {
-    if (pressAsyncState.buttonState === "loading") return;
+    if (pendingRef.current) return;
     clearTimeout(settledTimerRef.current);
     const result = onPress(event);
     if (!(result instanceof Promise)) return;
-    dispatch({ type: "start" });
+    pendingRef.current = true;
+    dispatch({ type: "pending" });
+    // Let the current microtask queue finish first. Synchronous work wrapped
+    // in a Promise (including field validation) needs no loading indicator.
+    loadingTimerRef.current = setTimeout(() => {
+      dispatch({ type: "start" });
+    }, 0);
+
+    function finishPending(): boolean {
+      pendingRef.current = false;
+      clearTimeout(loadingTimerRef.current);
+      return mountedRef.current;
+    }
 
     function scheduleSettledTimeout(): void {
       settledTimerRef.current = setTimeout(() => {
@@ -66,10 +87,12 @@ export function usePressAsync(
 
     result
       .then(() => {
+        if (!finishPending()) return;
         dispatch({ type: "resolve" });
         scheduleSettledTimeout();
       })
       .catch((caughtError: unknown) => {
+        if (!finishPending()) return;
         const normalizedError =
           caughtError instanceof Error
             ? caughtError

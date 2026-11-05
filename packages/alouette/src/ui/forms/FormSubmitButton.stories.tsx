@@ -80,7 +80,7 @@ export default {
   component: FormSubmitButton,
   parameters: {
     componentSubtitle:
-      "Submit button for a <Form>. Reuses Button's own disabled/loading accessibility handling — only wires isSubmitting from react-hook-form's context to it.",
+      "Submit button for a <Form>. Shares ActionButton's loading, success and failure states. Validation that finishes within the current microtask queue does not show a loader.",
   },
 } satisfies Meta<typeof FormSubmitButtonDemo>;
 
