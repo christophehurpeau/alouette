@@ -67,7 +67,7 @@
     "@types/react": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
     "@vitest/browser-playwright": "5.0.5",
-    "chromatic": "18.13.6",
+    "chromatic": "18.13.9",
     "expo-svg-transformer": "3.2.0",
     "playwright": "1.64.1",
     "storybook": "10.6.5",
